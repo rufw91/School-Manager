@@ -1,0 +1,225 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:models="clr-namespace:Helper.Models;assembly=Starehe.Helper"
+                    xmlns:views="clr-namespace:Starehe.Views">
+    <DataTemplate x:Key="StudentListTemplate">
+        <Grid HorizontalAlignment="Left" Height="136" VerticalAlignment="Top" Width="145">
+            <Border BorderBrush="{DynamicResource Title1BackgroundBrush}" BorderThickness="2">
+                <Grid Background="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="18"/>
+                        <RowDefinition Height="18"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0" Stretch="Uniform" Source="{Binding SPhoto, IsAsync=True, 
+                        Converter={StaticResource StreamToImageSourceConverter}, ConverterParameter=145}" />
+                    <Border Grid.Row="1" Grid.RowSpan="2" Background="{DynamicResource Title1BackgroundBrush}"/>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock Text="Name:" Style="{DynamicResource Emphasis}"/>
+                        <TextBlock Text="{Binding NameOfStudent, IsAsync=True}" Style="{DynamicResource Normal}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <TextBlock Text="ID: " Style="{DynamicResource Emphasis}"/>
+                        <TextBlock Text="{Binding StudentID, IsAsync=True}" Style="{DynamicResource Normal}"/>
+                    </StackPanel>
+                    <Grid.ToolTip>
+                        <ToolTip>
+                            <Grid>
+                                <StackPanel>
+                                    <TextBlock Style="{DynamicResource ContentTextSemiBold}" Text="{Binding NameOfStudent, StringFormat=Name: {0}}"/>
+                                    <TextBlock Style="{DynamicResource ContentTextSemiBold}" Text="{Binding StudentID,StringFormat=Student ID: {0}}"/>
+                                </StackPanel>
+                            </Grid>
+                        </ToolTip>
+                    </Grid.ToolTip>
+                </Grid>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="StaffListTemplate">
+        <Grid HorizontalAlignment="Left" Height="136" VerticalAlignment="Top" Width="145" >
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="18"/>
+                        <RowDefinition Height="18"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0"  Stretch="Uniform" Source="{Binding SPhoto, IsAsync=True, 
+                        Converter={StaticResource StreamToImageSourceConverter},ConverterParameter=145}"/>
+                    <Border Grid.Row="1" Grid.RowSpan="2" Background="{DynamicResource Title2BackgroundBrush}"/>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock Text="Name:" Style="{DynamicResource Emphasis}"/>
+                        <TextBlock Text="{Binding Name, IsAsync=True}" Style="{DynamicResource Normal}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <TextBlock Text="National ID:" Style="{DynamicResource Emphasis}"/>
+                        <TextBlock Text="{Binding NationalID, IsAsync=True}" Style="{DynamicResource Normal}"/>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+        </Grid>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="FeePaymentModel">
+        <Grid Height="60">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>                
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Amount Paid:"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AmountPaid}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Date Paid:"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding DatePaid, StringFormat={}{0:dd MM yyyy}}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FeesStructureEntryModel">
+        <Grid Height="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Item:"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Cost:"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Amount}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FeesStructureEditableEntryModel">
+        <Grid Height="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Item:"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Cost:"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BorderThickness="0"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="StudentResultTemplate">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90*"/>
+                <RowDefinition Height="329*"/>
+            </Grid.RowDefinitions>
+            <TextBlock HorizontalAlignment="Left" Margin="22,24,0,0"  Text="NAME:" VerticalAlignment="Top"
+                   FontFamily="Calibri" FontWeight="Bold" FontSize="16" Height="20" Width="46"/>
+            <TextBlock HorizontalAlignment="Left" Margin="75,20,0,0" VerticalAlignment="Top"
+                   Style="{DynamicResource Title0}"
+                   Text="{Binding NameOfStudent,Converter={StaticResource ToLowerConverter}}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="22,54,0,0"  Text="CLASS:" VerticalAlignment="Top"
+        	FontFamily="Calibri" FontWeight="Bold" FontSize="16" Height="20" Width="44"/>
+            <TextBlock HorizontalAlignment="Left" Margin="75,50,0,0" VerticalAlignment="Top"
+                   Style="{DynamicResource Title0}"
+                   Text="{Binding NameOfClass, Converter={StaticResource ToLowerConverter}}" />
+            <DataGrid AutoGenerateColumns="False" Name="test" Margin="20,10,20,0" CanUserAddRows="False"
+                  CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False"
+                  VerticalAlignment="Top" Grid.Row="1"
+                  ItemsSource="{Binding Entries}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Subject" Binding="{Binding NameOfSubject}" Width="200*" IsReadOnly="True"/>
+
+                    <DataGridTextColumn Binding=
+                          "{Binding Path=Score}" 
+                      Header="Score" Width="200*" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ClassResultTemplate">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90"/>
+                <RowDefinition Height="90*"/>
+            </Grid.RowDefinitions>
+            <TextBlock HorizontalAlignment="Left" Margin="22,24,0,0"  Text="NAME:" VerticalAlignment="Top"
+                   FontFamily="Calibri" FontWeight="Bold" FontSize="16" Height="20" Width="46"/>
+            <TextBlock HorizontalAlignment="Left" Margin="75,20,0,0" VerticalAlignment="Top"
+                   Style="{DynamicResource Title0}"
+                   Text="{Binding NameOfClass,Converter={StaticResource ToLowerConverter}}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="22,54,0,0"  Text="EXAM:" VerticalAlignment="Top"
+        	FontFamily="Calibri" FontWeight="Bold" FontSize="16" Height="20" Width="44"/>
+            <TextBlock HorizontalAlignment="Left" Margin="75,50,0,0" VerticalAlignment="Top"
+                   Style="{DynamicResource Title0}"
+                   Text="{Binding NameOfExam, Converter={StaticResource ToLowerConverter}}" />
+            <DataGrid AutoGenerateColumns="True" Name="test" Margin="20,10,20,0" CanUserAddRows="False"
+                  CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False"
+                  VerticalAlignment="Top" Grid.Row="1"
+                  ItemsSource="{Binding ResultTable}">
+            </DataGrid>
+
+
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EventTemplate">
+        <Grid Height="120" Width="400">
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" Text="Event:" VerticalAlignment="Top"
+                       Style="{DynamicResource ContentTextBold}" FontSize="24"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,40,0,0" Text="STARTS:" VerticalAlignment="Top"
+                       Style="{DynamicResource ContentTextSemiBold}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,70,0,0" Text="ENDS:" VerticalAlignment="Top"
+                       Style="{DynamicResource ContentTextSemiBold}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,100,0,0" Text="LOCATION:" VerticalAlignment="Top"
+                       Style="{DynamicResource ContentTextSemiBold}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="100,-5,0,0" Style="{DynamicResource Title}" FontSize="30" VerticalAlignment="Top"
+                       Text="{Binding Name, Converter={StaticResource ToLowerConverter}}" />
+            <TextBlock HorizontalAlignment="Left" Margin="100,40,0,0" VerticalAlignment="Top" Style="{DynamicResource ContentText}"
+                       Text="{Binding StartDateTime}" />
+            <TextBlock HorizontalAlignment="Left" Margin="100,70,0,0"  VerticalAlignment="Top" Style="{DynamicResource ContentText}"
+                       Text="{Binding EndDateTime}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="100,100,0,0" VerticalAlignment="Top" Style="{DynamicResource ContentText}"
+                       Text="{Binding Location}"/>
+        </Grid>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="TimetableClassTemplate">
+        <Grid Width="650">
+            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="{Binding NameOfClass}" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+            <DataGrid AutoGenerateColumns="False" Name="test" Margin="10,40,20,10" CanUserAddRows="False"
+                  CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False"
+                  Grid.Row="1"
+                  ItemsSource="{Binding Entries}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Subject" Binding="{Binding NameOfSubject}" Width="*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Day" Binding= "{Binding Path=Day, StringFormat={}{0:dd MMM yyyy}}" Width="*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Tutor" Binding= "{Binding Path=Tutor}" Width="*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Period" Binding= "{Binding Path=Period}" Width="*" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="GalleryItemTemplate">
+        <Grid Width="90" Height="100">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <Image Source="{Binding Thumbnail, IsAsync=True, Converter={StaticResource StreamToImageSourceConverter}}"/>                     
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

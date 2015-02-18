@@ -1,0 +1,15 @@
+﻿<ccl:CustomWindow Style="{StaticResource {x:Type ccl:CustomWindow}}" x:Class="Starehe.Views.Help"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:ccl="clr-namespace:Helper.Controls;assembly=Helper"
+        Title="Ask For Help" Height="250" Width="523" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Help" 
+                   VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top">
+            To obtain help, visit <Hyperlink Click="OnWeblink_Click">sourceforge.net</Hyperlink> or send an email to the <Hyperlink Click="OnEmail_Click">Developer</Hyperlink>
+        </TextBlock>
+        <Button Content="_Close" HorizontalAlignment="Right" Margin="0,0,10,10" Click="OnClick_Close" VerticalAlignment="Bottom" Width="98" IsCancel="True" />
+        
+    </Grid>
+</ccl:CustomWindow>

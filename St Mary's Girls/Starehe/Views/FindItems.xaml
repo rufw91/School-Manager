@@ -1,0 +1,34 @@
+﻿<core:CustomWindow x:Class="Starehe.Views.FindItems" Style="{StaticResource {x:Type core:CustomWindow}}" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:Helper.Controls;assembly=Helper"
+        xmlns:helper="clr-namespace:Helper;assembly=Starehe.Helper"
+        xmlns:converters="clr-namespace:Helper.Converters;assembly=Starehe.Helper"
+        Title="Find Items" Height="600" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow">
+    
+    <Grid>
+        <Grid>
+            <TextBlock Style="{StaticResource Title}" HorizontalAlignment="Left" Margin="10,10,0,0" Text="Find Item(s)" VerticalAlignment="Top" />
+            <TextBox HorizontalAlignment="Center" Margin="0,55,0,0" VerticalAlignment="Top" Width="300" Style="{DynamicResource SearchTextBox}" 
+                     Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=30}"/>
+
+            <DataGrid AutoGenerateColumns="False"  Name="dtGrid" ItemsSource="{Binding AllItems, IsAsync=True}"
+                          CanUserAddRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" 
+                          RowHeaderWidth="0" Margin="10,100,10,50" 
+                           KeyUp="dtGrid_KeyUp">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Path=ItemID, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" Header="Item ID" Width="150*" />
+                    <DataGridTextColumn Binding="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Description" 
+                                            IsReadOnly="True" Width="250*"
+                                            />
+                    <DataGridTextColumn Binding="{Binding Path=Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Price" IsReadOnly="True" Width="150*" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button Name="btnFinish" IsDefault="True" Content="Finish" HorizontalAlignment="Right" Margin="0,0,10,10"
+        	VerticalAlignment="Bottom" Width="96" Click="btnFinish_Click"/>
+            <Button IsCancel="True" Content="Close" HorizontalAlignment="Right" Margin="0,0,119,10" VerticalAlignment="Bottom" Width="75" Click="Button_Click"/>
+        </Grid>
+    </Grid>
+</core:CustomWindow>
