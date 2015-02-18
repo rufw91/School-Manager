@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Starehe.Views.ImportWizardPage2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views ="clr-namespace:Starehe.Views"
+             xmlns:controls ="clr-namespace:Helper.Controls;assembly=Helper"
+             mc:Ignorable="d" Background="{DynamicResource WindowBackground}"
+             d:DesignHeight="500" d:DesignWidth="600">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" Text="File Contents" Style="{DynamicResource Title}" VerticalAlignment="Top"/>
+        <TextBlock Margin="23,55,37,0" VerticalAlignment="Top" TextWrapping="Wrap"> 
+            Below is the data in the file. <LineBreak/><Bold>IMPORTANT:</Bold> Please ensure that column headers are correctly displayed. If you not, close this wizard and edit the file you are importing to ensure that the first row contains only the column headers.
+        </TextBlock>
+        
+
+        <DataGrid Margin="10,120,10,50" IsReadOnly="True"
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
+                  CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="True" ColumnWidth="Auto"
+                  ItemsSource="{Binding Path=DataContext.Data, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+
+        
+
+        <StackPanel Grid.Row="1" Margin="0,0,0,15" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Button Content="Cancel" Width="100" IsCancel="True"
+                    Command="{Binding Path=DataContext.CancelCommand, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+            <Grid Width="10"/>
+            <Button Content="Next" Width="100" IsDefault="True"
+                    Command="{Binding Path=DataContext.NextCommand, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+
+        </StackPanel>
+        <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"
+                      Visibility="{Binding Path=DataContext.IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+    </Grid>
+</UserControl>

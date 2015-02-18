@@ -1,0 +1,76 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Helper.Controls">
+
+    <Style TargetType="{x:Type controls:HomePageButton}">
+        <Setter Property="FocusVisualStyle" 
+                Value="{x:Null}"/>
+        <Setter Property="Background"
+                Value="Transparent"/>
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource TitleBackgroundBrush}"/>
+        <Setter Property="BorderThickness"
+                Value="2"/>
+        <Setter Property="Foreground"
+                Value="{DynamicResource ButtonText}"/>
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center"/>
+        <Setter Property="VerticalContentAlignment"
+                Value="Center"/>
+        <Setter Property="Padding"
+                Value="5"/>        
+        <Setter Property="Width" 
+                Value="240"/>        
+        <Setter Property="Height" 
+                Value="175"/>
+        <Setter Property="HorizontalAlignment" 
+                Value="Left"/>
+        <Setter Property="CaptionBackground" 
+                Value="{DynamicResource TitleBackgroundBrush}"/>
+        <Setter Property="VerticalAlignment" 
+                Value="Top"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:HomePageButton}">
+                    <Grid>
+                        <Border Name="Chrome" 
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding CaptionBackground}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        SnapsToDevicePixels="true">
+                            <Grid>
+                                <ContentPresenter/>
+                                <Border Name="CaptionBorder" Margin="0,145,0,0" Background="{TemplateBinding CaptionBackground}"
+                                    BorderThickness="0">
+                                    <Grid>
+                                        <TextBlock Margin="6,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                           Text="{TemplateBinding Caption}" Foreground="{DynamicResource WhiteBrush}"
+                                           FontWeight="Bold" Style="{DynamicResource GroupTitle}"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <Border Name="MouseOverBorder" BorderBrush="Transparent" BorderThickness="0"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Background" Value="#99C8C8C8"/>
+                            
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="BorderThickness" Value="4"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="true">
+                            <Setter Property="BorderThickness" Value="4"/>
+                            <Setter Property="BorderBrush" Value="#99C8C8C8"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

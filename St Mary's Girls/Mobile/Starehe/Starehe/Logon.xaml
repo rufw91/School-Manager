@@ -1,0 +1,37 @@
+﻿<Page
+    x:Class="Starehe.Logon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Starehe"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="#FF91CBFF" 
+    Foreground="Black"
+    FontSize="14">
+
+    <Grid>
+
+        <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" Text="Login" VerticalAlignment="Top"
+                   Style="{ThemeResource HeaderTextBlockStyle}" Foreground="Black"/>
+        <TextBlock HorizontalAlignment="Left" Margin="15,95,0,0" Text="User Name" VerticalAlignment="Top"/>
+
+        <TextBox  Margin="15,115,15,0" VerticalAlignment="Top" Height="45"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="15,175,0,0" Text="Password" VerticalAlignment="Top"/>
+        <PasswordBox  Margin="15,195,15,0" VerticalAlignment="Top" Height="45"/>
+
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar Background="#FF0078C8"
+    Foreground="AliceBlue" >
+            <AppBarButton Icon="Accept" Label="Login" IsCompact="False" Click="AppBarButton_Click"/>
+
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>
+
+
+
+
+

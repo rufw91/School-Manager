@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:Controls="clr-namespace:Helper.Controls" >
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Helper;component/Themes/Generic.xaml"/>
+        <ResourceDictionary Source="/Starehe.Helper;component/Styles/Button.xaml"/>        
+    </ResourceDictionary.MergedDictionaries>    
+
+</ResourceDictionary>

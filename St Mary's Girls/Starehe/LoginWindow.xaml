@@ -1,0 +1,27 @@
+﻿<helper:CustomWindow x:Class="Starehe.Login" Style="{StaticResource {x:Type helper:CustomWindow}}" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helper="clr-namespace:Helper.Controls;assembly=Helper"
+        Title="Login" Height="350" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
+    <Grid Name="mnGrid">
+        <Border Background="{DynamicResource Accent}" Height="120"  VerticalAlignment="Top"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="10,30,0,0" 
+                   Text="{Binding Info.Name, Source={x:Static Application.Current}, Converter={StaticResource ToLowerConverter}}" VerticalAlignment="Top"
+                   Style="{DynamicResource LargeTitle}" Foreground="White" FontSize="48"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,95,0,0" Text="MANAGEMENT SYSTEM" VerticalAlignment="Top"
+                   Foreground="White" Style="{DynamicResource ContentTextSemiBold}"/>
+
+        
+        
+        <TextBlock HorizontalAlignment="Left" Margin="30,165,0,0" Text="User ID" VerticalAlignment="Top"/>
+        <TextBox Name="txtUId" HorizontalAlignment="Left" Margin="85,165,0,0" VerticalAlignment="Top" Width="251"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,210,0,0" Text="Password" VerticalAlignment="Top"/>
+        <PasswordBox Name="txtPwd" HorizontalAlignment="Left" Height="23" Margin="85,210,0,0" VerticalAlignment="Top" Width="251"/>
+        <StackPanel Margin="0,0,0,15" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Button Content="Login" Width="100" IsDefault="True" Click="Login_Click"/>
+            <Grid Width="10"/>
+            <Button Content="Cancel" Width="100" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</helper:CustomWindow>

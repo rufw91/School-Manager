@@ -1,0 +1,26 @@
+﻿<helper:CustomWindow x:Class="Starehe.Views.ImportWizardMainWindow" Style="{StaticResource {x:Type helper:CustomWindow}}" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helper="clr-namespace:Helper.Controls;assembly=Helper"
+        Title="Import Wizard" Height="500" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
+    <Window.Resources>
+        <SolidColorBrush Color="{DynamicResource AccentColor}" x:Key="TitleBackgroundBrush"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="70*"/>
+        </Grid.RowDefinitions>
+        <Border Background="{DynamicResource Accent}" Height="70"  VerticalAlignment="Top">
+            <Grid>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"
+                           Text="{Binding Info.Name, Source={x:Static Application.Current}, Converter={StaticResource ToLowerConverter}}"
+                   Style="{DynamicResource LargeTitle}" Foreground="White" Margin="5,0,0,0"/>
+                <TextBlock HorizontalAlignment="Left" Margin="5,40,0,0" Text="IMPORT WIZARD" VerticalAlignment="Top"
+                   Foreground="White" Style="{DynamicResource ContentTextSemiBold}"/>
+            </Grid>
+        </Border>
+        <ContentControl Grid.Row="1" Content="{Binding Source}"/>
+        
+    </Grid>
+</helper:CustomWindow>
