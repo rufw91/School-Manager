@@ -10,6 +10,7 @@ namespace Starehe.ViewModels
         {
             TryAddChild(typeof(NewEmployeePaymentVM));
             TryAddChild(typeof(PaymentHistoryVM));
+            TryAddChild(typeof(PAYEInfoVM));
         }
     }
 }

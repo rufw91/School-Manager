@@ -1,0 +1,18 @@
+﻿<FixedPage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           Width="793.76" Height="1122.56">
+    <Grid Width="793.76" Height="1122.56">
+        <TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" Text="AGGREGATE RESULTS" VerticalAlignment="Top" TextDecorations="Underline" FontFamily="Arial" FontSize="18"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,85,0,0" Text="CLASS:" VerticalAlignment="Top" FontFamily="Arial" FontSize="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,120,0,0" Text="EXAM:" VerticalAlignment="Top" FontFamily="Arial" FontSize="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,165,0,0" Text="CLASS MEAN:" VerticalAlignment="Top" FontFamily="Arial" FontSize="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,210,0,0" Text="MEAN GRADE:" VerticalAlignment="Top" FontFamily="Arial" FontSize="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,255,0,0" Text="POINTS:" VerticalAlignment="Top" FontFamily="Arial" FontSize="16"/>
+        <Border BorderBrush="Black" BorderThickness="1" Height="50" Margin="30,300,29.76,0" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="70,315,0,0" Text="SUBJECT" VerticalAlignment="Top" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="270,315,0,0" Text="MEAN SCORE" VerticalAlignment="Top" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="450,315,0,0" Text="MEAN GRADE" VerticalAlignment="Top" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="620,315,0,0" Text="POINTS" VerticalAlignment="Top" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="110,255,0,0" Text="TextBlock" VerticalAlignment="Top"/>
+    </Grid>
+</FixedPage>

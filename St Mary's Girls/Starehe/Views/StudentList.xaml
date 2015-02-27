@@ -39,6 +39,7 @@
                 <DataGridTextColumn Header="Adm No." Binding="{Binding StudentID}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding NameOfStudent}" Width="200" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Class" Binding="{Binding NameOfClass}" Width="80" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Previous Balance" Binding="{Binding PrevBalance, StringFormat={}{0:N2}}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Date of Birth" Binding="{Binding DateOfBirth, StringFormat={}{0: dd - MM - yyyy}}" Width="100" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Date Admitted" Binding="{Binding DateOfAdmission, StringFormat={}{0: dd - MM - yyyy}}" Width="100" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Guardian" Binding="{Binding NameOfGuardian}" Width="200" IsReadOnly="True"/>

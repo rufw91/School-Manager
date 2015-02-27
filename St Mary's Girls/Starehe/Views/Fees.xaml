@@ -28,7 +28,7 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="Fees" Style="{StaticResource HeaderTextStyle}" Grid.Column="1" HorizontalAlignment="Left"
+            <TextBlock x:Name="pageTitle" Text="Finance" Style="{StaticResource HeaderTextStyle}" Grid.Column="1" HorizontalAlignment="Left"
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
 
         </Grid>
@@ -39,7 +39,7 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ListBox Name="menu" Grid.Column="0" Height="400" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"
+            <ListBox Name="menu" Grid.Column="0" Height="500" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"
                  DisplayMemberPath="Title" ItemsSource="{Binding MenuItems}" SelectedIndex="0"
                      BorderThickness="0,0,1,0" BorderBrush="{DynamicResource TitleBackgroundBrush}"/>
             <ContentControl Grid.Column="1" Content="{Binding ElementName=menu, Path=SelectedItem}"/>

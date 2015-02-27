@@ -43,6 +43,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="350,315,0,0" Style="{DynamicResource Title0}" Text="Registred Subjects" VerticalAlignment="Top"/>
         <ListBox Margin="350,344,30,50" ItemsSource="{Binding SubjectsSetup.Entries, UpdateSourceTrigger=PropertyChanged}"
                  DisplayMemberPath="NameOfSubject"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,178,0,0" Foreground="Red" VerticalAlignment="Top" Text="IMPORTANT: Class Names should be in format 'FORM No XXX' eg 'FORM 1 EAST" TextWrapping="Wrap" Width="206"/>
 
 
 

@@ -38,6 +38,10 @@
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,317,0,0" Text="Item" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Times New Roman"/>
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="250,317,0,0" Text="Amount" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Times New Roman"/>
         <Image Grid.Column="1" HorizontalAlignment="Left" Height="169" Margin="10,25,0,0" VerticalAlignment="Top" Width="186" Source="Resources/logox.png" RenderTransformOrigin="0.5,0.5"/>
-
+        <TextBlock HorizontalAlignment="Left" Margin="140,760,0,0" Text="Received by: Accountant St Mary's School. Thank you." VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="140,760,0,0" Text="Received by: Accountant St Mary's School. Thank you." VerticalAlignment="Top"/>
+        
+        <TextBlock HorizontalAlignment="Left" Margin="30,740,0,0" Text="Mode of Payment:" VerticalAlignment="Top" FontFamily="Times New Roman"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,740,0,0" Text="Mode of Payment:" VerticalAlignment="Top" FontFamily="Times New Roman"/>
     </Grid>
 </FixedPage>

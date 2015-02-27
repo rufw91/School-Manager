@@ -67,7 +67,7 @@
                     </controls:HomePageButton.Background>
                 </controls:HomePageButton>
 
-                <controls:HomePageButton Grid.Column="2" Grid.Row="0" Caption="Fees" Background="Khaki"
+                <controls:HomePageButton Grid.Column="2" Grid.Row="0" Caption="Finance" Background="Khaki"
                                          Command="{Binding Path=DataContext.DisplayFeesCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}"
                                          CaptionBackground="{DynamicResource Title3BackgroundBrush}">
                     <controls:HomePageButton.Content>

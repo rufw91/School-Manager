@@ -1,10 +1,13 @@
 ﻿using Helper;
 using Helper.Models;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Security.Permissions;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
@@ -108,7 +111,7 @@ namespace Starehe.ViewModels
                     classResult.NameOfClass = st.NameOfClass;
                     classResult.NameOfExam = selectedExam.NameOfExam;
 
-                    classResult.ResultTable = ConvertClassResults(classResult.Entries);
+                    classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x=>x.Total).ToList());
                 }
 
             }, o => CanDisplayResults());
@@ -122,34 +125,46 @@ namespace Starehe.ViewModels
                 return (classResult != null && classResult.Entries.Count > 0);
         }
 
-        private DataTable ConvertClassResults(ObservableCollection<ExamResultStudentModel> temp)
+        private async Task<DataTable> ConvertClassResults(List<ExamResultStudentModel> temp)
         {
             if (temp == null)
                 return new DataTable();
             if (temp.Count == 0)
                 return new DataTable();
             DataTable dt = new DataTable();
-
-            ExamResultStudentModel v = temp[0];
+            var g = await DataAccess.GetSubjectsRegistredToClassAsync(classResult.ClassID);
 
             dt.Columns.Add(new DataColumn("Student ID"));
             dt.Columns.Add(new DataColumn("Name"));
             int subjectCount = 0;
-            foreach (ExamResultSubjectEntryModel d in v.Entries)
+            foreach (var d in g)
             {
                 dt.Columns.Add(new DataColumn(d.NameOfSubject));
                 subjectCount++;
             }
+            dt.Columns.Add(new DataColumn("Total"));
+            dt.Columns.Add(new DataColumn("Position"));
             DataRow dtr;
-
-            foreach (ExamResultStudentModel s in temp)
+            ExamResultSubjectEntryModel f;
+            int pos = 1;
+            ExamResultStudentModel s;
+            for (int x=0;x<temp.Count;x++)
             {
+                s = temp[x];
                 dtr = dt.NewRow();
                 dtr[0] = s.StudentID;
                 dtr[1] = s.NameOfStudent;
                 for (int i = 0; i < subjectCount; i++)
-                    dtr[i + 2] = s.Entries[i].Score;
+                {                    
+                    f = s.Entries.FirstOrDefault(o => o.NameOfSubject == g[i].NameOfSubject);
+                    dtr[i + 2] = (f != null) ? f.Score.ToString() : " - ";
+                }
+                dtr[subjectCount+2] = s.Total;                
+                dtr[subjectCount+3] = pos;
                 dt.Rows.Add(dtr);
+                if ((temp.Count>x+1)&&(temp[x + 1].Total == s.Total))
+                        continue;                
+                pos++;
             }
             return dt;
 

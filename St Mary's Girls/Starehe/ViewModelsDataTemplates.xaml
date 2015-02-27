@@ -49,9 +49,32 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
-
+    <DataTemplate DataType="{x:Type viewModels:PAYEInfoVM}" >
+        <views:PAYEInfo/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:PDFViewVM}" >
+        <views:PDFView/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:AggregateResultsVM}" >
         <views:AggregateResults/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewPaymentVoucherVM}" >
+        <views:NewPaymentVoucher/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:PaymentVoucherHistoryVM}" >
+        <views:PaymentVoucherHistory/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:BillStudentVM}" >
+        <views:BillStudents/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ViewBooksVM}" >
+        <views:ViewBooks/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:RemovePaymentVM}" >
+        <views:RemovePayment/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:RemoveBillVM}" >
+        <views:RemoveBill/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:StudentTranscriptVM}" >
         <views:StudentTranscript/>

@@ -56,9 +56,8 @@ namespace Starehe.ViewModels
             }, o => CanSave());
 
             RefreshCommand = new RelayCommand(o =>
-            {
+            {               
                 Transcript.CopyFrom(DataAccess.GetStudentTranscript(transcript).Result);
-                MessageBox.Show(transcript.Entries.Count + "");
             }, o => !transcript.HasErrors);
         }
 

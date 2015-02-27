@@ -17,10 +17,11 @@
         <Border BorderBrush="Gray" BorderThickness="1" Height="358" Margin="30,208,30,0" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="40,215,0,0" Text="CODE" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="130,215,0,0" Text="SUBJECT" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="300,215,0,0" Text="CAT1" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="365,215,0,0" Text="CAT2" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="420,215,0,0" Text="END OF TERM" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="520,215,0,0" Text="MEAN GRADE" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="260,215,0,0" Text="CAT1" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="325,215,0,0" Text="CAT2" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="380,215,0,0" Text="END OF TERM" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="465,215,0,0" Text="MEAN SCORE" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="550,215,0,0" Text="GRADE" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="610,215,0,0" Text="POINTS" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="700,215,0,0" Text="TUTOR" VerticalAlignment="Top"/>
         <Border BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Left" Height="34" Margin="30,532,0,0" VerticalAlignment="Top" Width="734"/>
@@ -83,7 +84,18 @@
             <TextBlock>E</TextBlock>
         </StackPanel>
 
-
+        <Rectangle Margin="276,662,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,679,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,695,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,710,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,727,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,743,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,758,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,775,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,791,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,806,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,823,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="276,838,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,1055,0,0" Text="CLOSING DAY:" VerticalAlignment="Top" FontWeight="Bold"/>
         <TextBlock HorizontalAlignment="Left" Margin="250,1055,0,0" Text="OPENING DAY:" VerticalAlignment="Top" FontWeight="Bold"/>
     </Grid>
