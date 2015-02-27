@@ -34,9 +34,9 @@
         <TextBlock HorizontalAlignment="Left" Margin="70,541,0,0" Text="CLASS POSITION" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="240,540,0,0" Text="TOTAL MARKS" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="390,540,0,0" Text="MEAN GRADE" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="550,540,0,0" Text="OVERALL POSITION" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="550,540,0,0" Text="CLUST. POINTS" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Center" Margin="274,92,271.76,0" Text="EMAIL: stmarysgirlskola@yahoo.com" VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
         <TextBlock HorizontalAlignment="Left" Margin="55,1000,0,0" Text="OFFICIAL STAMP:..............................................." VerticalAlignment="Top"/>
-        
+
     </Grid>
 </FixedPage>

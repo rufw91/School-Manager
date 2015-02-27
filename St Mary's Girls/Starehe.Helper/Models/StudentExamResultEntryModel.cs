@@ -32,5 +32,9 @@ namespace Helper.Models
         public decimal MeanScore { get; set; }
 
         public int Points { get; set; }
+
+        public string Code { get; set; }
+
+        public string Tutor { get; set; }
     }
 }

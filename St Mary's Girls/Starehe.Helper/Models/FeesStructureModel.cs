@@ -23,7 +23,7 @@ namespace Helper.Models
             IsActive = true;
             StartDate = DateTime.Now;
             EndDate = null;
-            Entries = new ObservableCollection<FeesStructureEntryModel>();
+            Entries.Clear();
         }
          
         public int FeesStructureID

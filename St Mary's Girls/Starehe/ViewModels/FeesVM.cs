@@ -9,13 +9,18 @@ namespace Starehe.ViewModels
     {
         public FeesVM()
         {
-            Title = "FEES";
+            Title = "FINANCE";
             TryAddChild(typeof(NewFeesPaymentVM));
+            TryAddChild(typeof(BillStudentVM));
             TryAddChild(typeof(FeesStatementVM));
             TryAddChild(typeof(ViewFeesStructureVM));
             TryAddChild(typeof(SetFeesStructureVM));
             TryAddChild(typeof(ReprintReceiptVM));
             TryAddChild(typeof(FeesDefaultersVM));
+            TryAddChild(typeof(RemovePaymentVM));
+            TryAddChild(typeof(RemoveBillVM));
+            TryAddChild(typeof(NewPaymentVoucherVM));
+            TryAddChild(typeof(PaymentVoucherHistoryVM));
         }
     }
 }

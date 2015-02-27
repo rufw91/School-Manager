@@ -65,6 +65,20 @@ namespace Helper.Properties {
         ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
         ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; Text=&quot;AGGREGATE RESULTS&quot; VerticalAlignment=&quot;Top&quot; TextDecorations=&quot;Underline&quot; FontFamily=&quot;Arial&quot; FontSize=&quot;18&quot;/&gt;
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Left&quot; Margin=&quot;30,85,0,0&quot; Text=&quot;CLASS:&quot; VerticalAli [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string AggregateResult {
+            get {
+                return ResourceManager.GetString("AggregateResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+        ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; Text=&quot;BALANCES BY CLASS&quot; VerticalAlignment=&quot;Top&quot; TextDecorations=&quot;Underline&quot; FontFamily=&quot;Arial&quot; FontSize=&quot;18&quot;/&gt;
         ///        &lt;TextBlock HorizontalAlignment=&quot;Left&quot; Margin=&quot;30,83,0,0&quot; Text=&quot;CLASS:&quot; VerticalAli [rest of string was truncated]&quot;;.
         /// </summary>
@@ -90,6 +104,20 @@ namespace Helper.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+        ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,20,0,0&quot; Text=&quot;ST MARY&apos;S GIRLS SCHOOL - KOLA&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,60,0,0&quot; Text=&quot;CLASS RESULTS&quot; VerticalAl [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ClassMarkList {
+            get {
+                return ResourceManager.GetString("ClassMarkList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
         ///           xmlns:local=&quot;clr-namespace:Starehe&quot; 
         ///           xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot; Width=&quot;793.76&quot; Height=&quot;1122.56&quot; Background=&quot;White&quot;
         ///           xmlns:sys=&quot;clr-namespace:System;assembly=mscorlib&quot;&gt;
@@ -108,10 +136,24 @@ namespace Helper.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
         ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; Text=&quot;ST MARY&apos;S GIRLS SCHOOL - KOLA&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,70,0,0&quot; Text=&quot;P.O. BOX 80 - 90108 KOLA, [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PaymentVoucher {
+            get {
+                return ResourceManager.GetString("PaymentVoucher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+        ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
         ///           Height=&quot;793.76&quot; Width=&quot;1122.56&quot;&gt;
-        ///  &lt;Grid Height=&quot;793.76&quot; Width=&quot;1122.56&quot;&gt;
+        ///    &lt;Grid Height=&quot;793.76&quot; Width=&quot;1122.56&quot; &gt;
         ///    &lt;TextBlock HorizontalAlignment=&quot;Left&quot; Margin=&quot;230,36,0,0&quot; Text=&quot;FEES RECEIPT&quot; FontWeight=&quot;Bold&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Times New Roman&quot; FontSize=&quot;16&quot;/&gt;
-        ///    &lt;TextBlock HorizontalAlignment=&quot;Left&quot; Margin=&quot;269,105,0,0&quot; Text=&quot;St Mary&apos;s Girls Secondary School [rest of string was truncated]&quot;;.
+        ///    &lt;TextBlock HorizontalAlignment=&quot;Left&quot; Margin=&quot;269,105,0,0&quot; Text=&quot;St Mary&apos;s Girls Secondary Sch [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Receipt {
             get {

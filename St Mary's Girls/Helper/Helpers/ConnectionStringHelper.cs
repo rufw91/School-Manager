@@ -24,7 +24,7 @@ namespace Helper
 
         public static string ConnectionString
         {
-            get { return connStr; }
+            get {  return connStr; }
         }
 
         public static string MasterConnectionString

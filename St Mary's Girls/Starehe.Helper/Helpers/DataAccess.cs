@@ -66,7 +66,7 @@ namespace Helper
                 a.Name = "AMOUNT PAID";
 
                 var b = new FeesStructureEntryModel();
-                b.Amount = await GetBalanceBroughtForwardAsync(temp.StudentID, currentPayment.FeePaymentID,currentPayment.DatePaid);
+                b.Amount = await GetBalanceBroughtForwardAsync(temp.StudentID, currentPayment.FeePaymentID, currentPayment.DatePaid);
                 b.Name = "BALANCE B/F";
 
                 var c = new FeesStructureEntryModel();
@@ -236,7 +236,7 @@ namespace Helper
                     "', DormitoryID='" + student.DormitoryID +
                     "', BedNo='" + student.BedNo +
                     "', PreviousBalance='" + student.PrevBalance +
-                    "', SPhoto=@photo WHERE StudentID="+student.StudentID;
+                    "', SPhoto=@photo WHERE StudentID=" + student.StudentID;
 
                 ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
 
@@ -260,7 +260,7 @@ namespace Helper
                     "', Address='" + staff.Address +
                     "', PostalCode='" + staff.PostalCode +
                     "', City='" + staff.City +
-                    "', SPhoto=@photo WHERE StaffID="+staff.StaffID;
+                    "', SPhoto=@photo WHERE StaffID=" + staff.StaffID;
 
                 ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
 
@@ -856,14 +856,14 @@ namespace Helper
             return temp;
         }
 
-        private static Task<decimal> GetBalanceBroughtForwardAsync(int studentID, int paymentID,DateTime endTime)
+        private static Task<decimal> GetBalanceBroughtForwardAsync(int studentID, int paymentID, DateTime endTime)
         {
             return Task.Run<decimal>(() =>
             {
                 string salesStr = "DECLARE  @sal decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,TotalAmt),0)) FROM  " +
     "[Sales].[SaleHeader] WHERE CustomerID ='" + studentID + "');\r\n" +
     "DECLARE  @pur decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,AmountPaid),0)) FROM  " +
-    "[Institution].[FeesPayment] WHERE StudentID =" + studentID + " AND FeesPaymentID <> " + paymentID + " AND DatePaid<'"+endTime+"');\r\n" +
+    "[Institution].[FeesPayment] WHERE StudentID =" + studentID + " AND FeesPaymentID <> " + paymentID + " AND DatePaid<'" + endTime + "');\r\n" +
     "DECLARE  @prev decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,PreviousBalance),0)) FROM  " +
     "[Institution].[Student] WHERE StudentID=" + studentID + ")\r\n" +
     "select (ISNULL(@sal,0)+ISNULL(@prev,0))-ISNULL(@pur,0)";
@@ -881,7 +881,7 @@ namespace Helper
                 string salesStr = "DECLARE  @sal decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,TotalAmt),0)) FROM  " +
     "[Sales].[SaleHeader] WHERE CustomerID ='" + studentID + "');\r\n" +
     "DECLARE  @pur decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,AmountPaid),0)) FROM  " +
-    "[Institution].[FeesPayment] WHERE StudentID =" + studentID + " AND DatePaid <'" + endTime.ToString("g") +"');\r\n" +
+    "[Institution].[FeesPayment] WHERE StudentID =" + studentID + " AND DatePaid <'" + endTime.ToString("g") + "');\r\n" +
     "DECLARE  @prev decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,PreviousBalance),0)) FROM  " +
     "[Institution].[Student] WHERE StudentID=" + studentID + ")\r\n" +
     "select (ISNULL(@sal,0)+ISNULL(@prev,0))-ISNULL(@pur,0)";
@@ -896,7 +896,7 @@ namespace Helper
         {
             return Task.Run<decimal>(() =>
             {
-                    
+
                 string salesStr = "DECLARE  @sal decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,TotalAmt),0)) FROM  " +
     "[Sales].[SaleHeader] WHERE CustomerID ='" + studentID + "');\r\n" +
     "DECLARE  @pur decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,AmountPaid),0)) FROM  " +
@@ -970,7 +970,7 @@ namespace Helper
                 temp.StudentID = studentID;
                 temp.From = startTime.Value;
                 temp.To = endTime.Value;
-
+                temp.TotalDue = await GetCurrentBalanceAsync(studentID);
                 return temp;
             });
         }
@@ -1010,7 +1010,7 @@ namespace Helper
                     CurrentStudent.FirstName = r.Rows[0][0].ToString();
                     CurrentStudent.LastName = r.Rows[0][1].ToString();
                     CurrentStudent.MiddleName = r.Rows[0][2].ToString();
-                    CurrentStudent.NameOfStudent = CurrentStudent.FirstName + " " + CurrentStudent.MiddleName + " " + CurrentStudent.LastName;  
+                    CurrentStudent.NameOfStudent = CurrentStudent.FirstName + " " + CurrentStudent.MiddleName + " " + CurrentStudent.LastName;
                     CurrentStudent.ClassID = int.Parse(r.Rows[0][3].ToString());
                     CurrentStudent.DateOfBirth = DateTime.Parse(r.Rows[0][4].ToString());
                     CurrentStudent.DateOfAdmission = DateTime.Parse(r.Rows[0][5].ToString());
@@ -1148,6 +1148,43 @@ namespace Helper
             {
             }
             return resq;
+        }
+
+        public static Task<bool> RemovePaymentAsync(int paymentID)
+        {
+            return Task.Run<bool>(() =>
+                {
+                    bool resq = false;
+                    try
+                    {
+                        string insertCurrClass = "DELETE FROM [Institution].[FeesPayment] WHERE FeesPaymentID = " + paymentID;
+                        resq = DataAccessHelper.ExecuteNonQuery(insertCurrClass);
+                    }
+                    catch
+                    {
+                    }
+                    return resq;
+                });
+
+        }
+
+        public static Task<bool> RemoveSaleAsync(int saleID)
+        {
+            return Task.Run<bool>(() =>
+                {
+                    bool resq = false;
+                    try
+                    {
+                        string insertCurrClass = "DELETE FROM [Sales].[SaleHeader] WHERE SaleID = " + saleID;
+                        insertCurrClass += "\r\nDELETE FROM [Sales].[SaleDetail] WHERE SaleID = " + saleID;
+                        resq = DataAccessHelper.ExecuteNonQuery(insertCurrClass);
+                    }
+                    catch
+                    {
+                    }
+                    return resq;
+                });
+
         }
 
         internal static int GetClassIDFromStudent(int studentID)
@@ -1316,10 +1353,10 @@ namespace Helper
             return Task.Run<ObservableCollection<StudentListModel>>(() =>
             {
                 string selectStr =
-                   "SELECT * FROM (SELECT TOP 1000000 s.StudentID,s.FirstName,s.LastName,s.MiddleName,s.ClassID, c.NameOfClass,s.DateOfBirth," +
+                   "SELECT TOP 1000000 s.StudentID,s.FirstName,s.LastName,s.MiddleName,s.ClassID, c.NameOfClass,s.DateOfBirth," +
                    "s.DateOfAdmission,s.NameOfGuardian,s.GuardianPhoneNo," +
-                   "s.Address,s.City,s.PostalCode,s.BedNo,s.PreviousInstitution, s.DormitoryID" +
-                   " FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON (s.ClassID=c.ClassID)) l LEFT OUTER JOIN [Institution].[Dormitory] d ON (l.DormitoryID=d.DormitoryID)";
+                   "s.Address,s.City,s.PostalCode,s.BedNo,s.PreviousInstitution, s.DormitoryID, s.PreviousBalance,d.NameOfDormitory" +
+                   " FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON (s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[Dormitory] d ON (s.DormitoryID=d.DormitoryID)";
                 ObservableCollection<StudentListModel> allStudents = new ObservableCollection<StudentListModel>();
                 DataTable r = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                 if (r.Rows.Count != 0)
@@ -1341,10 +1378,12 @@ namespace Helper
                         CurrentStudent.Address = dtr[10].ToString();
                         CurrentStudent.City = dtr[11].ToString();
                         CurrentStudent.PostalCode = dtr[12].ToString();
-                        CurrentStudent.BedNo = dtr[13].ToString();
-                        CurrentStudent.PrevInstitution = dtr[14].ToString();
+                        CurrentStudent.BedNo = dtr[13].ToString();                        
+                        CurrentStudent.PrevInstitution = dtr[14].ToString();                        
                         CurrentStudent.DormitoryID = dtr[15].ToString();
+                        CurrentStudent.PrevBalance = decimal.Parse(dtr[16].ToString());
                         CurrentStudent.NameOfDormitory = dtr[17].ToString();
+                        
                         allStudents.Add(CurrentStudent);
                     }
                 }
@@ -1417,6 +1456,88 @@ namespace Helper
                 return DataAccessHelper.ExecuteNonQuery(insertStr);
             });
         }
+
+        public static Task<bool> SaveNewStudentBill(SaleModel newSale)
+        {
+            return Task.Run<bool>(() =>
+            {
+                string insertStr = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Sales.SaleHeader')\r\n" +
+                    "INSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,TotalAmt,IsDiscount,PaymentID) " +
+                  "VALUES(@id,'" + newSale.CustomerID + "'," +
+                  newSale.EmployeeID + ",'" + newSale.IsCancelled + "','" + newSale.DateAdded + "','" +
+                  newSale.OrderTotal + "','" + newSale.IsDiscount + "',@id)";
+
+                foreach (FeesStructureEntryModel obs in newSale.SaleItems)
+                {
+                    insertStr += "\r\nINSERT INTO [Sales].[SaleDetail] (SaleID,Name,Amount) " +
+                        "VALUES(@id2,'" + obs.Name + "'," + obs.Amount + ")";
+                }
+                insertStr += "\r\nCOMMIT";
+                return DataAccessHelper.ExecuteNonQuery(insertStr);
+            });
+        }
+
+        public static Task<bool> SaveNewClassBill(SaleModel newSale)
+        {
+            return Task.Run<bool>(() =>
+            {
+                int term = GetTerm();
+                DateTime? startTime = null;
+                DateTime? endTime = null;
+                switch (term)
+                {
+                    case 1: startTime = new DateTime(DateTime.Now.Year, 1, 1); endTime = new DateTime(DateTime.Now.Year, 4, 30); break;
+                    case 2: startTime = new DateTime(DateTime.Now.Year, 5, 1); endTime = new DateTime(DateTime.Now.Year, 8, 31); break;
+                    case 3: startTime = new DateTime(DateTime.Now.Year, 9, 1); endTime = new DateTime(DateTime.Now.Year, 12, 31); break;
+                }
+                string selectStuds = "SELECT StudentID FROM [Institution].[Student] WHERE ClassID=" + newSale.CustomerID;
+                var studs = DataAccessHelper.CopyFromDBtoObservableCollection(selectStuds);
+                string insertStr = "BEGIN TRANSACTION\r\n DECLARE @id int;\r\n";
+                foreach (string s in studs)
+                {
+
+                    insertStr += "IF NOT EXISTS(SELECT * FROM [Sales].[SaleHeader] WHERE CustomerID=" + s +
+                    " AND OrderDate BETWEEN '" + startTime.Value.Day.ToString() + "/" + startTime.Value.Month.ToString() + "/" + startTime.Value.Year.ToString() + " 00:00:00.000' AND '"
+                + endTime.Value.Day.ToString() + "/" + endTime.Value.Month.ToString() + "/" + endTime.Value.Year.ToString() + " 23:59:59.998')\r\nBEGIN\r\n" +
+                        "SET @id = dbo.GetNewID('Sales.SaleHeader');\r\n" +
+                      "INSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,TotalAmt,IsDiscount,PaymentID) " +
+                    "VALUES(@id,'" + s + "'," +
+                    newSale.EmployeeID + ",'" + newSale.IsCancelled + "','" + newSale.DateAdded + "','" +
+                    newSale.OrderTotal + "','" + newSale.IsDiscount + "',0)\r\n;";
+
+
+                    foreach (FeesStructureEntryModel obs in newSale.SaleItems)
+                    {
+                        insertStr += "INSERT INTO [Sales].[SaleDetail] (SaleID,Name,Amount) " +
+                            "VALUES(@id,'" + obs.Name + "'," + obs.Amount + ");\r\n";
+                    }
+                    insertStr += "\r\nEND\r\n";
+                }
+                insertStr += "COMMIT";
+                MessageBox.Show(insertStr);
+                return DataAccessHelper.ExecuteNonQuery(insertStr);
+            });
+        }
+
+        public static Task<bool> UpdateStudentBill(SaleModel newSale)
+        {
+            return Task.Run<bool>(() =>
+            {
+                string insertStr = "BEGIN TRANSACTION\r\n" +
+                    "UPDATE [Sales].[SaleHeader] SET TotalAmt=" + newSale.OrderTotal + " WHERE CustomerID=" + newSale.CustomerID + " AND SaleID=" + newSale.SaleID +
+                    "\r\nDELETE FROM [Sales].[SaleDetail] WHERE SaleID=" + newSale.SaleID;
+
+
+                foreach (FeesStructureEntryModel obs in newSale.SaleItems)
+                {
+                    insertStr += "\r\nINSERT INTO [Sales].[SaleDetail] (SaleID,Name,Amount) " +
+                        "VALUES(" + newSale.SaleID + ",'" + obs.Name + "'," + obs.Amount + ")";
+                }
+                insertStr += "\r\nCOMMIT";
+                return DataAccessHelper.ExecuteNonQuery(insertStr);
+            });
+        }
+
 
         public static bool SearchAllStudentProperties(StudentModel student, string searchText)
         {
@@ -1624,13 +1745,13 @@ namespace Helper
             return Task.Run<bool>(() =>
             {
                 string insertStr = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Institution.ExamHeader')\r\n" +
-                    "INSERT INTO [Institution].[ExamHeader] (ExamID,ClassID,NameOfExam)" +
-                                " VALUES (@id," + newExam.ClassID + ",'" + newExam.NameOfExam + "')\r\n";
+                    "INSERT INTO [Institution].[ExamHeader] (ExamID,ClassID,NameOfExam,ExamDateTime)" +
+                                " VALUES (@id," + newExam.ClassID + ",'" + newExam.NameOfExam + "','" + DateTime.Now.ToString("g") + "')\r\n";
 
                 foreach (ExamSubjectEntryModel entry in newExam.Entries)
                     insertStr += "INSERT INTO [Institution].[ExamDetail] (ExamID,SubjectID,ExamDateTime)" +
                         " VALUES (@id," + entry.SubjectID +
-                        ",'" + entry.ExamDateTime.ToString("d", new CultureInfo("en-GB")) +
+                        ",'" + entry.ExamDateTime.ToString("g", new CultureInfo("en-GB")) +
                         "')\r\n";
                 insertStr += " COMMIT";
 
@@ -1716,8 +1837,8 @@ namespace Helper
             return Task.Run<ObservableCollection<ExamModel>>(async () =>
             {
                 ObservableCollection<ExamModel> temp = new ObservableCollection<ExamModel>();
-                string selecteStr = "SELECT ExamID,NameOfExam FROM [Institution].[ExamHeader] WHERE ClassID=" + classID+
-                    " AND ExamDateTime>='"+GetTermStart().ToString("d")+"'";
+                string selecteStr = "SELECT ExamID,NameOfExam FROM [Institution].[ExamHeader] WHERE ClassID=" + classID +
+                    " AND ExamDateTime>='" + GetTermStart().ToString("g") + "'";
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selecteStr);
                 ExamModel em;
                 List<Task<KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>>>> tems =
@@ -1796,7 +1917,7 @@ namespace Helper
 
                 foreach (ExamResultSubjectEntryModel entry in newResult.Entries)
                     insertStr += "INSERT INTO [Institution].[ExamResultDetail] (ExamResultID,SubjectID,Score,Remarks,Tutor)" +
-                        " VALUES (@id," + entry.SubjectID + ",'" + entry.Score + "','" + entry.Remarks + "','" +entry.Tutor+ "')\r\n";
+                        " VALUES (@id," + entry.SubjectID + ",'" + entry.Score + "','" + entry.Remarks + "','" + entry.Tutor + "')\r\n";
                 insertStr += " COMMIT";
 
                 return DataAccessHelper.ExecuteNonQuery(insertStr);
@@ -2096,7 +2217,7 @@ namespace Helper
             st.NameOfClass = studentResult.NameOfClass;
             st.NameOfStudent = studentResult.NameOfStudent;
             st.StudentID = studentResult.StudentID;
-            
+
             st.OverAllPosition = GetOverallPosition(studentResult.StudentID, studentResult.ExamID);
             foreach (var v in studentResult.Entries)
                 totalScore += v.Score;
@@ -2105,13 +2226,18 @@ namespace Helper
 
             st.MeanGrade = (st.Entries.Count > 0) ? CalculateGradeFromPoints(((totalPoints + (st.Entries.Count - 1)) / st.Entries.Count)) : "UNDEF";
             st.TotalMarks = totalScore;
+            st.Points = CalculatePoints(st.MeanGrade);
 
             return st;
         }
 
         public static ClassExamResultModel GetClassExamResult(ExamResultClassDisplayModel classResult)
         {
-            throw new NotImplementedException();
+            ClassExamResultModel res = new ClassExamResultModel();
+            res.ClassID = classResult.ClassID;
+            res.NameOfClass = classResult.NameOfClass;
+            res.Entries = classResult.ResultTable;
+            return res;
         }
 
         internal static string CalculateGrade(decimal score)
@@ -2190,12 +2316,14 @@ namespace Helper
 
         private static string GetClassPosition(int studentID, int examID)
         {
-            string selectStr = "SELECT ROW_NUMBER() OVER(ORDER BY SUM(CONVERT(int,SCORE)) DESC) AS Position, " +
-                "ISNULL((SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN (SELECT ClassID FROM [Institution].[Student] WHERE StudentID=" + studentID + ")),0)" +
-                " FROM [Institution].[ExamResultDetail] erd LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON(erd.ExamResultID=erh.ExamResultID) " +
-                "WHERE erd.ExamResultID IN(SELECT ExamResultID FROM [Institution].[ExamResultHeader] WHERE ExamID=" + examID + " AND StudentID=" + studentID + " AND IsActive=1) " +
-                "AND erh.StudentID IN (SELECT StudentID FROM [Institution].[Student] WHERE ClassID IN (SELECT ClassID FROM [Institution].[Student] WHERE StudentID=" + studentID + "))" +
-                " AND StudentID=" + studentID + " GROUP BY StudentID";
+            int classID = GetClassIDFromStudent(studentID);
+
+            string selectStr = "SELECT row_no,no_of_students FROM(SELECT ROW_NUMBER() OVER(ORDER BY " +
+                "ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no, res.StudentID," +
+                "(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + classID + ")no_of_students" +
+                " FROM [Institution].[ExamResultDetail] erd RIGHT OUTER JOIN (SELECT StudentID,ExamResultID " +
+                "FROM [Institution].[ExamResultHeader] WHERE IsActive=1 AND ExamID =" + examID + ") res ON (erd.ExamResultID=res.ExamResultID)" +
+                " GROUP BY res.StudentID )x WHERE x.StudentID=" + studentID;
             DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
             if (dt.Rows.Count == 0)
                 return "0/0";
@@ -2205,9 +2333,66 @@ namespace Helper
 
         private static string GetOverallPosition(int studentID, int examID)
         {
-            string temp = "";
-            return temp;
+            var form = GetClass(GetClassIDFromStudent(studentID)).NameOfClass[5];
+
+            string selectStr = "SELECT row_no,studs FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no" +
+                ", res.StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(SELECT ClassID FROM [Institution].[Class]" +
+                " WHERE NameOfClass LIKE '%" + form + "%'))studs FROM [Institution].[ExamResultDetail] erd RIGHT OUTER JOIN " +
+                "(SELECT StudentID,ExamResultID FROM [Institution].[ExamResultHeader] WHERE IsActive=1 AND ExamID =" + examID +
+                ") res ON (erd.ExamResultID=res.ExamResultID) GROUP BY res.StudentID)x WHERE x.StudentID=" + studentID;
+            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            if (dt.Rows.Count == 0)
+                return "0/0";
+            else
+                return dt.Rows[0][0].ToString() + "/" + dt.Rows[0][1].ToString();
         }
+
+        private static string GetTermClassPosition(int studentID)
+        {
+            int classID = GetClassIDFromStudent(studentID);
+            ObservableCollection<ExamModel> exams = GetExamsByClass(classID).Result;
+            if (exams.Count == 0)
+                return "0/0";
+
+
+            string selectStr ="SELECT row_no,no_of_students FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no, " +
+                "res.StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + classID + ")no_of_students" +
+                " FROM [Institution].[ExamResultDetail] erd RIGHT OUTER JOIN (SELECT StudentID,ExamResultID FROM " +
+                "[Institution].[ExamResultHeader] WHERE IsActive=1 AND ExamID IN (SELECT ExamID FROM [Institution].[ExamHeader] " +
+                "WHERE ClassID=" + classID + " AND ExamDatetime>='" + GetTermStart().ToString("dd-MM-yyyy HH:mm:ss") +
+                "' AND ExamDatetime<='" + GetTermEnd().ToString("dd-MM-yyyy HH:mm:ss") + "' )) " +
+                "res ON (erd.ExamResultID=res.ExamResultID) GROUP BY res.StudentID )x WHERE x.StudentID=" + studentID;
+            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            if (dt.Rows.Count == 0)
+                return "0/0";
+            else
+                return dt.Rows[0][0].ToString() + "/" + dt.Rows[0][1].ToString();
+        }
+
+        private static string GetTermOverallPosition(int studentID)
+        {
+            ObservableCollection<ExamModel> exams = GetExamsByClass(GetClassIDFromStudent(studentID)).Result;
+            if (exams.Count == 0)
+                return "0/0";
+            var form = GetClass(GetClassIDFromStudent(studentID)).NameOfClass[5];
+
+
+            string selectStr = "SELECT row_no,studs FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no," +
+                " res.StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(SELECT ClassID FROM [Institution].[Class] " +
+                "WHERE NameOfClass LIKE '%" + form + "%'))studs FROM [Institution].[ExamResultDetail] erd RIGHT OUTER JOIN " +
+                "(SELECT StudentID,ExamResultID FROM [Institution].[ExamResultHeader] WHERE IsActive=1 AND ExamID IN " +
+                "(SELECT ExamID FROM [Institution].[ExamHeader] WHERE ClassID IN (SELECT ClassID FROM [Institution].[Class] " +
+                "WHERE NameOfClass LIKE '%" + form + "%')AND ExamDatetime>='" + GetTermStart().ToString("dd-MM-yyyy HH:mm:ss") + "' " +
+                "AND ExamDatetime<='" + GetTermEnd().ToString("dd-MM-yyyy HH:mm:ss") + "' )) res ON " +
+                "(erd.ExamResultID=res.ExamResultID) GROUP BY res.StudentID)x WHERE x.StudentID=" + studentID;
+            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            if (dt.Rows.Count == 0)
+                return "0/0";
+            else
+                return dt.Rows[0][0].ToString() + "/" + dt.Rows[0][1].ToString();
+        }
+
+        
 
 
         public static Task<bool> HasInvoicedThisTerm(int studentID)
@@ -2249,7 +2434,7 @@ namespace Helper
         private static DateTime GetTermStart()
         {
             if (DateTime.Now.Month >= 1 && DateTime.Now.Month <= 4)
-                return new DateTime(DateTime.Now.Year,1,1);
+                return new DateTime(DateTime.Now.Year, 1, 1);
             else
                 if (DateTime.Now.Month >= 5 && DateTime.Now.Month <= 8)
                     return new DateTime(DateTime.Now.Year, 5, 1);
@@ -2303,7 +2488,7 @@ namespace Helper
                     "CONVERT(DATE, OrderDate) < '" + DateTime.Now.ToString("d") + "')-(SELECT ISNULL(SUM(ISNULL(CONVERT(DECIMAL,AmountPaid),0)),0)" +
                     " FROM  [Institution].[FeesPayment] WHERE StudentID IN(SELECT StudentID FROM [Institution].[Student] WHERE ClassID=" + classID + ") AND" +
                     " CONVERT(DATE, DatePaid) < '" + DateTime.Now.ToString("d") + "'))+(SELECT ISNULL(SUM(ISNULL(CONVERT(DECIMAL,PreviousBalance),0)),0) FROM " +
-                    " [Institution].[Student] WHERE StudentID IN(SELECT StudentID FROM [Institution].[Student] WHERE ClassID=" + classID + ")))>0 AND ClassID="+classID+")";
+                    " [Institution].[Student] WHERE StudentID IN(SELECT StudentID FROM [Institution].[Student] WHERE ClassID=" + classID + ")))>0 AND ClassID=" + classID + ")";
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                 StudentFeesDefaultModel stdf;
                 foreach (DataRow dtr in dt.Rows)
@@ -2330,7 +2515,7 @@ namespace Helper
                     stdf.SPhoto = (byte[])dtr[15];
                     stdf.PrevBalance = decimal.Parse(dtr[16].ToString());
 
-                    stdf.Balance = await GetBalanceBroughtForwardAsync(stdf.StudentID, DateTime.Now);
+                    stdf.Balance = await GetCurrentBalanceAsync(stdf.StudentID);
                     temp.Add(stdf);
                 }
 
@@ -2352,7 +2537,7 @@ namespace Helper
                         " WHERE PaymentID=" + feesPaymentID;
 
                     DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
-                    
+
                     if (dt.Rows.Count > 0)
                     {
                         DataRow dtr = dt.Rows[0];
@@ -2410,10 +2595,10 @@ namespace Helper
                 selectStr += startTime.Value.Day.ToString() + "/" + startTime.Value.Month.ToString() + "/" + startTime.Value.Year.ToString() + " 00:00:00.000' AND '"
                 + endTime.Value.Day.ToString() + "/" + endTime.Value.Month.ToString() + "/" + endTime.Value.Year.ToString() + " 23:59:59.998'";
 
-                DataTable dt=DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
-                if (dt.Rows.Count>0)
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                if (dt.Rows.Count > 0)
                 {
-                    DataRow dtr=dt.Rows[0];
+                    DataRow dtr = dt.Rows[0];
                     temp.SaleID = int.Parse(dtr[0].ToString());
                     temp.CustomerID = studentID;
                     temp.EmployeeID = int.Parse(dtr[1].ToString());
@@ -2436,13 +2621,13 @@ namespace Helper
                     temp.ClassID = selectedClass.ClassID;
                     temp.NameOfClass = selectedClass.NameOfClass;
                     string selectStr = "SELECT StudentID,FirstName,LastName,MiddleName FROM [Institution].[Student] WHERE ClassID=" + selectedClass.ClassID;
-                    DataTable dt= DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                    DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                     StudentBaseModel stud;
-                    foreach(DataRow dtr in dt.Rows)
+                    foreach (DataRow dtr in dt.Rows)
                     {
                         stud = new StudentBaseModel();
                         stud.StudentID = int.Parse(dtr[0].ToString());
-                        stud.NameOfStudent = dtr[2].ToString() +" "+ dtr[3].ToString() +" "+ dtr[1].ToString();
+                        stud.NameOfStudent = dtr[2].ToString() + " " + dtr[3].ToString() + " " + dtr[1].ToString();
                         temp.Entries.Add(stud);
                     }
 
@@ -2452,21 +2637,21 @@ namespace Helper
 
         internal static string GetSubjectCode(string nameOfSubject)
         {
-            string abbrev = nameOfSubject.ToLowerInvariant().Substring(0,3);
-            
-            switch(abbrev)
+            string abbrev = nameOfSubject.ToLowerInvariant().Substring(0, 3);
+
+            switch (abbrev)
             {
-                case "eng": return "101"; 
-                case "kis": return "102"; 
-                case "mat": return "121"; 
-                case "bio": return "231"; 
-                case "che": return "233"; 
-                case "phy": return "232"; 
-                case "geo": return "312"; 
-                case "his": return "311"; 
-                case "cre": return "313"; 
-                case "bus": return "565"; 
-                case "agr": return "443"; 
+                case "eng": return "101";
+                case "kis": return "102";
+                case "mat": return "121";
+                case "bio": return "231";
+                case "che": return "233";
+                case "phy": return "232";
+                case "geo": return "312";
+                case "his": return "311";
+                case "cre": return "313";
+                case "bus": return "565";
+                case "agr": return "443";
             }
             return "";
         }
@@ -2475,21 +2660,21 @@ namespace Helper
         {
             ObservableCollection<StudentExamResultEntryModel> temp = new ObservableCollection<StudentExamResultEntryModel>();
 
-            int classID = DataAccess.GetClassIDFromStudentID(studentID).Result;
-            var e = DataAccess.GetExamsByClass(classID).Result;
+            int classID = GetClassIDFromStudentID(studentID).Result;
+            var e = GetExamsByClass(classID).Result;
 
             int index = 0;
-            
+
             ExamResultStudentDisplayModel examp;
             foreach (ExamModel ex in e)
             {
-                
+
                 if (index > 2)
                     break;
                 examp = new ExamResultStudentDisplayModel(DataAccess.GetStudentExamResultAync(studentID, ex.ExamID).Result);
                 if (index == 0)
                 {
-                    
+
                     foreach (var s in examp.Entries)
                     {
                         StudentExamResultEntryModel set = new StudentExamResultEntryModel();
@@ -2498,6 +2683,8 @@ namespace Helper
                         set.MeanScore = (set.Cat1Score + set.Cat2Score + set.ExamScore) / 3;
                         set.Grade = CalculateGrade(set.MeanScore);
                         set.Points = CalculatePoints(set.Grade);
+                        set.Code = GetSubjectCode(set.NameOfSubject);
+                        set.Tutor = s.Tutor;
                         temp.Add(set);
                     }
                 }
@@ -2549,7 +2736,7 @@ namespace Helper
                                 ",PrincipalComments='" + transcript.PrincipalComments + "'" +
                                 ",OpeningDay='" + transcript.OpeningDay.ToString("g") + "'" +
                                 ",ClosingDay='" + transcript.ClosingDay.ToString("g") + "'" +
-                                ",DateSaved='" +DateTime.Now.ToString("g") + "' WHERE StudentTranscriptID= " + transcript.StudentTranscriptID; 
+                                ",DateSaved='" + DateTime.Now.ToString("g") + "' WHERE StudentTranscriptID= " + transcript.StudentTranscriptID;
                         }
                         else
                         {
@@ -2576,16 +2763,16 @@ namespace Helper
         public static Task<StudentTranscriptModel> GetStudentTranscript(StudentBaseModel student)
         {
             return Task.Run<StudentTranscriptModel>(() =>
-                {                    
-                    StudentTranscriptModel temp = new StudentTranscriptModel();
+                {
 
-                    string selectStr = "SELECT StudentTranscriptID, ClassPosition, OverAllPosition, TotalMarks, Points, MeanGrade, Responsibilities," +
+
+                    string selectStr = "SELECT StudentTranscriptID, Responsibilities," +
                         "ClubsAndSport, Boarding, ClassTeacher,ClassTeacherComments,Principal,PrincipalComments,OpeningDay,ClosingDay," +
-                        "CAT1Score,CAT2Score,ExamScore,Term1Pos,Term2Pos,Term3Pos,DateSaved FROM [Institution].[StudentTranscriptHeader] WHERE StudentID=" + student.StudentID +
+                        "Term1Pos,Term2Pos,Term3Pos,DateSaved FROM [Institution].[StudentTranscriptHeader] WHERE StudentID=" + student.StudentID +
                         " AND DateSaved BETWEEN '" + GetTermStart().ToString("g") + "' AND '" + GetTermEnd().ToString("g") + "'";
 
                     DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
-                    int count=GetExamsByClass(GetClassIDFromStudent(student.StudentID)).Result.Count;
+                    int count = GetExamsByClass(GetClassIDFromStudent(student.StudentID)).Result.Count;
                     if (dt.Rows.Count == 0)
                         if (count == 0)
                             return new StudentTranscriptModel();
@@ -2595,41 +2782,83 @@ namespace Helper
                             st.StudentID = student.StudentID;
                             st.NameOfStudent = student.NameOfStudent;
                             st.NameOfClass = GetClassAsync(GetClassIDFromStudent(student.StudentID)).Result.NameOfClass;
+                            st.ClassPosition = GetTermClassPosition(student.StudentID);
+                            st.OverAllPosition = GetTermOverallPosition(student.StudentID);
+                            st.Entries = GetTranscriptEntries(student.StudentID);                            
+                            st.MeanGrade = GetTranscriptGrade(st.TotalMarks,st.Entries.Count);
+                            st.Points = CalculatePoints(st.MeanGrade);
+                            st.CAT1Score = GetCat1Score(st.Entries);
+                            st.CAT2Score = GetCat2Score(st.Entries);
+                            st.ExamScore = GetCatExamScore(st.Entries);
+                            st.Term1Pos = "";
                             
-                            st.Entries = GetTranscriptEntries(student.StudentID);
+                            st.Term2Pos = "";
+                            st.Term3Pos = "";
                             return st;
                         }
                     ClassModel c = GetClass(GetClassIDFromStudent(student.StudentID));
-
+                    StudentTranscriptModel temp = new StudentTranscriptModel();
                     temp.NameOfClass = c.NameOfClass;
                     temp.StudentTranscriptID = int.Parse(dt.Rows[0][0].ToString());
                     temp.StudentID = student.StudentID;
                     temp.NameOfStudent = student.NameOfStudent;
-                    temp.ClassPosition = dt.Rows[0][1].ToString();
 
-                    temp.OverAllPosition = dt.Rows[0][2].ToString();
-                    temp.TotalMarks = decimal.Parse(dt.Rows[0][3].ToString());
-                    temp.Points = int.Parse(dt.Rows[0][4].ToString());
-                    temp.MeanGrade = dt.Rows[0][5].ToString();
-                    temp.Responsibilities = dt.Rows[0][6].ToString();
-                    temp.ClubsAndSport = dt.Rows[0][7].ToString();
-                    temp.Boarding = dt.Rows[0][8].ToString();
-                    temp.ClassTeacher = dt.Rows[0][9].ToString();
-                    temp.ClassTeacherComments = dt.Rows[0][10].ToString();
-                    temp.Principal = dt.Rows[0][11].ToString();
-                    temp.PrincipalComments = dt.Rows[0][12].ToString();
-                    temp.OpeningDay = DateTime.Parse(dt.Rows[0][13].ToString());
-                    temp.ClosingDay = DateTime.Parse(dt.Rows[0][14].ToString());
-                    temp.CAT1Score = int.Parse(dt.Rows[0][15].ToString());
-                    temp.CAT2Score = int.Parse(dt.Rows[0][16].ToString());
-                    temp.ExamScore = int.Parse(dt.Rows[0][17].ToString());
-                    temp.Term1Pos = dt.Rows[0][18].ToString();
-                    temp.Term2Pos = dt.Rows[0][19].ToString();
-                    temp.Term3Pos = dt.Rows[0][20].ToString();
-                    temp.DateSaved = DateTime.Parse(dt.Rows[0][21].ToString());
+                    temp.ClassPosition = GetTermClassPosition(student.StudentID);
+                    temp.OverAllPosition = GetTermOverallPosition(student.StudentID);
                     temp.Entries = GetTranscriptEntries(student.StudentID);
+                    temp.MeanGrade = GetTranscriptGrade(temp.TotalMarks, temp.Entries.Count);
+                    temp.Points = CalculatePoints(temp.MeanGrade);
+                    temp.CAT1Score = GetCat1Score(temp.Entries);
+                    temp.CAT2Score = GetCat2Score(temp.Entries);
+                    temp.ExamScore = GetCatExamScore(temp.Entries);
+
+
+                    temp.Responsibilities = dt.Rows[0][1].ToString();
+                    temp.ClubsAndSport = dt.Rows[0][2].ToString();
+                    temp.Boarding = dt.Rows[0][3].ToString();
+                    temp.ClassTeacher = dt.Rows[0][4].ToString();
+                    temp.ClassTeacherComments = dt.Rows[0][5].ToString();
+                    temp.Principal = dt.Rows[0][6].ToString();
+                    temp.PrincipalComments = dt.Rows[0][7].ToString();
+                    temp.OpeningDay = DateTime.Parse(dt.Rows[0][8].ToString());
+                    temp.ClosingDay = DateTime.Parse(dt.Rows[0][9].ToString());
+                    
+                    temp.Term1Pos = dt.Rows[0][10].ToString();
+                    temp.Term2Pos = dt.Rows[0][11].ToString();
+                    temp.Term3Pos = dt.Rows[0][12].ToString();
+                    temp.DateSaved = DateTime.Parse(dt.Rows[0][13].ToString());
                     return temp;
                 });
+        }
+
+        private static decimal GetCatExamScore(ObservableCollection<StudentExamResultEntryModel> observableCollection)
+        {
+            decimal tot = 0;
+            foreach (var v in observableCollection)
+                tot += v.ExamScore;
+            return tot;
+        }
+
+        private static decimal GetCat2Score(ObservableCollection<StudentExamResultEntryModel> observableCollection)
+        {
+            decimal tot = 0;
+            foreach (var v in observableCollection)
+                tot += v.Cat2Score;
+            return tot;
+        }
+
+        private static decimal GetCat1Score(ObservableCollection<StudentExamResultEntryModel> observableCollection)
+        {
+            decimal tot = 0;
+            foreach (var v in observableCollection)
+                tot += v.Cat1Score;
+            return tot;
+        }
+
+        private static string GetTranscriptGrade(decimal totalMarks, int noOfSubjects)
+        {
+            decimal avg = noOfSubjects>0?totalMarks/noOfSubjects:0;
+            return CalculateGrade(avg);
         }
 
 
@@ -2652,22 +2881,124 @@ namespace Helper
             });
         }
 
-        public static Task<int> GetLastPaymentIDAsync(int studentID,DateTime datePaid)
+        public static Task<int> GetLastPaymentIDAsync(int studentID, DateTime datePaid)
         {
-            
+
             return Task.Run<int>(() =>
             {
                 string selectStr =
-                    "SELECT FeesPaymentID FROM [Institution].[FeesPayment] WHERE StudentID="+studentID + " AND DatePaid='"+datePaid.ToString("g")+"'";
+                    "SELECT FeesPaymentID FROM [Institution].[FeesPayment] WHERE StudentID=" + studentID + " AND DatePaid='" + datePaid.ToString("g") + "'";
                 int ft;
-                int.TryParse(DataAccessHelper.ExecuteScalar(selectStr),out ft);
+                int.TryParse(DataAccessHelper.ExecuteScalar(selectStr), out ft);
                 return ft;
             });
         }
 
+        public static Task<bool> SaveNewPaymentVoucher(PaymentVoucherModel newVoucher)
+        {
+            return Task.Run<bool>(() =>
+            {
+                string insertStr = "BEGIN TRANSACTION\r\n" +
+                    "declare @id int; SET @id = [dbo].GetNewID('Institution.PayoutHeader')\r\n" +
+
+                    "INSERT INTO [Institution].[PayoutHeader] (PayoutID,Payee,Address,TotalPaid)" +
+                                " VALUES (@id,'" + newVoucher.NameOfPayee + "','" + newVoucher.Address + "','" + newVoucher.Total + "')\r\n";
+                foreach (var d in newVoucher.Entries)
+                {
+                    insertStr += "INSERT INTO [Institution].[PayoutDetail] (PayoutID,Description,DatePaid,Amount)" +
+                        " VALUES(@id,'" + d.Description + "','" + d.DatePaid.ToString("g") + "','" + d.Amount + "')\r\n";
+                }
+
+                insertStr += " COMMIT";
+
+                return DataAccessHelper.ExecuteNonQuery(insertStr);
+            });
+        }
 
 
-        
+        public static Task<ObservableCollection<PaymentVoucherModel>> GetAllPaymentVouchersAsync()
+        {
+            return Task.Run<ObservableCollection<PaymentVoucherModel>>(() =>
+            {
+                ObservableCollection<PaymentVoucherModel> temp = new ObservableCollection<PaymentVoucherModel>();
+                string selectStr =
+                    "SELECT PayoutID,Payee,Address,TotalPaid FROM [Institution].[PayoutHeader]";
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                PaymentVoucherModel cls;
+                foreach (DataRow dtr in dt.Rows)
+                {
+                    cls = new PaymentVoucherModel();
+                    cls.PaymentVoucherID = int.Parse(dtr[0].ToString());
+                    cls.NameOfPayee = dtr[1].ToString();
+                    cls.Address = dtr[2].ToString();
+                    cls.Total = decimal.Parse(dtr[3].ToString());
+                    cls.Entries = GetPaymentVoucherEntries(cls.PaymentVoucherID);
+                    temp.Add(cls);
+                }
+                return temp;
+            });
+        }
+
+        private static ObservableCollection<PaymentVoucherEntryModel> GetPaymentVoucherEntries(int paymentVoucherID)
+        {
+            ObservableCollection<PaymentVoucherEntryModel> temp = new ObservableCollection<PaymentVoucherEntryModel>();
+            string selectStr =
+                "SELECT Description,DatePaid,Amount FROM [Institution].[PayoutDetail]";
+            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            PaymentVoucherEntryModel cls;
+            foreach (DataRow dtr in dt.Rows)
+            {
+                cls = new PaymentVoucherEntryModel();
+                cls.Description = dtr[0].ToString();
+                cls.DatePaid = DateTime.Parse(dtr[1].ToString());
+                cls.Amount = decimal.Parse(dtr[2].ToString());
+                temp.Add(cls);
+            }
+            return temp;
+        }
+
+        public async static Task<AggregateResultModel> GetAggregateResultAsync(ClassModel selectedClass, ExamModel selectedExam)
+        {
+            AggregateResultModel temp = new AggregateResultModel();
+            temp.NameOfClass = selectedClass.NameOfClass;
+            temp.NameOfExam = selectedExam.NameOfExam;
+
+            string selectStr = "SELECT AVG(x.TotalScore) FROM(SELECT ISNULL(SUM(CONVERT(DECIMAL,ISNULL(Score,0))),0) TotalScore FROM "+
+                "[Institution].[ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM "+
+                "[Institution].[ExamResultHeader] WHERE ExamID="+selectedExam.ExamID+" AND StudentID IN(SELECT StudentID FROM "+
+                "[Institution].[Student] WHERE ClassID="+selectedClass.ClassID+") AND IsActive=1) group by ExamResultID) x";
+            temp.MeanScore = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
+            selectStr = "SELECT AVG(x.TotalScore) FROM(SELECT ISNULL(AVG(CONVERT(DECIMAL,ISNULL(Score,0))),0) TotalScore FROM "+
+                "[Institution].[ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM "+
+                "[Institution].[ExamResultHeader] WHERE ExamID=" + selectedExam.ExamID + " AND StudentID IN(SELECT StudentID FROM "+
+                "[Institution].[Student] WHERE ClassID=" + selectedClass.ClassID + ") AND IsActive=1) group by ExamResultID) x";
+            temp.MeanGrade = CalculateGrade(decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr)));
+            temp.Points = CalculatePoints(temp.MeanGrade);
+            temp.Entries = GetAggregateResultEntries(selectedClass, selectedExam);
+            return temp;
+        }
+
+        private static ObservableCollection<AggregateResultEntryModel> GetAggregateResultEntries(ClassModel selectedClass, ExamModel selectedExam)
+        {
+            ObservableCollection<AggregateResultEntryModel> temp = new ObservableCollection<AggregateResultEntryModel>();
+            string selectStr = "SELECT y.SubjectID,s.NameOfSubject,y.Score FROM [Institution].[Subject] s INNER JOIN "+
+                "(SELECT x.SubjectID, AVG(x.Score) Score FROM(SELECT SubjectID, (CONVERT(decimal,Score)) Score FROM "+
+                "[Institution].[ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM [Institution].[ExamResultHeader] "+
+                "WHERE ExamID="+selectedExam.ExamID+" AND StudentID IN (SELECT StudentID FROM [Institution].[Student] "+
+                "WHERE ClassID="+selectedClass.ClassID+"))) x group by x.SubjectID) y ON(s.SubjectID=y.SubjectID)";
+
+            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            AggregateResultEntryModel cls;
+            foreach(DataRow dtr in dt.Rows)
+            {
+                cls = new AggregateResultEntryModel();
+                cls.NameOfSubject = dtr[1].ToString();
+                cls.MeanScore = decimal.Parse(dtr[2].ToString());
+                cls.MeanGrade = CalculateGrade(cls.MeanScore);
+                cls.Points = CalculatePoints(cls.MeanGrade);
+                temp.Add(cls);
+            }
+            return temp;
+        }
     }
-
 }

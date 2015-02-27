@@ -8,13 +8,21 @@ namespace Helper.Models
     {
         private string nameOfStudent;
         private int studentID;
+        private decimal total;
         ObservableCollection<ExamResultSubjectEntryModel> entries;
 
         public ExamResultStudentModel()
         {
             StudentID = 0;
             NameOfStudent = "";
+            Total = 0;
             Entries = new ObservableCollection<ExamResultSubjectEntryModel>();
+            entries.CollectionChanged += (o, e) =>
+                {
+                    Total = 0;
+                    foreach (var s in entries)
+                        Total += s.Score;
+                };
         }
 
         public ObservableCollection<ExamResultSubjectEntryModel> Entries
@@ -41,6 +49,19 @@ namespace Helper.Models
                 {
                     this.studentID = value;
                     NotifyPropertyChanged("StudentID");
+                }
+            }
+        }
+        public decimal Total
+        {
+            get { return this.total; }
+
+            set
+            {
+                if (value != this.total)
+                {
+                    this.total = value;
+                    NotifyPropertyChanged("Total");
                 }
             }
         }

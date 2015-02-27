@@ -19,9 +19,9 @@ namespace Starehe.ViewModels
             TryAddChild(typeof(IssueBookVM));
             TryAddChild(typeof(BookReturnVM));
             TryAddChild(typeof(NewBookVM));
-            TryAddChild(typeof(ModifyBookVM));
-            //TryAddChild(typeof(AllBooksVM));
+            TryAddChild(typeof(ModifyBookVM));            
             TryAddChild(typeof(UnreturnedBooksVM));
+            TryAddChild(typeof(ViewBooksVM));
         }
     }
 }

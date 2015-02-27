@@ -19,9 +19,9 @@ namespace Helper.Models
         private string principalComments;
         private DateTime openingDay;
         private DateTime closingDay;
-        private int cat1Score;
-        private int cat2Score;
-        private int examScore;
+        private decimal cat1Score;
+        private decimal cat2Score;
+        private decimal examScore;
         private string term1Pos;
         private string term2Pos;
         private string term3Pos;
@@ -50,6 +50,24 @@ namespace Helper.Models
             Term3Pos = "1/1";
             Entries = new ObservableCollection<StudentExamResultEntryModel>();
             DateSaved = DateTime.Now;
+            PropertyChanged += (o, e) =>
+                {
+                    if ((e.PropertyName=="Entries")&&(entries!=null))
+                    {
+                        TotalMarks = 0;
+                        foreach (var v in entries)
+                        {
+                            TotalMarks += v.MeanScore;
+                        }
+                    }
+                };
+            entries.CollectionChanged += (o, e) =>
+                {
+                    foreach(var v in entries)
+                    {
+                        TotalMarks += v.MeanScore;
+                    }
+                };
         }
         public int StudentTranscriptID
         {
@@ -205,7 +223,7 @@ namespace Helper.Models
             }
         }
 
-        public int CAT1Score
+        public decimal CAT1Score
         {
             get { return this.cat1Score; }
 
@@ -219,7 +237,7 @@ namespace Helper.Models
             }
         }
 
-        public int CAT2Score
+        public decimal CAT2Score
         {
             get { return this.cat2Score; }
 
@@ -233,7 +251,7 @@ namespace Helper.Models
             }
         }
 
-        public int ExamScore
+        public decimal ExamScore
         {
             get { return this.examScore; }
 

@@ -140,6 +140,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -147,10 +148,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Enums.cs" />
+    <Compile Include="PDFViewerHost.cs" />
     <Compile Include="Updates\UpdatesWindow.xaml.cs">
       <DependentUpon>UpdatesWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ClassResultsVM.cs" />
+    <Compile Include="ViewModels\BillStudentVM.cs" />
+    <Compile Include="ViewModels\AggregateResultsVM.cs" />
+    <Compile Include="ViewModels\NewPaymentVoucherVM.cs" />
+    <Compile Include="ViewModels\PAYEInfoVM.cs" />
+    <Compile Include="ViewModels\PaymentVoucherHistoryVM.cs" />
+    <Compile Include="ViewModels\PDFViewVM.cs" />
+    <Compile Include="ViewModels\RemovePayment.cs" />
     <Compile Include="ViewModels\StudentTranscriptVM.cs" />
     <Compile Include="ViewModels\AllBooksVM.cs" />
     <Compile Include="ViewModels\BoardingVM.cs" />
@@ -235,6 +243,7 @@
     <Compile Include="ViewModels\TimeTableVM.cs" />
     <Compile Include="ViewModels\VATAnalysisVM.cs" />
     <Compile Include="ViewModels\VATsVM.cs" />
+    <Compile Include="ViewModels\ViewBooksVM.cs" />
     <Compile Include="ViewModels\ViewExamResultsVM.cs" />
     <Compile Include="ViewModels\ViewFeesStructureVM.cs" />
     <Compile Include="LoginWindow.xaml.cs">
@@ -242,6 +251,9 @@
     </Compile>
     <Compile Include="Views\Backup.xaml.cs">
       <DependentUpon>Backup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BillStudents.xaml.cs">
+      <DependentUpon>BillStudents.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Boarding.xaml.cs">
       <DependentUpon>Boarding.xaml</DependentUpon>
@@ -364,11 +376,17 @@
     <Compile Include="Views\NewItemCategory.xaml.cs">
       <DependentUpon>NewItemCategory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NewPaymentVoucher.xaml.cs">
+      <DependentUpon>NewPaymentVoucher.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NewSupplier.xaml.cs">
       <DependentUpon>NewSupplier.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewVATRate.xaml.cs">
       <DependentUpon>NewVATRate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PAYEInfo.xaml.cs">
+      <DependentUpon>PAYEInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PaymentToSupplier.xaml.cs">
       <DependentUpon>PaymentToSupplier.xaml</DependentUpon>
@@ -376,14 +394,33 @@
     <Compile Include="Views\PaymentToSupplierHistory.xaml.cs">
       <DependentUpon>PaymentToSupplierHistory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PaymentVoucherHistory.xaml.cs">
+      <DependentUpon>PaymentVoucherHistory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Payroll.xaml.cs">
       <DependentUpon>Payroll.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PDFView.xaml.cs">
+      <DependentUpon>PDFView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PDFViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\PDFViewer.Designer.cs">
+      <DependentUpon>PDFViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\QueryEditor.xaml.cs">
       <DependentUpon>QueryEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReceiveItems.xaml.cs">
       <DependentUpon>ReceiveItems.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RemoveBill.xaml.cs">
+      <DependentUpon>RemoveBill.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\RemoveBillVM.cs" />
+    <Compile Include="Views\RemovePayment.xaml.cs">
+      <DependentUpon>RemovePayment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReprintReceipt.xaml.cs">
       <DependentUpon>ReprintReceipt.xaml</DependentUpon>
@@ -429,6 +466,12 @@
     </Compile>
     <Compile Include="Views\Suppliers.xaml.cs">
       <DependentUpon>Suppliers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Test.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Test.Designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\UnreturnedBooks.xaml.cs">
       <DependentUpon>UnreturnedBooks.xaml</DependentUpon>
@@ -489,6 +532,9 @@
     <Compile Include="Views\VATs.xaml.cs">
       <DependentUpon>VATs.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ViewBooks.xaml.cs">
+      <DependentUpon>ViewBooks.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ViewExamResults.xaml.cs">
       <DependentUpon>ViewExamResults.xaml</DependentUpon>
     </Compile>
@@ -498,6 +544,10 @@
     <Compile Include="Views\WaitPage.xaml.cs">
       <DependentUpon>WaitPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="AggregateResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Balances.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -506,11 +556,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ClassMarkList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GalleryListBoxItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ModelsDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PaymentVoucher.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -543,6 +601,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Backup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BillStudents.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -714,11 +776,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\NewPaymentVoucher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NewSupplier.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewVATRate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PAYEInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -730,7 +800,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PaymentVoucherHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Payroll.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PDFView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -739,6 +817,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ReceiveItems.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RemoveBill.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RemovePayment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -815,6 +901,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\VATs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -933,6 +1023,13 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Views\PdfViewer.resx">
+      <DependentUpon>PDFViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Test.resx">
+      <DependentUpon>Test.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helper\Helper.csproj">
@@ -1075,6 +1172,28 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\library_bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PAYEGuide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AcroPDFLib">
+      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="AxAcroPDFLib">
+      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

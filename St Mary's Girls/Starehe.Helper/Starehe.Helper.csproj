@@ -92,6 +92,8 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Helpers\DocumentHelper.cs" />
     <Compile Include="Helpers\StudentTranscriptSubjectModel.cs" />
+    <Compile Include="Models\AggregateResultEntryModel.cs" />
+    <Compile Include="Models\AggregateResultModel.cs" />
     <Compile Include="Models\BookModel.cs" />
     <Compile Include="Models\BookSelectorModel.cs" />
     <Compile Include="Models\ClassFeesDefaultModel.cs" />
@@ -99,6 +101,8 @@
     <Compile Include="Models\ClassTranscriptModel.cs" />
     <Compile Include="Models\FeesPaymentReceiptModel.cs" />
     <Compile Include="Models\ModifyBookModel.cs" />
+    <Compile Include="Models\PaymentVoucherEntryModel.cs" />
+    <Compile Include="Models\PaymentVoucherModel.cs" />
     <Compile Include="Models\StudentClearancerModel.cs" />
     <Compile Include="Models\StudentFeesDefaultModel.cs" />
     <Compile Include="Models\StudentListModel.cs" />
@@ -224,6 +228,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Transcript2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PaymentVoucher.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClassMarkList.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AggregateResult.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
