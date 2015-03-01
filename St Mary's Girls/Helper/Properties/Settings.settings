@@ -41,12 +41,6 @@
     <Setting Name="DoFullStartupCheck" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ServerName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="StatementDocUri" Type="System.Uri" Scope="User">
-      <Value Profile="(Default)">pack://application:,,,/Starehe.Helper;component/Resources/Statement.xaml</Value>
-    </Setting>
     <Setting Name="Institution" Type="Helper.Models.InstitutionModel" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

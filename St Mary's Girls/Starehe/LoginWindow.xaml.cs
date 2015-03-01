@@ -6,6 +6,8 @@ using System.Security;
 using System.Windows;
 using System.Windows.Input;
 using Starehe.Views;
+using Starehe.ViewModels;
+using Starehe.Views.FirstRun;
 
 namespace Starehe
 {
@@ -78,11 +80,22 @@ namespace Starehe
                 if (_type == LoginType.Login)
                 {
                     this.Visibility = System.Windows.Visibility.Collapsed;
-                    MainWindow main = new MainWindow();
-                    Application.Current.MainWindow = main;
-                    main.Show();
-                    shutDownApp = false;
-                    this.Close();
+                    /*if (CheckFirstRun())
+                    {
+                        FirstRun main = new FirstRun();
+                        Application.Current.MainWindow = main;
+                        main.Show();
+                        shutDownApp = false;
+                        this.Close();
+                    }
+                    else
+                    {*/
+                        MainWindow main = new MainWindow();
+                        Application.Current.MainWindow = main;
+                        main.Show();
+                        shutDownApp = false;
+                        this.Close();
+                    //}
 
                 }
                 else
@@ -93,6 +106,24 @@ namespace Starehe
                     this.Close();
                 }
             }
+        }
+
+        private bool CheckFirstRun()
+        {
+            return true;
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            CustomWindow w = new CustomWindow();
+            w.ResizeMode= System.Windows.ResizeMode.NoResize;
+            w.WindowStartupLocation= System.Windows.WindowStartupLocation.CenterScreen;
+            w.MaxHeight = 400;
+            w.MaxWidth = 600;
+            w.MinHeight = 400;
+            w.MinWidth = 600;
+            w.Content = new NetworkOptionsVM(false);
+            w.Show();
         }
     }
 }

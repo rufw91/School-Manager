@@ -232,9 +232,9 @@ namespace Helper
                     "', Address='" + student.Address +
                     "', PostalCode='" + student.PostalCode +
                     "', City='" + student.City +
-                    "', PreviousInstitution='" + student.PrevInstitution +
-                    "', DormitoryID='" + student.DormitoryID +
-                    "', BedNo='" + student.BedNo +
+                    "', PreviousInstitution='" + student.PrevInstitution +"'"+
+                    ((student.DormitoryID>0)?(", DormitoryID=" + student.DormitoryID):"") +
+                    ", BedNo='" + student.BedNo +
                     "', PreviousBalance='" + student.PrevBalance +
                     "', SPhoto=@photo WHERE StudentID=" + student.StudentID;
 
@@ -1021,7 +1021,7 @@ namespace Helper
                     CurrentStudent.City = r.Rows[0][10].ToString();
                     CurrentStudent.PostalCode = r.Rows[0][11].ToString();
                     CurrentStudent.PrevInstitution = r.Rows[0][12].ToString();
-                    CurrentStudent.DormitoryID = r.Rows[0][13].ToString();
+                    CurrentStudent.DormitoryID = (!string.IsNullOrWhiteSpace(r.Rows[0][13].ToString())) ? int.Parse(r.Rows[0][13].ToString()) : 0;
                     CurrentStudent.BedNo = r.Rows[0][14].ToString();
                     CurrentStudent.SPhoto = (byte[])r.Rows[0][15];
                     CurrentStudent.PrevBalance = decimal.Parse(r.Rows[0][16].ToString());
@@ -1067,16 +1067,10 @@ namespace Helper
                     "SELECT DormitoryID,NameOfDormitory FROM [Institution].[Dormitory]";
                 DataTable tempColl = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                 ObservableCollection<DormModel> tempCls = new ObservableCollection<DormModel>();
-                try
+                foreach (DataRow s in tempColl.Rows)
                 {
-                    foreach (DataRow s in tempColl.Rows)
-                    {
-                        tempCls.Add(new DormModel((int)s[0], s[1].ToString()));
-                    }
+                    tempCls.Add(new DormModel(int.Parse(s[0].ToString()), s[1].ToString()));
                 }
-                catch { }
-
-
                 return tempCls;
             });
         }
@@ -1087,7 +1081,7 @@ namespace Helper
             {
                 ObservableCollection<DormitoryMemberModel> tempCls = new ObservableCollection<DormitoryMemberModel>();
                 string selectStr =
-                    "SELECT StudentID,NameOfStudent,BedNo FROM [Institution].[Student] WHERE DormitoryID=" + dormitoryID;
+                    "SELECT StudentID,FirstName +' '+LastName+' '+MiddleName,BedNo FROM [Institution].[Student] WHERE DormitoryID=" + dormitoryID;
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
 
                 DormitoryMemberModel dmm;
@@ -1335,9 +1329,9 @@ namespace Helper
                         CurrentStudent.Address = dtr[10].ToString();
                         CurrentStudent.City = dtr[11].ToString();
                         CurrentStudent.PostalCode = dtr[12].ToString();
-                        CurrentStudent.DormitoryID = dtr[13].ToString();
-                        CurrentStudent.BedNo = dtr[14].ToString();
-                        CurrentStudent.PrevInstitution = dtr[15].ToString();
+                        CurrentStudent.DormitoryID = !Convert.IsDBNull(dtr[13])?int.Parse(dtr[13].ToString()):0;
+                        CurrentStudent.BedNo = !Convert.IsDBNull(dtr[13])?dtr[14].ToString():"";
+                        CurrentStudent.PrevInstitution = !Convert.IsDBNull(dtr[13])?dtr[15].ToString():"";
                         CurrentStudent.SPhoto = dtr[16] as byte[];
                         allStudents.Add(CurrentStudent);
                     }
@@ -1378,12 +1372,12 @@ namespace Helper
                         CurrentStudent.Address = dtr[10].ToString();
                         CurrentStudent.City = dtr[11].ToString();
                         CurrentStudent.PostalCode = dtr[12].ToString();
-                        CurrentStudent.BedNo = dtr[13].ToString();                        
-                        CurrentStudent.PrevInstitution = dtr[14].ToString();                        
-                        CurrentStudent.DormitoryID = dtr[15].ToString();
+                        CurrentStudent.BedNo = dtr[13].ToString();
+                        CurrentStudent.PrevInstitution = dtr[14].ToString();
+                        CurrentStudent.DormitoryID = (!string.IsNullOrWhiteSpace(dtr[15].ToString())) ?int.Parse(dtr[15].ToString()):0;
                         CurrentStudent.PrevBalance = decimal.Parse(dtr[16].ToString());
                         CurrentStudent.NameOfDormitory = dtr[17].ToString();
-                        
+
                         allStudents.Add(CurrentStudent);
                     }
                 }
@@ -1552,11 +1546,22 @@ namespace Helper
                 Regex.Match(student.BedNo, searchText, RegexOptions.IgnoreCase).Success ||
                 Regex.Match(student.City, searchText, RegexOptions.IgnoreCase).Success ||
                 Regex.Match(student.ClassID.ToString(), searchText, RegexOptions.IgnoreCase).Success ||
-                Regex.Match(student.DormitoryID, searchText, RegexOptions.IgnoreCase).Success ||
+                Regex.Match(student.DormitoryID.ToString(), searchText, RegexOptions.IgnoreCase).Success ||
                 Regex.Match(student.Email, searchText, RegexOptions.IgnoreCase).Success ||
                 Regex.Match(student.NameOfStudent, searchText, RegexOptions.IgnoreCase).Success ||
                 Regex.Match(student.PostalCode, searchText, RegexOptions.IgnoreCase).Success ||
                 Regex.Match(student.PrevInstitution, searchText, RegexOptions.IgnoreCase).Success;
+        }
+
+        public static bool SearchAllBookProperties(BookModel student, string searchText)
+        {
+            Regex.CacheSize = 14;
+            return
+                Regex.Match(student.ISBN, searchText, RegexOptions.IgnoreCase).Success ||
+                Regex.Match(student.Title, searchText, RegexOptions.IgnoreCase).Success ||
+                Regex.Match(student.Author, searchText, RegexOptions.IgnoreCase).Success ||
+                Regex.Match(student.Publisher, searchText, RegexOptions.IgnoreCase).Success ||
+                Regex.Match(student.Price.ToString(), searchText, RegexOptions.IgnoreCase).Success;
         }
 
         public static bool SearchAllStaffProperties(StaffModel staff, string searchText)
@@ -2355,7 +2360,7 @@ namespace Helper
                 return "0/0";
 
 
-            string selectStr ="SELECT row_no,no_of_students FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no, " +
+            string selectStr = "SELECT row_no,no_of_students FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no, " +
                 "res.StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + classID + ")no_of_students" +
                 " FROM [Institution].[ExamResultDetail] erd RIGHT OUTER JOIN (SELECT StudentID,ExamResultID FROM " +
                 "[Institution].[ExamResultHeader] WHERE IsActive=1 AND ExamID IN (SELECT ExamID FROM [Institution].[ExamHeader] " +
@@ -2392,7 +2397,7 @@ namespace Helper
                 return dt.Rows[0][0].ToString() + "/" + dt.Rows[0][1].ToString();
         }
 
-        
+
 
 
         public static Task<bool> HasInvoicedThisTerm(int studentID)
@@ -2510,9 +2515,9 @@ namespace Helper
                     stdf.City = dtr[10].ToString();
                     stdf.PostalCode = dtr[11].ToString();
                     stdf.PrevInstitution = dtr[12].ToString();
-                    stdf.DormitoryID = dtr[13].ToString();
-                    stdf.BedNo = dtr[14].ToString();
-                    stdf.SPhoto = (byte[])dtr[15];
+                    stdf.DormitoryID = !string.IsNullOrWhiteSpace(dtr[13].ToString()) ? int.Parse(dtr[13].ToString()) : 0; ;
+                    stdf.BedNo = !string.IsNullOrWhiteSpace(dtr[14].ToString()) ? dtr[14].ToString() : "";
+                    stdf.SPhoto = !string.IsNullOrWhiteSpace(dtr[15].ToString()) ? (byte[])dtr[15] : new byte[0];
                     stdf.PrevBalance = decimal.Parse(dtr[16].ToString());
 
                     stdf.Balance = await GetCurrentBalanceAsync(stdf.StudentID);
@@ -2784,14 +2789,14 @@ namespace Helper
                             st.NameOfClass = GetClassAsync(GetClassIDFromStudent(student.StudentID)).Result.NameOfClass;
                             st.ClassPosition = GetTermClassPosition(student.StudentID);
                             st.OverAllPosition = GetTermOverallPosition(student.StudentID);
-                            st.Entries = GetTranscriptEntries(student.StudentID);                            
-                            st.MeanGrade = GetTranscriptGrade(st.TotalMarks,st.Entries.Count);
+                            st.Entries = GetTranscriptEntries(student.StudentID);
+                            st.MeanGrade = GetTranscriptGrade(st.TotalMarks, st.Entries.Count);
                             st.Points = CalculatePoints(st.MeanGrade);
                             st.CAT1Score = GetCat1Score(st.Entries);
                             st.CAT2Score = GetCat2Score(st.Entries);
                             st.ExamScore = GetCatExamScore(st.Entries);
                             st.Term1Pos = "";
-                            
+
                             st.Term2Pos = "";
                             st.Term3Pos = "";
                             return st;
@@ -2822,7 +2827,7 @@ namespace Helper
                     temp.PrincipalComments = dt.Rows[0][7].ToString();
                     temp.OpeningDay = DateTime.Parse(dt.Rows[0][8].ToString());
                     temp.ClosingDay = DateTime.Parse(dt.Rows[0][9].ToString());
-                    
+
                     temp.Term1Pos = dt.Rows[0][10].ToString();
                     temp.Term2Pos = dt.Rows[0][11].ToString();
                     temp.Term3Pos = dt.Rows[0][12].ToString();
@@ -2857,7 +2862,7 @@ namespace Helper
 
         private static string GetTranscriptGrade(decimal totalMarks, int noOfSubjects)
         {
-            decimal avg = noOfSubjects>0?totalMarks/noOfSubjects:0;
+            decimal avg = noOfSubjects > 0 ? totalMarks / noOfSubjects : 0;
             return CalculateGrade(avg);
         }
 
@@ -2867,11 +2872,13 @@ namespace Helper
             return Task.Run<bool>(() =>
             {
                 string INSERTSTR =
-                    "INSERT INTO [Institution].[Book] (Name,ISBN,Author,SPhoto) " +
+                    "INSERT INTO [Institution].[Book] (Name,ISBN,Author,Price,Publisher,SPhoto) " +
                     "VALUES('" +
                     book.Title + "','" +
                     book.ISBN + "','" +
-                    book.Author + "',@Photo)";
+                    book.Author + "',"+
+                    book.Price+",'"+
+                    book.Publisher+"',@Photo)";
 
                 ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
 
@@ -2963,14 +2970,14 @@ namespace Helper
             temp.NameOfClass = selectedClass.NameOfClass;
             temp.NameOfExam = selectedExam.NameOfExam;
 
-            string selectStr = "SELECT AVG(x.TotalScore) FROM(SELECT ISNULL(SUM(CONVERT(DECIMAL,ISNULL(Score,0))),0) TotalScore FROM "+
-                "[Institution].[ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM "+
-                "[Institution].[ExamResultHeader] WHERE ExamID="+selectedExam.ExamID+" AND StudentID IN(SELECT StudentID FROM "+
-                "[Institution].[Student] WHERE ClassID="+selectedClass.ClassID+") AND IsActive=1) group by ExamResultID) x";
+            string selectStr = "SELECT AVG(x.TotalScore) FROM(SELECT ISNULL(SUM(CONVERT(DECIMAL,ISNULL(Score,0))),0) TotalScore FROM " +
+                "[Institution].[ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM " +
+                "[Institution].[ExamResultHeader] WHERE ExamID=" + selectedExam.ExamID + " AND StudentID IN(SELECT StudentID FROM " +
+                "[Institution].[Student] WHERE ClassID=" + selectedClass.ClassID + ") AND IsActive=1) group by ExamResultID) x";
             temp.MeanScore = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
-            selectStr = "SELECT AVG(x.TotalScore) FROM(SELECT ISNULL(AVG(CONVERT(DECIMAL,ISNULL(Score,0))),0) TotalScore FROM "+
-                "[Institution].[ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM "+
-                "[Institution].[ExamResultHeader] WHERE ExamID=" + selectedExam.ExamID + " AND StudentID IN(SELECT StudentID FROM "+
+            selectStr = "SELECT AVG(x.TotalScore) FROM(SELECT ISNULL(AVG(CONVERT(DECIMAL,ISNULL(Score,0))),0) TotalScore FROM " +
+                "[Institution].[ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM " +
+                "[Institution].[ExamResultHeader] WHERE ExamID=" + selectedExam.ExamID + " AND StudentID IN(SELECT StudentID FROM " +
                 "[Institution].[Student] WHERE ClassID=" + selectedClass.ClassID + ") AND IsActive=1) group by ExamResultID) x";
             temp.MeanGrade = CalculateGrade(decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr)));
             temp.Points = CalculatePoints(temp.MeanGrade);
@@ -2981,15 +2988,15 @@ namespace Helper
         private static ObservableCollection<AggregateResultEntryModel> GetAggregateResultEntries(ClassModel selectedClass, ExamModel selectedExam)
         {
             ObservableCollection<AggregateResultEntryModel> temp = new ObservableCollection<AggregateResultEntryModel>();
-            string selectStr = "SELECT y.SubjectID,s.NameOfSubject,y.Score FROM [Institution].[Subject] s INNER JOIN "+
-                "(SELECT x.SubjectID, AVG(x.Score) Score FROM(SELECT SubjectID, (CONVERT(decimal,Score)) Score FROM "+
-                "[Institution].[ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM [Institution].[ExamResultHeader] "+
-                "WHERE ExamID="+selectedExam.ExamID+" AND StudentID IN (SELECT StudentID FROM [Institution].[Student] "+
-                "WHERE ClassID="+selectedClass.ClassID+"))) x group by x.SubjectID) y ON(s.SubjectID=y.SubjectID)";
+            string selectStr = "SELECT y.SubjectID,s.NameOfSubject,y.Score FROM [Institution].[Subject] s INNER JOIN " +
+                "(SELECT x.SubjectID, AVG(x.Score) Score FROM(SELECT SubjectID, (CONVERT(decimal,Score)) Score FROM " +
+                "[Institution].[ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM [Institution].[ExamResultHeader] " +
+                "WHERE ExamID=" + selectedExam.ExamID + " AND StudentID IN (SELECT StudentID FROM [Institution].[Student] " +
+                "WHERE ClassID=" + selectedClass.ClassID + "))) x group by x.SubjectID) y ON(s.SubjectID=y.SubjectID)";
 
             DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
             AggregateResultEntryModel cls;
-            foreach(DataRow dtr in dt.Rows)
+            foreach (DataRow dtr in dt.Rows)
             {
                 cls = new AggregateResultEntryModel();
                 cls.NameOfSubject = dtr[1].ToString();
@@ -2999,6 +3006,144 @@ namespace Helper
                 temp.Add(cls);
             }
             return temp;
+        }
+
+        public static Task<ObservableCollection<BookModel>> GetAllBooksAsync()
+        {
+            return Task.Run<ObservableCollection<BookModel>>(() =>
+            {
+                ObservableCollection<BookModel> temp = new ObservableCollection<BookModel>();
+                string selectStr = "SELECT ISBN, Name,Author,Publisher,SPhoto,BookID,Price FROM [Institution].[Book]";
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                BookModel book;
+                foreach (DataRow dtr in dt.Rows)
+                {
+                    book = new BookModel();
+                    book.ISBN = dtr[0].ToString();
+                    book.Title = dtr[1].ToString();
+                    book.Author = dtr[2].ToString();
+                    book.Publisher = dtr[3].ToString();
+                    book.SPhoto = (dtr[4] != null && !(dtr[4] is DBNull)) ? (byte[])dtr[4] : new byte[0];
+                    book.BookID = int.Parse(dtr[5].ToString());
+                    book.Price = decimal.Parse(dtr[6].ToString());
+                    temp.Add(book);
+                }
+                return temp;
+            });
+        }
+
+        public static Task<bool> SaveNewBookIssueAsync(BookIssueModel bim)
+        {
+            return Task.Run<bool>(() =>
+            {
+                string insertStr = "BEGIN TRANSACTION\r\n" +
+                    "declare @id int; " +
+                     "SET @id = [dbo].GetNewID('Institution.BookIssueHeader') " +
+                    "INSERT INTO [Institution].[BookIssueHeader] (BookIssueID,StudentID,DateIssued)" +
+                                " VALUES (@id," + bim.StudentID + ",'" + bim.DateIssued.ToString("g") + "')\r\n";
+
+                foreach (var entry in bim.Entries)
+                {
+                    insertStr +=
+                    "INSERT INTO [Institution].[BookIssueDetail] (BookIssueID,BookID)" +
+                       " VALUES (@id," + entry.BookID + ")\r\n";
+                }
+                insertStr += " COMMIT";
+
+                return DataAccessHelper.ExecuteNonQuery(insertStr);
+            });
+        }
+
+        public static Task<ObservableCollection<BookModel>> GetUnreturnedBooksAsync(int studenID)
+        {
+            return Task.Run<ObservableCollection<BookModel>>(() =>
+            {
+                ObservableCollection<BookModel> temp = new ObservableCollection<BookModel>();
+                string selectStr = "SELECT x.BookID,b.ISBN,b.Name,b.Author,b.Publisher,b.SPhoto,b.Price FROM ((SELECT bid.BookID FROM [Institution].[BookIssueDetail]" +
+                    " bid INNER JOIN [Institution].[BookIssueHeader] bih ON(bid.BookIssueID=bih.BookIssueID) " +
+                    "WHERE bih.StudentID=" + studenID + " AND NOT EXISTS(SELECT brd.BookID FROM [Institution].[BookReturnDetail] brd " +
+                    "INNER JOIN [Institution].[BookReturnHeader] brh ON(brd.BookReturnID=brh.BookReturnID) " +
+                    "WHERE brh.DateReturned>bih.DateIssued AND brd.BookID=bid.BookID AND brh.StudentID=" + studenID + ")) x LEFT OUTER JOIN [Institution].[Book] b " +
+                    "ON (x.BookID=b.BookID))";
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                BookModel book;
+                foreach (DataRow dtr in dt.Rows)
+                {
+                    book = new BookModel();
+                    book.BookID = int.Parse(dtr[0].ToString());
+                    book.ISBN = dtr[1].ToString();
+                    book.Title = dtr[2].ToString();
+                    book.Author = dtr[3].ToString();
+                    book.Publisher = dtr[4].ToString();
+                    book.SPhoto = (dtr[5] != null && !(dtr[5] is DBNull)) ? (byte[])dtr[5] : new byte[0];
+                    book.Price = decimal.Parse(dtr[6].ToString());
+                    temp.Add(book);
+                }
+                return temp;
+            });
+        }
+
+        public static Task<bool> SaveNewBookReturnAsync(BookReturnModel bim)
+        {
+            return Task.Run<bool>(() =>
+            {
+                string insertStr = "BEGIN TRANSACTION\r\n" +
+                    "declare @id int; " +
+                     "SET @id = [dbo].GetNewID('Institution.BookReturnHeader') " +
+                    "INSERT INTO [Institution].[BookReturnHeader] (BookReturnID,StudentID,DateReturned)" +
+                                " VALUES (@id," + bim.StudentID + ",'" + bim.DateReturned.ToString("g") + "')\r\n";
+
+                foreach (var entry in bim.Entries)
+                {
+                    insertStr +=
+                    "INSERT INTO [Institution].[BookReturnDetail] (BookReturnID,BookID)" +
+                       " VALUES (@id," + entry.BookID + ")\r\n";
+                }
+                insertStr += " COMMIT";
+
+                return DataAccessHelper.ExecuteNonQuery(insertStr);
+            });
+        }
+
+        internal static BookModel GetBook(int bookID)
+        {
+
+            string selectStr = "SELECT BookID,ISBN,Name,Author,Publisher,SPhoto,b.Price FROM [Institution].[Book] WHERE BookID=" + bookID;
+            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            if (dt.Rows.Count == 0)
+                return new BookModel();
+            BookModel book = new BookModel();
+            DataRow dtr = dt.Rows[0];
+            book = new BookModel();
+            book.BookID = int.Parse(dtr[0].ToString());
+            book.ISBN = dtr[1].ToString();
+            book.Title = dtr[2].ToString();
+            book.Author = dtr[3].ToString();
+            book.Publisher = dtr[4].ToString();
+            book.SPhoto = (dtr[5] != null && !(dtr[5] is DBNull)) ? (byte[])dtr[5] : new byte[0];
+            book.Price = decimal.Parse(dtr[6].ToString());
+            return book;
+        }
+
+        public static Task<bool> UpdateBookAsync(BookSelectModel book)
+        {
+            return Task.Run<bool>(() =>
+            {
+                string upDateStr = "UPDATE [Institution].[Book] SET" +
+                    " ISBN='" + book.ISBN +
+                    "', Name='" + book.Title +
+                    "', Author='" + book.Author +
+                    "', Publisher='" + book.Publisher +
+                    "', Price='" + book.Price +
+                    "', SPhoto=@photo WHERE BookID=" + book.BookID;
+
+                ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+
+                paramColl.Add(new SqlParameter("@photo", book.SPhoto));
+
+                bool succ = DataAccessHelper.ExecuteNonQueryWithParameters(upDateStr, paramColl);
+                return succ;
+            });
         }
     }
 }

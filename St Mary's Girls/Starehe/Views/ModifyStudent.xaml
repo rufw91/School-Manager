@@ -71,7 +71,7 @@
                 <ComboBox DisplayMemberPath="NameOfDormitory"  HorizontalAlignment="Left" Margin="525,234,0,0"
         	ItemsSource="{Binding AllDorms}"
         	SelectedValuePath="DormitoryID" 
-        	SelectedValue="{Binding NewStudent.DormitoryID, Mode=TwoWay}"
+        	SelectedValue="{Binding NewStudent.DormitoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
         	VerticalAlignment="Top" Width="200" />
                 <TextBlock HorizontalAlignment="Left" Margin="730,244,0,0" 
         	VerticalAlignment="Top" ><Hyperlink Command="{Binding ClearDormCommand}"><Run Text="Clear"/></Hyperlink></TextBlock>

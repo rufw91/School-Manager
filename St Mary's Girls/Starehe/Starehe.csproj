@@ -116,15 +116,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.WindowsAPICodePack">
-      <HintPath>..\..\..\Samples &amp; Libraries\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>..\..\..\..\Samples &amp; Libraries\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell">
-      <HintPath>..\..\..\Samples &amp; Libraries\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <HintPath>..\..\..\..\Samples &amp; Libraries\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
-      <HintPath>..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
+      <HintPath>..\..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -154,10 +154,13 @@
     </Compile>
     <Compile Include="ViewModels\BillStudentVM.cs" />
     <Compile Include="ViewModels\AggregateResultsVM.cs" />
+    <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
+    <Compile Include="ViewModels\NetworkOptionsVM.cs" />
     <Compile Include="ViewModels\NewPaymentVoucherVM.cs" />
     <Compile Include="ViewModels\PAYEInfoVM.cs" />
     <Compile Include="ViewModels\PaymentVoucherHistoryVM.cs" />
     <Compile Include="ViewModels\PDFViewVM.cs" />
+    <Compile Include="ViewModels\PriceListsVM.cs" />
     <Compile Include="ViewModels\RemovePayment.cs" />
     <Compile Include="ViewModels\StudentTranscriptVM.cs" />
     <Compile Include="ViewModels\AllBooksVM.cs" />
@@ -279,6 +282,27 @@
     <Compile Include="Views\FindItems.xaml.cs">
       <DependentUpon>FindItems.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FirstRun\Colors.xaml.cs">
+      <DependentUpon>Colors.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRun\Finally.xaml.cs">
+      <DependentUpon>Finally.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRun\ImportData.xaml.cs">
+      <DependentUpon>ImportData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRun\ImportData2.xaml.cs">
+      <DependentUpon>ImportData2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRun\InstitutionSetup.xaml.cs">
+      <DependentUpon>InstitutionSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRun\FirstRun.xaml.cs">
+      <DependentUpon>FirstRun.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRun\Welcome.xaml.cs">
+      <DependentUpon>Welcome.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Import\ImportWizardMainWindow.xaml.cs">
       <DependentUpon>ImportWizardMainWindow.xaml</DependentUpon>
     </Compile>
@@ -329,6 +353,9 @@
     </Compile>
     <Compile Include="Views\ModifySupplier.xaml.cs">
       <DependentUpon>ModifySupplier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NetworkOptions.xaml.cs">
+      <DependentUpon>NetworkOptions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewBook.xaml.cs">
       <DependentUpon>NewBook.xaml</DependentUpon>
@@ -408,6 +435,9 @@
     </Compile>
     <Compile Include="Views\PDFViewer.Designer.cs">
       <DependentUpon>PDFViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PriceLists.xaml.cs">
+      <DependentUpon>PriceLists.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QueryEditor.xaml.cs">
       <DependentUpon>QueryEditor.xaml</DependentUpon>
@@ -640,6 +670,34 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\FirstRun\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FirstRun\Finally.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FirstRun\ImportData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FirstRun\ImportData2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FirstRun\InstitutionSetup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FirstRun\FirstRun.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FirstRun\Welcome.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Import\ImportWizardMainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -705,6 +763,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ModifySupplier.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NetworkOptions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -809,6 +871,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PDFView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PriceLists.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1194,6 +1260,15 @@
       <WrapperTool>aximp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\excel_data.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\import_student.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\YAZOO_SMILIES COOL.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -10,6 +10,7 @@ namespace Starehe.ViewModels
         {
             Title = "SETTINGS";
             TryAddChild(typeof(GeneralSettingsVM));
+            TryAddChild(typeof(NetworkOptionsVM));
             TryAddChild(typeof(AdvancedSettingsVM));
 
         }

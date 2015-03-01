@@ -1,5 +1,6 @@
 ﻿using Helper;
 using Helper.Models;
+using Starehe.Views;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -25,16 +26,12 @@ namespace Starehe
         }
         private void InitGlobalVar()
         {
-            bool isClient = false;
             if (Helper.Properties.Settings.Default.Info == null)
                 Info = new ApplicationModel();
             else
             {
                 Info = Helper.Properties.Settings.Default.Info;
             }
-           // if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.ServerName))
-                Helper.Properties.Settings.Default.ServerName = isClient?"BURSAR-PC\\Starehe":Environment.MachineName +
-                    "\\Starehe";
             if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.DBName))
                 Helper.Properties.Settings.Default.DBName = "Starehe";
             if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.MostRecentBackup))
@@ -55,6 +52,7 @@ namespace Starehe
             FileHelper.CheckFiles();
             try
             {
+                
                 Login lg = new Login();
                 lg.ShowDialog();
             }

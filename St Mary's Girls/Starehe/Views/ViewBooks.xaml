@@ -8,16 +8,23 @@
     <Grid>
         <TextBlock Margin="10,10,0,0" Text="View Books" VerticalAlignment="Top" HorizontalAlignment="Left"
                  Style="{DynamicResource Title}"/>
-        <TextBlock Margin="40,70,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Hyperlink Command="{Binding OpenKLBListCommand}">1. KLB List</Hyperlink>
-        </TextBlock>
-                 
-        <TextBlock Margin="40,100,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Hyperlink Command="{Binding OpenLongHornListCommand}">2. Longhorn List</Hyperlink>
-        </TextBlock>
-
-        <TextBlock Margin="40,130,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Hyperlink Command="{Binding OpenEAEPListCommand}">3. EAEP List</Hyperlink>
+        <TextBox Margin="0,70,0,0" VerticalAlignment="Top" Width="300" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource SearchTextBox}"/>
+        <DataGrid Name="lbx" AutoGenerateColumns="False" VirtualizingStackPanel.IsVirtualizing="True" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto"                 
+                  IsReadOnly="True"
+                 ItemsSource="{Binding CollViewSource.View, IsAsync=True}"
+                  Tag="{Binding}" Margin="20,110,20,20" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="BookID" Binding="{Binding BookID}" Width="80" IsReadOnly="True"/>
+                <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="150" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="200" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Author" Binding="{Binding Author}" Width="100" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Publisher" Binding="{Binding Publisher}" Width="100" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Price" Binding="{Binding Price, StringFormat={}{0:N2}}" Width="80" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock HorizontalAlignment="Right" Margin="0,90,20,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding RefreshCommand}">refresh</Hyperlink>
         </TextBlock>
     </Grid>
 </UserControl>

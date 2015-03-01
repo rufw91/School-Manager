@@ -12,8 +12,8 @@
         <TextBlock HorizontalAlignment="Left" Margin="10,95,0,0" Text="MANAGEMENT SYSTEM" VerticalAlignment="Top"
                    Foreground="White" Style="{DynamicResource ContentTextSemiBold}"/>
 
-        
-        
+
+
         <TextBlock HorizontalAlignment="Left" Margin="30,165,0,0" Text="User ID" VerticalAlignment="Top"/>
         <TextBox Name="txtUId" HorizontalAlignment="Left" Margin="85,165,0,0" VerticalAlignment="Top" Width="251"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,210,0,0" Text="Password" VerticalAlignment="Top"/>
@@ -23,5 +23,8 @@
             <Grid Width="10"/>
             <Button Content="Cancel" Width="100" IsCancel="True"/>
         </StackPanel>
+        <TextBlock HorizontalAlignment="Left" Margin="30,0,0,52" VerticalAlignment="Bottom">
+            <Hyperlink Click="Hyperlink_Click">Login Problems?</Hyperlink>
+        </TextBlock>
     </Grid>
 </helper:CustomWindow>

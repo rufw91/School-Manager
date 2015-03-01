@@ -12,11 +12,13 @@
 
 
         <TextBlock HorizontalAlignment="Left" Margin="290,65,0,0" Text="Student ID" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="355,60,0,0" VerticalAlignment="Top" Width="180"/>
+        <TextBox HorizontalAlignment="Left" Margin="355,60,0,0" VerticalAlignment="Top" Width="180"
+                 Text="{Binding SelectedStudent.StudentID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            ValidatesOnDataErrors=True, ValidatesOnNotifyDataErrors=True}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="255,110,0,0" Text="Name of Student" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Margin="355,105,0,0" VerticalAlignment="Top" Width="250" IsReadOnly="True" IsReadOnlyCaretVisible="True"
-                 Background="WhiteSmoke"/>
+                 Background="WhiteSmoke" Text="{Binding SelectedStudent.NameOfStudent}"/>
         
         <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="120"                
                 Command="{Binding GenerateCommand}"/>

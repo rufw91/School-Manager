@@ -2,6 +2,7 @@
 using Helper.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
@@ -40,7 +41,9 @@ namespace Starehe.ViewModels
         {
             navigatingBack = false;
             backJournal = new ObservableCollection<ViewModelBase>();
-            Source = new HomePageVM();   
+            Source = new HomePageVM();
+            MessageBox.Show("This is a demo version of Starehe MS. Please contact your System Administrator for more information", "Info",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         protected override void CreateCommands()

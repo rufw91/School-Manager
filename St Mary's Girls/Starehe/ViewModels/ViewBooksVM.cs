@@ -1,65 +1,110 @@
 ﻿using Helper;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Helper.Models;
+using System.Collections.ObjectModel;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
     public class ViewBooksVM: ViewModelBase
     {
-        string currentFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+        CollectionViewSource collViewSource;
+        string searchText;
+        ObservableCollection<BookModel> allBooks;
         public ViewBooksVM()
         {
             InitVars();
             CreateCommands();
         }
-        protected override void InitVars()
+        protected async override void InitVars()
         {
             Title = "VIEW BOOKS";
+            AllBooks = await DataAccess.GetAllBooksAsync();
+            collViewSource = new CollectionViewSource();
+            collViewSource.Source = allBooks;
+            NotifyPropertyChanged("CollViewSource");
         }
 
-        protected override void CreateCommands()
+        protected override void CreateCommands() 
         {
-            OpenKLBListCommand = new RelayCommand(o =>
+            RefreshCommand = new RelayCommand(async o =>
             {
-                if (OpenKLBListAction != null)
-                    OpenKLBListAction.Invoke( Path.Combine(currentFolder,"klb.pdf"));
+                AllBooks = await DataAccess.GetAllBooksAsync();
+                collViewSource = new CollectionViewSource();
+                collViewSource.Source = allBooks;
+                NotifyPropertyChanged("CollViewSource");
             }, o => true);
-            OpenLongHornListCommand = new RelayCommand(o =>
+        }
+        public ObservableCollection<BookModel> AllBooks
+        {
+            get { return this.allBooks; }
+
+            set
             {
-                if (OpenLongHornListAction != null)
-                    OpenLongHornListAction.Invoke( Path.Combine(currentFolder,"longhorn.pdf"));
-            }, o => true);
-            OpenEAEPListCommand = new RelayCommand(o =>
+                if (value != this.allBooks)
+                {
+                    this.allBooks = value;
+                    NotifyPropertyChanged("AllBooks");
+                }
+            }
+        }
+        public CollectionViewSource CollViewSource
+        {
+            get
             {
-                if (OpenEAEPListAction != null)
-                    OpenEAEPListAction.Invoke( Path.Combine(currentFolder,"eaep.pdf"));
-            }, o => true);   
+                return collViewSource;
+            }
         }
 
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    searchText = value;
+                    RenewFilter();
+                    if (CollViewSource.View != null)
+                        CollViewSource.View.Refresh();
+                }
+                else
+                {
+                    searchText = value;
+                    if (searchText != null)
+                        RemoveFilter();
+                    if (CollViewSource.View != null)
+                        CollViewSource.View.Refresh();
+                }
+            }
+        }
+
+        private void RenewFilter()
+        {
+            RemoveFilter();
+            CollViewSource.Filter += new FilterEventHandler(Filter);
+        }
+        private void RemoveFilter()
+        {
+            CollViewSource.Filter -= new FilterEventHandler(Filter);
+        }
+        private void Filter(object sender, FilterEventArgs e)
+        {
+            e.Accepted = false;
+            var src = e.Item as BookModel;
+            if (src == null)
+            {
+                e.Accepted = false;
+            }
+            else if (DataAccess.SearchAllBookProperties(src, SearchText))
+                e.Accepted = true;
+            else e.Accepted = false;
+        }
+        public ICommand RefreshCommand
+        { get; private set; }
         public override void Reset()
         {
          
         }
-        public Action<string> OpenKLBListAction
-        { get; set; }
-        public Action<string> OpenLongHornListAction
-        { get; set; }
-        public Action<string> OpenEAEPListAction
-        { get; set; }
-        public ICommand OpenKLBListCommand
-        { get; private set; }
-
-        public ICommand OpenLongHornListCommand
-        { get; private set; }
-
-        public ICommand OpenEAEPListCommand
-        { get; private set; }
     }
 }

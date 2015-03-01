@@ -24,5 +24,6 @@ namespace Starehe.Views
         {
             InitializeComponent();
         }
+
     }
 }

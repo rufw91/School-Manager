@@ -19,6 +19,7 @@ namespace Starehe.ViewModels
         protected async override void InitVars()
         {
             Title = "DORMITORY MEMBERS";
+            Entries = new ObservableCollection<DormitoryMemberModel>();
             PropertyChanged += async (o, e) =>
                 {
                     if ((e.PropertyName == "SelectedDormitoryID") &&

@@ -28,7 +28,12 @@ namespace Starehe.ViewModels
             IsBusy = true;
             Title = "MODIFY STUDENT";
             NewStudent = new ModifyStudentModel();
-            AllDorms = new ObservableCollection<DormModel>();
+            newStudent.PropertyChanged += (o, e) =>
+                {
+                    if (e.PropertyName == "StudentID")
+                        newStudent.CheckErrors();
+                };
+            AllDorms = await DataAccess.GetAllDormsAsync();
             AllClasses = await DataAccess.GetAllClassesAsync();
             IsBusy = false;
         }
@@ -39,7 +44,7 @@ namespace Starehe.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-
+                MessageBox.Show(newStudent.DormitoryID + "");
                 bool succ = await DataAccess.UpdateStudentAsync(newStudent);
                 if (succ)
                 {
@@ -57,13 +62,12 @@ namespace Starehe.ViewModels
             }, o => !IsBusy && CanSave());
             ClearImageCommand = new RelayCommand(o => { newStudent.SPhoto = null; }, o => true);
             BrowseCommand = new RelayCommand(o => { newStudent.SPhoto = FileHelper.BrowseImageAsByteArray(); }, o => true);
-            ClearDormCommand = new RelayCommand(o => { newStudent.DormitoryID = null; }, o => true);
+            ClearDormCommand = new RelayCommand(o => { newStudent.DormitoryID = 0; }, o => true);
 
         }
 
         private bool CanSave()
         {
-            newStudent.CheckErrors();
             return !newStudent.HasErrors && ValidateStudent();
         }
 

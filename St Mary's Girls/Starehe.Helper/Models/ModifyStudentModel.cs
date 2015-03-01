@@ -8,6 +8,10 @@ namespace Helper.Models
 {
     public class ModifyStudentModel:StudentModel
     {
+        public ModifyStudentModel()
+        {
+            CheckErrors();
+        }
         public override bool CheckErrors()
         {
             try
@@ -32,29 +36,24 @@ namespace Helper.Models
                     }
                     else
                     {
-                        if ((StudentID != 0) && (!string.IsNullOrWhiteSpace(this.FirstName)))
-                        { }
-                        else
-                        {
-                            ClearErrors("StudentID");
-                            this.Address = student.Address;
-                            this.NameOfGuardian = student.NameOfGuardian;
-                            this.GuardianPhoneNo = student.GuardianPhoneNo;
-                            this.City = student.City;
-                            this.StudentID = student.StudentID;
-                            this.FirstName = student.FirstName;
-                            this.MiddleName = student.MiddleName;
-                            this.LastName = student.LastName;
-                            this.SPhoto = student.SPhoto;
-                            this.Email = student.Email;
-                            this.PostalCode = student.PostalCode;
-                            this.PrevInstitution = student.PrevInstitution;
-                            this.BedNo = student.BedNo;
-                            this.ClassID = student.ClassID;
-                            this.DateOfAdmission = student.DateOfAdmission;
-                            this.DateOfBirth = student.DateOfBirth;
-                            this.DormitoryID = student.DormitoryID;
-                        }
+                        ClearErrors("StudentID");
+                        this.Address = student.Address;
+                        this.NameOfGuardian = student.NameOfGuardian;
+                        this.GuardianPhoneNo = student.GuardianPhoneNo;
+                        this.City = student.City;
+                        this.StudentID = student.StudentID;
+                        this.FirstName = student.FirstName;
+                        this.MiddleName = student.MiddleName;
+                        this.LastName = student.LastName;
+                        this.SPhoto = student.SPhoto;
+                        this.Email = student.Email;
+                        this.PostalCode = student.PostalCode;
+                        this.PrevInstitution = student.PrevInstitution;
+                        this.BedNo = student.BedNo;
+                        this.ClassID = student.ClassID;
+                        this.DateOfAdmission = student.DateOfAdmission;
+                        this.DateOfBirth = student.DateOfBirth;
+                        this.DormitoryID = student.DormitoryID;
                     }
                 }
             }
@@ -83,7 +82,7 @@ namespace Helper.Models
             PostalCode = "";
             SPhoto = null;
             ClassID = 0;
-            DormitoryID = "";
+            DormitoryID = 0;
             BedNo = "";
             PrevInstitution = "";
         }

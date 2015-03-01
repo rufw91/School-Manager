@@ -25,7 +25,7 @@ namespace Helper.Models
         private decimal prevBalance;
 
         private int classID = 0;
-        private string dormitoryID = "";
+        private int dormitoryID = 0;
         private string bedNo = "";
         private string prevInstitution = "";
 
@@ -217,7 +217,7 @@ namespace Helper.Models
                 }
             }
         }
-        public string DormitoryID
+        public int DormitoryID
         {
             get { return this.dormitoryID; }
 
@@ -290,7 +290,7 @@ namespace Helper.Models
             PostalCode = "";
             SPhoto = null;
             ClassID = 0;
-            DormitoryID = "";
+            DormitoryID = 0;
             BedNo = "";
             PrevInstitution = "";
         }

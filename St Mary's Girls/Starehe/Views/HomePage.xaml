@@ -32,7 +32,8 @@
                 </TextBlock>
             </Border>
 
-            <TextBlock x:Name="pageTitle" Text="{Binding Info.Name, Source={x:Static Application.Current}, Converter={StaticResource TitleConverter}}" 
+            <TextBlock x:Name="pageTitle" 
+                       Text="{Binding Info.Name, Source={x:Static Application.Current}, Converter={StaticResource TitleConverter}}" 
                        Style="{StaticResource HeaderTextStyle}" Grid.ColumnSpan="2" HorizontalAlignment="Left"
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="20,0,30,40"/>
 

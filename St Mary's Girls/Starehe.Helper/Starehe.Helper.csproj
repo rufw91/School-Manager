@@ -68,7 +68,7 @@
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
-      <HintPath>..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
+      <HintPath>..\..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -94,8 +94,10 @@
     <Compile Include="Helpers\StudentTranscriptSubjectModel.cs" />
     <Compile Include="Models\AggregateResultEntryModel.cs" />
     <Compile Include="Models\AggregateResultModel.cs" />
+    <Compile Include="Models\BookIssueModel.cs" />
     <Compile Include="Models\BookModel.cs" />
-    <Compile Include="Models\BookSelectorModel.cs" />
+    <Compile Include="Models\BookReturnModel.cs" />
+    <Compile Include="Models\BookSelectModel.cs" />
     <Compile Include="Models\ClassFeesDefaultModel.cs" />
     <Compile Include="Models\ClassStudentListModel.cs" />
     <Compile Include="Models\ClassTranscriptModel.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\TimetableClassModel.cs" />
     <Compile Include="Models\TranscriptItem.cs" />
+    <Compile Include="Models\UnreturnedBooksModel.cs" />
     <Compile Include="Models\VATAnalysisModel.cs" />
     <Compile Include="Models\VatModel.cs" />
     <Compile Include="ObservableCollectionObject.cs" />
@@ -237,6 +240,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AggregateResult.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\noImage.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
