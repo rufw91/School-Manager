@@ -96,7 +96,9 @@
     <Compile Include="Controls\TimePicker.cs" />
     <Compile Include="Converters\BooleansToVisibilityConverter.cs" />
     <Compile Include="Converters\ByteToStringConverter.cs" />
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\TitleConverter.cs" />
+    <Compile Include="Helpers\ActivationHelper.cs" />
     <Compile Include="Presentation\NotifyPropertyChanged.cs" />
     <Compile Include="Presentation\RelayCommand.cs" />
     <Compile Include="Constants.cs" />

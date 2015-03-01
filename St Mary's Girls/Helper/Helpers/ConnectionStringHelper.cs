@@ -13,13 +13,13 @@ namespace Helper
     public static class ConnectionStringHelper
     {
         static readonly string connStr = "Data Source=" +
-                Helper.Properties.Settings.Default.ServerName +
+                Helper.Properties.Settings.Default.Info.ServerName +
                 ";Database=Starehe;Connection Timeout=30;Encrypt=True;TrustServerCertificate=True;";
         static readonly string masterConnString = "Data Source=" +
-                Helper.Properties.Settings.Default.ServerName +
+                Helper.Properties.Settings.Default.Info.ServerName +
                 ";Database=Master;Connection Timeout=30;Encrypt=True;TrustServerCertificate=True;";
         static readonly string testConnString = "Data Source=" +
-               Helper.Properties.Settings.Default.ServerName +
+               Helper.Properties.Settings.Default.Info.ServerName +
                ";Connection Timeout=30;Encrypt=True;TrustServerCertificate=True;";
 
         public static string ConnectionString
@@ -34,6 +34,12 @@ namespace Helper
         public static string TestConnectionString
         {
             get { return testConnString; }
+        }
+
+        public static string CreateTestConnSTr(string serverName)
+        {
+            return "Data Source=" +serverName +
+                ";Connection Timeout=30;Encrypt=True;TrustServerCertificate=True;";
         }
     }
 }

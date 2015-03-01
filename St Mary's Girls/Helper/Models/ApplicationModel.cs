@@ -18,8 +18,9 @@ namespace Helper.Models
             City = "Kola";
             PhoneNo = "+254 721 437 475";
             Email = "stmarysgirlskola@yahoo.com";
-
+            ServerName = Environment.MachineName + "\\Starehe";
             Culture = new CultureInfo("en-GB").LCID;
+            Logo = new byte[0];
         }
         public string Name { get; set; }
         public string Address { get; set; }
@@ -27,7 +28,8 @@ namespace Helper.Models
         public string PhoneNo { get; set; }
         public string Email { get; set; }
         public string Motto { get; set; }
-
+        public byte[] Logo { get; set; }
+        public string ServerName { get; set; }
         public int Culture
         {
             get { return this.culture; }

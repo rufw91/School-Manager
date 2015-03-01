@@ -175,30 +175,6 @@ namespace Helper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ServerName {
-            get {
-                return ((string)(this["ServerName"]));
-            }
-            set {
-                this["ServerName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("pack://application:,,,/Starehe.Helper;component/Resources/Statement.xaml")]
-        public global::System.Uri StatementDocUri {
-            get {
-                return ((global::System.Uri)(this["StatementDocUri"]));
-            }
-            set {
-                this["StatementDocUri"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::Helper.Models.InstitutionModel Institution {
             get {
                 return ((global::Helper.Models.InstitutionModel)(this["Institution"]));

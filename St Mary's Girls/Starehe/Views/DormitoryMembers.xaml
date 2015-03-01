@@ -7,10 +7,10 @@
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid >
         <TextBlock Margin="30,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Text="Dormitory Members" Style="{DynamicResource SmallTitle}"/>
-        <DataGrid Margin="20,140,20,20" ItemsSource="{Binding Entries}" CanUserSortColumns="False" IsReadOnly="True">
+        <DataGrid Margin="20,140,20,20" AutoGenerateColumns="False" ItemsSource="{Binding Entries}" CanUserSortColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Student ID" Binding="{Binding NameOfSubject}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Name of Student" Binding="{Binding NameOfSubject}" Width="2*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Student ID" Binding="{Binding StudentID}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Name of Student" Binding="{Binding NameOfStudent}" Width="2*" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Bed No." Binding="{Binding BedNo}" Width="*" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>

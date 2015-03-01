@@ -8,6 +8,10 @@ namespace Helper.Models
 {
     public class StudentSelectModel:StudentBaseModel
     {
+        public StudentSelectModel()
+        {
+            CheckErrors();
+        }
         public override bool CheckErrors()
         {
             try

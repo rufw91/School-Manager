@@ -5,6 +5,7 @@
 
     <converters:TitleConverter x:Key="TitleConverter"/>
     <converters:ByteToStringConverter x:Key="ByteToStringConverter"/>
+    <converters:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
     <converters:BackgroundToForegroundConverter x:Key="BackgroundToForegroundConverter"/>
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:BooleansToVisibilityConverter x:Key="BooleansToVisibilityConverter" />

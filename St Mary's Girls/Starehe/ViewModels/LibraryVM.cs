@@ -22,6 +22,7 @@ namespace Starehe.ViewModels
             TryAddChild(typeof(ModifyBookVM));            
             TryAddChild(typeof(UnreturnedBooksVM));
             TryAddChild(typeof(ViewBooksVM));
+            TryAddChild(typeof(PriceListsVM));
         }
     }
 }

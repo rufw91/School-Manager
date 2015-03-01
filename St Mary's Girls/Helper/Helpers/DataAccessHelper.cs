@@ -334,6 +334,30 @@ namespace Helper
             });
         }
 
+        public static Task<bool> TestDb(string connectionStr)
+        {
+            return Task.Run<bool>(() =>
+            {
+                bool succ = false;
+                try
+                {
+                    using (SqlConnection DBConnection = new SqlConnection(connectionStr, Credentials))
+                    {
+                        DBConnection.Open();
+                        SqlCommand dta = new SqlCommand("USE Starehe", DBConnection);
+                        dta.ExecuteNonQuery();
+                        dta.Dispose();
+                    }
+                    succ = true;
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                return succ;
+            });
+        }
+
         public static Task<bool> ClearDb()
         {
             return Task.Run<bool>(() =>

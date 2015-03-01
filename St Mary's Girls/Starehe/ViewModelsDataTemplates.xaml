@@ -49,6 +49,12 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
+    <DataTemplate DataType="{x:Type viewModels:PriceListsVM}" >
+        <views:PriceLists/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NetworkOptionsVM}" >
+        <views:NetworkOptions/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:PAYEInfoVM}" >
         <views:PAYEInfo/>
     </DataTemplate>

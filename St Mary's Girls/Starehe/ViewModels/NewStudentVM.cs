@@ -31,7 +31,7 @@ namespace Starehe.ViewModels
                 ValidateStudent());
             ClearImageCommand = new RelayCommand(o => { newStudent.SPhoto = null; }, o => true);
             BrowseCommand = new RelayCommand(o => { newStudent.SPhoto = FileHelper.BrowseImageAsByteArray(); }, o => true);
-            ClearDormCommand = new RelayCommand(o => { newStudent.DormitoryID = null; }, o => true);
+            ClearDormCommand = new RelayCommand(o => { newStudent.DormitoryID = 0; }, o => true);
             ImportFromExcelCommand = new RelayCommand(o=> 
             {
                 if (ShowImportWindowAction != null)
@@ -44,9 +44,7 @@ namespace Starehe.ViewModels
             Title = "NEW STUDENT";
             newStudent = new StudentModel();
             AllDorms = await DataAccess.GetAllDormsAsync();
-            NotifyPropertyChanged("AllDorms");
             AllClasses = await DataAccess.GetAllClassesAsync();
-            NotifyPropertyChanged("AllClasses");
         }
 
         public override void Reset()
@@ -60,20 +58,22 @@ namespace Starehe.ViewModels
         public ObservableCollection<DormModel> AllDorms
         {
             get { return allDorms; }
-            private set
+            set
             {
                 if (value != allDorms)
                     allDorms = value;
+                NotifyPropertyChanged("AllDorms");
             }
         }
 
         public ObservableCollection<ClassModel> AllClasses
         {
             get { return allClasses; }
-            private set
+            set
             {
                 if (value != allClasses)                
                     allClasses = value;
+                NotifyPropertyChanged("AllClasses");
             }
         }
 
