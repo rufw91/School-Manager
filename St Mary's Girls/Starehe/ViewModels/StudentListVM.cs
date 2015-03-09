@@ -16,8 +16,10 @@ namespace Starehe.ViewModels
     public class StudentListVM : ViewModelBase
     {
         ObservableCollection<StudentListModel> allStudents;
-        string searchText;
+        string searchText="";
         CollectionViewSource collViewSource;
+        bool showCleared;
+        bool showTransferred;
         public StudentListVM()
             : base()
         {
@@ -142,6 +144,8 @@ namespace Starehe.ViewModels
             SearchText = "";
             allStudents = await DataAccess.GetAllStudentsListAsync();
             CollViewSource.Source = allStudents;
+            ShowTransferred = true;
+            ShowCleared = true;
         }
 
         private int GetSelectedItemsCount()
@@ -208,6 +212,34 @@ namespace Starehe.ViewModels
             }
         }
 
+        public bool ShowTransferred
+        {
+            get { return showTransferred; }
+            set
+            {
+                if (showTransferred != value)
+                {
+                    showTransferred = value;
+                    NotifyPropertyChanged("ShowTransferred");
+                    RenewFilter();
+                }
+            }
+        }
+
+        public bool ShowCleared
+        {
+            get { return showCleared; }
+            set
+            {
+                if (showCleared != value)
+                {
+                    showCleared = value;
+                    NotifyPropertyChanged("ShowCleared");
+                    RenewFilter();
+                }
+            }
+        }
+        
         private void RenewFilter()
         {
             RemoveFilter();
@@ -221,14 +253,18 @@ namespace Starehe.ViewModels
         private void Filter(object sender, FilterEventArgs e)
         {
             e.Accepted = false;
-            var src = e.Item as StudentModel;
+            var src = e.Item as StudentListModel;
             if (src == null)
             {
                 e.Accepted = false;
             }
-            else if (DataAccess.SearchAllStudentProperties(src, SearchText))
-                e.Accepted = true;
-            else e.Accepted = false;
+            else
+            {
+                if (DataAccess.SearchAllStudentProperties(src, SearchText))
+                    e.Accepted = (!src.IsCleared | showCleared) &&
+                        (!src.IsTransferred | showTransferred);
+                else e.Accepted = false;
+            }
         }
 
         public ICommand RefreshCommand

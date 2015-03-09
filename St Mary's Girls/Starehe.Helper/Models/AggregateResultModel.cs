@@ -14,6 +14,7 @@ namespace Helper.Models
             NameOfClass = "";
             NameOfExam = "";
             MeanScore = 0;
+            TotalScore = 0;
             Points = 0;
             MeanGrade = "NOT DEF";
             Entries = new ObservableCollection<AggregateResultEntryModel>();
@@ -30,15 +31,18 @@ namespace Helper.Models
         { get; set; }
         public ObservableCollection<AggregateResultEntryModel> Entries
         { get; set; }
-
+        public decimal TotalScore { get; set; }
         public override void Reset()
         {
             NameOfClass = "";
             NameOfExam = "";
             MeanScore = 0;
             Points = 0;
+            TotalScore = 0;
             MeanGrade = "NOT DEF";
             Entries = new ObservableCollection<AggregateResultEntryModel>();
         }
+
+        
     }
 }

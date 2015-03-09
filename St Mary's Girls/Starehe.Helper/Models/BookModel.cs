@@ -24,26 +24,9 @@ namespace Helper.Models
             Title = "";
             Author = "";
             ISBN = "";
-            SPhoto = SetNoImage();
+            SPhoto = new byte[0];
             Publisher = "";
             Price = 0;
-        }
-
-        private byte[] SetNoImage()
-        {
-            byte[] b = new byte[0];
-            try
-            {
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Application.GetResourceStream(new Uri("pack://application:,,,/Resources/noImage.png")).Stream.CopyTo(mem, 1024);                    
-                    mem.Seek(0, System.IO.SeekOrigin.Begin);
-                    b = mem.ToArray();
-                    mem.Dispose();
-                }
-            }
-            catch { }
-            return b;
         }
 
         public int BookID
@@ -148,7 +131,7 @@ namespace Helper.Models
             Title = "";
             Author = "";
             ISBN = "";
-            SPhoto = SetNoImage();
+            SPhoto = new byte[0];
             Publisher = "";
             Price = 0;
         }

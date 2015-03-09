@@ -19,12 +19,26 @@ namespace Starehe.ViewModels
             InitVars();
             CreateCommands();
         }
+
+        protected override async void InitVars()
+        {
+            Title = "NEW STUDENT";
+            newStudent = new StudentModel();
+            AllDorms = await DataAccess.GetAllDormsAsync();
+            AllClasses = await DataAccess.GetAllClassesAsync();
+            newStudent.PropertyChanged += (o, e) =>
+                {
+                    if (e.PropertyName == "StudentID")
+                        newStudent.CheckErrors();
+                };
+        }
+
         protected override void CreateCommands()
         {
             
             SaveCommand = new RelayCommand(async o => 
             {
-                bool succ = await DataAccess.SaveNewStudentAsync(newStudent,false); 
+                bool succ = await DataAccess.SaveNewStudentAsync(newStudent); 
                 if (succ)
                     Reset(); 
             }, o => 
@@ -38,14 +52,7 @@ namespace Starehe.ViewModels
                     ShowImportWindowAction.Invoke();
             });
         }
-
-        protected override async void InitVars()
-        {            
-            Title = "NEW STUDENT";
-            newStudent = new StudentModel();
-            AllDorms = await DataAccess.GetAllDormsAsync();
-            AllClasses = await DataAccess.GetAllClassesAsync();
-        }
+        
 
         public override void Reset()
         {
@@ -114,6 +121,7 @@ namespace Starehe.ViewModels
 
         private bool ValidateStudent()
         {
+            newStudent.CheckErrors();
             bool isOk = !string.IsNullOrWhiteSpace(newStudent.FirstName) && !string.IsNullOrWhiteSpace(newStudent.LastName)
                 && !string.IsNullOrWhiteSpace(newStudent.NameOfGuardian) && !string.IsNullOrWhiteSpace(newStudent.Email)
                    && !string.IsNullOrWhiteSpace(newStudent.GuardianPhoneNo) && !string.IsNullOrWhiteSpace(newStudent.Address)
@@ -121,7 +129,7 @@ namespace Starehe.ViewModels
                       && !(newStudent.DateOfBirth == null) && !(newStudent.DateOfAdmission == null)
                       && (EmailValidator.IsValidEmail(newStudent.Email))
                       && newStudent.ClassID>0;
-            return isOk;
+            return isOk&&!newStudent.HasErrors;
         }
 
     }

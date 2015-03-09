@@ -7,7 +7,7 @@
              d:DesignHeight="700" d:DesignWidth="984"
              Background="White">
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Aggregate Results" 
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Subject Perfomance" 
                    VerticalAlignment="Top"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Class" VerticalAlignment="Top"/>
@@ -24,5 +24,8 @@
         <DocumentViewer Margin="350,109,10,50" BorderBrush="Silver" BorderThickness="2" Document="{Binding Document}"/>
         <Button Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" BorderBrush="Silver" BorderThickness="2"
                 Command="{Binding GenerateCommand}" Content="Generate"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,90,10,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FullPreviewCommand}">Full Preview</Hyperlink>
+        </TextBlock>
     </Grid>
 </UserControl>

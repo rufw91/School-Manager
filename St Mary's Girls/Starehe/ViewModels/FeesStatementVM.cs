@@ -1,6 +1,7 @@
 ﻿
 using Helper;
 using Helper.Models;
+using System;
 using System.Security.Permissions;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -26,6 +27,13 @@ namespace Starehe.ViewModels
 
         protected override void CreateCommands()
         {
+            FullPreviewCommand=new RelayCommand(o =>
+            {
+                var doc = DocumentHelper.GenerateDocument(statement);
+                if (ShowPrintDialogAction != null)
+                    ShowPrintDialogAction.Invoke(doc);
+            }, o => CanGnerateStatement()&&Document!=null);
+
             GenerateStatementCommand = new RelayCommand(async o =>
             {
                 var s = await
@@ -69,7 +77,11 @@ namespace Starehe.ViewModels
                 }
             }
         }
-
+        public ICommand FullPreviewCommand
+        {
+            get;
+            private set;
+        }
         public ICommand GenerateStatementCommand
         {
             get;
@@ -81,7 +93,11 @@ namespace Starehe.ViewModels
             statement.CheckErrors();
             return !statement.HasErrors && (statement.To > statement.From);
         }
-
+        public Action<FixedDocument> ShowPrintDialogAction
+        {
+            get;
+            set;
+        }
         public override void Reset()
         {
             Statement.Reset();

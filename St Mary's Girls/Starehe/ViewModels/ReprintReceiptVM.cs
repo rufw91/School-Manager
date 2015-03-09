@@ -2,12 +2,13 @@
 using Helper.Models;
 using System;
 using System.Collections.ObjectModel;
-using System.Windows;
+using System.Security.Permissions;
 using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ReprintReceiptVM:ViewModelBase
     {
         private FeePaymentModel currentPayment;
@@ -37,12 +38,21 @@ namespace Starehe.ViewModels
 
         protected override void CreateCommands()
         {
+            FullPreviewCommand = new RelayCommand(async o=>
+            {
+                var fs = await DataAccess.GetSaleAsync(currentPayment.FeePaymentID);
+                currentPayment.NameOfStudent = currentStudent.NameOfStudent;
+                var temp = await DataAccess.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
+                var doc = DocumentHelper.GenerateDocument(new FeePaymentReceipt2Model(temp));
+                if (ShowPrintDialogAction != null)
+                    ShowPrintDialogAction.Invoke(doc);
+            }, o => CanGenerate() && Document!=null);
             GenerateCommand = new RelayCommand(async o =>
             {
                 var fs = await DataAccess.GetSaleAsync(currentPayment.FeePaymentID);
                 currentPayment.NameOfStudent = currentStudent.NameOfStudent;
                 var temp = await DataAccess.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
-                Document = DocumentHelper.GenerateDocument(temp);
+                Document = DocumentHelper.GenerateDocument(new FeePaymentReceipt2Model(temp));
             },
                o => CanGenerate());
         }
@@ -102,8 +112,16 @@ namespace Starehe.ViewModels
                 }
             }
         }
-
-
+        public Action<FixedDocument> ShowPrintDialogAction
+        {
+            get;
+            set;
+        }
+        public ICommand FullPreviewCommand
+        {
+            get;
+            private set;
+        }
         public ICommand GenerateCommand
         {
             get;

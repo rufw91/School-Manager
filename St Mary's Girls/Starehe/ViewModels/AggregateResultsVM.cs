@@ -1,16 +1,14 @@
 ﻿using Helper;
 using Helper.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Permissions;
 using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class AggregateResultsVM: ViewModelBase
     {
         private FixedDocument fd;
@@ -32,7 +30,7 @@ namespace Starehe.ViewModels
         }
         protected async override void InitVars()
         {
-            Title = "AGGREGATE RESULTS";
+            Title = "SUBJECT PERFOMANCE";
             AllExams = new ObservableCollection<ExamModel>();
             AllClasses = await DataAccess.GetAllClassesAsync();
             NotifyPropertyChanged("AllClasses");
@@ -40,6 +38,13 @@ namespace Starehe.ViewModels
 
         protected override void CreateCommands()
         {
+            FullPreviewCommand = new RelayCommand(async o =>
+            {
+                AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedClass, selectedExam);
+                var doc  = DocumentHelper.GenerateDocument(fs);
+                if (ShowPrintDialogAction != null)
+                    ShowPrintDialogAction.Invoke(doc);
+            }, o => CanGenerate() && Document != null);
             GenerateCommand = new RelayCommand(async o =>
             {
                 AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedClass, selectedExam);
@@ -106,6 +111,16 @@ namespace Starehe.ViewModels
             }
         }
         public ObservableCollection<ClassModel> AllClasses { get; private set; }
+        public Action<FixedDocument> ShowPrintDialogAction
+        {
+            get;
+            set;
+        }
+        public ICommand FullPreviewCommand
+        {
+            get;
+            private set;
+        }
         public ICommand GenerateCommand
         {
             get;

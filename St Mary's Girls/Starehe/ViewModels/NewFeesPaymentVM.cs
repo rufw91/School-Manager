@@ -34,7 +34,37 @@ namespace Starehe.ViewModels
                     return ((int)o) > -1;
                     return false;
                 });
+            PreviewCommand  = new RelayCommand(async o=>
+            {
+                SaleModel sm = new SaleModel();
 
+                if (!await DataAccess.HasInvoicedThisTerm(currentPayment.StudentID))
+                {
+                    sm = new SaleModel();
+                    sm.CustomerID = currentPayment.StudentID;
+                    sm.DateAdded = currentPayment.DatePaid;
+                    sm.EmployeeID = 0;
+                    sm.SaleItems = currentFeesStructure.Entries;
+                    sm.RefreshTotal();
+                }
+                else
+                {
+                    sm = await DataAccess.GetThisTermInvoice(currentPayment.StudentID);
+                    sm.CustomerID = currentPayment.StudentID;
+                    sm.DateAdded = currentPayment.DatePaid;
+                    sm.EmployeeID = 0;
+                    sm.SaleItems = currentFeesStructure.Entries;
+                    sm.RefreshTotal();
+                }
+                MessageBox.Show("Dont forget to save the transaction!!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                currentPayment.FeePaymentID = await DataAccess.GetLastPaymentIDAsync(currentPayment.StudentID, currentPayment.DatePaid);
+                FeePaymentReceiptModel fprm = await DataAccess.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(sm.SaleItems));
+                
+                Document = DocumentHelper.GenerateDocument(new FeePaymentReceipt2Model(fprm));
+                if (ShowPrintDialogAction != null)
+                    ShowPrintDialogAction.Invoke(Document);
+
+            }, o => CanSavePayment());
             SaveCommand = new RelayCommand(async o =>
             {
                 bool succ=true;
@@ -89,7 +119,7 @@ namespace Starehe.ViewModels
                     RefreshRecentPayments();
                     Reset();
                     
-                    Document = DocumentHelper.GenerateDocument(fprm);
+                    Document = DocumentHelper.GenerateDocument(new FeePaymentReceipt2Model(fprm));
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(Document);
                     
@@ -233,7 +263,11 @@ namespace Starehe.ViewModels
             get;
             private set;
         }
-        
+        public ICommand PreviewCommand
+        {
+            get;
+            private set;
+        }
         public ICommand SaveAndPrintCommand
         {
             get;

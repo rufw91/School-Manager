@@ -39,6 +39,7 @@ namespace Starehe.ViewModels
                 }
             }
         }
+
         public override void Reset()
         {
         }

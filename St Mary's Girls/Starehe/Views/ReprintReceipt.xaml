@@ -21,9 +21,14 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,126,0,0" TextWrapping="Wrap" Text="Student ID" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="40,217,0,0" TextWrapping="Wrap" Style="{DynamicResource Title0}" Text="Receint Payments" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="350,80,0,0" Style="{DynamicResource Title0}" Text="Preview" VerticalAlignment="Top"/>
+        
         <ListBox Margin="20,250,0,30" Width="310" ItemsSource="{Binding RecentPayments}" ItemTemplate="{StaticResource FeePaymentModel}" HorizontalAlignment="Left"
                  SelectedItem="{Binding CurrentPayment, Mode=TwoWay}"/>
+        
         <DocumentViewer Margin="350,109,10,50" Document="{Binding Document}" Name="viewer"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,90,10,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FullPreviewCommand}">Full Preview</Hyperlink>
+        </TextBlock>
         <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding GenerateCommand}"/>
 

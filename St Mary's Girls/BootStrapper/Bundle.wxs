@@ -3,7 +3,7 @@
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
 
 
-  <Bundle Name="Shishi" Version="6.5.0.0" Manufacturer="Almond Tech" UpgradeCode="6238b473-021f-4324-9926-f9198f4bd6ca">
+  <Bundle Name="Starehe" Version="6.5.0.0" Manufacturer="Almond Tech" UpgradeCode="6238b473-021f-4324-9926-f9198f4bd6ca">
     <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.HyperlinkLicense">
       <bal:WixStandardBootstrapperApplication LicenseUrl="https://www.gnu.org/licenses/lgpl.html" SuppressOptionsUI="yes" />
     

@@ -274,7 +274,37 @@ namespace Helper.Models
         {
             return NameOfStudent;
         }
-
+        public override bool CheckErrors()
+        {
+            ErrorCheckingStatus = Helper.ErrorCheckingStatus.Incomplete;
+            try
+            {
+                ClearAllErrors();
+                var s = DataAccess.GetStudent(StudentID);
+                if (s.StudentID>0)
+                {
+                    List<string> errors = new List<string>();
+                    errors.Add("Student already exists. (" + s.NameOfStudent.ToUpper() + ")");
+                    SetErrors("StudentID", errors);
+                }
+                var f = DataAccess.GetBedNoUser(BedNo);
+                if (f.StudentID > 0)
+                {
+                    List<string> errors = new List<string>();
+                    errors.Add("Bed No already in use by: (" + s.NameOfStudent.ToUpper() + ")");
+                    SetErrors("BedNo", errors);
+                }
+            }
+            catch (Exception e)
+            {
+                List<string> errors = new List<string>();
+                errors.Add(e.Message);
+                SetErrors("", errors);
+            }
+            NotifyPropertyChanged("HasErrors");
+            ErrorCheckingStatus = Helper.ErrorCheckingStatus.Complete;
+            return HasErrors;
+        }
         public override void Reset()
         {
             StudentID = 0;

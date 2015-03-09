@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class BillStudentVM: ViewModelBase
     {
         bool isInStudentMode;
@@ -70,6 +72,19 @@ namespace Starehe.ViewModels
 
         protected override void CreateCommands()
         {
+            GetFeesSturctureItemsCommand = new RelayCommand(async o =>
+            {
+                FeesStructureModel fs;
+                if (isInStudentMode)
+                    fs = await DataAccess.GetFeesStructureAsync(await DataAccess.GetClassIDFromStudentID(selectedStudent.StudentID), DateTime.Now);
+                else
+                    fs = fs = await DataAccess.GetFeesStructureAsync(selectedClass.ClassID, DateTime.Now);
+                currentFeesStructure.Entries.Clear();
+                foreach (var f in fs.Entries)
+                {
+                    currentFeesStructure.Entries.Add(f);
+                }
+            }, o => CanGetFeesStructure());
             AddEntryCommand = new RelayCommand(o =>
             {
                 currentFeesStructure.Entries.Add(newEntry);
@@ -131,6 +146,11 @@ namespace Starehe.ViewModels
                         Reset();
                 }
             }, o =>CanSave());
+        }
+
+        private bool CanGetFeesStructure()
+        {
+            return isInStudentMode ? selectedStudent != null && !selectedStudent.HasErrors : selectedClass != null && selectedClass.ClassID > 0;
         }
 
 
@@ -307,5 +327,7 @@ namespace Starehe.ViewModels
             selectedClass.Reset();
             selectedStudent.Reset();
         }
+
+        public ICommand GetFeesSturctureItemsCommand { get; private set; }
     }
 }

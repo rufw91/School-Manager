@@ -65,8 +65,8 @@ namespace Helper.Properties {
         ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
         ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; Text=&quot;AGGREGATE RESULTS&quot; VerticalAlignment=&quot;Top&quot; TextDecorations=&quot;Underline&quot; FontFamily=&quot;Arial&quot; FontSize=&quot;18&quot;/&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Left&quot; Margin=&quot;30,85,0,0&quot; Text=&quot;CLASS:&quot; VerticalAli [rest of string was truncated]&quot;;.
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; Text=&quot;SUBJECT PERFOMANCE&quot; VerticalAlignment=&quot;Top&quot; TextDecorations=&quot;Underline&quot; FontFamily=&quot;Arial&quot; FontSize=&quot;18&quot;/&gt;
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Left&quot; Margin=&quot;30,85,0,0&quot; Text=&quot;CLASS:&quot; VerticalAl [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string AggregateResult {
             get {
@@ -107,8 +107,8 @@ namespace Helper.Properties {
         ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
         ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,20,0,0&quot; Text=&quot;ST MARY&apos;S GIRLS SCHOOL - KOLA&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,60,0,0&quot; Text=&quot;CLASS RESULTS&quot; VerticalAl [rest of string was truncated]&quot;;.
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,20,0,0&quot; Text=&quot;{Binding Info.FullName, Source={x:Static Application.Current}}&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,60,0,0 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ClassMarkList {
             get {
@@ -125,7 +125,7 @@ namespace Helper.Properties {
         ///        &lt;sys:Double x:Key=&quot;rowHeight&quot;&gt;25&lt;/sys:Double&gt;
         ///    &lt;/FixedPage.Resources&gt;
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; M [rest of string was truncated]&quot;;.
+        ///        &lt;Image HorizontalAlignment=&quot;Left&quot; Height= [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string LeavingCert {
             get {
@@ -137,9 +137,10 @@ namespace Helper.Properties {
         ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
         ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
         ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///    
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; Text=&quot;ST MARY&apos;S GIRLS SCHOOL - KOLA&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,70,0,0&quot; Text=&quot;P.O. BOX 80 - 90108 KOLA, [rest of string was truncated]&quot;;.
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; Text=&quot;{Binding Info.FullName, Source={x:Static Application.Current}}&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
+        ///        &lt;StackPanel Orientation=&quot;Horizontal&quot; Margin=&quot;0,70, [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PaymentVoucher {
             get {
@@ -151,13 +152,30 @@ namespace Helper.Properties {
         ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
         ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
         ///           Height=&quot;793.76&quot; Width=&quot;1122.56&quot;&gt;
-        ///    &lt;Grid Height=&quot;793.76&quot; Width=&quot;1122.56&quot; &gt;
+        ///    &lt;Grid Height=&quot;793.76&quot; Width=&quot;1122.56&quot; DataContext=&quot;{Binding Source={x:Static Application.Current}}&quot;&gt;
         ///    &lt;TextBlock HorizontalAlignment=&quot;Left&quot; Margin=&quot;230,36,0,0&quot; Text=&quot;FEES RECEIPT&quot; FontWeight=&quot;Bold&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Times New Roman&quot; FontSize=&quot;16&quot;/&gt;
-        ///    &lt;TextBlock HorizontalAlignment=&quot;Left&quot; Margin=&quot;269,105,0,0&quot; Text=&quot;St Mary&apos;s Girls Secondary Sch [rest of string was truncated]&quot;;.
+        ///       
+        ///        &lt;StackPanel Orientat [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Receipt {
             get {
                 return ResourceManager.GetString("Receipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+        ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///        &lt;TextBlock   Margin=&quot;0,130,0,0&quot; Text=&quot;FEES RECEIPT&quot; FontWeight=&quot;Bold&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Times New Roman&quot; FontSize=&quot;16&quot;
+        ///                    HorizontalAlignment=&quot;Center&quot;/&gt;
+        ///&lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; 
+        ///            [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Receipt2 {
+            get {
+                return ResourceManager.GetString("Receipt2", resourceCulture);
             }
         }
         
@@ -181,8 +199,11 @@ namespace Helper.Properties {
         ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
         ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; Text=&quot;ST MARY&apos;S GIRLS SCHOOL - KOLA&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,70,0,0&quot; Text=&quot;P.O. BOX 80 - 90108 KOLA, [rest of string was truncated]&quot;;.
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; 
+        ///                   Text=&quot;{Binding Info.FullName, Source={x:Static Application.Current}}&quot; 
+        ///                   VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
+        ///        
+        ///        &lt;Ima [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Transcript {
             get {
@@ -196,12 +217,22 @@ namespace Helper.Properties {
         ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///        &lt;Border Margin=&quot;10,10,10,30&quot; BorderBrush=&quot;Gray&quot; BorderThickness=&quot;1&quot;/&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,20,0,0&quot; Text=&quot;ST MARY&apos;S GIRLS SCHOOL - KOLA&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
-        ///        &lt;TextBlock [rest of string was truncated]&quot;;.
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,20,0,0&quot; 
+        ///                   Text=&quot;{Binding Info.FullName, Source={x:Static Application.Current}}&quot; 
+        ///                   VerticalAlig [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Transcript2 {
             get {
                 return ResourceManager.GetString("Transcript2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UnreturnedBooks {
+            get {
+                return ResourceManager.GetString("UnreturnedBooks", resourceCulture);
             }
         }
     }

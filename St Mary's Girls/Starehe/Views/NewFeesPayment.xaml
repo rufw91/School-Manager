@@ -41,6 +41,10 @@
                    Command="{Binding SaveAndPrintCommand}"/>
             <TextBlock HorizontalAlignment="Left" Margin="30,0,0,20" Text="TOTAL:" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
             <TextBlock HorizontalAlignment="Left" Margin="85,0,0,20" Text="{Binding FeesStructureTotal, StringFormat={}{0:N2}}" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
+            <TextBlock HorizontalAlignment="Right" Margin="0,51,30,0" VerticalAlignment="Top">
+                <Hyperlink Command="{Binding PreviewCommand}">Preview Receipt</Hyperlink>
+            </TextBlock>
+
 
         </Grid>
     </Grid>

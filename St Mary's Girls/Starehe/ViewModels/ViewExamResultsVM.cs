@@ -142,28 +142,30 @@ namespace Starehe.ViewModels
                 dt.Columns.Add(new DataColumn(d.NameOfSubject));
                 subjectCount++;
             }
+            dt.Columns.Add(new DataColumn("MeanGrade"));
             dt.Columns.Add(new DataColumn("Total"));
             dt.Columns.Add(new DataColumn("Position"));
             DataRow dtr;
             ExamResultSubjectEntryModel f;
             int pos = 1;
             ExamResultStudentModel s;
-            for (int x=0;x<temp.Count;x++)
+            for (int x = 0; x < temp.Count; x++)
             {
                 s = temp[x];
                 dtr = dt.NewRow();
                 dtr[0] = s.StudentID;
                 dtr[1] = s.NameOfStudent;
                 for (int i = 0; i < subjectCount; i++)
-                {                    
+                {
                     f = s.Entries.FirstOrDefault(o => o.NameOfSubject == g[i].NameOfSubject);
                     dtr[i + 2] = (f != null) ? f.Score.ToString() : " - ";
                 }
-                dtr[subjectCount+2] = s.Total;                
-                dtr[subjectCount+3] = pos;
+                dtr[subjectCount + 2] = s.MeanGrade;
+                dtr[subjectCount + 3] = s.Total;
+                dtr[subjectCount + 4] = pos;
                 dt.Rows.Add(dtr);
-                if ((temp.Count>x+1)&&(temp[x + 1].Total == s.Total))
-                        continue;                
+                if ((temp.Count > x + 1) && (temp[x + 1].Total == s.Total))
+                    continue;
                 pos++;
             }
             return dt;

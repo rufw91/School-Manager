@@ -49,7 +49,7 @@
         </Border>
         <TextBlock  HorizontalAlignment="Left" Margin="25,350,0,0" Name="textBlock10" Text="Address" VerticalAlignment="Top" />
 
-        <TextBlock HorizontalAlignment="Left" Margin="25,350,0,0" TextWrapping="Wrap" Text="City" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="25,395,0,0" TextWrapping="Wrap" Text="City" VerticalAlignment="Top"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="25,440,0,0" TextWrapping="Wrap" Text="Postal Code" VerticalAlignment="Top"/>
 

@@ -15,36 +15,38 @@
         <TextBlock  HorizontalAlignment="Left" Margin="59,80,0,0" Text="Student ID" VerticalAlignment="Top" />
         <TextBox HorizontalAlignment="Left" Margin="120,80,0,0" Name="txtStudentId" VerticalAlignment="Top" Width="200" 
                          Text="{Binding NewResult.StudentID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=10}"/>
-
-        <TextBlock  HorizontalAlignment="Left" Margin="87,125,0,0" Text="Exam" VerticalAlignment="Top" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="120,125,0,0" VerticalAlignment="Top" Width="200" 
+        <TextBlock  HorizontalAlignment="Left" Margin="79,125,0,0" Text="Name" VerticalAlignment="Top" />
+        <TextBox HorizontalAlignment="Left" Margin="120,125,0,0" VerticalAlignment="Top" Width="200" 
+                         Text="{Binding NewResult.NameOfStudent}" Background="WhiteSmoke" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="87,170,0,0" Text="Exam" VerticalAlignment="Top" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="120,170,0,0" VerticalAlignment="Top" Width="200" 
         	SelectedValuePath="ExamID" 
         	DisplayMemberPath="NameOfExam"
         	ItemsSource="{Binding AllExams}"
         	SelectedValue="{Binding SelectedExamID, Mode=TwoWay}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="40,200,0,0" Style="{DynamicResource Title0}" Text="Subject Scores" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,225,0,0" Style="{DynamicResource Title0}" Text="Subject Scores" VerticalAlignment="Top"/>
 
-        <TextBlock  HorizontalAlignment="Left" Margin="76,245,0,0" Text="Subject" VerticalAlignment="Top" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="120,245,0,0" VerticalAlignment="Top" Width="200"         	
+        <TextBlock  HorizontalAlignment="Left" Margin="76,270,0,0" Text="Subject" VerticalAlignment="Top" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="120,270,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllSubjects}"
         	DisplayMemberPath="NameOfSubject" 
         	SelectedItem="{Binding SelectedSubject, Mode=TwoWay}"/>
-        <TextBlock  HorizontalAlignment="Left" Margin="86,290,0,0" Text="Score" VerticalAlignment="Top" />
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,290,0,0" VerticalAlignment="Top" Width="150"
+        <TextBlock  HorizontalAlignment="Left" Margin="86,315,0,0" Text="Score" VerticalAlignment="Top" />
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,315,0,0" VerticalAlignment="Top" Width="150"
                  DataContext="{Binding SelectedSubject}"
                  Text="{Binding Score, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <TextBlock  HorizontalAlignment="Left" Margin="86,330,0,0" Text="Tutor" VerticalAlignment="Top" />
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,330,0,0" VerticalAlignment="Top" Width="150"
+        <TextBlock  HorizontalAlignment="Left" Margin="86,355,0,0" Text="Tutor" VerticalAlignment="Top" />
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,355,0,0" VerticalAlignment="Top" Width="150"
                  DataContext="{Binding SelectedSubject}" MaxLength="4"
                  Text="{Binding Tutor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <TextBlock  HorizontalAlignment="Left" Margin="70,370,0,0" x:Name="textBlock4" Text="Remarks" VerticalAlignment="Top" />
-        <TextBox HorizontalAlignment="Left" Margin="120,370,0,0" MaxLength="20"
-        	Width="201" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Height="165" VerticalAlignment="Top" 
+        <TextBlock  HorizontalAlignment="Left" Margin="70,395,0,0" x:Name="textBlock4" Text="Remarks" VerticalAlignment="Top" />
+        <TextBox HorizontalAlignment="Left" Margin="120,395,0,0" MaxLength="20"
+        	Width="200" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Height="80" VerticalAlignment="Top" 
                  DataContext="{Binding SelectedSubject}"
                  Text="{Binding Remarks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Button Content="Add" HorizontalAlignment="Left" Margin="245,550,0,0" VerticalAlignment="Top" Width="75"
+        <Button Content="Add" HorizontalAlignment="Left" Margin="245,485,0,0" VerticalAlignment="Top" Width="75"
         	Command="{Binding AddSubjectResultCommand}"/>
 
         <TextBlock  HorizontalAlignment="Left" Margin="350,80,0,0" Style="{DynamicResource Title0}" Text="Preview" VerticalAlignment="Top" />

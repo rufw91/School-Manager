@@ -39,8 +39,8 @@
     <DataTemplate DataType="{x:Type viewModels:SettingsVM}" >
         <views:Settings/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:BoardingVM}" >
-        <views:Boarding/>
+    <DataTemplate DataType="{x:Type viewModels:ReportsVM}" >
+        <views:Reports/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:PayrollVM}" >
         <views:Payroll/>
@@ -49,6 +49,24 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
+    <DataTemplate DataType="{x:Type viewModels:CombinedClassListVM}" >
+        <views:CombinedClassList/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ClassReportFormsVM}" >
+        <views:ClassReportForms/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:LeavingCertificateVM}" >
+        <views:LeavingCertificate/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:StudentClearanceVM}" >
+        <views:StudentClearance/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:StudentTransferVM}" >
+        <views:StudentTransfer/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:AssignNewClassVM}" >
+        <views:AssignNewClass/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:PriceListsVM}" >
         <views:PriceLists/>
     </DataTemplate>
@@ -121,6 +139,15 @@
     </DataTemplate>
 
 
+    <DataTemplate DataType="{x:Type viewModels:LocalTutorialsVM}" >
+        <views:LocalTutorials/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ReportsHomeVM}" >
+        <views:ReportsHome/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:OnlineResourcesVM}" >
+        <views:OnlineResources/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:StudentDetailsVM}" >
         <views:StudentDetails/>
     </DataTemplate>

@@ -18,7 +18,7 @@ namespace Helper.Models
         private string address = "";
         private string city = "";
         private string postalCode = "";
-        private byte[] sPhoto=null;
+        private byte[] sPhoto=new byte[0];
 
         public StaffModel() { }
 
@@ -173,7 +173,7 @@ namespace Helper.Models
             Address = "";
             City = "";
             PostalCode = "";
-            SPhoto = null;
+            SPhoto = new byte[0];
         }
 
         

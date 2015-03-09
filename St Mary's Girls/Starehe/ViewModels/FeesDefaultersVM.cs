@@ -1,11 +1,13 @@
 ﻿using Helper;
 using Helper.Models;
 using System.Collections.ObjectModel;
+using System.Security.Permissions;
 using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class FeesDefaultersVM : ViewModelBase
     {
         ClassModel selectedClass;

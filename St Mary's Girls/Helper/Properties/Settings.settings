@@ -2,6 +2,12 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Helper.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
+    <Setting Name="Institution" Type="Helper.Models.InstitutionModel" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Info" Type="Helper.Models.ApplicationPersistModel" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="DBBackupDirectoryPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -40,12 +46,6 @@
     </Setting>
     <Setting Name="DoFullStartupCheck" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="Institution" Type="Helper.Models.InstitutionModel" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="Info" Type="Helper.Models.ApplicationModel" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

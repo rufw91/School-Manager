@@ -13,7 +13,8 @@
             <Grid.BindingGroup>
                 <BindingGroup ValidatesOnNotifyDataError="True"/>
             </Grid.BindingGroup>
-            <TextBox HorizontalAlignment="Left" Margin="120,65,0,0" Text="{Binding NewStudent.StudentID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+            <TextBox HorizontalAlignment="Left" Margin="120,65,0,0" Text="{Binding NewStudent.StudentID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,
+                Delay=10}"
                  VerticalAlignment="Top" Width="250" />
             <TextBox HorizontalAlignment="Left" Margin="120,110,0,0" Text="{Binding NewStudent.FirstName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                  VerticalAlignment="Top" Width="250" />
@@ -74,7 +75,7 @@
             <ComboBox DisplayMemberPath="NameOfDormitory"  HorizontalAlignment="Left" Margin="525,227,0,0"
         	ItemsSource="{Binding AllDorms}"
         	SelectedValuePath="DormitoryID" 
-        	SelectedValue="{Binding NewStudent.DormitoryID, Mode=TwoWay}"
+        	SelectedValue="{Binding NewStudent.DormitoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
         	VerticalAlignment="Top" Width="200" />
             <TextBlock HorizontalAlignment="Left" Margin="730,237,0,0" 
         	VerticalAlignment="Top" ><Hyperlink Command="{Binding ClearDormCommand}"><Run Text="Clear"/></Hyperlink></TextBlock>
@@ -93,6 +94,7 @@
             <TextBlock HorizontalAlignment="Right" Margin="0,20,20,0" VerticalAlignment="Top">
                 <Hyperlink Command="{Binding ImportFromExcelCommand}">Import From Excel</Hyperlink>
             </TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="200,20,0,0" Text="All fields outside 'Optional' category are mandatory" VerticalAlignment="Top" Foreground="{DynamicResource Accent}"/>
         </Grid>
     </Grid>
 </UserControl>

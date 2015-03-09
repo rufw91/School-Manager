@@ -6,12 +6,14 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class PAYEInfoVM: ViewModelBase
     {
         string currentFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);

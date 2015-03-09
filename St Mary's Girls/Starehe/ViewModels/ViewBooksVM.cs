@@ -1,11 +1,14 @@
 ﻿using Helper;
 using Helper.Models;
 using System.Collections.ObjectModel;
+using System.Security.Permissions;
 using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "User")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ViewBooksVM: ViewModelBase
     {
         CollectionViewSource collViewSource;

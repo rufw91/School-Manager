@@ -18,6 +18,13 @@ namespace Helper.Security
             return result;
         }
 
+        public static string GetSha1Hash(string data)
+        {
+            SHA1 sha = new SHA1Managed();
+            byte[] result = sha.ComputeHash(Encoding.UTF8.GetBytes(data)); ;
+            return Convert.ToBase64String(result);
+        }
+
         public static bool CompareHash(byte[] object1, byte[] object2)
         {
             byte[] a1 = GetHash(object1);

@@ -13,6 +13,8 @@ namespace Starehe.ViewModels
             TryAddChild(typeof(InstitutionInfoVM));
             TryAddChild(typeof(ClassSubjectSetupVM));
             TryAddChild(typeof(InstitutionSetupVM));
+            TryAddChild(typeof(NewDormitoryVM));
+            TryAddChild(typeof(DormitoryMembersVM));
         }
     }
 }

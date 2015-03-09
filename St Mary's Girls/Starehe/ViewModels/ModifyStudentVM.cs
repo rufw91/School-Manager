@@ -44,17 +44,17 @@ namespace Starehe.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                MessageBox.Show(newStudent.DormitoryID + "");
+
                 bool succ = await DataAccess.UpdateStudentAsync(newStudent);
                 if (succ)
                 {
-                    MessageBox.Show("Succesfully updated employee.", "", MessageBoxButton.OK,
+                    MessageBox.Show("Succesfully updated details.", "", MessageBoxButton.OK,
                         MessageBoxImage.Information);
                     Reset();
                 }
                 else
                 {
-                    MessageBox.Show("An error occured. Could not save details at this Time.\r\n Error: Database Access Failure.", "", MessageBoxButton.OK,
+                    MessageBox.Show("An error occured. Could not save details at this Time.", "", MessageBoxButton.OK,
                         MessageBoxImage.Information);
                 }
                 Reset();

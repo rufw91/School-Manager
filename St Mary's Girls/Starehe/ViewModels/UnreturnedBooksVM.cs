@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +13,8 @@ using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class UnreturnedBooksVM: ViewModelBase
     {
         StudentSelectModel selectedStudent;

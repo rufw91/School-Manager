@@ -27,7 +27,7 @@ namespace Helper.Models
             DateAdded = item.DateAdded;
             ItemCategoryID = item.ItemCategoryID;
             Price = item.Price;
-            Cost = item.Cost;
+            Cost = 1;
             StartQuantity = item.StartQuantity;
             VatID = item.VatID;
         }

@@ -5,7 +5,7 @@
         Title="First Run" Height="600" Width="800" ResizeMode="NoResize" ShowInTaskbar="True" WindowStartupLocation="CenterScreen" >
     <Grid>
         <Border Background="{DynamicResource Accent}" Height="120"  VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,30,0,0" 
+        <TextBlock HorizontalAlignment="Left" Margin="20,30,0,0" 
                    Text="Welcome" VerticalAlignment="Top"
                    Style="{DynamicResource LargeTitle}" Foreground="White" FontSize="48"/>
         <ContentControl Content="{Binding Source}" Margin="0,120,0,0"/>

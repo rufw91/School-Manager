@@ -15,6 +15,7 @@ namespace Helper.Models
         private int points;
         private string meanGrade;
         private ObservableCollection<StudentTranscriptSubjectModel> entries;
+        private string nameOfExam;
         public StudentExamResultModel()
         {
             NameOfClass = "";
@@ -23,6 +24,7 @@ namespace Helper.Models
             TotalMarks = 0;
             Points = 0;
             MeanGrade = "";
+            NameOfExam = "";
             Entries = new ObservableCollection<StudentTranscriptSubjectModel>();
         }
 
@@ -106,6 +108,20 @@ namespace Helper.Models
                 {
                     this.meanGrade = value;
                     NotifyPropertyChanged("MeanGrade");
+                }
+            }
+        }
+
+        public string NameOfExam
+        {
+            get { return this.nameOfExam; }
+
+            set
+            {
+                if (value != this.nameOfExam)
+                {
+                    this.nameOfExam = value;
+                    NotifyPropertyChanged("NameOfExam");
                 }
             }
         }

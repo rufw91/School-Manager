@@ -17,27 +17,29 @@ namespace Helper.Converters
                 if (value != null)
                 {                    
                     byte[] newB = (byte[])value;
-                    BitmapImage gy = new BitmapImage();
-                    using (MemoryStream mem = new MemoryStream(newB))
+                    if (newB.Length > 0)
                     {
-                        mem.Seek(0, System.IO.SeekOrigin.Begin);                        
-                        gy.BeginInit();
-                        gy.CacheOption = BitmapCacheOption.OnLoad;
-                        if (parameter != null)
+                        BitmapImage gy = new BitmapImage();
+                        using (MemoryStream mem = new MemoryStream(newB))
                         {
-                            int width;
-                            if (int.TryParse(parameter.ToString(), out width))
-                                gy.DecodePixelWidth = width;
+                            mem.Seek(0, System.IO.SeekOrigin.Begin);
+                            gy.BeginInit();
+                            gy.CacheOption = BitmapCacheOption.OnLoad;
+                            if (parameter != null)
+                            {
+                                int width;
+                                if (int.TryParse(parameter.ToString(), out width))
+                                    gy.DecodePixelWidth = width;
+                            }
+                            gy.StreamSource = mem;
+                            gy.EndInit();
                         }
-                        gy.StreamSource = mem;
-                        gy.EndInit();
+                        return gy;
                     }
-                    return gy;
                 }
-                else
-                    return DependencyProperty.UnsetValue;
             }
-            catch { return DependencyProperty.UnsetValue; }
+            catch {  }
+            return DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

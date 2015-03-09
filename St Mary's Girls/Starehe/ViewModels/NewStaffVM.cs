@@ -59,7 +59,7 @@ namespace Starehe.ViewModels
 
                 bool succ = await DataAccess.SaveNewStaffAsync(newStaff);
                 if (canSaveUser)
-                    succ = succ && await UsersHelper.CreateNewUserAsync(c, Role);
+                    succ = succ && await UsersHelper.CreateNewUserAsync(c, Role, newStaff.Name,newStaff.SPhoto);
                 if (succ)
                 {
                     MessageBox.Show("Succesfully saved staff member.", "Success", MessageBoxButton.OK,

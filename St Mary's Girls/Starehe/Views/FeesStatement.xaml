@@ -14,6 +14,9 @@
         <TextBox HorizontalAlignment="Left" Height="23" Margin="114,126,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding Statement.StudentID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, 
             ValidatesOnDataErrors=True, Delay=100}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="70,170,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="114,170,0,0" VerticalAlignment="Top" Width="200"
+                 Text="{Binding Statement.NameOfStudent}" IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"/>
         <TextBlock HorizontalAlignment="Left" Margin="53,126,0,0" TextWrapping="Wrap" Text="Student ID" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="40,217,0,0" TextWrapping="Wrap" Style="{DynamicResource Title0}" Text="Period" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="56,262,0,0" TextWrapping="Wrap" Text="Start Date" VerticalAlignment="Top"/>
@@ -28,7 +31,9 @@
         <DocumentViewer Margin="350,109,10,50" Document="{Binding Document}" Name="viewer"/>
         <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding GenerateStatementCommand}"/>
-
+        <TextBlock HorizontalAlignment="Right" Margin="0,90,10,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FullPreviewCommand}" CommandParameter="{Binding Document, ElementName=viewer}">Full Preview</Hyperlink>
+        </TextBlock>
 
     </Grid>
 </UserControl>

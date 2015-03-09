@@ -8,6 +8,8 @@ using System.Windows.Input;
 using Starehe.Views;
 using Starehe.ViewModels;
 using Starehe.Views.FirstRun;
+using System.Threading;
+using System.Security.Principal;
 
 namespace Starehe
 {
@@ -58,12 +60,7 @@ namespace Starehe
             }
         }
 
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            SqlConnection sc = new SqlConnection("Data Source=Bursar-PC\\Starehe; Integrated Security=false; Persist Security Info=True; User ID=sa; Password=000002");
-        }
-
+        
         private async void Login_Click(object sender, RoutedEventArgs e)
         {
             mnGrid.IsEnabled = false;
@@ -90,6 +87,7 @@ namespace Starehe
                     }
                     else
                     {*/
+                        App.Info.CurrentUser = UsersHelper.CurrentUser;
                         MainWindow main = new MainWindow();
                         Application.Current.MainWindow = main;
                         main.Show();
@@ -115,6 +113,7 @@ namespace Starehe
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
+            
             CustomWindow w = new CustomWindow();
             w.ResizeMode= System.Windows.ResizeMode.NoResize;
             w.WindowStartupLocation= System.Windows.WindowStartupLocation.CenterScreen;
@@ -122,8 +121,13 @@ namespace Starehe
             w.MaxWidth = 600;
             w.MinHeight = 400;
             w.MinWidth = 600;
-            w.Content = new NetworkOptionsVM(false);
-            w.Show();
+            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("temp_sa"), new string[1] { "SystemAdmin" });
+            var i = new NetworkOptionsVM(false);
+            w.Content = i;
+            w.ShowDialog();
+            i = null;
+            w = null;
+            Thread.CurrentPrincipal = null;
         }
     }
 }

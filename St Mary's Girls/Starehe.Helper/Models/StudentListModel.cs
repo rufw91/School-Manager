@@ -17,6 +17,14 @@ namespace Helper.Models
         {
             NameOfClass = "";
             NameOfDormitory = "";
+            IsActive = true;
+            IsCleared = false;
+            IsTransferred = false;
+            PropertyChanged += (o, e) =>
+                {
+                    if ((e.PropertyName == "IsCleared" || e.PropertyName == "IsTransferred") && (isTransferred || isCleared))
+                        IsActive = false;
+                };
         }
 
         public string NameOfClass
@@ -109,7 +117,7 @@ namespace Helper.Models
             }
         }
 
-        public new void CopyFrom(StudentListModel newStudent)
+        public void CopyFrom(StudentListModel newStudent)
         {
             base.CopyFrom(newStudent);
             this.NameOfDormitory = newStudent.NameOfDormitory;
