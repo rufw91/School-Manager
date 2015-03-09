@@ -42,7 +42,7 @@
                  Text="{Binding NewStudent.City,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox HorizontalAlignment="Left" Margin="120,519,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding NewStudent.PostalCode,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <ComboBox HorizontalAlignment="Left" Margin="525,65,0,0" 
+                <ComboBox HorizontalAlignment="Left" Margin="525,65,0,0" IsEnabled="False"
         	DisplayMemberPath="NameOfClass" SelectedValuePath="ClassID" VerticalAlignment="Top" Width="200"
         	ItemsSource="{Binding AllClasses}"        	
         	SelectedValue="{Binding NewStudent.ClassID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 

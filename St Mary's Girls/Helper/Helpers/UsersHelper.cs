@@ -1,8 +1,10 @@
-﻿using Microsoft.SqlServer.Management.Common;
+﻿using Helper.Models;
+using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -13,7 +15,7 @@ namespace Helper
 {
     public static class UsersHelper
     {
-        public static Task<bool> CreateNewUserAsync(SqlCredential cred, UserRole role)
+        public static Task<bool> CreateNewUserAsync(SqlCredential cred, UserRole role, string name, byte[] photo)
         {
             return Task.Run<bool>(async () =>
             {
@@ -37,7 +39,7 @@ namespace Helper
                         List<UserRole> roles = GetChildRoles(role);
                         foreach (UserRole r in roles)
                             u.AddToRole(r.ToString());
-                        succ = await SaveUserInfo(cred, role);
+                        succ = await SaveUserInfo(cred, role, name, photo);
 
                         if ((role == UserRole.Principal) || (role == UserRole.SystemAdmin))
                         {
@@ -94,13 +96,13 @@ namespace Helper
             return temp;
         }
 
-        private static Task<bool> SaveUserInfo(SqlCredential cred, UserRole role)
+        private static Task<bool> SaveUserInfo(SqlCredential cred, UserRole role, string name, byte[] photo)
         {
             return Task.Run<bool>(() =>
             {
                 string insertStr = "BEGIN TRANSACTION\r\n" +
-                    " INSERT INTO [Users].[User] (UserID,EmployeeID) " +
-                   "VALUES('" + cred.UserId + "','" + cred.UserId + "')";
+                    " INSERT INTO [Users].[User] (UserID,Name,SPhoto) " +
+                   "VALUES('" + cred.UserId + "','" + name + "',@sPhoto)";
                 Array allRoles = Enum.GetValues(typeof(UserRole));
                 for (int i = 0; i < allRoles.Length; i++)
                 {
@@ -109,7 +111,8 @@ namespace Helper
                             "VALUES('" + cred.UserId + "'," + i + ")";
                 }
                 insertStr += "\r\nCOMMIT";
-                DataAccessHelper.ExecuteNonQuery(insertStr);
+                DataAccessHelper.ExecuteNonQueryWithParameters(insertStr, 
+                    new ObservableCollection<SqlParameter>() { new SqlParameter("@sPhoto", photo) });
                 return true;
             });
         }
@@ -175,17 +178,48 @@ namespace Helper
             });
         }
 
-        public static IIdentity CurrentUser
+        public static UserModel CurrentUser
         { get { return GetCurrUser(); } }
 
         public static int CurrentUserId
-        { get { int i; int.TryParse(CurrentUser.Name, out i); return i; } }
-
-        static IIdentity GetCurrUser()
         {
-            return Thread.CurrentPrincipal.Identity;
+            get
+            {
+                UserModel u = new UserModel();
+                IIdentity ii = Thread.CurrentPrincipal.Identity; int i; int.TryParse(ii.Name, out i); return i;
+            }
         }
 
+        static UserModel GetCurrUser()
+        {
+            UserModel u = new UserModel();
+            IIdentity ii = Thread.CurrentPrincipal.Identity;
+            int i; 
+            if (int.TryParse(ii.Name, out i))
+                u = GetCurrDbUser(i);
+            else
+            {
+                u.UserName = ii.Name;
+                u.Photo = null;
+                u.UserID = ii.Name;
+                u.Role = "SystemAdmin";
+            }
+            return u;
+        }
+        static UserModel GetCurrDbUser(int userID)
+        {
+            UserModel temp = new UserModel();
+            string selectStr = "SELECT UserID,Name,SPhoto FROM [Users].[User] WHERE UserID=" + userID;
+            DataTable dt=DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            if (dt.Rows.Count>0)
+            {
+                temp.UserID = dt.Rows[0][0].ToString();
+                temp.UserName = dt.Rows[0][1].ToString();
+                temp.Role = GetUserRole(userID).ToString();
+                temp.Photo = (byte[])dt.Rows[0][2]; ;
+            }
+            return temp;
+        }
         public static UserRole GetUserRole(int userID)
         {
             string selectStr = "SELECT UserRoleID FROM [Users].[UserDetail] WHERE UserID='" + userID + "'";

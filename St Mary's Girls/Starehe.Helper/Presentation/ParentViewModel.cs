@@ -10,6 +10,7 @@ namespace Helper
     public class ParentViewModel: ViewModelBase
     {
         ObservableCollection<ViewModelBase> menuItems;
+private  ViewModelBase activeView;
         public ParentViewModel()
         {
             menuItems = new ObservableCollection<ViewModelBase>();
@@ -17,6 +18,23 @@ namespace Helper
         }
         protected override void InitVars()
         {
+        }
+
+        public ViewModelBase ActiveView
+        {
+            get { return activeView; }
+            set
+            {
+                if (activeView != value)
+                {
+                    if (activeView!=null)
+                    activeView.IsActive = false;
+                    activeView = value;
+                    if (activeView != null)
+                    activeView.IsActive = true;
+                    NotifyPropertyChanged("ActiveView");
+                }
+            }
         }
 
         public ReadOnlyObservableCollection<ViewModelBase> MenuItems

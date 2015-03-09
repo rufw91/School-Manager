@@ -190,7 +190,7 @@ namespace Starehe.ViewModels
                     student.PostalCode = "X";
                     student.PrevBalance = decimal.Parse(dtr[balanceBFColumn].ToString());
                    
-                    await DataAccess.SaveNewStudentAsync(student,false);
+                    await DataAccess.SaveNewStudentAsync(student);
                 }
 
                 ProgressText = "Successfully saved Students.";

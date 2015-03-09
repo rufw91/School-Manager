@@ -41,12 +41,11 @@ namespace Starehe.ViewModels
 
             ResetCommand = new RelayCommand(o =>
             {
-                if (MessageBoxResult.Yes == MessageBox.Show("This action may leave your database inaccessible. Are you sure you would like to proceed?", "Info",
+                if (MessageBoxResult.Yes == MessageBox.Show("This action may leave your database inaccessible.. Are you sure you would like to proceed?", "Info",
                      MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
                     Helper.Properties.Settings.Default.DBName = "Starehe";
                     Helper.Properties.Settings.Default.Save();
-                    Application.Current.Shutdown();
                 }
             }, o => true);
         }

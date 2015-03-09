@@ -1,15 +1,12 @@
 ﻿using Helper;
 using Helper.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Permissions;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class PaymentVoucherHistoryVM: ViewModelBase
     {
         ObservableCollection<PaymentVoucherModel> allPaymentVouchers;

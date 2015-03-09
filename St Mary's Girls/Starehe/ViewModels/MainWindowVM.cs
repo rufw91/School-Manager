@@ -1,8 +1,12 @@
 ﻿using Helper;
+using Helper.Helpers;
 using Helper.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
@@ -42,12 +46,12 @@ namespace Starehe.ViewModels
             navigatingBack = false;
             backJournal = new ObservableCollection<ViewModelBase>();
             Source = new HomePageVM();
-            MessageBox.Show("This is a demo version of Starehe MS. Please contact your System Administrator for more information", "Info",
-                MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         protected override void CreateCommands()
         {
+            
+
             AboutCommand = new RelayCommand(o =>
             {
                 if (AboutAction != null)
@@ -123,7 +127,7 @@ namespace Starehe.ViewModels
 
             DisplayBoardingCommand = new RelayCommand(o =>
             {
-                this.Source = new BoardingVM();
+                this.Source = new ReportsVM();
             }, o => true);
 
             DisplayPayrollCommand = new RelayCommand(o =>
@@ -307,18 +311,18 @@ namespace Starehe.ViewModels
         }
         #endregion
 
+        
         public Action AboutAction
         {
             get;
             set;
         }
-
+        
         public ICommand AboutCommand
         {
             get;
             private set;
         }
-
         public ICommand DisplayStudentDetailCommand
         {
             get;

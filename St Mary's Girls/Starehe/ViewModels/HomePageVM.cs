@@ -10,6 +10,7 @@ namespace Starehe.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "None")]
     public class HomePageVM: ViewModelBase
     {
+        private Window window;
         public HomePageVM()
         {
             CreateCommands();
@@ -22,13 +23,18 @@ namespace Starehe.ViewModels
 
         protected override void CreateCommands()
         {
-            NavigatePageCommand = new RelayCommand(o =>
+            LogoutCommand = new RelayCommand(o =>
             {
-                
-            },o=>true);
+                if (MessageBoxResult.Yes== MessageBox.Show("Are you sure you would like to logout?","Info", 
+                    MessageBoxButton.YesNo, MessageBoxImage.Information))
+                {
+                    App.Restart();
+                }
+
+            }, o => true);
         }
 
-        public ICommand NavigatePageCommand
+        public ICommand LogoutCommand
         {
             get;
             private set;
@@ -37,6 +43,11 @@ namespace Starehe.ViewModels
         {
             
         }
-        
+
+
+        internal void SetWindow(Window window)
+        {
+            this.window = window;
+        }
     }
 }

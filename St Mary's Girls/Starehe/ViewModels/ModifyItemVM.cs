@@ -29,6 +29,11 @@ namespace Starehe.ViewModels
             AllItemCategories = await DataAccess.GetAllItemCategoriesAsync();
             AllVats = await DataAccess.GetAllVatsAsync();
             IsBusy = false;
+            NewItem.PropertyChanged += (o, e) =>
+                {
+                    if (e.PropertyName=="ItemID")
+                        item.CheckErrors();
+                };
         }
 
         protected override void CreateCommands()
@@ -52,8 +57,7 @@ namespace Starehe.ViewModels
         }
 
         private bool CanSave()
-        {
-            item.CheckErrors();
+        {            
             return !item.HasErrors && !string.IsNullOrWhiteSpace(item.Description)
                 && item.Cost > 0 && item.Price > 0 && item.ItemCategoryID > 0;
         }

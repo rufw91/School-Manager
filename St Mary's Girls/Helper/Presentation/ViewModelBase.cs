@@ -8,10 +8,12 @@ namespace Helper
     {
         string title;
         bool isBusy;
+        private bool isActive;
         public ViewModelBase()
         {
             Title = "";
             IsBusy = false;
+            isActive = false;
         }
         public void Dispose()
         {
@@ -49,7 +51,18 @@ namespace Helper
                 }
             }
         }
-
+        public bool IsActive
+        {
+            get { return isActive; }
+            set
+            {
+                if (value != this.isActive)
+                {
+                    this.isActive = value;
+                    NotifyPropertyChanged("IsActive");
+                }
+            }
+        }
     }
 
 }

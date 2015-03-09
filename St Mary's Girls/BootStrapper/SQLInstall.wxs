@@ -5,8 +5,8 @@
   <Fragment>
     
     <?define InstanceName = "STAREHE" ?>
-    <?define SqlWebLink32Bit = http://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPR_x86_ENU.exe ?>
-    <?define SqlWebLink64Bit = http://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPR_x64_ENU.exe ?>
+    <?define SqlWebLink32Bit = http://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPRADV_x86_ENU.exe ?>
+    <?define SqlWebLink64Bit = http://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPRADV_x64_ENU.exe ?>
 
     <Variable Name="SqlVariable" Type="string" Value="/SAPWD=000002" Hidden="yes" />
 
@@ -22,6 +22,18 @@
       Win64="yes" Condition="VersionNT64"
       Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL" Value="$(var.InstanceName)"
       Result="exists" Variable="SqlInstanceKeyFound" />
+    
+     <util:RegistrySearch
+      Id="SqlRSInstanceKeyFoundX86"
+      Win64="no" Condition="NOT VersionNT64"
+      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\RS" Value="$(var.InstanceName)"
+      Result="exists" Variable="SqlRSInstanceKeyFound" />
+
+    <util:RegistrySearch
+      Id="SqlRSInstanceKeyFoundX64"
+      Win64="yes" Condition="VersionNT64"
+      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\RS" Value="$(var.InstanceName)"
+      Result="exists" Variable="SqlRSInstanceKeyFound" />
 
     <util:RegistrySearch
       Id="SqlInstanceKeyX86"
@@ -34,18 +46,54 @@
       Win64="yes"
       Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL" Value="$(var.InstanceName)"
       Variable="SqlInstanceKey" After="SqlInstanceKeyFoundX64" Condition="SqlInstanceKeyFound AND VersionNT64" />
+    
+     <util:RegistrySearch
+      Id="SqlRSInstanceKeyX86"
+      Win64="no"
+      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\RS" Value="$(var.InstanceName)"
+      Variable="SqlRSInstanceKey" After="SqlRSInstanceKeyFoundX86" Condition="SqlRSInstanceKeyFound AND NOT VersionNT64" />
+
+    <util:RegistrySearch
+      Id="SqlRSInstanceKeyX64"
+      Win64="yes"
+      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\RS" Value="$(var.InstanceName)"
+      Variable="SqlRSInstanceKey" After="SqlRSInstanceKeyFoundX64" Condition="SqlRSInstanceKeyFound AND VersionNT64" />
+    
+    <util:RegistrySearch
+      Id="SqlInstanceRSKeyX86"
+      Win64="no"
+      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\RS" Value="$(var.InstanceName)"
+      Variable="SqlRSInstanceKey" After="SqlInstanceKeyX86" Condition="SqlRSInstanceKeyFound AND NOT VersionNT64" />
+
+    <util:RegistrySearch
+      Id="SqlInstanceRSKeyX64"
+      Win64="yes"
+      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\RS" Value="$(var.InstanceName)"
+      Variable="SqlRSInstanceKey" After="SqlInstanceKeyX64" Condition="SqlRSInstanceKeyFound AND VersionNT64" />
         
     <util:RegistrySearch
       Id="SqlInstanceFoundX86"
       Win64="no"
       Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\[SqlInstanceKey]"
-      Result="exists" Variable="SqlInstanceFound" After="SqlInstanceKeyX86" Condition="SqlInstanceKeyFound AND NOT VersionNT64" />
+      Result="exists" Variable="SqlInstanceFound" After="SqlInstanceRSKeyX86" Condition="SqlInstanceKeyFound AND NOT VersionNT64" />
 
     <util:RegistrySearch
       Id="SqlInstanceFoundX64"
        Win64="yes"
       Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\[SqlInstanceKey]"
-      Result="exists" Variable="SqlInstanceFound" After="SqlInstanceKeyX64" Condition="SqlInstanceKeyFound AND VersionNT64" />
+      Result="exists" Variable="SqlInstanceFound" After="SqlInstanceRSKeyX64" Condition="SqlInstanceKeyFound AND VersionNT64" />
+    
+    <util:RegistrySearch
+      Id="SqlRSInstanceFoundX86"
+      Win64="no"
+      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\[SqlInstanceKey]"
+      Result="exists" Variable="SqlRSInstanceFound" After="SqlRSInstanceKeyX86" Condition="SqlRSInstanceKeyFound AND NOT VersionNT64" />
+
+    <util:RegistrySearch
+      Id="SqlRSInstanceFoundX64"
+       Win64="yes"
+      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\[SqlInstanceKey]"
+      Result="exists" Variable="SqlRSInstanceFound" After="SqlRSInstanceKeyX64" Condition="SqlRSInstanceKeyFound AND VersionNT64" />
     
     <util:RegistrySearch
       Id="SqlVersionX86"
@@ -68,21 +116,23 @@
         PerMachine="yes"
         Permanent="yes"
         Vital="yes"
-        Name="Redist\SQLEXPR_x86_ENU.exe"
+        Name="Redist\SQLEXPRADV_x86_ENU.exe"
         DownloadUrl="$(var.SqlWebLink32Bit)"
-        InstallCommand="/ACTION=Install /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL /SECURITYMODE=SQL [SqlVariable] /TCPENABLED=1 /SQLSVCACCOUNT=&quot;NT AUTHORITY\NETWORK SERVICE&quot; /SQLSYSADMINACCOUNTS=BUILTIN\Administrators /ADDCURRENTUSERASSQLADMIN=FALSE /QS /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
-        UninstallCommand="/Action=Uninstall /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL /QS /HIDECONSOLE"
+        InstallCommand="/ACTION=Install /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL,RS,Tools /SECURITYMODE=SQL [SqlVariable] /TCPENABLED=1 /RSSVCACCOUNT=&quot;NT AUTHORITY\NETWORK SERVICE&quot; /SQLSVCACCOUNT=&quot;NT AUTHORITY\NETWORK SERVICE&quot; /SQLSYSADMINACCOUNTS=BUILTIN\Administrators /ADDCURRENTUSERASSQLADMIN=TRUE /QS /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
+        UninstallCommand="/Action=Uninstall /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL,RS /QS /HIDECONSOLE"
         RepairCommand="/ACTION=Repair /QS /FEATURES=SQLEngine /INSTANCENAME=$(var.InstanceName)"
-        DetectCondition="SqlInstanceFound"
+        DetectCondition="SqlInstanceFound AND SqlRSInstanceFound"
         InstallCondition="NOT VersionNT64">
         <ExitCode Value ="3010" Behavior="forceReboot" />
-        <RemotePayload
-          Description="SQL Server 2008 R2 Express SP2"
-          Hash="6CE34F57A13E0DED95CAF4405FAD133E859ADE30"
-          ProductName="SQL Server 2008 R2 Express SP2"
-          Size="115763632"
-          Version="10.50.4000.0" />
+        
+      <RemotePayload 
+      Description="SQL Server 2008 R2 Express Advanced SP2" 
+      Hash="BD4FC2E4994C4C235910EB1BB36998FD3DEC94DA" 
+      ProductName="SQL Server 2008 R2 Express Advanced SP2"
+      Size="937497032" Version="10.50.4000.0" />
       </ExePackage>
+      
+      
 
       <ExePackage Id="Sql2008ExpressX64"
         DisplayName="SQL Server 2008 R2 SP2 Express"
@@ -93,18 +143,17 @@
         Vital="yes"
         Name="Redist\SQLEXPR_x64_ENU.exe"
         DownloadUrl="$(var.SqlWebLink64Bit)"
-        InstallCommand="/ACTION=Install /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL /SECURITYMODE=SQL [SqlVariable] /TCPENABLED=1 /SQLSVCACCOUNT=&quot;NT AUTHORITY\NETWORK SERVICE&quot; /SQLSYSADMINACCOUNTS=BUILTIN\Administrators /ADDCURRENTUSERASSQLADMIN=FALSE /QS /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
-        UninstallCommand="/Action=Uninstall /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL /QS /HIDECONSOLE"
+        InstallCommand="/ACTION=Install /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL,RS,Tools /SECURITYMODE=SQL [SqlVariable] /TCPENABLED=1 /RSSVCACCOUNT=&quot;NT AUTHORITY\NETWORK SERVICE&quot; /SQLSVCACCOUNT=&quot;NT AUTHORITY\NETWORK SERVICE&quot; /SQLSYSADMINACCOUNTS=BUILTIN\Administrators /ADDCURRENTUSERASSQLADMIN=TRUE /QS /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
+        UninstallCommand="/Action=Uninstall /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL,RS /QS /HIDECONSOLE"
         RepairCommand="/ACTION=Repair /QS /FEATURES=SQLEngine /INSTANCENAME=$(var.InstanceName)"
-        DetectCondition="SqlInstanceFound"
+        DetectCondition="SqlInstanceFound AND SqlRSInstanceFound"
         InstallCondition="VersionNT64">
         <ExitCode Value ="3010" Behavior="forceReboot" />
-        <RemotePayload
-          Description="SQL Server 2008 R2 Express SP2"
-          Hash="E768A3B70E3F3B596EFFA9F57D812F95C0A0506B"
-          ProductName="SQL Server 2008 R2 Express SP2"
-          Size="128331696"
-          Version="10.50.4000.0" />
+      
+      <RemotePayload  
+      Description="SQL Server 2008 R2 Express Advanced SP2" 
+      Hash="70CFB80A66F507A6229030B14ACFCFEEB38701EB" 
+      ProductName="SQL Server 2008 R2 Express Advanced SP2" Size="1057589704" Version="10.50.4000.0" />
       </ExePackage>
 
       <!--
@@ -119,16 +168,15 @@
         Vital="yes"
         Name="Redist\SQLEXPR_x86_ENU.exe"
         DownloadUrl="$(var.SqlWebLink32Bit)"
-        InstallCommand="/ACTION=Upgrade /INSTANCENAME=$(var.InstanceName) /Q /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
+        InstallCommand="/ACTION=Upgrade /INSTANCENAME=$(var.InstanceName) /QS /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
         DetectCondition="NOT (SqlInstanceFound AND (SqlVersion &lt; v10.50.4000.0))"
         InstallCondition="NOT VersionNT64">
         <ExitCode Value ="3010" Behavior="forceReboot" />
-        <RemotePayload
-          Description="SQL Server 2008 R2 Express SP2"
-          Hash="6CE34F57A13E0DED95CAF4405FAD133E859ADE30"
-          ProductName="SQL Server 2008 R2 Express SP2"
-          Size="115763632"
-          Version="10.50.4000.0" />
+        <RemotePayload 
+      Description="SQL Server 2008 R2 Express Advanced SP2" 
+      Hash="BD4FC2E4994C4C235910EB1BB36998FD3DEC94DA" 
+      ProductName="SQL Server 2008 R2 Express Advanced SP2"
+      Size="937497032" Version="10.50.4000.0" />
       </ExePackage>
 
       <ExePackage Id="Sql2008ExpressUpgradeX64"
@@ -140,16 +188,14 @@
         Vital="yes"
         Name="Redist\SQLEXPR_x86_ENU.exe"
         DownloadUrl="$(var.SqlWebLink64Bit)"
-        InstallCommand="/ACTION=Upgrade /INSTANCENAME=$(var.InstanceName) /Q /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
+        InstallCommand="/ACTION=Upgrade /INSTANCENAME=$(var.InstanceName) /QS /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
         DetectCondition="NOT (SqlInstanceFound AND (SqlVersion &lt; v10.50.4000.0))"
         InstallCondition="VersionNT64">
         <ExitCode Value ="3010" Behavior="forceReboot" />
-        <RemotePayload
-          Description="SQL Server 2008 R2 Express SP2"
-          Hash="E768A3B70E3F3B596EFFA9F57D812F95C0A0506B"
-          ProductName="SQL Server 2008 R2 Express SP2"
-          Size="128331696"
-          Version="10.50.4000.0" />
+         <RemotePayload  
+      Description="SQL Server 2008 R2 Express Advanced SP2" 
+      Hash="70CFB80A66F507A6229030B14ACFCFEEB38701EB" 
+      ProductName="SQL Server 2008 R2 Express Advanced SP2" Size="1057589704" Version="10.50.4000.0" />
       </ExePackage>
 
     </PackageGroup>

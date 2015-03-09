@@ -7,18 +7,18 @@
 
   <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
   <?define Win64 = "yes"?>
-  <?define ProductName = "Umanyi (64 bit)" ?>
+  <?define ProductName = "Starehe (64 bit)" ?>
   <?define ProductCode= "5BD9AAFA-34ED-463C-9C14-EB793AF9D45D" ?>
 
   <?else ?>
 
   <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
   <?define Win64 = "no"?>
-  <?define ProductName = "Umanyi" ?>
+  <?define ProductName = "Starehe" ?>
   <?define ProductCode = "b4eb6124-f631-4d04-926f-ea97dfbd6bc2" ?>
   <?endif ?>
   
-<Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.5.0.0" Manufacturer="Almond Tech" 
+  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.5.2.2015" Manufacturer="Monsoon Digital" 
            UpgradeCode="$(var.ProductCode)">
     
 		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
@@ -102,6 +102,16 @@
       <Component Id="cmp6" Guid="{8DEBFFC5-D9F8-46E5-8291-C43A62D7C314}">
         <File Source="$(var.Starehe.TargetDir)System.Collections.Immutable.dll" />
       </Component>
+       <Component Id="cmp11" Guid="{8DEBFFC5-D9F8-44E5-8290-C43A62D7C314}">
+        <File Source="$(var.Starehe.TargetDir)Interop.AcroPDFLib.dll" />
+      </Component>
+        <Component Id="cmp12" Guid="{8DEBFFC5-D9F8-46C5-8292-C43A62D7C314}">
+        <File Source="$(var.Starehe.TargetDir)AxInterop.AcroPDFLib.dll" />
+      </Component>
+      <Component Id="cmp18" Guid="{8DEBFFD5-D9F8-46B5-8291-C43A62D7C315}">
+        <File Source="$(var.Starehe.TargetDir)OpenXmlPackaging.dll" />
+      </Component>
+      
     <Component Id="cmp7" Guid="{8DEBFFC5-D9F8-46E5-8291-C43A62E7C314}">
         <File Source="$(var.Starehe.TargetDir)longhorn.pdf" />
       </Component>
@@ -111,23 +121,37 @@
       <Component Id="cmp9" Guid="{8DEBFFC5-D9F8-46F5-8291-C43B62D7C314}">
         <File Source="$(var.Starehe.TargetDir)eaep.pdf" />
       </Component>
+      <Component Id="cmp178" Guid="{8BEBFFC5-D9F8-46F5-8791-C43B42D7C314}">
+        <File Source="$(var.Starehe.TargetDir)jkf.pdf" />
+      </Component>
       <Component Id="cmp10" Guid="{8DEBFFC5-D9F8-36E5-8291-C43A62D7C314}">
         <File Source="$(var.Starehe.TargetDir)PAYEGuide2009.pdf" />
       </Component>
-        <Component Id="cmp11" Guid="{8DEBFFC5-D9F8-44E5-8290-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)Interop.AcroPDFLib.dll" />
+       <Component Id="cmp15" Guid="{8CEBFFC5-D9F9-46C5-8292-C43A62D7C314}">
+        <File Source="$(var.Starehe.TargetDir)Tut1.pdf" />
       </Component>
-        <Component Id="cmp12" Guid="{8DEBFFC5-D9F8-46C5-8292-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)AxInterop.AcroPDFLib.dll" />
+      <Component Id="cmp16" Guid="{ADEBFEC5-D9F8-46C5-8292-C43A62D7C314}">
+        <File Source="$(var.Starehe.TargetDir)Tut2.pdf" />
       </Component>
+    <Component Id="cmp17" Guid="{ADEBFEC5-D7F8-46C5-8292-C43A62D7C314}">
+        <File Source="$(var.Starehe.TargetDir)Tut3.pdf" />
+      </Component>
+      <Component Id="cmp13" Guid="{8DEBFFC5-D9F9-46C5-8292-C43A62D7C314}">
+        <File Source="$(var.Starehe.TargetDir)Video1.mp4" />
+      </Component>
+      <Component Id="cmp14" Guid="{8DEBFEB5-D9F8-46C5-8292-C43A62D7C314}">
+        <File Source="$(var.Starehe.TargetDir)Video2.mp4" />
+      </Component>
+    
+    
 		</ComponentGroup>
 	</Fragment>
 
   <Fragment>
     <ComponentGroup Id="ShortcutComponents" Directory="DesktopFolder">
-      <Component Id="cmp13" Guid="33741C82-30BF-41EF-8246-44A5DCFCF953">
-        <Shortcut Id="desktopShortcut" Name="Shishi"
-        Description="Shishi Management System"
+      <Component Id="cmp19" Guid="33741C82-30BF-41EF-8246-44A5DCFCF953">
+        <Shortcut Id="desktopShortcut" Name="Starehe"
+        Description="Starehe Management System"
         Target="[INSTALLFOLDER]Starehe.exe" />
         <RegistryValue Root="HKCU"
         Key="Software\Almond Tech"

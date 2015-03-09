@@ -42,7 +42,7 @@ namespace Helper
             return false;
         }
 
-        protected void SetErrors(string propertyName, List<string> propertyErrors)
+        public void SetErrors(string propertyName, List<string> propertyErrors)
         {
             errors.Remove(propertyName);
             errors.Add(propertyName, propertyErrors);

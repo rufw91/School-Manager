@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:Controls="clr-namespace:Helper.Controls;assembly=Helper"
+             xmlns:commands="clr-namespace:Starehe.Presentation" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"       
       mc:Ignorable="d" Background="White"
              xmlns:views ="clr-namespace:Starehe.Views"
@@ -26,15 +27,31 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Student List" VerticalAlignment="Top"/>
         <TextBox Style="{StaticResource SearchTextBox}" Grid.Row="0"  Name="txtTitle" HorizontalAlignment="Left" Height="23" Margin="230,26,0,0" 
-                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=10, Mode=OneWayToSource}" VerticalAlignment="Top" Width="454"/>
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=10, Mode=OneWayToSource}" VerticalAlignment="Top" Width="400"/>
+        <CheckBox Content="Show Cleared" HorizontalAlignment="Left" Margin="200,75,0,0" VerticalAlignment="Top"
+                  IsChecked="{Binding ShowCleared}"/>
+        <CheckBox Content="Show Transferred" HorizontalAlignment="Left" Margin="350,75,0,0" VerticalAlignment="Top"
+                  IsChecked="{Binding ShowTransferred}"/>
         <TextBlock Grid.Row="0"  HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" >
                 <Hyperlink Command="{Binding RefreshCommand}">Refresh</Hyperlink>
         </TextBlock>
+        <Controls:DropDownButton Content="Export" HorizontalAlignment="Left" Margin="20,75,0,0" VerticalAlignment="Top" DataContext="{Binding ElementName=lbx}">
+            <Controls:DropDownButton.DropDownContent>
+                <Menu>
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
+                    <MenuItem Header="Export to PDF" Command="{Binding Source={x:Static commands:CommonCommands.ExportToPDFCommand}}" CommandParameter="{Binding}"/>
+                    <MenuItem Header="Export to Excel" Command="{Binding Source={x:Static commands:CommonCommands.ExportToExcelCommand}}" CommandParameter="{Binding}"/>
+                </Menu>
+            </Controls:DropDownButton.DropDownContent>
+        </Controls:DropDownButton>
         <DataGrid Name="lbx" AutoGenerateColumns="False" VirtualizingStackPanel.IsVirtualizing="True" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 Margin="20,0,20,20" 
-                  IsReadOnly="True"
-                 ItemsSource="{Binding CollViewSource.View, IsAsync=True}"
-                  Tag="{Binding}">
+                 Margin="20,0,20,20"  IsReadOnly="True"
+                 ItemsSource="{Binding CollViewSource.View, IsAsync=True}" Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+                  >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Adm No." Binding="{Binding StudentID}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding NameOfStudent}" Width="200" IsReadOnly="True"/>
@@ -54,36 +71,25 @@
             <DataGrid.Resources>
                 <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                     <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                    <Setter Property="Tag" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}" Tag="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                <MenuItem Header="View Details" Command="{Binding DisplayStudentDetailCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                <MenuItem Header="Modify Details" IsEnabled="False"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsTransferred}" Value="True">
+                            <Setter Property="Background" Value="Aqua"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsCleared}" Value="True">
+                            <Setter Property="Background" Value="OrangeRed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.Resources>
-            <DataGrid.ContextMenu>
-                <ContextMenu IsEnabled="False" Visibility="Collapsed">
-                    <MenuItem Header="Set New Class" 
-                              CommandParameter="{Binding}"
-                              Command="{Binding PlacementTarget.Tag.SetNewClassCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                    <MenuItem Header="Set Cleared"
-                              Command="{Binding PlacementTarget.Tag.SetClearedCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                    <MenuItem Header="Set Transferred"
-                              Command="{Binding PlacementTarget.Tag.SetTransferredCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                    <Separator/>
-                    <MenuItem Header="Show Active Only"
-                              Command="{Binding PlacementTarget.Tag.ShowActiveOnlyCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                    <MenuItem Header="Show Transferred Only"
-                              Command="{Binding PlacementTarget.Tag.ShowTransferredOnlyCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                    <MenuItem Header="Show Cleared Only"
-                              Command="{Binding PlacementTarget.Tag.ShowClearedCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                    <MenuItem Header="Show All"
-                              Command="{Binding PlacementTarget.Tag.ShowAllCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                    <Separator/>
-                    <MenuItem Header="Include Transferred"
-                              Command="{Binding PlacementTarget.Tag.IncludeTransferredCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                    <MenuItem Header="Include Cleared"
-                              Command="{Binding PlacementTarget.Tag.IncludeClearedCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                    <Separator/>
-                    <MenuItem Header="Export to Excel"
-                              Command="{Binding PlacementTarget.Tag.ExportToExcelCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
         </DataGrid>
         <TextBlock HorizontalAlignment="Right" Margin="0,35,80,0" Text="Active" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,55,80,0" Text="Transferred" VerticalAlignment="Top"/>
@@ -92,5 +98,6 @@
         <Border HorizontalAlignment="Right" Margin="0,35,20,0" BorderThickness="1" Background="White" BorderBrush="Silver" Width="50" Height="15" VerticalAlignment="Top"/>
         <Border HorizontalAlignment="Right" Margin="0,55,20,0" BorderThickness="1" Background="Aqua" BorderBrush="Silver" Width="50" Height="15" VerticalAlignment="Top"/>
         <Border HorizontalAlignment="Right" Margin="0,75,20,0" BorderThickness="1" Background="OrangeRed" BorderBrush="Silver" Width="50" Height="15" VerticalAlignment="Top"/>
+        
     </Grid>
 </UserControl>

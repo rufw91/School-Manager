@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="clr-namespace:Helper.Controls;assembly=Helper" 
+            xmlns:commands="clr-namespace:Starehe.Presentation" 
             d:DesignHeight="722" d:DesignWidth="1024"
              mc:Ignorable="d"
 	 Background="White">
@@ -58,7 +60,19 @@
 
                 </DataGrid.Columns>
             </DataGrid>
-
+            <Controls:DropDownButton Content="Export" HorizontalAlignment="Right" Margin="0,120,10,0" VerticalAlignment="Top" DataContext="{Binding ElementName=dataGrid1}">
+                <Controls:DropDownButton.DropDownContent>
+                    <Menu>
+                        <Menu.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" IsItemsHost="True"/>
+                            </ItemsPanelTemplate>
+                        </Menu.ItemsPanel>
+                        <MenuItem Header="Export to PDF" Command="{Binding Source={x:Static commands:CommonCommands.ExportToPDFCommand}}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Export to Excel" Command="{Binding Source={x:Static commands:CommonCommands.ExportToExcelCommand}}" CommandParameter="{Binding}"/>
+                    </Menu>
+                </Controls:DropDownButton.DropDownContent>
+            </Controls:DropDownButton>
             <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="90" 
                 Command="{Binding SaveCommand}"/>
             <TextBlock HorizontalAlignment="Left" Margin="339,65,0,0" Text="The actual start date of the stock taking" VerticalAlignment="Top"/>

@@ -40,11 +40,10 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>MonsoonDigital.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -57,6 +56,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\x86\Debug\</OutputPath>
+    <CodeAnalysisRuleSet>..\..\..\..\MyRuleSet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -90,7 +90,13 @@
     <Compile Include="Converters\ItemListToItemFindListConverter.cs" />
     <Compile Include="Credits.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Helpers\DocumentHelper.AggregateResult.cs" />
     <Compile Include="Helpers\DocumentHelper.cs" />
+    <Compile Include="Helpers\DocumentHelper.Receipt.cs" />
+    <Compile Include="Helpers\DocumentHelper.Statement.cs" />
+    <Compile Include="Helpers\DocumentHelper.Transcript.cs" />
+    <Compile Include="Helpers\DocumentHelper.Transcript2.cs" />
+    <Compile Include="Helpers\DocumentHelper.Voucher.cs" />
     <Compile Include="Helpers\StudentTranscriptSubjectModel.cs" />
     <Compile Include="Models\AggregateResultEntryModel.cs" />
     <Compile Include="Models\AggregateResultModel.cs" />
@@ -101,6 +107,9 @@
     <Compile Include="Models\ClassFeesDefaultModel.cs" />
     <Compile Include="Models\ClassStudentListModel.cs" />
     <Compile Include="Models\ClassTranscriptModel.cs" />
+    <Compile Include="Models\ClassTranscriptsModel.cs" />
+    <Compile Include="Models\CombinedClassModel.cs" />
+    <Compile Include="Models\FeePaymentReceipt2Model.cs" />
     <Compile Include="Models\FeesPaymentReceiptModel.cs" />
     <Compile Include="Models\ModifyBookModel.cs" />
     <Compile Include="Models\PaymentVoucherEntryModel.cs" />
@@ -163,11 +172,6 @@
     <Compile Include="ObservableImmutableDictionary.cs" />
     <Compile Include="ObservableImmutableList.cs" />
     <Compile Include="Presentation\ParentViewModel.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\DataAccess.cs" />
     <Compile Include="Models\ClassModel.cs" />
     <Compile Include="Models\DormModel.cs" />
@@ -177,12 +181,25 @@
     <Compile Include="Models\StudentModel.cs" />
     <Compile Include="Models\SubjectModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Converters\Converters.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Helpers\DocumentHelper.Receipt2.cs" />
+    <Compile Include="Helpers\DocumentHelper.LeavingCertificate.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassBalances.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassList.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassMarkList.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassTranscripts.cs" />
+    <Compile Include="Helpers\DocumentHelper.UnretunedBooks.cs" />
+    <None Include="MonsoonDigital.pfx" />
     <None Include="Resources\Receipt.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -206,43 +223,76 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Page Include="Resources\LeavingCert.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\LeavingCert.txt" />
+    <Page Include="Resources\Statement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Statement.txt" />
+    <Page Include="Resources\Transcript.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\logox.png" />
+    <Page Include="Resources\Balances.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Transcript.txt" />
+    <Page Include="Resources\ClassList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Balances.txt" />
+    <Page Include="Resources\Transcript2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ClassList.txt" />
+    <Page Include="Resources\PaymentVoucher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Transcript2.txt" />
+    <Page Include="Resources\ClassMarkList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\PaymentVoucher.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ClassMarkList.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AggregateResult.txt" />
+    <Page Include="Resources\AggregateResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\noImage.png" />
+    <Page Include="Resources\UnreturnedBooks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Receipt2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

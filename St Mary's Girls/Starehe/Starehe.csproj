@@ -16,7 +16,6 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,17 +25,11 @@
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>false</MapFileExtensions>
-    <SupportUrl>http://starehe.codeplex.com</SupportUrl>
-    <ProductName>Starehe</ProductName>
-    <PublisherName>Almond Tech</PublisherName>
-    <SuiteName>Starehe</SuiteName>
-    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>6.5.0.%2a</ApplicationVersion>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <CreateDesktopShortcut>true</CreateDesktopShortcut>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -80,7 +73,7 @@
     <ManifestKeyFile>Starehe_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -95,8 +88,7 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>MonsoonDigital.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -115,6 +107,9 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\Samples &amp; Libraries\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack">
       <HintPath>..\..\..\..\Samples &amp; Libraries\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
@@ -143,28 +138,37 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Enums.cs" />
-    <Compile Include="PDFViewerHost.cs" />
+    </Page>
+    <Compile Include="Presentation\CommonCommands.cs" />
+    <Compile Include="Presentation\Enums.cs" />
+    <Compile Include="Presentation\PDFViewerHost.cs" />
     <Compile Include="Updates\UpdatesWindow.xaml.cs">
       <DependentUpon>UpdatesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AssignNewClassVM.cs" />
     <Compile Include="ViewModels\BillStudentVM.cs" />
     <Compile Include="ViewModels\AggregateResultsVM.cs" />
+    <Compile Include="ViewModels\ClassReportFormsVM.cs" />
+    <Compile Include="ViewModels\CombinedClassListVM.cs" />
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
+    <Compile Include="ViewModels\LeavingCertificateVM.cs" />
+    <Compile Include="ViewModels\LocalTutorialsVM.cs" />
     <Compile Include="ViewModels\NetworkOptionsVM.cs" />
     <Compile Include="ViewModels\NewPaymentVoucherVM.cs" />
+    <Compile Include="ViewModels\OnlineResourcesVM.cs" />
     <Compile Include="ViewModels\PAYEInfoVM.cs" />
     <Compile Include="ViewModels\PaymentVoucherHistoryVM.cs" />
     <Compile Include="ViewModels\PDFViewVM.cs" />
     <Compile Include="ViewModels\PriceListsVM.cs" />
     <Compile Include="ViewModels\RemovePayment.cs" />
+    <Compile Include="ViewModels\ReportsHomeVM.cs" />
+    <Compile Include="ViewModels\StudentClearanceVM.cs" />
     <Compile Include="ViewModels\StudentTranscriptVM.cs" />
     <Compile Include="ViewModels\AllBooksVM.cs" />
-    <Compile Include="ViewModels\BoardingVM.cs" />
+    <Compile Include="ViewModels\ReportsVM.cs" />
     <Compile Include="ViewModels\BookReturnVM.cs" />
     <Compile Include="ViewModels\ChangeDbVM.cs" />
     <Compile Include="ViewModels\ClassListVM.cs" />
@@ -229,6 +233,7 @@
     <Compile Include="ViewModels\StockTakingsVM.cs" />
     <Compile Include="ViewModels\StockTakingVM.cs" />
     <Compile Include="ViewModels\StudentDetailsVM.cs" />
+    <Compile Include="ViewModels\StudentTransferVM.cs" />
     <Compile Include="ViewModels\SupplierListVM.cs" />
     <Compile Include="ViewModels\SupplierReportsVM.cs" />
     <Compile Include="ViewModels\SuppliersVM.cs" />
@@ -252,14 +257,32 @@
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Activation.xaml.cs">
+      <DependentUpon>Activation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AssignNewClass.xaml.cs">
+      <DependentUpon>AssignNewClass.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Backup.xaml.cs">
       <DependentUpon>Backup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\BillStudents.xaml.cs">
       <DependentUpon>BillStudents.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Boarding.xaml.cs">
-      <DependentUpon>Boarding.xaml</DependentUpon>
+    <Compile Include="Views\ClassReportFoms.xaml.cs">
+      <DependentUpon>ClassReportFoms.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CombinedClassList.xaml.cs">
+      <DependentUpon>CombinedClassList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LocalTutorials.xaml.cs">
+      <DependentUpon>LocalTutorials.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OnlineResources.xaml.cs">
+      <DependentUpon>OnlineResources.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports.xaml.cs">
+      <DependentUpon>Reports.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\BookReturn.xaml.cs">
       <DependentUpon>BookReturn.xaml</DependentUpon>
@@ -300,6 +323,9 @@
     <Compile Include="Views\FirstRun\FirstRun.xaml.cs">
       <DependentUpon>FirstRun.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FirstRun\Logo.xaml.cs">
+      <DependentUpon>Logo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FirstRun\Welcome.xaml.cs">
       <DependentUpon>Welcome.xaml</DependentUpon>
     </Compile>
@@ -338,6 +364,9 @@
     </Compile>
     <Compile Include="Views\ItemReceiptHistory.xaml.cs">
       <DependentUpon>ItemReceiptHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LeavingCertificate.xaml.cs">
+      <DependentUpon>LeavingCertificate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ModifyBook.xaml.cs">
       <DependentUpon>ModifyBook.xaml</DependentUpon>
@@ -452,6 +481,9 @@
     <Compile Include="Views\RemovePayment.xaml.cs">
       <DependentUpon>RemovePayment.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReportsHome.xaml.cs">
+      <DependentUpon>ReportsHome.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ReprintReceipt.xaml.cs">
       <DependentUpon>ReprintReceipt.xaml</DependentUpon>
     </Compile>
@@ -485,11 +517,17 @@
     <Compile Include="Views\StockTakings.xaml.cs">
       <DependentUpon>StockTakings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StudentClearance.xaml.cs">
+      <DependentUpon>StudentClearance.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StudentDetails.xaml.cs">
       <DependentUpon>StudentDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StudentTranscript.xaml.cs">
       <DependentUpon>StudentTranscript.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StudentTransfer.xaml.cs">
+      <DependentUpon>StudentTransfer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SupplierList.xaml.cs">
       <DependentUpon>SupplierList.xaml</DependentUpon>
@@ -574,43 +612,15 @@
     <Compile Include="Views\WaitPage.xaml.cs">
       <DependentUpon>WaitPage.xaml</DependentUpon>
     </Compile>
-    <Page Include="AggregateResult.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="DropDown.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Balances.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ClassList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ClassMarkList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GalleryListBoxItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ModelsDataTemplates.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PaymentVoucher.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Receipt.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Transcript.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Transcript2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -630,6 +640,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Activation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AssignNewClass.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Backup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -638,7 +656,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Boarding.xaml">
+    <Page Include="Views\ClassReportFoms.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CombinedClassList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LocalTutorials.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OnlineResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -694,6 +728,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\FirstRun\Logo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FirstRun\Welcome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -743,6 +781,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ItemReceiptHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LeavingCertificate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -894,6 +936,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ReportsHome.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ReprintReceipt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -914,11 +960,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\StudentClearance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StudentDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StudentTranscript.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StudentTransfer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1127,7 +1181,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Properties\app.manifest" />
+    <None Include="MonsoonDigital.pfx" />
+    <None Include="Properties\app.manifest">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\students_bg.jpg" />
@@ -1158,70 +1215,6 @@
     <Resource Include="Resources\noImage.png" />
   </ItemGroup>
   <ItemGroup>
-    <PublishFile Include="Microsoft.Office.Interop.Excel">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="Microsoft.Vbe.Interop">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="office">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="stdole">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.SqlServer.Express.11.0">
-      <Visible>False</Visible>
-      <ProductName>SQL Server 2012 Express</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\profile.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1229,9 +1222,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\inventory.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\logox.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Updates\" />
@@ -1269,6 +1259,26 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\YAZOO_SMILIES COOL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\reports.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -18,11 +18,11 @@ namespace Helper.Models
         private DateTime dateOfIssue;
         public LeavingCertificateModel()
         {
-            DateOfIssue = DateTime.Now.AddDays(5);
-            DateOfBirth = DateTime.Now.AddDays(5);
-            DateOfAdmission = DateTime.Now.AddDays(5);
-            DateOfLeaving = DateTime.Now.AddDays(5);            
-            Nationality = "";
+            DateOfIssue = DateTime.Now;
+            DateOfBirth = DateTime.Now;
+            DateOfAdmission = DateTime.Now;
+            DateOfLeaving = DateTime.Now;
+            Nationality = "KENYAN";
             ClassEntered = "";
             ClassLeft = "";
             Remarks = "";
@@ -177,14 +177,13 @@ namespace Helper.Models
             return HasErrors;
         }
 
-
         public override void Reset()
         {
             base.Reset();
-            DateOfIssue = DateTime.Now.AddDays(5);
-            DateOfBirth = DateTime.Now.AddDays(5);
-            DateOfAdmission = DateTime.Now.AddDays(5);
-            DateOfLeaving = DateTime.Now.AddDays(5);
+            DateOfIssue = DateTime.Now;
+            DateOfBirth = DateTime.Now;
+            DateOfAdmission = DateTime.Now;
+            DateOfLeaving = DateTime.Now;
             Nationality = "";
             ClassEntered = "";
             ClassLeft = "";

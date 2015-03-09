@@ -1,9 +1,9 @@
 ﻿using System.Management;
 namespace Helper
 {
-    public class SystemInfo
+    public static class SystemInfo
     {
-        public SystemInfo()
+        static SystemInfo()
         {
             string query = "SELECT * FROM Win32_Processor";
             ManagementObjectSearcher m = new ManagementObjectSearcher(query);
@@ -34,22 +34,22 @@ namespace Helper
                 BIOSSerial = i3["SerialNumber"].ToString();
             }
         }
-        public string MotherBoardSerial
+        public static string MotherBoardSerial
         {
             get;
             set;
         }
-        public string ProcessorID
-        {
-            get;
-            set;
-        }        
-        public string HardDiskSerial
+        public static string ProcessorID
         {
             get;
             set;
         }
-        public string BIOSSerial
+        public static string HardDiskSerial
+        {
+            get;
+            set;
+        }
+        public static string BIOSSerial
         {
             get;
             set;

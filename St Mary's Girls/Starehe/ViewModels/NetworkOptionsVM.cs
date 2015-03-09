@@ -3,6 +3,7 @@ using Helper.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,6 +11,7 @@ using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "SystemAdmin")]
     public class NetworkOptionsVM:ViewModelBase
     {
         bool canTest=true;
@@ -44,8 +46,13 @@ namespace Starehe.ViewModels
         {
             SaveCommand = new RelayCommand(o =>
             {
-                Helper.Properties.Settings.Default.Info = newSchool;
+                Helper.Properties.Settings.Default.Info = new ApplicationPersistModel(newSchool);
                 Helper.Properties.Settings.Default.Save();
+                App.Info.CopyFrom(new ApplicationModel(Helper.Properties.Settings.Default.Info));
+                MessageBox.Show("Successfully saved settings.","Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (CloseWindowAction!=null)
+                CloseWindowAction.Invoke();
+                
             }, o => !IsBusy);
 
             TestCommand = new RelayCommand(async o =>
@@ -60,9 +67,11 @@ namespace Starehe.ViewModels
         }
         public override void Reset()
         {
-            newSchool = Helper.Properties.Settings.Default.Info;
+            newSchool = new ApplicationModel(Helper.Properties.Settings.Default.Info);
         }
 
+        public Action CloseWindowAction
+        { get; set; }
         public ICommand SaveCommand
         {
             get;

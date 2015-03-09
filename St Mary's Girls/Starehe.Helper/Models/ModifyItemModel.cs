@@ -34,7 +34,7 @@ namespace Helper.Models
                         ClearErrors("ItemID");
                         this.ItemID = item.ItemID;
                         this.Description = item.Description;
-                        this.Cost = item.Cost;
+                        this.Cost = 1;
                         this.DateAdded = item.DateAdded;
                         this.ItemCategoryID = item.ItemCategoryID;
                         this.Price = item.Price;

@@ -60,6 +60,9 @@
         <TextBlock HorizontalAlignment="Right" Margin="0,50,20,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding RemoveEntryCommand}">Remove</Hyperlink>
         </TextBlock>
+        <TextBlock HorizontalAlignment="Right" Margin="0,50,80,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding GetFeesSturctureItemsCommand}">Get Class Default</Hyperlink>
+        </TextBlock>
 
     </Grid>
 </UserControl>

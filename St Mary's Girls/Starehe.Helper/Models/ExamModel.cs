@@ -141,7 +141,7 @@ namespace Helper.Models
                 if (examDate != value)
                 {
                     examDate = value;
-                    NotifyPropertyChanged("Date");
+                    NotifyPropertyChanged("ExamDate");
                 }
             }
         }

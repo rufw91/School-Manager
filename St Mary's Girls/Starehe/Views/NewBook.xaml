@@ -14,7 +14,7 @@
 			VerticalAlignment="Top"/>
 
         <TextBlock  HorizontalAlignment="Left" Margin="20,70,0,0" Text="Title" VerticalAlignment="Top" />
-        <TextBox  Margin="115,70,20,0" VerticalAlignment="Top"  MaxLength="9"
+        <TextBox  Margin="115,70,20,0" VerticalAlignment="Top"
                       Text="{Binding Book.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock  HorizontalAlignment="Left" Margin="20,120,0,0" Text="ISBN" VerticalAlignment="Top" />

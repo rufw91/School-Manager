@@ -25,6 +25,28 @@ namespace Helper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Helper.Models.InstitutionModel Institution {
+            get {
+                return ((global::Helper.Models.InstitutionModel)(this["Institution"]));
+            }
+            set {
+                this["Institution"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Helper.Models.ApplicationPersistModel Info {
+            get {
+                return ((global::Helper.Models.ApplicationPersistModel)(this["Info"]));
+            }
+            set {
+                this["Info"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DBBackupDirectoryPath {
             get {
@@ -170,28 +192,6 @@ namespace Helper.Properties {
             }
             set {
                 this["DoFullStartupCheck"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Helper.Models.InstitutionModel Institution {
-            get {
-                return ((global::Helper.Models.InstitutionModel)(this["Institution"]));
-            }
-            set {
-                this["Institution"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Helper.Models.ApplicationModel Info {
-            get {
-                return ((global::Helper.Models.ApplicationModel)(this["Info"]));
-            }
-            set {
-                this["Info"] = value;
             }
         }
     }

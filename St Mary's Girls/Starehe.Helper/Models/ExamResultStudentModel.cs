@@ -7,6 +7,7 @@ namespace Helper.Models
     public class ExamResultStudentModel : ExamResultBaseModel
     {
         private string nameOfStudent;
+        private string meanGrade;
         private int studentID;
         private decimal total;
         ObservableCollection<ExamResultSubjectEntryModel> entries;
@@ -20,8 +21,12 @@ namespace Helper.Models
             entries.CollectionChanged += (o, e) =>
                 {
                     Total = 0;
+                    MeanGrade = "";
                     foreach (var s in entries)
+                    {
                         Total += s.Score;
+                        MeanGrade = DataAccess.CalculateGrade(entries.Count > 0 ? total / entries.Count : 1);
+                    }
                 };
         }
 
@@ -79,6 +84,19 @@ namespace Helper.Models
             }
         }
 
+        public string MeanGrade
+        {
+            get { return meanGrade; }
+            set
+            {
+                if (value != this.meanGrade)
+                {
+                    this.meanGrade = value;
+                    NotifyPropertyChanged("MeanGrade");
+                }
+            }
+        }
+
         public override void Reset()
         {
             base.Reset();
@@ -124,5 +142,7 @@ namespace Helper.Models
             NotifyPropertyChanged("HasErrors");
             return HasErrors;
         }
+
+        
     }
 }

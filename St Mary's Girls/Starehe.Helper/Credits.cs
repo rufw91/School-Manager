@@ -8,8 +8,8 @@ namespace Helper
         static Credits()
         {
             credits = new ObservableCollection<string>();
-            credits.Add("Raphael M.");
-            credits.Add("Moses Ngovi,Shishi Ltd.");
+            credits.Add("Jones M, Umanyi Ltd.");
+            credits.Add("Moses Ngovi, Shishi Ltd.");
             credits.Add("Meshack Mwongela");
             credits.Add("Mykola Dobrochynskyy: EmailFormatValidator");
             credits.Add("MahApps.Metro :UI");

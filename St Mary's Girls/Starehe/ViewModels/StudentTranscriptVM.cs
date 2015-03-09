@@ -3,6 +3,7 @@ using Helper.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class StudentTranscriptVM: ViewModelBase
     {
         StudentTranscriptModel transcript;
@@ -22,8 +24,13 @@ namespace Starehe.ViewModels
         }
         protected override void InitVars()
         {
-            Title = "STUDENT TRANSCRIPT";
-            Transcript = new StudentTranscriptModel();            
+            Title = "REPORT FORM";
+            Transcript = new StudentTranscriptModel();
+            transcript.PropertyChanged += (o, e) =>
+                {
+                    if (e.PropertyName=="StudentID")
+                        transcript.CheckErrors();
+                };
         }
 
         protected override void CreateCommands()
@@ -38,6 +45,13 @@ namespace Starehe.ViewModels
                 }
                 else
                     MessageBox.Show("Could not save details.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }, o => CanSave());
+            PreviewCommand = new RelayCommand(o =>
+            {
+                Document = DocumentHelper.GenerateDocument(transcript);
+                Reset();
+                if (ShowPrintDialogAction != null)
+                    ShowPrintDialogAction.Invoke(Document);
             }, o => CanSave());
             SaveAndPrintCommand = new RelayCommand(async o =>
             {
@@ -62,8 +76,7 @@ namespace Starehe.ViewModels
         }
 
         private bool CanSave()
-        {
-            transcript.CheckErrors();
+        {            
             return !transcript.HasErrors&&transcript.Entries.Count>0;
         }
 
@@ -99,6 +112,8 @@ namespace Starehe.ViewModels
             get;
             set;
         }
+        public ICommand PreviewCommand
+        { get; private set; }
         public ICommand SaveCommand
         { get; private set; }
 

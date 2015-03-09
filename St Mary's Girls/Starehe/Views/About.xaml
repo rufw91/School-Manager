@@ -80,9 +80,9 @@
 
     <Grid>
         
-        <TextBlock HorizontalAlignment="Left" Margin="30,164,0,0" Text="Version 6.5.0.2014" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="30,164,0,0" Text="Version 6.5.1.2015" VerticalAlignment="Top" />
         
-        <TextBlock HorizontalAlignment="Left" Margin="30,185,0,0" Name="textBlock4" Text="Copyright © 2014 Raphael M." VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="30,185,0,0" Name="textBlock4" Text="Copyright © 2015 Raphael Muindi" VerticalAlignment="Top" />
         <TextBlock HorizontalAlignment="Left" Margin="126,47,0,0" Text="Starehe" Style="{DynamicResource Heading0}" 
                    VerticalAlignment="Top"/>
         <Image Height="80" Width="80" Margin="30,30,0,0" Source="/Starehe;component/Resources/White0078C8.png" HorizontalAlignment="Left" 
@@ -90,11 +90,12 @@
         <TextBlock HorizontalAlignment="Left" Margin="264,58,0,0" TextWrapping="Wrap" Text="®" VerticalAlignment="Top" FontSize="16"/>
         <TextBlock HorizontalAlignment="Left" Margin="328,79,0,0" Style="{DynamicResource Emphasis}" Text="ATTRIBUTIONS &amp; CREDITS:" VerticalAlignment="Top"/>
         <ListBox Margin="330,100,10,45" ItemsSource="{Binding}" BorderThickness="0"/>
-        
+        <TextBlock HorizontalAlignment="Left" Margin="30,207,0,0" Text="Phone No: +254 721 626 250" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,227,0,0" VerticalAlignment="Top" Text="Email: rufw91@live.com"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,248,0,0" VerticalAlignment="Top" >
             License: <Hyperlink Click="OnLicenceLink_Click">GNU Lesser GPL License v3.0</Hyperlink>
         </TextBlock>
         <Button Content="_Close" HorizontalAlignment="Right" Margin="0,0,10,6" VerticalAlignment="Bottom" Width="75" IsCancel="True" Click="Button_Click"/>
+        
     </Grid>
 </ccl:CustomWindow>

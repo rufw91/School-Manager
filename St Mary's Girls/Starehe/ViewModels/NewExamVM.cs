@@ -30,7 +30,7 @@ namespace Starehe.ViewModels
             o =>
             {
                 return SelectedClassID > 0 &&
-                    !string.IsNullOrWhiteSpace(newExam.NameOfExam);
+                    !string.IsNullOrWhiteSpace(newExam.NameOfExam)&&newExam.Entries.Count>0;
             });
         }
 
