@@ -49,6 +49,18 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
+    <DataTemplate DataType="{x:Type viewModels:IssueItemsVM}" >
+        <views:IssueItems/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:DisciplineDetailsVM}" >
+        <views:DiscipineDetails/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:DisciplineTrackerHistoryVM}" >
+        <views:DisciplineTrackerHistory/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:DisciplineTrackerVM}" >
+        <views:DisciplineTracker/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:CombinedClassListVM}" >
         <views:CombinedClassList/>
     </DataTemplate>

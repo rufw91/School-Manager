@@ -42,9 +42,9 @@ namespace Helper
                 AddText(item[i].ToString(), "Times New Roman", 12, false, 0, Colors.Black, xPos + count * 35, yPos, pageNo);
                 count++;
             }
-            AddText(item["MeanGrade"].ToString(), "Times New Roman", 12, false, 0, Colors.Black, 676, yPos, pageNo);
-            AddText(item["Total"].ToString(), "Times New Roman", 12, false, 0, Colors.Black, 711, yPos, pageNo);
-            AddText(item["Position"].ToString(), "Times New Roman", 12, false, 0, Colors.Black, 751, yPos, pageNo);
+            AddText(item["MeanGrade"].ToString(), "Times New Roman", 12, false, 0, Colors.Black, 680, yPos, pageNo);
+            AddText(item["Total"].ToString(), "Times New Roman", 12, false, 0, Colors.Black, 715, yPos, pageNo);
+            AddText(item["Position"].ToString(), "Times New Roman", 12, false, 0, Colors.Black, 754, yPos, pageNo);
         }
         private static void AddCMLStudents(DataTable psi, int pageNo)
         {

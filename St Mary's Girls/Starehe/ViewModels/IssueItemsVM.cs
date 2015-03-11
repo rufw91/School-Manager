@@ -1,18 +1,19 @@
 ﻿using Helper;
 using Helper.Models;
 using System;
-using System.Collections.ObjectModel;
-using System.Security.Permissions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
-    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
-    public class StockTakingVM : ViewModelBase
+    public class IssueItemsVM: ViewModelBase
     {
-        StockTakingModel newStockTaking;
-        public StockTakingVM()
+        ItemIssueModel newIssue;
+        public IssueItemsVM()
         {
             InitVars();
             CreateCommands();
@@ -20,9 +21,10 @@ namespace Starehe.ViewModels
 
         protected override void InitVars()
         {
-            Title = "Stock Taking";
+            Title = "Receive Items";
+            IsBusy = true;
+            newIssue = new ItemIssueModel();
             IsBusy = false;
-            NewStockTaking = new StockTakingModel();
         }
 
         protected override void CreateCommands()
@@ -30,16 +32,15 @@ namespace Starehe.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewStockTakingAsync(newStockTaking);
+                bool succ = await DataAccess.SaveNewItemIssueAsync(newIssue);
                 if (succ)
                 {
-                    MessageBox.Show("Successfully saved information.");
+                    MessageBox.Show("Successfully saved purchase information.");
                     Reset();
                 }
                 else
                 {
-                    MessageBox.Show("Could not save details please ensure you have filled all entries correctly.");
-                    return;
+                    MessageBox.Show("Could not save details please ensure you have filled all entries correctly.");                    
                 }
                 IsBusy = false;
             }, o => !IsBusy&&CanSave());
@@ -57,10 +58,14 @@ namespace Starehe.ViewModels
 
         private bool CanSave()
         {
-            return newStockTaking.DateTaken != null && newStockTaking.DateTaken <= DateTime.Now && 
-                    newStockTaking.Items.Count > 0;
+            bool succ = true;
+            foreach (var i in newIssue.Entries)
+                if (i.Quantity==0)
+                { succ = false; break; }
+            return !string.IsNullOrWhiteSpace(newIssue.Description) && succ &&
+                    newIssue.Entries.Count > 0;
         }
-        
+
         public Action FindItemsAction
         { get; internal set; }
 
@@ -76,23 +81,23 @@ namespace Starehe.ViewModels
             private set;
         }
 
-        public StockTakingModel NewStockTaking
+        public ItemIssueModel NewIssue
         {
-            get { return this.newStockTaking; }
+            get { return this.newIssue; }
 
             set
             {
-                if (value != this.newStockTaking)
+                if (value != this.newIssue)
                 {
-                    this.newStockTaking = value;
-                    NotifyPropertyChanged("NewStockTaking");
+                    this.newIssue = value;
+                    NotifyPropertyChanged("NewIssue");
                 }
             }
         }
 
         public override void Reset()
         {
-            NewStockTaking.Reset();
+            newIssue.Reset();
         }
     }
 }

@@ -225,6 +225,8 @@ namespace Helper.Models
 
         private BitmapImage GetImage()
         {
+            if (sPhoto == null)
+                return null;
             BitmapImage gy = new BitmapImage();
             if (sPhoto.Length > 0)
             {

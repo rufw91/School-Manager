@@ -50,14 +50,15 @@
         </Controls:DropDownButton>
         <DataGrid Name="lbx" AutoGenerateColumns="False" VirtualizingStackPanel.IsVirtualizing="True" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto"
                  Margin="20,0,20,20"  IsReadOnly="True"
-                 ItemsSource="{Binding CollViewSource.View, IsAsync=True}" Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+                 ItemsSource="{Binding CollViewSource.View, IsAsync=True}" 
+                  Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
                   >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Adm No." Binding="{Binding StudentID}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding NameOfStudent}" Width="200" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Class" Binding="{Binding NameOfClass}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Previous Balance" Binding="{Binding PrevBalance, StringFormat={}{0:N2}}" Width="80" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Date of Birth" Binding="{Binding DateOfBirth, StringFormat={}{0: dd - MM - yyyy}}" Width="100" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Date of Birth" Binding="{Binding DateOfBirth, StringFormat={}{0:yyyy}}" Width="100" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Date Admitted" Binding="{Binding DateOfAdmission, StringFormat={}{0: dd - MM - yyyy}}" Width="100" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Guardian" Binding="{Binding NameOfGuardian}" Width="200" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Guardian Phone No." Binding="{Binding GuardianPhoneNo}" Width="100" IsReadOnly="True"/>

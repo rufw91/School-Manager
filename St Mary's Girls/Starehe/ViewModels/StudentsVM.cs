@@ -26,6 +26,8 @@ namespace Starehe.ViewModels
             TryAddChild(typeof(StudentTransferVM));
             TryAddChild(typeof(StudentClearanceVM));
             TryAddChild(typeof(LeavingCertificateVM));
+            TryAddChild(typeof(DisciplineTrackerVM));
+            TryAddChild(typeof(DisciplineTrackerHistoryVM));
         }        
     }
 }

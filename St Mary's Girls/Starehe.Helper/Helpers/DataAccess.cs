@@ -3180,7 +3180,6 @@ namespace Helper
                     book.Publisher = dtr[4].ToString();
                     book.SPhoto = (dtr[5] != null && !(dtr[5] is DBNull)) ? (byte[])dtr[5] : new byte[0];
                     book.Price = decimal.Parse(dtr[6].ToString());
-                    for (int i = 0; i < 100;i++ )
                         temp.Add(book);
                 }
                 return temp;
@@ -3336,6 +3335,87 @@ namespace Helper
                     }
 
                     return temp;
+        }
+
+        public static Task<bool> SaveNewDiscipline(DisciplineModel discipline)
+        {
+            return Task.Run<bool>(() =>
+                {
+                    string insertStr = "INSERT INTO [Institution].[Discipline] (StudentID,Issue,DateAdded,SPhoto)" +
+                                " VALUES (" + discipline.StudentID + ",'" + discipline.Issue + "','"
+                                +discipline.DateAdded.ToString("g")+"',@sPhoto)";
+                    var d = new ObservableCollection<SqlParameter> { new SqlParameter("@sPhoto", discipline.SPhoto) };
+                    return DataAccessHelper.ExecuteNonQueryWithParameters(insertStr, d);
+                });
+        }
+
+        public static Task<ObservableCollection<DisciplineModel>> GetStudentDiscipline(StudentBaseModel student, DateTime? start, DateTime? end)
+        {
+            return Task.Run<ObservableCollection<DisciplineModel>>(() =>
+            {
+                ObservableCollection<DisciplineModel> temp = new ObservableCollection<DisciplineModel>();
+                try
+                {
+                    string SELECTSTR =
+                           "SELECT Issue,DateAdded,SPhoto FROM [Institution].[Discipline] ";
+                    if (student.StudentID > 0)
+                    SELECTSTR+="WHERE StudentID=" + student.StudentID;
+                    if ((start != null) && (end != null))
+                    {
+                        if (student.StudentID > 0)
+                            SELECTSTR += " AND DateAdded BETWEEN '" + start.Value.ToString("dd-MM-yyyy") + " 00:00:00.000' AND '" +
+                                end.Value.ToString("dd-MM-yyyy") + " 23:59:59.998'";
+                        else
+                            SELECTSTR += " WHERE DateAdded BETWEEN '" + start.Value.ToString("dd-MM-yyyy") + " 00:00:00.000' AND '" +
+                                    end.Value.ToString("dd-MM-yyyy") + " 23:59:59.998'";
+                    }
+                    DataTable r = DataAccessHelper.ExecuteNonQueryWithResultTable(SELECTSTR);
+                    DisciplineModel dr;
+                    foreach(DataRow dtr in r.Rows)
+                    {
+                        dr = new DisciplineModel();
+                        dr.StudentID = student.StudentID;
+                        dr.NameOfStudent = student.NameOfStudent;
+                        dr.Issue = dtr[0].ToString();
+                        dr.DateAdded = DateTime.Parse(dtr[1].ToString());
+                        dr.SPhoto = (byte[])dtr[2];
+                        temp.Add(dr);
+                    }
+                }
+                catch { }
+                return temp;
+            });
+        }
+
+        public static Task<bool> SaveNewCombinedExamAsync(ExamModel newExam, CombinedClassModel selectedCombinedClass)
+        {
+            return Task.Run<bool>(() =>
+            {
+                string insertStr = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Institution.ExamHeader')\r\n";
+                foreach (var f in selectedCombinedClass.Entries)
+                {
+                    insertStr+="INSERT INTO [Institution].[ExamHeader] (ExamID,ClassID,NameOfExam,ExamDateTime)" +
+                                " VALUES (@id," + f.ClassID + ",'" + newExam.NameOfExam + "','" + DateTime.Now.ToString("g") + "')\r\n"+
+                                "SET @id = dbo.GetNewID('Institution.ExamHeader')\r\n";
+
+                    foreach (ExamSubjectEntryModel entry in newExam.Entries)
+                        insertStr += "INSERT INTO [Institution].[ExamDetail] (ExamID,SubjectID,ExamDateTime)" +
+                            " VALUES (@id," + entry.SubjectID +
+                            ",'" + entry.ExamDateTime.ToString("g", new CultureInfo("en-GB")) +
+                            "')\r\n";
+                    insertStr += " COMMIT";
+                }
+
+                return DataAccessHelper.ExecuteNonQuery(insertStr);
+            });
+        }
+
+        public static Task<bool> SaveNewItemIssueAsync(ItemIssueModel newIssue)
+        {
+            return Task.Run<bool>(() =>
+                {
+                    return true;
+                });
         }
     }
 }

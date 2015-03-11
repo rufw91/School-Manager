@@ -18,10 +18,11 @@ namespace Helper.Models
             {
                 ClearAllErrors();
                 if (StudentID == 0)
-                {
+                {                   
                     List<string> errors = new List<string>();
                     errors.Add("Student does not exist.");
                     SetErrors("StudentID", errors);
+                    NameOfStudent = "";
                 }
                 else
                 {
@@ -31,6 +32,7 @@ namespace Helper.Models
                         List<string> errors = new List<string>();
                         errors.Add("Student does not exist.");
                         SetErrors("StudentID", errors);
+                        NameOfStudent = "";
                     }
                     else
                     {
@@ -45,6 +47,7 @@ namespace Helper.Models
                 List<string> errors = new List<string>();
                 errors.Add(e.Message);
                 SetErrors("", errors);
+                NameOfStudent = "";
             }
             NotifyPropertyChanged("HasErrors");
             return HasErrors;

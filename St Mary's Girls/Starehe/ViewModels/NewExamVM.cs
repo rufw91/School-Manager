@@ -8,7 +8,7 @@ using System.Windows.Input;
 namespace Starehe.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
-    public class NewExamVM: ViewModelBase
+    public class NewExamVM : ViewModelBase
     {
         int selectedClassID;
         ObservableCollection<ClassModel> allClasses;
@@ -22,22 +22,22 @@ namespace Starehe.ViewModels
         {
             RefreshCommand = new RelayCommand(o => { RefreshEntries(); }, o => selectedClassID > 0);
             SaveCommand = new RelayCommand(async o =>
-            {                
-              bool succ = await DataAccess.SaveNewExamAsync(newExam);
-              if (succ)
-                  Reset();
+            {
+                bool succ = await DataAccess.SaveNewExamAsync(newExam);
+                if (succ)
+                    Reset();
             },
             o =>
             {
                 return SelectedClassID > 0 &&
-                    !string.IsNullOrWhiteSpace(newExam.NameOfExam)&&newExam.Entries.Count>0;
+                    !string.IsNullOrWhiteSpace(newExam.NameOfExam) && newExam.Entries.Count > 0;
             });
         }
 
         protected async override void InitVars()
         {
             Title = "NEW EXAM";
-            SelectedClassID=0;
+            SelectedClassID = 0;
             NewExam = new ExamModel();
             AllClasses = await DataAccess.GetAllClassesAsync();
         }
@@ -63,7 +63,7 @@ namespace Starehe.ViewModels
                 if (selectedClassID != value)
                 {
                     selectedClassID = value;
-                    newExam.ClassID = selectedClassID;   
+                    newExam.ClassID = selectedClassID;
                     RefreshEntries();
                 }
             }
@@ -77,7 +77,7 @@ namespace Starehe.ViewModels
             var temp =
                 await DataAccess.GetSubjectsRegistredToClassAsync(newExam.ClassID);
             foreach (SubjectModel sm in temp)
-                newExam.Entries.Add(new ExamSubjectEntryModel(sm)); 
+                newExam.Entries.Add(new ExamSubjectEntryModel(sm));
         }
 
         public ExamModel NewExam
@@ -109,7 +109,7 @@ namespace Starehe.ViewModels
         {
             SelectedClassID = 0;
             NewExam = new ExamModel();
-            AllClasses = await DataAccess.GetAllClassesAsync();  
+            AllClasses = await DataAccess.GetAllClassesAsync();
         }
     }
 }
