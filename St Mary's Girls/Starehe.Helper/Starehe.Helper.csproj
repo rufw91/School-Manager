@@ -109,8 +109,11 @@
     <Compile Include="Models\ClassTranscriptModel.cs" />
     <Compile Include="Models\ClassTranscriptsModel.cs" />
     <Compile Include="Models\CombinedClassModel.cs" />
+    <Compile Include="Models\DisciplineModel.cs" />
     <Compile Include="Models\FeePaymentReceipt2Model.cs" />
     <Compile Include="Models\FeesPaymentReceiptModel.cs" />
+    <Compile Include="Models\ItemIssueEntryModel.cs" />
+    <Compile Include="Models\ItemIssueModel.cs" />
     <Compile Include="Models\ModifyBookModel.cs" />
     <Compile Include="Models\PaymentVoucherEntryModel.cs" />
     <Compile Include="Models\PaymentVoucherModel.cs" />

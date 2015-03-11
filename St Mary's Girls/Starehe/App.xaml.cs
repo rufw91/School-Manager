@@ -77,22 +77,25 @@ namespace Starehe
         }
         private void InitGlobalVar()
         {
-            if (Helper.Properties.Settings.Default.Info == null)
-                Helper.Properties.Settings.Default.Info = new ApplicationPersistModel(new ApplicationModel());
-            Info = new ApplicationModel(Helper.Properties.Settings.Default.Info);
-            if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.DBName))
-                Helper.Properties.Settings.Default.DBName = "Starehe";
-            if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.MostRecentBackup))
-                Helper.Properties.Settings.Default.MostRecentBackup = "";
+            try
+            {
+                if (Helper.Properties.Settings.Default.Info == null)
+                    Helper.Properties.Settings.Default.Info = new ApplicationPersistModel(new ApplicationModel());
+                Info = new ApplicationModel(Helper.Properties.Settings.Default.Info);
+                if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.DBName))
+                    Helper.Properties.Settings.Default.DBName = "Starehe";
+                if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.MostRecentBackup))
+                    Helper.Properties.Settings.Default.MostRecentBackup = "";
 
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-GB");
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-GB");
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-GB");
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-GB");
 
-            Helper.Properties.Settings.Default.PropertyChanged += (o, e) =>
-                {
-                    Helper.Properties.Settings.Default.Save();
-                };
-
+                Helper.Properties.Settings.Default.PropertyChanged += (o, e) =>
+                    {
+                        Helper.Properties.Settings.Default.Save();
+                    };
+            }
+            catch(Exception e) { Log(LogType.I, e.ToString()); }
         }
 
         private async void Application_Startup(object sender, StartupEventArgs e)

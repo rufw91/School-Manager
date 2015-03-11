@@ -12,6 +12,7 @@ namespace Helper.Models
         {
             ExamID = 0;
             ClassID = 0;
+            
             NameOfExam = "";
             Entries = new ObservableCollection<ExamSubjectEntryModel>();
         }

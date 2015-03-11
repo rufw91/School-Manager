@@ -122,7 +122,7 @@ namespace OpenXmlPackaging {
             // Write columns to Excel if includeColumnNames = true
             for (int i = startColumnIndex; i <= endColumnIndex; i++)
             {
-                DataColumn column = new DataColumn(includeColumnNames ? this.GetCell(1, i).Value.ToString() : "column" + i);
+                DataColumn column = new DataColumn(includeColumnNames ? this.GetCell(1, i).Value.ToString().Trim() : "column" + i);
                 dt.Columns.Add(column);
             }
 

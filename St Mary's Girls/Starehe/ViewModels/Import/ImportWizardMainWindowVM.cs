@@ -28,6 +28,10 @@ namespace Starehe.ViewModels
         string classColumn;
         string phoneNoColumn;
         string balanceBFColumn;
+        string boardingColumn;
+        string dateOfBirthColumn;
+        string dateOfAdmissionColumn;
+        string nameOfGuardianColumn;
         private int testProgressStudentID;
         private int testProgressFirstName;
         private int testProgressMiddleName;
@@ -35,10 +39,14 @@ namespace Starehe.ViewModels
         private int testProgressClass;
         private int testProgressPhoneNo;
         private int testProgressBalanceBF;
+        private int testProgressBoarding;
+        private int testProgressDateOfAdmission;
+        private int testProgressDateOfBirth;
         private bool hasFinished;
         private int progress;
         private string progressText;
         private string informationText;
+        private int testProgressNameOfGuardian;
 
         public ImportWizardMainWindowVM()
         {
@@ -179,14 +187,14 @@ namespace Starehe.ViewModels
                     student.MiddleName = dtr[middleNameColumn].ToString();
                     student.LastName = dtr[lastNameColumn].ToString();
                     ProgressText = "Saving Student:  " + student.NameOfStudent;
-                    student.Address = "X";
-                    student.BedNo = "X";
+                    student.Address = "-";
+                    student.BedNo = "-";
                     student.ClassID = AllClasses.First(c => c.NameOfClass.ToUpper() == dtr[classColumn].ToString().ToUpper()).ClassID;
-                    student.DateOfAdmission = DateTime.Now;
-                    student.DateOfBirth = new DateTime(2000, 1, 1);
+                    student.DateOfAdmission = DateTime.Parse(dtr[dateOfAdmissionColumn].ToString());
+                    student.DateOfBirth = DateTime.Parse(dtr[dateOfBirthColumn].ToString());
                     student.Email = "test@example.com";
                     student.GuardianPhoneNo = dtr[phoneNoColumn].ToString();
-                    student.NameOfGuardian = "X";
+                    student.NameOfGuardian = dtr[nameOfGuardianColumn].ToString();
                     student.PostalCode = "X";
                     student.PrevBalance = decimal.Parse(dtr[balanceBFColumn].ToString());
                    
@@ -495,6 +503,62 @@ namespace Starehe.ViewModels
             }
         }
 
+        public string NameOfGuardianColumn
+        {
+            get { return nameOfGuardianColumn; }
+            set
+            {
+                if (value != this.nameOfGuardianColumn)
+                {
+                    this.nameOfGuardianColumn = value;
+                    NotifyPropertyChanged("NameOfGuardianColumn");
+                    TestAll();
+                }
+            }
+        }
+
+        public string BoardingColumn
+        {
+            get { return boardingColumn; }
+            set
+            {
+                if (value != this.boardingColumn)
+                {
+                    this.boardingColumn = value;
+                    NotifyPropertyChanged("BoardingColumn");
+                    TestAll();
+                }
+            }
+        }
+
+        public string DateOfBirthColumn
+        {
+            get { return dateOfBirthColumn; }
+            set
+            {
+                if (value != this.dateOfBirthColumn)
+                {
+                    this.dateOfBirthColumn = value;
+                    NotifyPropertyChanged("DateOfBirthColumn");
+                    TestAll();
+                }
+            }
+        }
+
+        public string DateOfAdmissionColumn
+        {
+            get { return dateOfAdmissionColumn; }
+            set
+            {
+                if (value != this.dateOfAdmissionColumn)
+                {
+                    this.dateOfAdmissionColumn = value;
+                    NotifyPropertyChanged("DateOfAdmissionColumn");
+                    TestAll();
+                }
+            }
+        }
+
         private void AddError(int i, string error)
         {
             if (Errors.ContainsKey(i))
@@ -507,7 +571,7 @@ namespace Starehe.ViewModels
         {
             Errors.Clear();
             await Task.WhenAll<bool>(TestStudentID(), TestFirstName(), TestMiddleName(), TestLastName(),
-                TestClass(), TestPhoneNo(), TestBalanceBF());
+                TestClass(), TestPhoneNo(), TestBalanceBF(),TestNameOfGuardian(),TestDateOfBirth(),TestDateOfAdmission(),TestBoarding());
         }
 
         private async Task<bool> TestStudentID()
@@ -680,6 +744,158 @@ namespace Starehe.ViewModels
                 }
                 return succ;
             });
+        }
+
+        private async Task<bool> TestNameOfGuardian()
+        {
+            TestProgressNameOfGuardian = 0;
+            if (string.IsNullOrWhiteSpace(nameOfGuardianColumn))
+            {
+                TestProgressNameOfGuardian = 100;
+                return false;
+            }
+            return await Task.Run<bool>(() =>
+            {
+                bool succ = true;
+                bool isOk;
+                for (int i = 0; i < data.Rows.Count; i++)
+                {
+                    TestProgressNameOfGuardian = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
+
+                    isOk = !string.IsNullOrWhiteSpace(data.Rows[i][nameOfGuardianColumn].ToString());
+                    succ = succ && isOk;
+                    if (!isOk)
+                        AddError(i, "Description value [" + data.Rows[i][nameOfGuardianColumn] + "] is invalid.");
+                }
+                return succ;
+            });
+        }
+
+        private async Task<bool> TestBoarding()
+        {
+            TestProgressBoarding = 0;
+            if (string.IsNullOrWhiteSpace(boardingColumn))
+            {
+                TestProgressBoarding = 100;
+                return false;
+            }
+            return await Task.Run<bool>(() =>
+            {
+                bool succ = true;
+                bool isOk;
+                for (int i = 0; i < data.Rows.Count; i++)
+                {
+                    TestProgressBoarding = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
+                    
+                    isOk = !string.IsNullOrWhiteSpace(data.Rows[i][boardingColumn].ToString());
+                    succ = succ && isOk;
+                    if (!isOk)
+                        AddError(i, "Description value [" + data.Rows[i][boardingColumn] + "] is invalid.");
+                }
+                return succ;
+            });
+        }
+
+        private async Task<bool> TestDateOfBirth()
+        {
+            TestProgressDateOfBirth = 0;
+            if (string.IsNullOrWhiteSpace(dateOfBirthColumn))
+            {
+                TestProgressDateOfBirth = 100;
+                return false;
+            }
+            return await Task.Run<bool>(() =>
+            {
+                bool succ = true;
+                bool isOk;
+                for (int i = 0; i < data.Rows.Count; i++)
+                {
+                    TestProgressDateOfBirth = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
+                    DateTime test;
+                    isOk = DateTime.TryParse(data.Rows[i][dateOfBirthColumn].ToString(), out test);
+                    succ = succ && isOk;
+                    if (!isOk)
+                        AddError(i, "Description value [" + data.Rows[i][dateOfBirthColumn] + "] is invalid.");
+                }
+                return succ;
+            });
+        }
+
+        private async Task<bool> TestDateOfAdmission()
+        {
+            TestProgressDateOfAdmission = 0;
+            if (string.IsNullOrWhiteSpace(dateOfAdmissionColumn))
+            {
+                TestProgressDateOfAdmission = 100;
+                return false;
+            }
+            return await Task.Run<bool>(() =>
+            {
+                bool succ = true;
+                bool isOk;
+                for (int i = 0; i < data.Rows.Count; i++)
+                {
+                    TestProgressDateOfAdmission = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
+                    DateTime test;
+                    isOk = DateTime.TryParse(data.Rows[i][dateOfAdmissionColumn].ToString(), out test);
+                    succ = succ && isOk;
+                    if (!isOk)
+                        AddError(i, "Description value [" + data.Rows[i][dateOfAdmissionColumn] + "] is invalid.");
+                }
+                return succ;
+            });
+        }
+
+        public int TestProgressNameOfGuardian
+        {
+            get { return testProgressNameOfGuardian; }
+            set
+            {
+                if (value != this.testProgressNameOfGuardian)
+                {
+                    this.testProgressNameOfGuardian = value;
+                    NotifyPropertyChanged("TestProgressNameOfGuardian");
+                }
+            }
+        }
+
+        public int TestProgressDateOfBirth
+        {
+            get { return testProgressDateOfBirth; }
+            set
+            {
+                if (value != this.testProgressDateOfBirth)
+                {
+                    this.testProgressDateOfBirth = value;
+                    NotifyPropertyChanged("TestProgressDateOfBirth");
+                }
+            }
+        }
+
+        public int TestProgressBoarding
+        {
+            get { return testProgressBoarding; }
+            set
+            {
+                if (value != this.testProgressBoarding)
+                {
+                    this.testProgressBoarding = value;
+                    NotifyPropertyChanged("TestProgressBoarding");
+                }
+            }
+        }
+
+        public int TestProgressDateOfAdmission
+        {
+            get { return testProgressDateOfAdmission; }
+            set
+            {
+                if (value != this.testProgressDateOfAdmission)
+                {
+                    this.testProgressDateOfAdmission = value;
+                    NotifyPropertyChanged("TestProgressDateOfAdmission");
+                }
+            }
         }
 
         public int TestProgressPhoneNo

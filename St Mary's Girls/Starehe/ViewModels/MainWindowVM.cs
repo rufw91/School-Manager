@@ -50,8 +50,14 @@ namespace Starehe.ViewModels
 
         protected override void CreateCommands()
         {
-            
-
+            DisplayIssueItemsCommand = new RelayCommand(o =>
+            {
+                this.Source = new IssueItemsVM();
+            }, o => true);
+            DisplayDisciplineDetailCommand = new RelayCommand(o =>
+            {
+                this.Source = new DisciplineDetailsVM((DisciplineModel)o);
+            }, o => (o is DisciplineModel));
             AboutCommand = new RelayCommand(o =>
             {
                 if (AboutAction != null)
@@ -323,6 +329,17 @@ namespace Starehe.ViewModels
             get;
             private set;
         }
+        public ICommand DisplayIssueItemsCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand DisplayDisciplineDetailCommand
+        {
+            get;
+            private set;
+        }
+
         public ICommand DisplayStudentDetailCommand
         {
             get;

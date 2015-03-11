@@ -13,8 +13,9 @@
         <TextBlock Style="{DynamicResource ContentTextSemiBold}" HorizontalAlignment="Left" Margin="40,60,0,0" VerticalAlignment="Top">
             Manage Inventory items from this portal.
         </TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="40,110,0,0" Text="Shortcuts" VerticalAlignment="Top"
-                   Style="{DynamicResource SmallTitle}"/>
+        <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,120,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayIssueItemsCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Issue Items</Hyperlink>
+        </TextBlock>
         <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,150,0,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding DataContext.DisplayReceiveItemsCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Receive Items</Hyperlink>
         </TextBlock>

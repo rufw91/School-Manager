@@ -16,6 +16,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -28,7 +29,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -153,7 +153,11 @@
     <Compile Include="ViewModels\AggregateResultsVM.cs" />
     <Compile Include="ViewModels\ClassReportFormsVM.cs" />
     <Compile Include="ViewModels\CombinedClassListVM.cs" />
+    <Compile Include="ViewModels\DisciplineDetailsVM.cs" />
+    <Compile Include="ViewModels\DisciplineTrackerHistoryVM.cs" />
+    <Compile Include="ViewModels\DisciplineTrackerVM.cs" />
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
+    <Compile Include="ViewModels\IssueItemsVM.cs" />
     <Compile Include="ViewModels\LeavingCertificateVM.cs" />
     <Compile Include="ViewModels\LocalTutorialsVM.cs" />
     <Compile Include="ViewModels\NetworkOptionsVM.cs" />
@@ -274,6 +278,18 @@
     </Compile>
     <Compile Include="Views\CombinedClassList.xaml.cs">
       <DependentUpon>CombinedClassList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiscipineDetails.xaml.cs">
+      <DependentUpon>DiscipineDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DisciplineTracker.xaml.cs">
+      <DependentUpon>DisciplineTracker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DisciplineTrackerHistory.xaml.cs">
+      <DependentUpon>DisciplineTrackerHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IssueItems.xaml.cs">
+      <DependentUpon>IssueItems.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LocalTutorials.xaml.cs">
       <DependentUpon>LocalTutorials.xaml</DependentUpon>
@@ -661,6 +677,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CombinedClassList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiscipineDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DisciplineTracker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DisciplineTrackerHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IssueItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
