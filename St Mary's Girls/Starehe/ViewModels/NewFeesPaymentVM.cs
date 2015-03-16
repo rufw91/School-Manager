@@ -60,7 +60,7 @@ namespace Starehe.ViewModels
                 currentPayment.FeePaymentID = await DataAccess.GetLastPaymentIDAsync(currentPayment.StudentID, currentPayment.DatePaid);
                 FeePaymentReceiptModel fprm = await DataAccess.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(sm.SaleItems));
                 
-                Document = DocumentHelper.GenerateDocument(new FeePaymentReceipt2Model(fprm));
+                Document = DocumentHelper.GenerateDocument(fprm);
                 if (ShowPrintDialogAction != null)
                     ShowPrintDialogAction.Invoke(Document);
 
@@ -119,7 +119,7 @@ namespace Starehe.ViewModels
                     RefreshRecentPayments();
                     Reset();
                     
-                    Document = DocumentHelper.GenerateDocument(new FeePaymentReceipt2Model(fprm));
+                    Document = DocumentHelper.GenerateDocument(fprm);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(Document);
                     
@@ -137,27 +137,32 @@ namespace Starehe.ViewModels
             RecentPayments = new ObservableCollection<FeePaymentModel>();
             currentPayment.PropertyChanged += async (o, e) =>
             {
-                if (e.PropertyName == "StudentID")
+                if (e.PropertyName != "StudentID")
+                    return;
+                if (currentPayment.StudentID > 0)
+                    currentPayment.CheckErrors();
+                if (!currentPayment.HasErrors)
                 {
-                    if (currentPayment.StudentID != 0)
+                    bool hasInv = await DataAccess.HasInvoicedThisTerm(currentPayment.StudentID);
+                    if (hasInv)
+                        CurrentFeesStructure = new FeesStructureModel() { Entries = (await DataAccess.GetThisTermInvoice(currentPayment.StudentID)).SaleItems };
+                    else
                     {
                         var s = await DataAccess.GetClassIDFromStudentID(currentPayment.StudentID);
                         CurrentFeesStructure = await DataAccess.GetFeesStructureAsync(s, DateTime.Now);
+                    }
+                    FeesStructureTotal = 0;
+                    foreach (var v in currentFeesStructure.Entries)
+                        FeesStructureTotal += v.Amount;
+                    currentFeesStructure.Entries.CollectionChanged += (o1, e1) =>
+                    {
                         FeesStructureTotal = 0;
                         foreach (var v in currentFeesStructure.Entries)
                             FeesStructureTotal += v.Amount;
-                        currentFeesStructure.Entries.CollectionChanged += (o1, e1) =>
-                        {
-                            FeesStructureTotal = 0;
-                            foreach (var v in currentFeesStructure.Entries)
-                                FeesStructureTotal += v.Amount;
-                        };
-                    }
+                    };
                 }
 
             };
-
-            
         }
 
         public override void Reset()

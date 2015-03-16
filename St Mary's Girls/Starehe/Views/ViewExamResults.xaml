@@ -21,39 +21,53 @@
                      IsChecked="{Binding IsInStudentMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      GroupName="1"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="50,130,0,0" Text="Student ID" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="50,118,0,0" Text="Student ID" VerticalAlignment="Top"/>
 
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="114,130,0,0" VerticalAlignment="Top" Width="200"
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="114,118,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding StudentResult.StudentID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
             ValidatesOnDataErrors=True,ValidatesOnNotifyDataErrors=True}"
                  IsEnabled="{Binding IsInStudentMode}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="65,175,0,0" Text="Name" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="65,163,0,0" Text="Name" VerticalAlignment="Top"/>
 
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="114,175,0,0" VerticalAlignment="Top" Width="200"
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="114,163,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding StudentResult.NameOfStudent}"
                  IsEnabled="{Binding IsInStudentMode}" IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"/>
-        <TextBlock HorizontalAlignment="Left" Margin="78,222,0,0" Text="Exam" VerticalAlignment="Top"/>
-        <ComboBox x:Name="what" HorizontalAlignment="Left" Margin="114,222,0,0" VerticalAlignment="Top" Width="180"
+        <TextBlock HorizontalAlignment="Left" Margin="78,210,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <ComboBox x:Name="what" HorizontalAlignment="Left" Margin="114,210,0,0" VerticalAlignment="Top" Width="180"
                   ItemsSource="{Binding AllExams}" DisplayMemberPath="NameOfExam" 
-                  SelectedValuePath="ExamID"
                   SelectedItem="{Binding SelectedExam, Mode=TwoWay}"
                   IsEnabled="{Binding IsInStudentMode}"/>
 
-        <RadioButton Content="Class" HorizontalAlignment="Left" Margin="40,286,0,0" VerticalAlignment="Top"
+        <RadioButton Content="Class" HorizontalAlignment="Left" Margin="40,270,0,0" VerticalAlignment="Top"
                      IsChecked="{Binding IsInClassMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      GroupName="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="79,336,0,0" Text="Class" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="114,336,0,0" VerticalAlignment="Top" Width="200"
+        <TextBlock HorizontalAlignment="Left" Margin="79,321,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="114,321,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllClasses}" DisplayMemberPath="NameOfClass"
                   SelectedValuePath="ClassID"
                   SelectedValue="{Binding ClassResult.ClassID}"
                   IsEnabled="{Binding IsInClassMode}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="78,391,0,0" Text="Exam" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="114,391,0,0" VerticalAlignment="Top" Width="180"
+        <TextBlock HorizontalAlignment="Left" Margin="78,368,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="114,368,0,0" VerticalAlignment="Top" Width="180"
         	ItemsSource="{Binding AllExams}" DisplayMemberPath="NameOfExam" 
-        	SelectedValuePath="ExamID"
         	SelectedItem="{Binding SelectedExam, Mode=TwoWay}"
             IsEnabled="{Binding IsInClassMode}"/>
+
+        <RadioButton Content="Combined Classes" HorizontalAlignment="Left" Margin="40,430,0,0" VerticalAlignment="Top"
+                     IsChecked="{Binding IsInCombinedMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     GroupName="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="79,475,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="114,475,0,0" VerticalAlignment="Top" Width="200"
+                  ItemsSource="{Binding AllCombinedClasses}" DisplayMemberPath="Description"
+                  SelectedItem="{Binding SelectedCombinedClass}"
+                  IsEnabled="{Binding IsInCombinedMode}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="78,525,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="114,525,0,0" VerticalAlignment="Top" Width="180"
+        	ItemsSource="{Binding AllExams}" DisplayMemberPath="NameOfExam" 
+        	SelectedItem="{Binding SelectedExam, Mode=TwoWay}"
+            IsEnabled="{Binding IsInCombinedMode}"/>
+
+
         <TextBlock HorizontalAlignment="Left" Margin="350,80,0,0" Style="{DynamicResource Title0}" Text="Result" VerticalAlignment="Top"/>
         <Border Margin="350,109,40,40" BorderBrush="Silver" BorderThickness="2">
             <ScrollViewer CanContentScroll="True">
@@ -61,7 +75,9 @@
                     <ContentControl Name="st" Content="{Binding StudentResult}" ContentTemplate="{StaticResource StudentResultTemplate}"
                          Visibility="{Binding IsInStudentMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <ContentControl Content="{Binding ClassResult}" ContentTemplate="{StaticResource ClassResultTemplate}"
-                                Visibility="{Binding Visibility, ElementName=st, Converter={StaticResource InverseVisibilityConverter}}"/>
+                                Visibility="{Binding IsInClassMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <ContentControl Content="{Binding ClassResult}" ContentTemplate="{StaticResource ClassResultTemplate}"
+                                Visibility="{Binding IsInCombinedMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </Grid>
             </ScrollViewer>
         </Border>

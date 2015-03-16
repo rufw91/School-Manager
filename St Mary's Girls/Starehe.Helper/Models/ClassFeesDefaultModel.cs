@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class ClassFeesDefaultModel: ClassModel
+    public class ClassBalancesListModel: ClassModel
     {
-        public ClassFeesDefaultModel()
+        public ClassBalancesListModel()
         {
             Date = DateTime.Now;
             Entries = new ObservableCollection<StudentFeesDefaultModel>();

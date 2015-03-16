@@ -33,10 +33,9 @@
                  DataContext="{Binding NewSubject}"
                   Text="{Binding MaximumScore, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock HorizontalAlignment="Left" Margin="89,342,0,0" TextWrapping="Wrap" Text="Class" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="159" ItemsSource="{Binding ClassesSetup.Entries}"
-        	DisplayMemberPath="NameOfClass"
-        	SelectedValuePath="ClassID"
-        	SelectedValue="{Binding SelectedCombinedClass, Mode=TwoWay}" Margin="126,342,0,0"/>
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="159" ItemsSource="{Binding AllCombinedClasses}"
+        	DisplayMemberPath="Description"
+        	SelectedItem="{Binding SelectedCombinedClass, Mode=TwoWay}" Margin="126,342,0,0"/>
         <Button Content="_Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" 
         	Command="{Binding AddNewSubjectCommand}" Margin="251,538,0,0"/>
 

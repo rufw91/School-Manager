@@ -28,6 +28,7 @@ namespace Helper
                 }
                 catch (Exception e)
                 {
+                    Log.E(e.ToString(), typeof(DataAccessHelper));
                     DataTable dt= new DataTable();
                     dt.Columns.Add(new DataColumn("Error"));
                     dt.Columns.Add(new DataColumn("Exception Details"));
@@ -62,6 +63,7 @@ namespace Helper
                 }
                 catch (Exception e)
                 {
+                    Log.E(e.ToString(), typeof(DataAccessHelper));
                     DataTable dt = new DataTable();
                     dt.Columns.Add(new DataColumn("Error"));
                     dt.Columns.Add(new DataColumn("Exception Details"));
@@ -85,8 +87,11 @@ namespace Helper
                 }
                 return true;
             }
-            catch
-            { return false; }
+            catch (Exception e)
+            {
+                Log.E(e.ToString(), typeof(DataAccessHelper));
+                return false;
+            }
         }
 
         static SqlCredential Credentials { get; set; }
@@ -104,7 +109,10 @@ namespace Helper
                 conn = CreateConnection(Credentials, ConnectionStringHelper.ConnectionString);
             }
             catch (Exception e)
-            { throw e; }
+            {
+                Log.E(e.ToString(), typeof(DataAccessHelper));
+                throw e;
+            }
             return conn;
         }
 
@@ -116,7 +124,10 @@ namespace Helper
                 conn = CreateConnection(Credentials, connectionString);
             }
             catch (Exception e)
-            { throw e; }
+            {
+                Log.E(e.ToString(), typeof(DataAccessHelper));
+                throw e;
+            }
             return conn;
         }
 
@@ -133,7 +144,10 @@ namespace Helper
                     { }
             }
             catch (Exception e)
-            { throw e; }
+            {
+                Log.E(e.ToString(), typeof(DataAccessHelper)); 
+                throw e;
+            }
             return conn;
         }
 
@@ -167,6 +181,7 @@ namespace Helper
             }
             catch (Exception e)
             {
+                Log.E(e.ToString(), typeof(DataAccessHelper));
                 throw e;
             }
         }
@@ -183,8 +198,9 @@ namespace Helper
                 }
                 return res;
             }
-            catch
+            catch (Exception e)
             {
+                Log.E(e.ToString(), typeof(DataAccessHelper));
             }
             return new ObservableCollection<string>();
         }
@@ -212,6 +228,7 @@ namespace Helper
             }
             catch (Exception e)
             {
+                Log.E(e.ToString(), typeof(DataAccessHelper));
                 throw e;
             }
             return result;
@@ -260,6 +277,7 @@ namespace Helper
             }
             catch (Exception e)
             {
+                Log.E(e.ToString(), typeof(DataAccessHelper));
                 throw e;
             }
             return result;
@@ -293,6 +311,7 @@ namespace Helper
             }
             catch (Exception e)
             {
+                Log.E(e.ToString(), typeof(DataAccessHelper));
                 throw e;
             }
             return result;
@@ -321,6 +340,7 @@ namespace Helper
             }
             catch (Exception e)
             {
+                Log.E(e.ToString(), typeof(DataAccessHelper));
                 throw e;
             }
             return succ;
@@ -353,6 +373,7 @@ namespace Helper
                 }
                 catch (Exception e)
                 {
+                    Log.E(e.ToString(), typeof(DataAccessHelper));
                     throw e;
                 }
                 return succ;
@@ -459,7 +480,7 @@ namespace Helper
                     }
                     return true;
                 }
-                catch { return false; }
+                catch(Exception e) { Log.E(e.ToString(), typeof(DataAccessHelper)); return false; }
             });
         }
 
@@ -489,7 +510,7 @@ namespace Helper
                     return true;
                 }
                 catch(Exception e) {
-                    MessageBox.Show(e.ToString());
+                    Log.E(e.ToString(), typeof(DataAccessHelper));
                     return false; }
             });
         }
@@ -521,8 +542,9 @@ namespace Helper
                     }
                     return true;
                 }
-                catch
+                catch(Exception e)
                 {
+                    Log.E(e.ToString(), typeof(DataAccessHelper));
                     return false;
                 }
             });

@@ -50,7 +50,7 @@ namespace Helper
 
         private static void GenerateBalanceList()
         {
-            ClassFeesDefaultModel si = myWorkObject as ClassFeesDefaultModel;
+            ClassBalancesListModel si = myWorkObject as ClassBalancesListModel;
 
             int pageNo;
             for (pageNo = 0; pageNo < noOfPages; pageNo++)

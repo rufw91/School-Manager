@@ -6,14 +6,17 @@ using System.ComponentModel;
 
 namespace Helper.Models
 {
-    public class FeePaymentModel : StudentBaseModel
+    public class FeePaymentModel : StudentSelectModel
     {
         int feePaymentID;
-        decimal amtPaid = 0;
-        DateTime datePaid = DateTime.Now;
+        decimal amtPaid;
+        DateTime datePaid;
         public FeePaymentModel()
             : base()
         {
+            DatePaid = DateTime.Now;
+            FeePaymentID = 0;
+            AmountPaid = 0;
         }
 
         public DateTime DatePaid
@@ -56,46 +59,6 @@ namespace Helper.Models
             }
         }
         
-        public override bool CheckErrors()
-        {
-            ErrorCheckingStatus = Helper.ErrorCheckingStatus.Incomplete;
-            try
-            {
-                ClearAllErrors();
-                if (StudentID == 0)
-                {
-                    List<string> errors = new List<string>();
-                    errors.Add("Student does not exist.");
-                    SetErrors("StudentID", errors);
-                }
-                else
-                {
-                    StudentModel student = DataAccess.GetStudent(StudentID);
-                    if (student.StudentID == 0)
-                    {
-                        List<string> errors = new List<string>();
-                        errors.Add("Student does not exist.");
-                        SetErrors("StudentID", errors);
-                    }
-                    else
-                    {
-                        ClearErrors("StudentID");
-                        this.StudentID = student.StudentID;
-                        this.NameOfStudent = student.NameOfStudent;
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-                List<string> errors = new List<string>();
-                errors.Add(e.Message);
-                SetErrors("", errors);
-            }
-            NotifyPropertyChanged("HasErrors");
-            ErrorCheckingStatus = Helper.ErrorCheckingStatus.Complete;
-            return HasErrors;
-        }
         public override void Reset()
         {
             base.Reset();

@@ -43,7 +43,7 @@ namespace Starehe.ViewModels
                 var fs = await DataAccess.GetSaleAsync(currentPayment.FeePaymentID);
                 currentPayment.NameOfStudent = currentStudent.NameOfStudent;
                 var temp = await DataAccess.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
-                var doc = DocumentHelper.GenerateDocument(new FeePaymentReceipt2Model(temp));
+                var doc = DocumentHelper.GenerateDocument(temp);
                 if (ShowPrintDialogAction != null)
                     ShowPrintDialogAction.Invoke(doc);
             }, o => CanGenerate() && Document!=null);
@@ -52,7 +52,7 @@ namespace Starehe.ViewModels
                 var fs = await DataAccess.GetSaleAsync(currentPayment.FeePaymentID);
                 currentPayment.NameOfStudent = currentStudent.NameOfStudent;
                 var temp = await DataAccess.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
-                Document = DocumentHelper.GenerateDocument(new FeePaymentReceipt2Model(temp));
+                Document = DocumentHelper.GenerateDocument(temp);
             },
                o => CanGenerate());
         }

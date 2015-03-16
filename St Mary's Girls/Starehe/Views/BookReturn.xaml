@@ -65,7 +65,7 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Add to this Issue" Command="{Binding PlacementTarget.Tag.AddCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                    <MenuItem Header="Set Returned" Command="{Binding PlacementTarget.Tag.AddCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>

@@ -13,7 +13,7 @@
 
             <TextBlock HorizontalAlignment="Left" Margin="30,100,0,0" Text="Student ID" VerticalAlignment="Top"/>
             <TextBox HorizontalAlignment="Left" Height="23" Margin="92,100,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding CurrentPayment.StudentID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=100,
+                 Text="{Binding CurrentPayment.StudentID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=20,
             ValidatesOnNotifyDataErrors=True}"/>
             <TextBlock HorizontalAlignment="Left" Margin="30,145,0,0" Text="Name" VerticalAlignment="Top"/>
 

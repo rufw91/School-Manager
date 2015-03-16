@@ -107,7 +107,8 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Samples &amp; Libraries\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack">
@@ -156,6 +157,7 @@
     <Compile Include="ViewModels\DisciplineDetailsVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerHistoryVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerVM.cs" />
+    <Compile Include="ViewModels\EnterExamResultsBySubjectVM.cs" />
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
     <Compile Include="ViewModels\IssueItemsVM.cs" />
     <Compile Include="ViewModels\LeavingCertificateVM.cs" />
@@ -164,6 +166,7 @@
     <Compile Include="ViewModels\NewPaymentVoucherVM.cs" />
     <Compile Include="ViewModels\OnlineResourcesVM.cs" />
     <Compile Include="ViewModels\PAYEInfoVM.cs" />
+    <Compile Include="ViewModels\PaymentsByVoteHeadVM.cs" />
     <Compile Include="ViewModels\PaymentVoucherHistoryVM.cs" />
     <Compile Include="ViewModels\PDFViewVM.cs" />
     <Compile Include="ViewModels\PriceListsVM.cs" />
@@ -179,7 +182,7 @@
     <Compile Include="ViewModels\DormitoryMembersVM.cs" />
     <Compile Include="ViewModels\IssueBookVM.cs" />
     <Compile Include="ViewModels\LibraryVM.cs" />
-    <Compile Include="ViewModels\FeesDefaultersVM.cs" />
+    <Compile Include="ViewModels\BalancesListVM.cs" />
     <Compile Include="ViewModels\Import\ImportWizardMainWindowVM.cs" />
     <Compile Include="ViewModels\Import\ImportWizardPage1VM.cs" />
     <Compile Include="ViewModels\Import\ImportWizardPage2VM.cs" />
@@ -221,11 +224,10 @@
     <Compile Include="ViewModels\RemoveSupplierVM.cs" />
     <Compile Include="ViewModels\ReprintReceiptVM.cs" />
     <Compile Include="ViewModels\SetFeesStructureVM.cs" />
-    <Compile Include="ViewModels\FeesVM.cs" />
+    <Compile Include="ViewModels\FinanceVM.cs" />
     <Compile Include="ViewModels\GalleryVM.cs" />
     <Compile Include="ViewModels\GeneralSettingsVM.cs" />
     <Compile Include="ViewModels\HomePageVM.cs" />
-    <Compile Include="ViewModels\ImportWizardVM.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="ViewModels\ModifyTimeTableVM.cs" />
     <Compile Include="ViewModels\NewEventVM.cs" />
@@ -288,6 +290,9 @@
     <Compile Include="Views\DisciplineTrackerHistory.xaml.cs">
       <DependentUpon>DisciplineTrackerHistory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EnterExamResultsBySubject.xaml.cs">
+      <DependentUpon>EnterExamResultsBySubject.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\IssueItems.xaml.cs">
       <DependentUpon>IssueItems.xaml</DependentUpon>
     </Compile>
@@ -296,6 +301,9 @@
     </Compile>
     <Compile Include="Views\OnlineResources.xaml.cs">
       <DependentUpon>OnlineResources.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PaymentsByVoteHead.xaml.cs">
+      <DependentUpon>PaymentsByVoteHead.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Reports.xaml.cs">
       <DependentUpon>Reports.xaml</DependentUpon>
@@ -692,6 +700,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\EnterExamResultsBySubject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\IssueItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -701,6 +713,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OnlineResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PaymentsByVoteHead.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

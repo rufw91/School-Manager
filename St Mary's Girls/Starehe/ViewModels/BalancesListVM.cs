@@ -8,19 +8,19 @@ using System.Windows.Input;
 namespace Starehe.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
-    public class FeesDefaultersVM : ViewModelBase
+    public class BalancesListVM : ViewModelBase
     {
         ClassModel selectedClass;
         ObservableCollection<ClassModel> allClasses;
         private FixedDocument doc;
-        public FeesDefaultersVM()
+        public BalancesListVM()
         {
             InitVars();
             CreateCommands();
         }
         protected override async void InitVars()
         {
-            Title = "FEES DEFAULTERS";
+            Title = "BALANCES LIST";
             AllClasses = await DataAccess.GetAllClassesAsync();
         }
 
@@ -28,7 +28,7 @@ namespace Starehe.ViewModels
         {
             GenerateCommand = new RelayCommand(async o =>
             {
-                ClassFeesDefaultModel s = await DataAccess.GetFeesDefaulters(selectedClass);
+                ClassBalancesListModel s = await DataAccess.GetBalancesList(selectedClass);
                 Document = DocumentHelper.GenerateDocument(s);
             }, o => selectedClass != null);
         }

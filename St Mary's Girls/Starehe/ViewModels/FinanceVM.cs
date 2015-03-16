@@ -5,9 +5,9 @@ using System.Security.Permissions;
 namespace Starehe.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "User")]
-    public class FeesVM : ParentViewModel
+    public class FinanceVM : ParentViewModel
     {
-        public FeesVM()
+        public FinanceVM()
         {
             Title = "FINANCE";
             TryAddChild(typeof(NewFeesPaymentVM));
@@ -16,11 +16,12 @@ namespace Starehe.ViewModels
             TryAddChild(typeof(ViewFeesStructureVM));
             TryAddChild(typeof(SetFeesStructureVM));
             TryAddChild(typeof(ReprintReceiptVM));
-            TryAddChild(typeof(FeesDefaultersVM));
+            TryAddChild(typeof(BalancesListVM));
             TryAddChild(typeof(RemovePaymentVM));
             TryAddChild(typeof(RemoveBillVM));
             TryAddChild(typeof(NewPaymentVoucherVM));
             TryAddChild(typeof(PaymentVoucherHistoryVM));
+            TryAddChild(typeof(PaymentsByVoteHeadVM));
         }
     }
 }
