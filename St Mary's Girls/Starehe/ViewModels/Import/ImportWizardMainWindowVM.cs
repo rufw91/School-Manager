@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Security.Permissions;
 using System.Threading.Tasks;
@@ -80,8 +81,8 @@ namespace Starehe.ViewModels
             AllColumns = new ObservableCollection<string>();
             Source = new ImportWizardPage1VM();
             AllClasses = new List<ClassModel>(await DataAccess.GetAllClassesAsync());
-           
-            
+
+
             Errors = new Dictionary<int, List<string>>();
             IsBusy = false;
         }
@@ -112,10 +113,10 @@ namespace Starehe.ViewModels
                 IsBusy = true;
                 PathToFile = FileHelper.BrowseExcelFileAsString();
                 if (!string.IsNullOrWhiteSpace(pathToFile))
-                await Task.Run(() =>
-                {
-                    Dimension = SpreadsheetDocument.GetDimension(pathToFile);
-                });
+                    await Task.Run(() =>
+                    {
+                        Dimension = SpreadsheetDocument.GetDimension(pathToFile);
+                    });
                 IsBusy = false;
             }, o => !IsBusy);
             CancelCommand = new RelayCommand(o =>
@@ -171,7 +172,7 @@ namespace Starehe.ViewModels
 
                 Progress = 0;
                 ProgressText = "Refreshing Classes.";
-                AllClasses = new List<ClassModel>( DataAccess.GetAllClassesAsync().Result);                
+                AllClasses = new List<ClassModel>(DataAccess.GetAllClassesAsync().Result);
                 Progress = 100;
 
                 //Save Students                   
@@ -190,26 +191,30 @@ namespace Starehe.ViewModels
                     student.Address = "-";
                     student.BedNo = "-";
                     student.ClassID = AllClasses.First(c => c.NameOfClass.ToUpper() == dtr[classColumn].ToString().ToUpper()).ClassID;
-                    student.DateOfAdmission = DateTime.Parse(dtr[dateOfAdmissionColumn].ToString());
-                    student.DateOfBirth = DateTime.Parse(dtr[dateOfBirthColumn].ToString());
+                    DateTime d;
+                    DateTime d1;
+                    ConvertDate(dtr[dateOfAdmissionColumn].ToString(), out d);
+                    ConvertDate(dtr[dateOfBirthColumn].ToString(), out d1);
+                    student.DateOfAdmission = d;
+                    student.DateOfBirth = d1;
                     student.Email = "test@example.com";
                     student.GuardianPhoneNo = dtr[phoneNoColumn].ToString();
                     student.NameOfGuardian = dtr[nameOfGuardianColumn].ToString();
                     student.PostalCode = "X";
                     student.PrevBalance = decimal.Parse(dtr[balanceBFColumn].ToString());
-                   
+
                     await DataAccess.SaveNewStudentAsync(student);
                 }
 
                 ProgressText = "Successfully saved Students.";
-                    HasFinished =true;
-                    InformationText = "Successfully completed Import Process.";
+                HasFinished = true;
+                InformationText = "Successfully completed Import Process.";
             });
         }
 
         private List<ClassModel> AllClasses
         { get; set; }
-        
+
         private async Task GoNext()
         {
             if (source is ImportWizardPage1VM)
@@ -272,9 +277,18 @@ namespace Starehe.ViewModels
                 DataTable dt = rawData;
                 foreach (DataRow dtr in dt.Rows)
                 {
-                    for (int i =0 ; i<dt.Columns.Count;i++)
+                    for (int i = 0; i < dt.Columns.Count; i++)
                     {
-                        dtr[i]=dtr[i].ToString().Replace("'", "");
+                        dtr[i] = dtr[i].ToString().Replace("'", "").Trim().Replace("@","")
+                            .Replace("#","")
+                            .Replace(":", "")
+                            .Replace("\"", "")
+                            .Replace("\\", "")
+                            .Replace("?", "")
+                            .Replace("!", "")
+                            .Replace("$", "")
+                            .Replace("%", "")
+                            .Replace("^", "");
                     }
                 }
                 return dt;
@@ -470,7 +484,7 @@ namespace Starehe.ViewModels
                 {
                     this.classColumn = value;
                     NotifyPropertyChanged("ClassColumn");
-                    TestAll(); 
+                    TestAll();
                 }
             }
         }
@@ -571,7 +585,7 @@ namespace Starehe.ViewModels
         {
             Errors.Clear();
             await Task.WhenAll<bool>(TestStudentID(), TestFirstName(), TestMiddleName(), TestLastName(),
-                TestClass(), TestPhoneNo(), TestBalanceBF(),TestNameOfGuardian(),TestDateOfBirth(),TestDateOfAdmission(),TestBoarding());
+                TestClass(), TestPhoneNo(), TestBalanceBF(), TestNameOfGuardian(), TestDateOfBirth(), TestDateOfAdmission(), TestBoarding());
         }
 
         private async Task<bool> TestStudentID()
@@ -582,7 +596,7 @@ namespace Starehe.ViewModels
                 TestProgressStudentID = 100;
                 return false;
             }
-            
+
             return await Task.Run<bool>(() =>
             {
                 bool succ = true;
@@ -592,7 +606,7 @@ namespace Starehe.ViewModels
                     TestProgressStudentID = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
                     int x;
                     isOk = int.TryParse(data.Rows[i][studentIDColumn] == null ? null : data.Rows[i][studentIDColumn].ToString(), out x)
-                        && x >0;
+                        && x > 0;
                     succ = succ && isOk;
                     if (!isOk)
                         AddError(i, "Student ID value [" + data.Rows[i][studentIDColumn] + "] is invalid.");
@@ -737,7 +751,7 @@ namespace Starehe.ViewModels
                 {
                     TestProgressBalanceBF = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
                     Decimal test;
-                    isOk = decimal.TryParse(data.Rows[i][balanceBFColumn].ToString(),out test);
+                    isOk = decimal.TryParse(data.Rows[i][balanceBFColumn].ToString(), out test);
                     succ = succ && isOk;
                     if (!isOk)
                         AddError(i, "Description value [" + data.Rows[i][balanceBFColumn] + "] is invalid.");
@@ -786,7 +800,7 @@ namespace Starehe.ViewModels
                 for (int i = 0; i < data.Rows.Count; i++)
                 {
                     TestProgressBoarding = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-                    
+
                     isOk = !string.IsNullOrWhiteSpace(data.Rows[i][boardingColumn].ToString());
                     succ = succ && isOk;
                     if (!isOk)
@@ -812,7 +826,7 @@ namespace Starehe.ViewModels
                 {
                     TestProgressDateOfBirth = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
                     DateTime test;
-                    isOk = DateTime.TryParse(data.Rows[i][dateOfBirthColumn].ToString(), out test);
+                    isOk = ConvertDate(data.Rows[i][dateOfBirthColumn].ToString(), out test);
                     succ = succ && isOk;
                     if (!isOk)
                         AddError(i, "Description value [" + data.Rows[i][dateOfBirthColumn] + "] is invalid.");
@@ -837,7 +851,7 @@ namespace Starehe.ViewModels
                 {
                     TestProgressDateOfAdmission = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
                     DateTime test;
-                    isOk = DateTime.TryParse(data.Rows[i][dateOfAdmissionColumn].ToString(), out test);
+                    isOk = ConvertDate(data.Rows[i][dateOfAdmissionColumn].ToString(), out test);
                     succ = succ && isOk;
                     if (!isOk)
                         AddError(i, "Description value [" + data.Rows[i][dateOfAdmissionColumn] + "] is invalid.");
@@ -1011,6 +1025,34 @@ namespace Starehe.ViewModels
         {
             get;
             private set;
+        }
+
+        public bool ConvertDate(string date,out DateTime returnDate)
+        {
+            DateTime dt = DateTime.Now;
+            if (DateTime.TryParse(date, new CultureInfo("en-GB"), DateTimeStyles.None, out dt))
+            {
+                returnDate = dt;
+                return true;
+            }
+
+            int i;
+            if (int.TryParse(date, out i))
+            {
+                if (i>3000)
+                {
+                    dt = new DateTime(1899, 12, 31).AddDays(i - 1);
+                    returnDate= dt;
+                    return true;
+                }
+                else
+                {
+                    returnDate = new DateTime(i,1,1);
+                    return true;                     
+                }
+            }
+            returnDate = DateTime.Now;
+            return false;
         }
     }
 }

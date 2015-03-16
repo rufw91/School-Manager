@@ -19,6 +19,8 @@
     <Color x:Key="Title11BackgroundColor">#4C3C08</Color>
     <Color x:Key="Title12BackgroundColor">Black</Color>
 
+
+    
     <SolidColorBrush x:Key="Title1BackgroundBrush" Color="{DynamicResource Title1BackgroundColor}"/>
     <SolidColorBrush x:Key="Title2BackgroundBrush" Color="{DynamicResource Title2BackgroundColor}"/>
     <SolidColorBrush x:Key="Title3BackgroundBrush" Color="{DynamicResource Title3BackgroundColor}"/>

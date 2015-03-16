@@ -110,6 +110,7 @@
     <Compile Include="Models\ClassTranscriptsModel.cs" />
     <Compile Include="Models\CombinedClassModel.cs" />
     <Compile Include="Models\DisciplineModel.cs" />
+    <Compile Include="Models\ExamResultStudentSubjectEntryModel.cs" />
     <Compile Include="Models\FeePaymentReceipt2Model.cs" />
     <Compile Include="Models\FeesPaymentReceiptModel.cs" />
     <Compile Include="Models\ItemIssueEntryModel.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Models\UnreturnedBooksModel.cs" />
     <Compile Include="Models\VATAnalysisModel.cs" />
     <Compile Include="Models\VatModel.cs" />
+    <Compile Include="Models\VoteHeadModel.cs" />
     <Compile Include="ObservableCollectionObject.cs" />
     <Compile Include="ObservableImmutableDictionary.cs" />
     <Compile Include="ObservableImmutableList.cs" />

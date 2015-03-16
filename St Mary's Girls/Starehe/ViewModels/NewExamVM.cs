@@ -3,6 +3,7 @@ using Helper.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Starehe.ViewModels
@@ -10,8 +11,8 @@ namespace Starehe.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class NewExamVM : ViewModelBase
     {
-        int selectedClassID;
-        ObservableCollection<ClassModel> allClasses;
+        CombinedClassModel selectedCombinedClass;
+        ObservableCollection<CombinedClassModel> allCombinedClasses;
         ExamModel newExam;
         public NewExamVM()
         {
@@ -20,7 +21,7 @@ namespace Starehe.ViewModels
         }
         protected override void CreateCommands()
         {
-            RefreshCommand = new RelayCommand(o => { RefreshEntries(); }, o => selectedClassID > 0);
+            RefreshCommand = new RelayCommand(async o => { await RefreshEntries(); }, o => selectedCombinedClass !=null);
             SaveCommand = new RelayCommand(async o =>
             {
                 bool succ = await DataAccess.SaveNewExamAsync(newExam);
@@ -29,7 +30,7 @@ namespace Starehe.ViewModels
             },
             o =>
             {
-                return SelectedClassID > 0 &&
+                return selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0&&
                     !string.IsNullOrWhiteSpace(newExam.NameOfExam) && newExam.Entries.Count > 0;
             });
         }
@@ -37,45 +38,61 @@ namespace Starehe.ViewModels
         protected async override void InitVars()
         {
             Title = "NEW EXAM";
-            SelectedClassID = 0;
+            SelectedCombinedClass =null;
             NewExam = new ExamModel();
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            PropertyChanged +=async (o, e) =>
+                {
+                    if (e.PropertyName=="SelectedCombinedClass")
+                    {
+                        if (selectedCombinedClass != null)
+                        {
+                            newExam.Classes = selectedCombinedClass.Entries;
+                            await RefreshEntries();
+                        }
+                        else
+                            newExam.Classes.Clear();
+                    }
+                };
         }
 
-        public ObservableCollection<ClassModel> AllClasses
+        public ObservableCollection<CombinedClassModel> AllCombinedClasses
         {
-            get { return allClasses; }
+            get { return allCombinedClasses; }
             set
             {
-                if (allClasses != value)
+                if (allCombinedClasses != value)
                 {
-                    allClasses = value;
-                    NotifyPropertyChanged("AllClasses");
+                    allCombinedClasses = value;
+                    NotifyPropertyChanged("AllCombinedClasses");
                 }
             }
         }
 
-        public int SelectedClassID
+        public CombinedClassModel SelectedCombinedClass
         {
-            get { return selectedClassID; }
+            get { return selectedCombinedClass; }
             set
             {
-                if (selectedClassID != value)
+                if (selectedCombinedClass != value)
                 {
-                    selectedClassID = value;
-                    newExam.ClassID = selectedClassID;
-                    RefreshEntries();
+                    selectedCombinedClass = value;
+                    NotifyPropertyChanged("SelectedCombinedClass");
                 }
             }
         }
-
-        private async void RefreshEntries()
+        private void SetExamClasses()
+        {
+            foreach (var c in selectedCombinedClass.Entries)
+                newExam.Classes.Add(c);
+        }
+        private async Task RefreshEntries()
         {
             newExam.Entries.Clear();
-            if (newExam.ClassID <= 0)
+            if (newExam.Classes.Count== 0)
                 return;
             var temp =
-                await DataAccess.GetSubjectsRegistredToClassAsync(newExam.ClassID);
+                await DataAccess.GetSubjectsRegistredToClassAsync(newExam.Classes[0].ClassID);
             foreach (SubjectModel sm in temp)
                 newExam.Entries.Add(new ExamSubjectEntryModel(sm));
         }
@@ -107,9 +124,9 @@ namespace Starehe.ViewModels
 
         public async override void Reset()
         {
-            SelectedClassID = 0;
+            SelectedCombinedClass = null;
             NewExam = new ExamModel();
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
         }
     }
 }

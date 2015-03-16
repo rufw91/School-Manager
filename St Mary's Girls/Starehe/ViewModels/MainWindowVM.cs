@@ -93,7 +93,7 @@ namespace Starehe.ViewModels
 
             DisplayFeesCommand = new RelayCommand(o =>
             {
-                this.Source = new FeesVM();
+                this.Source = new FinanceVM();
             }, o => true);
 
             DisplayInstitutionCommand = new RelayCommand(o =>

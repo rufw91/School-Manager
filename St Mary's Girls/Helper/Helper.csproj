@@ -54,6 +54,9 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\Samples &amp; Libraries\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
@@ -111,6 +114,7 @@
     <Compile Include="Converters\DataGridToDataTable.cs" />
     <Compile Include="Converters\TitleConverter.cs" />
     <Compile Include="Helpers\ActivationHelper.cs" />
+    <Compile Include="Helpers\Log.cs" />
     <Compile Include="Helpers\WebHelper.cs" />
     <Compile Include="Helpers\XPSHelper.cs" />
     <Compile Include="Models\ApplicationPersistModel.cs" />

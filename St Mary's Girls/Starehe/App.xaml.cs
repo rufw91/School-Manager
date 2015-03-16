@@ -14,8 +14,7 @@ using System.Windows.Threading;
 namespace Starehe
 {
     public partial class App : Application, ISingleInstanceApp 
-    {
-        public enum LogType { E,I,W,D}
+    {       
         private const string Unique = "Starehe";
         private static ApplicationModel info;
         [STAThread]
@@ -34,17 +33,7 @@ namespace Starehe
             }
         }
         #region ISingleInstanceApp Members
-        public static void Log(LogType logType,string message)
-        {
-            switch(logType)
-            {
-                case LogType.D: LogManager.GetLogger(typeof(App)).Debug(message); break;
-                case LogType.E: LogManager.GetLogger(typeof(App)).Error(message); break;
-                case LogType.I: LogManager.GetLogger(typeof(App)).Info(message); break;
-                case LogType.W: LogManager.GetLogger(typeof(App)).Warn(message); break;
-            }
-            
-        }
+        
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
             // handle command line arguments of second instance
@@ -95,12 +84,12 @@ namespace Starehe
                         Helper.Properties.Settings.Default.Save();
                     };
             }
-            catch(Exception e) { Log(LogType.I, e.ToString()); }
+            catch(Exception e) { Log.E(e.ToString(),this); }
         }
 
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
-            Log(LogType.I, "Init Vars");
+            Log.I("Init Vars",this);
             InitGlobalVar();
             FileHelper.CheckFiles();
             if (await ActivationHelper.IsActivated())
@@ -129,7 +118,7 @@ namespace Starehe
         
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Log(LogType.E, e.Exception.ToString());
+            Log.E(e.Exception.ToString(), this);
             e.Handled = true;            
         }
 

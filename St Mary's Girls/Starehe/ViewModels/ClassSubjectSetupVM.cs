@@ -2,6 +2,7 @@
 using Helper.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,7 +18,8 @@ namespace Starehe.ViewModels
 
         ClassesSetupEntryModel newClass;
         SubjectsSetupEntryModel newSubject;
-        int selectedClassID;
+        CombinedClassModel selectedCombinedClass;
+        ObservableCollection<CombinedClassModel> allCombinedClasses;
 
         public ClassSubjectSetupVM()
         {
@@ -27,6 +29,7 @@ namespace Starehe.ViewModels
 
         protected override async void InitVars()
         {
+            IsBusy = true;
             Title = "CLASS & SUBJECT SETUP";
             subjectsSetup = new SubjectsSetupModel();
             classesSetup = new ClassesSetupModel();
@@ -35,8 +38,21 @@ namespace Starehe.ViewModels
             ObservableCollection<ClassModel> allClasses = await DataAccess.GetAllClassesAsync();
             foreach (ClassModel c in allClasses)
                 classesSetup.Entries.Add(new ClassesSetupEntryModel(c));
+            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            IsBusy = false;
         }
-
+        public ObservableCollection<CombinedClassModel> AllCombinedClasses
+        {
+            get { return allCombinedClasses; }
+            set
+            {
+                if (allCombinedClasses != value)
+                {
+                    allCombinedClasses = value;
+                    NotifyPropertyChanged("AllCombinedClasses");
+                }
+            }
+        }
         protected override void CreateCommands()
         {
             AddNewClassCommand = new RelayCommand(async o =>
@@ -56,7 +72,10 @@ namespace Starehe.ViewModels
                 subjectsSetup.Entries.Add(NewSubject);
                 bool succ = await DataAccess.SaveNewSubjectSetupAsync(subjectsSetup);
                 if (succ)
+                {
                     NewSubject = new SubjectsSetupEntryModel();
+                    SelectedCombinedClass = null;
+                }
             }, o => CanAddSubject());
         }
 
@@ -98,33 +117,33 @@ namespace Starehe.ViewModels
             }
         }
 
-        public int SelectedClassID
+        public CombinedClassModel SelectedCombinedClass
         {
-            get { return selectedClassID; }
+            get { return selectedCombinedClass; }
 
             set
             {
-                selectedClassID = value;
-                if (selectedClassID == subjectsSetup.ClassID)
+                if (selectedCombinedClass != value)
+                {
+                    selectedCombinedClass = value;
+                    NotifyPropertyChanged("SelectedCombinedClass");
+                }
+                if ((selectedCombinedClass == null) || (selectedCombinedClass.Entries == subjectsSetup.Classes))
                     return;
                 else
                 {
-                    NotifyPropertyChanged("SelectedClassID");
-                    subjectsSetup.ClassID = selectedClassID;
+                    if (selectedCombinedClass != null)
+                        subjectsSetup.Classes = selectedCombinedClass.Entries;
                     RefreshSubjectEntries();
                 }
             }
         }
         private async void RefreshSubjectEntries()
         {
-            if (selectedClassID==0)
-            {
-                subjectsSetup.Entries.Clear();
-                subjectsSetup.ClassID = 0;
-                return;
-            }   
             subjectsSetup.Entries.Clear();
-            var temp= await DataAccess.GetSubjectsRegistredToClassAsync(selectedClassID);
+            if (selectedCombinedClass == null || selectedCombinedClass.Entries.Count == 0)
+                return;            
+            var temp= await DataAccess.GetSubjectsRegistredToClassAsync(selectedCombinedClass.Entries[0].ClassID);
             foreach (SubjectModel sm in temp)
                 subjectsSetup.Entries.Add(new SubjectsSetupEntryModel(sm));
         }
@@ -135,6 +154,7 @@ namespace Starehe.ViewModels
             ObservableCollection<ClassModel> allClasses = await DataAccess.GetAllClassesAsync();
             foreach (ClassModel c in allClasses)
                 classesSetup.Entries.Add(new ClassesSetupEntryModel(c));
+            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
         }
 
         public ICommand AddNewClassCommand
@@ -151,9 +171,12 @@ namespace Starehe.ViewModels
         
         private bool CanAddSubject()
         {
-            return subjectsSetup.ClassID>0
+            bool temp= subjectsSetup.Classes.Count>0
                 && !string.IsNullOrWhiteSpace(newSubject.NameOfSubject)
                 && newSubject.MaximumScore > 0;
+            Debug.WriteLine("CanAddSubject: " + temp);
+            Debug.WriteLine("HasClasses: " + (subjectsSetup.Classes.Count > 0));
+            return temp;
         }
 
         private bool CanAddClass()

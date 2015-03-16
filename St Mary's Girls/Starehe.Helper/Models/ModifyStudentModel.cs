@@ -54,6 +54,7 @@ namespace Helper.Models
                         this.DateOfAdmission = student.DateOfAdmission;
                         this.DateOfBirth = student.DateOfBirth;
                         this.DormitoryID = student.DormitoryID;
+                        this.PrevBalance = student.PrevBalance;
                     }
                 }
             }
@@ -85,6 +86,7 @@ namespace Helper.Models
             DormitoryID = 0;
             BedNo = "";
             PrevInstitution = "";
+            PrevBalance = 0;
         }
     }
 }

@@ -118,7 +118,7 @@ namespace Helper
                 return DocType.FeesPayment2;
             if (workObject is FeePaymentReceiptModel)
                 return DocType.FeesPayment;
-            if (workObject is ClassFeesDefaultModel)
+            if (workObject is ClassBalancesListModel)
                 return DocType.Balances;
             if (workObject is ClassStudentListModel)
                 return DocType.ClassList;
@@ -170,8 +170,8 @@ namespace Helper
                 totalNoOfItems = (workObject as SaleModel).SaleItems.Count;
             if (workObject is FeesStatementModel)
                 totalNoOfItems = (workObject as FeesStatementModel).Transactions.Count;
-            if (workObject is ClassFeesDefaultModel)
-                totalNoOfItems = (workObject as ClassFeesDefaultModel).Entries.Count;
+            if (workObject is ClassBalancesListModel)
+                totalNoOfItems = (workObject as ClassBalancesListModel).Entries.Count;
             if (workObject is ClassStudentListModel)
                 totalNoOfItems = (workObject as ClassStudentListModel).Entries.Count;
             if (workObject is ClassExamResultModel)

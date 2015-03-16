@@ -14,9 +14,9 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="New Exam" 
                    VerticalAlignment="Top"/>
         <TextBlock Text="Class" HorizontalAlignment="Left" Margin="87,80,0,0" VerticalAlignment="Top" />
-        <ComboBox DisplayMemberPath="NameOfClass" HorizontalAlignment="Left" Margin="120,80,0,0" 
-                  ItemsSource="{Binding AllClasses}"
-                  SelectedValue="{Binding Path=SelectedClassID, Mode=TwoWay}" SelectedValuePath="ClassID" 
+        <ComboBox DisplayMemberPath="Description" HorizontalAlignment="Left" Margin="120,80,0,0" 
+                  ItemsSource="{Binding AllCombinedClasses}"
+                  SelectedItem="{Binding Path=SelectedCombinedClass, Mode=TwoWay}"
                   VerticalAlignment="Top" Width="194"/>
         <TextBlock Text="Name" HorizontalAlignment="Left" Margin="82,130,0,0" Name="label3" VerticalAlignment="Top" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="120,130,0,0" MaxLength="20" 

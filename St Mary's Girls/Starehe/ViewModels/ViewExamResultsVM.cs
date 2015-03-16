@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Permissions;
 using System.Threading.Tasks;
@@ -17,11 +18,12 @@ namespace Starehe.ViewModels
     {
         bool isInStudentMode;
         bool isInClassMode;
+        bool isInCombinedMode;
         ExamResultStudentDisplayModel studentResult;
         ExamResultClassDisplayModel classResult;
-
+        CombinedClassModel selectedCombinedClass;
         ExamModel selectedExam;
-        ObservableCollection<ExamModel> allExams;
+        ObservableImmutableList<ExamModel> allExams;
         bool canExec = false;
         public ViewExamResultsVM()
         {
@@ -34,16 +36,16 @@ namespace Starehe.ViewModels
             Title = "VIEW EXAM RESULTS";
             StudentResult = new ExamResultStudentDisplayModel();
             ClassResult = new ExamResultClassDisplayModel();
-            AllExams = new ObservableCollection<ExamModel>();
+            AllExams = new ObservableImmutableList<ExamModel>();
             IsInStudentMode = true;
-            studentResult.PropertyChanged += (o, e) =>
+            studentResult.PropertyChanged += async (o, e) =>
             {
                 if (isInStudentMode)
                     if (e.PropertyName == "StudentID")
                     {
                         RefreshView();
                         if (studentResult.StudentID > 0)
-                            RefreshAllExams();
+                            await RefreshAllExams();
                         else AllExams.Clear();
                     }
 
@@ -53,23 +55,13 @@ namespace Starehe.ViewModels
             classResult.PropertyChanged += OnPropertyChanged;
             AllClasses = await DataAccess.GetAllClassesAsync();
             NotifyPropertyChanged("AllClasses");
-        }
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (isInClassMode)
-                if (e.PropertyName == "ClassID")
-                {
-                    RefreshAllExams();
-                    RefreshView();
-                }
-            if (e.PropertyName == "SelectedExam")
-                RefreshView();
+            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            NotifyPropertyChanged("AllClasses");
         }
 
         protected override void CreateCommands()
         {
-            PrintTranscriptCommand = new RelayCommand(o => 
+            PrintTranscriptCommand = new RelayCommand(o =>
             {
                 if (isInStudentMode)
                 {
@@ -93,7 +85,7 @@ namespace Starehe.ViewModels
                     StudentResult.Entries = temp.Entries;
                     StudentResult.ExamID = temp.ExamID;
                     StudentResult.ExamResultID = temp.ExamResultID;
-                    
+
                     StudentModel st = await DataAccess.GetStudentAsync(studentResult.StudentID);
                     studentResult.NameOfStudent = st.NameOfStudent;
                     studentResult.NameOfClass = (await DataAccess.GetClassAsync(st.ClassID)).NameOfClass;
@@ -104,6 +96,9 @@ namespace Starehe.ViewModels
                 {
                     var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(classResult.ClassID, selectedExam.ExamID));
                     ClassResult.Entries = temp.Entries;
+                    Debug.WriteLine("ClassID:" + classResult.ClassID+"   EXamID:"+selectedExam.ExamID);
+                    Debug.WriteLine("Name:" + temp.NameOfClass);
+                    Debug.WriteLine("Class No of res:" + temp.Entries.Count);
                     ClassResult.ExamID = temp.ExamID;
                     ClassResult.ExamResultID = temp.ExamResultID;
 
@@ -111,11 +106,57 @@ namespace Starehe.ViewModels
                     classResult.NameOfClass = st.NameOfClass;
                     classResult.NameOfExam = selectedExam.NameOfExam;
 
-                    classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x=>x.Total).ToList());
+                    classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
+                }
+
+                if (isInCombinedMode)
+                {
+                    ClassModel cs;
+                    Debug.WriteLine("selectedCombinedClass count:" + selectedCombinedClass.Entries.Count);
+                    for (int i = 0; i < selectedCombinedClass.Entries.Count;i++ )
+                    {
+                        cs = selectedCombinedClass.Entries[i];
+                        Debug.WriteLine("ClassID:" + cs.ClassID + "   EXamID:" + selectedExam.ExamID);
+                        Debug.WriteLine("Name:" + cs.NameOfClass);
+                        var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(cs.ClassID, selectedExam.ExamID));
+                        Debug.WriteLine("No of res:" + temp.Entries.Count);
+                        foreach (var e in temp.Entries)
+                        {
+                            classResult.Entries.Add(e);                            
+                        }
+
+                        if (i == 0)
+                        {
+                            classResult.ExamID = temp.ExamID;
+                            classResult.ExamResultID = temp.ExamResultID;
+                            classResult.NameOfClass = selectedCombinedClass.Description;
+                            classResult.NameOfExam = selectedExam.NameOfExam;
+                        }                        
+                    }
+                    Debug.WriteLine("Number of Student Results count:" + classResult.Entries.Count);
+                    classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
                 }
 
             }, o => CanDisplayResults());
         }
+        
+        private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (isInClassMode)
+                if (e.PropertyName == "ClassID")
+                {
+                    await RefreshAllExams();
+                    RefreshView();
+                }
+            if (e.PropertyName == "SelectedExam")
+                RefreshView();
+
+            if (e.PropertyName == "SelectedCombinedClass")
+                if ((selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0))
+                    await RefreshAllExams();
+        }
+
+        
 
         private bool CanPrintResult()
         {
@@ -201,11 +242,14 @@ namespace Starehe.ViewModels
 
             if (isInClassMode)
                 return selectedExam != null && selectedExam.ExamID > 0 && classResult.ClassID > 0;
+            if (isInCombinedMode)
+                return selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0&&
+                    selectedExam != null && selectedExam.ExamID > 0;
 
             return false;
         }
 
-        public ObservableCollection<ExamModel> AllExams
+        public ObservableImmutableList<ExamModel> AllExams
         {
             get { return allExams; }
 
@@ -247,6 +291,20 @@ namespace Starehe.ViewModels
             }
         }
 
+        public CombinedClassModel SelectedCombinedClass
+        {
+            get { return selectedCombinedClass; }
+
+            set
+            {
+                if (value != selectedCombinedClass)
+                {
+                    selectedCombinedClass = value;
+                    NotifyPropertyChanged("SelectedCombinedClass");
+                }
+            }
+        }
+
         public bool IsInStudentMode
         {
             get { return isInStudentMode; }
@@ -279,6 +337,22 @@ namespace Starehe.ViewModels
             }
         }
 
+        public bool IsInCombinedMode
+        {
+            get { return isInCombinedMode; }
+
+            set
+            {
+                if (value != isInCombinedMode)
+                {
+                    isInCombinedMode = value;
+                    NotifyPropertyChanged("IsInCombinedMode");
+                    ClassResult.Reset();
+                    allExams.Clear();
+                }
+            }
+        }
+
         public ExamModel SelectedExam
         {
             get { return selectedExam; }
@@ -293,19 +367,28 @@ namespace Starehe.ViewModels
             }
         }
 
-        private async void RefreshAllExams()
+        private async Task RefreshAllExams()
         {
             if (isInStudentMode)
             {
+                if (studentResult.StudentID == 0)
+                    return;
                 int classID = await DataAccess.GetClassIDFromStudentID(studentResult.StudentID);
-                AllExams = await DataAccess.GetExamsByClass(classID);
+                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(classID));
                 return;
             }
             if (isInClassMode)
             {
-                AllExams = await DataAccess.GetExamsByClass(classResult.ClassID);
+                if (classResult.ClassID == 0)
+                    return;
+                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(classResult.ClassID));
+                return;
             }
-
+            if (isInCombinedMode)
+            {
+                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID));
+                return;
+            }
         }
 
         public override void Reset()
@@ -333,5 +416,7 @@ namespace Starehe.ViewModels
         }
         
         public ObservableCollection<ClassModel> AllClasses { get; private set; }
+
+        public ObservableCollection<CombinedClassModel> AllCombinedClasses { get; private set; }
     }
 }

@@ -85,6 +85,12 @@ namespace Helper.Models
             return HasErrors;
         }
 
+        public void CopyFrom(StudentBaseModel student)
+        {
+            this.StudentID = student.StudentID;
+            this.NameOfStudent = student.NameOfStudent;
+        }
+
         public override void Reset()
         {
             StudentID = 0;

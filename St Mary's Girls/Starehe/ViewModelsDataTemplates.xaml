@@ -15,7 +15,7 @@
     <DataTemplate DataType="{x:Type viewModels:StaffVM}" >
         <views:Staff/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:FeesVM}" >
+    <DataTemplate DataType="{x:Type viewModels:FinanceVM}" >
         <views:Fees/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:InstitutionVM}" >
@@ -49,6 +49,12 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
+    <DataTemplate DataType="{x:Type viewModels:EnterExamResultsBySubjectVM}" >
+        <views:EnterExamResultsBySubject/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:PaymentsByVoteHeadVM}" >
+        <views:PaymentsByVoteHead/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:IssueItemsVM}" >
         <views:IssueItems/>
     </DataTemplate>
@@ -146,7 +152,7 @@
         <views:ImportWizardPage4/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type viewModels:FeesDefaultersVM}" >
+    <DataTemplate DataType="{x:Type viewModels:BalancesListVM}" >
         <views:FeesDefaulters/>
     </DataTemplate>
 

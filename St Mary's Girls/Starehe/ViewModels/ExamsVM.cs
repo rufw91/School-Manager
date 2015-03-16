@@ -12,6 +12,7 @@ namespace Starehe.ViewModels
         {
             TryAddChild(typeof(NewExamVM));
             TryAddChild(typeof(EnterExamResultsVM));
+            TryAddChild(typeof(EnterExamResultsBySubjectVM));            
             TryAddChild(typeof(ViewExamResultsVM));
             TryAddChild(typeof(StudentTranscriptVM));
             TryAddChild(typeof(ClassReportFormsVM));

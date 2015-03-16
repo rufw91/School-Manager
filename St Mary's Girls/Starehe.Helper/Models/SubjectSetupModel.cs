@@ -10,7 +10,7 @@ namespace Helper.Models
     public class SubjectsSetupModel : ModelBase
     {
         int subjectSetupID;
-        int classID;
+        ObservableCollection<ClassModel> classes;
         bool isActive;
         DateTime startDate;
         DateTime? endDate = null;
@@ -18,7 +18,7 @@ namespace Helper.Models
         public SubjectsSetupModel()
         {
             SubjectSetupID = 0;
-            ClassID = 0;
+            Classes = new ObservableCollection<ClassModel>(); 
             IsActive = true;
             StartDate = DateTime.Now;
             EndDate = null;
@@ -28,7 +28,7 @@ namespace Helper.Models
         public override void Reset()
         {
             SubjectSetupID = 0;
-            ClassID = 0;
+            Classes = new ObservableCollection<ClassModel>();
             IsActive = true;
             StartDate = DateTime.Now;
             EndDate = null;
@@ -48,14 +48,14 @@ namespace Helper.Models
             }
         }
 
-        public int ClassID
+        public ObservableCollection<ClassModel> Classes
         {
-            get { return classID; }
+            get { return classes; }
             set
             {
-                if (value != classID)
+                if (value != classes)
                 {
-                    classID = value;
+                    classes = value;
                     NotifyPropertyChanged("ClassID");
                 }
             }

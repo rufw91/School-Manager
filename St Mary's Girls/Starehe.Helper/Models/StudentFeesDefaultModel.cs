@@ -6,17 +6,14 @@ using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class StudentFeesDefaultModel: StudentModel
+    public class StudentFeesDefaultModel: StudentBaseModel
     {
         decimal balance;
+        private string guardianPhoneNo;
         public StudentFeesDefaultModel()
         {
             Balance = 0;
-        }
-        public StudentFeesDefaultModel(StudentModel student, decimal balance):base()
-        {
-            CopyFrom(student);
-            Balance = balance;
+            GuardianPhoneNo = "";
         }
 
         public decimal Balance
@@ -31,6 +28,20 @@ namespace Helper.Models
                     NotifyPropertyChanged("Balance");
                 }
             }
-        } 
+        }
+
+        public string GuardianPhoneNo
+        {
+            get { return this.guardianPhoneNo; }
+
+            set
+            {
+                if (value != this.guardianPhoneNo)
+                {
+                    this.guardianPhoneNo = value;
+                    NotifyPropertyChanged("GuardianPhoneNo");
+                }
+            }
+        }
     }
 }

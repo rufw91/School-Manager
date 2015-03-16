@@ -11,13 +11,12 @@ namespace Helper.Models
         public ExamModel()
         {
             ExamID = 0;
-            ClassID = 0;
-            
+            Classes = new ObservableCollection<ClassModel>();
             NameOfExam = "";
             Entries = new ObservableCollection<ExamSubjectEntryModel>();
         }
-        int examID;
-        int classID;
+        ObservableCollection<ClassModel> classes;
+        int examID;        
         string nameOfExam;
         ObservableCollection<ExamSubjectEntryModel> entries;
         
@@ -49,16 +48,16 @@ namespace Helper.Models
             }
         }
 
-        public int ClassID
+        public ObservableCollection<ClassModel> Classes
         {
-            get { return this.classID; }
+            get { return this.classes; }
 
             set
             {
-                if (value != this.classID)
+                if (value != this.classes)
                 {
-                    this.classID = value;
-                    NotifyPropertyChanged("ClassID");
+                    this.classes = value;
+                    NotifyPropertyChanged("Classes");
                 }
             }
         }
@@ -80,7 +79,7 @@ namespace Helper.Models
         public override void Reset()
         {
             ExamID = 0;
-            ClassID = 0;
+            classes.Clear();
             NameOfExam = "";
             Entries = new ObservableCollection<ExamSubjectEntryModel>();
         }
