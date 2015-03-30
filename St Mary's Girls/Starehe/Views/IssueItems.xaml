@@ -50,7 +50,7 @@
             <Button Height="23" HorizontalAlignment="Left" Margin="85,100,0,0" VerticalAlignment="Top" 
                         Content="Add Items" Width="110" Command="{Binding FindItemsCommand}"/>
 
-            <DataGrid Margin="10,150,10,47" AutoGenerateColumns="False"  Name="dataGrid1" ItemsSource="{Binding NewReceipt.Items, UpdateSourceTrigger=PropertyChanged}"
+            <DataGrid Margin="10,150,10,47" AutoGenerateColumns="False"  Name="dataGrid1" ItemsSource="{Binding NewIssue.Items, UpdateSourceTrigger=PropertyChanged}"
                   CanUserAddRows="False" CanUserDeleteRows="True" CanUserReorderColumns="False" CanUserSortColumns="False"
                   >
                 <DataGrid.Columns>
@@ -65,9 +65,6 @@
 
             <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="90" 
                 Command="{Binding SaveCommand}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="15,0,0,18" Style="{DynamicResource ContentTextSemiBold}" 
-                   Height="16" VerticalAlignment="Bottom"
-                   Text="{Binding NewReceipt.OrderTotal,FallbackValue=0, StringFormat=TOTAL: {0:N2}}"/>
 
         </Grid>
     </Grid>

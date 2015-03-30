@@ -41,7 +41,7 @@
                        FontFamily="Times New Roman" FontSize="16" FontWeight="Bold"/>
             <TextBlock Text="FEES PAID" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                        FontFamily="Times New Roman" FontSize="16" FontWeight="Bold"/>
-            <TextBlock Text="TOTAL" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"
+            <TextBlock Text="BALANCE" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"
                        FontFamily="Times New Roman" FontSize="16" FontWeight="Bold"/>
         </Grid>
         <Border BorderBrush="Black" BorderThickness="1" Height="35" Margin="30,385,30,0" VerticalAlignment="Top" >
@@ -52,7 +52,7 @@
                     <ColumnDefinition Width="1.7*"/>                    
                     <ColumnDefinition Width=".75*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="DAY" HorizontalAlignment="Center" VerticalAlignment="Center"
+                <TextBlock Text="DATE/TIME" HorizontalAlignment="Center" VerticalAlignment="Center"
                        FontFamily="Times New Roman" FontSize="16" FontWeight="Bold"/>
                 <TextBlock Text="REF NO." Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                        FontFamily="Times New Roman" FontSize="16" FontWeight="Bold"/>

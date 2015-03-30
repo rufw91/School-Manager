@@ -22,7 +22,7 @@ namespace Starehe.ViewModels
         }
         protected override void InitVars()
         {
-            Title = "GET STARTED";
+            Title = "REPORT BUILDER";
         }
 
         protected override void CreateCommands()

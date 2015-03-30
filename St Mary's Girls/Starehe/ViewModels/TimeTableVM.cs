@@ -17,6 +17,9 @@ namespace Starehe.ViewModels
             Title = "TIME TABLE";
             TryAddChild(typeof(CurrentTimeTableVM));
             TryAddChild(typeof(ModifyTimeTableVM));
+            TryAddChild(typeof(GenerateTimeTableVM));
+            TryAddChild(typeof(TimeTableSettingsVM));
+            
         }
     }
 }

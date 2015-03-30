@@ -111,6 +111,7 @@ namespace Starehe.ViewModels
 
                 if (isInCombinedMode)
                 {
+                    classResult.Entries.Clear();
                     ClassModel cs;
                     Debug.WriteLine("selectedCombinedClass count:" + selectedCombinedClass.Entries.Count);
                     for (int i = 0; i < selectedCombinedClass.Entries.Count;i++ )
@@ -131,6 +132,7 @@ namespace Starehe.ViewModels
                             classResult.ExamResultID = temp.ExamResultID;
                             classResult.NameOfClass = selectedCombinedClass.Description;
                             classResult.NameOfExam = selectedExam.NameOfExam;
+                            classResult.ClassID = cs.ClassID;
                         }                        
                     }
                     Debug.WriteLine("Number of Student Results count:" + classResult.Entries.Count);

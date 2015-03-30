@@ -10,9 +10,12 @@ namespace Starehe.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class NewStudentVM : ViewModelBase
     {
+        
         StudentModel newStudent;
         ObservableCollection<DormModel> allDorms;
         ObservableCollection<ClassModel> allClasses;
+        private Boardingtype boardingValue;
+
         public NewStudentVM()
             : base()
         {
@@ -23,14 +26,17 @@ namespace Starehe.ViewModels
         protected override async void InitVars()
         {
             Title = "NEW STUDENT";
+
             newStudent = new StudentModel();
+            BoardingValue = Boardingtype.Boarder;
             AllDorms = await DataAccess.GetAllDormsAsync();
             AllClasses = await DataAccess.GetAllClassesAsync();
             newStudent.PropertyChanged += (o, e) =>
                 {
-                    if (e.PropertyName == "StudentID")
+                    if ((e.PropertyName=="BedNo")||(e.PropertyName=="StudentID"))
                         newStudent.CheckErrors();
                 };
+            newStudent.IsBoarder = true;
         }
 
         protected override void CreateCommands()
@@ -57,6 +63,26 @@ namespace Starehe.ViewModels
         public override void Reset()
         {
             newStudent.Reset();
+        }
+
+        public Array BoardingValues
+        {
+            get { return Enum.GetValues(typeof(Boardingtype)); }
+        }
+
+        public Boardingtype BoardingValue
+        {
+            get { return boardingValue; }
+            set
+            {
+                if (value != boardingValue)
+                {
+                    boardingValue = value;
+                    newStudent.IsBoarder = boardingValue == Boardingtype.Boarder ? true : false;
+                }
+
+                NotifyPropertyChanged("BoardingValue");
+            }
         }
 
         public StudentModel NewStudent
@@ -120,8 +146,7 @@ namespace Starehe.ViewModels
         }
 
         private bool ValidateStudent()
-        {
-            newStudent.CheckErrors();
+        {            
             bool isOk = !string.IsNullOrWhiteSpace(newStudent.FirstName) && !string.IsNullOrWhiteSpace(newStudent.LastName)
                 && !string.IsNullOrWhiteSpace(newStudent.NameOfGuardian) && !string.IsNullOrWhiteSpace(newStudent.Email)
                    && !string.IsNullOrWhiteSpace(newStudent.GuardianPhoneNo) && !string.IsNullOrWhiteSpace(newStudent.Address)
@@ -132,5 +157,7 @@ namespace Starehe.ViewModels
             return isOk&&!newStudent.HasErrors;
         }
 
+
+       
     }
 }

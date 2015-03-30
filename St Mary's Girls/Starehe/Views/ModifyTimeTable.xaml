@@ -15,21 +15,22 @@
                   SelectedValuePath="ClassID"
                   SelectedValue="{Binding NewTimeTable.ClassID, Mode=TwoWay}"
                   VerticalAlignment="Top" Width="150"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="340,90,0,0" Text="Day" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="380,90,0,0" 
+                  ItemsSource="{Binding DaysOfTheWeek}"
+                  SelectedItem="{Binding SelectedDay, Mode=TwoWay}"
+                  VerticalAlignment="Top" Width="150"/>
+
         <TextBlock HorizontalAlignment="Left" Margin="30,150,0,0" Text="Schedule" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
-        <DataGrid Margin="40,205,20,50" ItemsSource="{Binding NewTimeTable.Entries}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" 
+        <DataGrid Margin="40,205,20,50" ItemsSource="{Binding NewTimeTable.Entries}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="True" CanUserResizeColumns="False" 
                   FontSize="{DynamicResource ControlContentThemeFontSize}" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name of Subject" Width="200*" EditingElementStyle="{StaticResource {x:Type TextBox}}"
                         Binding="{Binding Path=NameOfSubject}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Tutor" Width="200*" EditingElementStyle="{StaticResource {x:Type TextBox}}"
                         Binding="{Binding Path=Tutor, Mode=TwoWay}"/>
-                <DataGridTemplateColumn Header="Day" Width="200*" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox ItemsSource="{Binding DataContext.DaysOfTheWeek, RelativeSource={RelativeSource AncestorType={x:Type views:ModifyTimeTable}}}" SelectedItem="{Binding Day, Mode=TwoWay}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Day" Width="200*" Binding="{Binding Day, Mode=TwoWay}" IsReadOnly="True"/>
                                         
                 <DataGridTemplateColumn Header="Start Time" Width="200*">
                     <DataGridTemplateColumn.CellTemplate>

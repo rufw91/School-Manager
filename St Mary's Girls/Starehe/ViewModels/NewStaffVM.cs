@@ -54,6 +54,7 @@ namespace Starehe.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
+                if (SecurePassword!=null)
                 SecurePassword.MakeReadOnly();
                 SqlCredential c = new SqlCredential(newStaff.StaffID + "", SecurePassword);
 

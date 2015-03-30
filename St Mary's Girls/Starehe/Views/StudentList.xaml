@@ -65,6 +65,7 @@
                 <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Postal Code" Binding="{Binding PostalCode}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="City" Binding="{Binding City}" Width="80" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Boarding Value" Binding="{Binding BoardingValue}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Dormitory" Binding="{Binding NameOfDormitory}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Bed No" Binding="{Binding BedNo}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Prev. Institution" Binding="{Binding PrevInstitution}" Width="200" IsReadOnly="True"/>

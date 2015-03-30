@@ -22,6 +22,7 @@ namespace Starehe.ViewModels
             TryAddChild(typeof(NewPaymentVoucherVM));
             TryAddChild(typeof(PaymentVoucherHistoryVM));
             TryAddChild(typeof(PaymentsByVoteHeadVM));
+            TryAddChild(typeof(QuickBooksSyncVM));
         }
     }
 }

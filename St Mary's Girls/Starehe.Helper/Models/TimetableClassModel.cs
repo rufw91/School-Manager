@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Helper.Models
 {
@@ -13,6 +15,10 @@ namespace Helper.Models
         public TimetableClassModel()
         {
             Entries = new ObservableCollection<TimetableClassEntryModel>();
+            PrintCommand = new RelayCommand(o =>
+            {
+                MessageBox.Show("An error occured while trying to print");
+            }, o => true);
         }
         public TimetableClassModel(ClassModel newClass)
             : base(newClass.ClassID, newClass.NameOfClass)
@@ -32,6 +38,12 @@ namespace Helper.Models
                     NotifyPropertyChanged("Entries");
                 }
             }
+        }
+
+        public ICommand PrintCommand
+        {
+            get;
+            private set;
         }
 
         public override void Reset()

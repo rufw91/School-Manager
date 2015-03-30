@@ -23,7 +23,7 @@ namespace Helper
         static object myWorkObject;
         enum DocType
         {
-            Statement, Transcript, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, UnreturnedBooks
+            Statement, Transcript, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, UnreturnedBooks, Report
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -76,6 +76,7 @@ namespace Helper
                 case DocType.AggregateResult: GenerateAggregateResult(); break;
                 case DocType.ClassTranscripts: GenerateClassTranscripts(); break;
                 case DocType.UnreturnedBooks: GenerateUnreturnedBooks(); break;
+                case DocType.Report: GenerateReport(); break;
             }
         }
 
@@ -97,6 +98,8 @@ namespace Helper
                 case DocType.ClassMarkList: resString = Helper.Properties.Resources.ClassMarkList; break;
                 case DocType.AggregateResult: resString = Helper.Properties.Resources.AggregateResult; break;
                 case DocType.UnreturnedBooks: resString = Helper.Properties.Resources.UnreturnedBooks; break;
+                case DocType.Report: resString = Helper.Properties.Resources.UnreturnedBooks; break;
+                default: throw new ArgumentException();
             }
             StringReader stringReader = new StringReader(resString);
             XmlReader xmlReader = XmlReader.Create(stringReader);
@@ -132,6 +135,8 @@ namespace Helper
                 return DocType.UnreturnedBooks;
             if (workObject is ClassTranscriptsModel)
                 return DocType.ClassTranscripts;
+            if (workObject is ReportModel)
+                return DocType.Report;
             
             throw new ArgumentException();
         }
@@ -177,9 +182,11 @@ namespace Helper
             if (workObject is ClassExamResultModel)
                 totalNoOfItems = (workObject as ClassExamResultModel).Entries.Rows.Count;
             if (workObject is UnreturnedBooksModel)
-                totalNoOfItems = (workObject as UnreturnedBooksModel).Entries.Count;
+                totalNoOfItems = (workObject as UnreturnedBooksModel).Entries.Count;            
             if (workObject is ClassTranscriptsModel)
                 return (workObject as ClassTranscriptsModel).Entries.Count;
+            if (workObject is ReportModel)
+                totalNoOfItems = (workObject as ReportModel).Entries.Rows.Count;
             return (totalNoOfItems % itemsPerPage) != 0 ?
                 (totalNoOfItems / itemsPerPage) + 1 : (totalNoOfItems / itemsPerPage);
         }

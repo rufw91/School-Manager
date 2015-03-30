@@ -14,7 +14,7 @@ namespace Starehe.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class IssueItemsVM: ViewModelBase
     {
-        ItemIssueModel newIssue;
+        IssueModel newIssue;
         public IssueItemsVM()
         {
             InitVars();
@@ -25,7 +25,7 @@ namespace Starehe.ViewModels
         {
             Title = "Receive Items";
             IsBusy = true;
-            newIssue = new ItemIssueModel();
+            newIssue = new IssueModel();
             IsBusy = false;
         }
 
@@ -35,15 +35,11 @@ namespace Starehe.ViewModels
             {
                 IsBusy = true;
                 bool succ = await DataAccess.SaveNewItemIssueAsync(newIssue);
+                 MessageBox.Show(succ ? "Successfully saved details." : "Could not save details please ensure you have filled all entries correctly.",
+                        succ ? "Success" : "Error", MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
-                {
-                    MessageBox.Show("Successfully saved purchase information.");
                     Reset();
-                }
-                else
-                {
-                    MessageBox.Show("Could not save details please ensure you have filled all entries correctly.");                    
-                }
+               
                 IsBusy = false;
             }, o => !IsBusy&&CanSave());
 
@@ -61,11 +57,11 @@ namespace Starehe.ViewModels
         private bool CanSave()
         {
             bool succ = true;
-            foreach (var i in newIssue.Entries)
+            foreach (var i in newIssue.Items)
                 if (i.Quantity==0)
                 { succ = false; break; }
             return !string.IsNullOrWhiteSpace(newIssue.Description) && succ &&
-                    newIssue.Entries.Count > 0;
+                    newIssue.Items.Count > 0;
         }
 
         public Action FindItemsAction
@@ -83,7 +79,7 @@ namespace Starehe.ViewModels
             private set;
         }
 
-        public ItemIssueModel NewIssue
+        public IssueModel NewIssue
         {
             get { return this.newIssue; }
 

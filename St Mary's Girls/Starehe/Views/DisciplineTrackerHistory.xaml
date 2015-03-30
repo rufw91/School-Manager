@@ -34,7 +34,7 @@
                   Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=Issue, Mode=OneWay}" Header="Issue" Width="100*"/>
-                <DataGridTextColumn Binding="{Binding Path=DateAdded, Mode=OneWay,StringFormat='dd-MMM-yyyy hh:mm:ss'}" Header="DateAdded" Width="50*"/>
+                <DataGridTextColumn Binding="{Binding Path=DateAdded, Mode=OneWay,StringFormat='dd-MMM-yyyy hh:mm:ss'}" Header="Date Added" Width="50*"/>
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">

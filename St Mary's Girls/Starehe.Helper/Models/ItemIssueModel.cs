@@ -7,79 +7,37 @@ using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class ItemIssueModel:ModelBase
+    public class ItemIssueModel:ItemBaseModel
     {
-        private int issueID;
-        private DateTime dateIssued;
-        private ObservableCollection<ItemIssueEntryModel> entries;
-        private string description;
+        
+        private decimal quantity;
         public ItemIssueModel()
         {
-            IssueID = 0;
-            Description = "";
-            DateIssued = DateTime.Now;
-            Entries = new ObservableCollection<ItemIssueEntryModel>();
+            Quantity = 0;
+        }
+        public ItemIssueModel(ItemBaseModel item):base(item)
+        {
+            Quantity = 0;
         }
         public override void Reset()
         {
-            IssueID = 0;
-            Description = "";
-            DateIssued = DateTime.Now;
-            Entries.Clear();
+            base.Reset();
+            Quantity = 0;
         }
 
-        public int IssueID
+        public decimal Quantity
         {
-            get { return this.issueID; }
+            get { return this.quantity; }
 
             set
             {
-                if (value != this.issueID)
+                if (value != this.quantity)
                 {
-                    this.issueID = value;
-                    NotifyPropertyChanged("IssueID");
+                    this.quantity = value;
+                    NotifyPropertyChanged("Quantity");
                 }
             }
         }
-        public DateTime DateIssued
-        {
-            get { return dateIssued; }
-
-            set
-            {
-                if (value != this.dateIssued)
-                {
-                    this.dateIssued = value;
-                    NotifyPropertyChanged("DateIssued");
-                }
-            }
-        }
-        public ObservableCollection<ItemIssueEntryModel> Entries
-        {
-            get { return entries; }
-
-            set
-            {
-                if (value != this.entries)
-                {
-                    this.entries = value;
-                    NotifyPropertyChanged("Entries");
-                }
-            }
-        }
-
-        public string Description
-        {
-            get { return description; }
-
-            set
-            {
-                if (value != this.description)
-                {
-                    this.description = value;
-                    NotifyPropertyChanged("Description");
-                }
-            }
-        }
+        
     }
 }

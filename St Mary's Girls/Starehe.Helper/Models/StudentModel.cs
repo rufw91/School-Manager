@@ -28,6 +28,7 @@ namespace Helper.Models
         private int dormitoryID = 0;
         private string bedNo = "";
         private string prevInstitution = "";
+        private bool isBoarder;
 
         public StudentModel()
         {
@@ -42,6 +43,7 @@ namespace Helper.Models
                 };
             Email = "test@example.com";
             PrevBalance = 0;
+            IsBoarder = true;
         }
        
       
@@ -288,7 +290,7 @@ namespace Helper.Models
                     SetErrors("StudentID", errors);
                 }
                 var f = DataAccess.GetBedNoUser(BedNo);
-                if (f.StudentID > 0)
+                if ((f.StudentID > 0)&&(!isBoarder))
                 {
                     List<string> errors = new List<string>();
                     errors.Add("Bed No already in use by: (" + s.NameOfStudent.ToUpper() + ")");
@@ -342,7 +344,16 @@ namespace Helper.Models
             BedNo = curr.BedNo;
             PrevInstitution = curr.PrevInstitution;
         }
-
+        public bool IsBoarder
+        {
+            get { return isBoarder; }
+            set
+            {
+                if (value != isBoarder)
+                    isBoarder = value;
+                NotifyPropertyChanged("IsBoarder");
+            }
+        }
         public int KCPEScore { get; set; }
     }
 

@@ -9,6 +9,7 @@ namespace Helper
         string title;
         bool isBusy;
         private bool isActive;
+        private ViewModelBase parent;
         public ViewModelBase()
         {
             Title = "";
@@ -35,6 +36,19 @@ namespace Helper
                 {
                     this.title = value;
                     NotifyPropertyChanged("Title");
+                }
+            }
+        }
+
+        public ViewModelBase Parent
+        {
+            get { return parent; }
+            set
+            {
+                if (value != this.parent)
+                {
+                    this.parent = value;
+                    NotifyPropertyChanged("Parent");
                 }
             }
         }

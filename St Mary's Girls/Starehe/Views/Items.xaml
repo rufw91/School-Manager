@@ -34,7 +34,9 @@
         <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,300,0,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding DataContext.DisplayItemReceiptHistoryCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Item Receipt History</Hyperlink>
         </TextBlock>
-
+        <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,330,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayItemIssueHistoryCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Item Issue History</Hyperlink>
+        </TextBlock>
 
     </Grid>
 </UserControl>

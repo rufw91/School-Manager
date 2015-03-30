@@ -21,7 +21,6 @@ namespace Starehe.ViewModels
         bool showCleared;
         bool showTransferred;
         public StudentListVM()
-            : base()
         {
             InitVars();
             CreateCommands();
@@ -146,6 +145,15 @@ namespace Starehe.ViewModels
             CollViewSource.Source = allStudents;
             ShowTransferred = true;
             ShowCleared = true;
+            PropertyChanged += async (o, e) =>
+                {
+                    if (e.PropertyName=="IsActive")
+                        if (IsActive)
+                        {
+                            allStudents = await DataAccess.GetAllStudentsListAsync();
+                            CollViewSource.Source = allStudents;
+                        }
+                };
         }
 
         private int GetSelectedItemsCount()

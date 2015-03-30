@@ -7,12 +7,14 @@ using System.Linq;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "User")]
     public class CurrentTimeTableVM: ViewModelBase
     {
+        DayOfWeek selectedDay;
         private ObservableCollection<TimetableClassModel> entries;
         public CurrentTimeTableVM()
             : base()
@@ -22,14 +24,22 @@ namespace Starehe.ViewModels
         }
         protected override void CreateCommands()
         {
-            
+            RefreshCommand = new RelayCommand(async o =>
+            {
+                Entries = await DataAccess.GetCurrentTimeTableAsync((int)selectedDay);
+            }, o => true);
         }
 
         protected async override void InitVars()
         {            
             Title = "CURRENT TIMETABLE";
-            Entries = await DataAccess.GetCurrentTimeTableAsync();
+            DaysOfTheWeek = Enum.GetValues(typeof(DayOfWeek));
+            NotifyPropertyChanged("DaysOfTheWeek");
+            Entries = await DataAccess.GetCurrentTimeTableAsync((int)selectedDay);
         }
+
+        public Array DaysOfTheWeek
+        { get; private set; }
 
         public ObservableCollection<TimetableClassModel> Entries
         {
@@ -43,6 +53,26 @@ namespace Starehe.ViewModels
                     NotifyPropertyChanged("Entries");
                 }
             }
+        }
+
+        public DayOfWeek SelectedDay
+        {
+            get { return this.selectedDay; }
+
+            set
+            {
+                if (value != this.selectedDay)
+                {
+                    this.selectedDay = value;
+                    NotifyPropertyChanged("SelectedDay");
+                }
+            }
+        }
+
+        public ICommand RefreshCommand
+        {
+            get;
+            private set;
         }
 
         public override void Reset()

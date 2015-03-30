@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Starehe.ViewModels
 {
@@ -35,12 +36,20 @@ namespace Starehe.ViewModels
         {
             Title = "PAYMENTS BY VOTE HEAD";
             allVoteHeads = new ObservableCollection<VoteHeadModel>();
-            AllClasses = await DataAccess.GetAllClassesAsync();
-            
+            AllClasses = await DataAccess.GetAllClassesAsync();            
         }
 
         protected override void CreateCommands()
         {
+            RefreshCommand = new RelayCommand(async o =>
+            {
+                AllVoteHeads = await DataAccess.GetVoteHeadsSummaryByClass(selectedClassID);
+            }, o => Canrefresh());
+        }
+
+        private bool Canrefresh()
+        {
+            return SelectedClassID != 0;
         }
         public int SelectedClassID
         {
@@ -80,6 +89,11 @@ namespace Starehe.ViewModels
             }
         }
 
+        public ICommand RefreshCommand
+        {
+            private get;
+            set;
+        }
         public override void Reset()
         {
             allVoteHeads.Clear();

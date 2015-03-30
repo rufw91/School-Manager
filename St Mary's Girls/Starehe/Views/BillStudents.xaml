@@ -36,7 +36,7 @@
                   ItemsSource="{Binding AllClasses}" DisplayMemberPath="NameOfClass"
                   SelectedItem="{Binding SelectedClass}"
                   IsEnabled="{Binding IsInClassMode}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,350,0,0" Style="{DynamicResource Title0}" Text="New Entry" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,350,0,0" Style="{DynamicResource Title0}" Text="Other Fees" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="39,400,0,0" TextWrapping="Wrap" Text="Name of Entry" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="120,400,0,0" VerticalAlignment="Top" Width="200"
                  DataContext="{Binding NewEntry}"

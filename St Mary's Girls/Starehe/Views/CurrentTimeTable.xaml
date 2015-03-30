@@ -8,7 +8,12 @@
              Background="White">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Current Timetable" VerticalAlignment="Top"/>
-        <ListBox SelectedIndex="-1" Margin="20,80,20,20" ItemsSource="{Binding Entries}" ItemTemplate="{StaticResource TimetableClassTemplate}">
+        <TextBlock HorizontalAlignment="Left" Margin="30,70,0,0" Text="Day" VerticalAlignment="Top"/>
+        <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Margin="73,70,0,0" VerticalAlignment="Top" Width="173"
+                  ItemsSource="{Binding DaysOfTheWeek}"
+                  SelectedItem="{Binding SelectedDay}"/>
+        <ListBox SelectedIndex="-1" Margin="20,126,20,20" ItemsSource="{Binding Entries}" ItemTemplate="{StaticResource TimetableClassTemplate}">
+
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="Focusable" Value="False"/>
@@ -16,6 +21,10 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
+        <TextBlock HorizontalAlignment="Right" Margin="0,105,20,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding RefreshCommand}">Refresh</Hyperlink>
+        </TextBlock>
+
 
     </Grid>
 </UserControl>

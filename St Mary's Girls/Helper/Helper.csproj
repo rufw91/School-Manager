@@ -118,6 +118,7 @@
     <Compile Include="Helpers\WebHelper.cs" />
     <Compile Include="Helpers\XPSHelper.cs" />
     <Compile Include="Models\ApplicationPersistModel.cs" />
+    <Compile Include="Models\ColumnModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Presentation\NotifyPropertyChanged.cs" />
     <Compile Include="Presentation\RelayCommand.cs" />

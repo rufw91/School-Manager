@@ -9,6 +9,7 @@ namespace Starehe.ViewModels
     {
         public ReportsVM()
         {
+            TryAddChild(typeof(NewReportVM));
             TryAddChild(typeof(ReportsHomeVM));
             TryAddChild(typeof(LocalTutorialsVM));
             TryAddChild(typeof(OnlineResourcesVM));
