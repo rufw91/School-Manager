@@ -13,6 +13,7 @@ namespace Helper.Models
         private bool isTransferred;
         private bool isActive;
         private bool isSelected;
+        Boardingtype boardingValue;
         public StudentListModel()
         {
             NameOfClass = "";
@@ -24,7 +25,22 @@ namespace Helper.Models
                 {
                     if ((e.PropertyName == "IsCleared" || e.PropertyName == "IsTransferred") && (isTransferred || isCleared))
                         IsActive = false;
+                    if (e.PropertyName == "IsBoarder")
+                        BoardingValue = IsBoarder ? Boardingtype.Boarder : Boardingtype.DayScholar;
                 };
+        }
+
+        public Boardingtype BoardingValue
+        {
+            get { return boardingValue; }
+            set
+            {
+                if (value != boardingValue)
+                {
+                    boardingValue = value;
+                }
+                NotifyPropertyChanged("BoardingValue");
+            }
         }
 
         public string NameOfClass

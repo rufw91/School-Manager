@@ -1,7 +1,9 @@
-﻿using Microsoft.SqlServer.Management.Common;
+﻿using Helper.Models;
+using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -45,6 +47,14 @@ namespace Helper
         private static string GetDBScript()
         {
             return "";// Helper.Properties.Resources.Script;
+        }
+        public static Task<ObservableCollection<ColumnModel>> GetTableColumnsAsync(string nameOfTable)
+        {
+            return Task.Run<ObservableCollection<ColumnModel>>(() =>
+                {
+                    ObservableCollection<ColumnModel> temp = new ObservableCollection<ColumnModel>();
+                    return temp;
+                });
         }
     }
 }

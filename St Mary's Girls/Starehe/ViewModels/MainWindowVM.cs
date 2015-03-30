@@ -1,6 +1,7 @@
 ﻿using Helper;
 using Helper.Helpers;
 using Helper.Models;
+using Starehe.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -50,6 +51,41 @@ namespace Starehe.ViewModels
 
         protected override void CreateCommands()
         {
+            DisplayAcademicReportCommand = new RelayCommand(o =>
+            {
+                this.Source = new AcademicReportVM();
+            }, o => true);
+
+            DisplayStudentsReportCommand = new RelayCommand(o =>
+            {
+                this.Source = new StudentsReportVM();
+            }, o => true);
+
+            DisplayStaffReportCommand = new RelayCommand(o =>
+            {
+                this.Source = new StaffReportVM();
+            }, o => true);
+
+            DisplayFinanceReportCommand = new RelayCommand(o =>
+            {
+                this.Source = new FinanceReportVM();
+            }, o => true);
+
+            DisplayBoardingReportCommand = new RelayCommand(o =>
+            {
+                this.Source = new BoardingReportVM();
+            }, o => true);
+
+            DisplayLibraryReportCommand = new RelayCommand(o =>
+            {
+                this.Source = new LibraryReportVM();
+            }, o => true);
+
+            DisplayEventsReportCommand = new RelayCommand(o =>
+            {
+                this.Source = new EventsReportVM();
+            }, o => true);
+
             DisplayIssueItemsCommand = new RelayCommand(o =>
             {
                 this.Source = new IssueItemsVM();
@@ -172,6 +208,11 @@ namespace Starehe.ViewModels
                 this.Source = new ItemReceiptHistoryVM();
             }, o => true);
 
+            DisplayItemIssueHistoryCommand = new RelayCommand(o =>
+            {
+                this.Source = new ItemIssueHistoryVM();
+            }, o => true); 
+            
             DisplaySupplierListCommand = new RelayCommand(o =>
             {
                 this.Source = new SupplierListVM();
@@ -323,12 +364,60 @@ namespace Starehe.ViewModels
             get;
             set;
         }
-        
+
+        public ICommand DisplayAcademicReportCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand DisplayLibraryReportCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand DisplayStaffReportCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand DisplayFinanceReportCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand DisplayStudentsReportCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand DisplayBoardingReportCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand DisplayEventsReportCommand
+        {
+            get;
+            private set;
+        }
+
         public ICommand AboutCommand
         {
             get;
             private set;
         }
+
+        public ICommand DisplayItemIssueHistoryCommand
+        {
+            get;
+            private set;
+        }
+        
         public ICommand DisplayIssueItemsCommand
         {
             get;

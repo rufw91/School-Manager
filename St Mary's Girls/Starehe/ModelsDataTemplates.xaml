@@ -228,7 +228,7 @@
         <Grid Width="650">
             <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="{Binding NameOfClass}" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
             <TextBlock HorizontalAlignment="Right" Margin="0,15,15,0"  VerticalAlignment="Top" FontSize="12">
-                <Hyperlink>Print</Hyperlink>
+                <Hyperlink Command="{Binding PrintCommand}">Print</Hyperlink>
             </TextBlock>
             <DataGrid AutoGenerateColumns="False" Name="test" Margin="10,40,20,10" CanUserAddRows="False"
                   CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False"

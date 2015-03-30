@@ -15,6 +15,7 @@ namespace Starehe.ViewModels
     public class ModifyTimeTableVM: ViewModelBase
     {
         TimetableClassModel newTimeTable;
+        DayOfWeek selectedDay;
         ObservableCollection<ClassModel> allClasses;
         public ModifyTimeTableVM()
             : base()
@@ -28,7 +29,7 @@ namespace Starehe.ViewModels
             Title = "MODIFY TIMETABLE";
             NewTimeTable = new TimetableClassModel();
             AllClasses = await DataAccess.GetAllClassesAsync();
-            DaysOfTheWeek= new ObservableCollection<string>() { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }; 
+            DaysOfTheWeek = Enum.GetValues(typeof(DayOfWeek)); 
             NotifyPropertyChanged("DaysOfTheWeek");
             newTimeTable.PropertyChanged += async (o, e) =>
             {
@@ -36,19 +37,27 @@ namespace Starehe.ViewModels
                 {
                     if (newTimeTable.ClassID > 0)
                     {
-                        newTimeTable.Entries = (await DataAccess.GetClassTimetableAsync(newTimeTable.ClassID)).Entries;
+                        newTimeTable.Entries = (await DataAccess.GetClassTimetableAsync(newTimeTable.ClassID,(int)selectedDay)).Entries;
                         if (newTimeTable.Entries.Count == 0)
                         {
                             var p = await DataAccess.GetSubjectsRegistredToClassAsync(newTimeTable.ClassID);
                             foreach (var s in p)
                             {
-                                newTimeTable.Entries.Add(new TimetableClassEntryModel(s));
+                                newTimeTable.Entries.Add(new TimetableClassEntryModel(s) { Day = selectedDay.ToString()});
                             }
                         }
                     }
                     else newTimeTable.Entries.Clear();
                 }
             };
+            PropertyChanged += (o, e) =>
+                {
+                    if (e.PropertyName=="SelectedDay")
+                        foreach(var d in newTimeTable.Entries)
+                        {
+                            d.Day = selectedDay.ToString();
+                        }
+                };
         }
 
         protected override void CreateCommands()
@@ -72,7 +81,7 @@ namespace Starehe.ViewModels
             return newTimeTable.Entries.Count > 0;
         }
 
-        public ObservableCollection<string> DaysOfTheWeek
+        public Array DaysOfTheWeek
         { get; private set;}
 
         public TimetableClassModel NewTimeTable
@@ -85,6 +94,20 @@ namespace Starehe.ViewModels
                 {
                     this.newTimeTable = value;
                     NotifyPropertyChanged("NewTimeTable");
+                }
+            }
+        }
+
+        public DayOfWeek SelectedDay
+        {
+            get { return this.selectedDay; }
+
+            set
+            {
+                if (value != this.selectedDay)
+                {
+                    this.selectedDay = value;
+                    NotifyPropertyChanged("SelectedDay");
                 }
             }
         }

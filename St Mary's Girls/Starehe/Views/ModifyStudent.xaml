@@ -39,9 +39,9 @@
                 <TextBox HorizontalAlignment="Left" Margin="120,429,0,0" VerticalAlignment="Top" Width="200"  
                  Text="{Binding NewStudent.Address,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox HorizontalAlignment="Left" Margin="120,474,0,0" VerticalAlignment="Top" Width="200"  
-                 Text="{Binding NewStudent.City,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding NewStudent.PostalCode,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox HorizontalAlignment="Left" Margin="120,519,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding NewStudent.PostalCode,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding NewStudent.City,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox HorizontalAlignment="Left" Margin="525,65,0,0" IsEnabled="False"
         	DisplayMemberPath="NameOfClass" SelectedValuePath="ClassID" VerticalAlignment="Top" Width="200"
         	ItemsSource="{Binding AllClasses}"        	
@@ -56,8 +56,8 @@
                 <TextBlock  HorizontalAlignment="Left" Margin="25,343,0,0" Text="Guadian Name" VerticalAlignment="Top" />
                 <TextBlock  HorizontalAlignment="Left" Margin="25,388,0,0" Text="Phone No" VerticalAlignment="Top" />
                 <TextBlock  HorizontalAlignment="Left" Margin="25,429,0,0" Text="Address" VerticalAlignment="Top" />
-                <TextBlock HorizontalAlignment="Left" Margin="25,474,0,0" Text="City" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="25,519,0,0" Text="Postal Code" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="25,519,0,0" Text="City" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="25,474,0,0" Text="Postal Code" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="425,68,0,0" Text="New Class" VerticalAlignment="Top" />
 
                 <TextBlock HorizontalAlignment="Left" Margin="425,189,0,0" TextWrapping="Wrap" LineHeight="10" VerticalAlignment="Top" Text="Prev. Institution Attended" Height="32" Width="86" />

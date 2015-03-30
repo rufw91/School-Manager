@@ -21,6 +21,7 @@ namespace Starehe.ViewModels
         int selectedClassID;
         private ObservableCollection<ClassModel> allClasses;
         private int newClassID;
+        private ClassModel currentClass;
         public AssignNewClassVM()
         {
             InitVars();
@@ -30,10 +31,12 @@ namespace Starehe.ViewModels
         {
             Title = "ASSIGN NEW CLASS";
             selectedStudent = new StudentSelectModel();
-            selectedStudent.PropertyChanged += (o, e) =>
+            selectedStudent.PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName=="StudentID")
                         selectedStudent.CheckErrors();
+                    if (!selectedStudent.HasErrors)
+                        CurrentClass = await DataAccess.GetClassAsync(await DataAccess.GetClassIDFromStudentID(selectedStudent.StudentID));
                 };
 
             SelectedClassID = 0;
@@ -145,6 +148,19 @@ namespace Starehe.ViewModels
                 }
             }
         }
+        public ClassModel CurrentClass
+        {
+            get { return currentClass; }
+
+            private set
+            {
+                if (value != currentClass)
+                {
+                    currentClass = value;
+                    NotifyPropertyChanged("CurrentClass");
+                }
+            }
+        }
         public ICommand SaveCommand
         { get; private set; }
         public override void Reset()
@@ -153,5 +169,7 @@ namespace Starehe.ViewModels
             NewClassID = 0;
             SelectedClassID = 0;
         }
+
+        
     }
 }

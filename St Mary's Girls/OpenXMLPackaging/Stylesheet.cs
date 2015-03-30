@@ -65,14 +65,14 @@ namespace OpenXmlPackaging {
         /// </summary>
         public void Save() {
             FormatCells();
-            /*PackagePart worksheetPart = _package.CreatePart(Constants.StylesUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml");
+            PackagePart worksheetPart = _package.CreatePart(Constants.StylesUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml");
             _workbookPart.CreateRelationship(new Uri("/xl/styles.xml", UriKind.Relative), TargetMode.Internal, Constants.RelationshipXNamespace.NamespaceName + "/styles");
 
             using (Stream stream = worksheetPart.GetStream(FileMode.Create, FileAccess.Write)) {
                 using (XmlWriter writer = XmlWriter.Create(stream)) {
                     _styleXml.WriteTo(writer);
                 }
-            }*/
+            }
         }
         
         #endregion

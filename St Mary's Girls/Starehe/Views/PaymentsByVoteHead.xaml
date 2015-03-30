@@ -16,14 +16,15 @@
                   DisplayMemberPath="NameOfClass"
                   SelectedValuePath="ClassID"
                   SelectedValue="{Binding SelectedClassID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <DataGrid Name="datagrid" Margin="320,100,20,20" AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False">
+        <DataGrid Name="datagrid" Margin="320,100,20,20" AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False"
+                  ItemsSource="{Binding AllVoteHeads}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Vote Head" Binding="{Binding Name}" Width="1*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width=".7*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat={}{0:N2}}" Width=".7*" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
         <Controls:DropDownButton  Content="Export" HorizontalAlignment="Right" Margin="0,70,20,0" 
-                                 VerticalAlignment="Top" DataContext="{Binding Document, ElementName=datagrid}">
+                                 VerticalAlignment="Top" DataContext="{Binding ElementName=datagrid}">
             <Controls:DropDownButton.DropDownContent>
                 <Menu>
                     <Menu.ItemsPanel>

@@ -49,6 +49,42 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
+    <DataTemplate DataType="{x:Type viewModels:QuickBooksSyncVM}" >
+        <views:QuickBooksSync/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:TimeTableSettingsVM}" >
+        <views:TimeTableSettings/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:GenerateTimeTableVM}" >
+        <views:GenerateTimeTable/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewReportVM}" >
+        <views:NewReport/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:StudentsReportVM}" >
+        <views:StudentsReport/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:StaffReportVM}" >
+        <views:StaffReport/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:AcademicReportVM}" >
+        <views:AcademicReport/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:FinanceReportVM}" >
+        <views:FinanceReport/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:BoardingReportVM}" >
+        <views:BoardingReport/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:LibraryReportVM}" >
+        <views:LibraryReport/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:EventsReportVM}" >
+        <views:EventsReport/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ItemIssueHistoryVM}" >
+        <views:ItemIssueHistory/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:EnterExamResultsBySubjectVM}" >
         <views:EnterExamResultsBySubject/>
     </DataTemplate>

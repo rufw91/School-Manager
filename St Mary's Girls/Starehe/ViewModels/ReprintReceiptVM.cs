@@ -14,7 +14,7 @@ namespace Starehe.ViewModels
         private FeePaymentModel currentPayment;
         private FixedDocument fd;
         ObservableCollection<FeePaymentModel> recentPayments;
-        private StudentBaseModel currentStudent;
+        private StudentSelectModel currentStudent;
 
         public ReprintReceiptVM()
         {
@@ -25,7 +25,7 @@ namespace Starehe.ViewModels
         protected override void InitVars()
         {
             Title = "REPRINT RECEIPT";
-            CurrentStudent = new StudentBaseModel();
+            CurrentStudent = new StudentSelectModel();
             CurrentPayment = new FeePaymentModel();
             RecentPayments = new ObservableCollection<FeePaymentModel>();
             currentStudent.PropertyChanged += (o, e) =>
@@ -85,7 +85,7 @@ namespace Starehe.ViewModels
             }
         }
 
-        public StudentBaseModel CurrentStudent
+        public StudentSelectModel CurrentStudent
         {
             get { return currentStudent; }
 

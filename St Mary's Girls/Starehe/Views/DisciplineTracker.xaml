@@ -23,10 +23,10 @@
         <Border BorderBrush="Silver" BorderThickness="2" Margin="420,110,20,200">
             <Image Source="{Binding CurrentDiscipline.SPhoto}"/>
         </Border>
-        <Button Content="Browse" HorizontalAlignment="Right" Margin="0,410,20,0" VerticalAlignment="Top" Width="100"
+        <Button Content="Browse" HorizontalAlignment="Right" Margin="0,0,20,158" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding BrowseCommand}"/>
         <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding SaveCommand}"/>
-        
+
     </Grid>
 </UserControl>

@@ -33,5 +33,10 @@
         <TextBox HorizontalAlignment="Left" Margin="46,380,0,0"
         	VerticalAlignment="Top" Width="370" MaxLength="49"
         	Text="{Binding Motto, Mode=OneWay}" BorderThickness="0" IsReadOnly="True"/>
+        <Border Margin="0,200,20,10" Width="250" Height="200" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Silver" BorderThickness="2">
+            <Image Source="{Binding Logo}"/>
+        </Border>
+        <TextBlock HorizontalAlignment="Left" Margin="630,173,0,0" Text="Logo" VerticalAlignment="Top"
+                   Style="{DynamicResource SmallTitle}"/>
     </Grid>
 </UserControl>

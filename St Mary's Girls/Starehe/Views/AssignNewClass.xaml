@@ -7,7 +7,7 @@
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid >
         <TextBlock Margin="20,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Text="Assign New Class" 
-                   Style="{DynamicResource SmallTitle}"/>
+                   Style="{DynamicResource Title0}"/>
         <RadioButton x:Name="rb1" Content="One Student" HorizontalAlignment="Left" Margin="40,80,0,0" VerticalAlignment="Top"
                      IsChecked="{Binding IsInStudentMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      GroupName="1"/>
@@ -18,17 +18,23 @@
                  Text="{Binding SelectedStudent.StudentID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
             ValidatesOnDataErrors=True,ValidatesOnNotifyDataErrors=True}"
                  IsEnabled="{Binding IsInStudentMode}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="75,185,0,0" Text="Name" VerticalAlignment="Top"/>
-        <TextBox x:Name="what" HorizontalAlignment="Left" Margin="114,185,0,0" VerticalAlignment="Top" Width="250"
-                  Background="WhiteSmoke"
+        <TextBlock HorizontalAlignment="Left" Margin="75,180,0,0" Text="Name" VerticalAlignment="Top"/>
+        <TextBox  HorizontalAlignment="Left" Margin="114,180,0,0" VerticalAlignment="Top" Width="250"
+                  Background="WhiteSmoke" IsReadOnly="True" IsReadOnlyCaretVisible="True"
                   Text="{Binding SelectedStudent.NameOfStudent}"
                   IsEnabled="{Binding IsInStudentMode}"/>
 
-        <RadioButton Content="Class" HorizontalAlignment="Left" Margin="40,250,0,0" VerticalAlignment="Top"
+        <TextBlock HorizontalAlignment="Left" Margin="33,230,0,0" Text="Current Class" VerticalAlignment="Top"/>
+        <TextBox  HorizontalAlignment="Left" Margin="114,230,0,0" VerticalAlignment="Top" Width="250"
+                  Background="WhiteSmoke" IsReadOnly="True" IsReadOnlyCaretVisible="True"
+                  Text="{Binding CurrentClass.NameOfClass}"
+                  IsEnabled="{Binding IsInStudentMode}"/>
+
+        <RadioButton Content="Class" HorizontalAlignment="Left" Margin="40,280,0,0" VerticalAlignment="Top"
                      IsChecked="{Binding IsInClassMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      GroupName="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="79,300,0,0" Text="Class" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="114,300,0,0" VerticalAlignment="Top" Width="200"
+        <TextBlock HorizontalAlignment="Left" Margin="79,330,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="114,330,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllClasses}" DisplayMemberPath="NameOfClass"
                   SelectedValuePath="ClassID"
                   SelectedValue="{Binding SelectedClassID}"

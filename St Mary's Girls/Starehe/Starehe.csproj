@@ -107,6 +107,48 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevDefined.OAuth">
+      <HintPath>..\packages\DevDefined.OAuth.0.2\lib\DevDefined.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Core">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Data">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.DataService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.DataService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Diagnostics">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Exception">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Exception.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.GlobalTaxService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.GlobalTaxService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.LinqExtender">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.LinqExtender.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.PlatformService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.PlatformService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.QueryFilter">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.QueryFilter.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.ReportService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.ReportService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Retry">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Retry.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Security">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Utility">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Samples &amp; Libraries\log4net.dll</HintPath>
@@ -116,6 +158,9 @@
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell">
       <HintPath>..\..\..\..\Samples &amp; Libraries\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
@@ -159,19 +204,30 @@
     <Compile Include="ViewModels\DisciplineTrackerVM.cs" />
     <Compile Include="ViewModels\EnterExamResultsBySubjectVM.cs" />
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
+    <Compile Include="ViewModels\GenerateTimeTableVM.cs" />
     <Compile Include="ViewModels\IssueItemsVM.cs" />
+    <Compile Include="ViewModels\ItemIssueHistoryVM.cs" />
     <Compile Include="ViewModels\LeavingCertificateVM.cs" />
     <Compile Include="ViewModels\LocalTutorialsVM.cs" />
     <Compile Include="ViewModels\NetworkOptionsVM.cs" />
     <Compile Include="ViewModels\NewPaymentVoucherVM.cs" />
+    <Compile Include="ViewModels\NewReportVM.cs" />
     <Compile Include="ViewModels\OnlineResourcesVM.cs" />
     <Compile Include="ViewModels\PAYEInfoVM.cs" />
     <Compile Include="ViewModels\PaymentsByVoteHeadVM.cs" />
     <Compile Include="ViewModels\PaymentVoucherHistoryVM.cs" />
     <Compile Include="ViewModels\PDFViewVM.cs" />
     <Compile Include="ViewModels\PriceListsVM.cs" />
+    <Compile Include="ViewModels\QuickBooksVM.cs" />
     <Compile Include="ViewModels\RemovePayment.cs" />
     <Compile Include="ViewModels\ReportsHomeVM.cs" />
+    <Compile Include="ViewModels\Reports\AcademicReportVM.cs" />
+    <Compile Include="ViewModels\Reports\BoardingReportVM.cs" />
+    <Compile Include="ViewModels\Reports\EventsReportVM.cs" />
+    <Compile Include="ViewModels\Reports\FinanceReportVM.cs" />
+    <Compile Include="ViewModels\Reports\LibraryReportVM.cs" />
+    <Compile Include="ViewModels\Reports\StaffReportVM.cs" />
+    <Compile Include="ViewModels\Reports\StudentsReportVM.cs" />
     <Compile Include="ViewModels\StudentClearanceVM.cs" />
     <Compile Include="ViewModels\StudentTranscriptVM.cs" />
     <Compile Include="ViewModels\AllBooksVM.cs" />
@@ -243,6 +299,7 @@
     <Compile Include="ViewModels\SupplierListVM.cs" />
     <Compile Include="ViewModels\SupplierReportsVM.cs" />
     <Compile Include="ViewModels\SuppliersVM.cs" />
+    <Compile Include="ViewModels\TimeTableSettingsVM.cs" />
     <Compile Include="ViewModels\UnreturnedBooksVM.cs" />
     <Compile Include="ViewModels\UpcomingEventsVM.cs" />
     <Compile Include="ViewModels\RecentGalleryItemsVM.cs" />
@@ -263,6 +320,15 @@
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\GenerateTimeTable.xaml.cs">
+      <DependentUpon>GenerateTimeTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QuickBooksSync.xaml.cs">
+      <DependentUpon>QuickBooksSync.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\AcademicReport.xaml.cs">
+      <DependentUpon>AcademicReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Activation.xaml.cs">
       <DependentUpon>Activation.xaml</DependentUpon>
     </Compile>
@@ -274,6 +340,9 @@
     </Compile>
     <Compile Include="Views\BillStudents.xaml.cs">
       <DependentUpon>BillStudents.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\BoardingReport.xaml.cs">
+      <DependentUpon>BoardingReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ClassReportFoms.xaml.cs">
       <DependentUpon>ClassReportFoms.xaml</DependentUpon>
@@ -293,11 +362,26 @@
     <Compile Include="Views\EnterExamResultsBySubject.xaml.cs">
       <DependentUpon>EnterExamResultsBySubject.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Reports\EventsReport.xaml.cs">
+      <DependentUpon>EventsReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\FinanceReport.xaml.cs">
+      <DependentUpon>FinanceReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\IssueItems.xaml.cs">
       <DependentUpon>IssueItems.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ItemIssueHistory.xaml.cs">
+      <DependentUpon>ItemIssueHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\LibraryReport.xaml.cs">
+      <DependentUpon>LibraryReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LocalTutorials.xaml.cs">
       <DependentUpon>LocalTutorials.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewReport.xaml.cs">
+      <DependentUpon>NewReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\OnlineResources.xaml.cs">
       <DependentUpon>OnlineResources.xaml</DependentUpon>
@@ -508,6 +592,7 @@
     <Compile Include="Views\ReportsHome.xaml.cs">
       <DependentUpon>ReportsHome.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Reports\ReportViewModel.cs" />
     <Compile Include="Views\ReprintReceipt.xaml.cs">
       <DependentUpon>ReprintReceipt.xaml</DependentUpon>
     </Compile>
@@ -532,6 +617,9 @@
     <Compile Include="Views\StaffDetails.xaml.cs">
       <DependentUpon>StaffDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Reports\StaffReport.xaml.cs">
+      <DependentUpon>StaffReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StockTakeResults.xaml.cs">
       <DependentUpon>StockTakeResults.xaml</DependentUpon>
     </Compile>
@@ -546,6 +634,9 @@
     </Compile>
     <Compile Include="Views\StudentDetails.xaml.cs">
       <DependentUpon>StudentDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\StudentsReport.xaml.cs">
+      <DependentUpon>StudentsReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StudentTranscript.xaml.cs">
       <DependentUpon>StudentTranscript.xaml</DependentUpon>
@@ -564,6 +655,9 @@
     </Compile>
     <Compile Include="Views\Test.Designer.cs">
       <DependentUpon>Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TimeTableSettings.xaml.cs">
+      <DependentUpon>TimeTableSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UnreturnedBooks.xaml.cs">
       <DependentUpon>UnreturnedBooks.xaml</DependentUpon>
@@ -664,6 +758,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\GenerateTimeTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QuickBooksSync.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\AcademicReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Activation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -677,6 +783,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BillStudents.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\BoardingReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -704,11 +814,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Reports\EventsReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\FinanceReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\IssueItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ItemIssueHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\LibraryReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LocalTutorials.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -996,6 +1126,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Reports\StaffReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StockTakeResults.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1016,6 +1150,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Reports\StudentsReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StudentTranscript.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1029,6 +1167,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Suppliers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TimeTableSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1230,6 +1372,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="MonsoonDigital.pfx" />
+    <None Include="packages.config" />
     <None Include="Properties\app.manifest">
       <SubType>Designer</SubType>
     </None>

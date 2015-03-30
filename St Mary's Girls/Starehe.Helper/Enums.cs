@@ -10,4 +10,5 @@ namespace Helper
     {
         Debit, Credit, All
     }
+    public enum Boardingtype { Boarder, DayScholar }
 }

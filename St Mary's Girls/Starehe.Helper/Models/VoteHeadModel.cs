@@ -8,6 +8,10 @@ namespace Helper.Models
 {
     public class VoteHeadModel:FeesStructureEntryModel
     {
+        public VoteHeadModel()
+        {
+
+        }
         public VoteHeadModel(FeesStructureEntryModel d)
         {
             Name = d.Name;

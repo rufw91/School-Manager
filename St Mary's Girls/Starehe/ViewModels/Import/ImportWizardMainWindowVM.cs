@@ -202,7 +202,7 @@ namespace Starehe.ViewModels
                     student.NameOfGuardian = dtr[nameOfGuardianColumn].ToString();
                     student.PostalCode = "X";
                     student.PrevBalance = decimal.Parse(dtr[balanceBFColumn].ToString());
-
+                    student.IsBoarder = ConvertBoadingString(dtr[boardingColumn].ToString());
                     await DataAccess.SaveNewStudentAsync(student);
                 }
 
@@ -210,6 +210,16 @@ namespace Starehe.ViewModels
                 HasFinished = true;
                 InformationText = "Successfully completed Import Process.";
             });
+        }
+
+        private bool ConvertBoadingString(string text)
+        {
+            text = text.Trim().ToUpper();
+            if ((text.Contains("BOARD")||text.Contains("B")) && !text.Contains("NOT"))
+                return true;
+            if ((text.Contains("DAY")||text.Contains("D")) && !text.Contains("NOT"))
+                return false;
+            return false;
         }
 
         private List<ClassModel> AllClasses
@@ -288,7 +298,10 @@ namespace Starehe.ViewModels
                             .Replace("!", "")
                             .Replace("$", "")
                             .Replace("%", "")
-                            .Replace("^", "");
+                            .Replace("^", "")
+                        .Replace(".", "");
+                        if (string.IsNullOrWhiteSpace(dtr[i].ToString()))
+                            dtr[i] = "-";
                     }
                 }
                 return dt;
@@ -1052,7 +1065,7 @@ namespace Starehe.ViewModels
                 }
             }
             returnDate = DateTime.Now;
-            return false;
+            return true;
         }
     }
 }
