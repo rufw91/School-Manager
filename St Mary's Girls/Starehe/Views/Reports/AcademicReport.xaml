@@ -36,19 +36,35 @@
             <TabItem Header="Filters" Height="22" VerticalAlignment="Bottom">
                 <Grid>
                     <TextBlock HorizontalAlignment="Left" Margin="10,20,0,0" Text="Student ID is:" VerticalAlignment="Top"/>
-                    <TextBox Margin="10,40,10,0" VerticalAlignment="Top" />
+                    <TextBox Margin="10,40,10,0" VerticalAlignment="Top" 
+                             Text="{Binding StudentID, UpdateSourceTrigger=PropertyChanged, Delay=10}"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,80,0,0" Text="Class is:" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,100,10,0" VerticalAlignment="Top"/>
+                    <ComboBox Margin="10,100,10,0" VerticalAlignment="Top"
+                              ItemsSource="{Binding AllClasses}"
+                              DisplayMemberPath="NameOfClass" SelectedValuePath="ClassID"
+                              SelectedValue="{Binding ClassID, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,140,0,0" Text="Exam is:" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,160,10,0" VerticalAlignment="Top"/>
+                    <ComboBox Margin="10,160,10,0" VerticalAlignment="Top"
+                              ItemsSource="{Binding AllExams}"
+                              DisplayMemberPath="NameOfExam" SelectedValuePath="ExamID"
+                              SelectedValue="{Binding ExamID, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,200,0,0" Text="Grade" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,220,10,0" VerticalAlignment="Top" />
+                    <ComboBox Margin="10,220,10,0" VerticalAlignment="Top" 
+                              ItemsSource="{Binding Comparisons}"
+                              DisplayMemberPath="Description" SelectedValuePath="Value"
+                              SelectedValue="{Binding SelectedComparisonValue1, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,260,0,0" Text="Value" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,280,10,0" VerticalAlignment="Top" />
+                    <ComboBox Margin="10,280,10,0" VerticalAlignment="Top" 
+                              ItemsSource="{Binding AllGrades}"
+                              SelectedItem="{Binding Grade, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,320,0,0" Text="Score" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,340,10,0" VerticalAlignment="Top" />
+                    <ComboBox Margin="10,340,10,0" VerticalAlignment="Top" 
+                              ItemsSource="{Binding Comparisons}"
+                              DisplayMemberPath="Description" SelectedValuePath="Value"
+                              SelectedValue="{Binding SelectedComparisonValue2, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,380,0,0" Text="Value" VerticalAlignment="Top"/>
-                    <TextBox Margin="10,400,10,0" VerticalAlignment="Top" />
+                    <TextBox Margin="10,400,10,0" VerticalAlignment="Top" 
+                             Text="{Binding Score, UpdateSourceTrigger=PropertyChanged, Delay=10}"/>
                     <Button Content="Refresh" Margin="20,0,20,10" VerticalAlignment="Bottom"
                             Command="{Binding RefreshCommand}"/>
                 </Grid>
@@ -68,5 +84,9 @@
         </TabControl>
         <DocumentViewer BorderBrush="Silver" BorderThickness="2" Margin="240,50,10,10" Grid.Row="1"
                         Document="{Binding Document}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="240,20,0,0" Grid.Row="1" Text="Preview" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,31,9,0" Grid.Row="1" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FullPreviewCommand}">Full Preview</Hyperlink>
+        </TextBlock>
     </Grid>
 </UserControl>

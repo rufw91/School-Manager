@@ -39,7 +39,8 @@ namespace Helper
 
         public virtual bool CheckErrors()
         {
-            return false;
+             ClearAllErrors();
+             return false;
         }
 
         public void SetErrors(string propertyName, List<string> propertyErrors)

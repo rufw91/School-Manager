@@ -9,5 +9,7 @@
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Quickbooks Sync" 
                    VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,75,0,0" Text="Click 'Sync' below to start syncing to quickbooks." VerticalAlignment="Top"/>
+        <Button Content="Sync" Width="200" Height="50" Command="{Binding SyncCommand}"/>        
     </Grid>
 </UserControl>

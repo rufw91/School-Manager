@@ -36,27 +36,50 @@
             <TabItem Header="Filters" Height="22" VerticalAlignment="Bottom">
                 <Grid>
                     <TextBlock HorizontalAlignment="Left" Margin="10,20,0,0" Text="Dormitory is:" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,40,10,0" VerticalAlignment="Top" />
+                    <ComboBox Margin="10,40,10,0" VerticalAlignment="Top" 
+                              ItemsSource="{Binding AllDorms}"
+                              DisplayMemberPath="NameOfDormitory" SelectedValuePath="DormitoryID"
+                              SelectedValue="{Binding SelectedDormitoryID, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,80,0,0" Text="No of Members:" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,100,10,0" VerticalAlignment="Top"/>
+                    <ComboBox Margin="10,100,10,0" VerticalAlignment="Top"
+                              ItemsSource="{Binding Comparisons}"
+                              DisplayMemberPath="Description" SelectedValuePath="Value"
+                              SelectedValue="{Binding SelectedComparisonValue, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,140,0,0" Text="Value:" VerticalAlignment="Top"/>
-                    <TextBox Margin="10,160,10,0" VerticalAlignment="Top"/>
-                    <Button Content="Refresh" Margin="20,0,20,10" VerticalAlignment="Bottom"/>
+                    <TextBox Margin="10,160,10,0" VerticalAlignment="Top"
+                             Text="{Binding NoOfMembers, UpdateSourceTrigger=PropertyChanged, Delay=10}"/>
+                    <GroupBox Style="{x:Null}" Header="" Height="100" Margin="10,206,10,0" VerticalAlignment="Top">
+                        <Grid>
+                            <RadioButton Content="Show Dormitories" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top"
+                                         GroupName="1"/>
+                            <RadioButton Content="Show Members" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top"
+                                         IsChecked="{Binding ShowMembers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         GroupName="1"/>
+                        </Grid>
+                    </GroupBox>
+                    <Button Content="Refresh" Margin="20,0,20,10" VerticalAlignment="Bottom"
+                            Command="{Binding RefreshCommand}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Columns">
                 <Grid>
-                    <DataGrid Margin="5,5,5,5" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False"
+                    <DataGrid Margin="5,5,5,5" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False"
                               CanUserSortColumns="False" ItemsSource="{Binding Columns}">
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{Binding IsChecked}" Header=" " Width=".25*"/>
-                            <DataGridTextColumn Binding="{Binding IsChecked}" Header="Column" Width="1*"/>
-                            <DataGridTextColumn Binding="{Binding IsChecked}" Header="Width" Width=".5*"/>
+                            <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Header=" " Width=".25*"/>
+                            <DataGridTextColumn Binding="{Binding FriendlyName}" Header="Column" Width="1*" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Width}" Header="Width" Width=".5*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </TabItem>
+            
         </TabControl>
-        <DocumentViewer BorderBrush="Silver" BorderThickness="2" Margin="240,50,10,10" Grid.Row="1"/>
+        <DocumentViewer BorderBrush="Silver" BorderThickness="2" Margin="240,50,10,10" Grid.Row="1"
+                        Document="{Binding Document}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="240,20,0,0" Grid.Row="1" Text="Preview" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,31,9,0" Grid.Row="1" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FullPreviewCommand}">Full Preview</Hyperlink>
+        </TextBlock>
     </Grid>
 </UserControl>

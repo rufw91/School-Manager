@@ -14,6 +14,11 @@ namespace Helper.Models
         {            
             StudentID = 0;
             NameOfStudent = "";
+            PropertyChanged += (o, e) =>
+                {
+                    if (e.PropertyName == "MaximumScore" || e.PropertyName == "Score")
+                        CheckErrors();
+                };
         }
 
         public int StudentID
@@ -42,6 +47,15 @@ namespace Helper.Models
                 }
             }
         }
+
+        public override bool CheckErrors()
+        {
+            ClearAllErrors();
+            if (Score > MaximumScore)
+                SetErrors("Score", new List<string>() { "Score value [" + Score + "] is invalid. Should be non negative number greater than zero and less than or equal to [" + MaximumScore + "]" });
+            return HasErrors;
+        }
+
         public override void Reset()
         {
             base.Reset();

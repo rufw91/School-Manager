@@ -34,8 +34,11 @@ namespace Starehe.ViewModels
                             classHasResults = false;
                             return;
                         }
+                        IsBusy = true;
                         ClassTranscripts = await DataAccess.GetClassTranscriptsAsync(selectedClassID);
+                        IsBusy = false;
                         classHasResults = classTranscripts.Count > 0;
+                        Log.I(classHasResults + "",null);
                     }
                 };
             AllClasses = await DataAccess.GetAllClassesAsync();
@@ -82,7 +85,7 @@ namespace Starehe.ViewModels
 
         private bool CanGenerate()
         {
-            return classHasResults;
+            return classHasResults && !IsBusy;
         }
 
         private FixedDocument Document

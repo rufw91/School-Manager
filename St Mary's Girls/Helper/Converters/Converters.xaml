@@ -16,5 +16,6 @@
     <converters:ToUpperConverter x:Key="ToUpperConverter" />
     <converters:ToLowerConverter x:Key="ToLowerConverter" />    
     <converters:UriToImageSourceConverter x:Key="UriToImageSourceConverter"/>
-   
+    <converters:ValidationErrorConverter x:Key="ValidationErrorConverter"/>
+    
 </ResourceDictionary>

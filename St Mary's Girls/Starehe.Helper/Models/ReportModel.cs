@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.ObjectModel;
+using System.Data;
 
 namespace Helper.Models
 {
@@ -12,6 +13,9 @@ namespace Helper.Models
         public string Title
         { get; set; }
         public DataTable Entries
+        { get; set; }
+
+        public ObservableCollection<ColumnModel> Columns
         { get; set; }
         public override void Reset()
         {

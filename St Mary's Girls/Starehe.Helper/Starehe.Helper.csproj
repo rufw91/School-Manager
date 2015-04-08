@@ -40,7 +40,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>MonsoonDigital.pfx</AssemblyOriginatorKeyFile>
@@ -63,6 +63,51 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevDefined.OAuth">
+      <HintPath>..\packages\DevDefined.OAuth.0.2\lib\DevDefined.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Core">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Data">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.DataService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.DataService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Diagnostics">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Exception">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Exception.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.GlobalTaxService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.GlobalTaxService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.LinqExtender">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.LinqExtender.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.PlatformService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.PlatformService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.QueryFilter">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.QueryFilter.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.ReportService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.ReportService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Retry">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Retry.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Security">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Utility">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="ReachFramework" />
@@ -85,6 +130,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComparisonCollection.cs" />
     <Compile Include="Controls\HomePageButton.cs" />
     <Compile Include="Converters\ImageConverters.cs" />
     <Compile Include="Converters\ItemListToItemFindListConverter.cs" />
@@ -98,6 +144,7 @@
     <Compile Include="Helpers\DocumentHelper.Transcript.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript2.cs" />
     <Compile Include="Helpers\DocumentHelper.Voucher.cs" />
+    <Compile Include="Helpers\QBSyncHelper.cs" />
     <Compile Include="Helpers\StudentTranscriptSubjectModel.cs" />
     <Compile Include="Models\AcademicReportModel.cs" />
     <Compile Include="Models\AggregateResultEntryModel.cs" />
@@ -107,10 +154,12 @@
     <Compile Include="Models\BookReturnModel.cs" />
     <Compile Include="Models\BookSelectModel.cs" />
     <Compile Include="Models\ClassFeesDefaultModel.cs" />
+    <Compile Include="Models\ClassStudentsExamResultModel.cs" />
     <Compile Include="Models\ClassStudentListModel.cs" />
     <Compile Include="Models\ClassTranscriptModel.cs" />
     <Compile Include="Models\ClassTranscriptsModel.cs" />
     <Compile Include="Models\CombinedClassModel.cs" />
+    <Compile Include="Models\ComparisonModel.cs" />
     <Compile Include="Models\DisciplineModel.cs" />
     <Compile Include="Models\ExamResultStudentSubjectEntryModel.cs" />
     <Compile Include="Models\FeePaymentReceipt2Model.cs" />
@@ -196,6 +245,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Transcript3.xaml.cs">
+      <DependentUpon>Transcript3.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Converters\Converters.xaml">
@@ -209,11 +261,21 @@
     <Compile Include="Helpers\DocumentHelper.ClassMarkList.cs" />
     <Compile Include="Helpers\DocumentHelper.ClassTranscripts.cs" />
     <Compile Include="Helpers\DocumentHelper.UnretunedBooks.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassExamResults.cs" />
     <None Include="MonsoonDigital.pfx" />
+    <None Include="packages.config" />
     <None Include="Resources\Receipt.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Resources\Report.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <Page Include="Resources\Transcript3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -300,8 +362,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

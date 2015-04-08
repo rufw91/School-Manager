@@ -107,48 +107,6 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevDefined.OAuth">
-      <HintPath>..\packages\DevDefined.OAuth.0.2\lib\DevDefined.OAuth.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.Core">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.Data">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.DataService">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.DataService.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.Diagnostics">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.Exception">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Exception.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.GlobalTaxService">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.GlobalTaxService.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.LinqExtender">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.LinqExtender.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.PlatformService">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.PlatformService.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.QueryFilter">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.QueryFilter.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.ReportService">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.ReportService.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.Retry">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Retry.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.Security">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.Utility">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Utility.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Samples &amp; Libraries\log4net.dll</HintPath>
@@ -158,9 +116,6 @@
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell">
       <HintPath>..\..\..\..\Samples &amp; Libraries\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
@@ -219,6 +174,7 @@
     <Compile Include="ViewModels\PDFViewVM.cs" />
     <Compile Include="ViewModels\PriceListsVM.cs" />
     <Compile Include="ViewModels\QuickBooksVM.cs" />
+    <Compile Include="ViewModels\RemoveExamVM.cs" />
     <Compile Include="ViewModels\RemovePayment.cs" />
     <Compile Include="ViewModels\ReportsHomeVM.cs" />
     <Compile Include="ViewModels\Reports\AcademicReportVM.cs" />
@@ -325,6 +281,9 @@
     </Compile>
     <Compile Include="Views\QuickBooksSync.xaml.cs">
       <DependentUpon>QuickBooksSync.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RemoveExam.xaml.cs">
+      <DependentUpon>RemoveExam.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Reports\AcademicReport.xaml.cs">
       <DependentUpon>AcademicReport.xaml</DependentUpon>
@@ -592,7 +551,6 @@
     <Compile Include="Views\ReportsHome.xaml.cs">
       <DependentUpon>ReportsHome.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Reports\ReportViewModel.cs" />
     <Compile Include="Views\ReprintReceipt.xaml.cs">
       <DependentUpon>ReprintReceipt.xaml</DependentUpon>
     </Compile>
@@ -763,6 +721,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\QuickBooksSync.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RemoveExam.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1372,7 +1334,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="MonsoonDigital.pfx" />
-    <None Include="packages.config" />
     <None Include="Properties\app.manifest">
       <SubType>Designer</SubType>
     </None>

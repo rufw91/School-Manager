@@ -39,7 +39,7 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ListBox Name="menu" Grid.Column="0" Height="500" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"
+            <ListBox Name="menu" Grid.Column="0" Height="560" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"
                  DisplayMemberPath="Title" ItemsSource="{Binding MenuItems}" SelectedIndex="0"
                      BorderThickness="0,0,1,0" BorderBrush="{DynamicResource TitleBackgroundBrush}"/>
             <ContentControl Grid.Column="1" Content="{Binding ElementName=menu, Path=SelectedItem}"/>
