@@ -23,7 +23,7 @@ namespace Helper
         static object myWorkObject;
         enum DocType
         {
-            Statement, Transcript, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, UnreturnedBooks, Report
+            Statement, Transcript, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList,ClassExamResults, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, UnreturnedBooks, Report
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -77,6 +77,7 @@ namespace Helper
                 case DocType.ClassTranscripts: GenerateClassTranscripts(); break;
                 case DocType.UnreturnedBooks: GenerateUnreturnedBooks(); break;
                 case DocType.Report: GenerateReport(); break;
+                case DocType.ClassExamResults: GenerateClassExamResults(); break;
             }
         }
 
@@ -94,11 +95,12 @@ namespace Helper
                 case DocType.ClassList: resString = Helper.Properties.Resources.ClassList; break;
                 case DocType.Transcript2: resString = Helper.Properties.Resources.Transcript2; break;
                 case DocType.ClassTranscripts: resString = Helper.Properties.Resources.Transcript2; break;
+                case DocType.ClassExamResults: resString = Helper.Properties.Resources.Transcript; break;
                 case DocType.Voucher: resString = Helper.Properties.Resources.PaymentVoucher; break;
                 case DocType.ClassMarkList: resString = Helper.Properties.Resources.ClassMarkList; break;
                 case DocType.AggregateResult: resString = Helper.Properties.Resources.AggregateResult; break;
                 case DocType.UnreturnedBooks: resString = Helper.Properties.Resources.UnreturnedBooks; break;
-                case DocType.Report: resString = Helper.Properties.Resources.UnreturnedBooks; break;
+                case DocType.Report: resString = Helper.Properties.Resources.Report; break;
                 default: throw new ArgumentException();
             }
             StringReader stringReader = new StringReader(resString);
@@ -137,7 +139,8 @@ namespace Helper
                 return DocType.ClassTranscripts;
             if (workObject is ReportModel)
                 return DocType.Report;
-            
+            if (workObject is ClassStudentsExamResultModel)
+                return DocType.ClassExamResults;
             throw new ArgumentException();
         }
 
@@ -150,6 +153,7 @@ namespace Helper
                 case DocType.ClassList: return 34;
                 case DocType.Balances: return 34;
                 case DocType.UnreturnedBooks: return 34;
+                case DocType.Report: return 37;
                 default: return 31;
             }
         }
@@ -185,6 +189,8 @@ namespace Helper
                 totalNoOfItems = (workObject as UnreturnedBooksModel).Entries.Count;            
             if (workObject is ClassTranscriptsModel)
                 return (workObject as ClassTranscriptsModel).Entries.Count;
+            if (workObject is ClassStudentsExamResultModel)
+                return (workObject as ClassStudentsExamResultModel).Entries.Count;
             if (workObject is ReportModel)
                 totalNoOfItems = (workObject as ReportModel).Entries.Rows.Count;
             return (totalNoOfItems % itemsPerPage) != 0 ?
@@ -209,10 +215,9 @@ namespace Helper
                 text1.RenderTransform = rotateTransform1;
             }
 
-            text1.HorizontalAlignment = HorizontalAlignment.Left;
+            text1.HorizontalAlignment = (left == -1) ? HorizontalAlignment.Center : HorizontalAlignment.Left;
             text1.VerticalAlignment = VerticalAlignment.Top;
-
-            text1.Margin = new Thickness(left, top, 0, 0);
+            text1.Margin = new Thickness((left == -1) ? 0 : left, top, 0, 0);
 
             Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(text1);
@@ -239,10 +244,9 @@ namespace Helper
                 text1.RenderTransform = rotateTransform1;
             }
 
-            text1.HorizontalAlignment = HorizontalAlignment.Left;
+            text1.HorizontalAlignment = (left == -1) ? HorizontalAlignment.Center : HorizontalAlignment.Left;
             text1.VerticalAlignment = VerticalAlignment.Top;
-
-            text1.Margin = new Thickness(left, top, 0, 0);
+            text1.Margin = new Thickness((left == -1) ? 0 : left, top, 0, 0);
 
             Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(text1);
@@ -266,10 +270,10 @@ namespace Helper
                 text1.RenderTransform = rotateTransform1;
             }
 
-            text1.HorizontalAlignment = HorizontalAlignment.Left;
+            text1.HorizontalAlignment = (left == -1) ? HorizontalAlignment.Center : HorizontalAlignment.Left;
             text1.VerticalAlignment = VerticalAlignment.Top;
-
-            text1.Margin = new Thickness(left, top, 0, 0);
+            text1.Margin = new Thickness((left == -1) ? 0 : left, top, 0, 0);
+            
 
             Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(text1);

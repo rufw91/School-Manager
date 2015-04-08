@@ -185,6 +185,7 @@ namespace Starehe.ViewModels
             if (newSubjectResult != null)
                 newSubjectResult.Reset();
             SelectedExamID = 0;
+            
         }
     }
 }

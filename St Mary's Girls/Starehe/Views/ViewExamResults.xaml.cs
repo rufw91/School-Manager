@@ -27,6 +27,17 @@ namespace Starehe.Views
                                 w.Content = new PrintDialog(v);
                                 w.ShowDialog();
                             };
+                        vervm.ShowClassStudentsTranscriptAction = (p) =>
+                        {
+                            CustomWindow w = new CustomWindow();
+                            w.MinHeight = 610;
+                            w.MinWidth = 810;
+                            w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                            w.WindowState = WindowState.Maximized;
+                            var v = DocumentHelper.GenerateDocument(p);
+                            w.Content = new PrintDialog(v);
+                            w.ShowDialog();
+                        };
                         vervm.ShowClassTranscriptAction = (p) =>
                         {
                             CustomWindow w = new CustomWindow();

@@ -14,11 +14,14 @@ namespace Helper.Models
             Classes = new ObservableCollection<ClassModel>();
             NameOfExam = "";
             Entries = new ObservableCollection<ExamSubjectEntryModel>();
+            OutOf = 100;
         }
         ObservableCollection<ClassModel> classes;
         int examID;        
         string nameOfExam;
         ObservableCollection<ExamSubjectEntryModel> entries;
+        private decimal outOf;
+        private bool isRemovingInvalid;
         
         public string NameOfExam
         {
@@ -72,6 +75,22 @@ namespace Helper.Models
                 {
                     this.entries = value;
                     NotifyPropertyChanged("Entries");
+                }
+            }
+        }
+
+        public decimal OutOf
+        {
+            get { return this.outOf; }
+
+            set
+            {
+                if (value != this.outOf)
+                {
+                    if ((decimal.Ceiling(value) > 100) || (decimal.Ceiling(value) < 0))
+                        throw new ArgumentOutOfRangeException("OutOf", "Out Of value [" + value + "] is invalid. Should be non negative number greater than zero and less than or equal to 100");
+                    this.outOf = value;
+                    NotifyPropertyChanged("OutOf");
                 }
             }
         }

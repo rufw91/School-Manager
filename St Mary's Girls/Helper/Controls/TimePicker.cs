@@ -13,7 +13,7 @@ namespace Helper.Controls
 
     public class TimePicker : UserControl
     {
-        public static readonly DependencyProperty SelectedTimeProperty = DependencyProperty.Register("SelectedTime", typeof(TimeSpan),
+        public static readonly DependencyProperty SelectedTimeProperty = DependencyProperty.Register("SelectedTime", typeof(TimeSpan?),
             typeof(TimePicker), new PropertyMetadata(new TimeSpan(0, 0, 0), new PropertyChangedCallback(SelectedTimeChangedCallBack)));
         public static readonly RoutedEvent SelectedTimeChangedEvent = EventManager.RegisterRoutedEvent(
         "SelectedTimeChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TimePicker));
@@ -44,32 +44,44 @@ namespace Helper.Controls
 
         private void HourChanged(object sender, RoutedEventArgs e)
         {
-            SelectedTime = SelectedTime.Add(new TimeSpan(1, 0, 0));
+            if (!SelectedTime.HasValue)
+                SelectedTime = new TimeSpan(0, 0, 0);
+            SelectedTime = SelectedTime.Value.Add(new TimeSpan(1, 0, 0));
         }
 
         private void MinuteChanged(object sender, RoutedEventArgs e)
         {
-            SelectedTime = SelectedTime.Add(new TimeSpan(0, 1, 0));
+            if (!SelectedTime.HasValue)
+                SelectedTime = new TimeSpan(0, 0, 0);
+            SelectedTime = SelectedTime.Value.Add(new TimeSpan(0, 1, 0));
         }
 
         private void SecondChanged(object sender, RoutedEventArgs e)
         {
-            SelectedTime = SelectedTime.Add(new TimeSpan(0, 0, 1));
+            if (!SelectedTime.HasValue)
+                SelectedTime = new TimeSpan(0, 0, 0);
+            SelectedTime = SelectedTime.Value.Add(new TimeSpan(0, 0, 1));
         }
 
         private void ResetHour(object sender, MouseButtonEventArgs e)
         {
-            SelectedTime=SelectedTime.Subtract(new TimeSpan(SelectedTime.Hours, 0, 0));
+            if (!SelectedTime.HasValue)
+                SelectedTime = new TimeSpan(0, 0, 0);
+            SelectedTime = SelectedTime.Value.Subtract(new TimeSpan(SelectedTime.Value.Hours, 0, 0));
         }
 
         private void ResetMinute(object sender, MouseButtonEventArgs e)
         {
-            SelectedTime = SelectedTime.Subtract(new TimeSpan(0, SelectedTime.Minutes, 0));
+            if (!SelectedTime.HasValue)
+                SelectedTime = new TimeSpan(0, 0, 0);
+            SelectedTime = SelectedTime.Value.Subtract(new TimeSpan(0, SelectedTime.Value.Minutes, 0));
         }
 
         private void ResetSecond(object sender, MouseButtonEventArgs e)
         {
-            SelectedTime = SelectedTime.Subtract(new TimeSpan(0, 0, SelectedTime.Seconds));
+            if (!SelectedTime.HasValue)
+                SelectedTime = new TimeSpan(0, 0, 0);
+            SelectedTime = SelectedTime.Value.Subtract(new TimeSpan(0, 0, SelectedTime.Value.Seconds));
         }
 
         private RepeatButton HourButton
@@ -144,9 +156,9 @@ namespace Helper.Controls
             }
         }
 
-        public TimeSpan SelectedTime
+        public TimeSpan? SelectedTime
         {
-            get { return (TimeSpan)this.GetValue(SelectedTimeProperty); }
+            get { return (TimeSpan?)this.GetValue(SelectedTimeProperty); }
             set
             {
                 this.SetValue(SelectedTimeProperty, value);

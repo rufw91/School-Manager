@@ -54,13 +54,15 @@ namespace Starehe.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                if (SecurePassword!=null)
-                SecurePassword.MakeReadOnly();
-                SqlCredential c = new SqlCredential(newStaff.StaffID + "", SecurePassword);
+
 
                 bool succ = await DataAccess.SaveNewStaffAsync(newStaff);
                 if (canSaveUser)
-                    succ = succ && await UsersHelper.CreateNewUserAsync(c, Role, newStaff.Name,newStaff.SPhoto);
+                {
+                    SecurePassword.MakeReadOnly();
+                    SqlCredential c = new SqlCredential(newStaff.StaffID + "", SecurePassword);
+                    succ = succ && await UsersHelper.CreateNewUserAsync(c, Role, newStaff.Name, newStaff.SPhoto);
+                }
                 if (succ)
                 {
                     MessageBox.Show("Succesfully saved staff member.", "Success", MessageBoxButton.OK,
@@ -147,12 +149,17 @@ namespace Starehe.ViewModels
         }
         private bool ValidateStaff()
         {
+            
             bool isOk = newStaff.StaffID>0&&
                 !string.IsNullOrWhiteSpace(newStaff.Name) && !string.IsNullOrWhiteSpace(newStaff.NationalID)
                 && !string.IsNullOrWhiteSpace(newStaff.Email) && !(newStaff.DateOfAdmission == null)
                    && !string.IsNullOrWhiteSpace(newStaff.PhoneNo) && !string.IsNullOrWhiteSpace(newStaff.Address)
                     && !string.IsNullOrWhiteSpace(newStaff.City) && !string.IsNullOrWhiteSpace(newStaff.PostalCode)
                       && (EmailValidator.IsValidEmail(newStaff.Email));
+
+            if (canSaveUser)
+                if (SecurePassword == null)
+                    isOk = false;
             return isOk;
         }
     }

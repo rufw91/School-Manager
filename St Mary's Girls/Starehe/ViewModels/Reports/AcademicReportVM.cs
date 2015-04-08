@@ -1,44 +1,200 @@
 ﻿using Helper;
 using Helper.Models;
+using System.Linq;
+using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Data;
+using System.Threading.Tasks;
+using System;
 
 namespace Starehe.ViewModels
 {
-    public class AcademicReportVM : ReportViewModel
+    public class AcademicReportVM : ViewModelBase
     {
-        private int? studentID;
-        private int? classID;
-        private int? examID;
+        private int studentID;
+        private int classID;
+        private int examID;
         private string grade;
         private decimal? score;
         private FixedDocument document;
+        private ObservableCollection<ColumnModel> columns;
+        private int selectedComparisonValue1;
+        private int selectedComparisonValue2;
+        private ObservableCollection<ExamModel> allExams;
         public AcademicReportVM():base()
         {
             InitVars();
             CreateCommands();
         }
-        protected override void InitVars()
+        protected async override void InitVars()
         {
-            Columns.Add(new ColumnModel(true,"Student ID",0.8));
-            Columns.Add(new ColumnModel(true, "Name of Student", 1));
-            Columns.Add(new ColumnModel(true, "Class", 1));
-            Columns.Add(new ColumnModel(true, "Exam", 1));
-            Columns.Add(new ColumnModel(true, "Grade", .3));
-            Columns.Add(new ColumnModel(true, "Score", .5));
+            SelectedComparisonValue1 = 0;
+            SelectedComparisonValue2 = 0;
+            AllGrades = new ObservableCollection<string>()
+            {
+                "A","A-","B+","B","B-","C+","C","C-","D+","D","D-","E"
+            };
+            AllClasses = new ObservableCollection<ClassModel>();
+            AllExams = new ObservableCollection<ExamModel>();
+            Columns = new ObservableCollection<ColumnModel>(){  
+                new ColumnModel(true, "s.StudentID", "Student ID", 0.8),
+           new ColumnModel(true, "s.NameOfStudent", "Name of Student", 1),
+           new ColumnModel(true, "c.NameOfClass", "Class", 1),
+            new ColumnModel(true, "e.NameOfExam","Exam", 1),
+            new ColumnModel(true, "dbo.GetGrade(ISNUll(AVG(CONVERT(decimal,erd.Score)),0)) MeanGrade", "Grade", .3),
+            new ColumnModel(true, "ISNULL(SUM(CONVERT(decimal,erd.Score)),0) TotalScore","Total Score", .5)
+            };
+            PropertyChanged += async(o, e) =>
+                {
+                    if (e.PropertyName == "StudentID")
+                    {
+                        ClassID = studentID > 0 ? 0 : classID;
+                        if (studentID == 0)
+                            AllExams.Clear();
+                        else
+                        {
+                            var s = await DataAccess.GetClassIDFromStudentID(studentID);
+                            AllExams = await DataAccess.GetExamsByClass(s);
+                        }
+                    }
+                    if (e.PropertyName == "ClassID")
+                    {
+                        StudentID = classID > 0 ? 0 : studentID;
+                        if (classID == 0)
+                            AllExams.Clear();
+                        else
+                            AllExams = await DataAccess.GetExamsByClass(classID);
+                    }
+
+                    if ((e.PropertyName == "SelectedComparisonValue1")&&(selectedComparisonValue1 ==0))
+                        Grade = null;
+                    if ((e.PropertyName == "SelectedComparisonValue2") && (selectedComparisonValue2 == 0))
+                        Score = null;
+                    
+                    
+                };
+            var f = await DataAccess.GetAllClassesAsync();
+            AllClasses.Add(new ClassModel() { NameOfClass = "None", ClassID = 0 });
+            foreach (ClassModel cs in f)
+                AllClasses.Add(cs);
+            NotifyPropertyChanged("AllClasses");
         }
 
         protected override void CreateCommands()
         {
             RefreshCommand = new RelayCommand(async o =>
             {
-                AcademicReportModel arm = await DataAccess.GetAcademicReport(studentID,classID,examID,grade,score);
-                Document = DocumentHelper.GenerateDocument(arm);
+                ReportModel rt = new ReportModel();
+                rt.Title = "Student(s) Report";
+                rt.Entries = await GetEntries();
+                rt.Columns = new ObservableCollection<ColumnModel>(columns.Where(ox => ox.IsSelected == true));
+                Document = DocumentHelper.GenerateDocument(rt);
+            }, o => CanRefresh());
 
-            },o=>!IsBusy);
+            FullPreviewCommand = new RelayCommand(async o =>
+            {
+                ReportModel rt = new ReportModel();
+                rt.Title = "Student(s) Report";
+                rt.Entries = await GetEntries();
+                rt.Columns = new ObservableCollection<ColumnModel>(columns.Where(ox => ox.IsSelected == true));
+                var xdc = DocumentHelper.GenerateDocument(rt);
+                if (ShowFullPreviewAction != null)
+                    ShowFullPreviewAction.Invoke(xdc);
+            }, o => CanRefresh());
         }
 
-        public int? StudentID
+        private bool CanRefresh()
+        {
+            return !IsBusy && examID > 0 && (studentID > 0 || classID > 0) && ((selectedComparisonValue1 > 0) ? !string.IsNullOrWhiteSpace(grade) : true)
+                && ((selectedComparisonValue2 > 0) ? score.HasValue : true);
+        }
+
+        private Task<DataTable> GetEntries()
+        {
+            return Task.Run<DataTable>(() =>
+            {
+                string selectStr = "SELECT * FROM (SELECT ";
+                var t = columns.Where(ox => ox.IsSelected == true);
+                foreach (var c in t)
+                    selectStr += c.Name + ",";
+                selectStr = selectStr.Remove(selectStr.Length - 1);
+                selectStr += " FROM [Institution].[Student] s INNER JOIN  [Institution].[ExamResultHeader] erh ON(s.StudentID =erh.StudentID)"+
+                    "INNER JOIN [Institution].[ExamResultDetail] erd ON(erh.ExamResultID = erd.ExamResultID) "+
+                    "LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[ExamHeader] e ON(erh.ExamID=e.ExamID) WHERE erh.IsActive = 1";
+                if (classID > 0)
+                    selectStr += " AND s.ClassID=" + classID;
+                else if (studentID>0)
+                    selectStr += " AND s.StudentID=" + studentID;
+                selectStr += " AND erh.ExamID=" + examID;
+                selectStr += " GROUP BY s.StudentID,s.NameOfStudent,c.NameOfClass,e.NameOfExam) x";
+                if (selectedComparisonValue1>0)
+                {
+                    switch (selectedComparisonValue1)
+                    {
+                        case 1: selectStr += " WHERE x.MeanGrade =" + grade; break;
+                        case 2: selectStr += " WHERE x.MeanGrade IN(" + GetGrades(selectedComparisonValue1, grade) + ")"; break;
+                        case 3: selectStr += " WHERE x.MeanGrade IN(" + GetGrades(selectedComparisonValue1, grade) + ")"; break;
+                        case 4: selectStr += " WHERE x.MeanGrade IN(" + GetGrades(selectedComparisonValue1, grade) + ")"; break;
+                        case 5: selectStr += " WHERE x.MeanGrade IN(" + GetGrades(selectedComparisonValue1, grade) + ")"; break;
+                    }
+                }
+
+                if (selectedComparisonValue2 > 0)
+                {
+                    if (selectedComparisonValue1 > 0)
+                        selectStr += " AND";
+                    else
+                        selectStr += " WHERE";
+                    switch (selectedComparisonValue2)
+                    {
+                        case 1: selectStr += " x.TotalScore =" + score; break;
+                        case 2: selectStr += " x.TotalScore >" + score; break;
+                        case 3: selectStr += " x.TotalScore >=" + score; break;
+                        case 4: selectStr += " x.TotalScore <" + score; break;
+                        case 5: selectStr += " x.TotalScore <=" + score; break;
+                    }
+                }
+
+                
+                return DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            });
+        }
+
+        private string GetGrades(int comparisonValue, string grade)
+        {
+            return "";
+        }
+
+        public int SelectedComparisonValue1
+        {
+            get { return selectedComparisonValue1; }
+
+            set
+            {
+                if (value != selectedComparisonValue1)
+                {
+                    selectedComparisonValue1 = value;
+                    NotifyPropertyChanged("SelectedComparisonValue1");
+                }
+            }
+        }
+
+        public int SelectedComparisonValue2
+        {
+            get { return selectedComparisonValue2; }
+
+            set
+            {
+                if (value != selectedComparisonValue2)
+                {
+                    selectedComparisonValue2 = value;
+                    NotifyPropertyChanged("SelectedComparisonValue2");
+                }
+            }
+        }
+
+        public int StudentID
         {
             get { return this.studentID; }
 
@@ -52,7 +208,7 @@ namespace Starehe.ViewModels
             }
         }
 
-        public int? ClassID
+        public int ClassID
         {
             get { return this.classID; }
 
@@ -66,7 +222,7 @@ namespace Starehe.ViewModels
             }
         }
 
-        public int? ExamID
+        public int ExamID
         {
             get { return this.examID; }
 
@@ -108,6 +264,40 @@ namespace Starehe.ViewModels
             }
         }
 
+        public ComparisonCollection Comparisons
+        {
+            get { return new ComparisonCollection(); }
+        }
+
+        public ObservableCollection<ClassModel> AllClasses
+        {
+            get;
+            private set;
+        }
+
+        public ObservableCollection<string> AllGrades
+        {
+            get;
+            private set;
+        }
+
+        public ObservableCollection<ExamModel> AllExams
+        {
+            get { return allExams; }
+
+            private set
+            {
+                if (value != allExams)
+                {
+                    allExams = value;
+                    NotifyPropertyChanged("AllExams");
+                }
+            }
+        }
+
+        public Action<FixedDocument> ShowFullPreviewAction
+        { get; set; }
+
         public ICommand RefreshCommand
         {
             get;
@@ -116,6 +306,20 @@ namespace Starehe.ViewModels
 
         public override void Reset()
         {
+        }
+
+        public ObservableCollection<ColumnModel> Columns
+        {
+            get { return columns; }
+
+            private set
+            {
+                if (value != columns)
+                {
+                    columns = value;
+                    NotifyPropertyChanged("Columns");
+                }
+            }
         }
 
         public FixedDocument Document
@@ -130,6 +334,12 @@ namespace Starehe.ViewModels
                     NotifyPropertyChanged("Document");
                 }
             }
+        }
+
+        public ICommand FullPreviewCommand
+        {
+            get;
+            private set;
         }
     }
 }

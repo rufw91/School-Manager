@@ -12,6 +12,7 @@ namespace Helper.Models
     {
         public AcademicReportModel()
         {
+            Title = "Academic Report";
             Entries = new DataTable();
         }
         public override void Reset()

@@ -15,12 +15,13 @@
         	DisplayMemberPath="NameOfClass" 
                   SelectedValuePath="ClassID"
         	SelectedValue="{Binding SelectedClassID, Mode=TwoWay}" />
-        
+
         <TextBlock  HorizontalAlignment="Left" Margin="39,140,0,0" Text="Exam" VerticalAlignment="Top" />
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="80,140,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllExams}"
         	DisplayMemberPath="NameOfExam" 
                   SelectedValuePath="ExamID"
+                  SelectedItem="{Binding SelectedExam,Mode=OneWayToSource}"
         	SelectedValue="{Binding SelectedExamID, Mode=TwoWay}"/>
 
         <TextBlock  HorizontalAlignment="Left" Margin="28,190,0,0" Text="Subject" VerticalAlignment="Top" />
@@ -30,7 +31,15 @@
                   SelectedValuePath="SubjectID"
         	SelectedValue="{Binding SelectedSubjectID, Mode=TwoWay}"/>
 
-        <DataGrid AutoGenerateColumns="False" Margin="340,80,10,50" IsReadOnly="False"                   
+        <TextBlock HorizontalAlignment="Left" Margin="31,240,0,0" Text="Out Of" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="80,240,0,0" VerticalAlignment="Top" Width="150"
+                 Text="{Binding SelectedExam.OutOf, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                 IsEnabled="False"/>
+
+        <TextBlock HorizontalAlignment="Right" Margin="0,51,140,0" Text="Tutor Inititals" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Right" Height="23" Margin="0,43,10,0" VerticalAlignment="Top" Width="120"
+                 Text="{Binding Tutor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <DataGrid Name="dtGrid" AutoGenerateColumns="False" Margin="340,80,10,50" IsReadOnly="False"                   
                   ItemsSource="{Binding AllSubjectResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   CanUserAddRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" 
                   CanUserDeleteRows="True" RowHeaderWidth="0" >
@@ -48,5 +57,8 @@ Binding="{Binding Remarks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </DataGrid>
         <Button Content="_Save" HorizontalAlignment="Right" Margin="0,0,9,10" VerticalAlignment="Bottom" Width="75" 
                 Command="{Binding SaveCommand}"/>
+        
+
+
     </Grid>
 </UserControl>

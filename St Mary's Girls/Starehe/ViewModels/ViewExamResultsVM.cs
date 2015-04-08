@@ -61,6 +61,48 @@ namespace Starehe.ViewModels
 
         protected override void CreateCommands()
         {
+            PrintAsReportFormCommand = new RelayCommand(async o =>
+            {
+                IsBusy = true;
+                ClassStudentsExamResultModel st = new ClassStudentsExamResultModel();
+                var sts = await DataAccess.GetClassStudents(classResult.ClassID);
+                List<Task<ExamResultStudentDisplayModel>> l = new List<Task<ExamResultStudentDisplayModel>>();
+                foreach (var f in sts)
+                {
+                    Task<ExamResultStudentDisplayModel> t = Task.Run<ExamResultStudentDisplayModel>(async () =>
+                        {
+                            ExamResultStudentDisplayModel temp = new ExamResultStudentDisplayModel();
+                            var tx = new ExamResultStudentDisplayModel(await DataAccess.GetStudentExamResultAync(f.StudentID, selectedExam.ExamID));
+                            temp.Entries = tx.Entries;
+                            temp.ExamResultID = tx.ExamResultID;
+
+                            temp.NameOfExam = selectedExam.NameOfExam;
+                            temp.StudentID = f.StudentID;
+                            temp.NameOfStudent = f.NameOfStudent;
+                            temp.ExamID = selectedExam.ExamID;
+                            temp.NameOfExam = selectedExam.NameOfExam;
+                            var c = DataAccess.GetClass(await DataAccess.GetClassIDFromStudentID(f.StudentID));
+                            temp.NameOfClass = c.NameOfClass;
+                            return temp;
+                        });
+
+                    l.Add(t);
+
+                }
+                ObservableCollection<ExamResultStudentDisplayModel> res = new ObservableCollection<ExamResultStudentDisplayModel>(await Task.WhenAll<ExamResultStudentDisplayModel>(l));
+
+                List<Task<StudentExamResultModel>> l2 = new List<Task<StudentExamResultModel>>();
+                foreach (ExamResultStudentDisplayModel li in res)
+                    l2.Add(Task.Run<StudentExamResultModel>(() => DataAccess.GetStudentExamResult(li)));
+                StudentExamResultModel[] g = await Task.WhenAll<StudentExamResultModel>(l2);
+                var r = g.OrderBy(k => k.StudentID);
+                foreach (var d in r)
+                    st.Entries.Add(d);
+                IsBusy = false;
+                if (ShowClassStudentsTranscriptAction != null)
+                    ShowClassStudentsTranscriptAction.Invoke(st);
+            }, o => isInClassMode && CanPrintResult());
+
             PrintTranscriptCommand = new RelayCommand(o =>
             {
                 if (isInStudentMode)
@@ -79,6 +121,7 @@ namespace Starehe.ViewModels
 
             DisplayResultsCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                 if (isInStudentMode)
                 {
                     var temp = new ExamResultStudentDisplayModel(await DataAccess.GetStudentExamResultAync(studentResult.StudentID, selectedExam.ExamID));
@@ -138,7 +181,7 @@ namespace Starehe.ViewModels
                     Debug.WriteLine("Number of Student Results count:" + classResult.Entries.Count);
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
                 }
-
+                IsBusy = false;
             }, o => CanDisplayResults());
         }
         
@@ -163,9 +206,9 @@ namespace Starehe.ViewModels
         private bool CanPrintResult()
         {
             if (isInStudentMode)
-                return (studentResult != null && studentResult.Entries.Count > 0);
+                return (studentResult != null && studentResult.Entries.Count > 0)&&!IsBusy;
             else
-                return (classResult != null && classResult.Entries.Count > 0);
+                return (classResult != null && classResult.Entries.Count > 0)&&!IsBusy;
         }
 
         private async Task<DataTable> ConvertClassResults(List<ExamResultStudentModel> temp)
@@ -239,14 +282,14 @@ namespace Starehe.ViewModels
             {
                 studentResult.CheckErrors();
                 return selectedExam != null && selectedExam.ExamID > 0 &&
-                      !studentResult.HasErrors;
+                      !studentResult.HasErrors&&!IsBusy;
             }
 
             if (isInClassMode)
-                return selectedExam != null && selectedExam.ExamID > 0 && classResult.ClassID > 0;
+                return selectedExam != null && selectedExam.ExamID > 0 && classResult.ClassID > 0&&!IsBusy;
             if (isInCombinedMode)
                 return selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0&&
-                    selectedExam != null && selectedExam.ExamID > 0;
+                    selectedExam != null && selectedExam.ExamID > 0&&!IsBusy;
 
             return false;
         }
@@ -399,6 +442,9 @@ namespace Starehe.ViewModels
             classResult.Reset();
         }
 
+        public Action<ClassStudentsExamResultModel> ShowClassStudentsTranscriptAction
+        { get; set; }
+
         public Action<StudentExamResultModel> ShowStudentTranscriptAction
         { get; set; }
 
@@ -406,6 +452,12 @@ namespace Starehe.ViewModels
         { get; set; }
 
         public  ICommand DisplayResultsCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand PrintAsReportFormCommand
         {
             get;
             private set;

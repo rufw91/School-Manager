@@ -21,6 +21,11 @@ namespace Starehe.ViewModels
         private int selectedClassID;
         private int selectedExamID;
         private int selectedSubjectID;
+        private string tutor;
+        private ExamModel selectedExam;
+        private bool isRemovingInvalid;
+        private bool removeInvalid;
+        public ObservableImmutableList<ExamResultStudentSubjectEntryModel> tempResults;
         public EnterExamResultsBySubjectVM()
         {
             InitVars();
@@ -29,11 +34,27 @@ namespace Starehe.ViewModels
         protected async override void InitVars()
         {
             Title = "ENTER RESULTS BY SUBJECT";
+            Tutor = "";
             allSubjectResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>();
             allSubjects = new ObservableImmutableList<ExamResultSubjectEntryModel>();
             AllClasses = await DataAccess.GetAllClassesAsync();
             SelectedExamID = 0;
             AllExams = new ObservableImmutableList<ExamModel>();
+            allSubjectResults.CollectionChanged += (o, e) =>
+            {
+                if (isRemovingInvalid)
+                    return;
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                    foreach (ExamSubjectEntryModel i in e.NewItems)
+                    {
+                        if (i.MaximumScore > selectedExam.OutOf)
+                        {
+                            isRemovingInvalid = true;
+                            allSubjectResults.Remove(i);
+                            isRemovingInvalid = false;
+                        }
+                    }
+            };
             PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName == "SelectedClassID")
@@ -59,10 +80,28 @@ namespace Starehe.ViewModels
                     {
                         allSubjectResults.Clear();
                         if (SelectedSubjectID > 0)
-                            AllSubjectResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>(await DataAccess.GetStudentSubjectsResults(selectedClassID, selectedExamID, selectedSubjectID));                                                   
+                        {
+                            AllSubjectResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>(await DataAccess.GetStudentSubjectsResults(selectedClassID, selectedExamID, selectedSubjectID, selectedExam.OutOf));
+                            tempResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>(await DataAccess.GetStudentSubjectsResults(selectedClassID, selectedExamID, selectedSubjectID, selectedExam.OutOf));
+                        }
+                    }
+                    if (e.PropertyName=="Tutor")
+                    {
+                        if (allSubjectResults!=null)
+                        foreach (var v in allSubjectResults)
+                            v.Tutor = tutor;
+                    }
+
+                    if (e.PropertyName == "OutOf")
+                    {
+                        foreach(var f in AllSubjectResults)
+                        {
+                            f.MaximumScore = selectedExam.OutOf;
+                        }
                     }
                 };
         }
+
 
         private async Task RefreshSubjectEntries()
         {
@@ -76,6 +115,7 @@ namespace Starehe.ViewModels
         {
             SaveCommand = new RelayCommand(async o =>
             {
+                CheckForChanges();
                 ObservableCollection<ExamResultStudentModel> temp = new ObservableCollection<ExamResultStudentModel>();
                 ExamResultStudentModel em;
                 foreach(var d in allSubjectResults)
@@ -100,6 +140,44 @@ namespace Starehe.ViewModels
             }, o => !IsBusy && CanSave());
         }
 
+        private void CheckForChanges()
+        {
+            if (tempResults.Count!=allSubjectResults.Count)
+            {
+                var t=tempResults.Where(o => allSubjectResults.Where(a => a.StudentID == o.StudentID)==null?true:allSubjectResults.Where(a => a.StudentID == o.StudentID).Count()==0);
+                if (t != null && t.Count() > 0)
+                {
+                    int count =0;
+                    string msg="The following results were removed:\r\n";
+                    foreach(var i in t)
+                    {
+                        if (count > 20)
+                        {
+                            msg += ".....";
+                            break;
+                        }
+                        msg += " -  Student: [" + i.NameOfStudent + "] Score: [" + i.Score + "]\r\n";
+                            count++;
+
+                    }
+                    msg += "Do you want to DELETE these students's results for selected subject?";
+                    removeInvalid = (MessageBox.Show(msg, "Info", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes) ? true : false;
+                    if (removeInvalid)
+                    {
+                        string remStr="";
+                        foreach (var i in t)
+                        {
+                            remStr += "DELETE FROM [Institution].[ExamResultDetail] WHERE SubjectID=" + i.SubjectID + " AND ExamResultID=" + i.ExamResultID + "\r\n"+
+                            "DELETE FROM [Institution].[ExamResultHeader] WHERE ExamResultID=" + i.ExamResultID + "\r\n";
+                        }
+                        bool succ = DataAccessHelper.ExecuteNonQuery(remStr);
+                    }
+
+                }
+                else return;
+            }
+        }
+
         private bool CanSave()
         {
             return selectedClassID > 0 && selectedExamID > 0 && selectedSubjectID > 0 && allSubjectResults.Count > 0;
@@ -118,7 +196,21 @@ namespace Starehe.ViewModels
                 }
             }
         }
-        
+
+        public string Tutor
+        {
+            get { return this.tutor; }
+
+            private set
+            {
+                if (value != this.tutor)
+                {
+                    this.tutor = value;
+                    NotifyPropertyChanged("Tutor");
+                }
+            }
+        }
+                
         public ObservableImmutableList<ExamResultSubjectEntryModel> AllSubjects
         {
             get { return this.allSubjects; }
@@ -174,6 +266,22 @@ namespace Starehe.ViewModels
             }
         }
 
+        public ExamModel SelectedExam
+        {
+            get { return selectedExam; }
+
+            set
+            {
+                if (value != selectedExam)
+                {
+                    selectedExam = value;
+                    NotifyPropertyChanged("SelectedExam");
+
+                }
+            }
+        }
+
+
         public ObservableImmutableList<ExamModel> AllExams
         {
             get { return this.allExams; }
@@ -212,6 +320,7 @@ namespace Starehe.ViewModels
         public override void Reset()
         {
             SelectedClassID = 0;
+            Tutor = "";
         }
     }
 }

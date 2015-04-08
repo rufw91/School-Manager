@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Helper
 {
     public enum TransactionTypes
@@ -11,4 +6,6 @@ namespace Helper
         Debit, Credit, All
     }
     public enum Boardingtype { Boarder, DayScholar }
+
+    public enum Comparisons { None=0, IsEqualTo=1, IsGreaterThan=2, IsGreaterThanOrEqualTo=3, IsLessThan=4, IsLessThanOrEqualTo=5 }
 }

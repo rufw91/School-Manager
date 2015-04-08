@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 namespace Starehe
@@ -21,13 +23,17 @@ namespace Starehe
         public static void Main()
         {
             XmlConfigurator.Configure();
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
             if (SingleInstance<App>.InitializeAsFirstInstance(Unique))
             {
+               
                 var application = new App();
 
                 application.InitializeComponent();
                 application.Run();
-
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
                 // Allow single instance code to perform cleanup operations
                 SingleInstance<App>.Cleanup();
             }
@@ -36,8 +42,11 @@ namespace Starehe
         
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
-            // handle command line arguments of second instance
-            // …
+            if (this.MainWindow == null)
+                return true;
+            if (this.MainWindow.WindowState == WindowState.Minimized)
+                this.MainWindow.WindowState = WindowState.Normal;
+            this.MainWindow.Activate();
 
             return true;
         }
@@ -75,9 +84,6 @@ namespace Starehe
                     Helper.Properties.Settings.Default.DBName = "Starehe";
                 if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.MostRecentBackup))
                     Helper.Properties.Settings.Default.MostRecentBackup = "";
-
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-GB");
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-GB");
 
                 Helper.Properties.Settings.Default.PropertyChanged += (o, e) =>
                     {
