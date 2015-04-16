@@ -1,6 +1,8 @@
 ﻿using Helper;
 using Helper.Models;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Documents;
@@ -11,39 +13,128 @@ namespace Starehe.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class ClassReportFormsVM: ViewModelBase
     {
-        private bool classHasResults;
         private int selectedClassID;
         private ObservableCollection<StudentTranscriptModel> classTranscripts;
         private FixedDocument fd;
+        private bool resultsIsReadOnly;
+        private ObservableCollection<ExamWeightModel> exams;
+        private string classTeacher;
+        private DateTime openingDay;
+        private DateTime closingDay;
         public ClassReportFormsVM()
         {
             InitVars();
             CreateCommands();
 
         }
+
+        protected override void CreateCommands()
+        {
+            GenerateCommand = new RelayCommand(o =>
+            {
+                ClassTranscriptsModel cs = new ClassTranscriptsModel() { Entries = classTranscripts };
+                foreach(var f in cs.Entries)
+                {
+                    f.OpeningDay = openingDay;
+                    f.ClosingDay = closingDay;
+                    f.ClassTeacher = classTeacher;
+                }
+                Document = DocumentHelper.GenerateDocument(cs);
+                if (ShowPrintDialogAction != null)
+                    ShowPrintDialogAction.Invoke(Document);
+            }, o => CanGenerate());
+
+            RefreshCommand = new RelayCommand(async o =>
+            {
+                IsBusy = true;
+                
+                IEnumerable<ClassModel> classes =new List<ClassModel>();
+                var ft= await DataAccess.GetAllCombinedClassesAsync();
+                 var dx =ft.Where(o2=>o2.Entries.Any(o1=>o1.ClassID==selectedClassID));
+                    classes = dx.ElementAt(0).Entries;
+
+                ClassTranscripts = await DataAccess.GetClassTranscriptsAsync(selectedClassID,exams,classes);
+                ResultsIsReadOnly = true;
+                IsBusy = false;
+            }, o => CanRefresh());
+        }
+
         protected async override void InitVars()
         {
+            exams = new ObservableCollection<ExamWeightModel>();
+            classTranscripts = new ObservableCollection<StudentTranscriptModel>();
             Title = "CLASS REPORT FORMS";
             SelectedClassID = 0;
+            OpeningDay = DateTime.Now;
+            ClosingDay = DateTime.Now;
             PropertyChanged += async (o, e) =>
                 {
+                    if (e.PropertyName == "ClassTranscripts")
+                    {
+                        if (e.PropertyName == "ClassTeacher")
+                            foreach (var ed in classTranscripts)
+                                ed.ClassTeacher = classTeacher;
+
+                        if ((e.PropertyName == "OpeningDay") || (e.PropertyName == "ClosingDay"))
+
+                            foreach (var ed in classTranscripts)
+                            {
+                                ed.OpeningDay = openingDay;
+                                ed.ClosingDay = closingDay;
+                            }
+                    }
                     if (e.PropertyName == "SelectedClassID")
                     {
+                        exams.Clear();
+                        ResultsIsReadOnly = false;
                         if (selectedClassID == 0)
-                        {
-                            classHasResults = false;
                             return;
+                        
+                        var t = await DataAccess.GetExamsByClass(selectedClassID);
+                        int count = 1;
+                        foreach (var ex in t)
+                        {
+                            exams.Add(new ExamWeightModel()
+                            {
+                                ExamID = ex.ExamID,
+                                NameOfExam = ex.NameOfExam,
+                                OutOf = ex.OutOf,
+                                Weight = count < 3 ? ex.OutOf : 0,
+                                ShowInTranscript = count >= 3 ? false : true,
+                                Index = count
+                            });
+                            count++;
                         }
-                        IsBusy = true;
-                        ClassTranscripts = await DataAccess.GetClassTranscriptsAsync(selectedClassID);
-                        IsBusy = false;
-                        classHasResults = classTranscripts.Count > 0;
-                        Log.I(classHasResults + "",null);
                     }
                 };
             AllClasses = await DataAccess.GetAllClassesAsync();
             NotifyPropertyChanged("AllClasses");
         }
+        private bool CanRefresh()
+        {
+            decimal tot = 0;
+            int count = 0;
+            foreach (var ed in exams)
+            {
+                tot += ed.Weight;
+                count++;
+            }
+            return  tot == 100 && count <= 3 && count > 0;
+        }
+        public bool ResultsIsReadOnly
+        {
+            get { return this.resultsIsReadOnly; }
+
+            set
+            {
+                if (value != this.resultsIsReadOnly)
+                {
+                    this.resultsIsReadOnly = value;
+                    NotifyPropertyChanged("ResultsIsReadOnly");
+                }
+            }
+        }
+
         public int SelectedClassID
         {
             get { return selectedClassID; }
@@ -58,6 +149,61 @@ namespace Starehe.ViewModels
             }
         }
 
+        public string ClassTeacher
+        {
+            get { return classTeacher; }
+            set
+            {
+                if (value != classTeacher)
+                {
+                    classTeacher = value;
+                    NotifyPropertyChanged("ClassTeacher");
+
+                }
+            }
+        }
+
+        public DateTime ClosingDay
+        {
+            get { return closingDay; }
+            set
+            {
+                if (value != closingDay)
+                {
+                    closingDay = value;
+                    NotifyPropertyChanged("ClosingDay");
+
+                }
+            }
+        }
+
+        public DateTime OpeningDay
+        {
+            get { return openingDay; }
+            set
+            {
+                if (value != openingDay)
+                {
+                    openingDay = value;
+                    NotifyPropertyChanged("OpeningDay");
+
+                }
+            }
+        }
+
+        public ObservableCollection<ExamWeightModel> Exams
+        {
+            get { return this.exams; }
+
+            set
+            {
+                if (value != this.exams)
+                {
+                    this.exams = value;
+                    NotifyPropertyChanged("Exams");
+                }
+            }
+        }
         public ObservableCollection<StudentTranscriptModel> ClassTranscripts
         {
             get { return classTranscripts; }
@@ -72,20 +218,11 @@ namespace Starehe.ViewModels
             }
         }
 
-        protected override void CreateCommands()
-        {
-           GenerateCommand=new RelayCommand(o=>
-            {
-                ClassTranscriptsModel cs = new ClassTranscriptsModel() { Entries = classTranscripts };
-                Document = DocumentHelper.GenerateDocument(cs);
-                if (ShowPrintDialogAction != null)
-                    ShowPrintDialogAction.Invoke(Document);
-            },o=>CanGenerate());
-        }
+        
 
         private bool CanGenerate()
         {
-            return classHasResults && !IsBusy;
+            return !IsBusy && classTranscripts.Count > 0;
         }
 
         private FixedDocument Document
@@ -101,7 +238,10 @@ namespace Starehe.ViewModels
                 }
             }
         }
-
+        public ICommand PreviewCommand
+        { get; private set; }
+        public ICommand RefreshCommand
+        { get; private set; }
         public ICommand GenerateCommand
         {
             get;

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Helper.Resources
+namespace Starehe.Views
 {
     /// <summary>
-    /// Interaction logic for Transcript3.xaml
+    /// Interaction logic for SubjectSelection.xaml
     /// </summary>
-    public partial class Transcript3 : UserControl
+    public partial class SubjectSelection : UserControl
     {
-        public Transcript3()
+        public SubjectSelection()
         {
             InitializeComponent();
         }

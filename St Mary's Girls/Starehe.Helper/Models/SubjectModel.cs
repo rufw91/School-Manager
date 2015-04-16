@@ -9,10 +9,14 @@ namespace Helper.Models
     public class SubjectModel : SubjectBaseModel
     {
         decimal maximumScore;
+        private string tutor;
+        private int code;
 
         public SubjectModel()
         {
             MaximumScore = 0;
+            Tutor = "";
+            Code = 0;
         }
 
         public SubjectModel(int subjectID, string nameofsubject, decimal newMaximumScore)
@@ -35,10 +39,40 @@ namespace Helper.Models
             }
         }
 
+        public string Tutor
+        {
+            get { return this.tutor; }
+
+            set
+            {
+                if (value != this.tutor)
+                {
+                    this.tutor = value;
+                    NotifyPropertyChanged("Tutor");
+                }
+            }
+        }
+
+        public int Code
+        {
+            get { return this.code; }
+
+            set
+            {
+                if (value != this.code)
+                {
+                    this.code = value;
+                    NotifyPropertyChanged("Code");
+                }
+            }
+        }
+
         public override void Reset()
         {
             base.Reset();
             MaximumScore = 0;
+            Tutor = "";
+            Code = 0;
         }
     }
 }

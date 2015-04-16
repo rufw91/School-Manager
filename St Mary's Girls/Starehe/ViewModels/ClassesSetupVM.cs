@@ -11,7 +11,7 @@ using System.Windows.Input;
 namespace Starehe.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
-    public class ClassSubjectSetupVM : ViewModelBase
+    public class ClassesSetupVM : ViewModelBase
     {
         SubjectsSetupModel subjectsSetup;
         ClassesSetupModel classesSetup;
@@ -21,7 +21,7 @@ namespace Starehe.ViewModels
         CombinedClassModel selectedCombinedClass;
         ObservableCollection<CombinedClassModel> allCombinedClasses;
 
-        public ClassSubjectSetupVM()
+        public ClassesSetupVM()
         {
             InitVars();
             CreateCommands();
@@ -30,7 +30,7 @@ namespace Starehe.ViewModels
         protected override async void InitVars()
         {
             IsBusy = true;
-            Title = "CLASS & SUBJECT SETUP";
+            Title = "CLASSES SETUP";
             subjectsSetup = new SubjectsSetupModel();
             classesSetup = new ClassesSetupModel();
             newClass = new ClassesSetupEntryModel();

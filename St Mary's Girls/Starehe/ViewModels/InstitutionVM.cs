@@ -11,7 +11,9 @@ namespace Starehe.ViewModels
         {
             Title = "SCHOOL";
             TryAddChild(typeof(InstitutionInfoVM));
-            TryAddChild(typeof(ClassSubjectSetupVM));
+            TryAddChild(typeof(ClassesSetupVM));
+            TryAddChild(typeof(SubjectsSetupVM));
+            TryAddChild(typeof(SubjectSelectionSetupVM));
             TryAddChild(typeof(InstitutionSetupVM));
             TryAddChild(typeof(NewDormitoryVM));
             TryAddChild(typeof(DormitoryMembersVM));

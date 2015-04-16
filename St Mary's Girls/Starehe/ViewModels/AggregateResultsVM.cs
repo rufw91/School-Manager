@@ -47,8 +47,10 @@ namespace Starehe.ViewModels
             }, o => CanGenerate() && Document != null);
             GenerateCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                 AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedClass, selectedExam);
                 Document = DocumentHelper.GenerateDocument(fs);
+                IsBusy = false;
             },
                   o => CanGenerate());
         }

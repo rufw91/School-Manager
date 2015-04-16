@@ -22,7 +22,7 @@
         
         <Image HorizontalAlignment="Left" Height="101" Margin="20,16,0,0" VerticalAlignment="Top" Width="140" 
               Source="{Binding Info.Logo, Source={x:Static Application.Current}}" />
-        <TextBlock HorizontalAlignment="Center" Margin="0,0,0,10" Text="In Pursuit of Excellence." VerticalAlignment="Bottom" FontStyle="Italic" Width="136"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,0,0,10" Text="{Binding Info.Motto, Source={x:Static Application.Current}}" VerticalAlignment="Bottom" FontStyle="Italic"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,90,0,0" Text="REPORT FORM" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="20" TextDecorations="Underline"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,137,0,0" Text="ADM NO:" VerticalAlignment="Top" FontFamily="Arial" FontSize="14"/>
         <TextBlock HorizontalAlignment="Left" Margin="200,137,0,0" Text="NAME:" VerticalAlignment="Top" FontFamily="Arial" FontSize="14"/>
@@ -32,14 +32,15 @@
         <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Height="32" Margin="30,208,30,0" VerticalAlignment="Top"/>
         <Border BorderBrush="Gray" BorderThickness="1" Height="358" Margin="30,208,30,0" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="40,215,0,0" Text="CODE" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="130,215,0,0" Text="SUBJECT" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="260,215,0,0" Text="CAT1" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="325,215,0,0" Text="CAT2" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="380,215,0,0" Text="END OF TERM" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="465,215,0,0" Text="MEAN SCORE" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="550,215,0,0" Text="GRADE" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="610,215,0,0" Text="POINTS" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="700,215,0,0" Text="TUTOR" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="100,215,0,0" Text="SUBJECT" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="240,215,0,0" Text="CAT1" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="300,215,0,0" Text="CAT2" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="360,215,0,0" Text="EXAM" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="420,215,0,0" Text="MEAN SCORE" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="500,215,0,0" Text="GRADE" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="560,215,0,0" Text="POINTS" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="620,215,0,0" Text="REMARK" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="715,215,0,0" Text="TUTOR" VerticalAlignment="Top"/>
         <Border BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Left" Height="34" Margin="30,532,0,0" VerticalAlignment="Top" Width="734"/>
         <TextBlock HorizontalAlignment="Left" Margin="70,541,0,0" Text="CLASS POSITION" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="220,540,0,0" Text="TOTAL MARKS" VerticalAlignment="Top"/>
@@ -81,10 +82,8 @@
         <Border HorizontalAlignment="Left" Height="30" Margin="30,941,0,0" VerticalAlignment="Top" Width="200" Background="WhiteSmoke"/>
         <Border Height="30" Margin="250,941,20,0" VerticalAlignment="Top" Background="WhiteSmoke"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="30,990,0,0" Text="PRINCIPAL:" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="250,990,0,0" Text="COMMENTS:" VerticalAlignment="Top"/>
-        <Border HorizontalAlignment="Left" Height="30" Margin="30,1011,0,0" VerticalAlignment="Top" Width="200" Background="WhiteSmoke"/>
-        <Border Height="30" Margin="250,1011,20,0" VerticalAlignment="Top" Background="WhiteSmoke"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,990,0,0" Text="PRINCIPAL COMMENTS:" VerticalAlignment="Top"/>        
+        <Border Height="30" Margin="30,1011,20,0" VerticalAlignment="Top" Background="WhiteSmoke"/>
         <StackPanel Margin="260,655,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
             <TextBlock>A</TextBlock>
             <TextBlock>A-</TextBlock>

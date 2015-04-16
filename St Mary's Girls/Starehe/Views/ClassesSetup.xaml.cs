@@ -3,9 +3,9 @@ using System.Windows.Controls;
 
 namespace Starehe.Views
 {
-    public partial class ClassSubjectSetup : UserControl
+    public partial class ClassesSetup : UserControl
     {
-        public ClassSubjectSetup()
+        public ClassesSetup()
         {
             InitializeComponent();
         }

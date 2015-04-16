@@ -9,16 +9,46 @@
 
     <Grid >
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Class Report Forms" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="257,50,0,0" Text="Preview" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
-        <DocumentViewer Margin="260,80,10,50" />
-        <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
-                Command="{Binding GenerateCommand}"/>
-        <ComboBox HorizontalAlignment="Left" Margin="33,104,0,0" VerticalAlignment="Top" Width="200"
+        <TextBlock HorizontalAlignment="Left" Margin="370,51,0,0" Text="Preview" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+        <DocumentViewer Margin="370,80,10,50" />
+
+        <TextBlock HorizontalAlignment="Left" Margin="33,80,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="33,100,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllClasses}"
                   SelectedValue="{Binding SelectedClassID, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="NameOfClass" SelectedValuePath="ClassID"
                   />
-        <TextBlock HorizontalAlignment="Left" Margin="33,83,0,0" Text="Class" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,150,0,0" Text="Class Teacher" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="30,170,0,0" VerticalAlignment="Top" Width="200"
+                  Text="{Binding ClassTeacher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,218,0,0" Text="Exams" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
+        <DataGrid Margin="30,249,0,0" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="{Binding ResultsIsReadOnly}" 
+                  ItemsSource="{Binding Exams}" CanUserDeleteRows="True" CanUserAddRows="False" Height="182" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323">
+            <DataGrid.Columns>
 
+                <DataGridTextColumn Binding="{Binding Path=NameOfExam, Mode=OneWay}" Header="Name" Width="1*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Path=Weight,StringFormat={}{0:N2}, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Weight" Width="1*"/>
+                <DataGridTextColumn Binding="{Binding Path=Index, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Index" Width="1*"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock HorizontalAlignment="Left" Margin="324,228,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding ResetCommand}">Reset</Hyperlink>
+        </TextBlock>
+
+        <TextBlock HorizontalAlignment="Right" Margin="0,59,10,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding RefreshCommand}">Fetch Results</Hyperlink>
+        </TextBlock>
+
+        <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
+                Command="{Binding GenerateCommand}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="17,454,0,0" Text="Closing Day:" Height="16" VerticalAlignment="Top"/>
+        <DatePicker Margin="107,449,0,0" HorizontalAlignment="Left" Width="200" SelectedDateFormat="Long"
+                    SelectedDate="{Binding ClosingDay, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="32" VerticalAlignment="Top"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="17,499,0,0" Text="Opening Day:" VerticalAlignment="Top" />
+        <DatePicker Margin="107,494,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" SelectedDateFormat="Long"
+                    SelectedDate="{Binding OpeningDay, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
         <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
         </Border>

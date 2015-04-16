@@ -184,7 +184,7 @@ namespace Helper.Properties {
         ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
         ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
-        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; 
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,15,0,0&quot; 
         ///                   Text=&quot;{Binding Info.FullName, Source={x:Static Application.Current}}&quot; 
         ///                   VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
         ///
@@ -241,6 +241,21 @@ namespace Helper.Properties {
         internal static string Transcript2 {
             get {
                 return ResourceManager.GetString("Transcript2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+        ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///        &lt;Border Margin=&quot;10,10,10,30&quot; BorderBrush=&quot;Gray&quot; BorderThickness=&quot;1&quot;/&gt;
+        ///        &lt;Border Margin=&quot;240,240,0,0&quot; Width=&quot;65&quot; Height=&quot;292&quot; HorizontalAlignment=&quot;Left&quot; VerticalAlignment=&quot;Top&quot; Background=&quot;WhiteSmoke&quot;/&gt;
+        ///        &lt;Border Margin=&quot;305,240,0,0&quot; Width=&quot;65&quot; Hei [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Transcript3 {
+            get {
+                return ResourceManager.GetString("Transcript3", resourceCulture);
             }
         }
         

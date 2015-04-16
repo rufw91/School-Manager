@@ -162,6 +162,7 @@
     <Compile Include="Models\ComparisonModel.cs" />
     <Compile Include="Models\DisciplineModel.cs" />
     <Compile Include="Models\ExamResultStudentSubjectEntryModel.cs" />
+    <Compile Include="Models\ExamWeightModel.cs" />
     <Compile Include="Models\FeePaymentReceipt2Model.cs" />
     <Compile Include="Models\FeesPaymentReceiptModel.cs" />
     <Compile Include="Models\IssueModel.cs" />
@@ -245,9 +246,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\Transcript3.xaml.cs">
-      <DependentUpon>Transcript3.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Converters\Converters.xaml">
@@ -272,10 +270,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <Page Include="Resources\Transcript3.xaml">
-      <SubType>Designer</SubType>
+    <None Include="Resources\Transcript3.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+      <SubType>Designer</SubType>
+    </None>
     <Page Include="Styles\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

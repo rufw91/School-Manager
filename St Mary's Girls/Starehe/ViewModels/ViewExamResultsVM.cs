@@ -56,7 +56,7 @@ namespace Starehe.ViewModels
             AllClasses = await DataAccess.GetAllClassesAsync();
             NotifyPropertyChanged("AllClasses");
             AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
-            NotifyPropertyChanged("AllClasses");
+            NotifyPropertyChanged("AllCombinedClasses");
         }
 
         protected override void CreateCommands()
@@ -137,11 +137,8 @@ namespace Starehe.ViewModels
 
                 if (isInClassMode)
                 {
-                    var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(classResult.ClassID, selectedExam.ExamID));
+                    var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(classResult.ClassID, selectedExam.ExamID,selectedExam.OutOf));
                     ClassResult.Entries = temp.Entries;
-                    Debug.WriteLine("ClassID:" + classResult.ClassID+"   EXamID:"+selectedExam.ExamID);
-                    Debug.WriteLine("Name:" + temp.NameOfClass);
-                    Debug.WriteLine("Class No of res:" + temp.Entries.Count);
                     ClassResult.ExamID = temp.ExamID;
                     ClassResult.ExamResultID = temp.ExamResultID;
 
@@ -162,7 +159,7 @@ namespace Starehe.ViewModels
                         cs = selectedCombinedClass.Entries[i];
                         Debug.WriteLine("ClassID:" + cs.ClassID + "   EXamID:" + selectedExam.ExamID);
                         Debug.WriteLine("Name:" + cs.NameOfClass);
-                        var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(cs.ClassID, selectedExam.ExamID));
+                        var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(cs.ClassID, selectedExam.ExamID,selectedExam.OutOf));
                         Debug.WriteLine("No of res:" + temp.Entries.Count);
                         foreach (var e in temp.Entries)
                         {
@@ -468,7 +465,16 @@ namespace Starehe.ViewModels
             get;
             private set;
         }
-        
+        public ICommand ShowAllExamClassListCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand ShowAllExamCombinedClassListCommand
+        {
+            get;
+            private set;
+        }
         public ObservableCollection<ClassModel> AllClasses { get; private set; }
 
         public ObservableCollection<CombinedClassModel> AllCombinedClasses { get; private set; }
