@@ -8,22 +8,24 @@ namespace Helper.Models
         string tutor;
         decimal score;
         int examResultID;
+        decimal outOf;
         public ExamResultSubjectEntryModel()
         {
             ExamResultID = 0;
             Score = 0;
+            outOf = 100;
             Remarks = "";
             Tutor = "";
             PropertyChanged += (o, e) =>
                 {
-                    if ((e.PropertyName == "Score") || (e.PropertyName == "NameOfSubject"))
+                    if (((e.PropertyName == "Score") || (e.PropertyName == "NameOfSubject"))||(e.PropertyName=="OutOf"))
                         Remarks = GetRemark(score);
                 };
         }
 
         private string GetRemark(decimal score)
         {
-            int points = DataAccess.CalculatePoints(DataAccess.CalculateGrade(score));
+            int points = DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(score,outOf,100)));
             
             if (NameOfSubject.ToUpper().Trim() != "KISWAHILI")
                 switch (points)
@@ -90,6 +92,20 @@ namespace Helper.Models
                 {
                     this.score = value;
                     NotifyPropertyChanged("Score");
+                }
+            }
+        }
+
+        public decimal OutOf
+        {
+            get { return this.outOf; }
+
+            set
+            {
+                if (value != this.outOf)
+                {
+                    this.outOf = value;
+                    NotifyPropertyChanged("OutOf");
                 }
             }
         }

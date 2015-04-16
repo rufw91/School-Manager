@@ -49,6 +49,18 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
+    <DataTemplate DataType="{x:Type viewModels:SubjectsSetupVM}" >
+        <views:SubjectsSetup/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:SubjectSelectionSetupVM}" >
+        <views:SubjectSelectionSetup/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:SubjectSelectionVM}" >
+        <views:SubjectSelection/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:CombinedMarkListsVM}" >
+        <views:CombinedMarkLists/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:RemoveExamVM}" >
         <views:RemoveExam/>
     </DataTemplate>
@@ -241,8 +253,8 @@
     <DataTemplate DataType="{x:Type viewModels:ViewFeesStructureVM}" >
         <views:ViewFeesStructure/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ClassSubjectSetupVM}" >
-        <views:ClassSubjectSetup/>
+    <DataTemplate DataType="{x:Type viewModels:ClassesSetupVM}" >
+        <views:ClassesSetup/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:InstitutionSetupVM}" >
         <views:InstitutionSetup/>

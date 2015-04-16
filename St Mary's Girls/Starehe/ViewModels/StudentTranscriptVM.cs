@@ -2,6 +2,8 @@
 using Helper.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
@@ -17,6 +19,8 @@ namespace Starehe.ViewModels
     {
         StudentTranscriptModel transcript;
         FixedDocument fd;
+        ObservableCollection<ExamWeightModel> exams;
+        bool resultsIsReadOnly;
         public StudentTranscriptVM()
         {
             InitVars();
@@ -26,10 +30,35 @@ namespace Starehe.ViewModels
         {
             Title = "REPORT FORM";
             Transcript = new StudentTranscriptModel();
-            transcript.PropertyChanged += (o, e) =>
+            exams = new ObservableCollection<ExamWeightModel>();
+            ResultsIsReadOnly = false;
+            transcript.PropertyChanged += async (o, e) =>
                 {
-                    if (e.PropertyName=="StudentID")
+                    if (e.PropertyName == "StudentID")
+                    {
+                        exams.Clear();
+                        ResultsIsReadOnly = false;
                         transcript.CheckErrors();
+                        if (!transcript.HasErrors)
+                        {                            
+                            ResultsIsReadOnly = false;
+                            var t = await DataAccess.GetExamsByClass(await DataAccess.GetClassIDFromStudentID(transcript.StudentID));
+                            int count = 1;
+                            foreach(var ex in t)
+                            {
+                                exams.Add(new ExamWeightModel()
+                                {
+                                    ExamID = ex.ExamID,
+                                    NameOfExam = ex.NameOfExam,
+                                    OutOf = ex.OutOf,
+                                    Weight = count <3 ? ex.OutOf : 0,
+                                    ShowInTranscript = count >= 3 ? false : true,
+                                    Index=count
+                                });
+                                count++;
+                            }
+                        }
+                    }
                 };
         }
 
@@ -37,6 +66,7 @@ namespace Starehe.ViewModels
         {
             SaveCommand = new RelayCommand(async o => 
             {
+                IsBusy = true;
                 bool succ = await DataAccess.SaveNewStudentTranscript(transcript);
                 if (succ)
                 {
@@ -45,6 +75,7 @@ namespace Starehe.ViewModels
                 }
                 else
                     MessageBox.Show("Could not save details.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                IsBusy = false;
             }, o => CanSave());
             PreviewCommand = new RelayCommand(o =>
             {
@@ -55,6 +86,7 @@ namespace Starehe.ViewModels
             }, o => CanSave());
             SaveAndPrintCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                 bool succ = await DataAccess.SaveNewStudentTranscript(transcript);
                 if (succ)
                 {
@@ -65,19 +97,50 @@ namespace Starehe.ViewModels
                     MessageBox.Show("Could not save details.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);                
                 Document = DocumentHelper.GenerateDocument(transcript);
                 Reset();
+                IsBusy = false;
                 if (ShowPrintDialogAction != null)
                     ShowPrintDialogAction.Invoke(Document);
             }, o => CanSave());
 
-            RefreshCommand = new RelayCommand(o =>
-            {               
-                Transcript.CopyFrom(DataAccess.GetStudentTranscript(transcript).Result);
-            }, o => !transcript.HasErrors);
+            RefreshCommand = new RelayCommand(async o =>
+            {
+                IsBusy = true;
+                var c = await DataAccess.GetClassIDFromStudentID(transcript.StudentID);
+
+                IEnumerable<ClassModel> classes = new List<ClassModel>();
+                var ft = await DataAccess.GetAllCombinedClassesAsync();
+                var dx = ft.Where(o2 => o2.Entries.Any(o1 => o1.ClassID == c));
+                    classes = dx.ElementAt(0).Entries;
+                
+                Transcript.CopyFrom(await DataAccess.GetStudentTranscript(transcript.StudentID,exams,classes));
+                ResultsIsReadOnly = true;
+                IsBusy = false;
+            }, o =>CanRefresh());
+        }
+
+        private bool CanRefresh()
+        {
+            decimal tot = 0;
+            int count = 0;
+            foreach (var ed in exams)
+            {
+                tot += ed.Weight;
+                count++;
+            }
+            return !transcript.HasErrors && tot == 100 && count <= 3 && count > 0;
         }
 
         private bool CanSave()
-        {            
-            return !transcript.HasErrors&&transcript.Entries.Count>0;
+        {
+            decimal tot = 0;
+            int count = 0;
+            foreach (var ed in exams)
+            {
+                tot += ed.Weight;
+                count++;
+            }
+
+            return !transcript.HasErrors && transcript.Entries.Count > 0 && tot == 100 && count <= 3;
         }
 
         private FixedDocument Document
@@ -107,6 +170,35 @@ namespace Starehe.ViewModels
                 }
             }
         }
+
+        public bool ResultsIsReadOnly
+        {
+            get { return this.resultsIsReadOnly; }
+
+            set
+            {
+                if (value != this.resultsIsReadOnly)
+                {
+                    this.resultsIsReadOnly = value;
+                    NotifyPropertyChanged("ResultsIsReadOnly");
+                }
+            }
+        }
+
+        public ObservableCollection<ExamWeightModel> Exams
+        {
+            get { return this.exams; }
+
+            set
+            {
+                if (value != this.exams)
+                {
+                    this.exams = value;
+                    NotifyPropertyChanged("Exams");
+                }
+            }
+        }
+
         public Action<FixedDocument> ShowPrintDialogAction
         {
             get;

@@ -12,9 +12,6 @@ namespace Helper.Models
         {
             NameOfSubject = "";
             Grade = "";
-            Cat1Score = 0;
-            Cat2Score = 0;
-            ExamScore = 0;
             Points = 0;
             MeanScore = 0;
         }
@@ -23,17 +20,17 @@ namespace Helper.Models
 
         public string Grade { get; set; }
 
-        public decimal Cat1Score { get; set; }
+        public decimal? Cat1Score { get; set; }
 
-        public decimal Cat2Score { get; set; }
+        public decimal? Cat2Score { get; set; }
 
-        public decimal ExamScore { get; set; }
+        public decimal? ExamScore { get; set; }
 
         public decimal MeanScore { get; set; }
 
         public int Points { get; set; }
 
-        public string Code { get; set; }
+        public int Code { get; set; }
 
         public string Tutor { get; set; }
     }

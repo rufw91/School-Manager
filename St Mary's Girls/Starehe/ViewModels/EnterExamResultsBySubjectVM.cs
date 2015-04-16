@@ -166,10 +166,8 @@ namespace Starehe.ViewModels
                     {
                         string remStr="";
                         foreach (var i in t)
-                        {
-                            remStr += "DELETE FROM [Institution].[ExamResultDetail] WHERE SubjectID=" + i.SubjectID + " AND ExamResultID=" + i.ExamResultID + "\r\n"+
-                            "DELETE FROM [Institution].[ExamResultHeader] WHERE ExamResultID=" + i.ExamResultID + "\r\n";
-                        }
+                            remStr += "DELETE FROM [Institution].[ExamResultDetail] WHERE SubjectID=" + i.SubjectID + " AND ExamResultID=" + i.ExamResultID + "\r\n";                            
+                        
                         bool succ = DataAccessHelper.ExecuteNonQuery(remStr);
                     }
 

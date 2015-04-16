@@ -19,15 +19,16 @@ namespace Helper.Models
         private string principalComments;
         private DateTime openingDay;
         private DateTime closingDay;
-        private decimal cat1Score;
-        private decimal cat2Score;
-        private decimal examScore;
+        private decimal? cat1Score;
+        private decimal? cat2Score;
+        private decimal? examScore;
         private string term1Pos;
         private string term2Pos;
         private string term3Pos;
         private ObservableCollection<StudentExamResultEntryModel> entries;
         private int studentTranscriptID;
         private DateTime dateSaved;
+        private decimal meanScore;
 
         public StudentTranscriptModel()
         {
@@ -42,9 +43,7 @@ namespace Helper.Models
             PrincipalComments = "";
             OpeningDay = DateTime.Now;
             ClosingDay = DateTime.Now;
-            CAT1Score = 0;
-            CAT2Score = 0;
-            ExamScore = 0;
+            MeanScore = 0;
             Term1Pos = "1/1";
             Term2Pos = "1/1";
             Term3Pos = "1/1";
@@ -223,7 +222,7 @@ namespace Helper.Models
             }
         }
 
-        public decimal CAT1Score
+        public decimal? CAT1Score
         {
             get { return this.cat1Score; }
 
@@ -237,7 +236,7 @@ namespace Helper.Models
             }
         }
 
-        public decimal CAT2Score
+        public decimal? CAT2Score
         {
             get { return this.cat2Score; }
 
@@ -251,7 +250,7 @@ namespace Helper.Models
             }
         }
 
-        public decimal ExamScore
+        public decimal? ExamScore
         {
             get { return this.examScore; }
 
@@ -261,6 +260,20 @@ namespace Helper.Models
                 {
                     this.examScore = value;
                     NotifyPropertyChanged("ExamScore");
+                }
+            }
+        }
+
+        public decimal MeanScore
+        {
+            get { return this.meanScore; }
+
+            set
+            {
+                if (value != this.meanScore)
+                {
+                    this.meanScore = value;
+                    NotifyPropertyChanged("MeanScore");
                 }
             }
         }

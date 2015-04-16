@@ -25,7 +25,7 @@
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Student List" VerticalAlignment="Top"/>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Left" Margin="20,10,0,0" Style="{DynamicResource Title}"  Text="Student List" VerticalAlignment="Top"/>
         <TextBox Style="{StaticResource SearchTextBox}" Grid.Row="0"  Name="txtTitle" HorizontalAlignment="Left" Height="23" Margin="230,26,0,0" 
                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=10, Mode=OneWayToSource}" VerticalAlignment="Top" Width="400"/>
         <CheckBox Content="Show Cleared" HorizontalAlignment="Left" Margin="200,75,0,0" VerticalAlignment="Top"

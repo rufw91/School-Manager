@@ -1,6 +1,7 @@
 ﻿using Helper.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace Helper
             int pageNo;
             for (pageNo = 0; pageNo < noOfPages; pageNo++)
             {
+                si.Entries[pageNo].Entries = new ObservableCollection<StudentExamResultEntryModel>(si.Entries[pageNo].Entries.OrderBy(o => o.Code));
                 AddTR2StudentID(si.Entries[pageNo].StudentID, pageNo);
                 AddTR2Name(si.Entries[pageNo].NameOfStudent, pageNo);
                 AddTR2ClassName(si.Entries[pageNo].NameOfClass, pageNo);
@@ -37,9 +39,9 @@ namespace Helper
                 AddTR2ClustPoints(si.Entries[pageNo].Points, pageNo);
                 AddTR2ClassTRComments(si.Entries[pageNo].ClassTeacherComments, pageNo);
                 TR2DrawGraph(DataAccess.CalculateGrade(si.Entries[pageNo].KCPEScore / 5),
-                    DataAccess.CalculateGrade(si.Entries[pageNo].Entries.Count > 0 ? (si.Entries[pageNo].CAT1Score / si.Entries[pageNo].Entries.Count) : 0),
-                    DataAccess.CalculateGrade(si.Entries[pageNo].Entries.Count > 0 ? (si.Entries[pageNo].CAT2Score / si.Entries[pageNo].Entries.Count) : 0),
-                    DataAccess.CalculateGrade(si.Entries[pageNo].Entries.Count > 0 ? (si.Entries[pageNo].ExamScore / si.Entries[pageNo].Entries.Count) : 0), pageNo);
+                    DataAccess.CalculateGrade(si.Entries[pageNo].Entries.Count > 0 ? (si.Entries[pageNo].CAT1Score.HasValue ? decimal.Ceiling(si.Entries[pageNo].CAT1Score.Value / si.Entries[pageNo].Entries.Count) : 0) : 0),
+                    DataAccess.CalculateGrade(si.Entries[pageNo].Entries.Count > 0 ? (si.Entries[pageNo].CAT2Score.HasValue ? decimal.Ceiling(si.Entries[pageNo].CAT2Score.Value / si.Entries[pageNo].Entries.Count) : 0) : 0),
+                    DataAccess.CalculateGrade(si.Entries[pageNo].Entries.Count > 0 ? (si.Entries[pageNo].ExamScore.HasValue ? decimal.Ceiling(si.Entries[pageNo].ExamScore.Value / si.Entries[pageNo].Entries.Count) : 0) : 0), pageNo);
             }
         }
         #endregion

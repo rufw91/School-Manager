@@ -41,7 +41,7 @@ namespace Helper
         }
         private static void AddTR2PrincipalComments(string principalComments, int pageNo)
         {
-            AddTextWithWrap(principalComments, "Arial", 524, 30, 14, false, 0, Colors.Black, 250, 1010, pageNo);
+            AddTextWithWrap(principalComments, "Arial", 524, 30, 14, false, 0, Colors.Black, 30, 1010, pageNo);
         }
         private static void AddTR2Opening(DateTime opening, int pageNo)
         {
@@ -95,16 +95,18 @@ namespace Helper
             int pageRelativeIndex = itemIndex;
             double yPos = 255 + pageRelativeIndex * 21;
 
-            AddText(item.Code, "Arial", 14, false, 0, Colors.Black, 40, yPos, pageNo);
-            AddText(item.NameOfSubject, "Arial", 14, false, 0, Colors.Black, 130, yPos, pageNo);
-            AddText(item.Cat1Score.ToString(), "Arial", fontsize, false, 0, Colors.Black, 263, yPos, pageNo);
-            AddText(item.Cat2Score.ToString(), "Arial", fontsize, false, 0, Colors.Black, 327, yPos, pageNo);
-            AddText(item.ExamScore.ToString(), "Arial", fontsize, false, 0, Colors.Black, 390, yPos, pageNo);
-            AddText((item.ExamScore + item.Cat1Score + item.Cat2Score) > 0 ? ((item.ExamScore + item.Cat1Score + item.Cat2Score) / 3).ToString("N0") :
-            "0", "Arial", fontsize, false, 0, Colors.Black, 476, yPos, pageNo);
-            AddText(item.Grade, "Arial", fontsize, false, 0, Colors.Black, 535, yPos, pageNo);
-            AddText(item.Points.ToString(), "Arial", fontsize, false, 0, Colors.Black, 625, yPos, pageNo);
-            AddText(item.Tutor, "Arial", fontsize, false, 0, Colors.Black, 705, yPos, pageNo);
+            AddText(item.Code.ToString(), "Arial", 14, false, 0, Colors.Black, 40, yPos, pageNo);
+            AddText(item.NameOfSubject, "Arial", 14, false, 0, Colors.Black, 100, yPos, pageNo);
+            if (item.Cat1Score.HasValue)
+                AddText(item.Cat1Score.Value.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 242, yPos, pageNo);
+            if (item.Cat2Score.HasValue)
+                AddText(item.Cat2Score.Value.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 302, yPos, pageNo);
+            if (item.ExamScore.HasValue)
+            AddText(item.ExamScore.Value.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 362, yPos, pageNo);
+            AddText(item.MeanScore.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 422, yPos, pageNo);
+            AddText(item.Grade, "Arial", fontsize, false, 0, Colors.Black, 505, yPos, pageNo);
+            AddText(item.Points.ToString(), "Arial", fontsize, false, 0, Colors.Black, 562, yPos, pageNo);
+            AddText(item.Tutor, "Arial", fontsize, false, 0, Colors.Black, 715, yPos, pageNo);
         }
         private static void AddTR2SubjectScores(ObservableCollection<StudentExamResultEntryModel> psi, int pageNo)
         {
@@ -182,6 +184,7 @@ namespace Helper
             int pageNo;
             for (pageNo = 0; pageNo < noOfPages; pageNo++)
             {
+                si.Entries = new ObservableCollection<StudentExamResultEntryModel>(si.Entries.OrderBy(o => o.Code));
                 AddTR2StudentID(si.StudentID, pageNo);
                 AddTR2Name(si.NameOfStudent, pageNo);
                 AddTR2ClassName(si.NameOfClass, pageNo);
@@ -202,9 +205,9 @@ namespace Helper
                 AddTR2ClustPoints(si.Points, pageNo);
                 AddTR2ClassTRComments(si.ClassTeacherComments, pageNo);
                 TR2DrawGraph(DataAccess.CalculateGrade(si.KCPEScore / 5),
-                    DataAccess.CalculateGrade(si.Entries.Count > 0 ? (si.CAT1Score / si.Entries.Count) : 0),
-                    DataAccess.CalculateGrade(si.Entries.Count > 0 ? (si.CAT2Score / si.Entries.Count) : 0),
-                    DataAccess.CalculateGrade(si.Entries.Count > 0 ? (si.ExamScore / si.Entries.Count) : 0), pageNo);
+                    DataAccess.CalculateGrade(si.Entries.Count > 0 ? (si.CAT1Score.HasValue?decimal.Ceiling(si.CAT1Score.Value / si.Entries.Count) : 0):0),
+                    DataAccess.CalculateGrade(si.Entries.Count > 0 ? (si.CAT2Score.HasValue ? decimal.Ceiling(si.CAT2Score.Value  / si.Entries.Count) : 0):0),
+                    si.MeanGrade, pageNo);
             }
         }
         #endregion

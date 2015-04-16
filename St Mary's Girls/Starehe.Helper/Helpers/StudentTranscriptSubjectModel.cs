@@ -15,7 +15,7 @@ namespace Helper.Models
             this.Grade = DataAccess.CalculateGrade(this.Score);
             this.Points = DataAccess.CalculatePoints(this.Grade);
             this.Tutor = subjectResult.Tutor;
-            this.Code = DataAccess.GetSubjectCode(NameOfSubject);
+            this.Code = DataAccess.GetSubjectCode(NameOfSubject).ToString();
         }
         public string Code { get; set; }
 
