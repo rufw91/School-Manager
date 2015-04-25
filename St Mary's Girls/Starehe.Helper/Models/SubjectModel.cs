@@ -11,18 +11,21 @@ namespace Helper.Models
         decimal maximumScore;
         private string tutor;
         private int code;
+        private bool isOptional;
 
         public SubjectModel()
         {
             MaximumScore = 0;
             Tutor = "";
             Code = 0;
+            IsOptional = false;
         }
 
-        public SubjectModel(int subjectID, string nameofsubject, decimal newMaximumScore)
+        public SubjectModel(int subjectID, string nameofsubject, decimal newMaximumScore,bool isOptional)
             : base(subjectID, nameofsubject)
         {
             MaximumScore = newMaximumScore;
+            IsOptional = isOptional;
         }
         
         public decimal MaximumScore
@@ -67,12 +70,27 @@ namespace Helper.Models
             }
         }
 
+        public bool IsOptional
+        {
+            get { return this.isOptional; }
+
+            set
+            {
+                if (value != this.isOptional)
+                {
+                    this.isOptional = value;
+                    NotifyPropertyChanged("IsOptional");
+                }
+            }
+        }
+
         public override void Reset()
         {
             base.Reset();
             MaximumScore = 0;
             Tutor = "";
             Code = 0;
+            IsOptional = false;
         }
     }
 }

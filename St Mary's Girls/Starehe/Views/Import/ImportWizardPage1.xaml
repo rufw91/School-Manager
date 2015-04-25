@@ -9,7 +9,7 @@
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" Text="Welcome" Style="{DynamicResource Title}" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,70,0,0" VerticalAlignment="Top" TextWrapping="Wrap" Width="540">
-            This wizard can only be used to import Inventory Items i.e. stock items.<LineBreak/><LineBreak/>
+            This wizard can only be used to import students data.<LineBreak/><LineBreak/>
         <Bold>IMPORTANT:</Bold>  Please ensure that the file you close MS Excel or other program  that your file may be open in before proceeding.
         </TextBlock>
 

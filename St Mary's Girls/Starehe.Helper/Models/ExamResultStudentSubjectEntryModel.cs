@@ -51,7 +51,7 @@ namespace Helper.Models
         public override bool CheckErrors()
         {
             ClearAllErrors();
-            if (Score > MaximumScore)
+            if (Score > OutOf)
                 SetErrors("Score", new List<string>() { "Score value [" + Score + "] is invalid. Should be non negative number greater than zero and less than or equal to [" + MaximumScore + "]" });
             return HasErrors;
         }

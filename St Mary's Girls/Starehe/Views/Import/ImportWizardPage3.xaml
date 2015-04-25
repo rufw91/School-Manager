@@ -5,49 +5,167 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views ="clr-namespace:Starehe.Views"
             mc:Ignorable="d" Background="{DynamicResource WindowBackground}"
-             d:DesignHeight="500" d:DesignWidth="600">
+             d:DesignHeight="900" d:DesignWidth="600">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" Text="Column Mapping" Style="{DynamicResource Title}" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="450,13,0,0" Text="Accepted Values" VerticalAlignment="Top"
                    Style="{DynamicResource ContentTextSemiBold}"/>
         <ScrollViewer Margin="0,50,0,55" VerticalScrollBarVisibility="Visible">
             <Grid>
-                <StackPanel Margin="30,0,0,0" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <StackPanel Margin="30,0,0,0" VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal" Height="40">
-                        <TextBlock VerticalAlignment="Center" Text="Student ID" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <TextBlock VerticalAlignment="Center" Text="Student ID *" Style="{DynamicResource Emphasis1}" Width="150"/>
                         <ComboBox Width="250" VerticalAlignment="Center" 
                           ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
                           SelectedItem="{Binding Path=DataContext.StudentIDColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Numeric" />
+                        <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressStudentID, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="40">
-                        <TextBlock VerticalAlignment="Center" Text="First Name" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <TextBlock VerticalAlignment="Center" Text="First Name *" Style="{DynamicResource Emphasis1}" Width="150"/>
                         <ComboBox Width="250" VerticalAlignment="Center"
                           ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
                           SelectedItem="{Binding Path=DataContext.FirstNameColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressFirstName, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="40">
-                        <TextBlock VerticalAlignment="Center" Text="Middle Name" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <TextBlock VerticalAlignment="Center" Text="Middle Name *" Style="{DynamicResource Emphasis1}" Width="150"/>
                         <ComboBox Width="250" VerticalAlignment="Center"
                           ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
                           SelectedItem="{Binding Path=DataContext.MiddleNameColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressMiddleName, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="40">
-                        <TextBlock VerticalAlignment="Center" Text="Last Name" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <TextBlock VerticalAlignment="Center" Text="Last Name *" Style="{DynamicResource Emphasis1}" Width="150"/>
                         <ComboBox Width="250" VerticalAlignment="Center"
                           ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
                           SelectedItem="{Binding Path=DataContext.LastNameColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressLastName, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="40">
-                        <TextBlock VerticalAlignment="Center" Text="Class" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <TextBlock VerticalAlignment="Center" Text="Gender *" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <ComboBox Width="250" VerticalAlignment="Center"
+                          ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
+                          SelectedItem="{Binding Path=DataContext.GenderColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressGender, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="40">
+                        <TextBlock VerticalAlignment="Center" Text="Class *" Style="{DynamicResource Emphasis1}" Width="150"/>
                         <ComboBox Width="250" VerticalAlignment="Center"
                           ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
                           SelectedItem="{Binding Path=DataContext.ClassColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressClass, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="40">
-                        <TextBlock VerticalAlignment="Center" Text="Phone No." Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <TextBlock VerticalAlignment="Center" Text="Guardian Phone No.*" Style="{DynamicResource Emphasis1}" Width="150"/>
                         <ComboBox Width="250" VerticalAlignment="Center"
                           ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
                           SelectedItem="{Binding Path=DataContext.PhoneNoColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressPhoneNo, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="40">
+                        <TextBlock VerticalAlignment="Center" Text="Name Of Guardian" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <ComboBox Width="250" VerticalAlignment="Center"
+                          ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
+                          SelectedItem="{Binding Path=DataContext.NameOfGuardianColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressNameOfGuardian, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
+                    </StackPanel>                    
+                    <StackPanel Orientation="Horizontal" Height="40">
+                        <TextBlock VerticalAlignment="Center" Text="Date of Birth" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <ComboBox Width="250" VerticalAlignment="Center"
+                          ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
+                          SelectedItem="{Binding Path=DataContext.DateOfBirthColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Date" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressDateOfBirth, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="40">
+                        <TextBlock VerticalAlignment="Center" Text="Date Admitted" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <ComboBox Width="250" VerticalAlignment="Center"
+                          ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
+                          SelectedItem="{Binding Path=DataContext.DateOfAdmissionColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Date" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressDateOfAdmission, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
+                    </StackPanel>                    
+                    <StackPanel Orientation="Horizontal" Height="40">
+                        <TextBlock VerticalAlignment="Center" Text="Address" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <ComboBox Width="250" VerticalAlignment="Center"
+                          ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
+                          SelectedItem="{Binding Path=DataContext.AddressColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressAddress, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="40">
+                        <TextBlock VerticalAlignment="Center" Text="City" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <ComboBox Width="250" VerticalAlignment="Center"
+                          ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
+                          SelectedItem="{Binding Path=DataContext.CityColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressCity, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="40">
+                        <TextBlock VerticalAlignment="Center" Text="Previous Institution" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <ComboBox Width="250" VerticalAlignment="Center"
+                          ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
+                          SelectedItem="{Binding Path=DataContext.PrevInstitutionColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressPrevInstitution, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="40">
+                        <TextBlock VerticalAlignment="Center" Text="KCPE Score" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <ComboBox Width="250" VerticalAlignment="Center"
+                          ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
+                          SelectedItem="{Binding Path=DataContext.KCPEScoreColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Numeric" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressKCPEScore, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
                     </StackPanel>
                     
                     <StackPanel Orientation="Horizontal" Height="40">
@@ -55,67 +173,48 @@
                         <ComboBox Width="250" VerticalAlignment="Center"
                           ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
                           SelectedItem="{Binding Path=DataContext.BalanceBFColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressBalanceBF, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="40">
                         <TextBlock VerticalAlignment="Center" Text="Boarding" Style="{DynamicResource Emphasis1}" Width="150"/>
                         <ComboBox Width="250" VerticalAlignment="Center"
                           ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
                           SelectedItem="{Binding Path=DataContext.BoardingColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressBoarding, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="40">
-                        <TextBlock VerticalAlignment="Center" Text="Date of Bith" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <TextBlock VerticalAlignment="Center" Text="Dormitory" Style="{DynamicResource Emphasis1}" Width="150"/>
                         <ComboBox Width="250" VerticalAlignment="Center"
                           ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
-                          SelectedItem="{Binding Path=DataContext.DateOfBirthColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                          SelectedItem="{Binding Path=DataContext.DormitoryColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressDormitory, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="40">
-                        <TextBlock VerticalAlignment="Center" Text="Date Admitted" Style="{DynamicResource Emphasis1}" Width="150"/>
+                        <TextBlock VerticalAlignment="Center" Text="Bed No" Style="{DynamicResource Emphasis1}" Width="150"/>
                         <ComboBox Width="250" VerticalAlignment="Center"
                           ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
-                          SelectedItem="{Binding Path=DataContext.DateOfAdmissionColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="40">
-                        <TextBlock VerticalAlignment="Center" Text="Name Of Guardian" Style="{DynamicResource Emphasis1}" Width="150"/>
-                        <ComboBox Width="250" VerticalAlignment="Center"
-                          ItemsSource="{Binding Path=DataContext.AllColumns, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"
-                          SelectedItem="{Binding Path=DataContext.NameOfGuardianColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                          SelectedItem="{Binding Path=DataContext.BedNoColumn, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0" Text="Text" />
+                            <ProgressBar HorizontalAlignment="Left" Height="3" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="120"
+                     Value="{Binding Path=DataContext.TestProgressBedNo, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+                        </Grid>
                     </StackPanel>
                 </StackPanel>
-                
-                <TextBlock HorizontalAlignment="Left" Margin="450,0,0,0" Text="Numeric" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="450,40,0,0" Text="Text" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="450,80,0,0" Text="Text" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="450,120,0,0" Text="Numeric" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="450,160,0,0" Text="Numeric" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="450,200,0,0" Text="Numeric" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="450,240,0,0" Text="Numeric" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="450,280,0,0" Text="Text" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="450,320,0,0" Text="Date" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="450,360,0,0" Text="Date" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="450,400,0,0" Text="Text" VerticalAlignment="Top"/>
-                
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,30,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressStudentID, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,70,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressFirstName, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,110,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressMiddleName, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,150,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressLastName, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,190,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressClass, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,230,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressPhoneNo, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,270,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressBalanceBF, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,310,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressBoarding, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,350,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressDateOfBirth, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,390,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressDateOfAdmission, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
-                <ProgressBar HorizontalAlignment="Left" Height="3" Margin="450,430,0,0" VerticalAlignment="Top" Width="120"
-                     Value="{Binding Path=DataContext.TestProgressNameOfGuardian, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
+
+               
             </Grid>
         </ScrollViewer>
         <StackPanel Grid.Row="1" Margin="0,0,0,15" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
@@ -126,5 +225,7 @@
                     Command="{Binding Path=DataContext.NextCommand, RelativeSource={RelativeSource AncestorType=views:ImportWizardMainWindow}}"/>
 
         </StackPanel>
+        <TextBlock HorizontalAlignment="Left" Margin="195,10,0,0" Text="Columns marked * are MANDATORY" VerticalAlignment="Top"
+                   Foreground="{DynamicResource Accent}"/>
     </Grid>
 </UserControl>

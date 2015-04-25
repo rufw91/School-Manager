@@ -14,7 +14,7 @@ namespace Starehe.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class DisciplineTrackerHistoryVM : ViewModelBase
     {
-        StudentSelectModel selectedStudent;
+        StudentBaseModel selectedStudent;
         private DateTime? start;
         private DateTime? end;
         ObservableCollection<DisciplineModel> entries;
@@ -26,7 +26,8 @@ namespace Starehe.ViewModels
         protected override void InitVars()
         {
             Title = "DISCIPLINE HISTORY";
-            SelectedStudent = new StudentSelectModel();
+            SelectedStudent = new StudentBaseModel();
+            selectedStudent.CheckErrors();
             selectedStudent.PropertyChanged += (o, e) =>
             {
                 if (e.PropertyName == "StudentID")
@@ -61,7 +62,7 @@ namespace Starehe.ViewModels
 
         }
 
-        public StudentSelectModel SelectedStudent
+        public StudentBaseModel SelectedStudent
         {
             get { return selectedStudent; }
             set

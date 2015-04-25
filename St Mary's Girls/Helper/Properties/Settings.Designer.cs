@@ -194,5 +194,17 @@ namespace Helper.Properties {
                 this["DoFullStartupCheck"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutomaticBackup {
+            get {
+                return ((bool)(this["AutomaticBackup"]));
+            }
+            set {
+                this["AutomaticBackup"] = value;
+            }
+        }
     }
 }

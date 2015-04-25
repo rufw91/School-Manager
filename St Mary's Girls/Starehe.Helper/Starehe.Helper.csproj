@@ -210,6 +210,8 @@
     <Compile Include="Models\StockTakingResultsModel.cs" />
     <Compile Include="Models\StudentBaseModel.cs" />
     <Compile Include="Models\StudentSelectModel.cs" />
+    <Compile Include="Models\StudentSubjectSelectionEntryModel.cs" />
+    <Compile Include="Models\StudentSubjectSelectionModel.cs" />
     <Compile Include="Models\StudentTranscriptModel.cs" />
     <Compile Include="Models\StudentExamResultModel.cs" />
     <Compile Include="Models\StudentExamResultEntryModel.cs" />
@@ -220,7 +222,6 @@
     <Compile Include="Models\SupplierModel.cs" />
     <Compile Include="Models\SupplierPaymentModel.cs" />
     <Compile Include="Models\TimetableClassEntryModel.cs" />
-    <Compile Include="Models\TimeTableModel.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\TimetableClassModel.cs" />
     <Compile Include="Models\TranscriptItem.cs" />

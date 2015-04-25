@@ -12,7 +12,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="45,75,0,0" Text="Backup &amp; Restore" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="350,75,0,0" Text="Display" Style="{DynamicResource ResourceKey=Title0}" VerticalAlignment="Top"/>
         <Controls:ToggleSwitch Header="Automatic Backup" HorizontalAlignment="Left" Margin="60,125,0,0" VerticalAlignment="Top"
-                               IsEnabled="False"/>
+                               IsOn="{Binding AutomaticBackup}"/>
         <Controls:ToggleSwitch Header="Use Hardware Rendering" HorizontalAlignment="Left" Margin="370,120,0,0" VerticalAlignment="Top"
                                IsOn="{Binding UseHardwareRendering}"/>
         <TextBlock HorizontalAlignment="Left" Margin="45,250,0,0" Text="Sharing" VerticalAlignment="Top"

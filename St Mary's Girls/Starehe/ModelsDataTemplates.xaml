@@ -39,6 +39,20 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="SubjectSelectionModelTemplate">
+        <Grid HorizontalAlignment="Left" Height="60" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Margin="10,0,0,0" Text="{Binding NameOfSubject}" VerticalAlignment="Center"/>
+            <CheckBox Margin="10,0,0,0" Content="Is Compulsory" IsChecked="{Binding IsSelected, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                      Grid.Row="1" VerticalAlignment="Center"/>
+
+        </Grid>
+    </DataTemplate>
+    
     <DataTemplate x:Key="StaffListTemplate">
         <Grid HorizontalAlignment="Left" Height="136" VerticalAlignment="Top" Width="145" >
             <Border BorderBrush="Black" BorderThickness="1">

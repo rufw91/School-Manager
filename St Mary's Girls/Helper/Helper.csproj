@@ -107,6 +107,9 @@
     <Compile Include="Controls\LinkSplitButton.cs" />
     <Compile Include="Controls\ProgressText.cs" />
     <Compile Include="Controls\TimePicker.cs" />
+    <Compile Include="Controls\TimeTable.cs" />
+    <Compile Include="Controls\TimeTableColumnHeadersPresenter.cs" />
+    <Compile Include="Controls\TimeTableGroupedRowsPresenter.cs" />
     <Compile Include="Converters\BooleansToVisibilityConverter.cs" />
     <Compile Include="Converters\ByteToStringConverter.cs" />
     <Compile Include="Converters\ColorToBrushConverter.cs" />
@@ -118,7 +121,11 @@
     <Compile Include="Helpers\WebHelper.cs" />
     <Compile Include="Helpers\XPSHelper.cs" />
     <Compile Include="Models\ApplicationPersistModel.cs" />
+    <Compile Include="Models\ClassLessons.cs" />
     <Compile Include="Models\ColumnModel.cs" />
+    <Compile Include="Models\Lesson.cs" />
+    <Compile Include="Models\TimeTableModel.cs" />
+    <Compile Include="Models\TimeTableSettingsModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Presentation\NotifyPropertyChanged.cs" />
     <Compile Include="Presentation\RelayCommand.cs" />
@@ -288,6 +295,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\TimePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TimeTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TimeTableColumnHeadersPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TimeTableGroupedRowsPresenter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

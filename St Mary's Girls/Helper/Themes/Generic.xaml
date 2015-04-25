@@ -31,6 +31,9 @@
         <ResourceDictionary Source="/Helper;component/Styles/TextBlock.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/TextBox.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/TimePicker.xaml"/>
+        <ResourceDictionary Source="/Helper;component/Styles/TimeTableColumnHeadersPresenter.xaml"/>
+        <ResourceDictionary Source="/Helper;component/Styles/TimeTableGroupedRowsPresenter.xaml"/>
+        <ResourceDictionary Source="/Helper;component/Styles/TimeTable.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/ToggleSwitch.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/ToolTip.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/TreeView.xaml"/>

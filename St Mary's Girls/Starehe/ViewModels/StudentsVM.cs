@@ -23,6 +23,7 @@ namespace Starehe.ViewModels
             TryAddChild(typeof(ClassListVM));
             TryAddChild(typeof(CombinedClassListVM));
             TryAddChild(typeof(SubjectSelectionVM));
+            TryAddChild(typeof(SubjectSelectionFastVM));
             TryAddChild(typeof(AssignNewClassVM));
             TryAddChild(typeof(StudentTransferVM));
             TryAddChild(typeof(StudentClearanceVM));

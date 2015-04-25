@@ -8,7 +8,7 @@
       d:DesignHeight="700" d:DesignWidth="860">
 
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Classes &amp; Subjects Setup" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Classes Setup" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,75,0,0" Style="{DynamicResource Title0}" Text="Add New Class" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="40,120,0,0" Text="Name of Class" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="126,120,0,0"  VerticalAlignment="Top" Width="200"
@@ -17,32 +17,12 @@
         <Button Content="_Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" 
         	Command="{Binding AddNewClassCommand}" Margin="251,170,0,0"/>
         <TextBlock HorizontalAlignment="Left" Margin="350,100,0,0" Style="{DynamicResource Title0}" Text="Registred Classes" VerticalAlignment="Top"/>
-        <ListBox Height="157" Margin="350,129,30,0" VerticalAlignment="Top" 
+        <ListBox Margin="350,129,30,30" 
                  ItemsSource="{Binding ClassesSetup.Entries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  DisplayMemberPath="NameOfClass"/>
         
         
-        <TextBlock HorizontalAlignment="Left" Margin="30,290,0,0" Style="{DynamicResource Title0}" Text="Add New Subject" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="40,399,0,0" TextWrapping="Wrap" Text="Enter the subject name and maximum score" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="84,438,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="126,438,0,0"
-                 DataContext="{Binding NewSubject}"
-                 Text="{Binding NameOfSubject, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock HorizontalAlignment="Left" Margin="31,488,0,0" TextWrapping="Wrap" Text="Maximum Score" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="126,488,0,0"
-                 DataContext="{Binding NewSubject}"
-                  Text="{Binding MaximumScore, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock HorizontalAlignment="Left" Margin="89,342,0,0" TextWrapping="Wrap" Text="Class" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="159" ItemsSource="{Binding AllCombinedClasses}"
-        	DisplayMemberPath="Description"
-        	SelectedItem="{Binding SelectedCombinedClass, Mode=TwoWay}" Margin="126,342,0,0"/>
-        <Button Content="_Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" 
-        	Command="{Binding AddNewSubjectCommand}" Margin="251,538,0,0"/>
-
-        <TextBlock HorizontalAlignment="Left" Margin="350,315,0,0" Style="{DynamicResource Title0}" Text="Registred Subjects" VerticalAlignment="Top"/>
-        <ListBox Margin="350,344,30,50" ItemsSource="{Binding SubjectsSetup.Entries, UpdateSourceTrigger=PropertyChanged}"
-                 DisplayMemberPath="NameOfSubject"/>
-        <TextBlock HorizontalAlignment="Left" Margin="40,178,0,0" Foreground="Red" VerticalAlignment="Top" Text="IMPORTANT: Class Names should be in format 'FORM No XXX' eg 'FORM 1 EAST" TextWrapping="Wrap" Width="206"/>
+                <TextBlock HorizontalAlignment="Left" Margin="40,178,0,0" Foreground="Red" VerticalAlignment="Top" Text="IMPORTANT: Class Names should be in format 'FORM No XXX' eg 'FORM 1 EAST" TextWrapping="Wrap" Width="206"/>
 
 
 

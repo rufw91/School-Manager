@@ -1,11 +1,12 @@
 ﻿
+using System;
+using System.Collections.Generic;
 using System.Windows;
 namespace Helper.Models
 {
     public class ExamResultSubjectEntryModel: SubjectModel
     {
         string remarks;
-        string tutor;
         decimal score;
         int examResultID;
         decimal outOf;
@@ -19,8 +20,44 @@ namespace Helper.Models
             PropertyChanged += (o, e) =>
                 {
                     if (((e.PropertyName == "Score") || (e.PropertyName == "NameOfSubject"))||(e.PropertyName=="OutOf"))
-                        Remarks = GetRemark(score);
+                    { 
+                        ClearAllErrors();
+                        if (score>outOf)
+                        {
+                            List<String> errors = new List<string>();
+                            errors.Add("Value [" + score + "] should be a non-negative number less than or equal to [" + outOf + "]" );
+                            this.SetErrors("Score",errors);
+                        }
+                        NotifyPropertyChanged("HasErrors");
+                        if (!HasErrors)
+                            Remarks = GetRemark(score);
+                    }
+                    
                 };
+        }
+
+        public ExamResultSubjectEntryModel(SubjectModel sm)
+        {
+            this.NameOfSubject = sm.NameOfSubject;
+            this.SubjectID = sm.SubjectID;
+            this.OutOf = sm.MaximumScore;
+            PropertyChanged += (o, e) =>
+            {
+                if (((e.PropertyName == "Score") || (e.PropertyName == "NameOfSubject")) || (e.PropertyName == "OutOf"))
+                {  
+                    ClearErrors("Score");
+                    if (score > outOf)
+                    {
+                        List<String> errors = new List<string>();
+                        errors.Add("Value [" + score + "] should be a non-negative number less than or equal to [" + outOf + "]");
+                        this.SetErrors("Score", errors);
+                    }
+                    NotifyPropertyChanged("HasErrors");
+                    if (!HasErrors)
+                        Remarks = GetRemark(score);
+                }
+
+            };
         }
 
         private string GetRemark(decimal score)
@@ -62,12 +99,7 @@ namespace Helper.Models
             return "";
         }
 
-        public ExamResultSubjectEntryModel(SubjectModel sm)
-        {
-            this.NameOfSubject = sm.NameOfSubject;
-            this.SubjectID = sm.SubjectID;
-        }
-
+        
         public int ExamResultID
         {
             get { return this.examResultID; }
@@ -120,20 +152,6 @@ namespace Helper.Models
                 {
                     this.remarks = value;
                     NotifyPropertyChanged("Remarks");
-                }
-            }
-        }
-
-        public string Tutor
-        {
-            get { return this.tutor; }
-
-            set
-            {
-                if (value != this.tutor)
-                {
-                    this.tutor = value;
-                    NotifyPropertyChanged("Tutor");
                 }
             }
         }

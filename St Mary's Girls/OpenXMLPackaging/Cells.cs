@@ -107,6 +107,21 @@ namespace OpenXmlPackaging {
             }
         }
 
+        string CleanString(string value)
+        {
+            return value.Replace("'", "").Replace("@", "")
+                            .Replace("#","")
+                            .Replace(":", "")
+                            .Replace("\"", "")
+                            .Replace("\\", "")
+                            .Replace("?", "")
+                            .Replace("!", "")
+                            .Replace("$", "")
+                            .Replace("%", "")
+                            .Replace("^", "")
+                        .Replace(".", "").Trim();
+        }
+
         public DataTable ExportDataTable(string rangeReference, bool includeColumnNames)
         {
             DataTable dt = new DataTable();
@@ -122,7 +137,7 @@ namespace OpenXmlPackaging {
             // Write columns to Excel if includeColumnNames = true
             for (int i = startColumnIndex; i <= endColumnIndex; i++)
             {
-                DataColumn column = new DataColumn(includeColumnNames ? this.GetCell(1, i).Value.ToString().Trim() : "column" + i);
+                DataColumn column = new DataColumn(includeColumnNames ? CleanString(this.GetCell(1, i).Value.ToString().Trim()) : "column" + i);
                 dt.Columns.Add(column);
             }
 
@@ -137,7 +152,11 @@ namespace OpenXmlPackaging {
                 tbCol=0;
                 for (int col = startColumnIndex; col <=endColumnIndex; col++)
                 {
-                    dtr[tbCol] = this.GetCell(row,col).Value;
+                    try
+                    {
+                        dtr[tbCol] = this.GetCell(row, col).Value;
+                    }
+                    catch { dtr[tbCol] = ""; }
                     tbCol++;
                 }
                 dt.Rows.Add(dtr);

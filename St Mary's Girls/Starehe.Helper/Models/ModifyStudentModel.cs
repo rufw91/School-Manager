@@ -14,8 +14,6 @@ namespace Helper.Models
         }
         public override bool CheckErrors()
         {
-            try
-            {
                 ClearAllErrors();
                 if (StudentID == 0)
                 {
@@ -55,15 +53,12 @@ namespace Helper.Models
                         this.DateOfBirth = student.DateOfBirth;
                         this.DormitoryID = student.DormitoryID;
                         this.PrevBalance = student.PrevBalance;
+                        this.IsActive = student.IsActive;
+
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                List<string> errors = new List<string>();
-                errors.Add(e.Message);
-                SetErrors("", errors);
-            }
+            
+            
             NotifyPropertyChanged("HasErrors");
             return HasErrors;
         }
@@ -73,7 +68,7 @@ namespace Helper.Models
             FirstName = "";
             MiddleName = "";
             LastName = "";
-            DateOfBirth = new DateTime(1900, 1, 1);
+            DateOfBirth = new DateTime(1980, 1, 1);
             DateOfAdmission = DateTime.Now;
             NameOfGuardian = "";
             GuardianPhoneNo = "";
@@ -87,6 +82,7 @@ namespace Helper.Models
             BedNo = "";
             PrevInstitution = "";
             PrevBalance = 0;
+            IsActive = true;
         }
     }
 }

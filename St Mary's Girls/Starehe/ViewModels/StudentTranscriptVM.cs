@@ -51,8 +51,8 @@ namespace Starehe.ViewModels
                                     ExamID = ex.ExamID,
                                     NameOfExam = ex.NameOfExam,
                                     OutOf = ex.OutOf,
-                                    Weight = count <3 ? ex.OutOf : 0,
-                                    ShowInTranscript = count >= 3 ? false : true,
+                                    Weight = count <=3 ? ex.OutOf : 0,
+                                    ShowInTranscript = count > 3 ? false : true,
                                     Index=count
                                 });
                                 count++;
@@ -122,12 +122,14 @@ namespace Starehe.ViewModels
         {
             decimal tot = 0;
             int count = 0;
+            bool hasErr = false;
             foreach (var ed in exams)
             {
                 tot += ed.Weight;
+                hasErr = hasErr || (ed.ExamID == 0);
                 count++;
             }
-            return !transcript.HasErrors && tot == 100 && count <= 3 && count > 0;
+            return !transcript.HasErrors && tot == 100 && count <= 3 && count > 0 && !hasErr;
         }
 
         private bool CanSave()
