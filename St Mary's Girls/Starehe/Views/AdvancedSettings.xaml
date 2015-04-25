@@ -12,9 +12,10 @@
 
 
         <TextBlock HorizontalAlignment="Left" Margin="45,75,0,0" Text="Database" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="60,125,0,0" Text="Export Database Schema" VerticalAlignment="Top"
+        <TextBlock HorizontalAlignment="Left" Margin="60,125,0,0" Text="Clean database (remove unused entries)" VerticalAlignment="Top"
                        Style="{DynamicResource ContentTextSemiBold}"/>
-        <Button Content="Export" HorizontalAlignment="Left" Margin="80,170,0,0" VerticalAlignment="Top" Width="150"/>
+        <Button Content="Clean" HorizontalAlignment="Left" Margin="80,170,0,0" VerticalAlignment="Top" Width="150"
+                Command="{Binding CleanDbCommand}"/>
         <TextBlock HorizontalAlignment="Left" Margin="60,225,0,0" VerticalAlignment="Top" Text="Test for database connectivity"
                        Style="{DynamicResource ContentTextSemiBold}"/>
         <Button Content="Test" Margin="80,270,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"
@@ -61,6 +62,8 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,0,0,20" Height="16" VerticalAlignment="Bottom">
             <Hyperlink Command="{Binding OpenQueryEditorCommand}">Open Query Editor</Hyperlink>
         </TextBlock>
-
+        <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+        </Border>
     </Grid>
 </UserControl>

@@ -1,6 +1,8 @@
 ﻿
 namespace Helper
 {
+    public enum Gender
+    { Male=0,Female=1}
     public enum UserRole
     {
         None, User, Teacher, Accounts, Deputy, Principal, SystemAdmin

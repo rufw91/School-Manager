@@ -26,7 +26,7 @@ namespace Starehe.ViewModels
         {
             RefreshCommand = new RelayCommand(async o =>
             {
-                Entries = await DataAccess.GetCurrentTimeTableAsync((int)selectedDay);
+                //Entries = await DataAccess.GetCurrentTimeTableAsync((int)selectedDay);
             }, o => true);
         }
 
@@ -35,7 +35,7 @@ namespace Starehe.ViewModels
             Title = "CURRENT TIMETABLE";
             DaysOfTheWeek = Enum.GetValues(typeof(DayOfWeek));
             NotifyPropertyChanged("DaysOfTheWeek");
-            Entries = await DataAccess.GetCurrentTimeTableAsync((int)selectedDay);
+            //Entries = await DataAccess.GetCurrentTimeTableAsync((int)selectedDay);
         }
 
         public Array DaysOfTheWeek

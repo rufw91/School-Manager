@@ -23,7 +23,7 @@
         	SelectedValuePath="ExamID" 
         	DisplayMemberPath="NameOfExam"
         	ItemsSource="{Binding AllExams}"
-        	SelectedValue="{Binding SelectedExamID, Mode=TwoWay}"/>
+        	SelectedItem="{Binding SelectedExam, Mode=TwoWay}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="40,225,0,0" Style="{DynamicResource Title0}" Text="Subject Scores" VerticalAlignment="Top"/>
 
@@ -33,9 +33,9 @@
         	DisplayMemberPath="NameOfSubject" 
         	SelectedItem="{Binding SelectedSubject, Mode=TwoWay}"/>
         <TextBlock  HorizontalAlignment="Left" Margin="86,315,0,0" Text="Score" VerticalAlignment="Top" />
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,315,0,0" VerticalAlignment="Top" Width="150"
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,315,0,0" VerticalAlignment="Top" Width="150" 
                  DataContext="{Binding SelectedSubject}"
-                 Text="{Binding Score, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                 Text="{Binding Score, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <TextBlock  HorizontalAlignment="Left" Margin="86,355,0,0" Text="Tutor" VerticalAlignment="Top" />
         <TextBox HorizontalAlignment="Left" Height="23" Margin="120,355,0,0" VerticalAlignment="Top" Width="150"
                  DataContext="{Binding SelectedSubject}" MaxLength="4"
@@ -66,14 +66,5 @@ Binding="{Binding Remarks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </DataGrid>
         <Button Content="_Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" 
                 Command="{Binding SaveCommand}"/>
-
-
-
-
-
-
-
-
-
     </Grid>
 </UserControl>

@@ -1,7 +1,9 @@
 ﻿using Helper;
 using Helper.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -14,6 +16,7 @@ namespace Starehe.ViewModels
         ExamResultSubjectEntryModel newSubjectResult;
         ObservableCollection<ExamModel> allExams;
         ObservableCollection<ExamResultSubjectEntryModel> allSubjects;
+        private ExamModel selectedExam;
         public EnterExamResultsVM()
         {
             InitVars();
@@ -26,21 +29,41 @@ namespace Starehe.ViewModels
             Title = "ENTER EXAM RESULTS";
             NewResult = new ExamResultStudentModel();
             SelectedSubject = new ExamResultSubjectEntryModel();
-            SelectedExamID = 0;
             AllExams = new ObservableCollection<ExamModel>();
             AllSubjects = new ObservableCollection<ExamResultSubjectEntryModel>();
             newResult.PropertyChanged += async (o, e) =>
             {
                 if (e.PropertyName == "StudentID")
                 {
-                    if (newResult.StudentID != 0)
+                    AllExams.Clear();
+                    newResult.CheckErrors();
+                    if ((newResult.StudentID != 0)&&(!newResult.HasErrors))
                     {
                         var s = await DataAccess.GetClassIDFromStudentID(newResult.StudentID);
                         AllExams = await DataAccess.GetExamsByClass(s);
                     }
                 }
 
+                
+
             };
+
+            PropertyChanged += async(o, e) =>
+                {
+                    if (e.PropertyName == "SelectedExam")
+                    {
+                        if (selectedExam != null)
+                        {
+                            newResult.ExamID = selectedExam.ExamID;
+                            await RefreshSubjectEntries();
+                        }
+                        else
+                        {
+                            newResult.ExamID = 0;
+                            AllSubjects.Clear();
+                        }
+                    }
+                };
         }
 
         protected override void CreateCommands()
@@ -54,7 +77,7 @@ namespace Starehe.ViewModels
             o =>
             {
                 return newSubjectResult != null && newSubjectResult.SubjectID > 0 &&
-                    newSubjectResult.Score > 0 && !SubjectExists(newSubjectResult.SubjectID);
+                    !newSubjectResult.HasErrors && !SubjectExists(newSubjectResult.SubjectID);
             });
 
             SaveCommand = new RelayCommand(async o =>
@@ -84,30 +107,26 @@ namespace Starehe.ViewModels
             return exists;
         }
 
-        public int SelectedExamID
+        public ExamModel SelectedExam
         {
-            get { return newResult.ExamID; }
+            get { return selectedExam; }
 
             set
             {
-                if (value != newResult.ExamID)
+                if (value != selectedExam)
                 {
-                    newResult.ExamID = value;
-                    NotifyPropertyChanged("SelectedExamID");
-                    if (newResult.ExamID > 0)
-                        RefreshSubjectEntries();
-                    else
-                        AllSubjects.Clear();
+                    selectedExam = value;
+                    NotifyPropertyChanged("SelectedExam");
                 }
             }
         }
-
-        private async void RefreshSubjectEntries()
+        
+        private async Task RefreshSubjectEntries()
         {
             AllSubjects.Clear();
             var temp = (await DataAccess.GetExamAsync(newResult.ExamID)).Entries;
             foreach (SubjectModel sm in temp)
-                AllSubjects.Add(new ExamResultSubjectEntryModel(sm));
+                AllSubjects.Add(new ExamResultSubjectEntryModel(sm) { OutOf = selectedExam.OutOf });
             newResult.Entries = (await DataAccess.GetStudentExamResultAync(newResult.StudentID, newResult.ExamID)).Entries;
         }
 
@@ -184,7 +203,7 @@ namespace Starehe.ViewModels
             newResult.Reset();
             if (newSubjectResult != null)
                 newSubjectResult.Reset();
-            SelectedExamID = 0;
+            SelectedExam = null;
             
         }
     }

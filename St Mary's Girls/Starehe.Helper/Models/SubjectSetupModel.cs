@@ -125,10 +125,10 @@ namespace Helper.Models
 
         public SubjectsSetupEntryModel(SubjectModel subjectModel)
         {
-            SubjectSetupID = 0;
             this.MaximumScore = subjectModel.MaximumScore;
             this.NameOfSubject = subjectModel.NameOfSubject;
             this.SubjectID = subjectModel.SubjectID;
+            this.IsOptional = subjectModel.IsOptional;
         }
 
         public int SubjectSetupID

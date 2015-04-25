@@ -12,7 +12,7 @@ namespace Starehe.ViewModels
     public class LeavingCertificateVM: ViewModelBase
     {
         LeavingCertificateModel leavingCert;
-        StudentSelectModel selectedStudent;
+        StudentBaseModel selectedStudent;
         bool isCleared  = false;
         bool hasRefreshed = false;
         public LeavingCertificateVM()
@@ -24,7 +24,8 @@ namespace Starehe.ViewModels
         {
             Title = "LEAVING CERTIFICATE";
             leavingCert = new LeavingCertificateModel();
-            SelectedStudent = new StudentSelectModel();
+            SelectedStudent = new StudentBaseModel();
+            selectedStudent.CheckErrors();
             selectedStudent.PropertyChanged += (o, e) =>
                 {
                     if (e.PropertyName != "StudentID")
@@ -131,7 +132,7 @@ namespace Starehe.ViewModels
             }
         }
 
-        public StudentSelectModel SelectedStudent
+        public StudentBaseModel SelectedStudent
         {
             get { return selectedStudent; }
             set

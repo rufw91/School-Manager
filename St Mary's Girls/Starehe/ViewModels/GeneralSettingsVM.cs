@@ -27,7 +27,7 @@ namespace Starehe.ViewModels
         protected override void InitVars()
         {            
             Title = "GENERAL";
-            useHardwareRendering = RenderOptions.ProcessRenderMode == RenderMode.Default;
+            UseHardwareRendering = RenderOptions.ProcessRenderMode == RenderMode.Default;
         }
 
         public bool UseHardwareRendering
@@ -43,6 +43,20 @@ namespace Starehe.ViewModels
                     else
                         RenderOptions.ProcessRenderMode = RenderMode.Default;
                     NotifyPropertyChanged("UseHardwareRendering");
+                }
+            }
+        }
+
+        public bool AutomaticBackup
+        {
+            get { return Helper.Properties.Settings.Default.AutomaticBackup; }
+            set
+            {
+                if (value != Helper.Properties.Settings.Default.AutomaticBackup)
+                {
+                    Helper.Properties.Settings.Default.AutomaticBackup = value;
+                    Helper.Properties.Settings.Default.Save();
+                    NotifyPropertyChanged("AutomaticBackup");
                 }
             }
         }

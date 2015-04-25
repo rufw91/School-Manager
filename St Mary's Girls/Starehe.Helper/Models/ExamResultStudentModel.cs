@@ -11,6 +11,7 @@ namespace Helper.Models
         private int studentID;
         private decimal total;
         ObservableCollection<ExamResultSubjectEntryModel> entries;
+        private bool isActive;
 
         public ExamResultStudentModel()
         {
@@ -28,6 +29,21 @@ namespace Helper.Models
                         MeanGrade = DataAccess.CalculateGrade(entries.Count > 0 ? total / entries.Count : 1);
                     }
                 };
+            IsActive = true;
+        }
+
+        public bool IsActive
+        {
+            get { return this.isActive; }
+
+            set
+            {
+                if (value != this.isActive)
+                {
+                    this.isActive = value;
+                    NotifyPropertyChanged("IsActive");
+                }
+            }
         }
 
         public ObservableCollection<ExamResultSubjectEntryModel> Entries
@@ -130,6 +146,13 @@ namespace Helper.Models
                         ClearErrors("StudentID");
                         this.StudentID = student.StudentID;
                         this.NameOfStudent = student.NameOfStudent;
+                        this.IsActive = student.IsActive;
+                        if (!this.isActive)
+                        {
+                            List<string> errors = new List<string>();
+                            errors.Add("Student is not active.");
+                            SetErrors("StudentID", errors);
+                        }
                     }
                 }
             }

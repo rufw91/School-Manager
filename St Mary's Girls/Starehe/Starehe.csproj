@@ -155,12 +155,13 @@
     <Compile Include="ViewModels\ClassReportFormsVM.cs" />
     <Compile Include="ViewModels\CombinedClassListVM.cs" />
     <Compile Include="ViewModels\CombinedMarkListsVM.cs" />
+    <Compile Include="ViewModels\CurrentTimeTableFullVM.cs" />
     <Compile Include="ViewModels\DisciplineDetailsVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerHistoryVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerVM.cs" />
     <Compile Include="ViewModels\EnterExamResultsBySubjectVM.cs" />
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
-    <Compile Include="ViewModels\GenerateTimeTableVM.cs" />
+    <Compile Include="ViewModels\ModifyTimeTableFullVM.cs" />
     <Compile Include="ViewModels\IssueItemsVM.cs" />
     <Compile Include="ViewModels\ItemIssueHistoryVM.cs" />
     <Compile Include="ViewModels\LeavingCertificateVM.cs" />
@@ -242,7 +243,6 @@
     <Compile Include="ViewModels\GeneralSettingsVM.cs" />
     <Compile Include="ViewModels\HomePageVM.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
-    <Compile Include="ViewModels\ModifyTimeTableVM.cs" />
     <Compile Include="ViewModels\NewEventVM.cs" />
     <Compile Include="ViewModels\NewExamVM.cs" />
     <Compile Include="ViewModels\NewFeesPaymentVM.cs" />
@@ -253,7 +253,7 @@
     <Compile Include="ViewModels\StockTakingVM.cs" />
     <Compile Include="ViewModels\StudentDetailsVM.cs" />
     <Compile Include="ViewModels\StudentTransferVM.cs" />
-    <Compile Include="ViewModels\SubjectSelectionSetupVM.cs" />
+    <Compile Include="ViewModels\SubjectSelectionFastVM.cs" />
     <Compile Include="ViewModels\SubjectSelectionVM.cs" />
     <Compile Include="ViewModels\SubjectsSetupVM.cs" />
     <Compile Include="ViewModels\SupplierListVM.cs" />
@@ -283,8 +283,11 @@
     <Compile Include="Views\CombinedMarkLists.xaml.cs">
       <DependentUpon>CombinedMarkLists.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GenerateTimeTable.xaml.cs">
-      <DependentUpon>GenerateTimeTable.xaml</DependentUpon>
+    <Compile Include="Views\CurrentTimeTableFull.xaml.cs">
+      <DependentUpon>CurrentTimeTableFull.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ModifyTimeTableFull.xaml.cs">
+      <DependentUpon>ModifyTimeTableFull.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QuickBooksSync.xaml.cs">
       <DependentUpon>QuickBooksSync.xaml</DependentUpon>
@@ -570,9 +573,6 @@
     <Compile Include="Views\GeneralSettings.xaml.cs">
       <DependentUpon>GeneralSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ModifyTimeTable.xaml.cs">
-      <DependentUpon>ModifyTimeTable.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\NewEvent.xaml.cs">
       <DependentUpon>NewEvent.xaml</DependentUpon>
     </Compile>
@@ -612,8 +612,8 @@
     <Compile Include="Views\SubjectSelection.xaml.cs">
       <DependentUpon>SubjectSelection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubjectSelectionSetup.xaml.cs">
-      <DependentUpon>SubjectSelectionSetup.xaml</DependentUpon>
+    <Compile Include="Views\SubjectSelectionFast.xaml.cs">
+      <DependentUpon>SubjectSelectionFast.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SubjectsSetup.xaml.cs">
       <DependentUpon>SubjectsSetup.xaml</DependentUpon>
@@ -736,7 +736,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GenerateTimeTable.xaml">
+    <Page Include="Views\CurrentTimeTableFull.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ModifyTimeTableFull.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1024,10 +1028,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ModifyTimeTable.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\NewEvent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1148,7 +1148,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubjectSelectionSetup.xaml">
+    <Page Include="Views\SubjectSelectionFast.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

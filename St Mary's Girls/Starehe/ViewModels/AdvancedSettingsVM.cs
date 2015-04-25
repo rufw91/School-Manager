@@ -25,6 +25,12 @@ namespace Starehe.ViewModels
 
         protected override void CreateCommands()
         {
+            CleanDbCommand = new RelayCommand(async o =>
+                {
+                    IsBusy = true;
+                    await DataAccessHelper.CleanDb();
+                    IsBusy = false;
+                }, o => !IsBusy);
             OpenTaskWindowCommand = new RelayCommand(o =>
             {
                 if (OpenTaskWindowAction != null)
@@ -110,6 +116,9 @@ namespace Starehe.ViewModels
 
         public Action<ViewModelBase> OpenTaskWindowAction
         { get; internal set; }
+
+        public ICommand CleanDbCommand
+        { get; private set; }
 
         public ICommand OpenTaskWindowCommand
         { get; private set; }

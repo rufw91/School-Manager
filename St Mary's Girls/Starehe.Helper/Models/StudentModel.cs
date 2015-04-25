@@ -23,12 +23,14 @@ namespace Helper.Models
         private string postalCode = "";
         private byte[] sPhoto = null;
         private decimal prevBalance;
-
+        private Gender gender;
         private int classID = 0;
         private int dormitoryID = 0;
         private string bedNo = "";
         private string prevInstitution = "";
         private bool isBoarder;
+        private int kcpescore;
+        private bool isActive;
 
         public StudentModel()
         {
@@ -44,6 +46,9 @@ namespace Helper.Models
             Email = "test@example.com";
             PrevBalance = 0;
             IsBoarder = true;
+            IsActive = true;
+            SPhoto = new byte[1];
+            sPhoto[0] = 1;
         }
        
       
@@ -86,7 +91,20 @@ namespace Helper.Models
                 }
             }
         }
-        
+
+        public Gender Gender
+        {
+            get { return this.gender; }
+
+            set
+            {
+                if (value != this.gender)
+                {
+                    this.gender = value;
+                    NotifyPropertyChanged("Gender");
+                }
+            }
+        }
 
         public DateTime DateOfBirth
         {
@@ -272,6 +290,20 @@ namespace Helper.Models
             }
         }
 
+        public bool IsActive
+        {
+            get { return this.isActive; }
+
+            set
+            {
+                if (value != this.isActive)
+                {
+                    this.isActive = value;
+                    NotifyPropertyChanged("IsActive");
+                }
+            }
+        }
+
         public override string ToString()
         {
             return NameOfStudent;
@@ -354,7 +386,16 @@ namespace Helper.Models
                 NotifyPropertyChanged("IsBoarder");
             }
         }
-        public int KCPEScore { get; set; }
+        public int KCPEScore
+        {
+            get { return kcpescore; }
+            set
+            {
+                if (value != kcpescore)
+                    kcpescore = value;
+                NotifyPropertyChanged("KCPEscore");
+            }
+        }
     }
 
 }

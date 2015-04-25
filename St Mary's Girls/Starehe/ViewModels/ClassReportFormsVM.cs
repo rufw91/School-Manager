@@ -99,8 +99,8 @@ namespace Starehe.ViewModels
                                 ExamID = ex.ExamID,
                                 NameOfExam = ex.NameOfExam,
                                 OutOf = ex.OutOf,
-                                Weight = count < 3 ? ex.OutOf : 0,
-                                ShowInTranscript = count >= 3 ? false : true,
+                                Weight = count <= 3 ? ex.OutOf : 0,
+                                ShowInTranscript = count > 3 ? false : true,
                                 Index = count
                             });
                             count++;

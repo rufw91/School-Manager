@@ -44,7 +44,7 @@ namespace Starehe.ViewModels
                     if (e.PropertyName == "StudentID")
                     {
                         RefreshView();
-                        if (studentResult.StudentID > 0)
+                        if ((studentResult.StudentID > 0)&&(!studentResult.HasErrors))
                             await RefreshAllExams();
                         else AllExams.Clear();
                     }
@@ -153,14 +153,11 @@ namespace Starehe.ViewModels
                 {
                     classResult.Entries.Clear();
                     ClassModel cs;
-                    Debug.WriteLine("selectedCombinedClass count:" + selectedCombinedClass.Entries.Count);
                     for (int i = 0; i < selectedCombinedClass.Entries.Count;i++ )
                     {
                         cs = selectedCombinedClass.Entries[i];
-                        Debug.WriteLine("ClassID:" + cs.ClassID + "   EXamID:" + selectedExam.ExamID);
-                        Debug.WriteLine("Name:" + cs.NameOfClass);
                         var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(cs.ClassID, selectedExam.ExamID,selectedExam.OutOf));
-                        Debug.WriteLine("No of res:" + temp.Entries.Count);
+                        
                         foreach (var e in temp.Entries)
                         {
                             classResult.Entries.Add(e);                            
@@ -175,7 +172,6 @@ namespace Starehe.ViewModels
                             classResult.ClassID = cs.ClassID;
                         }                        
                     }
-                    Debug.WriteLine("Number of Student Results count:" + classResult.Entries.Count);
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
                 }
                 IsBusy = false;

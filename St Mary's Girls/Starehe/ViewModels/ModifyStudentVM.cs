@@ -17,6 +17,8 @@ namespace Starehe.ViewModels
         ModifyStudentModel newStudent;
         ObservableCollection<DormModel> allDorms;
         ObservableCollection<ClassModel> allClasses;
+        private Boardingtype boardingValue;
+        private bool isStudentInactive;
         public ModifyStudentVM()
         {
             InitVars();
@@ -26,12 +28,21 @@ namespace Starehe.ViewModels
         protected async override void InitVars()
         {
             IsBusy = true;
+            IsStudentInactive = false;
             Title = "MODIFY STUDENT";
+            BoardingValue = Boardingtype.Boarder;
             NewStudent = new ModifyStudentModel();
             newStudent.PropertyChanged += (o, e) =>
                 {
                     if (e.PropertyName == "StudentID")
+                    {
                         newStudent.CheckErrors();
+                        if (!newStudent.HasErrors)
+                            IsStudentInactive = !newStudent.IsActive;
+                        
+
+                        BoardingValue = newStudent.DormitoryID > 0 ? Boardingtype.Boarder : Boardingtype.DayScholar;
+                    }
                 };
             AllDorms = await DataAccess.GetAllDormsAsync();
             AllClasses = await DataAccess.GetAllClassesAsync();
@@ -63,7 +74,14 @@ namespace Starehe.ViewModels
             ClearImageCommand = new RelayCommand(o => { newStudent.SPhoto = null; }, o => true);
             BrowseCommand = new RelayCommand(o => { newStudent.SPhoto = FileHelper.BrowseImageAsByteArray(); }, o => true);
             ClearDormCommand = new RelayCommand(o => { newStudent.DormitoryID = 0; }, o => true);
-
+            MakeActiveCommand = new RelayCommand(o => 
+            {
+                IsStudentInactive = false;
+                IsBusy = true;
+                DataAccess.SetStudentActiveAsync(newStudent);
+                IsBusy = false;
+            }, o => !newStudent.HasErrors && isStudentInactive);
+            IgnoreCommand = new RelayCommand(o => { IsStudentInactive = false; }, o => !newStudent.HasErrors && isStudentInactive);
         }
 
         private bool CanSave()
@@ -81,6 +99,38 @@ namespace Starehe.ViewModels
                       && (EmailValidator.IsValidEmail(newStudent.Email))
                       && newStudent.ClassID > 0;
             return isOk;
+        }
+
+        public Array BoardingValues
+        {
+            get { return Enum.GetValues(typeof(Boardingtype)); }
+        }
+
+        public bool IsStudentInactive
+        {
+            get { return isStudentInactive; }
+            set
+            {
+                if (value != isStudentInactive)
+                {
+                    isStudentInactive = value;
+                    NotifyPropertyChanged("IsStudentInactive");
+                }
+            }
+        }
+        public Boardingtype BoardingValue
+        {
+            get { return boardingValue; }
+            set
+            {
+                if (value != boardingValue)
+                {
+                    boardingValue = value;
+                    newStudent.IsBoarder = boardingValue == Boardingtype.Boarder ? true : false;
+                }
+
+                NotifyPropertyChanged("BoardingValue");
+            }
         }
 
         public ObservableCollection<DormModel> AllDorms
@@ -109,7 +159,13 @@ namespace Starehe.ViewModels
             }
         }
 
-
+        public ICommand MakeActiveCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand IgnoreCommand
+        { get; private set; }
         public ICommand ClearImageCommand
         {
             get;

@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Helper.Models
 {
-    public class FeePaymentModel : StudentBaseModel
+    public class FeePaymentModel : StudentSelectModel
     {
         int feePaymentID;
         decimal amtPaid;

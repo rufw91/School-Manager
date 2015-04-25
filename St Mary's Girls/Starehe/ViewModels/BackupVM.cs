@@ -36,7 +36,9 @@ namespace Starehe.ViewModels
                 if (succ)
                     MessageBox.Show("Successfully completed operation.");
                 else
-                    MessageBox.Show("Operation failed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Operation failed. Ensure you have sufficient permission to access the current folder."+
+                        "\r\nYou can also try saving to a different location e.g. a removable disk.", "Error", MessageBoxButton.OK, 
+                        MessageBoxImage.Error);
                 Reset();
                 IsBusy = false;
             }, o => !IsBusy && !string.IsNullOrEmpty(pathToFile));

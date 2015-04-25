@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Starehe.Views
 {
     /// <summary>
-    /// Interaction logic for ModifyTimeTable.xaml
+    /// Interaction logic for CurrentTimeTableFull.xaml
     /// </summary>
-    public partial class ModifyTimeTable : UserControl
+    public partial class CurrentTimeTableFull : UserControl
     {
-        public ModifyTimeTable()
+        public CurrentTimeTableFull()
         {
             InitializeComponent();
         }

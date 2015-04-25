@@ -62,10 +62,8 @@ namespace Starehe.ViewModels
                         allExams.Clear();
                         SelectedExamID = 0;
                         if (SelectedClassID != 0)
-                        {                            
-                            Debug.WriteLine("SelectedClassID is not Zero");
+                        {              
                             AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedClassID));
-                            Debug.WriteLine("Exams in class count:" + allExams.Count);
                         }
                         return;
                     }

@@ -74,6 +74,7 @@
         </TextBlock>
         <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding SaveCommand}"/>
+        
 
     </Grid>
 </UserControl>

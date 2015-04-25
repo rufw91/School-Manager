@@ -19,7 +19,7 @@ namespace Starehe.ViewModels
         string searchText="";
         CollectionViewSource collViewSource;
         bool showCleared;
-        bool showTransferred;
+        bool showInactive;
         public StudentListVM()
         {
             InitVars();
@@ -34,106 +34,6 @@ namespace Starehe.ViewModels
             }, o => (o is StudentModel));
             RefreshCommand = new RelayCommand(o => { Reset(); }, o => true);
 
-            SetNewClassCommand = new RelayCommand(o =>
-            {/*
-                GalleryItemModel gim = o as GalleryItemModel;
-                if (o == null)
-                {
-                    MessageBox.Show("No Student Selected.","Warning", MessageBoxButton.OK, MessageBoxImage.Warning); return;
-                }
-                //else DataAccess.SetNewStudentsClassAsync(GetSelectedItems(),)*/
-            }, o => GetSelectedItemsCount()>0);
-
-            SetTransferredCommand = new RelayCommand(o =>
-            {
-                /*bool succ = DataAccess.SaveNewStudentTransfersAsync(GetSelectedItems());
-                if (succ)
-                    MessageBox.Show("Successfully saved details.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                else
-                    MessageBox.Show("Could Not save details.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                */
-            }, o => GetSelectedItemsCount() > 0);
-
-            SetClearedCommand = new RelayCommand(o =>
-            {/*
-                bool succ = DataAccess.SaveNewStudentClearancesAsync(GetSelectedItems());
-                if (succ)
-                    MessageBox.Show("Successfully saved details.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                else
-                    MessageBox.Show("Could Not save details.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-              */
-            }, o => GetSelectedItemsCount() > 0);
-
-            SetActiveCommand = new RelayCommand(o =>
-            {
-                /*
-                bool succ = DataAccess.SaveActiveStudentsActiveAsync(GetSelectedItems());
-                if (succ)
-                    MessageBox.Show("Successfully saved details.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                else
-                    MessageBox.Show("Could Not save details.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);*/
-            }, o => GetSelectedItemsCount() > 0);
-
-            ShowAllCommand = new RelayCommand(o =>
-            {/*
-                GalleryItemModel gim = o as GalleryItemModel;
-                if (o == null)
-                {
-                    MessageBox.Show("No Student Selected.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); return;
-                }
-                else MessageBox.Show(GetSelectedItemsCount() + "");*/
-            }, o => GetSelectedItemsCount() > 0);
-
-            ShowActiveOnlyCommand = new RelayCommand(o =>
-            {/*
-                GalleryItemModel gim = o as GalleryItemModel;
-                if (o == null)
-                {
-                    MessageBox.Show("No Student Selected.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); return;
-                }
-                else MessageBox.Show(GetSelectedItemsCount() + "");*/
-            }, o => GetSelectedItemsCount() > 0);
-
-            ShowClearedCommand = new RelayCommand(o =>
-            {
-                /*GalleryItemModel gim = o as GalleryItemModel;
-                if (o == null)
-                {
-                    MessageBox.Show("No Student Selected.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); return;
-                }
-                else MessageBox.Show(GetSelectedItemsCount() + "");*/
-            }, o => GetSelectedItemsCount() > 0);
-
-            ShowTransferredOnlyCommand = new RelayCommand(o =>
-            {
-                /*
-                GalleryItemModel gim = o as GalleryItemModel;
-                if (o == null)
-                {
-                    MessageBox.Show("No Student Selected.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); return;
-                }
-                else MessageBox.Show(GetSelectedItemsCount() + "");*/
-            }, o => GetSelectedItemsCount() > 0);
-
-            IncludeClearedCommand = new RelayCommand(o =>
-            {
-                /*GalleryItemModel gim = o as GalleryItemModel;
-                if (o == null)
-                {
-                    MessageBox.Show("No Student Selected.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); return;
-                }
-                else MessageBox.Show(GetSelectedItemsCount() + "");*/
-            }, o => true);
-
-            IncludeTransferredCommand = new RelayCommand(o =>
-            {
-                /*GalleryItemModel gim = o as GalleryItemModel;
-                if (o == null)
-                {
-                    MessageBox.Show("No Student Selected.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); return;
-                }
-                else MessageBox.Show(GetSelectedItemsCount() + "");*/
-            }, o => true);
         }
 
         protected async override void InitVars()
@@ -143,8 +43,7 @@ namespace Starehe.ViewModels
             SearchText = "";
             allStudents = await DataAccess.GetAllStudentsListAsync();
             CollViewSource.Source = allStudents;
-            ShowTransferred = true;
-            ShowCleared = true;
+            ShowInactive = false;
             PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName=="IsActive")
@@ -220,33 +119,20 @@ namespace Starehe.ViewModels
             }
         }
 
-        public bool ShowTransferred
+        public bool ShowInactive
         {
-            get { return showTransferred; }
+            get { return showInactive; }
             set
             {
-                if (showTransferred != value)
+                if (showInactive != value)
                 {
-                    showTransferred = value;
-                    NotifyPropertyChanged("ShowTransferred");
+                    showInactive = value;
+                    NotifyPropertyChanged("ShowInactive");
                     RenewFilter();
                 }
             }
         }
 
-        public bool ShowCleared
-        {
-            get { return showCleared; }
-            set
-            {
-                if (showCleared != value)
-                {
-                    showCleared = value;
-                    NotifyPropertyChanged("ShowCleared");
-                    RenewFilter();
-                }
-            }
-        }
         
         private void RenewFilter()
         {
@@ -269,8 +155,7 @@ namespace Starehe.ViewModels
             else
             {
                 if (DataAccess.SearchAllStudentProperties(src, SearchText))
-                    e.Accepted = (!src.IsCleared | showCleared) &&
-                        (!src.IsTransferred | showTransferred);
+                    e.Accepted = (src.IsActive | !showInactive);
                 else e.Accepted = false;
             }
         }
@@ -287,63 +172,7 @@ namespace Starehe.ViewModels
             private set;
         }
 
-        public ICommand SetNewClassCommand
-        {
-            get;
-            private set;
-        }
-        public ICommand SetActiveCommand
-        {
-            get;
-            private set;
-        }
-        public ICommand SetTransferredCommand
-        {
-            get;
-            private set;
-        }
-        public ICommand SetClearedCommand
-        {
-            get;
-            private set;
-        }
-        public ICommand ShowClearedCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand ShowTransferredOnlyCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand ShowAllCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand ShowActiveOnlyCommand
-        {
-            get;
-            private set;
-        }
-
-
-        public ICommand IncludeTransferredCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand IncludeClearedCommand
-        {
-            get;
-            private set;
-        }
-
+        
         public ICommand ExportToExcelCommand
         {
             get;

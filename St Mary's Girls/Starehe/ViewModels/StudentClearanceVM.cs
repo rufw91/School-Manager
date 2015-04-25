@@ -15,7 +15,7 @@ namespace Starehe.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class StudentClearanceVM: ViewModelBase
     {
-        StudentSelectModel selectedStudent;
+        StudentBaseModel selectedStudent;
         private byte[] sPhoto;
         public StudentClearanceVM()
         {
@@ -25,13 +25,14 @@ namespace Starehe.ViewModels
         protected override void InitVars()
         {
             Title = "CLEAR STUDENT";
-            selectedStudent = new StudentSelectModel();
+            selectedStudent = new StudentBaseModel();
+            selectedStudent.CheckErrors();
             selectedStudent.PropertyChanged += async (o, e) =>
             {
                 if (e.PropertyName == "StudentID")
                 {
                     selectedStudent.CheckErrors();
-                    if ((selectedStudent.StudentID > 0) && (!selectedStudent.HasErrors))
+                    if ( (!selectedStudent.HasErrors)&&(selectedStudent.StudentID > 0))
                         SPhoto = (await DataAccess.GetStudentAsync(selectedStudent.StudentID)).SPhoto;
                 }
             };
@@ -52,7 +53,7 @@ namespace Starehe.ViewModels
                     Reset();
             }, o => !selectedStudent.HasErrors);
         }
-        public StudentSelectModel SelectedStudent
+        public StudentBaseModel SelectedStudent
         {
             get { return selectedStudent; }
 

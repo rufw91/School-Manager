@@ -4,6 +4,7 @@ using OpenXmlPackaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace Starehe.ViewModels
         string firstNameColumn;
         string middleNameColumn;
         string lastNameColumn;
+        string genderColumn;
         string classColumn;
         string phoneNoColumn;
         string balanceBFColumn;
@@ -33,21 +35,32 @@ namespace Starehe.ViewModels
         string dateOfBirthColumn;
         string dateOfAdmissionColumn;
         string nameOfGuardianColumn;
+        string addressColumn;
+        string cityColumn;
+        string kcpeScoreColumn;
+        
         private int testProgressStudentID;
         private int testProgressFirstName;
         private int testProgressMiddleName;
         private int testProgressLastName;
+        private int testProgressGender;
         private int testProgressClass;
         private int testProgressPhoneNo;
         private int testProgressBalanceBF;
         private int testProgressBoarding;
-        private int testProgressDateOfAdmission;
         private int testProgressDateOfBirth;
+        private int testProgressDateOfAdmission;
+        private int testProgressNameOfGuardian;
+        private int testProgressAddress;
+        private int testProgressCity;
+        private int testProgressKCPEScore;
+        
         private bool hasFinished;
         private int progress;
         private string progressText;
         private string informationText;
-        private int testProgressNameOfGuardian;
+        private string bedNoColumn;
+        private string dormitoryColumn;
 
         public ImportWizardMainWindowVM()
         {
@@ -81,7 +94,7 @@ namespace Starehe.ViewModels
             AllColumns = new ObservableCollection<string>();
             Source = new ImportWizardPage1VM();
             AllClasses = new List<ClassModel>(await DataAccess.GetAllClassesAsync());
-
+            AllDorms = new List<DormModel>(await DataAccess.GetAllDormsAsync());
 
             Errors = new Dictionary<int, List<string>>();
             IsBusy = false;
@@ -144,7 +157,7 @@ namespace Starehe.ViewModels
                 for (int i = 0; i < data.Rows.Count; i++)
                 {
                     DataRow dtr = data.Rows[i];
-                    Progress = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
+                    Progress = Convert.ToInt32(((double)((i +1)* 100) / (double)data.Rows.Count));
                     if (Errors.ContainsKey(i))
                         continue;
 
@@ -158,7 +171,7 @@ namespace Starehe.ViewModels
                 ProgressText = "Saving new Classes.";
                 for (int i = 0; i < newClasses.Count; i++)
                 {
-                    Progress = Convert.ToInt32(((double)(i * 100) / (double)newClasses.Count));
+                    Progress = Convert.ToInt32(((double)((i+1) * 100) / (double)newClasses.Count));
                     ClassesSetupModel classesSetup = new ClassesSetupModel();
                     ObservableCollection<ClassModel> allClasses = await DataAccess.GetAllClassesAsync();
                     foreach (ClassModel c in allClasses)
@@ -175,12 +188,48 @@ namespace Starehe.ViewModels
                 AllClasses = new List<ClassModel>(DataAccess.GetAllClassesAsync().Result);
                 Progress = 100;
 
-                //Save Students                   
+                if (!string.IsNullOrWhiteSpace(dormitoryColumn))
+                {
+                    ProgressText = "Checking for New Dormitories.";
+                    List<string> newDorms = new List<string>();
+                    for (int i = 0; i < data.Rows.Count; i++)
+                    {
+                        DataRow dtr = data.Rows[i];
+                        Progress = Convert.ToInt32(((double)((i + 1) * 100) / (double)data.Rows.Count));
+                        if (Errors.ContainsKey(i))
+                            continue;
+
+                        string newDorm = dtr[dormitoryColumn].ToString();
+                        if ((!newDorms.Any(s => s.ToUpper() == newDorm.ToUpper())) && (!AllDorms.Any(v => v.NameOfDormitory.ToUpper() == newDorm.ToUpper())))
+                            newDorms.Add(newDorm.ToUpper());
+                    }
+
+                    ProgressText = "Saving new Dorms.";
+                    DormModel dm;
+                    for (int i = 0; i < newDorms.Count; i++)
+                    {
+                        Progress = Convert.ToInt32(((double)((i + 1) * 100) / (double)newClasses.Count));
+                        dm = new DormModel(0, newDorms[i]);
+                        await DataAccess.SaveNewDormitory(dm);
+                    }
+                }
+
+                Progress = 0;
+                ProgressText = "Refreshing Classes.";
+                AllClasses = new List<ClassModel>(DataAccess.GetAllClassesAsync().Result);
+                Progress = 100;
+
+                Progress = 0;
+                ProgressText = "Refreshing Dorms.";
+                AllDorms = new List<DormModel>(DataAccess.GetAllDormsAsync().Result);
+                Progress = 100;
+
+                  
                 StudentModel student = new StudentModel();
                 for (int i = 0; i < data.Rows.Count; i++)
                 {
                     DataRow dtr = data.Rows[i];
-                    Progress = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
+                    Progress = Convert.ToInt32(((double)((i+1) * 100) / (double)data.Rows.Count));
                     if (Errors.ContainsKey(i))
                         continue;
                     student.StudentID = int.Parse(dtr[studentIDColumn].ToString());
@@ -188,21 +237,38 @@ namespace Starehe.ViewModels
                     student.MiddleName = dtr[middleNameColumn].ToString();
                     student.LastName = dtr[lastNameColumn].ToString();
                     ProgressText = "Saving Student:  " + student.NameOfStudent;
-                    student.Address = "-";
-                    student.BedNo = "-";
+                    student.Gender = ConvertGender(dtr[genderColumn].ToString());
                     student.ClassID = AllClasses.First(c => c.NameOfClass.ToUpper() == dtr[classColumn].ToString().ToUpper()).ClassID;
-                    DateTime d;
-                    DateTime d1;
-                    ConvertDate(dtr[dateOfAdmissionColumn].ToString(), out d);
-                    ConvertDate(dtr[dateOfBirthColumn].ToString(), out d1);
-                    student.DateOfAdmission = d;
-                    student.DateOfBirth = d1;
+                    if (!string.IsNullOrWhiteSpace(dateOfBirthColumn))
+                    {
+
+                        DateTime d1;
+                        ConvertDate(dtr[dateOfBirthColumn].ToString(), out d1);
+                        student.DateOfBirth = d1;
+                    }
+                    if (!string.IsNullOrWhiteSpace(dateOfAdmissionColumn))
+                    {
+                        DateTime d;
+                        ConvertDate(dtr[dateOfAdmissionColumn].ToString(), out d);
+                        student.DateOfAdmission = d;
+                    }
+                    
                     student.Email = "test@example.com";
-                    student.GuardianPhoneNo = dtr[phoneNoColumn].ToString();
-                    student.NameOfGuardian = dtr[nameOfGuardianColumn].ToString();
+                    student.GuardianPhoneNo = string.IsNullOrWhiteSpace(phoneNoColumn) ? "-" : dtr[phoneNoColumn].ToString();
+                    student.NameOfGuardian = string.IsNullOrWhiteSpace(nameOfGuardianColumn) ? "-" : dtr[nameOfGuardianColumn].ToString();
                     student.PostalCode = "X";
-                    student.PrevBalance = decimal.Parse(dtr[balanceBFColumn].ToString());
-                    student.IsBoarder = ConvertBoadingString(dtr[boardingColumn].ToString());
+                    student.PrevBalance = string.IsNullOrWhiteSpace(balanceBFColumn) ? 0.0m : decimal.Parse(dtr[balanceBFColumn].ToString());
+                    student.IsBoarder = string.IsNullOrWhiteSpace(boardingColumn) ? false : ConvertBoadingString(dtr[boardingColumn].ToString());
+                    student.KCPEScore = string.IsNullOrWhiteSpace(kcpeScoreColumn) ? 0 : int.Parse(dtr[kcpeScoreColumn].ToString());
+
+                    student.Address = string.IsNullOrWhiteSpace(addressColumn) ? "-" : dtr[addressColumn].ToString();
+                    if (student.IsBoarder)
+                    {                        
+                        student.DormitoryID = (string.IsNullOrWhiteSpace(dormitoryColumn) || AllDorms.Any(c => c.NameOfDormitory.ToUpper() ==
+                            dtr[dormitoryColumn].ToString().ToUpper())) ? 0 : AllDorms.First(c => c.NameOfDormitory.ToUpper() ==
+                                dtr[dormitoryColumn].ToString().ToUpper()).DormitoryID;
+                        student.BedNo = (string.IsNullOrWhiteSpace(bedNoColumn) || student.DormitoryID == 0) ? "" : dtr[bedNoColumn].ToString();
+                    }
                     await DataAccess.SaveNewStudentAsync(student);
                 }
 
@@ -210,6 +276,17 @@ namespace Starehe.ViewModels
                 HasFinished = true;
                 InformationText = "Successfully completed Import Process.";
             });
+        }
+
+        private Gender ConvertGender(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value.Trim()))
+                return Gender.Male;
+            else if (value.Trim().ToUpper()[0] == 'M')
+                return Gender.Male;
+            else if (value.Trim().ToUpper()[0] == 'F')
+                return Gender.Female;
+            else return Gender.Male;
         }
 
         private bool ConvertBoadingString(string text)
@@ -318,15 +395,14 @@ namespace Starehe.ViewModels
 
             if (source is ImportWizardPage3VM)
             {
-                bool stringsAreNull = string.IsNullOrWhiteSpace(phoneNoColumn) ||
-                    string.IsNullOrWhiteSpace(firstNameColumn) || string.IsNullOrWhiteSpace(classColumn) ||
-                    string.IsNullOrWhiteSpace(lastNameColumn) || string.IsNullOrWhiteSpace(middleNameColumn) ||
-                    string.IsNullOrWhiteSpace(studentIDColumn);
-                bool prog100 = testProgressClass == 100 && testProgressFirstName == 100 && testProgressMiddleName == 100
-                    && testProgressLastName == 100 && testProgressPhoneNo == 100 && testProgressPhoneNo == 100;
+                bool stringsAreNull = string.IsNullOrWhiteSpace(studentIDColumn) ||
+                    string.IsNullOrWhiteSpace(firstNameColumn) || string.IsNullOrWhiteSpace(middleNameColumn) ||
+                    string.IsNullOrWhiteSpace(lastNameColumn) || string.IsNullOrWhiteSpace(genderColumn) ||
+                    string.IsNullOrWhiteSpace(classColumn) || string.IsNullOrWhiteSpace(phoneNoColumn);
 
-                //return !stringsAreNull && prog100;
-                return true;
+                bool prog100 = testProgressStudentID == 100 && testProgressFirstName == 100 && testProgressMiddleName == 100
+                    && testProgressLastName == 100 && testProgressGender == 100 && testProgressClass == 100 && testProgressPhoneNo == 100;
+                return !stringsAreNull && prog100;
             }
             return false;
         }
@@ -488,6 +564,20 @@ namespace Starehe.ViewModels
             }
         }
 
+        public string GenderColumn
+        {
+            get { return genderColumn; }
+            set
+            {
+                if (value != this.genderColumn)
+                {
+                    this.genderColumn = value;
+                    NotifyPropertyChanged("GenderColumn");
+                    TestAll();
+                }
+            }
+        }
+
         public string ClassColumn
         {
             get { return classColumn; }
@@ -586,6 +676,48 @@ namespace Starehe.ViewModels
             }
         }
 
+        public string AddressColumn
+        {
+            get { return addressColumn; }
+            set
+            {
+                if (value != this.addressColumn)
+                {
+                    this.addressColumn = value;
+                    NotifyPropertyChanged("AddressColumn");
+                    TestAll();
+                }
+            }
+        }
+
+        public string CityColumn
+        {
+            get { return cityColumn; }
+            set
+            {
+                if (value != this.cityColumn)
+                {
+                    this.cityColumn = value;
+                    NotifyPropertyChanged("CityColumn");
+                    TestAll();
+                }
+            }
+        }
+
+        public string KCPEScoreColumn
+        {
+            get { return kcpeScoreColumn; }
+            set
+            {
+                if (value != this.kcpeScoreColumn)
+                {
+                    this.kcpeScoreColumn = value;
+                    NotifyPropertyChanged("KCPEScoreColumn");
+                    TestAll();
+                }
+            }
+        }
+
         private void AddError(int i, string error)
         {
             if (Errors.ContainsKey(i))
@@ -597,280 +729,134 @@ namespace Starehe.ViewModels
         private async void TestAll()
         {
             Errors.Clear();
-            await Task.WhenAll<bool>(TestStudentID(), TestFirstName(), TestMiddleName(), TestLastName(),
-                TestClass(), TestPhoneNo(), TestBalanceBF(), TestNameOfGuardian(), TestDateOfBirth(), TestDateOfAdmission(), TestBoarding());
+            await Task.WhenAll<bool>(
+                TestColumnAsync(studentIDColumn, "Student ID", typeof(int), false, false, OnProgressChanged, "TestProgressStudentID"),
+                TestColumnAsync(firstNameColumn, "First Name", typeof(string), false, false,OnProgressChanged, "TestProgressFirstName"),
+                TestColumnAsync(middleNameColumn, "Middle Name", typeof(string), false, false,OnProgressChanged, "TestProgressMiddleName"),
+                TestColumnAsync(lastNameColumn, "Last Name", typeof(string), false, false, OnProgressChanged,"TestProgressLastName"),
+                TestColumnAsync(genderColumn, "Gender", typeof(string), false, false, OnProgressChanged, "TestProgressGender"),
+                TestColumnAsync(classColumn, "Class", typeof(string), false, false, OnProgressChanged,"TestProgressClass"),
+                TestColumnAsync(phoneNoColumn, "Phone No", typeof(string), false, false, OnProgressChanged,"TestProgressPhoneNo"),
+                TestColumnAsync(balanceBFColumn, "Previous Fees Balance", typeof(decimal), false, true,OnProgressChanged, "TestProgressBalanceBF"),
+                TestColumnAsync(nameOfGuardianColumn, "Name of Guardian", typeof(string), false, false, OnProgressChanged,"TestProgressNameOfGuardian"),
+                TestColumnAsync(dateOfBirthColumn, "Date Of Birth", typeof(DateTime), false, false, OnProgressChanged,"TestProgressDateOfBirth"),
+                TestColumnAsync(dateOfAdmissionColumn, "Date Of Admission", typeof(DateTime), false, false, OnProgressChanged,"TestProgressDateOfAdmission"),
+                TestColumnAsync(boardingColumn, "Boarding", typeof(string), true, false, OnProgressChanged, "TestProgressBoarding"),
+                TestColumnAsync(kcpeScoreColumn, "KCPE Score", typeof(int), true, false, OnProgressChanged, "TestProgressKCPEScore"),                
+                TestColumnAsync(addressColumn, "Address", typeof(string), true, false, OnProgressChanged, "TestProgressAddress"),
+                TestColumnAsync(cityColumn, "City", typeof(string), true, false, OnProgressChanged, "TestProgressCity"));
         }
 
-        private async Task<bool> TestStudentID()
+        private void OnProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            TestProgressStudentID = 0;
-            if (string.IsNullOrWhiteSpace(studentIDColumn))
+            switch(e.UserState.ToString())
             {
-                TestProgressStudentID = 100;
+                case "TestProgressStudentID": TestProgressStudentID = e.ProgressPercentage; break;
+                case "TestProgressFirstName": TestProgressFirstName = e.ProgressPercentage; break;
+                case "TestProgressMiddleName": TestProgressMiddleName = e.ProgressPercentage; break;
+                case "TestProgressLastName": TestProgressLastName = e.ProgressPercentage; break;
+                case "TestProgressClass": TestProgressClass = e.ProgressPercentage; break;
+                case "TestProgressPhoneNo": TestProgressPhoneNo = e.ProgressPercentage; break;
+                case "TestProgressBalanceBF": TestProgressBalanceBF = e.ProgressPercentage; break;
+                case "TestProgressNameOfGuardian": TestProgressNameOfGuardian = e.ProgressPercentage; break;
+                case "TestProgressDateOfBirth": TestProgressDateOfBirth = e.ProgressPercentage; break;
+                case "TestProgressDateOfAdmission": TestProgressDateOfAdmission = e.ProgressPercentage; break;
+                case "TestProgressBoarding": TestProgressBoarding = e.ProgressPercentage; break;
+                case "TestProgressKCPEScore": TestProgressKCPEScore = e.ProgressPercentage; break;
+                case "TestProgressGender": TestProgressGender = e.ProgressPercentage; break;
+                case "TestProgressAddress": TestProgressAddress = e.ProgressPercentage; break;
+                case "TestProgressCity": TestProgressCity = e.ProgressPercentage; break;
+            }
+        }
+
+        private async Task<bool> TestColumnAsync(string columnName, string friendlyName, Type dataType, bool allowEmptyStrings, bool allowZeroAndNegativeValues,
+            EventHandler<ProgressChangedEventArgs> progressChangedCallBack, string nameOfProperty)
+        {
+            if (string.IsNullOrWhiteSpace(columnName))
+            {
+                TestProgressAddress = 100;
                 return false;
             }
+            return await Task.Run<bool>(() => TestColumn(columnName, friendlyName, dataType, allowEmptyStrings, allowZeroAndNegativeValues, 
+                progressChangedCallBack, nameOfProperty));
+        }
 
-            return await Task.Run<bool>(() =>
-            {
+        private bool TestColumn(string columnName, string friendlyName, Type dataType, bool allowEmptyStrings, bool allowZeroAndNegativeValues,
+            EventHandler<ProgressChangedEventArgs> progressChangedCallBack, string nameOfProperty)
+        {
+            int progressValue = 0;
                 bool succ = true;
                 bool isOk;
                 for (int i = 0; i < data.Rows.Count; i++)
                 {
-                    TestProgressStudentID = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-                    int x;
-                    isOk = int.TryParse(data.Rows[i][studentIDColumn] == null ? null : data.Rows[i][studentIDColumn].ToString(), out x)
-                        && x > 0;
+
+                    progressValue = Convert.ToInt32(((double)((i + 1) * 100) / (double)data.Rows.Count));
+                    progressChangedCallBack.Invoke(this, new ProgressChangedEventArgs(progressValue, nameOfProperty));
+                    isOk = !string.IsNullOrWhiteSpace(data.Rows[i][columnName].ToString());
+                    if (allowEmptyStrings)
+                        isOk = true;
+                    if (dataType == typeof(int))
+                    {
+                        int dt = 0;
+                        isOk = int.TryParse(data.Rows[i][columnName].ToString(), out dt) && (allowZeroAndNegativeValues ? true : dt > 0);
+                    }
+                    else if (dataType == typeof(DateTime))
+                    {
+                        DateTime dt;
+                        if (nameOfProperty == "TestProgressDateOfBirth")
+                        isOk = ConvertDate(data.Rows[i][dateOfBirthColumn].ToString(), out dt);
+                        else
+                            isOk = ConvertDate(data.Rows[i][dateOfAdmissionColumn].ToString(), out dt);
+                    }
+                    else if (dataType == typeof(decimal))
+                    {
+                        decimal dt;
+                        isOk = decimal.TryParse(data.Rows[i][columnName].ToString(), out dt);
+                    }
                     succ = succ && isOk;
                     if (!isOk)
-                        AddError(i, "Student ID value [" + data.Rows[i][studentIDColumn] + "] is invalid.");
+                        AddError(i, "The value [" + data.Rows[i][columnName] + "] at " + friendlyName + " for the Student [" + data.Rows[i][studentIDColumn] + "] is invalid.");
                 }
                 return succ;
-            });
         }
 
-        private async Task<bool> TestFirstName()
+        public int TestProgressKCPEScore
         {
-            TestProgressFirstName = 0;
-            if (string.IsNullOrWhiteSpace(firstNameColumn))
+            get { return testProgressKCPEScore; }
+            set
             {
-                TestProgressFirstName = 100;
-                return false;
-            }
-            return await Task.Run<bool>(() =>
-            {
-                bool succ = true;
-                bool isOk;
-                for (int i = 0; i < data.Rows.Count; i++)
+                if (value != this.testProgressKCPEScore)
                 {
-                    TestProgressFirstName = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-                    isOk = !string.IsNullOrWhiteSpace(data.Rows[i][firstNameColumn] == null ? null : data.Rows[i][firstNameColumn].ToString());
-                    succ = succ && isOk;
-                    if (!isOk)
-                        AddError(i, "First Name value [" + data.Rows[i][firstNameColumn] + "] is invalid.");
+                    this.testProgressKCPEScore = value;
+                    NotifyPropertyChanged("TestProgressKCPEScore");
                 }
-                return succ;
-            });
+            }
         }
-
-        private async Task<bool> TestMiddleName()
+        
+        public int TestProgressCity
         {
-            TestProgressMiddleName = 0;
-            if (string.IsNullOrWhiteSpace(middleNameColumn))
+            get { return testProgressCity; }
+            set
             {
-                TestProgressMiddleName = 100;
-                return false;
-            }
-            return await Task.Run<bool>(() =>
-            {
-                bool succ = true;
-                bool isOk;
-                for (int i = 0; i < data.Rows.Count; i++)
+                if (value != this.testProgressCity)
                 {
-                    TestProgressMiddleName = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-                    isOk = !string.IsNullOrWhiteSpace(data.Rows[i][middleNameColumn] == null ? null : data.Rows[i][middleNameColumn].ToString());
-                    succ = succ && isOk;
-                    if (!isOk)
-                        AddError(i, "Middle name value [" + data.Rows[i][middleNameColumn] + "] is invalid.");
+                    this.testProgressCity = value;
+                    NotifyPropertyChanged("TestProgressCity");
                 }
-                return succ;
-            });
+            }
         }
-
-        private async Task<bool> TestLastName()
+        
+        public int TestProgressAddress
         {
-            TestProgressLastName = 0;
-            if (string.IsNullOrWhiteSpace(lastNameColumn))
+            get { return testProgressAddress; }
+            set
             {
-                TestProgressLastName = 100;
-                return false;
-            }
-            return await Task.Run<bool>(() =>
-            {
-                bool succ = true;
-                bool isOk;
-                for (int i = 0; i < data.Rows.Count; i++)
+                if (value != this.testProgressAddress)
                 {
-                    TestProgressLastName = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-                    isOk = !string.IsNullOrWhiteSpace(data.Rows[i][lastNameColumn] == null ? null : data.Rows[i][lastNameColumn].ToString());
-                    succ = succ && isOk;
-                    if (!isOk)
-                        AddError(i, "Last Name value [" + data.Rows[i][lastNameColumn] + "] is invalid.");
+                    this.testProgressAddress = value;
+                    NotifyPropertyChanged("TestProgressAddress");
                 }
-                return succ;
-            });
-        }
-
-        private async Task<bool> TestClass()
-        {
-            TestProgressClass = 0;
-            if (string.IsNullOrWhiteSpace(classColumn))
-            {
-                TestProgressClass = 100;
-                return false;
             }
-            return await Task.Run<bool>(() =>
-            {
-                bool succ = true;
-                bool isOk;
-                for (int i = 0; i < data.Rows.Count; i++)
-                {
-                    TestProgressClass = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-                    isOk = !string.IsNullOrWhiteSpace(data.Rows[i][classColumn] == null ? null : data.Rows[i][classColumn].ToString());
-                    succ = succ && isOk;
-                    if (!isOk)
-                        AddError(i, "Class value [" + data.Rows[i][classColumn] + "] is invalid.");
-                }
-                return succ;
-            });
-        }
-
-        private async Task<bool> TestPhoneNo()
-        {
-            TestProgressPhoneNo = 0;
-            if (string.IsNullOrWhiteSpace(phoneNoColumn))
-            {
-                TestProgressPhoneNo = 100;
-                return false;
-            }
-            return await Task.Run<bool>(() =>
-            {
-                bool succ = true;
-                bool isOk;
-                for (int i = 0; i < data.Rows.Count; i++)
-                {
-                    TestProgressPhoneNo = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-                    isOk = !string.IsNullOrWhiteSpace(data.Rows[i][phoneNoColumn] == null ? null : data.Rows[i][phoneNoColumn].ToString());
-                    succ = succ && isOk;
-                    if (!isOk)
-                        AddError(i, "Description value [" + data.Rows[i][phoneNoColumn] + "] is invalid.");
-                }
-                return succ;
-            });
-        }
-
-        private async Task<bool> TestBalanceBF()
-        {
-            TestProgressBalanceBF = 0;
-            if (string.IsNullOrWhiteSpace(balanceBFColumn))
-            {
-                TestProgressBalanceBF = 100;
-                return false;
-            }
-            return await Task.Run<bool>(() =>
-            {
-                bool succ = true;
-                bool isOk;
-                for (int i = 0; i < data.Rows.Count; i++)
-                {
-                    TestProgressBalanceBF = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-                    Decimal test;
-                    isOk = decimal.TryParse(data.Rows[i][balanceBFColumn].ToString(), out test);
-                    succ = succ && isOk;
-                    if (!isOk)
-                        AddError(i, "Description value [" + data.Rows[i][balanceBFColumn] + "] is invalid.");
-                }
-                return succ;
-            });
-        }
-
-        private async Task<bool> TestNameOfGuardian()
-        {
-            TestProgressNameOfGuardian = 0;
-            if (string.IsNullOrWhiteSpace(nameOfGuardianColumn))
-            {
-                TestProgressNameOfGuardian = 100;
-                return false;
-            }
-            return await Task.Run<bool>(() =>
-            {
-                bool succ = true;
-                bool isOk;
-                for (int i = 0; i < data.Rows.Count; i++)
-                {
-                    TestProgressNameOfGuardian = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-
-                    isOk = !string.IsNullOrWhiteSpace(data.Rows[i][nameOfGuardianColumn].ToString());
-                    succ = succ && isOk;
-                    if (!isOk)
-                        AddError(i, "Description value [" + data.Rows[i][nameOfGuardianColumn] + "] is invalid.");
-                }
-                return succ;
-            });
-        }
-
-        private async Task<bool> TestBoarding()
-        {
-            TestProgressBoarding = 0;
-            if (string.IsNullOrWhiteSpace(boardingColumn))
-            {
-                TestProgressBoarding = 100;
-                return false;
-            }
-            return await Task.Run<bool>(() =>
-            {
-                bool succ = true;
-                bool isOk;
-                for (int i = 0; i < data.Rows.Count; i++)
-                {
-                    TestProgressBoarding = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-
-                    isOk = !string.IsNullOrWhiteSpace(data.Rows[i][boardingColumn].ToString());
-                    succ = succ && isOk;
-                    if (!isOk)
-                        AddError(i, "Description value [" + data.Rows[i][boardingColumn] + "] is invalid.");
-                }
-                return succ;
-            });
-        }
-
-        private async Task<bool> TestDateOfBirth()
-        {
-            TestProgressDateOfBirth = 0;
-            if (string.IsNullOrWhiteSpace(dateOfBirthColumn))
-            {
-                TestProgressDateOfBirth = 100;
-                return false;
-            }
-            return await Task.Run<bool>(() =>
-            {
-                bool succ = true;
-                bool isOk;
-                for (int i = 0; i < data.Rows.Count; i++)
-                {
-                    TestProgressDateOfBirth = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-                    DateTime test;
-                    isOk = ConvertDate(data.Rows[i][dateOfBirthColumn].ToString(), out test);
-                    succ = succ && isOk;
-                    if (!isOk)
-                        AddError(i, "Description value [" + data.Rows[i][dateOfBirthColumn] + "] is invalid.");
-                }
-                return succ;
-            });
-        }
-
-        private async Task<bool> TestDateOfAdmission()
-        {
-            TestProgressDateOfAdmission = 0;
-            if (string.IsNullOrWhiteSpace(dateOfAdmissionColumn))
-            {
-                TestProgressDateOfAdmission = 100;
-                return false;
-            }
-            return await Task.Run<bool>(() =>
-            {
-                bool succ = true;
-                bool isOk;
-                for (int i = 0; i < data.Rows.Count; i++)
-                {
-                    TestProgressDateOfAdmission = Convert.ToInt32(((double)(i * 100) / (double)data.Rows.Count));
-                    DateTime test;
-                    isOk = ConvertDate(data.Rows[i][dateOfAdmissionColumn].ToString(), out test);
-                    succ = succ && isOk;
-                    if (!isOk)
-                        AddError(i, "Description value [" + data.Rows[i][dateOfAdmissionColumn] + "] is invalid.");
-                }
-                return succ;
-            });
         }
 
         public int TestProgressNameOfGuardian
@@ -947,6 +933,19 @@ namespace Starehe.ViewModels
                 {
                     this.testProgressBalanceBF = value;
                     NotifyPropertyChanged("TestProgressBalanceBF");
+                }
+            }
+        }
+
+        public int TestProgressGender
+        {
+            get { return testProgressGender; }
+            set
+            {
+                if (value != this.testProgressGender)
+                {
+                    this.testProgressGender = value;
+                    NotifyPropertyChanged("TestProgressGender");
                 }
             }
         }
@@ -1042,15 +1041,14 @@ namespace Starehe.ViewModels
 
         public bool ConvertDate(string date,out DateTime returnDate)
         {
-            DateTime dt = DateTime.Now;
+            DateTime dt;
+            int i;
             if (DateTime.TryParse(date, new CultureInfo("en-GB"), DateTimeStyles.None, out dt))
             {
                 returnDate = dt;
                 return true;
             }
-
-            int i;
-            if (int.TryParse(date, out i))
+            else if (int.TryParse(date, out i))
             {
                 if (i>3000)
                 {
@@ -1064,8 +1062,11 @@ namespace Starehe.ViewModels
                     return true;                     
                 }
             }
+            else
             returnDate = DateTime.Now;
             return true;
         }
+
+        public List<DormModel> AllDorms { get; set; }
     }
 }
