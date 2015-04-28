@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.SubjectsSetup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="984"
+             Background="White">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Subject Setup" 
+			VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="89,115,0,0" TextWrapping="Wrap" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" ItemsSource="{Binding AllCombinedClasses}"
+        	DisplayMemberPath="Description"
+        	SelectedItem="{Binding SelectedCombinedClass, Mode=TwoWay}" Margin="126,115,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,60,0,0" Style="{DynamicResource Title0}" Text="Add New Subject" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,171,0,0" TextWrapping="Wrap" Text="Enter the subject name and maximum score" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="84,210,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="126,210,0,0"
+                 DataContext="{Binding NewSubject}"
+                 Text="{Binding NameOfSubject, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBlock HorizontalAlignment="Left" Margin="31,261,0,0" TextWrapping="Wrap" Text="Maximum Score" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="126,261,0,0"
+                 DataContext="{Binding NewSubject}"
+                  Text="{Binding MaximumScore, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock HorizontalAlignment="Left" Margin="88,310,0,0" TextWrapping="Wrap" Text="Code" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="126,310,0,0"
+                 DataContext="{Binding NewSubject}"
+                  Text="{Binding Code, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock HorizontalAlignment="Left" Margin="88,360,0,0" Text="Tutor" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="126,360,0,0"
+                 DataContext="{Binding NewSubject}"
+                  Text="{Binding Tutor, UpdateSourceTrigger=PropertyChanged}" />
+
+        <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="126,410,0,0" Content="Is Optional"
+                 DataContext="{Binding NewSubject}"
+                  IsChecked="{Binding IsOptional, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Button Content="_Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" 
+        	Command="{Binding AddNewSubjectCommand}" Margin="251,430,0,0"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="350,60,0,0" Style="{DynamicResource Title0}" Text="Registred Subjects" VerticalAlignment="Top"/>
+        <ListBox Margin="350,89,30,30" ItemsSource="{Binding SubjectsSetup.Entries, UpdateSourceTrigger=PropertyChanged}"
+                 DisplayMemberPath="NameOfSubject"/>
+
+    </Grid>
+</UserControl>

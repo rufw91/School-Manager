@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.OnlineResources"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900"
+	Background="White">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Online Resources" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="50,80,0,0" Style="{DynamicResource Title0}" Text="Recommended" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="50,115,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding OpenLink1Command}" >Microsoft Tutorials :  Tutorials (Report Builder 3.0)</Hyperlink>
+        </TextBlock>
+        
+        <TextBlock HorizontalAlignment="Left" Margin="50,140,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding OpenLink2Command}">MMSQL :  Report Builder 3.0 Tutorial</Hyperlink>
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,185,0,0" Style="{DynamicResource Title0}" Text="Further Reading:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="50,220,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding OpenLink3Command}" >Google Results :  Report Builder 3.0 Tutorial</Hyperlink>
+        </TextBlock>
+    </Grid>
+</UserControl>

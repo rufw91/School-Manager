@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.RemoveBill"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+               mc:Ignorable="d"
+      d:DesignHeight="600" d:DesignWidth="900"
+	Background="White">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Remove Bill" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="150,32,0,0" Text="(WARNING: THis action cannot be undone.)" FontWeight="Bold" VerticalAlignment="Top" Foreground="Red"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,80,0,0" Style="{DynamicResource Title0}" Text="Student" VerticalAlignment="Top"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="30,120,0,0" Text="Student ID" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="92,120,0,0" VerticalAlignment="Top" Width="200"
+                 Text="{Binding SelectedStudent.StudentID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=100,
+            ValidatesOnNotifyDataErrors=True}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,165,0,0" Text="Name" VerticalAlignment="Top"/>
+
+        <TextBox HorizontalAlignment="Left" Margin="92,165,0,0" VerticalAlignment="Top" Width="200"
+                 Text="{Binding SelectedStudent.NameOfStudent, Mode=OneWay}" IsEnabled="False" Background="WhiteSmoke" IsReadOnlyCaretVisible="True"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="350,70,0,0" Style="{DynamicResource Title0}" Text="Bill(Current Term)" VerticalAlignment="Top"/>
+        <ListBox Margin="350,109,10,50" ItemsSource="{Binding CurrentBill.SaleItems}"  ItemTemplate="{StaticResource FeesStructureEntryModel}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="350,0,0,20" Text="TOTAL:" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="405,0,0,20" Text="{Binding BillTotal, StringFormat={}{0:N2}}" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
+        <Button Content="Delete" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100" Foreground="Red" 
+                Command="{Binding DeleteCommand}"/>
+
+    </Grid>
+</UserControl>

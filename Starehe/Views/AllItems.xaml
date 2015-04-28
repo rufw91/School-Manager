@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.AllItems"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Helper.Controls;assembly=Helper"
+             xmlns:views="clr-namespace:UmanyiSMS.Views"
+             mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="984"
+             Background="White">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="All Items" 
+                   VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,40,20,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding RefreshCommand}">Refresh</Hyperlink>
+        </TextBlock>
+        <ListBox Margin="20,80,20,20" 
+                 ItemTemplate="{StaticResource GalleryItemTemplate}"
+                 ItemContainerStyle="{StaticResource AllItemsListBoxItem}"
+                 ItemsSource="{Binding Entries, IsAsync=True, Mode=OneWay}"
+                 SelectedItem="{Binding DataContext.SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type views:AllItems}}}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:VirtualizingWrapPanel/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+        <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+        </Border>
+    </Grid>
+</UserControl>

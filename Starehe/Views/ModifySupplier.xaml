@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.ModifySupplier"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             d:DesignHeight="722" d:DesignWidth="1024"
+             mc:Ignorable="d"
+	 Background="White">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource Title7BackgroundColor}"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- Back button and page title -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.ColumnSpan="2" Background="{DynamicResource TitleBackgroundBrush}"/>
+            <Button x:Name="backButton" Margin="39,40,21,0" 
+                        Style="{StaticResource BackButtonX}"
+                        VerticalAlignment="Top"
+                        AutomationProperties.Name="Back"
+                        AutomationProperties.AutomationId="BackButton"
+                        AutomationProperties.ItemType="Navigation Button"/>
+            <TextBlock x:Name="pageTitle" Text="Modify Supplier" Style="{StaticResource HeaderTextStyle}" Grid.Column="1" HorizontalAlignment="Left"
+                        IsHitTestVisible="false" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130*"/>
+                <ColumnDefinition Width="120*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Left" Margin="30,20,0,0" Text="Modify Supplier" VerticalAlignment="Top"
+                   Style="{DynamicResource SmallTitle}"/>
+
+            <TextBlock  HorizontalAlignment="Left" Margin="30,80,0,0" Text="Supplier ID" VerticalAlignment="Top" />
+            <TextBox  Margin="125,80,40,0" VerticalAlignment="Top" MaxLength="10"
+                      Text="{Binding NewSupplier.SupplierID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                      Delay=100, ValidatesOnNotifyDataErrors=True}" />
+
+            <TextBlock  HorizontalAlignment="Left" Margin="30,130,0,0" Text="Name" VerticalAlignment="Top" />
+            <TextBox  Margin="125,130,40,0" VerticalAlignment="Top"  MaxLength="50"
+                  Text="{Binding NewSupplier.NameOfSupplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock HorizontalAlignment="Left" Margin="30,180,0,0" Text="Phone No." VerticalAlignment="Top" Width="79" TextWrapping="WrapWithOverflow" />
+            <TextBox  Margin="125,180,40,0" VerticalAlignment="Top" MaxLength="50"
+                   Text="{Binding NewSupplier.PhoneNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock HorizontalAlignment="Left" Margin="30,230,0,0" Text="Alt Phone No." VerticalAlignment="Top" Width="81" TextWrapping="WrapWithOverflow" />
+            <TextBox Margin="125,230,40,0" VerticalAlignment="Top"  MaxLength="50"
+                       Text="{Binding NewSupplier.AltPhoneNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock HorizontalAlignment="Left" Margin="30,280,0,0"  Text="Email" VerticalAlignment="Top"/>
+            <TextBox Margin="125,280,40,0"  VerticalAlignment="Top" MaxLength="50"
+                 Text="{Binding NewSupplier.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock  HorizontalAlignment="Left" Margin="30,330,0,0" Text="Address" VerticalAlignment="Top" />
+            <TextBox  Margin="125,330,40,0" VerticalAlignment="Top"  MaxLength="50"
+                   Text="{Binding NewSupplier.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock  HorizontalAlignment="Left" Margin="30,380,0,0" Text="Postal Code" VerticalAlignment="Top" />
+            <TextBox  Margin="125,380,40,0" VerticalAlignment="Top" MaxLength="50" 
+        	 Text="{Binding NewSupplier.PostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock  HorizontalAlignment="Left" Margin="30,430,0,0" Text="City" VerticalAlignment="Top" />
+            <TextBox  Margin="125,430,40,0" VerticalAlignment="Top" MaxLength="50" 
+        	 Text="{Binding NewSupplier.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0"  Text="PIN No." VerticalAlignment="Top" Grid.Column="1"/>
+            <TextBox Margin="100,80,40,0" VerticalAlignment="Top" Grid.Column="1" MaxLength="50"
+                 Text="{Binding NewSupplier.PINNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Content="Save" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="90"
+                Command="{Binding UpdateCommand}"/>
+
+        </Grid>
+    </Grid>
+</UserControl>
