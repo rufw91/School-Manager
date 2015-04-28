@@ -1,8 +1,0 @@
-﻿<helper:CustomWindow Style="{StaticResource {x:Type helper:CustomWindow}}" 
-                     x:Class="Starehe.Updates.UpdatesWindow"
-                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:helper="clr-namespace:Helper.Controls;assembly=Helper"
-        Title="Updates Window" Height="600" Width="800">
-    <ContentControl Content="{Binding Source}"/>
-</helper:CustomWindow>

@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C3938395-7C97-4474-866C-6E486819AF93}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Helper</RootNamespace>
+    <AssemblyName>UmanyiSMS.Helper</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>MonsoonDigital.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <CodeAnalysisRuleSet>..\..\..\..\MyRuleSet.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevDefined.OAuth">
+      <HintPath>..\packages\DevDefined.OAuth.0.2\lib\DevDefined.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Core">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Data">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.DataService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.DataService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Diagnostics">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Exception">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Exception.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.GlobalTaxService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.GlobalTaxService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.LinqExtender">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.LinqExtender.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.PlatformService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.PlatformService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.QueryFilter">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.QueryFilter.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.ReportService">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.ReportService.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Retry">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Retry.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Security">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Utility">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.2.0\lib\Intuit.Ipp.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ComparisonCollection.cs" />
+    <Compile Include="Controls\HomePageButton.cs" />
+    <Compile Include="Converters\ImageConverters.cs" />
+    <Compile Include="Converters\ItemListToItemFindListConverter.cs" />
+    <Compile Include="Credits.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Helpers\DocumentHelper.AggregateResult.cs" />
+    <Compile Include="Helpers\DocumentHelper.cs" />
+    <Compile Include="Helpers\DocumentHelper.Receipt.cs" />
+    <Compile Include="Helpers\DocumentHelper.Report.cs" />
+    <Compile Include="Helpers\DocumentHelper.Statement.cs" />
+    <Compile Include="Helpers\DocumentHelper.Transcript.cs" />
+    <Compile Include="Helpers\DocumentHelper.Transcript2.cs" />
+    <Compile Include="Helpers\DocumentHelper.Voucher.cs" />
+    <Compile Include="Helpers\QBSyncHelper.cs" />
+    <Compile Include="Helpers\StudentTranscriptSubjectModel.cs" />
+    <Compile Include="Models\AcademicReportModel.cs" />
+    <Compile Include="Models\AggregateResultEntryModel.cs" />
+    <Compile Include="Models\AggregateResultModel.cs" />
+    <Compile Include="Models\BookIssueModel.cs" />
+    <Compile Include="Models\BookModel.cs" />
+    <Compile Include="Models\BookReturnModel.cs" />
+    <Compile Include="Models\BookSelectModel.cs" />
+    <Compile Include="Models\ClassFeesDefaultModel.cs" />
+    <Compile Include="Models\ClassStudentsExamResultModel.cs" />
+    <Compile Include="Models\ClassStudentListModel.cs" />
+    <Compile Include="Models\ClassTranscriptModel.cs" />
+    <Compile Include="Models\ClassTranscriptsModel.cs" />
+    <Compile Include="Models\CombinedClassModel.cs" />
+    <Compile Include="Models\ComparisonModel.cs" />
+    <Compile Include="Models\DisciplineModel.cs" />
+    <Compile Include="Models\ExamResultStudentSubjectEntryModel.cs" />
+    <Compile Include="Models\ExamWeightModel.cs" />
+    <Compile Include="Models\FeePaymentReceipt2Model.cs" />
+    <Compile Include="Models\FeesPaymentReceiptModel.cs" />
+    <Compile Include="Models\IssueModel.cs" />
+    <Compile Include="Models\ItemIssueEntryModel.cs" />
+    <Compile Include="Models\ItemIssueModel.cs" />
+    <Compile Include="Models\ModifyBookModel.cs" />
+    <Compile Include="Models\PaymentVoucherEntryModel.cs" />
+    <Compile Include="Models\PaymentVoucherModel.cs" />
+    <Compile Include="Models\ReportModel.cs" />
+    <Compile Include="Models\StudentClearancerModel.cs" />
+    <Compile Include="Models\StudentFeesDefaultModel.cs" />
+    <Compile Include="Models\StudentListModel.cs" />
+    <Compile Include="Models\ClassSetupModel.cs" />
+    <Compile Include="Models\DormitoryMemberModel.cs" />
+    <Compile Include="Models\EmployeePaymentModel.cs" />
+    <Compile Include="Models\EventModel.cs" />
+    <Compile Include="Models\ExamResultBaseModel.cs" />
+    <Compile Include="Models\ExamResultClassDisplayModel.cs" />
+    <Compile Include="Models\ExamResultClassModel.cs" />
+    <Compile Include="Models\ExamResultStudentDisplayModel.cs" />
+    <Compile Include="Models\ExamResultStudentModel.cs" />
+    <Compile Include="Models\ExamResultSubjectModel.cs" />
+    <Compile Include="Models\FeesStatementModel.cs" />
+    <Compile Include="Models\FeesStructureModel.cs" />
+    <Compile Include="Models\GalleryItemModel.cs" />
+    <Compile Include="Models\ItemBaseModel.cs" />
+    <Compile Include="Models\ItemCategoryModel.cs" />
+    <Compile Include="Models\ItemFindModel.cs" />
+    <Compile Include="Models\ItemListModel.cs" />
+    <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\ItemPurchaseModel.cs" />
+    <Compile Include="Models\ItemSaleModel.cs" />
+    <Compile Include="Models\ItemStockTakingModel.cs" />
+    <Compile Include="Models\ItemStockTakingResultsModel.cs" />
+    <Compile Include="Models\LeavingCertificateModel.cs" />
+    <Compile Include="Models\ModifyItemModel.cs" />
+    <Compile Include="Models\ModifyStaffModel.cs" />
+    <Compile Include="Models\ModifyStudentModel.cs" />
+    <Compile Include="Models\ModifySupplierModel.cs" />
+    <Compile Include="Models\PurchaseModel.cs" />
+    <Compile Include="Models\SaleModel.cs" />
+    <Compile Include="Models\StartUp.cs" />
+    <Compile Include="Models\StockTakingBaseModel.cs" />
+    <Compile Include="Models\StockTakingModel.cs" />
+    <Compile Include="Models\StockTakingResultsModel.cs" />
+    <Compile Include="Models\StudentBaseModel.cs" />
+    <Compile Include="Models\StudentSelectModel.cs" />
+    <Compile Include="Models\StudentSubjectSelectionEntryModel.cs" />
+    <Compile Include="Models\StudentSubjectSelectionModel.cs" />
+    <Compile Include="Models\StudentTranscriptModel.cs" />
+    <Compile Include="Models\StudentExamResultModel.cs" />
+    <Compile Include="Models\StudentExamResultEntryModel.cs" />
+    <Compile Include="Models\StudentTransferModel.cs" />
+    <Compile Include="Models\SubjectBaseModel.cs" />
+    <Compile Include="Models\SubjectSetupModel.cs" />
+    <Compile Include="Models\SupplierBaseModel.cs" />
+    <Compile Include="Models\SupplierModel.cs" />
+    <Compile Include="Models\SupplierPaymentModel.cs" />
+    <Compile Include="Models\TimetableClassEntryModel.cs" />
+    <Compile Include="Models\TransactionModel.cs" />
+    <Compile Include="Models\TimetableClassModel.cs" />
+    <Compile Include="Models\TranscriptItem.cs" />
+    <Compile Include="Models\UnreturnedBooksModel.cs" />
+    <Compile Include="Models\VATAnalysisModel.cs" />
+    <Compile Include="Models\VatModel.cs" />
+    <Compile Include="Models\VoteHeadModel.cs" />
+    <Compile Include="ObservableCollectionObject.cs" />
+    <Compile Include="ObservableImmutableDictionary.cs" />
+    <Compile Include="ObservableImmutableList.cs" />
+    <Compile Include="Presentation\ParentViewModel.cs" />
+    <Compile Include="Helpers\DataAccess.cs" />
+    <Compile Include="Models\ClassModel.cs" />
+    <Compile Include="Models\DormModel.cs" />
+    <Compile Include="Models\ExamModel.cs" />
+    <Compile Include="Models\FeePaymentModel.cs" />
+    <Compile Include="Models\StaffModel.cs" />
+    <Compile Include="Models\StudentModel.cs" />
+    <Compile Include="Models\SubjectModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Converters\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Helpers\DocumentHelper.Receipt2.cs" />
+    <Compile Include="Helpers\DocumentHelper.LeavingCertificate.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassBalances.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassList.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassMarkList.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassTranscripts.cs" />
+    <Compile Include="Helpers\DocumentHelper.UnretunedBooks.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassExamResults.cs" />
+    <None Include="MonsoonDigital.pfx" />
+    <None Include="packages.config" />
+    <None Include="Resources\Receipt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\Report.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\Transcript3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <Page Include="Styles\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{b2731322-51a5-4698-9eca-f43a8d3e8547}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\LeavingCert.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\Statement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\Transcript.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\Balances.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\ClassList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\Transcript2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\PaymentVoucher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\ClassMarkList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\AggregateResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\noImage.png" />
+    <Page Include="Resources\UnreturnedBooks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Receipt2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

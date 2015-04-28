@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="UmanyiSMS.Restore"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:Controls="clr-namespace:Helper.Controls;assembly=Helper"
+      mc:Ignorable="d" 
+       d:DesignHeight="600" d:DesignWidth="800"
+	>
+
+    <Grid Name="mnGrid">
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Restore" VerticalAlignment="Top"/>
+        <RadioButton Content="Restore from Most Recent Backup in defult loacation" HorizontalAlignment="Left" Margin="38,84,0,0" Name="radioButton1" VerticalAlignment="Top" GroupName="backup" IsChecked="True" TabIndex="0" />
+        <TextBox Height="53" HorizontalAlignment="Left" Margin="38,135,0,0" VerticalAlignment="Top" 
+                 Width="414" IsReadOnly="True" VerticalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" 
+                 TextWrapping="WrapWithOverflow" 
+                 IsEnabled="{Binding ElementName=radioButton1, Path=IsChecked}"
+                 Text="{Binding Path=BackupPath, Mode=OneWay}"/>
+        <RadioButton Content="Restore from Other location" HorizontalAlignment="Left" Margin="38,225,0,0" Name="radioButton2" VerticalAlignment="Top" GroupName="backup" TabIndex="3" />
+        <TextBox Name="txtBrowse"  HorizontalAlignment="Left" Margin="38,247,0,0"
+                 VerticalAlignment="Top" Width="414"  
+                 IsEnabled="{Binding ElementName=radioButton2, Path=IsChecked}"
+                 Text="{Binding Path=BackupPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                 IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
+        <Button Content="_Browse" HorizontalAlignment="Left" Margin="457,247,0,0" Name="btnBrowse" 
+                VerticalAlignment="Top" Width="80" TabIndex="5" 
+                Click="btnBrowse_Click" 
+                IsEnabled="{Binding ElementName=radioButton2, Path=IsChecked}"/>
+        <PasswordBox  HorizontalAlignment="Left" Margin="114,390,0,0" Name="passwordBox1" VerticalAlignment="Top" Width="230" />
+        <PasswordBox  HorizontalAlignment="Left" Margin="388,390,0,0" Name="passwordBox2" VerticalAlignment="Top" Width="230" />
+        <TextBlock HorizontalAlignment="Left" Margin="457,135,0,0" Name="textBlock1" Text="(RECOMMENDED)" VerticalAlignment="Top" Width="276" TextWrapping="WrapWithOverflow" />
+        <TextBlock HorizontalAlignment="Left" Margin="38,106,0,0" Name="textBlock2" Text="The backup file will be created in the location below:" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Width="345" />
+
+
+
+        <TextBlock HorizontalAlignment="Left" Margin="220,419,0,0" Name="textBlock3" Text="NB: This is the password used in creating the backup file." VerticalAlignment="Top" Width="345" TextWrapping="WrapWithOverflow" />
+        <Button Content="_Restore"  HorizontalAlignment="Right" Margin="0,0,10,10" Name="btnOK" VerticalAlignment="Bottom" Width="153" IsDefault="True" Click="btnOK_Click" />
+        <TextBlock  HorizontalAlignment="Left" Margin="114,369,0,0" Name="Password" Text="Password" VerticalAlignment="Top" />
+
+
+        <TextBlock  HorizontalAlignment="Left" Margin="388,369,0,0" Name="textBlock4" Text="Confirm Password" VerticalAlignment="Top" />
+    </Grid>
+</UserControl>

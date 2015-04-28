@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.LocalTutorials"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900"
+	Background="White">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Tutorials" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="50,80,0,0" Style="{DynamicResource Title0}" Text="Recommended" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="50,115,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding OpenTut1Command}">Learning Reportbuilder :  The End-User’s Guide to Building Reports [PDF]</Hyperlink>
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,150,0,0" Style="{DynamicResource Title0}" Text="Other Resources" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="50,185,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding OpenTut2Command}">Learning Reportbuilder :  The End-User’s Guide to Building Reports [PDF]</Hyperlink>
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,210,0,0" VerticalAlignment="Top">
+            <Hyperlink  Command="{Binding OpenTut3Command}">SSRS Report Builder 3.0 Overview &amp; Demo [PDF]</Hyperlink>
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,237,0,0" FontWeight="Bold" Text="Beginning Reportbuilder 3.0 [Video]" VerticalAlignment="Top"/>
+        <Border HorizontalAlignment="Left" Height="300" Margin="50,260,0,0" Width="520" VerticalAlignment="Top" Background="Black">
+        <MediaElement Name="media" 
+                      LoadedBehavior="Manual"
+              UnloadedBehavior="Stop"/>
+        </Border>
+        <TextBlock HorizontalAlignment="Left" Margin="575,255,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding OpenInDefaultPlayerCommand}">Open in Default Player</Hyperlink>
+        </TextBlock>
+    </Grid>
+</UserControl>
