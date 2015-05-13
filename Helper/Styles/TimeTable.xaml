@@ -22,7 +22,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}">
                         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            <Grid Margin="{TemplateBinding Padding}" IsHitTestVisible="{TemplateBinding IsReadOnly, Converter={StaticResource NegateConverter}}">
+                            <Grid x:Name="PART_PrintVisual" Margin="{TemplateBinding Padding}" IsHitTestVisible="{TemplateBinding IsReadOnly, Converter={StaticResource NegateConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
                                     <RowDefinition Height="*"/>

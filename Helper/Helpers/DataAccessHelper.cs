@@ -79,7 +79,7 @@ namespace Helper
         internal static bool TestCredential(SqlCredential newCredentials)
         {
             try
-            {
+            {                
                 using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.ConnectionString))
                 {
                     conn.Credential = newCredentials;

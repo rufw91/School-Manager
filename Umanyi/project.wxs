@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="UmanyiSMS.Binaries">
+            <Component Id="cmpC5F1E68EB15A17BD9555CD2E750F6C98" Guid="*">
+                <File Id="fil182BA847B0F2D583C064E2013264DF3E" Source="$(var.UmanyiSMS.TargetDir)\UmanyiSMS.exe" />
+            </Component>
+            <Component Id="cmp8FA1CA8FA347CA232F4AEB50411530F2" Guid="*">
+                <File Id="fil047B00E281375DD4FD9AA40650C93FB3" Source="$(var.UmanyiSMS.TargetDir)\UmanyiSMS.exe.config" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="UmanyiSMS.Binaries">
+            <ComponentRef Id="cmpC5F1E68EB15A17BD9555CD2E750F6C98" />
+            <ComponentRef Id="cmp8FA1CA8FA347CA232F4AEB50411530F2" />
+        </ComponentGroup>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="UmanyiSMS.Content" />
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="UmanyiSMS.Satellites" />
+    </Fragment>
+</Wix>

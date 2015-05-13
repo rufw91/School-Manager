@@ -255,19 +255,22 @@ namespace Helper
                         login.ChangePassword(pwd);
                         login.Alter();
                         Marshal.FreeBSTR(ptr);
-
-                        Database db = server.Databases[Helper.Properties.Settings.Default.DefaultDBName];
-                        User u = db.Users[credential.UserId];
-                        foreach (DatabaseRole dbr in db.Roles)
+                        succ = true;
+                        if (credential.UserId.Trim().ToUpper() != "SA")
                         {
-                            if (!dbr.IsFixedRole)
-                                if (u.IsMember(dbr.Name))
-                                    dbr.DropMember(u.Name);
-                        }
-                        u.AddToRole(userRole.ToString());
-                        u.Alter();
+                            Database db = server.Databases[Helper.Properties.Settings.Default.DefaultDBName];
+                            User u = db.Users[credential.UserId];
+                            foreach (DatabaseRole dbr in db.Roles)
+                            {
+                                if (!dbr.IsFixedRole)
+                                    if (u.IsMember(dbr.Name))
+                                        dbr.DropMember(u.Name);
+                            }
+                            u.AddToRole(userRole.ToString());
+                            u.Alter();
 
-                        succ = await UpdateUserInfo(credential, userRole);
+                            succ = await UpdateUserInfo(credential, userRole);
+                        }
                     }
                     return succ;
                 }

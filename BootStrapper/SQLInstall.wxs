@@ -4,7 +4,7 @@
 
   <Fragment>
     
-    <?define InstanceName = "STAREHE" ?>
+    <?define InstanceName = "UMANYI" ?>
     <?define SqlWebLink32Bit = http://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPRADV_x86_ENU.exe ?>
     <?define SqlWebLink64Bit = http://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPRADV_x64_ENU.exe ?>
 
@@ -118,7 +118,7 @@
         Vital="yes"
         Name="Redist\SQLEXPRADV_x86_ENU.exe"
         DownloadUrl="$(var.SqlWebLink32Bit)"
-        InstallCommand="/ACTION=Install /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL,RS,Tools /SECURITYMODE=SQL [SqlVariable] /TCPENABLED=1 /RSSVCACCOUNT=&quot;NT AUTHORITY\NETWORK SERVICE&quot; /SQLSVCACCOUNT=&quot;NT AUTHORITY\NETWORK SERVICE&quot; /SQLSYSADMINACCOUNTS=BUILTIN\Administrators /ADDCURRENTUSERASSQLADMIN=TRUE /QS /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
+        InstallCommand="/QS /ACTION=Install /FEATURES=SQL,RS,Tools,SDK /INSTANCENAME=$(var.InstanceName) /SECURITYMODE=SQL [SqlVariable] /SQLSVCACCOUNT=&quot;NT AUTHORITY\Network Service&quot; /ADDCURRENTUSERASSQLADMIN=TRUE /AGTSVCACCOUNT=&quot;NT AUTHORITY\Network Service&quot; /IACCEPTSQLSERVERLICENSETERMS"
         UninstallCommand="/Action=Uninstall /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL,RS /QS /HIDECONSOLE"
         RepairCommand="/ACTION=Repair /QS /FEATURES=SQLEngine /INSTANCENAME=$(var.InstanceName)"
         DetectCondition="SqlInstanceFound AND SqlRSInstanceFound"
@@ -141,9 +141,9 @@
         PerMachine="yes"
         Permanent="yes"
         Vital="yes"
-        Name="Redist\SQLEXPR_x64_ENU.exe"
+        Name="Redist\SQLEXPRADV_x64_ENU.exe"
         DownloadUrl="$(var.SqlWebLink64Bit)"
-        InstallCommand="/ACTION=Install /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL,RS,Tools /SECURITYMODE=SQL [SqlVariable] /TCPENABLED=1 /RSSVCACCOUNT=&quot;NT AUTHORITY\NETWORK SERVICE&quot; /SQLSVCACCOUNT=&quot;NT AUTHORITY\NETWORK SERVICE&quot; /SQLSYSADMINACCOUNTS=BUILTIN\Administrators /ADDCURRENTUSERASSQLADMIN=TRUE /QS /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
+        InstallCommand="/QS /ACTION=Install /FEATURES=SQL,RS,Tools,SDK /INSTANCENAME=$(var.InstanceName) /SECURITYMODE=SQL [SqlVariable] /SQLSVCACCOUNT=&quot;NT AUTHORITY\Network Service&quot; /ADDCURRENTUSERASSQLADMIN=TRUE /AGTSVCACCOUNT=&quot;NT AUTHORITY\Network Service&quot; /IACCEPTSQLSERVERLICENSETERMS"
         UninstallCommand="/Action=Uninstall /INSTANCENAME=$(var.InstanceName) /FEATURES=SQL,RS /QS /HIDECONSOLE"
         RepairCommand="/ACTION=Repair /QS /FEATURES=SQLEngine /INSTANCENAME=$(var.InstanceName)"
         DetectCondition="SqlInstanceFound AND SqlRSInstanceFound"
@@ -166,7 +166,7 @@
         PerMachine="yes"
         Permanent="yes"
         Vital="yes"
-        Name="Redist\SQLEXPR_x86_ENU.exe"
+        Name="Redist\SQLEXPRADV_x86_ENU.exe"
         DownloadUrl="$(var.SqlWebLink32Bit)"
         InstallCommand="/ACTION=Upgrade /INSTANCENAME=$(var.InstanceName) /QS /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
         DetectCondition="NOT (SqlInstanceFound AND (SqlVersion &lt; v10.50.4000.0))"
@@ -186,7 +186,7 @@
         PerMachine="yes"
         Permanent="yes"
         Vital="yes"
-        Name="Redist\SQLEXPR_x86_ENU.exe"
+        Name="Redist\SQLEXPRADV_x64_ENU.exe"
         DownloadUrl="$(var.SqlWebLink64Bit)"
         InstallCommand="/ACTION=Upgrade /INSTANCENAME=$(var.InstanceName) /QS /HIDECONSOLE /SkipRules=RebootRequiredCheck /IAcceptSQLServerLicenseTerms"
         DetectCondition="NOT (SqlInstanceFound AND (SqlVersion &lt; v10.50.4000.0))"
