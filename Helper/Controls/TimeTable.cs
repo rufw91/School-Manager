@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Windows;
-using System.Linq;
-using System.Windows.Controls;
+﻿using Helper.Models;
+using System;
 using System.Collections.Generic;
-using Helper.Models;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Helper.Controls
 {
     [TemplatePart(Name = "PART_ColumnHeaderPresenter", Type = typeof(TimeTableColumnHeadersPresenter))]
+    [TemplatePart(Name = "PART_PrintVisual", Type = typeof(Visual))]
+    [TemplatePart(Name = "PART_MondayRowsPresenter", Type = typeof(TimeTableGroupedRowsPresenter))]
+    [TemplatePart(Name = "PART_TuesdayRowsPresenter", Type = typeof(TimeTableGroupedRowsPresenter))]
+    [TemplatePart(Name = "PART_WednesdayRowsPresenter", Type = typeof(TimeTableGroupedRowsPresenter))]
+    [TemplatePart(Name = "PART_ThursdayRowsPresenter", Type = typeof(TimeTableGroupedRowsPresenter))]
+    [TemplatePart(Name = "PART_FridayRowsPresenter", Type = typeof(TimeTableGroupedRowsPresenter))]
+    [TemplatePart(Name = "PART_SaturdayRowsPresenter", Type = typeof(TimeTableGroupedRowsPresenter))]
     public class TimeTable : ItemsControl
     {
         public static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(
@@ -19,6 +25,8 @@ namespace Helper.Controls
             "NoOfLessonsPerDay", typeof(int), typeof(TimeTable), new PropertyMetadata(10));
         public static readonly DependencyProperty LessonDurationProperty = DependencyProperty.Register(
             "LessonDuration", typeof(TimeSpan), typeof(TimeTable), new PropertyMetadata(new TimeSpan(0, 40, 0)));
+        public static readonly DependencyProperty PrintVisualProperty = DependencyProperty.Register(
+            "PrintVisual", typeof(Visual), typeof(TimeTable), new PropertyMetadata());
         public static readonly DependencyProperty NoOfBreaksPerDayProperty = DependencyProperty.Register(
             "NoOfBreaksPerDay", typeof(int), typeof(TimeTable), new PropertyMetadata(3));
         public static readonly DependencyProperty LessonStartTimeProperty = DependencyProperty.Register(
@@ -151,7 +159,7 @@ namespace Helper.Controls
             Columns=GetColumns();
             TimeTableColumnHeadersPresenter ch = GetTemplateChild("PART_ColumnHeaderPresenter") as TimeTableColumnHeadersPresenter;
             ch.ItemsSource = Columns;
-
+            PrintVisual = GetTemplateChild("PART_PrintVisual") as Visual;
             monday = GetTemplateChild("PART_MondayRowsPresenter") as TimeTableGroupedRowsPresenter;
             tuesday = GetTemplateChild("PART_TuesdayRowsPresenter") as TimeTableGroupedRowsPresenter;
             wednesday = GetTemplateChild("PART_WednesdayRowsPresenter") as TimeTableGroupedRowsPresenter;
@@ -175,6 +183,19 @@ namespace Helper.Controls
             set
             {
                 SetValue(ColumnsProperty, value);
+            }
+        }
+
+        public Visual PrintVisual
+        {
+            get
+            {
+                return (Visual)GetValue(PrintVisualProperty);
+            }
+
+            set
+            {
+                SetValue(PrintVisualProperty, value);
             }
         }
 

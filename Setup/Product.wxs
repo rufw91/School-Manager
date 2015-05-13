@@ -7,18 +7,18 @@
 
   <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
   <?define Win64 = "yes"?>
-  <?define ProductName = "Starehe (64 bit)" ?>
-  <?define ProductCode= "5BD9AAFA-34ED-463C-9C14-EB793AF9D45D" ?>
+  <?define ProductName = "Umanyi School MS (64 bit)" ?>
+  <?define ProductCode= "5BD9BAFA-34ED-463C-9C14-EB793AF9D45D" ?>
 
   <?else ?>
 
   <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
   <?define Win64 = "no"?>
-  <?define ProductName = "Starehe" ?>
-  <?define ProductCode = "b4eb6124-f631-4d04-926f-ea97dfbd6bc2" ?>
+  <?define ProductName = "Umanyi School MS" ?>
+  <?define ProductCode = "b4eb6134-f631-4d04-926f-ea97dfbd6bc2" ?>
   <?endif ?>
   
-  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.5.2.2015" Manufacturer="Monsoon Digital" 
+  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.6.5.2015" Manufacturer="Umanyi Digital Technologies Ltd" 
            UpgradeCode="$(var.ProductCode)">
     
 		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
@@ -27,9 +27,9 @@
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate EmbedCab="yes"/>
 
-  <Property Id="DB_USER" Value="sa"/>
-    <Property Id="DB_PASSWORD" Value="000002"/>
-    <Property Id="DB_DATABASE" Value="Starehe"/>
+  <Property Hidden="yes" Id="DB_USER" Value="sa"/>
+    <Property Hidden="yes" Id="DB_PASSWORD" Value="000002"/>
+    <Property Hidden="yes" Id="DB_DATABASE" Value="UmanyiSMS"/>
   
     <!-- Specify UI -->
     <UIRef Id="MyUI" />
@@ -37,18 +37,23 @@
     <Binary Id="CheckSqlConnection.dll" SourceFile="$(var.CheckSqlConnection.TargetDir)CheckSqlConnection.CA.dll"/>
     <CustomAction Id="CheckSqlConnectionAction" BinaryKey="CheckSqlConnection.dll" DllEntry="CheckSqlConnection"/>
 
-		<Feature Id="ProductFeature" Title="Starehe" Level="1">     
+		<Feature Id="ProductFeature" Title="Umanyi" Level="1">     
 			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="CommonComponents" />
       <ComponentGroupRef Id="ShortcutComponents" />
       <ComponentRef Id="MySqlComponent" />
 		</Feature>
     
-     <CustomAction Id="SetServerName" Property="DB_SERVER" Value="[ComputerName]\Starehe" Execute="immediate"/>
+     <CustomAction Id="SetServerName" Property="DB_SERVER" Value="[ComputerName]\Umanyi" Execute="immediate"/>
+
+    <CustomAction Id="SetPassword" Property="DB_SERVER" Value="[ComputerName]\Umanyi" Execute="immediate"/>
     
     <InstallExecuteSequence>
       <Custom Action="SetServerName"
       After="LaunchConditions" />
     </InstallExecuteSequence>
+    
+    
     
     <Condition Message="OS must be Windows Vista SP2, Server 2008, or higher.">
       <![CDATA[Installed OR VersionNT >= 600]]>
@@ -66,9 +71,9 @@
       
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="$(var.PlatformProgramFilesFolder)">
-        <Directory Id="ALFolder" Name="Almond Tech">
-          <Directory Id="INSTALLFOLDER" Name="Umanyi">
-            <Component Id="MySqlComponent" Guid="8A1C82DB-1DD3-4FB5-8600-4F370FE1E04B">
+        <Directory Id="ALFolder" Name="Umanyi">
+          <Directory Id="INSTALLFOLDER" Name="Umanyi School MS">
+            <Component Id="MySqlComponent" Guid="{67F2BAA5-55B6-416F-BAF4-B971A54E68F3}">
         <Condition>NOT Installed</Condition>
         <sql:SqlDatabase Id="MySqlDatabase" Database="[DB_DATABASE]" Server="[DB_SERVER]" CreateOnInstall="yes"  ConfirmOverwrite="yes" DropOnUninstall="yes" User="SQLUserSA" ContinueOnError="no">
           <sql:SqlScript Id="CreateTables" ExecuteOnInstall="yes" ExecuteOnUninstall="no" BinaryKey="CreateTablesBin" ContinueOnError="no" />
@@ -84,83 +89,139 @@
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<Component Id="cmp1" Guid="{D6EAC4C4-B3C8-4A52-B821-1D465AB16A8E}">
-        <File Source="$(var.Starehe.TargetDir)Starehe.exe" />
+			<Component Id="cmp1" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)AxInterop.AcroPDFLib.dll" />
       </Component>
-      <Component Id="cmp2" Guid="{694CFD13-8070-4C27-8D94-EA7A6191E384}">
-        <File Source="$(var.Helper.TargetDir)Helper.dll" />
-      </Component>
-      <Component Id="cmp3" Guid="{13907959-F459-4C77-82AD-B1E0142E5208}">
-        <File Source="$(var.Starehe.Helper.TargetDir)Starehe.Helper.dll" />
-      </Component>
-      <Component Id="cmp4" Guid="{A04A12FD-CBC1-425D-AE9C-53C3C2425C74}">
-        <File Source="$(var.Starehe.TargetDir)Microsoft.WindowsAPICodePack.dll" />
-      </Component>
-      <Component Id="cmp5" Guid="{41101E03-C321-4869-AB06-BAAEFF6500B5}">
-        <File Source="$(var.Starehe.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll" />
-      </Component>
-      <Component Id="cmp6" Guid="{8DEBFFC5-D9F8-46E5-8291-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)System.Collections.Immutable.dll" />
-      </Component>
-       <Component Id="cmp11" Guid="{8DEBFFC5-D9F8-44E5-8290-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)Interop.AcroPDFLib.dll" />
-      </Component>
-        <Component Id="cmp12" Guid="{8DEBFFC5-D9F8-46C5-8292-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)AxInterop.AcroPDFLib.dll" />
-      </Component>
-      <Component Id="cmp18" Guid="{8DEBFFD5-D9F8-46B5-8291-C43A62D7C315}">
-        <File Source="$(var.Starehe.TargetDir)OpenXmlPackaging.dll" />
+      <Component Id="cmp2" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)DevDefined.OAuth.dll" />
       </Component>
       
-    <Component Id="cmp7" Guid="{8DEBFFC5-D9F8-46E5-8291-C43A62E7C314}">
-        <File Source="$(var.Starehe.TargetDir)longhorn.pdf" />
+       <!--Confused--> 
+      <Component Id="cmp3" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Helper.dll" />
       </Component>
-    <Component Id="cmp8" Guid="{8DEBFFC5-D9F8-46E5-8291-C43AC2D7C314}">
-        <File Source="$(var.Starehe.TargetDir)klb.pdf" />
+      
+      
+      
+      <Component Id="cmp5" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Interop.AcroPDFLib.dll" />
       </Component>
-      <Component Id="cmp9" Guid="{8DEBFFC5-D9F8-46F5-8291-C43B62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)eaep.pdf" />
+      <Component Id="cmp6" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Core.dll" />
       </Component>
-      <Component Id="cmp178" Guid="{8BEBFFC5-D9F8-46F5-8791-C43B42D7C314}">
-        <File Source="$(var.Starehe.TargetDir)jkf.pdf" />
+      <Component Id="cmp7" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Data.dll" />
       </Component>
-      <Component Id="cmp10" Guid="{8DEBFFC5-D9F8-36E5-8291-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)PAYEGuide2009.pdf" />
+      <Component Id="cmp8" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Diagnostics.dll" />
       </Component>
-       <Component Id="cmp15" Guid="{8CEBFFC5-D9F9-46C5-8292-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)Tut1.pdf" />
+      <Component Id="cmp9" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Exception.dll" />
       </Component>
-      <Component Id="cmp16" Guid="{ADEBFEC5-D9F8-46C5-8292-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)Tut2.pdf" />
+      <Component Id="cmp10" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Retry.dll" />
       </Component>
-    <Component Id="cmp17" Guid="{ADEBFEC5-D7F8-46C5-8292-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)Tut3.pdf" />
+      <Component Id="cmp11" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Security.dll" />
       </Component>
-      <Component Id="cmp13" Guid="{8DEBFFC5-D9F9-46C5-8292-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)Video1.mp4" />
+      <Component Id="cmp12" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Utility.dll" />
       </Component>
-      <Component Id="cmp14" Guid="{8DEBFEB5-D9F8-46C5-8292-C43A62D7C314}">
-        <File Source="$(var.Starehe.TargetDir)Video2.mp4" />
+      <Component Id="cmp13" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)log4net.dll" />
       </Component>
-    
-    
+      <Component Id="cmp14" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.WindowsAPICodePack.dll" />
+      </Component>
+      <Component Id="cmp15" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll" />
+      </Component>
+      <Component Id="cmp16" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Newtonsoft.Json.dll" />
+      </Component>
+      
+        <!--Confused-->
+      <Component Id="cmp17" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)OpenXmlPackaging.dll" />
+      </Component>
+      
+        
+      <Component Id="cmp18" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)System.Collections.Immutable.dll" />
+      </Component>
+      
+        <!--Confused-->
+       <Component Id="cmp19" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe" />
+      </Component>
+      <!--Confused-->
+      <Component Id="cmp20" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.Helper.dll" />
+      </Component>
 		</ComponentGroup>
 	</Fragment>
 
   <Fragment>
+    <ComponentGroup Id="CommonComponents" Directory="INSTALLFOLDER">
+      <Component Id="cmpc1" Guid="*">
+        <File Source="E:\Dev\School MS Common\eaep.pdf" />
+      </Component>
+      <Component Id="cmpc2" Guid="*">
+        <File Source="E:\Dev\School MS Common\gxps-9.15-win32.exe" />
+      </Component>
+      <Component Id="cmpc3" Guid="*">
+        <File Source="E:\Dev\School MS Common\jkf.pdf" />
+      </Component>
+      <Component Id="cmpc4" Guid="*">
+        <File Source="E:\Dev\School MS Common\klb.pdf" />
+      </Component>
+      <Component Id="cmpc5" Guid="*">
+        <File Source="E:\Dev\School MS Common\longhorn.pdf" />
+      </Component>
+       <Component Id="cmpc6" Guid="*">
+        <File Source="E:\Dev\School MS Common\PAYEGuide2009.pdf" />
+      </Component>
+      <Component Id="cmpc7" Guid="*">
+        <File Source="E:\Dev\School MS Common\Tut1.pdf" />
+      </Component>
+      <Component Id="cmpc8" Guid="*">
+        <File Source="E:\Dev\School MS Common\Tut2.pdf" />        
+      </Component>
+      <Component Id="cmpc9" Guid="*">
+        <File Source="E:\Dev\School MS Common\Tut3.pdf" />
+      </Component>
+      <Component Id="cmpc10" Guid="*">
+        <File Source="E:\Dev\School MS Common\tutorial1.pdf" />
+      </Component>
+      <Component Id="cmpc11" Guid="*">
+        <File Source="E:\Dev\School MS Common\tutorial2.pdf" />
+      </Component>
+      <Component Id="cmpc12" Guid="*">
+        <File Source="E:\Dev\School MS Common\tutorial3.pdf" />
+      </Component>
+      <Component Id="cmpc13" Guid="*">
+        <File Source="E:\Dev\School MS Common\Video1.mp4" />
+      </Component>
+      <Component Id="cmpc14" Guid="*">
+        <File Source="E:\Dev\School MS Common\Video2.mp4" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
     <ComponentGroup Id="ShortcutComponents" Directory="DesktopFolder">
-      <Component Id="cmp19" Guid="33741C82-30BF-41EF-8246-44A5DCFCF953">
-        <Shortcut Id="desktopShortcut" Name="Starehe"
-        Description="Starehe Management System"
-        Target="[INSTALLFOLDER]Starehe.exe" />
+      <Component Id="cmp21" Guid="*">
+        <Shortcut Id="desktopShortcut" Name="Umanyi School MS"
+        Description="Umanyi School Management System"
+        Target="[INSTALLFOLDER]UmanyiSMS.exe" />
         <RegistryValue Root="HKCU"
-        Key="Software\Almond Tech"
+        Key="Software\Umanyi Digital Technologies"
         Name="installed"
         Type="integer"
         Value="1"
         KeyPath="yes" />
       <RegistryValue Root="HKCU"
-        Key="Software\Almond Tech"
+        Key="Software\Umanyi Digital Technologies"
         Name="first_run"
         Type="integer"
         Value="1"/>

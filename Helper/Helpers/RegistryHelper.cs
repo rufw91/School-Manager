@@ -85,6 +85,32 @@ namespace Helper
             }
             catch { return false; }
         }
+
+        public static bool HasPassed30Days()
+        {
+            RegistryKey existingMainKey;
+            try
+            {
+                 existingMainKey =
+                    Registry.LocalMachine.OpenSubKey("SOFTWARE").
+                    OpenSubKey("Umanyi").OpenSubKey(Properties.Settings.Default.ApplicationName).OpenSubKey("Start");
+
+            }
+            catch
+            {
+                 existingMainKey =
+                Registry.LocalMachine.OpenSubKey("SOFTWARE").CreateSubKey("Umanyi").
+                CreateSubKey(Properties.Settings.Default.ApplicationName).CreateSubKey("Start");
+            }
+
+            if (existingMainKey.GetValue("Date") == null)
+            {
+                existingMainKey.SetValue("Date", DateTime.Now.ToString());
+                return false;
+            }
+            return false;
+            
+        }
     }
 }
 

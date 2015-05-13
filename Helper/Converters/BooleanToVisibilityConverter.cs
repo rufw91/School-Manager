@@ -23,7 +23,8 @@ namespace Helper.Converters
                 flag = nullable.HasValue ? nullable.Value : false;
             }
 
-            bool inverse = (parameter as string) == "inverse";
+
+            bool inverse = (parameter == null) ? false : (parameter.ToString().ToLower() == "inverse");
 
             if (inverse) {
                 return (flag ? Visibility.Collapsed : Visibility.Visible);

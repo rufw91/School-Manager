@@ -344,7 +344,7 @@
     <Content Include="Resources\search.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenXmlPackaging\OpenXmlPackaging\OpenXmlPackaging.csproj">
+    <ProjectReference Include="..\OpenXmlPackaging\OpenXmlPackaging.csproj">
       <Project>{dad3387a-470a-4484-9427-a8c8faec6c0f}</Project>
       <Name>OpenXmlPackaging</Name>
     </ProjectReference>
