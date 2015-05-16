@@ -9,27 +9,30 @@
         <TextBlock Margin="20,20,0,0" Text="New Fees Payment" VerticalAlignment="Top" HorizontalAlignment="Left"
                  Style="{DynamicResource Title}"/>
         <Grid>
-            <TextBlock HorizontalAlignment="Left" Margin="20,60,0,0" Style="{DynamicResource Title0}" Text="Student" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="20,55,0,0" Style="{DynamicResource Title0}" Text="Student" VerticalAlignment="Top"/>
 
-            <TextBlock HorizontalAlignment="Left" Margin="30,100,0,0" Text="Student ID" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Height="23" Margin="92,100,0,0" VerticalAlignment="Top" Width="200"
+            <TextBlock HorizontalAlignment="Left" Margin="30,90,0,0" Text="Student ID" VerticalAlignment="Top"/>
+            <TextBox HorizontalAlignment="Left" Height="23" Margin="92,90,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding CurrentPayment.StudentID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=20,
             ValidatesOnNotifyDataErrors=True}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="30,145,0,0" Text="Name" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="30,135,0,0" Text="Name" VerticalAlignment="Top"/>
 
-            <TextBox HorizontalAlignment="Left" Margin="92,145,0,0" VerticalAlignment="Top" Width="200"
+            <TextBox HorizontalAlignment="Left" Margin="92,135,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding CurrentPayment.NameOfStudent, Mode=OneWay}" IsEnabled="False" Background="WhiteSmoke" IsReadOnlyCaretVisible="True"/>
 
-            <TextBlock HorizontalAlignment="Left" Margin="20,185,0,0" Style="{DynamicResource Title0}" Text="Payment" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="30,230,0,0" TextWrapping="Wrap" Text="Payment" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Margin="92,230,0,0" VerticalAlignment="Top" Width="150"                 
+            <TextBlock HorizontalAlignment="Left" Margin="20,175,0,0" Style="{DynamicResource Title0}" Text="Payment" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="30,210,0,0" TextWrapping="Wrap" Text="Payment" VerticalAlignment="Top"/>
+            <TextBox HorizontalAlignment="Left" Margin="92,210,0,0" VerticalAlignment="Top" Width="150"                 
                  Text="{Binding CurrentPayment.AmountPaid, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="30,252,0,0" Text="Date Paid/Deposited" TextWrapping="Wrap" VerticalAlignment="Top" Height="33" Width="56"/>
+            <DatePicker HorizontalAlignment="Left" Margin="92,255,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
+                 SelectedDate="{Binding CurrentPayment.DatePaid, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
-            <TextBlock HorizontalAlignment="Left" Margin="20,280,0,0" Text="Fees Structure (Current Term)" VerticalAlignment="Top"
+            <TextBlock HorizontalAlignment="Left" Margin="20,295,0,0" Text="Fees Structure (Current Term)" VerticalAlignment="Top"
                    Style="{DynamicResource SmallTitle}"/>
-            <ListBox Name="lbxFeesStructure" HorizontalAlignment="Left" Margin="30,310,0,50" Width="270" ItemsSource="{Binding CurrentFeesStructure.Entries}"
+            <ListBox Name="lbxFeesStructure" HorizontalAlignment="Left" Margin="30,325,0,35" Width="270" ItemsSource="{Binding CurrentFeesStructure.Entries}"
                      ItemTemplate="{StaticResource FeesStructureEditableEntryModel}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="304,310,0,0" VerticalAlignment="Top">
+            <TextBlock HorizontalAlignment="Left" Margin="304,325,0,0" VerticalAlignment="Top">
                 <Hyperlink Command="{Binding RemoveItemCommand}" CommandParameter="{Binding Path=SelectedIndex, ElementName=lbxFeesStructure}">Remove</Hyperlink>
             </TextBlock>
             <TextBlock HorizontalAlignment="Left" Margin="350,70,0,0" Style="{DynamicResource Title0}" Text="Recent Payments" VerticalAlignment="Top"/>
@@ -40,12 +43,14 @@
                 Command="{Binding SaveCommand}"/>
             <Button Content="Save &amp; Print" HorizontalAlignment="Right" Margin="0,0,95,10" VerticalAlignment="Bottom" Width="120"
                    Command="{Binding SaveAndPrintCommand}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="30,0,0,20" Text="TOTAL:" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
-            <TextBlock HorizontalAlignment="Left" Margin="85,0,0,20" Text="{Binding FeesStructureTotal, StringFormat={}{0:N2}}" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
+            <TextBlock HorizontalAlignment="Left" Margin="30,0,0,10" Text="TOTAL:" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
+            <TextBlock HorizontalAlignment="Left" Margin="85,0,0,10" Text="{Binding FeesStructureTotal, StringFormat={}{0:N2}}" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
             <TextBlock HorizontalAlignment="Right" Margin="0,51,30,0" VerticalAlignment="Top">
                 <Hyperlink Command="{Binding PreviewCommand}">Preview Receipt</Hyperlink>
             </TextBlock>
-
+            <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+                <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+            </Border>
 
         </Grid>
     </Grid>

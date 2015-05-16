@@ -10,7 +10,7 @@
 			VerticalAlignment="Top"/>
         <DataGrid Name="lbx" AutoGenerateColumns="True" VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
                  Margin="20,120,20,50" CanUserDeleteRows="False" CanUserAddRows="False"
-                 ItemsSource="{Binding Entries}">
+                 ItemsSource="{Binding Entries}" BorderBrush="#FFDEDBDB">
         </DataGrid>
         <ComboBox HorizontalAlignment="Left" Margin="89,71,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllClasses}" DisplayMemberPath="NameOfClass" SelectedValuePath="ClassID"
@@ -18,7 +18,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="43,71,0,0" Text="Class" VerticalAlignment="Top"/>
         <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,20,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding SaveCommand}"/>
-        <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
             <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
         </Border>
     </Grid>

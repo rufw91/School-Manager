@@ -1,6 +1,7 @@
 ﻿using Helper;
 using Helper.Models;
 using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Security.Permissions;
@@ -36,6 +37,7 @@ namespace UmanyiSMS.ViewModels
                 });
             PreviewCommand  = new RelayCommand(async o=>
             {
+                IsBusy = true;
                 SaleModel sm = new SaleModel();
 
                 if (!await DataAccess.HasInvoicedThisTerm(currentPayment.StudentID))
@@ -59,14 +61,16 @@ namespace UmanyiSMS.ViewModels
                 MessageBox.Show("Dont forget to save the transaction!!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 currentPayment.FeePaymentID = await DataAccess.GetLastPaymentIDAsync(currentPayment.StudentID, currentPayment.DatePaid);
                 FeePaymentReceiptModel fprm = await DataAccess.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(sm.SaleItems));
-                
+                fprm.Entries.Where(o1 => o1.Name == "TOTAL BALANCE").First().Amount = fprm.Entries.Where(o1 => o1.Name == "TOTAL BALANCE").First().Amount - currentPayment.AmountPaid;
+
                 Document = DocumentHelper.GenerateDocument(fprm);
                 if (ShowPrintDialogAction != null)
                     ShowPrintDialogAction.Invoke(Document);
-
+                IsBusy = false;
             }, o => CanSavePayment());
             SaveCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                 bool succ=true;
                 if (!await DataAccess.HasInvoicedThisTerm(currentPayment.StudentID))
                 {
@@ -90,11 +94,13 @@ namespace UmanyiSMS.ViewModels
                 }
                 else
                     MessageBox.Show("Could not save details.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                IsBusy = false;
             },
                o => CanSavePayment());
 
             SaveAndPrintCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                 bool succ = true;
                 SaleModel sm;
                 if (!await DataAccess.HasInvoicedThisTerm(currentPayment.StudentID))
@@ -126,6 +132,7 @@ namespace UmanyiSMS.ViewModels
                 }
                 else
                     MessageBox.Show("Could not save details.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                IsBusy = true;
             },
                o => CanSavePayment());
         }
