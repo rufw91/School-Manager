@@ -100,6 +100,7 @@ namespace UmanyiSMS.ViewModels
 
             SaveCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                 if (isInStudentMode)
                 {
                     bool succ = true;
@@ -145,6 +146,7 @@ namespace UmanyiSMS.ViewModels
                     if (succ)
                         Reset();
                 }
+                IsBusy = false;
             }, o =>CanSave());
         }
 

@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace UmanyiSMS.ViewModels
@@ -24,9 +25,13 @@ namespace UmanyiSMS.ViewModels
             RefreshCommand = new RelayCommand(async o => { await RefreshEntries(); }, o => selectedCombinedClass !=null);
             SaveCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                 bool succ = await DataAccess.SaveNewExamAsync(newExam);
+                MessageBox.Show(succ ? "Successfully saved details." : "Could not save details.", succ ? "Success" : "Error", MessageBoxButton.OK, 
+                    succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
                     Reset();
+                IsBusy = false;
             },
             o =>
             {

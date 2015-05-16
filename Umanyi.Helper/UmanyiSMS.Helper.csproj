@@ -43,7 +43,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>MonsoonDigital.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -262,7 +263,6 @@
     <Compile Include="Helpers\DocumentHelper.ClassTranscripts.cs" />
     <Compile Include="Helpers\DocumentHelper.UnretunedBooks.cs" />
     <Compile Include="Helpers\DocumentHelper.ClassExamResults.cs" />
-    <None Include="MonsoonDigital.pfx" />
     <None Include="packages.config" />
     <None Include="Resources\Receipt.xaml">
       <Generator>MSBuild:Compile</Generator>

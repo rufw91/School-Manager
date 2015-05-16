@@ -1342,35 +1342,38 @@ namespace Helper
                 if (student.IsBoarder)
                     INSERTSTR += ",DormitoryID ,BedNo";
                 INSERTSTR += ",PreviousInstitution,KCPEScore,PreviousBalance,SPhoto) " +
-                     "VALUES(" + (autoGenerateStudentID ? "@id" : student.StudentID.ToString()) + ",'" +
-                     student.FirstName + "','" +
-                     student.LastName + "','" +
-                     student.MiddleName + "','" +
-                     student.Gender + "','" +
-                     student.DateOfBirth + "','" +
-                     student.DateOfAdmission + "','" +
-                     student.NameOfGuardian + "','" +
-                     student.GuardianPhoneNo + "','" +
-                     student.Email + "','" +
-                     student.Address + "','" +
-                     student.City + "','" +
-                     student.PostalCode + "'," +
-                     (student.IsBoarder ? "1" : "0" )+ ",'";
+                     "VALUES(" + (autoGenerateStudentID ? "@id" : "@studID") + ",@firstName,@lastName,@middleName" +
+                     ",@gender,@dob,@doa,@nameOfGuardian,@guardianPhoneNo,@email,@address,@city,@postalCode," +
+                     (student.IsBoarder ? "1" : "0" )+ ",";
                 if (student.IsBoarder)
-                    INSERTSTR += student.DormitoryID + "','" +
-                     student.BedNo + "','";
+                    INSERTSTR += "@dormID,@bedNo,";
                 INSERTSTR +=
-                     student.PrevInstitution + "'," +
-                     student.KCPEScore + ",'" +
-                     student.PrevBalance +
-                     "',@photo)\r\n" +
+                     "@prevInstitution,@kcpeScore,@prevBalance,@photo)\r\n" +
                      "INSERT INTO [Institution].[CurrentClass] (StudentID,ClassID,IsActive) " +
-                     "VALUES(" + (autoGenerateStudentID ? "@id" : student.StudentID.ToString()) + "," + student.ClassID + ",1)\r\n" +
+                     "VALUES(" + (autoGenerateStudentID ? "@id" : "@studID") + ",@classID,1)\r\n" +
                      "COMMIT";
 
                 ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
-
-                paramColl.Add(new SqlParameter("@photo", new byte[0]));
+                paramColl.Add(new SqlParameter("@studID", student.StudentID));
+                paramColl.Add(new SqlParameter("@firstName", student.FirstName));
+                paramColl.Add(new SqlParameter("@middleName", student.MiddleName));
+                paramColl.Add(new SqlParameter("@lastName", student.LastName));
+                paramColl.Add(new SqlParameter("@gender", student.Gender));
+                paramColl.Add(new SqlParameter("@dob", student.DateOfBirth.ToString("g")));
+                paramColl.Add(new SqlParameter("@doa", student.DateOfAdmission.ToString("g")));
+                paramColl.Add(new SqlParameter("@nameOfGuardian", student.NameOfGuardian));
+                paramColl.Add(new SqlParameter("@guardianPhoneNo", student.GuardianPhoneNo));
+                paramColl.Add(new SqlParameter("@email", student.Email));
+                paramColl.Add(new SqlParameter("@address", student.Address));
+                paramColl.Add(new SqlParameter("@city", student.City));
+                paramColl.Add(new SqlParameter("@postalCode", student.PostalCode));
+                paramColl.Add(new SqlParameter("@dormID", student.DormitoryID));
+                paramColl.Add(new SqlParameter("@bedNo", student.BedNo));
+                paramColl.Add(new SqlParameter("@prevInstitution", student.PrevInstitution));
+                paramColl.Add(new SqlParameter("@kcpeScore", student.KCPEScore));
+                paramColl.Add(new SqlParameter("@prevBalance", student.PrevBalance));
+                paramColl.Add(new SqlParameter("@photo", student.SPhoto));
+                paramColl.Add(new SqlParameter("@classID", student.ClassID));
 
                 return DataAccessHelper.ExecuteNonQueryWithParameters(INSERTSTR, paramColl);
             });
@@ -1508,21 +1511,25 @@ namespace Helper
         {
             return Task.Run<bool>(() =>
             {
+                 bool autoGenerateStudentID = newStaff.StaffID == 0;
                 string INSERTSTR =
+                    "BEGIN TRANSACTION\r\n" +
+                    "DECLARE @id INT; SET @id=dbo.GetNewID('Institution.Staff'); " +
+
                     "INSERT INTO [Institution].[Staff] (StaffID,Name,NationalID,DateOfAdmission,PhoneNo," +
                     "Email,Address,City,PostalCode,SPhoto) " +
-                    "VALUES(" + newStaff.StaffID + ",'" +
-                    newStaff.Name + "','" +
-                    newStaff.NationalID + "','" +
-                    newStaff.DateOfAdmission.ToString("g") + "','" +
-                    newStaff.PhoneNo + "','" +
-                    newStaff.Email + "','" +
-                    newStaff.Address + "','" +
-                    newStaff.City + "','" +
-                    newStaff.PostalCode + "',@photo)";
+                    "VALUES(" + (autoGenerateStudentID?"id":"@staffID") + ",@name,@nationalID,@doa,@phoneNo,@email,@address,@city,@postalCode,@photo)";
 
                 ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
-
+                paramColl.Add(new SqlParameter("@staffID", newStaff.StaffID));
+                paramColl.Add(new SqlParameter("@name", newStaff.Name));
+                paramColl.Add(new SqlParameter("@nationalID", newStaff.NationalID));
+                paramColl.Add(new SqlParameter("@doa", newStaff.DateOfAdmission.ToString("g")));
+                paramColl.Add(new SqlParameter("@phoneNo", newStaff.PhoneNo));
+                paramColl.Add(new SqlParameter("@email", newStaff.Email));
+                paramColl.Add(new SqlParameter("@address", newStaff.Address));
+                paramColl.Add(new SqlParameter("@city", newStaff.City));
+                paramColl.Add(new SqlParameter("@postalCode", newStaff.PostalCode));
                 paramColl.Add(new SqlParameter("@photo", newStaff.SPhoto));
 
                 return DataAccessHelper.ExecuteNonQueryWithParameters(INSERTSTR, paramColl);
@@ -1535,11 +1542,14 @@ namespace Helper
             {
                 string INSERTSTR =
                     "INSERT INTO [Institution].[FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid) " +
-                    "VALUES(dbo.GetNewID('Institution.FeesPayment')," +
-                    newPayment.StudentID + ",'" +
-                    newPayment.AmountPaid + "','" +
-                    newPayment.DatePaid.ToString("g") + "')";
-                return DataAccessHelper.ExecuteNonQuery(INSERTSTR);
+                    "VALUES(dbo.GetNewID('Institution.FeesPayment'),@studentID,@amount,@dop)";
+                
+                ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                paramColl.Add(new SqlParameter("@studentID", newPayment.StudentID));
+                paramColl.Add(new SqlParameter("@amount", newPayment.AmountPaid));
+                paramColl.Add(new SqlParameter("@dop", newPayment.DatePaid.ToString("g")));
+
+                return DataAccessHelper.ExecuteNonQueryWithParameters(INSERTSTR, paramColl);
             });
         }
 
@@ -1547,25 +1557,38 @@ namespace Helper
         {
             return Task.Run<bool>(() =>
             {
+                ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
                 string insertStr = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Institution.FeesPayment')\r\n" +
                     "DECLARE @id2 int; SET @id2 = dbo.GetNewID('Sales.SaleHeader')\r\n" +
                     "INSERT INTO [Institution].[FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid) " +
-                    "VALUES(@id," +
-                    newPayment.StudentID + ",'" +
-                    newPayment.AmountPaid + "','" +
-                    newPayment.DatePaid.ToString("g") + "')\r\n" +
+                    "VALUES(@id,@studentID,@amount,@dop)\r\n" +
                   "INSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,IsDiscount,PaymentID) " +
-                  "VALUES(@id2,'" + newSale.CustomerID + "'," +
-                  newSale.EmployeeID + ",'" + newSale.IsCancelled + "','" + newSale.DateAdded + "','"
-                  + newSale.IsDiscount + "',@id)";
+                  "VALUES(@id2,@studentID,employeeID,@isCancelled,@dateAdded,@isDiscount,@id)";
 
+                int c = 0;
                 foreach (FeesStructureEntryModel obs in newSale.SaleItems)
                 {
+                    string v1 = "@entryName" + c;
+                    string v2 = "@entryAmount" + c;
+                    paramColl.Add(new SqlParameter(v1, obs.Name));
+                    paramColl.Add(new SqlParameter(v2, obs.Amount));
                     insertStr += "\r\nINSERT INTO [Sales].[SaleDetail] (SaleID,Name,Amount) " +
-                        "VALUES(@id2,'" + obs.Name + "'," + obs.Amount + ")";
+                        "VALUES(@id2,@entryName,@entryAmount)";
                 }
                 insertStr += "\r\nCOMMIT";
-                return DataAccessHelper.ExecuteNonQuery(insertStr);
+
+
+                
+                paramColl.Add(new SqlParameter("@studentID", newPayment.StudentID));
+                paramColl.Add(new SqlParameter("@amount", newPayment.AmountPaid));
+                paramColl.Add(new SqlParameter("@dop", newPayment.DatePaid.ToString("g")));
+                paramColl.Add(new SqlParameter("@studentID", newPayment.StudentID));
+                paramColl.Add(new SqlParameter("@employeeID", newSale.EmployeeID));
+                paramColl.Add(new SqlParameter("@isCancelled", newSale.IsCancelled ? 0 : 1));
+                paramColl.Add(new SqlParameter("@dateAdded", newSale.DateAdded.ToString("g")));
+                paramColl.Add(new SqlParameter("@isDiscount", newSale.IsDiscount ? 0 : 1));
+
+                return DataAccessHelper.ExecuteNonQueryWithParameters(insertStr, paramColl);
             });
         }
 

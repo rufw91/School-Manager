@@ -3,6 +3,7 @@ using Helper.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
+using System.Windows;
 using System.Windows.Input;
 
 namespace UmanyiSMS.ViewModels
@@ -46,7 +47,9 @@ namespace UmanyiSMS.ViewModels
             {
                 bool succ = await DataAccess.SaveNewStudentAsync(newStudent); 
                 if (succ)
-                    Reset(); 
+                    Reset();
+                MessageBox.Show(succ ? "Successfully saved details." : "Could not save details.", succ ? "Success" : "Error", MessageBoxButton.OK,
+                    succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
             }, o => 
                 ValidateStudent());
             ClearImageCommand = new RelayCommand(o => { newStudent.SPhoto = null; }, o => true);
