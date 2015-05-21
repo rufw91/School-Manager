@@ -88,9 +88,8 @@ namespace UmanyiSMS.ViewModels
                     foreach (var c in t)
                         selectStr += c.Name + ",";
                     selectStr = selectStr.Remove(selectStr.Length - 1);
-                    selectStr += " FROM [Institution].[Student] WHERE EXISTS (SELECT * FROM [Institution].[Student] WHERE FirstName LIKE '%" + name +
-                        "%' OR MiddleName LIKE '%" + name +
-                        "%' OR LastName LIKE '%" + name + "%') AND NameOfGuardian LIKE '%" + nameOfGuardian + "%'";
+                    selectStr += " FROM [Institution].[Student] WHERE NameOfStudent LIKE '%" + name +
+                        "%' AND NameOfGuardian LIKE '%" + nameOfGuardian + "%'";
                     if (SelectedClassID > 0)
                         selectStr += " AND ClassID=" + selectedClassID;
                     if (selectedComparisonValue>0)

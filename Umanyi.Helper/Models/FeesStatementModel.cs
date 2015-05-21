@@ -67,44 +67,6 @@ namespace Helper.Models
             set;
         }
 
-        public override bool CheckErrors()
-        {
-            try
-            {
-                ClearAllErrors();
-                if (StudentID == 0)
-                {
-                    List<string> errors = new List<string>();
-                    errors.Add("Student does not exist.");
-                    SetErrors("StudentID", errors);
-                }
-                else
-                {
-                    StudentModel student = DataAccess.GetStudent(StudentID);
-                    if (student.StudentID == 0)
-                    {
-                        List<string> errors = new List<string>();
-                        errors.Add("Student does not exist.");
-                        SetErrors("StudentID", errors);
-                    }
-                    else
-                    {
-                        ClearErrors("StudentID");
-                        this.StudentID = student.StudentID;
-                        this.NameOfStudent = student.NameOfStudent;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                List<string> errors = new List<string>();
-                errors.Add(e.Message);
-                SetErrors("", errors);
-            }
-            NotifyPropertyChanged("HasErrors");
-            return HasErrors;
-        }
-
         public override void Reset()
         {
             base.Reset();

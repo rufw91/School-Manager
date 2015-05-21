@@ -23,6 +23,11 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "FEES STATEMENT";
             statement = new FeesStatementModel();
+            statement.PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == "StudentID")
+                    statement.CheckErrors();
+            };
         }
 
         protected override void CreateCommands()
@@ -90,7 +95,6 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanGnerateStatement()
         {
-            statement.CheckErrors();
             return !statement.HasErrors && (statement.To > statement.From);
         }
         public Action<FixedDocument> ShowPrintDialogAction

@@ -3,14 +3,14 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetCurrentBalance]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION [dbo].[GetCurrentBalance]
 GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetSubjectSelection]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[GetSubjectSelection]
+GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetTermClassPosition]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION [dbo].[GetTermClassPosition]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetTermOverAllPosition]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION [dbo].[GetTermOverAllPosition]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetSubjectSelection]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION [dbo].[GetSubjectSelection]
 GO
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_ItemReceiptHeader_IsCancelled]') AND type = 'D')
 BEGIN
@@ -102,9 +102,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentSubjectSelectionHeader]') AND type in (N'U'))
 DROP TABLE [Institution].[StudentSubjectSelectionHeader]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetSubjectsTakenByStudent]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION [dbo].[GetSubjectsTakenByStudent]
-GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetUnreturnedCopies]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION [dbo].[GetUnreturnedCopies]
 GO
@@ -113,6 +110,9 @@ DROP FUNCTION [dbo].[GetWeightedExamSubjectScore]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetWeightedExamTotalScore]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION [dbo].[GetWeightedExamTotalScore]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetSubjectsTakenByStudent]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[GetSubjectsTakenByStudent]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetPurchaseTotal]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION [dbo].[GetPurchaseTotal]
@@ -135,9 +135,9 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetExamTotalScore]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION [dbo].[GetExamTotalScore]
 GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_UserDetail_UserDetail]') AND type = 'D')
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_UserDetail_UserDetailID]') AND type = 'D')
 BEGIN
-ALTER TABLE [Users].[UserDetail] DROP CONSTRAINT [DF_UserDetail_UserDetail]
+ALTER TABLE [Users].[UserDetail] DROP CONSTRAINT [DF_UserDetail_UserDetailID]
 END
 GO
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_UserDetail_ModifiedDate]') AND type = 'D')
@@ -500,6 +500,24 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[ItemIssueDetail]') AND type in (N'U'))
 DROP TABLE [Sales].[ItemIssueDetail]
 GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_ItemReceiptDetail_ItemReceiptDetailID]') AND type = 'D')
+BEGIN
+ALTER TABLE [Sales].[ItemReceiptDetail] DROP CONSTRAINT [DF_ItemReceiptDetail_ItemReceiptDetailID]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PurchaseOrderDetail_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Sales].[ItemReceiptDetail] DROP CONSTRAINT [DF_PurchaseOrderDetail_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PurchaseOrderDetail_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Sales].[ItemReceiptDetail] DROP CONSTRAINT [DF_PurchaseOrderDetail_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[ItemReceiptDetail]') AND type in (N'U'))
+DROP TABLE [Sales].[ItemReceiptDetail]
+GO
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_LeavingCertificate_LeavingCertificateID]') AND type = 'D')
 BEGIN
 ALTER TABLE [Institution].[LeavingCertificate] DROP CONSTRAINT [DF_LeavingCertificate_LeavingCertificateID]
@@ -517,24 +535,6 @@ END
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[LeavingCertificate]') AND type in (N'U'))
 DROP TABLE [Institution].[LeavingCertificate]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PayoutDetail_PayoutDetailID]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[PayoutDetail] DROP CONSTRAINT [DF_PayoutDetail_PayoutDetailID]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PayoutDetail_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[PayoutDetail] DROP CONSTRAINT [DF_PayoutDetail_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PayoutDetail_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[PayoutDetail] DROP CONSTRAINT [DF_PayoutDetail_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[PayoutDetail]') AND type in (N'U'))
-DROP TABLE [Institution].[PayoutDetail]
 GO
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_SaleDetail_SalesOrderDetailID]') AND type = 'D')
 BEGIN
@@ -644,23 +644,23 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentSubjectSelectionDetail]') AND type in (N'U'))
 DROP TABLE [Institution].[StudentSubjectSelectionDetail]
 GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_ItemReceiptDetail_ItemReceiptDetailID]') AND type = 'D')
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PayoutDetail_PayoutDetailID]') AND type = 'D')
 BEGIN
-ALTER TABLE [Sales].[ItemReceiptDetail] DROP CONSTRAINT [DF_ItemReceiptDetail_ItemReceiptDetailID]
+ALTER TABLE [Institution].[PayoutDetail] DROP CONSTRAINT [DF_PayoutDetail_PayoutDetailID]
 END
 GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PurchaseOrderDetail_ModifiedDate]') AND type = 'D')
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PayoutDetail_ModifiedDate]') AND type = 'D')
 BEGIN
-ALTER TABLE [Sales].[ItemReceiptDetail] DROP CONSTRAINT [DF_PurchaseOrderDetail_ModifiedDate]
+ALTER TABLE [Institution].[PayoutDetail] DROP CONSTRAINT [DF_PayoutDetail_ModifiedDate]
 END
 GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PurchaseOrderDetail_rowguid]') AND type = 'D')
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PayoutDetail_rowguid]') AND type = 'D')
 BEGIN
-ALTER TABLE [Sales].[ItemReceiptDetail] DROP CONSTRAINT [DF_PurchaseOrderDetail_rowguid]
+ALTER TABLE [Institution].[PayoutDetail] DROP CONSTRAINT [DF_PayoutDetail_rowguid]
 END
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[ItemReceiptDetail]') AND type in (N'U'))
-DROP TABLE [Sales].[ItemReceiptDetail]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[PayoutDetail]') AND type in (N'U'))
+DROP TABLE [Institution].[PayoutDetail]
 GO
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Supplier_SupplierID]') AND type = 'D')
 BEGIN
@@ -716,150 +716,8 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[SupplierPayment]') AND type in (N'U'))
 DROP TABLE [Sales].[SupplierPayment]
 GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Staff_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[Staff] DROP CONSTRAINT [DF_Staff_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Staff_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[Staff] DROP CONSTRAINT [DF_Staff_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Staff]') AND type in (N'U'))
-DROP TABLE [Institution].[Staff]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_SubjectSetupHeader_IsActive]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[SubjectSetupHeader] DROP CONSTRAINT [DF_SubjectSetupHeader_IsActive]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_SubjectSetupHeader_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[SubjectSetupHeader] DROP CONSTRAINT [DF_SubjectSetupHeader_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_SubjectSetupHeader_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[SubjectSetupHeader] DROP CONSTRAINT [DF_SubjectSetupHeader_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[SubjectSetupHeader]') AND type in (N'U'))
-DROP TABLE [Institution].[SubjectSetupHeader]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Subject_IsOptional]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[Subject] DROP CONSTRAINT [DF_Subject_IsOptional]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Subject_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[Subject] DROP CONSTRAINT [DF_Subject_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Subject_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[Subject] DROP CONSTRAINT [DF_Subject_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Subject]') AND type in (N'U'))
-DROP TABLE [Institution].[Subject]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_StudentTranscriptHeader_IsActive]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[StudentTranscriptHeader] DROP CONSTRAINT [DF_StudentTranscriptHeader_IsActive]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_StudentTranscriptHeader_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[StudentTranscriptHeader] DROP CONSTRAINT [DF_StudentTranscriptHeader_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_StudentTranscriptHeader_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[StudentTranscriptHeader] DROP CONSTRAINT [DF_StudentTranscriptHeader_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentTranscriptHeader]') AND type in (N'U'))
-DROP TABLE [Institution].[StudentTranscriptHeader]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_StockTakingHeader_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Sales].[StockTakingHeader] DROP CONSTRAINT [DF_StockTakingHeader_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_StockTakingHeader_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Sales].[StockTakingHeader] DROP CONSTRAINT [DF_StockTakingHeader_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[StockTakingHeader]') AND type in (N'U'))
-DROP TABLE [Sales].[StockTakingHeader]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableHeader_IsActive]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[TimeTableHeader] DROP CONSTRAINT [DF_TimeTableHeader_IsActive]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableHeader_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[TimeTableHeader] DROP CONSTRAINT [DF_TimeTableHeader_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableHeader_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[TimeTableHeader] DROP CONSTRAINT [DF_TimeTableHeader_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[TimeTableHeader]') AND type in (N'U'))
-DROP TABLE [Institution].[TimeTableHeader]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableSettings_IsActive]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[TimeTableSettings] DROP CONSTRAINT [DF_TimeTableSettings_IsActive]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableSettings_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[TimeTableSettings] DROP CONSTRAINT [DF_TimeTableSettings_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableSettings_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[TimeTableSettings] DROP CONSTRAINT [DF_TimeTableSettings_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[TimeTableSettings]') AND type in (N'U'))
-DROP TABLE [Institution].[TimeTableSettings]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PayoutHeader_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[PayoutHeader] DROP CONSTRAINT [DF_PayoutHeader_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PayoutHeader_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[PayoutHeader] DROP CONSTRAINT [DF_PayoutHeader_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[PayoutHeader]') AND type in (N'U'))
-DROP TABLE [Institution].[PayoutHeader]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_QBSync_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[QBSync] DROP CONSTRAINT [DF_QBSync_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_QBSync_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Institution].[QBSync] DROP CONSTRAINT [DF_QBSync_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[QBSync]') AND type in (N'U'))
-DROP TABLE [Institution].[QBSync]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ResetUniqueIDs]') AND type in (N'P', N'PC'))
-DROP PROCEDURE [dbo].[ResetUniqueIDs]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Link_GetNewID]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[Link_GetNewID]
 GO
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_ItemIssueHeader_ModifiedDate]') AND type = 'D')
 BEGIN
@@ -873,6 +731,22 @@ END
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[ItemIssueHeader]') AND type in (N'U'))
 DROP TABLE [Sales].[ItemIssueHeader]
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Product_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Sales].[Item] DROP CONSTRAINT [DF_Product_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Product_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Sales].[Item] DROP CONSTRAINT [DF_Product_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[Item]') AND type in (N'U'))
+DROP TABLE [Sales].[Item]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetNewID]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[GetNewID]
 GO
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_FeesStructureHeader_IsActive]') AND type = 'D')
 BEGIN
@@ -891,22 +765,6 @@ END
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[FeesStructureHeader]') AND type in (N'U'))
 DROP TABLE [Institution].[FeesStructureHeader]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Product_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Sales].[Item] DROP CONSTRAINT [DF_Product_ModifiedDate]
-END
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Product_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Sales].[Item] DROP CONSTRAINT [DF_Product_rowguid]
-END
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[Item]') AND type in (N'U'))
-DROP TABLE [Sales].[Item]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetNewID]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION [dbo].[GetNewID]
 GO
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_EmployeePayment_ModifiedDate]') AND type = 'D')
 BEGIN
@@ -1014,24 +872,162 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[ExamHeader]') AND type in (N'U'))
 DROP TABLE [Institution].[ExamHeader]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetGrade]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION [dbo].[GetGrade]
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableHeader_IsActive]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[TimeTableHeader] DROP CONSTRAINT [DF_TimeTableHeader_IsActive]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableHeader_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[TimeTableHeader] DROP CONSTRAINT [DF_TimeTableHeader_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableHeader_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[TimeTableHeader] DROP CONSTRAINT [DF_TimeTableHeader_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[TimeTableHeader]') AND type in (N'U'))
+DROP TABLE [Institution].[TimeTableHeader]
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableSettings_IsActive]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[TimeTableSettings] DROP CONSTRAINT [DF_TimeTableSettings_IsActive]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableSettings_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[TimeTableSettings] DROP CONSTRAINT [DF_TimeTableSettings_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_TimeTableSettings_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[TimeTableSettings] DROP CONSTRAINT [DF_TimeTableSettings_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[TimeTableSettings]') AND type in (N'U'))
+DROP TABLE [Institution].[TimeTableSettings]
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PayoutHeader_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[PayoutHeader] DROP CONSTRAINT [DF_PayoutHeader_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_PayoutHeader_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[PayoutHeader] DROP CONSTRAINT [DF_PayoutHeader_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[PayoutHeader]') AND type in (N'U'))
+DROP TABLE [Institution].[PayoutHeader]
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_QBSync_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[QBSync] DROP CONSTRAINT [DF_QBSync_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_QBSync_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[QBSync] DROP CONSTRAINT [DF_QBSync_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[QBSync]') AND type in (N'U'))
+DROP TABLE [Institution].[QBSync]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ResetUniqueIDs]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[ResetUniqueIDs]
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Staff_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[Staff] DROP CONSTRAINT [DF_Staff_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Staff_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[Staff] DROP CONSTRAINT [DF_Staff_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Staff]') AND type in (N'U'))
+DROP TABLE [Institution].[Staff]
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_SubjectSetupHeader_IsActive]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[SubjectSetupHeader] DROP CONSTRAINT [DF_SubjectSetupHeader_IsActive]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_SubjectSetupHeader_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[SubjectSetupHeader] DROP CONSTRAINT [DF_SubjectSetupHeader_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_SubjectSetupHeader_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[SubjectSetupHeader] DROP CONSTRAINT [DF_SubjectSetupHeader_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[SubjectSetupHeader]') AND type in (N'U'))
+DROP TABLE [Institution].[SubjectSetupHeader]
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Subject_IsOptional]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[Subject] DROP CONSTRAINT [DF_Subject_IsOptional]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Subject_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[Subject] DROP CONSTRAINT [DF_Subject_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Subject_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[Subject] DROP CONSTRAINT [DF_Subject_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Subject]') AND type in (N'U'))
+DROP TABLE [Institution].[Subject]
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_StudentTranscriptHeader_IsActive]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[StudentTranscriptHeader] DROP CONSTRAINT [DF_StudentTranscriptHeader_IsActive]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_StudentTranscriptHeader_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[StudentTranscriptHeader] DROP CONSTRAINT [DF_StudentTranscriptHeader_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_StudentTranscriptHeader_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Institution].[StudentTranscriptHeader] DROP CONSTRAINT [DF_StudentTranscriptHeader_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentTranscriptHeader]') AND type in (N'U'))
+DROP TABLE [Institution].[StudentTranscriptHeader]
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_StockTakingHeader_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Sales].[StockTakingHeader] DROP CONSTRAINT [DF_StockTakingHeader_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_StockTakingHeader_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Sales].[StockTakingHeader] DROP CONSTRAINT [DF_StockTakingHeader_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[StockTakingHeader]') AND type in (N'U'))
+DROP TABLE [Sales].[StockTakingHeader]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sysIDs]') AND type in (N'U'))
 DROP TABLE [dbo].[sysIDs]
 GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_UserRole_ModifiedDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [Users].[UserRole] DROP CONSTRAINT [DF_UserRole_ModifiedDate]
-END
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetGrade]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[GetGrade]
 GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_UserRole_rowguid]') AND type = 'D')
-BEGIN
-ALTER TABLE [Users].[UserRole] DROP CONSTRAINT [DF_UserRole_rowguid]
-END
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetTablePrimaryKeyColumn]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[GetTablePrimaryKeyColumn]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Users].[UserRole]') AND type in (N'U'))
-DROP TABLE [Users].[UserRole]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AddValuesIgnoringNull]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[AddValuesIgnoringNull]
 GO
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_User_ModifiedDate]') AND type = 'D')
 BEGIN
@@ -1046,8 +1042,18 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Users].[User]') AND type in (N'U'))
 DROP TABLE [Users].[User]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AddValuesIgnoringNull]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION [dbo].[AddValuesIgnoringNull]
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_UserRole_ModifiedDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [Users].[UserRole] DROP CONSTRAINT [DF_UserRole_ModifiedDate]
+END
+GO
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_UserRole_rowguid]') AND type = 'D')
+BEGIN
+ALTER TABLE [Users].[UserRole] DROP CONSTRAINT [DF_UserRole_rowguid]
+END
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Users].[UserRole]') AND type in (N'U'))
+DROP TABLE [Users].[UserRole]
 GO
 IF  EXISTS (SELECT * FROM sys.schemas WHERE name = N'Users')
 DROP SCHEMA [Users]
@@ -1167,78 +1173,6 @@ IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'None' AND type 
 DROP ROLE [None]
 GO
 DECLARE @RoleName sysname
-set @RoleName = N'Teacher'
-IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = @RoleName AND type = 'R')
-Begin
-	DECLARE @RoleMemberName sysname
-	DECLARE Member_Cursor CURSOR FOR
-	select [name]
-	from sys.database_principals 
-	where principal_id in ( 
-		select member_principal_id 
-		from sys.database_role_members 
-		where role_principal_id in (
-			select principal_id
-			FROM sys.database_principals where [name] = @RoleName  AND type = 'R' ))
-
-	OPEN Member_Cursor;
-
-	FETCH NEXT FROM Member_Cursor
-	into @RoleMemberName
-
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-
-		exec sp_droprolemember @rolename=@RoleName, @membername= @RoleMemberName
-
-		FETCH NEXT FROM Member_Cursor
-		into @RoleMemberName
-	END;
-
-	CLOSE Member_Cursor;
-	DEALLOCATE Member_Cursor;
-End
-GO
-IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'Teacher' AND type = 'R')
-DROP ROLE [Teacher]
-GO
-DECLARE @RoleName sysname
-set @RoleName = N'User'
-IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = @RoleName AND type = 'R')
-Begin
-	DECLARE @RoleMemberName sysname
-	DECLARE Member_Cursor CURSOR FOR
-	select [name]
-	from sys.database_principals 
-	where principal_id in ( 
-		select member_principal_id 
-		from sys.database_role_members 
-		where role_principal_id in (
-			select principal_id
-			FROM sys.database_principals where [name] = @RoleName  AND type = 'R' ))
-
-	OPEN Member_Cursor;
-
-	FETCH NEXT FROM Member_Cursor
-	into @RoleMemberName
-
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-
-		exec sp_droprolemember @rolename=@RoleName, @membername= @RoleMemberName
-
-		FETCH NEXT FROM Member_Cursor
-		into @RoleMemberName
-	END;
-
-	CLOSE Member_Cursor;
-	DEALLOCATE Member_Cursor;
-End
-GO
-IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'User' AND type = 'R')
-DROP ROLE [User]
-GO
-DECLARE @RoleName sysname
 set @RoleName = N'Principal'
 IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = @RoleName AND type = 'R')
 Begin
@@ -1310,7 +1244,78 @@ GO
 IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'SystemAdmin' AND type = 'R')
 DROP ROLE [SystemAdmin]
 GO
+DECLARE @RoleName sysname
+set @RoleName = N'Teacher'
+IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = @RoleName AND type = 'R')
+Begin
+	DECLARE @RoleMemberName sysname
+	DECLARE Member_Cursor CURSOR FOR
+	select [name]
+	from sys.database_principals 
+	where principal_id in ( 
+		select member_principal_id 
+		from sys.database_role_members 
+		where role_principal_id in (
+			select principal_id
+			FROM sys.database_principals where [name] = @RoleName  AND type = 'R' ))
 
+	OPEN Member_Cursor;
+
+	FETCH NEXT FROM Member_Cursor
+	into @RoleMemberName
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+
+		exec sp_droprolemember @rolename=@RoleName, @membername= @RoleMemberName
+
+		FETCH NEXT FROM Member_Cursor
+		into @RoleMemberName
+	END;
+
+	CLOSE Member_Cursor;
+	DEALLOCATE Member_Cursor;
+End
+GO
+IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'Teacher' AND type = 'R')
+DROP ROLE [Teacher]
+GO
+DECLARE @RoleName sysname
+set @RoleName = N'User'
+IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = @RoleName AND type = 'R')
+Begin
+	DECLARE @RoleMemberName sysname
+	DECLARE Member_Cursor CURSOR FOR
+	select [name]
+	from sys.database_principals 
+	where principal_id in ( 
+		select member_principal_id 
+		from sys.database_role_members 
+		where role_principal_id in (
+			select principal_id
+			FROM sys.database_principals where [name] = @RoleName  AND type = 'R' ))
+
+	OPEN Member_Cursor;
+
+	FETCH NEXT FROM Member_Cursor
+	into @RoleMemberName
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+
+		exec sp_droprolemember @rolename=@RoleName, @membername= @RoleMemberName
+
+		FETCH NEXT FROM Member_Cursor
+		into @RoleMemberName
+	END;
+
+	CLOSE Member_Cursor;
+	DEALLOCATE Member_Cursor;
+End
+GO
+IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'User' AND type = 'R')
+DROP ROLE [User]
+GO
 IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'Accounts' AND type = 'R')
 CREATE ROLE [Accounts] AUTHORIZATION [dbo]
 GO
@@ -1320,17 +1325,17 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'None' AND type = 'R')
 CREATE ROLE [None] AUTHORIZATION [dbo]
 GO
-IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'Teacher' AND type = 'R')
-CREATE ROLE [Teacher] AUTHORIZATION [dbo]
-GO
-IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'User' AND type = 'R')
-CREATE ROLE [User] AUTHORIZATION [dbo]
-GO
 IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'Principal' AND type = 'R')
 CREATE ROLE [Principal] AUTHORIZATION [dbo]
 GO
 IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'SystemAdmin' AND type = 'R')
 CREATE ROLE [SystemAdmin] AUTHORIZATION [dbo]
+GO
+IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'Teacher' AND type = 'R')
+CREATE ROLE [Teacher] AUTHORIZATION [dbo]
+GO
+IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'User' AND type = 'R')
+CREATE ROLE [User] AUTHORIZATION [dbo]
 GO
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'Users')
 EXEC sys.sp_executesql N'CREATE SCHEMA [Users] AUTHORIZATION [dbo]'
@@ -1340,6 +1345,51 @@ EXEC sys.sp_executesql N'CREATE SCHEMA [Sales] AUTHORIZATION [dbo]'
 GO
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'Institution')
 EXEC sys.sp_executesql N'CREATE SCHEMA [Institution] AUTHORIZATION [dbo]'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Users].[UserRole]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Users].[UserRole](
+	[UserRoleID] [int] NOT NULL,
+	[Description] [varchar](20) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_UserRole_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_UserRole_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_UserRole] PRIMARY KEY CLUSTERED 
+(
+	[UserRoleID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Users].[User]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Users].[User](
+	[UserID] [varchar](50) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+	[SPhoto] [varbinary](max) NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_User_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_User_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[UserID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
 GO
 SET ANSI_NULLS ON
 GO
@@ -1378,66 +1428,25 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Users].[User]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetTablePrimaryKeyColumn]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 BEGIN
-CREATE TABLE [Users].[User](
-	[UserID] [varchar](50) NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[SPhoto] [varbinary](max) NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_User_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_User_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
-(
-	[UserID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetTablePrimaryKeyColumn](@nameOfTable varchar(max))
+    RETURNS NVARCHAR(50)
+    AS
+    BEGIN
+
+RETURN (SELECT COL_NAME(ic.OBJECT_ID,
+ic.column_id) AS ColumnName FROM sys.indexes AS i
+ INNER JOIN sys.index_columns AS ic ON i.OBJECT_ID = ic.OBJECT_ID AND 
+ i.index_id = ic.index_id 
+ INNER JOIN sys.tables t ON (ic.OBJECT_ID=t.object_id)WHERE i.is_primary_key = 1 AND  
+ UPPER(SCHEMA_NAME(t.schema_id)+''.''+OBJECT_NAME(ic.OBJECT_ID))=UPPER(@nameOfTable));
+    END
+    ;
+
+
+' 
 END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Users].[UserRole]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Users].[UserRole](
-	[UserRoleID] [int] NOT NULL,
-	[Description] [varchar](20) NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_UserRole_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_UserRole_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_UserRole] PRIMARY KEY CLUSTERED 
-(
-	[UserRoleID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sysIDs]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[sysIDs](
-	[table_name] [varchar](50) NOT NULL,
-	[last_id] [int] NOT NULL,
- CONSTRAINT [PK_sysIDs] PRIMARY KEY CLUSTERED 
-(
-	[table_name] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
 GO
 SET ANSI_NULLS ON
 GO
@@ -1487,6 +1496,302 @@ execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetGrade](@score
 
 
 ' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sysIDs]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[sysIDs](
+	[table_name] [varchar](50) NOT NULL,
+	[last_id] [int] NOT NULL,
+ CONSTRAINT [PK_sysIDs] PRIMARY KEY CLUSTERED 
+(
+	[table_name] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[StockTakingHeader]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Sales].[StockTakingHeader](
+	[StockTakingID] [int] NOT NULL,
+	[DateTaken] [datetime] NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_StockTakingHeader_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_StockTakingHeader_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_StockTakingHeader] PRIMARY KEY CLUSTERED 
+(
+	[StockTakingID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentTranscriptHeader]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[StudentTranscriptHeader](
+	[StudentTranscriptID] [int] NOT NULL,
+	[StudentID] [int] NOT NULL,
+	[Exam1ID] [int] NULL,
+	[Exam2ID] [int] NULL,
+	[Exam3ID] [int] NULL,
+	[IsActive] [bit] NULL CONSTRAINT [DF_StudentTranscriptHeader_IsActive]  DEFAULT ((1)),
+	[Responsibilities] [varchar](50) NULL,
+	[ClubsAndSport] [varchar](50) NULL,
+	[Boarding] [varchar](50) NULL,
+	[ClassTeacher] [varchar](50) NULL,
+	[ClassTeacherComments] [varchar](50) NULL,
+	[Principal] [varchar](50) NULL,
+	[PrincipalComments] [varchar](50) NULL,
+	[OpeningDay] [datetime] NULL,
+	[ClosingDay] [datetime] NULL,
+	[Term1Pos] [varchar](50) NULL,
+	[Term2Pos] [varchar](50) NULL,
+	[Term3Pos] [varchar](50) NULL,
+	[DateSaved] [datetime] NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_StudentTranscriptHeader_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_StudentTranscriptHeader_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_StudentTranscriptHeader] PRIMARY KEY CLUSTERED 
+(
+	[StudentTranscriptID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Subject]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[Subject](
+	[SubjectID] [int] NOT NULL,
+	[NameOfSubject] [varchar](50) NOT NULL,
+	[Code] [int] NULL,
+	[Tutor] [varchar](50) NULL,
+	[MaximumScore] [varchar](50) NOT NULL,
+	[IsOptional] [bit] NOT NULL CONSTRAINT [DF_Subject_IsOptional]  DEFAULT ((0)),
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_Subject_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_Subject_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_Subject] PRIMARY KEY CLUSTERED 
+(
+	[SubjectID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[SubjectSetupHeader]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[SubjectSetupHeader](
+	[SubjectSetupID] [int] NOT NULL,
+	[ClassID] [int] NOT NULL,
+	[IsActive] [bit] NOT NULL CONSTRAINT [DF_SubjectSetupHeader_IsActive]  DEFAULT ((1)),
+	[StartDate] [datetime] NOT NULL,
+	[EndDate] [datetime] NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_SubjectSetupHeader_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_SubjectSetupHeader_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_SubjectSetup] PRIMARY KEY CLUSTERED 
+(
+	[SubjectSetupID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Staff]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[Staff](
+	[StaffID] [int] NOT NULL,
+	[Name] [varchar](50) NULL,
+	[NationalID] [varchar](50) NULL,
+	[DateOfAdmission] [datetime] NULL,
+	[PhoneNo] [varchar](50) NULL,
+	[Email] [varchar](50) NULL,
+	[Address] [varchar](50) NULL,
+	[City] [varchar](50) NULL,
+	[PostalCode] [varchar](50) NULL,
+	[SPhoto] [varbinary](max) NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_Staff_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_Staff_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_Staff] PRIMARY KEY CLUSTERED 
+(
+	[StaffID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ResetUniqueIDs]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[ResetUniqueIDs]
+AS
+BEGIN
+ SET NOCOUNT ON;
+ if EXISTS(select s.name +''.''+t.name, 0 from [UmanyiSMS].[sys].[tables] t inner JOIN 
+ UmanyiSMS.sys.schemas s on (t.schema_id=s.schema_id))
+ BEGIN
+ delete from dbo.sysIDs;
+ 
+ DECLARE tables_cursor CURSOR
+   FOR
+   SELECT s.name,t.name FROM sys.tables AS t
+ INNER JOIN sys.schemas AS s ON t.schema_id = s.schema_id 
+ order by (s.name+''.''+t.name )
+ 
+OPEN tables_cursor;
+DECLARE @nameOfTable varchar(50);
+DECLARE @schema_name varchar(50);
+DECLARE @table_name varchar(50);
+FETCH NEXT FROM tables_cursor INTO @schema_name,@table_name;
+WHILE (@@FETCH_STATUS <> -1)
+BEGIN;
+set @nameOfTable = @schema_name+''.''+@table_name;
+
+declare @lastID int;
+declare @sql nvarchar(max);
+declare @pkey varchar(50)=dbo.GetTablePrimaryKeyColumn(@nameOfTable);
+    if @pkey is null
+    set @pkey=(select  Top 1 name from sys.columns where object_id=object_id(@nameOfTable))
+    
+    set @sql=''select @lastID=ISNULL(MAX(''+@pkey+''),0) from [''+@schema_name+''].[''+@table_name+'']'';    
+    exec sp_executesql @sql, N''@lastID int output'', @lastID output;    
+declare @sql2 nvarchar(200)=''INSERT INTO dbo.sysIDs(table_name,last_id) VALUES('''''' + @nameOfTable + '''''',''+CONVERT(varchar(50),@lastID)+'')'';
+   EXEC (@sql2);
+   FETCH NEXT FROM tables_cursor INTO @schema_name,@table_name
+END;
+CLOSE tables_cursor;
+DEALLOCATE tables_cursor;
+
+ 
+END
+END
+
+
+' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[QBSync]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[QBSync](
+	[QBSyncID] [int] NOT NULL,
+	[Type] [varchar](50) NOT NULL,
+	[TransactionID] [int] NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_QBSync_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_QBSync_rowguid]  DEFAULT (newid())
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[PayoutHeader]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[PayoutHeader](
+	[PayoutID] [int] NOT NULL,
+	[Payee] [varchar](50) NOT NULL,
+	[Address] [varchar](50) NOT NULL,
+	[TotalPaid] [varchar](50) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_PayoutHeader_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_PayoutHeader_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_PayoutHeader] PRIMARY KEY CLUSTERED 
+(
+	[PayoutID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[TimeTableSettings]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[TimeTableSettings](
+	[TimeTableSettingsID] [int] NOT NULL,
+	[NoOfLessons] [int] NOT NULL,
+	[LessonDuration] [int] NOT NULL,
+	[LessonsStartTime] [time](7) NOT NULL,
+	[BreakIndices] [varchar](50) NOT NULL,
+	[BreakDuration] [varchar](50) NOT NULL,
+	[IsActive] [bit] NOT NULL CONSTRAINT [DF_TimeTableSettings_IsActive]  DEFAULT ((1)),
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_TimeTableSettings_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_TimeTableSettings_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_TimeTableSettings] PRIMARY KEY CLUSTERED 
+(
+	[TimeTableSettingsID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[TimeTableHeader]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[TimeTableHeader](
+	[TimeTableID] [int] NOT NULL,
+	[ClassID] [int] NOT NULL,
+	[IsActive] [bit] NOT NULL CONSTRAINT [DF_TimeTableHeader_IsActive]  DEFAULT ((1)),
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_TimeTableHeader_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_TimeTableHeader_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_TimeTableHeader] PRIMARY KEY CLUSTERED 
+(
+	[TimeTableID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
 END
 GO
 SET ANSI_NULLS ON
@@ -1646,9 +1951,31 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[FeesStructureHeader]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[FeesStructureHeader](
+	[FeesStructureID] [int] NOT NULL,
+	[ClassID] [int] NOT NULL,
+	[IsActive] [bit] NULL CONSTRAINT [DF_FeesStructureHeader_IsActive]  DEFAULT ((1)),
+	[StartDate] [datetime] NOT NULL,
+	[EndDate] [datetime] NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_FeesStructureHeader_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_FeesStructureHeader_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_FeesStructureHeader] PRIMARY KEY CLUSTERED 
+(
+	[FeesStructureID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetNewID]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 BEGIN
-execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetNewID](@nameOfTable varchar(max))
+execute dbo.sp_executesql @statement = N'
+CREATE FUNCTION [dbo].[GetNewID](@nameOfTable varchar(max))
     RETURNS int
     AS
     BEGIN
@@ -1697,27 +2024,6 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[FeesStructureHeader]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[FeesStructureHeader](
-	[FeesStructureID] [int] NOT NULL,
-	[ClassID] [int] NOT NULL,
-	[IsActive] [bit] NULL CONSTRAINT [DF_FeesStructureHeader_IsActive]  DEFAULT ((1)),
-	[StartDate] [datetime] NOT NULL,
-	[EndDate] [datetime] NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_FeesStructureHeader_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_FeesStructureHeader_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_FeesStructureHeader] PRIMARY KEY CLUSTERED 
-(
-	[FeesStructureID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 SET ANSI_PADDING ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[ItemIssueHeader]') AND type in (N'U'))
@@ -1742,547 +2048,390 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ResetUniqueIDs]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[ResetUniqueIDs]
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Sales].[TR_StockTakingHeader_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Sales].[TR_StockTakingHeader_UpdateID]
+ ON [Sales].[StockTakingHeader] AFTER INSERT 
+ NOT FOR REPLICATION
 AS
 BEGIN
+ IF @@ROWCOUNT = 0 RETURN
  SET NOCOUNT ON;
- if EXISTS(
-select s.name +''.''+t.name, 0 from [UmanyiSMS].[sys].[tables] t inner JOIN UmanyiSMS.sys.schemas s on (t.schema_id=s.schema_id)
-and NOT EXISTS (SELECT * from dbo.sysIDs WHERE table_name=(s.name +''.''+t.name)))
 
-INSERT  dbo.sysIDs (table_name,last_id)
-select s.name +''.''+t.name, 0 from [UmanyiSMS].[sys].[tables] t inner JOIN UmanyiSMS.sys.schemas s on (t.schema_id=s.schema_id)
-and NOT EXISTS (SELECT * from dbo.sysIDs WHERE table_name=(s.name +''.''+t.name))
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Sales.StockTakingHeader'')
+    END
+   END
 END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_Staff_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_Staff_UpdateID]
+ ON [Institution].[Staff] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.Staff'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_QBSync_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_QBSync_UpdateID]
+ ON [Institution].[QBSync] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.QBSync'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_PayoutHeader_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_PayoutHeader_UpdateID]
+ ON [Institution].[PayoutHeader] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.PayoutHeader'')
+    END
+   END
+END
+
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Sales].[TR_Item_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Sales].[TR_Item_UpdateID]
+ ON [Sales].[Item] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Sales.Item'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Sales].[TR_ItemIssueHeader_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Sales].[TR_ItemIssueHeader_UpdateID]
+ ON [Sales].[ItemIssueHeader] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Sales.ItemIssueHeader'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_StudentTranscriptHeader_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_StudentTranscriptHeader_UpdateID]
+ ON [Institution].[StudentTranscriptHeader] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.StudentTranscriptHeader'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_Subject_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_Subject_UpdateID]
+ ON [Institution].[Subject] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.Subject'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_TimeTableSettings_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_TimeTableSettings_UpdateID]
+ ON [Institution].[TimeTableSettings] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.TimeTableSettings'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_TimeTableSettings_SetActive_EndDate]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_TimeTableSettings_SetActive_EndDate]
+ ON [Institution].[TimeTableSettings] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN 
+     UPDATE [Institution].[TimeTableSettings] SET IsActive = 0 WHERE TimeTableSettingsID NOT IN 
+  (SELECT TimeTableSettingsID FROM inserted)
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_TimeTableHeader_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_TimeTableHeader_UpdateID]
+ ON [Institution].[TimeTableHeader] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.TimeTableHeader'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_TimeTableHeader_SetActive_EndDate]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_TimeTableHeader_SetActive_EndDate]
+ ON [Institution].[TimeTableHeader] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN 
+     UPDATE [Institution].[TimeTableHeader] SET IsActive = 0 WHERE TimeTableID NOT IN 
+  (SELECT TimeTableID FROM inserted) AND ClassID IN (SELECT ClassID FROM inserted) 
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_SubjectSetupHeader_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_SubjectSetupHeader_UpdateID]
+ ON [Institution].[SubjectSetupHeader] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.SubjectSetupHeader'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_SubjectSetupHeader_SetActive_EndDate]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_SubjectSetupHeader_SetActive_EndDate]
+ ON [Institution].[SubjectSetupHeader] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+  UPDATE [Institution].[SubjectSetupHeader] SET EndDate = SYSDATETIME() WHERE IsActive=1 
+  AND SubjectSetupID NOT IN (SELECT SubjectSetupID FROM inserted) 
+  AND ClassID IN (SELECT ClassID FROM inserted) 
+     UPDATE [Institution].[SubjectSetupHeader] SET IsActive = 0 WHERE SubjectSetupID NOT IN 
+  (SELECT SubjectSetupID FROM inserted) AND ClassID IN (SELECT ClassID FROM inserted) 
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Link_GetNewID]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+BEGIN
+execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[Link_GetNewID](@nameOfTable varchar(max))
+    RETURNS int
+    AS
+    BEGIN
+
+    RETURN dbo.GetNewID(@nameOfTable);
+    END
+    ;
 
 
 ' 
 END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[QBSync]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[QBSync](
-	[QBSyncID] [int] NOT NULL,
-	[Type] [varchar](50) NOT NULL,
-	[TransactionID] [int] NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_QBSync_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_QBSync_rowguid]  DEFAULT (newid())
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[PayoutHeader]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[PayoutHeader](
-	[PayoutID] [int] NOT NULL,
-	[Payee] [varchar](50) NOT NULL,
-	[Address] [varchar](50) NOT NULL,
-	[TotalPaid] [varchar](50) NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_PayoutHeader_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_PayoutHeader_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_PayoutHeader] PRIMARY KEY CLUSTERED 
-(
-	[PayoutID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[TimeTableSettings]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[TimeTableSettings](
-	[TimeTableSettingsID] [int] NOT NULL,
-	[NoOfLessons] [int] NOT NULL,
-	[LessonDuration] [int] NOT NULL,
-	[LessonsStartTime] [time](7) NOT NULL,
-	[BreakIndices] [varchar](50) NOT NULL,
-	[BreakDuration] [varchar](50) NOT NULL,
-	[IsActive] [bit] NOT NULL CONSTRAINT [DF_TimeTableSettings_IsActive]  DEFAULT ((1)),
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_TimeTableSettings_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_TimeTableSettings_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_TimeTableSettings] PRIMARY KEY CLUSTERED 
-(
-	[TimeTableSettingsID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[TimeTableHeader]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[TimeTableHeader](
-	[TimeTableID] [int] NOT NULL,
-	[ClassID] [int] NOT NULL,
-	[IsActive] [bit] NOT NULL CONSTRAINT [DF_TimeTableHeader_IsActive]  DEFAULT ((1)),
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_TimeTableHeader_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_TimeTableHeader_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_TimeTableHeader] PRIMARY KEY CLUSTERED 
-(
-	[TimeTableID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[StockTakingHeader]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Sales].[StockTakingHeader](
-	[StockTakingID] [int] NOT NULL,
-	[DateTaken] [datetime] NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_StockTakingHeader_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_StockTakingHeader_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_StockTakingHeader] PRIMARY KEY CLUSTERED 
-(
-	[StockTakingID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentTranscriptHeader]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[StudentTranscriptHeader](
-	[StudentTranscriptID] [int] NOT NULL,
-	[StudentID] [int] NOT NULL,
-	[Exam1ID] [int] NULL,
-	[Exam2ID] [int] NULL,
-	[Exam3ID] [int] NULL,
-	[IsActive] [bit] NULL CONSTRAINT [DF_StudentTranscriptHeader_IsActive]  DEFAULT ((1)),
-	[Responsibilities] [varchar](50) NULL,
-	[ClubsAndSport] [varchar](50) NULL,
-	[Boarding] [varchar](50) NULL,
-	[ClassTeacher] [varchar](50) NULL,
-	[ClassTeacherComments] [varchar](50) NULL,
-	[Principal] [varchar](50) NULL,
-	[PrincipalComments] [varchar](50) NULL,
-	[OpeningDay] [datetime] NULL,
-	[ClosingDay] [datetime] NULL,
-	[Term1Pos] [varchar](50) NULL,
-	[Term2Pos] [varchar](50) NULL,
-	[Term3Pos] [varchar](50) NULL,
-	[DateSaved] [datetime] NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_StudentTranscriptHeader_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_StudentTranscriptHeader_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_StudentTranscriptHeader] PRIMARY KEY CLUSTERED 
-(
-	[StudentTranscriptID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Subject]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[Subject](
-	[SubjectID] [int] NOT NULL,
-	[NameOfSubject] [varchar](50) NOT NULL,
-	[Code] [int] NULL,
-	[Tutor] [varchar](50) NULL,
-	[MaximumScore] [varchar](50) NOT NULL,
-	[IsOptional] [bit] NOT NULL CONSTRAINT [DF_Subject_IsOptional]  DEFAULT ((0)),
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_Subject_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_Subject_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_Subject] PRIMARY KEY CLUSTERED 
-(
-	[SubjectID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[SubjectSetupHeader]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[SubjectSetupHeader](
-	[SubjectSetupID] [int] NOT NULL,
-	[ClassID] [int] NOT NULL,
-	[IsActive] [bit] NOT NULL CONSTRAINT [DF_SubjectSetupHeader_IsActive]  DEFAULT ((1)),
-	[StartDate] [datetime] NOT NULL,
-	[EndDate] [datetime] NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_SubjectSetupHeader_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_SubjectSetupHeader_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_SubjectSetup] PRIMARY KEY CLUSTERED 
-(
-	[SubjectSetupID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Staff]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[Staff](
-	[StaffID] [int] NOT NULL,
-	[Name] [varchar](50) NULL,
-	[NationalID] [varchar](50) NULL,
-	[DateOfAdmission] [datetime] NULL,
-	[PhoneNo] [varchar](50) NULL,
-	[Email] [varchar](50) NULL,
-	[Address] [varchar](50) NULL,
-	[City] [varchar](50) NULL,
-	[PostalCode] [varchar](50) NULL,
-	[SPhoto] [varbinary](max) NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_Staff_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_Staff_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_Staff] PRIMARY KEY CLUSTERED 
-(
-	[StaffID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[SupplierPayment]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Sales].[SupplierPayment](
-	[SupplierPaymentID] [int] NOT NULL CONSTRAINT [DF_SupplierPayment_SupplierPaymentID]  DEFAULT ([dbo].[GetNewID]('Sales.SupplierPayment')),
-	[SupplierID] [int] NOT NULL,
-	[DatePaid] [datetime] NOT NULL,
-	[AmountPaid] [decimal](18, 0) NOT NULL,
-	[Notes] [varchar](50) NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_SupplierPayment_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_SupplierPayment_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_SupplierPayment] PRIMARY KEY CLUSTERED 
-(
-	[SupplierPaymentID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[SupplierDetail]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Sales].[SupplierDetail](
-	[SupplierDetailID] [int] NOT NULL CONSTRAINT [DF_SupplierDetail_SupplierDetailID]  DEFAULT ([dbo].[GetNewID]('Sales.SupplierDetail')),
-	[SupplierID] [int] NOT NULL,
-	[ItemID] [bigint] NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_SupplierDetail_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_SupplierDetail_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_SupplierDetail] PRIMARY KEY CLUSTERED 
-(
-	[SupplierDetailID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[Supplier]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Sales].[Supplier](
-	[SupplierID] [int] NOT NULL CONSTRAINT [DF_Supplier_SupplierID]  DEFAULT ([dbo].[GetNewID]('Sales.Supplier')),
-	[NameOfSupplier] [varchar](50) NOT NULL,
-	[PhoneNo] [varchar](50) NOT NULL,
-	[AltPhoneNo] [varchar](50) NOT NULL,
-	[Email] [varchar](50) NOT NULL,
-	[Address] [varchar](50) NOT NULL,
-	[PostalCode] [varchar](50) NULL,
-	[City] [varchar](50) NULL,
-	[PINNo] [varchar](50) NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_Vendor_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_Vendor_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_Vendor] PRIMARY KEY CLUSTERED 
-(
-	[SupplierID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[ItemReceiptDetail]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Sales].[ItemReceiptDetail](
-	[ItemReceiptDetailID] [int] NOT NULL CONSTRAINT [DF_ItemReceiptDetail_ItemReceiptDetailID]  DEFAULT ([dbo].[GetNewID]('Sales.ItemreceiptDetail')),
-	[ItemReceiptID] [int] NOT NULL,
-	[ItemID] [bigint] NOT NULL,
-	[Quantity] [decimal](18, 0) NOT NULL,
-	[UnitCost] [decimal](18, 0) NOT NULL,
-	[LineTotal] [decimal](18, 0) NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_PurchaseOrderDetail_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_PurchaseOrderDetail_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_PurchaseOrderDetail] PRIMARY KEY CLUSTERED 
-(
-	[ItemReceiptDetailID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentSubjectSelectionDetail]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[StudentSubjectSelectionDetail](
-	[StudentSubjectSelectionDetailID] [int] NOT NULL CONSTRAINT [DF_StudentSubjectSelectionDetail_StudentSubjectSelectionDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.StudentSubjectSelectionDetail')),
-	[StudentSubjectSelectionID] [int] NOT NULL,
-	[SubjectID] [int] NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_StudentSubjectSelectionDetail_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_StudentSubjectSelectionDetail_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_StudentSubjectSelectionDetail] PRIMARY KEY CLUSTERED 
-(
-	[StudentSubjectSelectionDetailID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentClearance]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[StudentClearance](
-	[StudentClearanceID] [int] NOT NULL CONSTRAINT [DF_StudentClearance_StudentClearanceID]  DEFAULT ([dbo].[GetNewID]('Institution.StudentClearance')),
-	[StudentID] [int] NOT NULL,
-	[DateCleared] [datetime] NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_StudentClearance_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_StudentClearance_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_StudentClearance] PRIMARY KEY CLUSTERED 
-(
-	[StudentClearanceID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[SubjectSetupDetail]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[SubjectSetupDetail](
-	[SubjectSetupDetailID] [int] NOT NULL CONSTRAINT [DF_SubjectSetupDetail_SubjectSetupDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.SubjectSetupDetail')),
-	[SubjectSetupID] [int] NOT NULL,
-	[SubjectID] [int] NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_SubjectSetupDetail_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_SubjectSetupDetail_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_SubjectSetupDetail] PRIMARY KEY CLUSTERED 
-(
-	[SubjectSetupDetailID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentTransfer]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[StudentTransfer](
-	[StudentTransferID] [int] NOT NULL CONSTRAINT [DF_StudentTransfer_StudentTransferID]  DEFAULT ([dbo].[GetNewID]('Institution.StudentTransfer')),
-	[StudentID] [int] NOT NULL,
-	[DateTransferred] [datetime] NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_StudentTransfer_ModifiedDate]  DEFAULT (sysdatetime()),
-	[riwguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_StudentTransfer_riwguid]  DEFAULT (newid()),
- CONSTRAINT [PK_StudentTransfer] PRIMARY KEY CLUSTERED 
-(
-	[StudentTransferID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[TimeTableDetail]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Institution].[TimeTableDetail](
-	[TimeTableDetailID] [int] NOT NULL CONSTRAINT [DF_TimeTableDetail_TimeTableDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.TimeTableDetail')),
-	[TimeTableID] [int] NOT NULL,
-	[SubjectIndex] [int] NOT NULL,
-	[NameOfSubject] [varchar](50) NOT NULL,
-	[Tutor] [varchar](50) NULL,
-	[Day] [varchar](50) NOT NULL,
-	[StartTime] [time](7) NOT NULL,
-	[EndTime] [time](7) NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_TimeTableDetail_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_TimeTableDetail_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_TimeTableDetail] PRIMARY KEY CLUSTERED 
-(
-	[TimeTableDetailID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_Class_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_Class_UpdateID]
- ON [Institution].[Class] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.Class'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[SaleDetail]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [Sales].[SaleDetail](
-	[SalesOrderDetailID] [int] NOT NULL CONSTRAINT [DF_SaleDetail_SalesOrderDetailID]  DEFAULT ([dbo].[GetNewID]('Sales.SaleDetail')),
-	[SaleID] [int] NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[Amount] [decimal](18, 0) NOT NULL,
-	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_SalesOrderDetail_ModifiedDate]  DEFAULT (sysdatetime()),
-	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_SalesOrderDetail_rowguid]  DEFAULT (newid()),
- CONSTRAINT [PK_SalesOrderDetail] PRIMARY KEY CLUSTERED 
-(
-	[SalesOrderDetailID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_ClassGroupHeader_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_ClassGroupHeader_UpdateID]
- ON [Institution].[ClassGroupHeader] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.ClassGroupHeader'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_ClassGroupHeader_SetActive_EndDate]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_ClassGroupHeader_SetActive_EndDate]
- ON [Institution].[ClassGroupHeader] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     UPDATE [Institution].[ClassGroupHeader] SET IsActive = 0 WHERE ClassGroupID NOT IN 
-  (SELECT ClassGroupID FROM inserted)
-   END
-END
-
-
-'
 GO
 SET ANSI_NULLS ON
 GO
@@ -2528,12 +2677,162 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_Class_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_Class_UpdateID]
+ ON [Institution].[Class] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.Class'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_ClassGroupHeader_UpdateID]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_ClassGroupHeader_UpdateID]
+ ON [Institution].[ClassGroupHeader] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
+  WHILE(@inserted_count>0)
+    BEGIN
+   SET @inserted_count = @inserted_count-1
+   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.ClassGroupHeader'')
+    END
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_ClassGroupHeader_SetActive_EndDate]'))
+EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_ClassGroupHeader_SetActive_EndDate]
+ ON [Institution].[ClassGroupHeader] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+     UPDATE [Institution].[ClassGroupHeader] SET IsActive = 0 WHERE ClassGroupID NOT IN 
+  (SELECT ClassGroupID FROM inserted)
+   END
+END
+
+
+'
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[SupplierPayment]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Sales].[SupplierPayment](
+	[SupplierPaymentID] [int] NOT NULL CONSTRAINT [DF_SupplierPayment_SupplierPaymentID]  DEFAULT ([dbo].[Link_GetNewID]('Sales.SupplierPayment')),
+	[SupplierID] [int] NOT NULL,
+	[DatePaid] [datetime] NOT NULL,
+	[AmountPaid] [decimal](18, 0) NOT NULL,
+	[Notes] [varchar](50) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_SupplierPayment_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_SupplierPayment_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_SupplierPayment] PRIMARY KEY CLUSTERED 
+(
+	[SupplierPaymentID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[SupplierDetail]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Sales].[SupplierDetail](
+	[SupplierDetailID] [int] NOT NULL CONSTRAINT [DF_SupplierDetail_SupplierDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Sales.SupplierDetail')),
+	[SupplierID] [int] NOT NULL,
+	[ItemID] [bigint] NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_SupplierDetail_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_SupplierDetail_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_SupplierDetail] PRIMARY KEY CLUSTERED 
+(
+	[SupplierDetailID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[Supplier]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Sales].[Supplier](
+	[SupplierID] [int] NOT NULL CONSTRAINT [DF_Supplier_SupplierID]  DEFAULT ([dbo].[Link_GetNewID]('Sales.Supplier')),
+	[NameOfSupplier] [varchar](50) NOT NULL,
+	[PhoneNo] [varchar](50) NOT NULL,
+	[AltPhoneNo] [varchar](50) NOT NULL,
+	[Email] [varchar](50) NOT NULL,
+	[Address] [varchar](50) NOT NULL,
+	[PostalCode] [varchar](50) NULL,
+	[City] [varchar](50) NULL,
+	[PINNo] [varchar](50) NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_Vendor_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_Vendor_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_Vendor] PRIMARY KEY CLUSTERED 
+(
+	[SupplierID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 SET ANSI_PADDING ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[PayoutDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[PayoutDetail](
-	[PayoutDetailID] [int] NOT NULL CONSTRAINT [DF_PayoutDetail_PayoutDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.PayoutDetail')),
+	[PayoutDetailID] [int] NOT NULL CONSTRAINT [DF_PayoutDetail_PayoutDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.PayoutDetail')),
 	[PayoutID] [int] NOT NULL,
 	[Description] [varchar](50) NOT NULL,
 	[DatePaid] [datetime] NOT NULL,
@@ -2553,12 +2852,140 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentSubjectSelectionDetail]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[StudentSubjectSelectionDetail](
+	[StudentSubjectSelectionDetailID] [int] NOT NULL CONSTRAINT [DF_StudentSubjectSelectionDetail_StudentSubjectSelectionDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.StudentSubjectSelectionDetail')),
+	[StudentSubjectSelectionID] [int] NOT NULL,
+	[SubjectID] [int] NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_StudentSubjectSelectionDetail_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_StudentSubjectSelectionDetail_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_StudentSubjectSelectionDetail] PRIMARY KEY CLUSTERED 
+(
+	[StudentSubjectSelectionDetailID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentClearance]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[StudentClearance](
+	[StudentClearanceID] [int] NOT NULL CONSTRAINT [DF_StudentClearance_StudentClearanceID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.StudentClearance')),
+	[StudentID] [int] NOT NULL,
+	[DateCleared] [datetime] NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_StudentClearance_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_StudentClearance_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_StudentClearance] PRIMARY KEY CLUSTERED 
+(
+	[StudentClearanceID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[SubjectSetupDetail]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[SubjectSetupDetail](
+	[SubjectSetupDetailID] [int] NOT NULL CONSTRAINT [DF_SubjectSetupDetail_SubjectSetupDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.SubjectSetupDetail')),
+	[SubjectSetupID] [int] NOT NULL,
+	[SubjectID] [int] NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_SubjectSetupDetail_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_SubjectSetupDetail_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_SubjectSetupDetail] PRIMARY KEY CLUSTERED 
+(
+	[SubjectSetupDetailID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[StudentTransfer]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[StudentTransfer](
+	[StudentTransferID] [int] NOT NULL CONSTRAINT [DF_StudentTransfer_StudentTransferID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.StudentTransfer')),
+	[StudentID] [int] NOT NULL,
+	[DateTransferred] [datetime] NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_StudentTransfer_ModifiedDate]  DEFAULT (sysdatetime()),
+	[riwguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_StudentTransfer_riwguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_StudentTransfer] PRIMARY KEY CLUSTERED 
+(
+	[StudentTransferID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[TimeTableDetail]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Institution].[TimeTableDetail](
+	[TimeTableDetailID] [int] NOT NULL CONSTRAINT [DF_TimeTableDetail_TimeTableDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.TimeTableDetail')),
+	[TimeTableID] [int] NOT NULL,
+	[SubjectIndex] [int] NOT NULL,
+	[NameOfSubject] [varchar](50) NOT NULL,
+	[Tutor] [varchar](50) NULL,
+	[Day] [varchar](50) NOT NULL,
+	[StartTime] [time](7) NOT NULL,
+	[EndTime] [time](7) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_TimeTableDetail_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_TimeTableDetail_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_TimeTableDetail] PRIMARY KEY CLUSTERED 
+(
+	[TimeTableDetailID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[SaleDetail]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Sales].[SaleDetail](
+	[SalesOrderDetailID] [int] NOT NULL CONSTRAINT [DF_SaleDetail_SalesOrderDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Sales.SaleDetail')),
+	[SaleID] [int] NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+	[Amount] [decimal](18, 0) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_SalesOrderDetail_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_SalesOrderDetail_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_SalesOrderDetail] PRIMARY KEY CLUSTERED 
+(
+	[SalesOrderDetailID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 SET ANSI_PADDING ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[LeavingCertificate]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[LeavingCertificate](
-	[LeavingCertificateID] [int] NOT NULL CONSTRAINT [DF_LeavingCertificate_LeavingCertificateID]  DEFAULT ([dbo].[GetNewID]('Institution.LeavingCertificate')),
+	[LeavingCertificateID] [int] NOT NULL CONSTRAINT [DF_LeavingCertificate_LeavingCertificateID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.LeavingCertificate')),
 	[StudentID] [int] NOT NULL,
 	[DateOfIssue] [datetime] NOT NULL,
 	[DateOfBirth] [datetime] NOT NULL,
@@ -2583,10 +3010,32 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[ItemReceiptDetail]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [Sales].[ItemReceiptDetail](
+	[ItemReceiptDetailID] [int] NOT NULL CONSTRAINT [DF_ItemReceiptDetail_ItemReceiptDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Sales.ItemreceiptDetail')),
+	[ItemReceiptID] [int] NOT NULL,
+	[ItemID] [bigint] NOT NULL,
+	[Quantity] [decimal](18, 0) NOT NULL,
+	[UnitCost] [decimal](18, 0) NOT NULL,
+	[LineTotal] [decimal](18, 0) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_PurchaseOrderDetail_ModifiedDate]  DEFAULT (sysdatetime()),
+	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_PurchaseOrderDetail_rowguid]  DEFAULT (newid()),
+ CONSTRAINT [PK_PurchaseOrderDetail] PRIMARY KEY CLUSTERED 
+(
+	[ItemReceiptDetailID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[ItemIssueDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Sales].[ItemIssueDetail](
-	[ItemIssueDetailID] [int] NOT NULL CONSTRAINT [DF_ItemIssueDetail_ItemIssueDetailID]  DEFAULT ([dbo].[GetNewID]('Sales.ItemIssueDetail')),
+	[ItemIssueDetailID] [int] NOT NULL CONSTRAINT [DF_ItemIssueDetail_ItemIssueDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Sales.ItemIssueDetail')),
 	[ItemIssueID] [int] NOT NULL,
 	[ItemID] [bigint] NOT NULL,
 	[Quantity] [decimal](18, 0) NOT NULL,
@@ -2608,7 +3057,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[ItemCategory]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Sales].[ItemCategory](
-	[ItemCategoryID] [int] NOT NULL CONSTRAINT [DF_ItemCategory_ItemCategoryID]  DEFAULT ([dbo].[GetNewID]('Sales.ItemCategory')),
+	[ItemCategoryID] [int] NOT NULL CONSTRAINT [DF_ItemCategory_ItemCategoryID]  DEFAULT ([dbo].[Link_GetNewID]('Sales.ItemCategory')),
 	[Description] [varchar](50) NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_ProductCategory_ModifiedDate]  DEFAULT (sysdatetime()),
 	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_ProductCategory_rowguid]  DEFAULT (newid()),
@@ -2630,7 +3079,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Gallery]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[Gallery](
-	[GalleryID] [int] NOT NULL CONSTRAINT [DF_Gallery_GalleryID]  DEFAULT ([dbo].[GetNewID]('Institution.Gallery')),
+	[GalleryID] [int] NOT NULL CONSTRAINT [DF_Gallery_GalleryID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.Gallery')),
 	[Name] [varchar](255) NOT NULL,
 	[Data] [varbinary](max) NOT NULL,
 	[DateAdded] [datetime] NOT NULL,
@@ -2654,7 +3103,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[FeesStructureDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[FeesStructureDetail](
-	[FeesStructureDetailID] [int] NOT NULL CONSTRAINT [DF_FeesStructureDetail_FeesStructureDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.FeesStructureDetail')),
+	[FeesStructureDetailID] [int] NOT NULL CONSTRAINT [DF_FeesStructureDetail_FeesStructureDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.FeesStructureDetail')),
 	[FeesStructureID] [int] NULL,
 	[Name] [varchar](50) NULL,
 	[Amount] [varchar](50) NULL,
@@ -2678,7 +3127,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Dormitory]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[Dormitory](
-	[DormitoryID] [int] NOT NULL CONSTRAINT [DF_Dormitory_DormitoryID]  DEFAULT ([dbo].[GetNewID]('Institution.Dormitory')),
+	[DormitoryID] [int] NOT NULL CONSTRAINT [DF_Dormitory_DormitoryID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.Dormitory')),
 	[NameOfDormitory] [varchar](50) NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_Dormitory_ModifiedDate]  DEFAULT (sysdatetime()),
 	[rowguid] [uniqueidentifier] NOT NULL CONSTRAINT [DF_Dormitory_rowguid]  DEFAULT (newid()),
@@ -2700,7 +3149,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Discipline]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[Discipline](
-	[DisciplineID] [int] NOT NULL CONSTRAINT [DF_Discipline_DisciplineID]  DEFAULT ([dbo].[GetNewID]('Institution.Discipline')),
+	[DisciplineID] [int] NOT NULL CONSTRAINT [DF_Discipline_DisciplineID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.Discipline')),
 	[StudentID] [int] NOT NULL,
 	[Issue] [varchar](50) NOT NULL,
 	[DateAdded] [datetime] NOT NULL,
@@ -2719,7 +3168,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[CurrentClass]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[CurrentClass](
-	[CurrentClassID] [int] NOT NULL CONSTRAINT [DF_CurrentClass_CurrentClassID]  DEFAULT ([dbo].[GetNewID]('Institution.CurrentClass')),
+	[CurrentClassID] [int] NOT NULL CONSTRAINT [DF_CurrentClass_CurrentClassID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.CurrentClass')),
 	[StudentID] [int] NOT NULL,
 	[ClassID] [int] NOT NULL,
 	[IsActive] [bit] NOT NULL CONSTRAINT [DF_CurrentClass_IsActive]  DEFAULT ((1)),
@@ -2739,7 +3188,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[ClassSetupDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[ClassSetupDetail](
-	[ClassSetupDetailID] [int] NOT NULL CONSTRAINT [DF_ClassSetupDetail_ClassSetupDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.ClassSetupDetail')),
+	[ClassSetupDetailID] [int] NOT NULL CONSTRAINT [DF_ClassSetupDetail_ClassSetupDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.ClassSetupDetail')),
 	[ClassSetupID] [int] NOT NULL,
 	[ClassID] [int] NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_ClassSetupDetail_ModifiedDate]  DEFAULT (sysdatetime()),
@@ -2758,7 +3207,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[ClassGroupDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[ClassGroupDetail](
-	[ClassGroupDetailID] [int] NOT NULL CONSTRAINT [DF_ClassGroupDetail_ClassGroupDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.ClassGroupDetail')),
+	[ClassGroupDetailID] [int] NOT NULL CONSTRAINT [DF_ClassGroupDetail_ClassGroupDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.ClassGroupDetail')),
 	[ClassGroupID] [int] NOT NULL,
 	[ClassID] [int] NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_ClassGroupDetail_ModifiedDate]  DEFAULT (sysdatetime()),
@@ -2773,7 +3222,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[BookReturnHeader]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[BookReturnHeader](
-	[BookReturnID] [int] NOT NULL CONSTRAINT [DF_BookReturnHeader_BookReturnID]  DEFAULT ([dbo].[GetNewID]('Institution.BookReturnHeader')),
+	[BookReturnID] [int] NOT NULL CONSTRAINT [DF_BookReturnHeader_BookReturnID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.BookReturnHeader')),
 	[StudentID] [int] NOT NULL,
 	[DateReturned] [datetime] NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_BookReturnHeader_ModifiedDate]  DEFAULT (sysdatetime()),
@@ -2792,7 +3241,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[BookReturnDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[BookReturnDetail](
-	[BookReturnDetailID] [int] NOT NULL CONSTRAINT [DF_BookReturnDetail_BookReturnDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.BookReturnDetail')),
+	[BookReturnDetailID] [int] NOT NULL CONSTRAINT [DF_BookReturnDetail_BookReturnDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.BookReturnDetail')),
 	[BookReturnID] [int] NOT NULL,
 	[BookID] [int] NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_BookReturnDetail_ModifiedDate]  DEFAULT (sysdatetime()),
@@ -2811,7 +3260,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[BookIssueHeader]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[BookIssueHeader](
-	[BookIssueID] [int] NOT NULL CONSTRAINT [DF_BookIssueHeader_BookIssueID]  DEFAULT ([dbo].[GetNewID]('BookIssueHeader')),
+	[BookIssueID] [int] NOT NULL CONSTRAINT [DF_BookIssueHeader_BookIssueID]  DEFAULT ([dbo].[Link_GetNewID]('BookIssueHeader')),
 	[StudentID] [int] NOT NULL,
 	[DateIssued] [datetime] NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_BookIssue_ModifiedDate]  DEFAULT (sysdatetime()),
@@ -2830,7 +3279,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[BookIssueDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[BookIssueDetail](
-	[BookIssueDetailID] [int] NOT NULL CONSTRAINT [DF_BookIssueDetail_BookIssueDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.BookIssueDetail')),
+	[BookIssueDetailID] [int] NOT NULL CONSTRAINT [DF_BookIssueDetail_BookIssueDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.BookIssueDetail')),
 	[BookIssueID] [int] NOT NULL,
 	[BookID] [int] NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_BookIssueDetail_ModifiedDate]  DEFAULT (sysdatetime()),
@@ -2851,7 +3300,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Book]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[Book](
-	[BookID] [int] NOT NULL CONSTRAINT [DF_Book_BookID]  DEFAULT ([dbo].[GetNewID]('Institution.Book')),
+	[BookID] [int] NOT NULL CONSTRAINT [DF_Book_BookID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.Book')),
 	[ISBN] [varchar](50) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
 	[Author] [varchar](50) NOT NULL,
@@ -2878,11 +3327,11 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[ExamResultDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[ExamResultDetail](
-	[ExamResultDetail] [int] NOT NULL CONSTRAINT [DF_ExamResultDetail_ExamResultDetail]  DEFAULT ([dbo].[GetNewID]('Institution.ExamResultDetail')),
+	[ExamResultDetail] [int] NOT NULL CONSTRAINT [DF_ExamResultDetail_ExamResultDetail]  DEFAULT ([dbo].[Link_GetNewID]('Institution.ExamResultDetail')),
 	[ExamResultID] [int] NOT NULL,
 	[SubjectID] [int] NOT NULL,
 	[Score] [decimal](18, 0) NOT NULL,
-	[Grade]  AS ([dbo].[GetGrade](CONVERT([decimal],[Score],0))),
+	[Grade]  AS ([dbo].[GetGrade](CONVERT([decimal],[Score],(0)))),
 	[Remarks] [varchar](50) NULL,
 	[Tutor] [varchar](50) NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_ExamResultDetail_ModifiedDate]  DEFAULT (sysdatetime()),
@@ -2903,7 +3352,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[ExamDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[ExamDetail](
-	[ExamDetailID] [int] NOT NULL CONSTRAINT [DF_ExamDetail_ExamDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.ExamDetail')),
+	[ExamDetailID] [int] NOT NULL CONSTRAINT [DF_ExamDetail_ExamDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.ExamDetail')),
 	[ExamID] [int] NOT NULL,
 	[SubjectID] [int] NOT NULL,
 	[ExamDateTime] [datetime] NOT NULL,
@@ -2923,7 +3372,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[ExamClassDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[ExamClassDetail](
-	[ExamClassDetailID] [int] NOT NULL CONSTRAINT [DF_ExamClassDetail_ExamClassDetailID]  DEFAULT ([dbo].[GetNewID]('Institution.ExamClassDetail')),
+	[ExamClassDetailID] [int] NOT NULL CONSTRAINT [DF_ExamClassDetail_ExamClassDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.ExamClassDetail')),
 	[ExamID] [int] NOT NULL,
 	[ClassID] [int] NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_ExamClassDetail_ModifiedDate]  DEFAULT (sysdatetime()),
@@ -2944,7 +3393,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Institution].[Event]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Institution].[Event](
-	[EventID] [int] NOT NULL CONSTRAINT [DF_Event_EventID]  DEFAULT ([dbo].[GetNewID]('Institution.Event')),
+	[EventID] [int] NOT NULL CONSTRAINT [DF_Event_EventID]  DEFAULT ([dbo].[Link_GetNewID]('Institution.Event')),
 	[Name] [varchar](50) NULL,
 	[StartDateTime] [varchar](50) NULL,
 	[EndDateTime] [varchar](50) NULL,
@@ -2966,166 +3415,12 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_StudentTranscriptHeader_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_StudentTranscriptHeader_UpdateID]
- ON [Institution].[StudentTranscriptHeader] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.StudentTranscriptHeader'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_Subject_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_Subject_UpdateID]
- ON [Institution].[Subject] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.Subject'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_TimeTableSettings_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_TimeTableSettings_UpdateID]
- ON [Institution].[TimeTableSettings] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.TimeTableSettings'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_TimeTableSettings_SetActive_EndDate]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_TimeTableSettings_SetActive_EndDate]
- ON [Institution].[TimeTableSettings] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN 
-     UPDATE [Institution].[TimeTableSettings] SET IsActive = 0 WHERE TimeTableSettingsID NOT IN 
-  (SELECT TimeTableSettingsID FROM inserted)
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_TimeTableHeader_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_TimeTableHeader_UpdateID]
- ON [Institution].[TimeTableHeader] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.TimeTableHeader'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_TimeTableHeader_SetActive_EndDate]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_TimeTableHeader_SetActive_EndDate]
- ON [Institution].[TimeTableHeader] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN 
-     UPDATE [Institution].[TimeTableHeader] SET IsActive = 0 WHERE TimeTableID NOT IN 
-  (SELECT TimeTableID FROM inserted) AND ClassID IN (SELECT ClassID FROM inserted) 
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 SET ANSI_PADDING ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[Vat]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Sales].[Vat](
-	[VatID] [int] NOT NULL CONSTRAINT [DF_Vat_VatID]  DEFAULT ([dbo].[GetNewID]('Sales.Vat')),
+	[VatID] [int] NOT NULL CONSTRAINT [DF_Vat_VatID]  DEFAULT ([dbo].[Link_GetNewID]('Sales.Vat')),
 	[Description] [varchar](50) NOT NULL,
 	[Rate] [decimal](18, 0) NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_Vat_ModifiedDate]  DEFAULT (sysdatetime()),
@@ -3148,7 +3443,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Users].[UserDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Users].[UserDetail](
-	[UserDetailID] [int] NOT NULL CONSTRAINT [DF_UserDetail_UserDetail]  DEFAULT ([dbo].[GetNewID]('Users.UserDetail')),
+	[UserDetailID] [int] NOT NULL CONSTRAINT [DF_UserDetail_UserDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Users.UserDetail')),
 	[UserID] [varchar](50) NOT NULL,
 	[UserRoleID] [int] NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF_UserDetail_ModifiedDate]  DEFAULT (sysdatetime()),
@@ -3161,222 +3456,6 @@ CREATE TABLE [Users].[UserDetail](
 END
 GO
 SET ANSI_PADDING OFF
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_SubjectSetupHeader_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_SubjectSetupHeader_UpdateID]
- ON [Institution].[SubjectSetupHeader] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.SubjectSetupHeader'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_SubjectSetupHeader_SetActive_EndDate]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_SubjectSetupHeader_SetActive_EndDate]
- ON [Institution].[SubjectSetupHeader] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-  UPDATE [Institution].[SubjectSetupHeader] SET EndDate = SYSDATETIME() WHERE IsActive=1 
-  AND SubjectSetupID NOT IN (SELECT SubjectSetupID FROM inserted) 
-  AND ClassID IN (SELECT ClassID FROM inserted) 
-     UPDATE [Institution].[SubjectSetupHeader] SET IsActive = 0 WHERE SubjectSetupID NOT IN 
-  (SELECT SubjectSetupID FROM inserted) AND ClassID IN (SELECT ClassID FROM inserted) 
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Sales].[TR_StockTakingHeader_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Sales].[TR_StockTakingHeader_UpdateID]
- ON [Sales].[StockTakingHeader] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Sales.StockTakingHeader'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_Staff_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_Staff_UpdateID]
- ON [Institution].[Staff] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.Staff'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_QBSync_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_QBSync_UpdateID]
- ON [Institution].[QBSync] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.QBSync'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Institution].[TR_PayoutHeader_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Institution].[TR_PayoutHeader_UpdateID]
- ON [Institution].[PayoutHeader] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Institution.PayoutHeader'')
-    END
-   END
-END
-
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Sales].[TR_Item_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Sales].[TR_Item_UpdateID]
- ON [Sales].[Item] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Sales.Item'')
-    END
-   END
-END
-
-
-'
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[Sales].[TR_ItemIssueHeader_UpdateID]'))
-EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [Sales].[TR_ItemIssueHeader_UpdateID]
- ON [Sales].[ItemIssueHeader] AFTER INSERT 
- NOT FOR REPLICATION
-AS
-BEGIN
- IF @@ROWCOUNT = 0 RETURN
- SET NOCOUNT ON;
-
- IF exists (SELECT * FROM inserted)
-   BEGIN
-     DECLARE @inserted_count int = (SELECT COUNT(*) FROM inserted)
-  WHILE(@inserted_count>0)
-    BEGIN
-   SET @inserted_count = @inserted_count-1
-   UPDATE dbo.sysIDs SET last_id = last_id+1 where UPPER(table_name)=UPPER(''Sales.ItemIssueHeader'')
-    END
-   END
-END
-
-
-'
 GO
 SET ANSI_NULLS ON
 GO
@@ -3987,6 +4066,31 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetSubjectsTakenByStudent]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+BEGIN
+execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetSubjectsTakenByStudent](@studentSubjectSelectionID int)
+    RETURNS int
+    AS
+    BEGIN
+
+    DECLARE @noOfSubjects int;
+ IF NOT EXISTS (SELECT * FROM [Institution].[StudentSubjectSelectionDetail] WHERE StudentSubjectSelectionID=@studentSubjectSelectionID)
+ RETURN 0
+ ELSE
+ BEGIN 
+    set @noOfSubjects = (SELECT COUNT(*) FROM [Institution].[StudentSubjectSelectionDetail] WHERE StudentSubjectSelectionID=@studentSubjectSelectionID)
+ END
+ RETURN @noOfSubjects
+    END
+
+
+' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetWeightedExamTotalScore]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 BEGIN
 execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetWeightedExamTotalScore](@studentID int, @examID int,@weight decimal)
@@ -4052,31 +4156,6 @@ execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetUnreturnedCop
  DECLARE @unreturned int=(SELECT COUNT(*) FROM ((SELECT bid.BookID FROM [Institution].[BookIssueDetail] bid INNER JOIN [Institution].[BookIssueHeader] bih ON(bid.BookIssueID=bih.BookIssueID) WHERE NOT EXISTS(SELECT brd.BookID FROM [Institution].[BookReturnDetail] brd INNER JOIN [Institution].[BookReturnHeader] brh ON(brd.BookReturnID=brh.BookReturnID) WHERE brh.DateReturned>bih.DateIssued AND brd.BookID=bid.BookID)) x LEFT OUTER JOIN [Institution].[Book] b ON (x.BookID=b.BookID)) WHERE x.BookID=@bookID);
  
  RETURN @unreturned
-    END
-
-
-' 
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetSubjectsTakenByStudent]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-BEGIN
-execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetSubjectsTakenByStudent](@studentSubjectSelectionID int)
-    RETURNS int
-    AS
-    BEGIN
-
-    DECLARE @noOfSubjects int;
- IF NOT EXISTS (SELECT * FROM [Institution].[StudentSubjectSelectionDetail] WHERE StudentSubjectSelectionID=@studentSubjectSelectionID)
- RETURN 0
- ELSE
- BEGIN 
-    set @noOfSubjects = (SELECT COUNT(*) FROM [Institution].[StudentSubjectSelectionDetail] WHERE StudentSubjectSelectionID=@studentSubjectSelectionID)
- END
- RETURN @noOfSubjects
     END
 
 
@@ -4541,7 +4620,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[Sales].[StockTakingDetail]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [Sales].[StockTakingDetail](
-	[StockTakingDetailID] [int] NOT NULL CONSTRAINT [DF_StockTakingDetail_StockTakingDetailID]  DEFAULT ([dbo].[GetNewID]('Sales.StockTakingDetail')),
+	[StockTakingDetailID] [int] NOT NULL CONSTRAINT [DF_StockTakingDetail_StockTakingDetailID]  DEFAULT ([dbo].[Link_GetNewID]('Sales.StockTakingDetail')),
 	[StockTakingID] [int] NOT NULL,
 	[ItemID] [bigint] NOT NULL,
 	[AvailableQuantity] [float] NOT NULL,
@@ -4727,8 +4806,6 @@ BEGIN
     END
    END
 END
-
-
 '
 GO
 SET ANSI_NULLS ON
@@ -4817,31 +4894,6 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetSubjectSelection]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-BEGIN
-execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetSubjectSelection](@subjectID int,@studentID int)
-    RETURNS bit
-    AS
-    BEGIN
- DECLARE @isSelected bit;
- IF EXISTS (SELECT * FROM [Institution].[StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN
- [Institution].[StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) WHERE 
- sssd.SubjectID=@subjectID AND sssh.StudentID=@studentID)
-SET @isSelected=(SELECT 1);
-ELSE
-SET @isSelected=(SELECT 0);
-
- RETURN @isSelected
-    END
-
-
-' 
-END
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetTermOverAllPosition]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 BEGIN
 execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetTermOverAllPosition](@studentID int,@form varchar(2),@startDateTime datetime,@endDateTime datetime)
@@ -4908,6 +4960,31 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetSubjectSelection]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+BEGIN
+execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetSubjectSelection](@subjectID int,@studentID int)
+    RETURNS bit
+    AS
+    BEGIN
+ DECLARE @isSelected bit;
+ IF EXISTS (SELECT * FROM [Institution].[StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN
+ [Institution].[StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) WHERE 
+ sssd.SubjectID=@subjectID AND sssh.StudentID=@studentID)
+SET @isSelected=(SELECT 1);
+ELSE
+SET @isSelected=(SELECT 0);
+
+ RETURN @isSelected
+    END
+
+
+' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetCurrentBalance]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 BEGIN
 execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[GetCurrentBalance](@studentID int)
@@ -4934,8 +5011,6 @@ GO
 GRANT ALTER TO [Principal] WITH GRANT OPTION  AS [dbo]
 GO
 GRANT CONTROL TO [Principal] WITH GRANT OPTION  AS [dbo]
-GO
-USE [UmanyiSMS]
 GO
 GRANT ALTER ON ROLE::[Accounts] TO [Principal] WITH GRANT OPTION  AS [dbo]
 GO
@@ -4993,6 +5068,48 @@ GRANT UPDATE ON SCHEMA::[Institution] TO [SystemAdmin] AS [dbo]
 GO
 GRANT VIEW DEFINITION ON SCHEMA::[Institution] TO [SystemAdmin] AS [dbo]
 GO
+GRANT EXECUTE ON [dbo].[AddValuesIgnoringNull] TO [Accounts] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[AddValuesIgnoringNull] TO [Deputy] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[AddValuesIgnoringNull] TO [Principal] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[AddValuesIgnoringNull] TO [Teacher] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[GetGrade] TO [Accounts] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[GetGrade] TO [Deputy] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[GetGrade] TO [Principal] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[GetGrade] TO [Teacher] AS [dbo]
+GO
+GRANT INSERT ON [dbo].[sysIDs] TO [Accounts] AS [dbo]
+GO
+GRANT SELECT ON [dbo].[sysIDs] TO [Accounts] AS [dbo]
+GO
+GRANT UPDATE ON [dbo].[sysIDs] TO [Accounts] AS [dbo]
+GO
+GRANT INSERT ON [dbo].[sysIDs] TO [Deputy] AS [dbo]
+GO
+GRANT SELECT ON [dbo].[sysIDs] TO [Deputy] AS [dbo]
+GO
+GRANT UPDATE ON [dbo].[sysIDs] TO [Deputy] AS [dbo]
+GO
+GRANT INSERT ON [dbo].[sysIDs] TO [Principal] WITH GRANT OPTION  AS [dbo]
+GO
+GRANT SELECT ON [dbo].[sysIDs] TO [Principal] WITH GRANT OPTION  AS [dbo]
+GO
+GRANT UPDATE ON [dbo].[sysIDs] TO [Principal] WITH GRANT OPTION  AS [dbo]
+GO
+GRANT CONTROL ON [dbo].[sysIDs] TO [SystemAdmin] AS [dbo]
+GO
+GRANT INSERT ON [dbo].[sysIDs] TO [Teacher] AS [dbo]
+GO
+GRANT SELECT ON [dbo].[sysIDs] TO [Teacher] AS [dbo]
+GO
+GRANT UPDATE ON [dbo].[sysIDs] TO [Teacher] AS [dbo]
+GO
 GRANT SELECT ON [Users].[UserRole] TO [Accounts] AS [dbo]
 GO
 GRANT SELECT ON [Users].[UserRole] TO [Deputy] AS [dbo]
@@ -5025,47 +5142,45 @@ GRANT SELECT ON [Users].[User] TO [Teacher] AS [dbo]
 GO
 GRANT SELECT ON [Users].[User] TO [User] AS [dbo]
 GO
-GRANT INSERT ON [dbo].[sysIDs] TO [Accounts] AS [dbo]
+GRANT DELETE ON [Institution].[TimeTableSettings] TO [Deputy] AS [dbo]
 GO
-GRANT SELECT ON [dbo].[sysIDs] TO [Accounts] AS [dbo]
+GRANT INSERT ON [Institution].[TimeTableSettings] TO [Deputy] AS [dbo]
 GO
-GRANT UPDATE ON [dbo].[sysIDs] TO [Accounts] AS [dbo]
+GRANT SELECT ON [Institution].[TimeTableSettings] TO [Deputy] AS [dbo]
 GO
-GRANT INSERT ON [dbo].[sysIDs] TO [Deputy] AS [dbo]
+GRANT UPDATE ON [Institution].[TimeTableSettings] TO [Deputy] AS [dbo]
 GO
-GRANT SELECT ON [dbo].[sysIDs] TO [Deputy] AS [dbo]
+GRANT DELETE ON [Institution].[TimeTableSettings] TO [Principal] AS [dbo]
 GO
-GRANT UPDATE ON [dbo].[sysIDs] TO [Deputy] AS [dbo]
+GRANT INSERT ON [Institution].[TimeTableSettings] TO [Principal] AS [dbo]
 GO
-GRANT INSERT ON [dbo].[sysIDs] TO [Principal] WITH GRANT OPTION  AS [dbo]
+GRANT SELECT ON [Institution].[TimeTableSettings] TO [Principal] AS [dbo]
 GO
-GRANT SELECT ON [dbo].[sysIDs] TO [Principal] WITH GRANT OPTION  AS [dbo]
+GRANT UPDATE ON [Institution].[TimeTableSettings] TO [Principal] AS [dbo]
 GO
-GRANT UPDATE ON [dbo].[sysIDs] TO [Principal] WITH GRANT OPTION  AS [dbo]
+GRANT SELECT ON [Institution].[TimeTableSettings] TO [User] AS [dbo]
 GO
-GRANT CONTROL ON [dbo].[sysIDs] TO [SystemAdmin] AS [dbo]
+GRANT SELECT ON [Institution].[TimeTableHeader] TO [Accounts] AS [dbo]
 GO
-GRANT INSERT ON [dbo].[sysIDs] TO [Teacher] AS [dbo]
+GRANT DELETE ON [Institution].[TimeTableHeader] TO [Deputy] AS [dbo]
 GO
-GRANT SELECT ON [dbo].[sysIDs] TO [Teacher] AS [dbo]
+GRANT INSERT ON [Institution].[TimeTableHeader] TO [Deputy] AS [dbo]
 GO
-GRANT UPDATE ON [dbo].[sysIDs] TO [Teacher] AS [dbo]
+GRANT SELECT ON [Institution].[TimeTableHeader] TO [Deputy] AS [dbo]
 GO
-GRANT EXECUTE ON [dbo].[AddValuesIgnoringNull] TO [Accounts] AS [dbo]
+GRANT UPDATE ON [Institution].[TimeTableHeader] TO [Deputy] AS [dbo]
 GO
-GRANT EXECUTE ON [dbo].[AddValuesIgnoringNull] TO [Deputy] AS [dbo]
+GRANT DELETE ON [Institution].[TimeTableHeader] TO [Principal] AS [dbo]
 GO
-GRANT EXECUTE ON [dbo].[AddValuesIgnoringNull] TO [Principal] AS [dbo]
+GRANT INSERT ON [Institution].[TimeTableHeader] TO [Principal] AS [dbo]
 GO
-GRANT EXECUTE ON [dbo].[AddValuesIgnoringNull] TO [Teacher] AS [dbo]
+GRANT SELECT ON [Institution].[TimeTableHeader] TO [Principal] AS [dbo]
 GO
-GRANT EXECUTE ON [dbo].[GetGrade] TO [Accounts] AS [dbo]
+GRANT UPDATE ON [Institution].[TimeTableHeader] TO [Principal] AS [dbo]
 GO
-GRANT EXECUTE ON [dbo].[GetGrade] TO [Deputy] AS [dbo]
+GRANT SELECT ON [Institution].[TimeTableHeader] TO [Teacher] AS [dbo]
 GO
-GRANT EXECUTE ON [dbo].[GetGrade] TO [Principal] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetGrade] TO [Teacher] AS [dbo]
+GRANT SELECT ON [Institution].[TimeTableHeader] TO [User] AS [dbo]
 GO
 GRANT DELETE ON [Institution].[ExamHeader] TO [Deputy] AS [dbo]
 GO
@@ -5092,6 +5207,22 @@ GO
 GRANT UPDATE ON [Institution].[ExamHeader] TO [Teacher] AS [dbo]
 GO
 GRANT SELECT ON [Institution].[ExamHeader] TO [User] AS [dbo]
+GO
+GRANT DELETE ON [Sales].[Item] TO [Accounts] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[Item] TO [Accounts] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[Item] TO [Accounts] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[Item] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Sales].[Item] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[Item] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[Item] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[Item] TO [Principal] AS [dbo]
 GO
 GRANT DELETE ON [Institution].[FeesStructureHeader] TO [Accounts] AS [dbo]
 GO
@@ -5120,48 +5251,6 @@ GO
 GRANT SELECT ON [Institution].[FeesStructureHeader] TO [Teacher] AS [dbo]
 GO
 GRANT SELECT ON [Institution].[FeesStructureHeader] TO [User] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[Item] TO [Accounts] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[Item] TO [Accounts] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[Item] TO [Accounts] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[Item] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[Item] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[Item] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[Item] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[Item] TO [Principal] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[ItemIssueHeader] TO [Accounts] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[ItemIssueHeader] TO [Accounts] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[ItemIssueHeader] TO [Accounts] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[ItemIssueHeader] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[ItemIssueHeader] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[ItemIssueHeader] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[ItemIssueHeader] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[ItemIssueHeader] TO [Principal] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetNewID] TO [Accounts] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetNewID] TO [Deputy] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetNewID] TO [Principal] AS [dbo]
-GO
-GRANT CONTROL ON [dbo].[GetNewID] TO [SystemAdmin] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetNewID] TO [Teacher] AS [dbo]
 GO
 GRANT SELECT ON [Institution].[Class] TO [Accounts] AS [dbo]
 GO
@@ -5291,6 +5380,106 @@ GRANT UPDATE ON [Institution].[ExamResultHeader] TO [Teacher] AS [dbo]
 GO
 GRANT SELECT ON [Institution].[ExamResultHeader] TO [User] AS [dbo]
 GO
+GRANT DELETE ON [Sales].[StockTakingHeader] TO [Accounts] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[StockTakingHeader] TO [Accounts] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[StockTakingHeader] TO [Accounts] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[StockTakingHeader] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Sales].[StockTakingHeader] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[StockTakingHeader] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[StockTakingHeader] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[StockTakingHeader] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[StudentTranscriptHeader] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[StudentTranscriptHeader] TO [Deputy] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[StudentTranscriptHeader] TO [Deputy] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[StudentTranscriptHeader] TO [Deputy] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[StudentTranscriptHeader] TO [Deputy] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[StudentTranscriptHeader] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[StudentTranscriptHeader] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[StudentTranscriptHeader] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[StudentTranscriptHeader] TO [Principal] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[StudentTranscriptHeader] TO [Teacher] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[StudentTranscriptHeader] TO [Teacher] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[StudentTranscriptHeader] TO [Teacher] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[StudentTranscriptHeader] TO [Teacher] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[Subject] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[Subject] TO [Deputy] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[Subject] TO [Deputy] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[Subject] TO [Deputy] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[Subject] TO [Deputy] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[Subject] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[Subject] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[Subject] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[Subject] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[Subject] TO [Teacher] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[Subject] TO [User] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[SubjectSetupHeader] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[SubjectSetupHeader] TO [Deputy] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[SubjectSetupHeader] TO [Deputy] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[SubjectSetupHeader] TO [Deputy] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[SubjectSetupHeader] TO [Deputy] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[SubjectSetupHeader] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[SubjectSetupHeader] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[SubjectSetupHeader] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[SubjectSetupHeader] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[SubjectSetupHeader] TO [Teacher] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[SubjectSetupHeader] TO [User] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[Staff] TO [Accounts] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[Staff] TO [Deputy] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[Staff] TO [Deputy] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[Staff] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[Staff] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[Staff] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[Staff] TO [Principal] AS [dbo]
+GO
 GRANT EXECUTE ON [dbo].[ResetUniqueIDs] TO [Deputy] AS [dbo]
 GO
 GRANT EXECUTE ON [dbo].[ResetUniqueIDs] TO [Principal] AS [dbo]
@@ -5337,145 +5526,31 @@ GRANT SELECT ON [Institution].[PayoutHeader] TO [Principal] AS [dbo]
 GO
 GRANT UPDATE ON [Institution].[PayoutHeader] TO [Principal] AS [dbo]
 GO
-GRANT DELETE ON [Sales].[StockTakingHeader] TO [Accounts] AS [dbo]
+GRANT DELETE ON [Sales].[ItemIssueHeader] TO [Accounts] AS [dbo]
 GO
-GRANT INSERT ON [Sales].[StockTakingHeader] TO [Accounts] AS [dbo]
+GRANT INSERT ON [Sales].[ItemIssueHeader] TO [Accounts] AS [dbo]
 GO
-GRANT SELECT ON [Sales].[StockTakingHeader] TO [Accounts] AS [dbo]
+GRANT SELECT ON [Sales].[ItemIssueHeader] TO [Accounts] AS [dbo]
 GO
-GRANT UPDATE ON [Sales].[StockTakingHeader] TO [Accounts] AS [dbo]
+GRANT UPDATE ON [Sales].[ItemIssueHeader] TO [Accounts] AS [dbo]
 GO
-GRANT DELETE ON [Sales].[StockTakingHeader] TO [Principal] AS [dbo]
+GRANT DELETE ON [Sales].[ItemIssueHeader] TO [Principal] AS [dbo]
 GO
-GRANT INSERT ON [Sales].[StockTakingHeader] TO [Principal] AS [dbo]
+GRANT INSERT ON [Sales].[ItemIssueHeader] TO [Principal] AS [dbo]
 GO
-GRANT SELECT ON [Sales].[StockTakingHeader] TO [Principal] AS [dbo]
+GRANT SELECT ON [Sales].[ItemIssueHeader] TO [Principal] AS [dbo]
 GO
-GRANT UPDATE ON [Sales].[StockTakingHeader] TO [Principal] AS [dbo]
+GRANT UPDATE ON [Sales].[ItemIssueHeader] TO [Principal] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[StudentTranscriptHeader] TO [Accounts] AS [dbo]
+GRANT EXECUTE ON [dbo].[GetNewID] TO [Accounts] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[StudentTranscriptHeader] TO [Deputy] AS [dbo]
+GRANT EXECUTE ON [dbo].[GetNewID] TO [Deputy] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[StudentTranscriptHeader] TO [Deputy] AS [dbo]
+GRANT EXECUTE ON [dbo].[GetNewID] TO [Principal] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[StudentTranscriptHeader] TO [Deputy] AS [dbo]
+GRANT CONTROL ON [dbo].[GetNewID] TO [SystemAdmin] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[StudentTranscriptHeader] TO [Deputy] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[StudentTranscriptHeader] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[StudentTranscriptHeader] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[StudentTranscriptHeader] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[StudentTranscriptHeader] TO [Principal] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[StudentTranscriptHeader] TO [Teacher] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[StudentTranscriptHeader] TO [Teacher] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[StudentTranscriptHeader] TO [Teacher] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[StudentTranscriptHeader] TO [Teacher] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[Staff] TO [Accounts] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[Staff] TO [Deputy] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[Staff] TO [Deputy] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[Staff] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[Staff] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[Staff] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[Staff] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[Subject] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[Subject] TO [Deputy] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[Subject] TO [Deputy] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[Subject] TO [Deputy] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[Subject] TO [Deputy] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[Subject] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[Subject] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[Subject] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[Subject] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[Subject] TO [Teacher] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[Subject] TO [User] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[SubjectSetupHeader] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[SubjectSetupHeader] TO [Deputy] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[SubjectSetupHeader] TO [Deputy] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[SubjectSetupHeader] TO [Deputy] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[SubjectSetupHeader] TO [Deputy] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[SubjectSetupHeader] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[SubjectSetupHeader] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[SubjectSetupHeader] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[SubjectSetupHeader] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[SubjectSetupHeader] TO [Teacher] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[SubjectSetupHeader] TO [User] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[TimeTableSettings] TO [Deputy] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[TimeTableSettings] TO [Deputy] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[TimeTableSettings] TO [Deputy] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[TimeTableSettings] TO [Deputy] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[TimeTableSettings] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[TimeTableSettings] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[TimeTableSettings] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[TimeTableSettings] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[TimeTableSettings] TO [User] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[TimeTableHeader] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[TimeTableHeader] TO [Deputy] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[TimeTableHeader] TO [Deputy] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[TimeTableHeader] TO [Deputy] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[TimeTableHeader] TO [Deputy] AS [dbo]
-GO
-GRANT DELETE ON [Institution].[TimeTableHeader] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Institution].[TimeTableHeader] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[TimeTableHeader] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Institution].[TimeTableHeader] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[TimeTableHeader] TO [Teacher] AS [dbo]
-GO
-GRANT SELECT ON [Institution].[TimeTableHeader] TO [User] AS [dbo]
+GRANT EXECUTE ON [dbo].[GetNewID] TO [Teacher] AS [dbo]
 GO
 GRANT DELETE ON [Sales].[Vat] TO [Accounts] AS [dbo]
 GO
@@ -5531,53 +5606,143 @@ GRANT SELECT ON [Institution].[TimeTableDetail] TO [Teacher] AS [dbo]
 GO
 GRANT SELECT ON [Institution].[TimeTableDetail] TO [User] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[SubjectSetupDetail] TO [Accounts] AS [dbo]
+GRANT DELETE ON [Sales].[SupplierPayment] TO [Accounts] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[SubjectSetupDetail] TO [Deputy] AS [dbo]
+GRANT INSERT ON [Sales].[SupplierPayment] TO [Accounts] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[SubjectSetupDetail] TO [Deputy] AS [dbo]
+GRANT SELECT ON [Sales].[SupplierPayment] TO [Accounts] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[SubjectSetupDetail] TO [Deputy] AS [dbo]
+GRANT UPDATE ON [Sales].[SupplierPayment] TO [Accounts] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[SubjectSetupDetail] TO [Deputy] AS [dbo]
+GRANT DELETE ON [Sales].[SupplierPayment] TO [Principal] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[SubjectSetupDetail] TO [Principal] AS [dbo]
+GRANT INSERT ON [Sales].[SupplierPayment] TO [Principal] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[SubjectSetupDetail] TO [Principal] AS [dbo]
+GRANT SELECT ON [Sales].[SupplierPayment] TO [Principal] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[SubjectSetupDetail] TO [Principal] AS [dbo]
+GRANT UPDATE ON [Sales].[SupplierPayment] TO [Principal] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[SubjectSetupDetail] TO [Principal] AS [dbo]
+GRANT DELETE ON [Sales].[SupplierDetail] TO [Accounts] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[SubjectSetupDetail] TO [Teacher] AS [dbo]
+GRANT INSERT ON [Sales].[SupplierDetail] TO [Accounts] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[SubjectSetupDetail] TO [User] AS [dbo]
+GRANT SELECT ON [Sales].[SupplierDetail] TO [Accounts] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[StudentTransfer] TO [Accounts] AS [dbo]
+GRANT UPDATE ON [Sales].[SupplierDetail] TO [Accounts] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[StudentTransfer] TO [Deputy] AS [dbo]
+GRANT DELETE ON [Sales].[SupplierDetail] TO [Principal] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[StudentTransfer] TO [Deputy] AS [dbo]
+GRANT INSERT ON [Sales].[SupplierDetail] TO [Principal] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[StudentTransfer] TO [Deputy] AS [dbo]
+GRANT SELECT ON [Sales].[SupplierDetail] TO [Principal] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[StudentTransfer] TO [Deputy] AS [dbo]
+GRANT UPDATE ON [Sales].[SupplierDetail] TO [Principal] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[StudentTransfer] TO [Principal] AS [dbo]
+GRANT DELETE ON [Sales].[Supplier] TO [Accounts] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[StudentTransfer] TO [Principal] AS [dbo]
+GRANT INSERT ON [Sales].[Supplier] TO [Accounts] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[StudentTransfer] TO [Principal] AS [dbo]
+GRANT SELECT ON [Sales].[Supplier] TO [Accounts] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[StudentTransfer] TO [Principal] AS [dbo]
+GRANT UPDATE ON [Sales].[Supplier] TO [Accounts] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[StudentTransfer] TO [Teacher] AS [dbo]
+GRANT DELETE ON [Sales].[Supplier] TO [Principal] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[StudentTransfer] TO [Teacher] AS [dbo]
+GRANT INSERT ON [Sales].[Supplier] TO [Principal] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[StudentTransfer] TO [Teacher] AS [dbo]
+GRANT SELECT ON [Sales].[Supplier] TO [Principal] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[StudentTransfer] TO [Teacher] AS [dbo]
+GRANT UPDATE ON [Sales].[Supplier] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[LeavingCertificate] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[LeavingCertificate] TO [Deputy] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[LeavingCertificate] TO [Deputy] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[LeavingCertificate] TO [Deputy] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[LeavingCertificate] TO [Deputy] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[LeavingCertificate] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[LeavingCertificate] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[LeavingCertificate] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[LeavingCertificate] TO [Principal] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[LeavingCertificate] TO [Teacher] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[LeavingCertificate] TO [Teacher] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[LeavingCertificate] TO [Teacher] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[LeavingCertificate] TO [Teacher] AS [dbo]
+GO
+GRANT DELETE ON [Sales].[ItemReceiptDetail] TO [Accounts] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[ItemReceiptDetail] TO [Accounts] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[ItemReceiptDetail] TO [Accounts] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[ItemReceiptDetail] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Sales].[ItemReceiptDetail] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[ItemReceiptDetail] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[ItemReceiptDetail] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[ItemReceiptDetail] TO [Principal] AS [dbo]
+GO
+GRANT DELETE ON [Sales].[ItemIssueDetail] TO [Accounts] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[ItemIssueDetail] TO [Accounts] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[ItemIssueDetail] TO [Accounts] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[ItemIssueDetail] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Sales].[ItemIssueDetail] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[ItemIssueDetail] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[ItemIssueDetail] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[ItemIssueDetail] TO [Principal] AS [dbo]
+GO
+GRANT DELETE ON [Sales].[ItemCategory] TO [Accounts] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[ItemCategory] TO [Accounts] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[ItemCategory] TO [Accounts] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[ItemCategory] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Sales].[ItemCategory] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[ItemCategory] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[ItemCategory] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[ItemCategory] TO [Principal] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[PayoutDetail] TO [Accounts] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[PayoutDetail] TO [Accounts] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[PayoutDetail] TO [Accounts] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[PayoutDetail] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Institution].[PayoutDetail] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Institution].[PayoutDetail] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Institution].[PayoutDetail] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Institution].[PayoutDetail] TO [Principal] AS [dbo]
 GO
 GRANT DELETE ON [Sales].[SaleDetail] TO [Accounts] AS [dbo]
 GO
@@ -5647,63 +5812,53 @@ GRANT SELECT ON [Institution].[StudentClearance] TO [Teacher] AS [dbo]
 GO
 GRANT UPDATE ON [Institution].[StudentClearance] TO [Teacher] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[PayoutDetail] TO [Accounts] AS [dbo]
+GRANT SELECT ON [Institution].[SubjectSetupDetail] TO [Accounts] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[PayoutDetail] TO [Accounts] AS [dbo]
+GRANT DELETE ON [Institution].[SubjectSetupDetail] TO [Deputy] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[PayoutDetail] TO [Accounts] AS [dbo]
+GRANT INSERT ON [Institution].[SubjectSetupDetail] TO [Deputy] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[PayoutDetail] TO [Accounts] AS [dbo]
+GRANT SELECT ON [Institution].[SubjectSetupDetail] TO [Deputy] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[PayoutDetail] TO [Principal] AS [dbo]
+GRANT UPDATE ON [Institution].[SubjectSetupDetail] TO [Deputy] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[PayoutDetail] TO [Principal] AS [dbo]
+GRANT DELETE ON [Institution].[SubjectSetupDetail] TO [Principal] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[PayoutDetail] TO [Principal] AS [dbo]
+GRANT INSERT ON [Institution].[SubjectSetupDetail] TO [Principal] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[PayoutDetail] TO [Principal] AS [dbo]
+GRANT SELECT ON [Institution].[SubjectSetupDetail] TO [Principal] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[LeavingCertificate] TO [Accounts] AS [dbo]
+GRANT UPDATE ON [Institution].[SubjectSetupDetail] TO [Principal] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[LeavingCertificate] TO [Deputy] AS [dbo]
+GRANT SELECT ON [Institution].[SubjectSetupDetail] TO [Teacher] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[LeavingCertificate] TO [Deputy] AS [dbo]
+GRANT SELECT ON [Institution].[SubjectSetupDetail] TO [User] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[LeavingCertificate] TO [Deputy] AS [dbo]
+GRANT SELECT ON [Institution].[StudentTransfer] TO [Accounts] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[LeavingCertificate] TO [Deputy] AS [dbo]
+GRANT DELETE ON [Institution].[StudentTransfer] TO [Deputy] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[LeavingCertificate] TO [Principal] AS [dbo]
+GRANT INSERT ON [Institution].[StudentTransfer] TO [Deputy] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[LeavingCertificate] TO [Principal] AS [dbo]
+GRANT SELECT ON [Institution].[StudentTransfer] TO [Deputy] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[LeavingCertificate] TO [Principal] AS [dbo]
+GRANT UPDATE ON [Institution].[StudentTransfer] TO [Deputy] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[LeavingCertificate] TO [Principal] AS [dbo]
+GRANT DELETE ON [Institution].[StudentTransfer] TO [Principal] AS [dbo]
 GO
-GRANT DELETE ON [Institution].[LeavingCertificate] TO [Teacher] AS [dbo]
+GRANT INSERT ON [Institution].[StudentTransfer] TO [Principal] AS [dbo]
 GO
-GRANT INSERT ON [Institution].[LeavingCertificate] TO [Teacher] AS [dbo]
+GRANT SELECT ON [Institution].[StudentTransfer] TO [Principal] AS [dbo]
 GO
-GRANT SELECT ON [Institution].[LeavingCertificate] TO [Teacher] AS [dbo]
+GRANT UPDATE ON [Institution].[StudentTransfer] TO [Principal] AS [dbo]
 GO
-GRANT UPDATE ON [Institution].[LeavingCertificate] TO [Teacher] AS [dbo]
+GRANT DELETE ON [Institution].[StudentTransfer] TO [Teacher] AS [dbo]
 GO
-GRANT DELETE ON [Sales].[ItemReceiptDetail] TO [Accounts] AS [dbo]
+GRANT INSERT ON [Institution].[StudentTransfer] TO [Teacher] AS [dbo]
 GO
-GRANT INSERT ON [Sales].[ItemReceiptDetail] TO [Accounts] AS [dbo]
+GRANT SELECT ON [Institution].[StudentTransfer] TO [Teacher] AS [dbo]
 GO
-GRANT SELECT ON [Sales].[ItemReceiptDetail] TO [Accounts] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[ItemReceiptDetail] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[ItemReceiptDetail] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[ItemReceiptDetail] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[ItemReceiptDetail] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[ItemReceiptDetail] TO [Principal] AS [dbo]
+GRANT UPDATE ON [Institution].[StudentTransfer] TO [Teacher] AS [dbo]
 GO
 GRANT DELETE ON [Institution].[ExamResultDetail] TO [Deputy] AS [dbo]
 GO
@@ -5973,86 +6128,6 @@ GRANT SELECT ON [Institution].[Book] TO [Teacher] AS [dbo]
 GO
 GRANT UPDATE ON [Institution].[Book] TO [Teacher] AS [dbo]
 GO
-GRANT DELETE ON [Sales].[SupplierPayment] TO [Accounts] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[SupplierPayment] TO [Accounts] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[SupplierPayment] TO [Accounts] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[SupplierPayment] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[SupplierPayment] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[SupplierPayment] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[SupplierPayment] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[SupplierPayment] TO [Principal] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[SupplierDetail] TO [Accounts] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[SupplierDetail] TO [Accounts] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[SupplierDetail] TO [Accounts] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[SupplierDetail] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[SupplierDetail] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[SupplierDetail] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[SupplierDetail] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[SupplierDetail] TO [Principal] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[Supplier] TO [Accounts] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[Supplier] TO [Accounts] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[Supplier] TO [Accounts] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[Supplier] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[Supplier] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[Supplier] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[Supplier] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[Supplier] TO [Principal] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[ItemIssueDetail] TO [Accounts] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[ItemIssueDetail] TO [Accounts] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[ItemIssueDetail] TO [Accounts] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[ItemIssueDetail] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[ItemIssueDetail] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[ItemIssueDetail] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[ItemIssueDetail] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[ItemIssueDetail] TO [Principal] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[ItemCategory] TO [Accounts] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[ItemCategory] TO [Accounts] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[ItemCategory] TO [Accounts] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[ItemCategory] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[ItemCategory] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[ItemCategory] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[ItemCategory] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[ItemCategory] TO [Principal] AS [dbo]
-GO
 GRANT SELECT ON [Institution].[Gallery] TO [Accounts] AS [dbo]
 GO
 GRANT DELETE ON [Institution].[Gallery] TO [Deputy] AS [dbo]
@@ -6241,6 +6316,14 @@ GRANT EXECUTE ON [dbo].[GetPurchaseTotal] TO [Deputy] AS [dbo]
 GO
 GRANT EXECUTE ON [dbo].[GetPurchaseTotal] TO [Principal] AS [dbo]
 GO
+GRANT EXECUTE ON [dbo].[GetSubjectsTakenByStudent] TO [Accounts] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[GetSubjectsTakenByStudent] TO [Deputy] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[GetSubjectsTakenByStudent] TO [Principal] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[GetSubjectsTakenByStudent] TO [Teacher] AS [dbo]
+GO
 GRANT EXECUTE ON [dbo].[GetWeightedExamTotalScore] TO [Accounts] AS [dbo]
 GO
 GRANT EXECUTE ON [dbo].[GetWeightedExamTotalScore] TO [Deputy] AS [dbo]
@@ -6264,14 +6347,6 @@ GO
 GRANT EXECUTE ON [dbo].[GetUnreturnedCopies] TO [Principal] AS [dbo]
 GO
 GRANT EXECUTE ON [dbo].[GetUnreturnedCopies] TO [Teacher] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetSubjectsTakenByStudent] TO [Accounts] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetSubjectsTakenByStudent] TO [Deputy] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetSubjectsTakenByStudent] TO [Principal] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetSubjectsTakenByStudent] TO [Teacher] AS [dbo]
 GO
 GRANT SELECT ON [Institution].[StudentSubjectSelectionHeader] TO [Accounts] AS [dbo]
 GO
@@ -6315,22 +6390,6 @@ GRANT SELECT ON [Sales].[StockTakingDetail] TO [Principal] AS [dbo]
 GO
 GRANT UPDATE ON [Sales].[StockTakingDetail] TO [Principal] AS [dbo]
 GO
-GRANT DELETE ON [Sales].[SaleHeader] TO [Accounts] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[SaleHeader] TO [Accounts] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[SaleHeader] TO [Accounts] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[SaleHeader] TO [Accounts] AS [dbo]
-GO
-GRANT DELETE ON [Sales].[SaleHeader] TO [Principal] AS [dbo]
-GO
-GRANT INSERT ON [Sales].[SaleHeader] TO [Principal] AS [dbo]
-GO
-GRANT SELECT ON [Sales].[SaleHeader] TO [Principal] AS [dbo]
-GO
-GRANT UPDATE ON [Sales].[SaleHeader] TO [Principal] AS [dbo]
-GO
 GRANT SELECT ON [Institution].[Student] TO [Accounts] AS [dbo]
 GO
 GRANT DELETE ON [Institution].[Student] TO [Deputy] AS [dbo]
@@ -6355,6 +6414,22 @@ GRANT SELECT ON [Institution].[Student] TO [Teacher] AS [dbo]
 GO
 GRANT UPDATE ON [Institution].[Student] TO [Teacher] AS [dbo]
 GO
+GRANT DELETE ON [Sales].[SaleHeader] TO [Accounts] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[SaleHeader] TO [Accounts] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[SaleHeader] TO [Accounts] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[SaleHeader] TO [Accounts] AS [dbo]
+GO
+GRANT DELETE ON [Sales].[SaleHeader] TO [Principal] AS [dbo]
+GO
+GRANT INSERT ON [Sales].[SaleHeader] TO [Principal] AS [dbo]
+GO
+GRANT SELECT ON [Sales].[SaleHeader] TO [Principal] AS [dbo]
+GO
+GRANT UPDATE ON [Sales].[SaleHeader] TO [Principal] AS [dbo]
+GO
 GRANT DELETE ON [Sales].[ItemReceiptHeader] TO [Accounts] AS [dbo]
 GO
 GRANT INSERT ON [Sales].[ItemReceiptHeader] TO [Accounts] AS [dbo]
@@ -6370,14 +6445,6 @@ GO
 GRANT SELECT ON [Sales].[ItemReceiptHeader] TO [Principal] AS [dbo]
 GO
 GRANT UPDATE ON [Sales].[ItemReceiptHeader] TO [Principal] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetSubjectSelection] TO [Accounts] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetSubjectSelection] TO [Deputy] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetSubjectSelection] TO [Principal] AS [dbo]
-GO
-GRANT EXECUTE ON [dbo].[GetSubjectSelection] TO [Teacher] AS [dbo]
 GO
 GRANT EXECUTE ON [dbo].[GetTermOverAllPosition] TO [Accounts] AS [dbo]
 GO
@@ -6395,6 +6462,14 @@ GRANT EXECUTE ON [dbo].[GetTermClassPosition] TO [Principal] AS [dbo]
 GO
 GRANT EXECUTE ON [dbo].[GetTermClassPosition] TO [Teacher] AS [dbo]
 GO
+GRANT EXECUTE ON [dbo].[GetSubjectSelection] TO [Accounts] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[GetSubjectSelection] TO [Deputy] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[GetSubjectSelection] TO [Principal] AS [dbo]
+GO
+GRANT EXECUTE ON [dbo].[GetSubjectSelection] TO [Teacher] AS [dbo]
+GO
 GRANT EXECUTE ON [dbo].[GetCurrentBalance] TO [Accounts] AS [dbo]
 GO
 GRANT EXECUTE ON [dbo].[GetCurrentBalance] TO [Deputy] AS [dbo]
@@ -6404,5 +6479,4 @@ GO
 GRANT EXECUTE ON [dbo].[GetCurrentBalance] TO [Teacher] AS [dbo]
 GO
 USE [UmanyiSMS]
-GO
-exec dbo.ResetUniqueIDs
+EXEC [dbo].[ResetUniqueIds]
