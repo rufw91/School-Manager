@@ -95,10 +95,14 @@ namespace UmanyiSMS.ViewModels
 
         protected override void CreateCommands()
         {
+            ExportToExcelCommand = new RelayCommand(o =>
+            {
+
+            }, o => CanGenerate());
             GenerateCommand = new RelayCommand(async o =>
             {
-                
 
+                IsBusy = true;
                 if (isInClassMode)
                 {                    
                     var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassCombinedExamResultAsync(selectedClass.ClassID, exams));
@@ -129,7 +133,7 @@ namespace UmanyiSMS.ViewModels
                     if (ShowClassTranscriptAction != null)
                         ShowClassTranscriptAction.Invoke(st);
                 }
-
+                IsBusy = false;
 
             }, o => CanGenerate());
         }
@@ -330,6 +334,12 @@ namespace UmanyiSMS.ViewModels
         { get; set; }
 
         public ICommand GenerateCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ExportToExcelCommand
         {
             get;
             private set;

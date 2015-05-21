@@ -14,13 +14,13 @@ namespace Helper
     {
         static readonly string connStr = "Data Source=" +
                 Helper.Properties.Settings.Default.Info.ServerName +
-                ";Database=UmanyiSMS;Connection Timeout=30;Encrypt=True;TrustServerCertificate=True;";
+                ";Database=UmanyiSMS;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
         static readonly string masterConnString = "Data Source=" +
                 Helper.Properties.Settings.Default.Info.ServerName +
-                ";Database=Master;Connection Timeout=30;Encrypt=True;TrustServerCertificate=True;";
+                ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
         static readonly string testConnString = "Data Source=" +
                Helper.Properties.Settings.Default.Info.ServerName +
-               ";Connection Timeout=30;Encrypt=True;TrustServerCertificate=True;";
+               ";Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
 
         public static string ConnectionString
         {

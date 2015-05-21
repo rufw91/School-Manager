@@ -51,7 +51,7 @@ namespace Helper
                 }
 
             }
-            catch { }
+            catch (Exception e) { Log.E(e.ToString(), null); }
             return "";
         }
 

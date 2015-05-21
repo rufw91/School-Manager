@@ -41,6 +41,10 @@
         </TextBlock>
         <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding GenerateCommand}"/>
-
+        <Button Content="Export to Excel" HorizontalAlignment="Right" Margin="0,0,120,10" VerticalAlignment="Bottom" Width="150"
+                Command="{Binding ExportToExcelCommand}"/>
+        <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+        </Border>
     </Grid>
 </UserControl>
