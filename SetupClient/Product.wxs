@@ -1,36 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Setup_Client" Language="1033" Version="1.0.0.0" Manufacturer="" UpgradeCode="51a48e84-1d5d-4272-bbb2-9b7e87d0cb69">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
-
-		<Feature Id="ProductFeature" Title="Setup_Client" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
-		</Feature>
-	</Product>
-
-	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="Setup_Client" />
-			</Directory>
-		</Directory>
-	</Fragment>
-
-	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-			<!-- <Component Id="ProductComponent"> -->
-				<!-- TODO: Insert files, registry keys, and other resources here. -->
-			<!-- </Component> -->
-		</ComponentGroup>
-	</Fragment>
-</Wix>
-
-
-<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
   xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
   xmlns:sql="http://schemas.microsoft.com/wix/SqlExtension">
@@ -40,17 +8,17 @@
   <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
   <?define Win64 = "yes"?>
   <?define ProductName = "Umanyi School MS (64 bit)" ?>
-  <?define ProductCode= "5BD9BAFA-34ED-463C-9C14-EB793AF9D45D" ?>
+  <?define ProductCode= "54A87CC9-AF77-4635-B597-F2DA7EA8559F" ?>
 
   <?else ?>
 
   <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
   <?define Win64 = "no"?>
   <?define ProductName = "Umanyi School MS" ?>
-  <?define ProductCode = "b4eb6134-f631-4d04-926f-ea97dfbd6bc2" ?>
+  <?define ProductCode = "E87C0D4B-1902-4730-B169-8F776E2EFFC2" ?>
   <?endif ?>
 
-  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.6.5.2015" Manufacturer="Umanyi Digital Technologies Ltd"
+  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.6.7.16519" Manufacturer="Umanyi Digital Technologies Ltd"
            UpgradeCode="$(var.ProductCode)">
 
     <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
@@ -73,7 +41,6 @@
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="CommonComponents" />
       <ComponentGroupRef Id="ShortcutComponents" />
-      <ComponentRef Id="MySqlComponent" />
     </Feature>
 
     <CustomAction Id="SetServerName" Property="DB_SERVER" Value="[ComputerName]\Umanyi" Execute="immediate"/>
@@ -91,8 +58,7 @@
       <![CDATA[Installed OR VersionNT >= 600]]>
     </Condition>
 
-    <Binary Id="CreateTablesBin"  SourceFile="MyDb.sql" />
-
+   
   </Product>
 
 
@@ -105,13 +71,7 @@
       <Directory Id="$(var.PlatformProgramFilesFolder)">
         <Directory Id="ALFolder" Name="Umanyi">
           <Directory Id="INSTALLFOLDER" Name="Umanyi School MS">
-            <Component Id="MySqlComponent" Guid="{67F2BAA5-55B6-416F-BAF4-B971A54E68F3}">
-              <Condition>NOT Installed</Condition>
-              <sql:SqlDatabase Id="MySqlDatabase" Database="[DB_DATABASE]" Server="[DB_SERVER]" CreateOnInstall="yes"  ConfirmOverwrite="yes" DropOnUninstall="yes" User="SQLUserSA" ContinueOnError="no">
-                <sql:SqlScript Id="CreateTables" ExecuteOnInstall="yes" ExecuteOnUninstall="no" BinaryKey="CreateTablesBin" ContinueOnError="no" />
-              </sql:SqlDatabase>
-              <CreateFolder/>
-            </Component>
+          
           </Directory>
         </Directory>
       </Directory>

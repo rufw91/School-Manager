@@ -3061,9 +3061,9 @@ namespace Helper
             }
 
 
-            temp.CAT1Grade = ((e1 == 0) && (temp.Entries.Count > 0)) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t1 / temp.Entries.Count));
-            temp.CAT2Grade = ((e2 == 0) && (temp.Entries.Count > 0)) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t2 / temp.Entries.Count));
-            temp.ExamGrade = ((e3 == 0) && (temp.Entries.Count > 0)) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t3 / temp.Entries.Count));
+            temp.CAT1Grade = (((e1 == 0) && (temp.Entries.Count > 0))||t1==0||temp.Entries.Count==0) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t1 / temp.Entries.Count));
+            temp.CAT2Grade = (((e2 == 0) && (temp.Entries.Count > 0))||t1==0||temp.Entries.Count==0) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t2 / temp.Entries.Count));
+            temp.ExamGrade = (((e3 == 0) && (temp.Entries.Count > 0)) || t1 == 0 || temp.Entries.Count == 0) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t3 / temp.Entries.Count));
 
                 return temp;
            
@@ -3554,9 +3554,9 @@ namespace Helper
                     }
 
 
-                    temp.CAT1Grade = ((e1 == 0) && (temp.Entries.Count > 0)) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t1 / temp.Entries.Count));
-                    temp.CAT2Grade = ((e2 == 0) && (temp.Entries.Count > 0)) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t2 / temp.Entries.Count));
-                    temp.ExamGrade = ((e3 == 0) && (temp.Entries.Count > 0)) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t3 / temp.Entries.Count));
+                    temp.CAT1Grade = (((e1 == 0) && (temp.Entries.Count > 0))||t1==0||temp.Entries.Count==0) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t1 / temp.Entries.Count));
+                    temp.CAT2Grade = (((e2 == 0) && (temp.Entries.Count > 0))||t1==0||temp.Entries.Count==0) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t2 / temp.Entries.Count));
+                    temp.ExamGrade = (((e3 == 0) && (temp.Entries.Count > 0))||t1==0||temp.Entries.Count==0) ? "E" : CalculateGradeFromPoints((int)decimal.Ceiling(t3 / temp.Entries.Count));
                     tempCls.Add(temp);
                 }
 

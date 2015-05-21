@@ -106,12 +106,12 @@
                 <TextBox  HorizontalAlignment="Left" Margin="525,490,0,0" 
                       Text="{Binding NewStudent.PrevBalance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"  Width="200" 
         	ToolTip="Fees Balance."/>
-                <TextBlock HorizontalAlignment="Left" Margin="800,60,0,0" Style="{DynamicResource ResourceKey=Title0}" Text="Photo" 
+                <TextBlock Visibility="Collapsed"  HorizontalAlignment="Left" Margin="800,60,0,0" Style="{DynamicResource ResourceKey=Title0}" Text="Photo" 
         	VerticalAlignment="Top"/>
-                <Border BorderBrush="{DynamicResource Accent}" BorderThickness="1" Margin="800,100,10,0" Height="300" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                <Border Visibility="Collapsed" BorderBrush="{DynamicResource Accent}" BorderThickness="1" Margin="800,100,10,0" Height="300" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                     <Image Source="{Binding NewStudent.SPhoto, Mode=OneWay}" Stretch="Uniform"/>
                 </Border>
-                <Button Content="_Browse" HorizontalAlignment="Right" Margin="0,410,10,0" Width="105" Command="{Binding BrowseCommand}" Height="26" VerticalAlignment="Top" />
+                <Button Visibility="Collapsed"  Content="_Browse" HorizontalAlignment="Right" Margin="0,410,10,0" Width="105" Command="{Binding BrowseCommand}" Height="26" VerticalAlignment="Top" />
                 <TextBlock HorizontalAlignment="Right" Margin="0,20,20,0" VerticalAlignment="Top">
                 <Hyperlink Command="{Binding ImportFromExcelCommand}">Import From Excel</Hyperlink>
                 </TextBlock>
