@@ -1512,13 +1512,14 @@ namespace Helper
             return Task.Run<bool>(() =>
             {
                  bool autoGenerateStudentID = newStaff.StaffID == 0;
-                string INSERTSTR =
-                    "BEGIN TRANSACTION\r\n" +
-                    "DECLARE @id INT; SET @id=dbo.GetNewID('Institution.Staff'); " +
+                 string INSERTSTR =
+                     "BEGIN TRANSACTION\r\n" +
+                     "DECLARE @id INT; SET @id=dbo.GetNewID('Institution.Staff'); " +
 
-                    "INSERT INTO [Institution].[Staff] (StaffID,Name,NationalID,DateOfAdmission,PhoneNo," +
-                    "Email,Address,City,PostalCode,SPhoto) " +
-                    "VALUES(" + (autoGenerateStudentID?"id":"@staffID") + ",@name,@nationalID,@doa,@phoneNo,@email,@address,@city,@postalCode,@photo)";
+                     "INSERT INTO [Institution].[Staff] (StaffID,Name,NationalID,DateOfAdmission,PhoneNo," +
+                     "Email,Address,City,PostalCode,SPhoto) " +
+                     "VALUES(" + (autoGenerateStudentID ? "@id" : "@staffID") + ",@name,@nationalID,@doa,@phoneNo,@email,@address,@city,@postalCode,@photo)\r\n" +
+                     "COMMIT";
 
                 ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
                 paramColl.Add(new SqlParameter("@staffID", newStaff.StaffID));
@@ -2656,26 +2657,36 @@ namespace Helper
                     return 3;
         }
 
+        private static DateTime GetTermStart(DateTime date)
+        {
+            if (date.Month >= 1 && date.Month <= 4)
+                return new DateTime(date.Year, 1, 1);
+            else
+                if (date.Month >= 5 && date.Month <= 8)
+                    return new DateTime(date.Year, 5, 1);
+                else
+                    return new DateTime(date.Year, 9, 1);
+        }
+
+        private static DateTime GetTermEnd(DateTime date)
+        {
+            if (date.Month >= 1 && date.Month <= 4)
+                return new DateTime(date.Year, 4, 30, 23, 59, 59);
+            else
+                if (date.Month >= 5 && date.Month <= 8)
+                    return new DateTime(date.Year, 8, 31, 23, 59, 59);
+                else
+                    return new DateTime(date.Year, 12, 31, 23, 59, 59);
+        }
+
         private static DateTime GetTermStart()
         {
-            if (DateTime.Now.Month >= 1 && DateTime.Now.Month <= 4)
-                return new DateTime(DateTime.Now.Year, 1, 1);
-            else
-                if (DateTime.Now.Month >= 5 && DateTime.Now.Month <= 8)
-                    return new DateTime(DateTime.Now.Year, 5, 1);
-                else
-                    return new DateTime(DateTime.Now.Year, 9, 1);
+            return GetTermStart(DateTime.Now);
         }
 
         private static DateTime GetTermEnd()
         {
-            if (DateTime.Now.Month >= 1 && DateTime.Now.Month <= 4)
-                return new DateTime(DateTime.Now.Year, 4, 30, 23, 59, 59);
-            else
-                if (DateTime.Now.Month >= 5 && DateTime.Now.Month <= 8)
-                    return new DateTime(DateTime.Now.Year, 8, 31, 23, 59, 59);
-                else
-                    return new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59);
+            return GetTermEnd(DateTime.Now);
         }
 
         public static Task<ClassBalancesListModel> GetBalancesList(ClassModel selectedClass)
@@ -2814,6 +2825,41 @@ namespace Helper
                 }
                 selectStr += startTime.Value.Day.ToString() + "/" + startTime.Value.Month.ToString() + "/" + startTime.Value.Year.ToString() + " 00:00:00.000' AND '"
                 + endTime.Value.Day.ToString() + "/" + endTime.Value.Month.ToString() + "/" + endTime.Value.Year.ToString() + " 23:59:59.998'";
+
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow dtr = dt.Rows[0];
+                    temp.SaleID = int.Parse(dtr[0].ToString());
+                    temp.CustomerID = studentID;
+                    temp.EmployeeID = int.Parse(dtr[1].ToString());
+                    temp.PaymentID = int.Parse(dtr[2].ToString());
+                    temp.DateAdded = DateTime.Parse(dtr[3].ToString());
+                    temp.OrderTotal = decimal.Parse(dtr[4].ToString());
+                    temp.SaleItems = GetSaleItems(temp.SaleID);
+                }
+
+                return temp;
+            });
+
+        }
+
+        
+
+        public static Task<SaleModel> GetTermInvoice(int studentID, DateTime date)
+        {
+            return Task.Run<SaleModel>(() =>
+            {
+                SaleModel temp = new SaleModel();
+
+                DateTime startTime = GetTermStart(date);
+                DateTime endTime = GetTermEnd(date);
+
+                string selectStr = "SELECT SaleID,EmployeeID,PaymentID,OrderDate,TotalAmt FROM [Sales].[SaleHeader]" +
+                    " WHERE CustomerID=" + studentID +
+                    " AND OrderDate BETWEEN '";
+                selectStr += startTime.Day.ToString() + "/" + startTime.Month.ToString() + "/" + startTime.Year.ToString() + " 00:00:00.000' AND '"
+                + endTime.Day.ToString() + "/" + endTime.Month.ToString() + "/" + endTime.Year.ToString() + " 23:59:59.998'";
 
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                 if (dt.Rows.Count > 0)
@@ -4065,6 +4111,42 @@ namespace Helper
 
                     bool succ = DataAccessHelper.ExecuteNonQuery(upDateStr);
                     return succ;
+                });
+        }
+
+        public static Task<ObservableCollection<LeavingCertificateModel>> GetClassLeavingCerts(ObservableCollection<ClassModel> classes)
+        {
+            return Task.Run<ObservableCollection<LeavingCertificateModel>>(() =>
+                {
+                    ObservableCollection<LeavingCertificateModel> temp = new ObservableCollection<LeavingCertificateModel>();
+
+                    string classStr = "0,";
+                    foreach(var c in classes)                    
+                        classStr += c.ClassID + ",";
+                    classStr = classStr.Remove(classStr.Length - 1);
+
+                    string selectStr =
+                           "SELECT l.DateOfIssue,l.DateOfBirth,l.DateOfAdmission,l.DateOfLeaving,l.Nationality,l.ClassEntered"+
+                           ",l.ClassLeft,l.Remarks,s.StudentID,s.NameOfStudent FROM [Institution].[LeavingCertificate] l LEFT OUTER JOIN [Institution].[Student] s "+
+                           " ON (l.StudentID=s.StudentID) WHERE s.ClassID IN (" + classStr+")";
+                    DataTable r = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                    LeavingCertificateModel l;
+                    foreach (DataRow dtr in r.Rows)
+                    {
+                        l = new LeavingCertificateModel();
+                        l.StudentID = int.Parse(r.Rows[0][8].ToString());
+                        l.NameOfStudent = r.Rows[0][9].ToString();
+                        l.DateOfIssue = DateTime.Parse(r.Rows[0][0].ToString());
+                        l.DateOfBirth = DateTime.Parse(r.Rows[0][1].ToString());
+                        l.DateOfAdmission = DateTime.Parse(r.Rows[0][2].ToString());
+                        l.DateOfLeaving = DateTime.Parse(r.Rows[0][3].ToString());
+                        l.Nationality = r.Rows[0][4].ToString();
+                        l.ClassEntered = r.Rows[0][5].ToString();
+                        l.ClassLeft = r.Rows[0][6].ToString();
+                        l.Remarks = r.Rows[0][7].ToString();
+                        temp.Add(l);
+                    }
+                    return temp;
                 });
         }
     }

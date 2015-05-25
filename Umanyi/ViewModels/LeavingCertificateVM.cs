@@ -59,7 +59,7 @@ namespace UmanyiSMS.ViewModels
                      var s = await DataAccess.GetStudentAsync(selectedStudent.StudentID);
                      leavingCert.StudentID = selectedStudent.StudentID;
                      leavingCert.NameOfStudent = selectedStudent.NameOfStudent;
-                     leavingCert.DateOfAdmission = s.DateOfAdmission;
+                     leavingCert.DateOfAdmission = s.DateOfAdmission;                     
                      leavingCert.DateOfBirth = s.DateOfBirth;                     
                  }
                  hasRefreshed=true;

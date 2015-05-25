@@ -5,9 +5,10 @@ namespace UmanyiSMS.Views.FirstRun
 {
     public partial class FirstRun : CustomWindow
     {
-        bool canClose = true;
+        bool canClose;
         public FirstRun()
         {
+            canClose = true;
             InitializeComponent();
             Closing += (o, e) =>
                 {

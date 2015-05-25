@@ -13,7 +13,7 @@ namespace Helper.Models
         private string firstName = "";
         private string middleName = "";
         private string lastName = "";
-        private DateTime dateOfBirth = new DateTime(1980,1,1);
+        private DateTime dateOfBirth = new DateTime(1999,1,1);
         private DateTime dateOfAdmission = DateTime.Now;
         private string nameOfGuardian = "";
         private string guardianPhoneNo = "";
@@ -341,22 +341,28 @@ namespace Helper.Models
         }
         public override void Reset()
         {
-            StudentID = 0;
+            base.Reset();
             FirstName = "";
             MiddleName = "";
             LastName = "";
-            DateOfBirth = new DateTime(1900, 1, 1);
+            DateOfBirth = new DateTime(1999, 1, 1);
             DateOfAdmission = DateTime.Now;
             NameOfGuardian = "";
             GuardianPhoneNo = "";
             Address = "";
             City = "";
             PostalCode = "";
-            SPhoto = null;
+            IsActive = true;
+            SPhoto = new byte[1];
+            sPhoto[0] = 1;
             ClassID = 0;
             DormitoryID = 0;
             BedNo = "";
             PrevInstitution = "";
+            IsBoarder = true;
+            Gender = Helper.Gender.Male;
+            KCPEScore = 0;
+            PrevBalance = 0;
         }
         public new void CopyFrom(StudentModel student)
         {

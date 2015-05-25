@@ -43,7 +43,7 @@ namespace UmanyiSMS.ViewModels
         {
             FullPreviewCommand = new RelayCommand(async o=>
             {
-                var fs = await DataAccess.GetSaleAsync(selectedPayment.FeePaymentID);
+                var fs = await DataAccess.GetTermInvoice(selectedPayment.StudentID, selectedPayment.DatePaid);
                 var temp = await DataAccess.GetReceiptAsync(selectedPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
                 var doc = DocumentHelper.GenerateDocument(temp);
                 if (ShowPrintDialogAction != null)
@@ -51,7 +51,7 @@ namespace UmanyiSMS.ViewModels
             }, o => CanGenerate() && Document!=null);
             GenerateCommand = new RelayCommand(async o =>
             {
-                var fs = await DataAccess.GetSaleAsync(selectedPayment.FeePaymentID);
+                var fs = await DataAccess.GetTermInvoice(selectedPayment.StudentID, selectedPayment.DatePaid);
                 var temp = await DataAccess.GetReceiptAsync(selectedPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
                 Document = DocumentHelper.GenerateDocument(temp);
             },
@@ -60,10 +60,7 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanGenerate()
         {
-            if (selectedPayment == null)
-                return false;
-
-            return true;
+            return selectedPayment != null;
         }
 
         private async Task RefreshRecentPayments()

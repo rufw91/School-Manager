@@ -89,7 +89,9 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanAddClass()
         {
-            return !string.IsNullOrWhiteSpace(newClass.NameOfClass);
+            int testInt;
+            return !string.IsNullOrWhiteSpace(newClass.NameOfClass) && (newClass.NameOfClass.Length >= 6)
+                && (newClass.NameOfClass.Substring(0, 5) == "FORM ")&&int.TryParse(newClass.NameOfClass.Substring(5,1),out testInt);
         }
 
         public override void Reset()

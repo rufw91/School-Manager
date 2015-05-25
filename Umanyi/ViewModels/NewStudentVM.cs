@@ -66,6 +66,7 @@ namespace UmanyiSMS.ViewModels
         public override void Reset()
         {
             newStudent.Reset();
+
         }
 
         public Array BoardingValues
@@ -159,7 +160,7 @@ namespace UmanyiSMS.ViewModels
                 && !string.IsNullOrWhiteSpace(newStudent.NameOfGuardian) && !string.IsNullOrWhiteSpace(newStudent.Email)
                    && !string.IsNullOrWhiteSpace(newStudent.GuardianPhoneNo) && !string.IsNullOrWhiteSpace(newStudent.Address)
                     && !string.IsNullOrWhiteSpace(newStudent.City) && !string.IsNullOrWhiteSpace(newStudent.PostalCode)
-                      && !(newStudent.DateOfBirth == null) && !(newStudent.DateOfAdmission == null)
+                      && (newStudent.DateOfBirth != null) && (newStudent.DateOfAdmission != null)
                       && (EmailValidator.IsValidEmail(newStudent.Email))
                       && newStudent.ClassID>0;
             return isOk&&!newStudent.HasErrors;

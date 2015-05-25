@@ -156,9 +156,10 @@
     <Compile Include="Models\BookReturnModel.cs" />
     <Compile Include="Models\BookSelectModel.cs" />
     <Compile Include="Models\ClassFeesDefaultModel.cs" />
+    <Compile Include="Models\ClassLeavingCertificatesModel.cs" />
     <Compile Include="Models\ClassStudentsExamResultModel.cs" />
     <Compile Include="Models\ClassStudentListModel.cs" />
-    <Compile Include="Models\ClassTranscriptModel.cs" />
+    <Compile Include="Models\ClassExamResultModel.cs" />
     <Compile Include="Models\ClassTranscriptsModel.cs" />
     <Compile Include="Models\CombinedClassModel.cs" />
     <Compile Include="Models\ComparisonModel.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Helpers\DocumentHelper.ClassTranscripts.cs" />
     <Compile Include="Helpers\DocumentHelper.UnretunedBooks.cs" />
     <Compile Include="Helpers\DocumentHelper.ClassExamResults.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassLeavingCertificates.cs" />
     <None Include="packages.config" />
     <None Include="Resources\Receipt.xaml">
       <Generator>MSBuild:Compile</Generator>
