@@ -20,7 +20,7 @@ namespace UmanyiSMS.Views
         private async void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             bool succ =await ActivationHelper.Activate(txtLicense.Text);
-            MessageBox.Show(succ ? "Successfully activated application." : "Could not ctivate. Ensure you have a working internet connection and try again.",
+            MessageBox.Show(succ ? "Successfully activated application." : "Could not activate. Ensure you have a working internet connection and try again.",
                 succ ? "Success" : "Error", MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
             if (succ)
             {

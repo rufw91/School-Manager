@@ -111,10 +111,7 @@ namespace UmanyiSMS.ViewModels
                 subjectsSetup.Entries.Add(NewSubject);
                 bool succ = await DataAccess.SaveNewSubjectSetupAsync(subjectsSetup);
                 if (succ)
-                {
                     NewSubject = new SubjectsSetupEntryModel();
-                    SelectedCombinedClass = null;
-                }
             }, o => CanAddSubject());
         }
 

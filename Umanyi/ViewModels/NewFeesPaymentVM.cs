@@ -132,7 +132,7 @@ namespace UmanyiSMS.ViewModels
                 }
                 else
                     MessageBox.Show("Could not save details.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                IsBusy = true;
+                IsBusy = false;
             },
                o => CanSavePayment());
         }

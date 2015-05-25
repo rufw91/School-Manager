@@ -23,7 +23,7 @@ namespace Helper
         static object myWorkObject;
         enum DocType
         {
-            Statement, Transcript, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList,ClassExamResults, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, UnreturnedBooks, Report
+            Statement, Transcript, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList,ClassExamResults,ClassLeavingCertificates,Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, UnreturnedBooks, Report
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -64,6 +64,7 @@ namespace Helper
             switch (docType)
             {
                 case DocType.LeavingCert: GenerateLeavingCert(); break;
+                case DocType.ClassLeavingCertificates: GenerateClassLeavingCerts(); break;
                 case DocType.Statement: GenerateStatement(); break;
                 case DocType.FeesPayment: GenerateReceipt(); break;
                 case DocType.FeesPayment2: GenerateReceipt2(); break;
@@ -88,6 +89,7 @@ namespace Helper
             {
                 case DocType.Statement: resString = Helper.Properties.Resources.Statement; break;
                 case DocType.LeavingCert: resString = Helper.Properties.Resources.LeavingCert; break;
+                case DocType.ClassLeavingCertificates: resString = Helper.Properties.Resources.LeavingCert; break;
                 case DocType.FeesPayment: resString = Helper.Properties.Resources.Receipt; break;
                 case DocType.FeesPayment2: resString = Helper.Properties.Resources.Receipt2; break;
                 case DocType.Transcript: resString = Helper.Properties.Resources.Transcript; break;
@@ -141,6 +143,8 @@ namespace Helper
                 return DocType.Report;
             if (workObject is ClassStudentsExamResultModel)
                 return DocType.ClassExamResults;
+            if (workObject is ClassLeavingCertificatesModel)
+                return DocType.ClassLeavingCertificates;
             throw new ArgumentException();
         }
 
@@ -191,6 +195,8 @@ namespace Helper
                 return (workObject as ClassTranscriptsModel).Entries.Count;
             if (workObject is ClassStudentsExamResultModel)
                 return (workObject as ClassStudentsExamResultModel).Entries.Count;
+            if (workObject is ClassLeavingCertificatesModel)
+                return (workObject as ClassLeavingCertificatesModel).Entries.Count;
             if (workObject is ReportModel)
                 totalNoOfItems = (workObject as ReportModel).Entries.Rows.Count;
             return (totalNoOfItems % itemsPerPage) != 0 ?

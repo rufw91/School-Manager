@@ -75,11 +75,13 @@ namespace UmanyiSMS
                     MessageBoxButton.OK, MessageBoxImage.Warning);
             else
             {
+                App.Info.CurrentUser = UsersHelper.CurrentUser;
                 if (_type == LoginType.Login)
                 {
                     this.Visibility = System.Windows.Visibility.Collapsed;
-                    /*if (CheckFirstRun())
+                    if (CheckFirstRun())
                     {
+                        
                         FirstRun main = new FirstRun();
                         Application.Current.MainWindow = main;
                         main.Show();
@@ -87,14 +89,14 @@ namespace UmanyiSMS
                         this.Close();
                     }
                     else
-                    {*/
-                        App.Info.CurrentUser = UsersHelper.CurrentUser;
+                    {
                         MainWindow main = new MainWindow();
                         Application.Current.MainWindow = main;
                         main.Show();
                         shutDownApp = false;
+                        this.Visibility = System.Windows.Visibility.Collapsed;
                         this.Close();
-                    //}
+                    }
 
                 }
                 else

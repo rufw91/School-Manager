@@ -18,9 +18,9 @@ namespace UmanyiSMS.ViewModels
         bool isInStudentMode;
         bool isInClassMode;
         StudentSelectModel selectedStudent;
-        ClassModel selectedClass;
+        CombinedClassModel selectedCombinedClass;
         FeesStructureEntryModel newEntry;
-        ObservableCollection<ClassModel> allClasses;
+        ObservableCollection<CombinedClassModel> allCombinedClasses;
         private FeesStructureModel currentFeesStructure;
         private FeesStructureEntryModel selectedEntry;
         private decimal billTotal;
@@ -42,9 +42,9 @@ namespace UmanyiSMS.ViewModels
                 };
             newEntry = new FeesStructureEntryModel();
             IsInStudentMode = true;
-            selectedClass = new ClassModel();
+            selectedCombinedClass = new CombinedClassModel();
             selectedStudent = new StudentSelectModel();
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
             selectedStudent.PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName == "StudentID")
@@ -58,10 +58,10 @@ namespace UmanyiSMS.ViewModels
 
             PropertyChanged += async (o, e) =>
                 {
-                    if ((e.PropertyName == "SelectedClass") && (isInClassMode) && (selectedClass != null) && (selectedClass.ClassID > 0))
+                    if ((e.PropertyName == "SelectedClass") && (isInClassMode) && (selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0))
                     {
                         currentFeesStructure.Entries.Clear();
-                        var v = await DataAccess.GetFeesStructureAsync(selectedClass.ClassID, DateTime.Now);
+                        var v = await DataAccess.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, DateTime.Now);
                         foreach (var f in v.Entries)
                         {
                             currentFeesStructure.Entries.Add(f);
@@ -78,7 +78,7 @@ namespace UmanyiSMS.ViewModels
                 if (isInStudentMode)
                     fs = await DataAccess.GetFeesStructureAsync(await DataAccess.GetClassIDFromStudentID(selectedStudent.StudentID), DateTime.Now);
                 else
-                    fs = fs = await DataAccess.GetFeesStructureAsync(selectedClass.ClassID, DateTime.Now);
+                    fs = fs = await DataAccess.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, DateTime.Now);
                 currentFeesStructure.Entries.Clear();
                 foreach (var f in fs.Entries)
                 {
@@ -133,14 +133,18 @@ namespace UmanyiSMS.ViewModels
                 }
                 else
                 {
-                    SaleModel sm = new SaleModel();
-                    sm.CustomerID = selectedClass.ClassID;
-                    sm.DateAdded = DateTime.Now;
-                    sm.EmployeeID = 0;
-                    sm.SaleItems = currentFeesStructure.Entries;
-                    sm.RefreshTotal();
-                    MessageBox.Show(sm.SaleItems.Count + "");
-                    bool succ = await DataAccess.SaveNewClassBill(sm);
+                    SaleModel sm;
+                    bool succ = true;
+                    foreach (ClassModel c in selectedCombinedClass.Entries)
+                    {
+                        sm = new SaleModel();
+                        sm.CustomerID = c.ClassID;
+                        sm.DateAdded = DateTime.Now;
+                        sm.EmployeeID = 0;
+                        sm.SaleItems = currentFeesStructure.Entries;
+                        sm.RefreshTotal();                        
+                        succ = succ&&await DataAccess.SaveNewClassBill(sm);
+                    }
                     MessageBox.Show(succ ? "Successfully saved details" : "Could not save details.", succ ? "Success" : "Error",
                             MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                     if (succ)
@@ -152,7 +156,7 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanGetFeesStructure()
         {
-            return isInStudentMode ? selectedStudent != null && !selectedStudent.HasErrors : selectedClass != null && selectedClass.ClassID > 0;
+            return isInStudentMode ? selectedStudent != null && !selectedStudent.HasErrors : selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0;
         }
 
 
@@ -161,7 +165,7 @@ namespace UmanyiSMS.ViewModels
         {
             return !string.IsNullOrWhiteSpace(newEntry.Name)
                 && newEntry.Amount > 0
-                && (isInStudentMode?!selectedStudent.HasErrors:(selectedClass!=null)&&(selectedClass.ClassID>0));
+                && (isInStudentMode?!selectedStudent.HasErrors:(selectedCombinedClass!=null)&&(selectedCombinedClass.Entries.Count>0));
         }
         private bool CanRemoveEntry()
         {
@@ -177,7 +181,7 @@ namespace UmanyiSMS.ViewModels
             }
             else
             {
-                return (selectedClass != null) && (selectedClass.ClassID > 0) && (currentFeesStructure.Entries.Count > 0);
+                return (selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0) && (currentFeesStructure.Entries.Count > 0);
             }
         }
         public FeesStructureEntryModel NewEntry
@@ -232,30 +236,30 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public ObservableCollection<ClassModel> AllClasses
+        public ObservableCollection<CombinedClassModel> AllCombinedClasses
         {
-            get { return this.allClasses; }
+            get { return this.allCombinedClasses; }
 
             private set
             {
-                if (value != this.allClasses)
+                if (value != this.allCombinedClasses)
                 {
-                    this.allClasses = value;
-                    NotifyPropertyChanged("AllClasses");
+                    this.allCombinedClasses = value;
+                    NotifyPropertyChanged("AllCombinedClasses");
                 }
             }
         }
 
-        public ClassModel SelectedClass
+        public CombinedClassModel SelectedCombinedClass
         {
-            get { return this.selectedClass; }
+            get { return this.selectedCombinedClass; }
 
             set
             {
-                if (value != this.selectedClass)
+                if (value != this.selectedCombinedClass)
                 {
-                    this.selectedClass = value;
-                    NotifyPropertyChanged("SelectedClass");
+                    this.selectedCombinedClass = value;
+                    NotifyPropertyChanged("SelectedCombinedClass");
                     
                 }
             }
@@ -286,7 +290,6 @@ namespace UmanyiSMS.ViewModels
                 {
                     isInClassMode = value;
                     NotifyPropertyChanged("IsInClassMode");
-                    SelectedClass = null;
                     currentFeesStructure.Reset();
 
                 }
@@ -326,7 +329,6 @@ namespace UmanyiSMS.ViewModels
         public override void Reset()
         {
             currentFeesStructure.Entries.Clear();
-            selectedClass.Reset();
             selectedStudent.Reset();
         }
 

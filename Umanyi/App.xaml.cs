@@ -100,7 +100,7 @@ namespace UmanyiSMS
             catch(Exception e) { Log.E(e.ToString(),this); }
         }
 
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private async void Application_Startup(object sender, StartupEventArgs e)
         {
             SplashScreen splashScreen = new SplashScreen("/Resources/Starehe0078C8.png");
             splashScreen.Show(true);
@@ -109,7 +109,7 @@ namespace UmanyiSMS
             InitGlobalVar();
             FileHelper.CheckFiles();
             RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
-            if (ActivationHelper.IsActivated().Result)
+            if (await ActivationHelper.IsActivated())
             {
                 try
                 {

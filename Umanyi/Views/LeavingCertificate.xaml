@@ -20,18 +20,22 @@
 
         <TextBlock HorizontalAlignment="Left" Margin="30,180,0,0" Text="Date Of Birth" VerticalAlignment="Top"/>
         <DatePicker HorizontalAlignment="Left" Height="23" Margin="114,180,0,0" VerticalAlignment="Top" Width="250"
-                 Text="{Binding LeavingCert.DateOfBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    SelectedDateFormat="Long"
+                 SelectedDate="{Binding LeavingCert.DateOfBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,225,0,0" Text="Admission date" VerticalAlignment="Top"/>
         <DatePicker HorizontalAlignment="Left" Height="23" Margin="114,225,0,0" VerticalAlignment="Top" Width="250"
-                 Text="{Binding LeavingCert.DateOfAdmission, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    SelectedDateFormat="Long"
+                 SelectedDate="{Binding LeavingCert.DateOfAdmission, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,270,0,0" Text="Date Left" VerticalAlignment="Top"/>
         <DatePicker HorizontalAlignment="Left" Height="23" Margin="114,270,0,0" VerticalAlignment="Top" Width="250"
-                 Text="{Binding LeavingCert.DateOfLeaving, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    SelectedDateFormat="Long"
+                 SelectedDate="{Binding LeavingCert.DateOfLeaving, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,315,0,0" Text="Date issued" VerticalAlignment="Top"/>
         <DatePicker HorizontalAlignment="Left" Height="23" Margin="114,315,0,0" VerticalAlignment="Top" Width="250"                 
+                    SelectedDateFormat="Long"
                  SelectedDate="{Binding LeavingCert.DateOfIssue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,360,0,0" Text="Nationality" VerticalAlignment="Top"/>

@@ -33,8 +33,8 @@
                      GroupName="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="79,280,0,0" Text="Class" VerticalAlignment="Top"/>
         <ComboBox HorizontalAlignment="Left" Margin="114,280,0,0" VerticalAlignment="Top" Width="200"
-                  ItemsSource="{Binding AllClasses}" DisplayMemberPath="NameOfClass"
-                  SelectedItem="{Binding SelectedClass}"
+                  ItemsSource="{Binding AllCombinedClasses}" DisplayMemberPath="Description"
+                  SelectedItem="{Binding SelectedCombinedClass, Mode=OneWayToSource}"
                   IsEnabled="{Binding IsInClassMode}"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,350,0,0" Style="{DynamicResource Title0}" Text="Other Fees" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="39,400,0,0" TextWrapping="Wrap" Text="Name of Entry" VerticalAlignment="Top"/>

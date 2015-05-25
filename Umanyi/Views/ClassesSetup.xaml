@@ -22,7 +22,7 @@
                  DisplayMemberPath="NameOfClass"/>
         
         
-                <TextBlock HorizontalAlignment="Left" Margin="40,178,0,0" Foreground="Red" VerticalAlignment="Top" Text="IMPORTANT: Class Names should be in format 'FORM No XXX' eg 'FORM 1 EAST" TextWrapping="Wrap" Width="206"/>
+                <TextBlock HorizontalAlignment="Left" Margin="40,211,0,0" Foreground="Red" VerticalAlignment="Top" Text="IMPORTANT: Class Names should be in format 'FORM No XXX' eg 'FORM 1 EAST" TextWrapping="Wrap" Width="224"/>
 
 
 

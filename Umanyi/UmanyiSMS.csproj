@@ -156,6 +156,7 @@
     <Compile Include="ViewModels\BillStudentVM.cs" />
     <Compile Include="ViewModels\AggregateResultsVM.cs" />
     <Compile Include="ViewModels\ChangeSAPasswordVM.cs" />
+    <Compile Include="ViewModels\ClassLeavingCertificatesVM.cs" />
     <Compile Include="ViewModels\ClassReportFormsVM.cs" />
     <Compile Include="ViewModels\CombinedClassListVM.cs" />
     <Compile Include="ViewModels\CombinedMarkListsVM.cs" />
@@ -286,6 +287,9 @@
     </Compile>
     <Compile Include="Views\ChangeSAPassword.xaml.cs">
       <DependentUpon>ChangeSAPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ClassLeavingCertificates.xaml.cs">
+      <DependentUpon>ClassLeavingCertificates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CombinedMarkLists.xaml.cs">
       <DependentUpon>CombinedMarkLists.xaml</DependentUpon>
@@ -740,6 +744,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ChangeSAPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ClassLeavingCertificates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

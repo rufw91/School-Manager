@@ -28,6 +28,7 @@ namespace UmanyiSMS.ViewModels
             TryAddChild(typeof(StudentTransferVM));
             TryAddChild(typeof(StudentClearanceVM));
             TryAddChild(typeof(LeavingCertificateVM));
+            TryAddChild(typeof(ClassLeavingCertificatesVM));
             TryAddChild(typeof(DisciplineTrackerVM));
             TryAddChild(typeof(DisciplineTrackerHistoryVM));
         }        

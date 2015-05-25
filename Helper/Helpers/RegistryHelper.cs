@@ -7,6 +7,7 @@ namespace Helper
 {
     public class RegistryHelper
     {
+        const string guid = "{DBA3C969-6B84-495D-9D5B-03DD8D4FFC5C}";
         public static bool CheckSQLServer()
         {
             try
@@ -34,7 +35,7 @@ namespace Helper
             //HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\UMANYI\MSSQLServer\CurrentVersion
         }
 
-        private static Version GetSQLVersionInstalled()
+        public static Version GetSQLVersionInstalled()
         {
             Version tempCls = new Version();
             try
@@ -63,7 +64,7 @@ namespace Helper
             try
             {
                 RegistryKey MainKey =
-                    Registry.LocalMachine.OpenSubKey("SOFTWARE").CreateSubKey("Umanyi").
+                    Registry.CurrentUser.OpenSubKey("SOFTWARE").CreateSubKey("Umanyi").
                     CreateSubKey(Properties.Settings.Default.ApplicationName).CreateSubKey("Updates");
                 
 
@@ -78,7 +79,7 @@ namespace Helper
             try
             {
                 RegistryKey existingMainKey =
-                    Registry.LocalMachine.OpenSubKey("SOFTWARE").
+                    Registry.CurrentUser.OpenSubKey("SOFTWARE").
                     OpenSubKey("Umanyi").OpenSubKey(Properties.Settings.Default.ApplicationName).OpenSubKey("Updates");                
                 
                 return true;
@@ -110,6 +111,18 @@ namespace Helper
             }
             return false;
             
+        }
+
+        public static object GetKeyValue(string key, string name)
+        {
+            object val =null;
+            try
+            {
+                val = Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Umanyi Digital Technologies")
+                    .OpenSubKey(guid).GetValue("1");
+            }
+            catch { }
+            return val;
         }
     }
 }
