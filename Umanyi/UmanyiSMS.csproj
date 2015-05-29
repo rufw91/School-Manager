@@ -31,6 +31,11 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
+    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <AssemblyVersion>6.7.176.15149</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -166,6 +171,7 @@
     <Compile Include="ViewModels\DisciplineTrackerVM.cs" />
     <Compile Include="ViewModels\EnterExamResultsBySubjectVM.cs" />
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
+    <Compile Include="ViewModels\InstitutionSubjectsSetupVM.cs" />
     <Compile Include="ViewModels\ModifySubjectsSetupVM.cs" />
     <Compile Include="ViewModels\ModifyTimeTableFullVM.cs" />
     <Compile Include="ViewModels\IssueItemsVM.cs" />
@@ -261,7 +267,6 @@
     <Compile Include="ViewModels\StudentTransferVM.cs" />
     <Compile Include="ViewModels\SubjectSelectionFastVM.cs" />
     <Compile Include="ViewModels\SubjectSelectionVM.cs" />
-    <Compile Include="ViewModels\SubjectsSetupVM.cs" />
     <Compile Include="ViewModels\SupplierListVM.cs" />
     <Compile Include="ViewModels\SupplierReportsVM.cs" />
     <Compile Include="ViewModels\SuppliersVM.cs" />
@@ -297,8 +302,11 @@
     <Compile Include="Views\CurrentTimeTableFull.xaml.cs">
       <DependentUpon>CurrentTimeTableFull.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ModifySubjectTutor.xaml.cs">
-      <DependentUpon>ModifySubjectTutor.xaml</DependentUpon>
+    <Compile Include="Views\InstitutionSubjectsSetup.xaml.cs">
+      <DependentUpon>InstitutionSubjectsSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ModifySubjectsSetup.xaml.cs">
+      <DependentUpon>ModifySubjectsSetup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ModifyTimeTableFull.xaml.cs">
       <DependentUpon>ModifyTimeTableFull.xaml</DependentUpon>
@@ -629,9 +637,6 @@
     <Compile Include="Views\SubjectSelectionFast.xaml.cs">
       <DependentUpon>SubjectSelectionFast.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubjectsSetup.xaml.cs">
-      <DependentUpon>SubjectsSetup.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SupplierList.xaml.cs">
       <DependentUpon>SupplierList.xaml</DependentUpon>
     </Compile>
@@ -759,7 +764,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ModifySubjectTutor.xaml">
+    <Page Include="Views\InstitutionSubjectsSetup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ModifySubjectsSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1172,10 +1181,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SubjectSelectionFast.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SubjectsSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

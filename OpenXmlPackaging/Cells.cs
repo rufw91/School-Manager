@@ -5,11 +5,13 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace OpenXmlPackaging {
+namespace OpenXmlPackaging
+{
     /// <summary>
     /// Represents <sheetData> element in the worksheet xml
     /// </summary>
-    public class Cells : DataWriter {
+    public class Cells : DataWriter
+    {
 
         #region Private and Internal Members
 
@@ -37,7 +39,8 @@ namespace OpenXmlPackaging {
         /// </summary>
         /// <param name="styleSheet">The style sheet.</param>
         /// <param name="worksheet">The Worksheet</param>
-        internal Cells(Stylesheet styleSheet, Worksheet worksheet) {
+        internal Cells(Stylesheet styleSheet, Worksheet worksheet)
+        {
             _styleSheet = styleSheet;
             _worksheet = worksheet;
             AllCells = new Dictionary<int, List<Cell>>();
@@ -48,12 +51,14 @@ namespace OpenXmlPackaging {
         #endregion
 
         #region Public Methods and Indexers
-        
+
         /// <summary>
         /// Gets the <see cref="OpenXmlPackaging.Cell"/> with the specified row and column.
         /// </summary>
-        public Cell this[int row, int column] {
-            get {
+        public Cell this[int row, int column]
+        {
+            get
+            {
                 return GetCell(row, column);
             }
         }
@@ -61,8 +66,10 @@ namespace OpenXmlPackaging {
         /// <summary>
         /// Gets the <see cref="OpenXmlPackaging.Cell"/> with the specified reference.
         /// </summary>
-        public Cell this[string reference] {
-            get {
+        public Cell this[string reference]
+        {
+            get
+            {
                 return GetCell(reference);
             }
         }
@@ -73,16 +80,20 @@ namespace OpenXmlPackaging {
         /// <param name="table">The Data table</param>
         /// <param name="startFromReference">Start From Reference</param>
         /// <param name="includeColumnNames">Whether to include column names or not</param>
-        public void ImportDataTable(DataTable table, string startFromReference, bool includeColumnNames) {
-            if (table != null) {
+        public void ImportDataTable(DataTable table, string startFromReference, bool includeColumnNames)
+        {
+            if (table != null)
+            {
                 int startColumnIndex = Utilities.ColumnNames.IndexOf(Utilities.GetColumnName(startFromReference)) + 1;
                 int startRowIndex = Utilities.GetRowIndex(startFromReference);
 
                 int columnIndex = startColumnIndex, rowIndex = startRowIndex;
 
                 // Write columns to Excel if includeColumnNames = true
-                if (includeColumnNames) {
-                    foreach (DataColumn column in table.Columns) {
+                if (includeColumnNames)
+                {
+                    foreach (DataColumn column in table.Columns)
+                    {
                         Columns.ColumnsList.Add(new Column { Index = columnIndex });
                         AddCell(rowIndex, columnIndex++, column.Caption);
                     }
@@ -92,16 +103,20 @@ namespace OpenXmlPackaging {
                 // Add all the data row values
                 rowIndex++;
                 columnIndex = startColumnIndex;
-                foreach (DataRow row in table.Rows) {
+                foreach (DataRow row in table.Rows)
+                {
                     Rows.Add(new Row(rowIndex));
-                    for (var i = 0; i < table.Columns.Count; i++) {
+                    for (var i = 0; i < table.Columns.Count; i++)
+                    {
                         AddCell(rowIndex, columnIndex++, row[i].ToString());
                     }
                     rowIndex++;
                     columnIndex = startColumnIndex;
                 }
 
-            } else {
+            }
+            else
+            {
                 throw new ArgumentNullException("table");
             }
         }
@@ -114,8 +129,10 @@ namespace OpenXmlPackaging {
         /// <param name="numberOfRows">The number of rows.</param>
         /// <param name="numberOfColumns">The number of columns.</param>
         /// <returns></returns>
-        public Range CreateRange(int startRow, int startColumn, int numberOfRows, int numberOfColumns) {
-            return new Range(this, _worksheet) {
+        public Range CreateRange(int startRow, int startColumn, int numberOfRows, int numberOfColumns)
+        {
+            return new Range(this, _worksheet)
+            {
                 StartRow = startRow,
                 StartColumn = startColumn,
                 RowCount = numberOfRows,
@@ -128,10 +145,13 @@ namespace OpenXmlPackaging {
         /// </summary>
         /// <param name="reference">The reference.</param>
         /// <returns></returns>
-        public Range CreateRange(string reference) {
+        public Range CreateRange(string reference)
+        {
             var references = reference.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-            if (references.Length == 1 || references.Length == 2) {
-                foreach (var t in references) {
+            if (references.Length == 1 || references.Length == 2)
+            {
+                foreach (var t in references)
+                {
                     Utilities.ValidateReference(t);
                 }
 
@@ -150,11 +170,12 @@ namespace OpenXmlPackaging {
         /// <param name="from">From.</param>
         /// <param name="to">To.</param>
         /// <returns></returns>
-        public Range CreateRange(string from, string to) {
+        public Range CreateRange(string from, string to)
+        {
             Utilities.ValidateReference(from);
             Utilities.ValidateReference(to);
             return Range(from, to);
-        } 
+        }
 
         #endregion
 
@@ -166,7 +187,8 @@ namespace OpenXmlPackaging {
         /// <param name="first">The first cell reference.</param>
         /// <param name="second">The second cell reference.</param>
         /// <returns></returns>
-        private Range Range(string first, string second) {
+        private Range Range(string first, string second)
+        {
             // Swap the first and second references if the  firstRow (column) > secondRow (column)
             var firstCellRow = Utilities.GetRowIndex(first);
 
@@ -176,16 +198,19 @@ namespace OpenXmlPackaging {
 
             var secondCellColumn = Utilities.ColumnNames.IndexOf(Utilities.GetColumnName(second)) + 1;
 
-            if (firstCellRow > secondCellRow) {
+            if (firstCellRow > secondCellRow)
+            {
                 Swap(ref firstCellRow, ref secondCellRow);
             }
 
-            if (firstCellColumn > secondCellColumn) {
+            if (firstCellColumn > secondCellColumn)
+            {
                 Swap(ref firstCellColumn, ref secondCellColumn);
             }
 
             // Create and return a new Range
-            return new Range(this, _worksheet) {
+            return new Range(this, _worksheet)
+            {
                 StartRow = firstCellRow,
                 StartColumn = firstCellColumn,
                 RowCount = secondCellRow - firstCellRow,
@@ -198,7 +223,8 @@ namespace OpenXmlPackaging {
         /// </summary>
         /// <param name="reference">The reference.</param>
         /// <returns>Cell</returns>
-        private Cell GetCell(string reference) {
+        private Cell GetCell(string reference)
+        {
             var columnName = Utilities.GetColumnName(reference);
             var rowNumber = Utilities.GetRowIndex(reference);
             var columnIndex = Utilities.ColumnNames.IndexOf(columnName) + 1;
@@ -214,7 +240,8 @@ namespace OpenXmlPackaging {
         /// <param name="rowNumber">Row Number</param>
         /// <param name="columnIndex">Column Index</param>
         /// <returns></returns>
-        private Cell GetCell(int rowNumber, int columnIndex) {
+        private Cell GetCell(int rowNumber, int columnIndex)
+        {
             string reference = Utilities.BuildReference(rowNumber, columnIndex);
             var row = AllCells.FirstOrDefault(c => c.Key == rowNumber).Value;
 
@@ -222,16 +249,20 @@ namespace OpenXmlPackaging {
             var cell = row == null ? null : row.FirstOrDefault(c => c.ColumnNumber == columnIndex);
 
             // Cell does not exist. Create one.
-            if (cell == null) {
+            if (cell == null)
+            {
                 cell = new Cell(reference) { Stylesheet = _styleSheet };
 
                 var currentRow = Rows.FirstOrDefault(r => r.Index == rowNumber);
 
                 // If the row already exists, get the row. Else, create a new row
                 List<Cell> thisRow = null;
-                if (AllCells.ContainsKey(rowNumber)) {
+                if (AllCells.ContainsKey(rowNumber))
+                {
                     thisRow = AllCells[rowNumber];
-                } else {
+                }
+                else
+                {
                     thisRow = new List<Cell>();
                     AllCells.Add(rowNumber, thisRow);
                 }
@@ -240,15 +271,19 @@ namespace OpenXmlPackaging {
                 thisRow.Add(cell);
 
                 // Add the current row to the list of rows if it does not exist in the list.
-                if (currentRow == null) {
+                if (currentRow == null)
+                {
                     cell.Row = new Row(rowNumber);
                     Rows.Add(cell.Row);
-                } else {
+                }
+                else
+                {
                     cell.Row = currentRow;
                 }
 
                 // Add the current column to the list of columns if it does not exist in the list.
-                if (!Columns.ColumnsList.Any(c => c.Index == columnIndex)) {
+                if (!Columns.ColumnsList.Any(c => c.Index == columnIndex))
+                {
                     Columns.ColumnsList.Add(new Column { Index = columnIndex });
                 }
             }
@@ -261,7 +296,8 @@ namespace OpenXmlPackaging {
         /// </summary>
         /// <param name="first">The first.</param>
         /// <param name="second">The second.</param>
-        private static void Swap(ref int first, ref int second) {
+        private static void Swap(ref int first, ref int second)
+        {
             var tempSwap = first;
             first = second;
             second = tempSwap;
@@ -274,7 +310,8 @@ namespace OpenXmlPackaging {
         /// <summary>
         /// Empties the Worksheet
         /// </summary>
-        internal void ClearCells() {
+        internal void ClearCells()
+        {
             AllCells.Clear();
             Columns.ColumnsList.Clear();
             Rows.Clear();
@@ -287,12 +324,14 @@ namespace OpenXmlPackaging {
         /// <param name="row">Cell Row</param>
         /// <param name="column">Cell Column</param>
         /// <param name="value">Value of the cell</param>
-        internal void AddCell(int row, int column, string value) {
+        internal void AddCell(int row, int column, string value)
+        {
             // Get the current row
             var cellRow = AllCells.ContainsKey(row) ? AllCells[row] : null;
 
             // Add one if the row does not exist
-            if (cellRow == null) {
+            if (cellRow == null)
+            {
                 cellRow = new List<Cell>();
                 AllCells.Add(row, cellRow);
             }
@@ -301,9 +340,12 @@ namespace OpenXmlPackaging {
             var cell = new Cell(row, column) { Stylesheet = _styleSheet, Value = value };
 
             // Assign the Row property of the cell 
-            if (cellRow.Count == 0) {
+            if (cellRow.Count == 0)
+            {
                 cell.Row = new Row(row);
-            } else {
+            }
+            else
+            {
                 cell.Row = cellRow[0].Row;
             }
 
@@ -435,20 +477,26 @@ namespace OpenXmlPackaging {
 
         #region DataWriter Members
 
-        internal override bool Write(XmlWriter writer) {
+        internal override bool Write(XmlWriter writer)
+        {
             writer.WriteStartElement("sheetData", Constants.MainNamespace);
-            foreach (var row in AllCells.OrderBy(r => r.Key)) {
-                if (row.Value.Any()) {
+            foreach (var row in AllCells.OrderBy(r => r.Key))
+            {
+                if (row.Value.Any())
+                {
                     var currentRow = row.Value[0].Row;
                     var postWriteRow = currentRow.Write(writer);
 
-                    foreach (var cell in row.Value) {
-                        if (cell.Write(writer)) {
+                    foreach (var cell in row.Value)
+                    {
+                        if (cell.Write(writer))
+                        {
                             cell.PostWrite(writer);
                         }
                     }
 
-                    if (postWriteRow) {
+                    if (postWriteRow)
+                    {
                         currentRow.PostWrite(writer);
                     }
                 }

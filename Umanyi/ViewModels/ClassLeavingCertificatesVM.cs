@@ -32,7 +32,9 @@ namespace UmanyiSMS.ViewModels
         {
             RefreshCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                 AllCerts.Entries = await DataAccess.GetClassLeavingCerts(selectedCombinedClass.Entries);
+                IsBusy = false;
             }, o => CanRefresh());
 
             GenerateCommand = new RelayCommand(o =>

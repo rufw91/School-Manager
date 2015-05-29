@@ -29,30 +29,20 @@ namespace OpenXmlPackaging {
         }
 
         private void AddWorkbook() {
-            if (!_package.PartExists(Constants.WorkbookUri))
-            {
-                _workbookPart = _package.CreatePart(Constants.WorkbookUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml");
+            _workbookPart = _package.CreatePart(Constants.WorkbookUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml");
 
-                _package.CreateRelationship(Constants.WorkbookUri, TargetMode.Internal, Constants.RelationshipNamespace + "/officeDocument");
+            _package.CreateRelationship(Constants.WorkbookUri, TargetMode.Internal, Constants.RelationshipNamespace + "/officeDocument");
 
-                using (XmlWriter writer = XmlWriter.Create(_workbookPart.GetStream(FileMode.Create, FileAccess.Write)))
-                {
+            using (XmlWriter writer = XmlWriter.Create(_workbookPart.GetStream(FileMode.Create, FileAccess.Write))) {
 
-                    XElement e = new XElement(Constants.MainXNamespace + "workbook", new XAttribute(XNamespace.Xmlns + "r", Constants.RelationshipXNamespace.NamespaceName),
-                                            new XElement(Constants.MainXNamespace + "sheets"));
+                XElement e = new XElement(Constants.MainXNamespace + "workbook", new XAttribute(XNamespace.Xmlns + "r", Constants.RelationshipXNamespace.NamespaceName),
+                                        new XElement(Constants.MainXNamespace + "sheets"));
 
-                    WorkbookXml = new XDocument(new XElement(Constants.MainXNamespace + "workbook", new XAttribute(XNamespace.Xmlns + "r", Constants.RelationshipXNamespace.NamespaceName),
-                                            new XElement(Constants.MainXNamespace + "sheets")));
-                    WorkbookXml.WriteTo(writer);
-                }
-                _worksheets = new Worksheets(_package, Stylesheet);
+                WorkbookXml = new XDocument(new XElement(Constants.MainXNamespace + "workbook", new XAttribute(XNamespace.Xmlns + "r", Constants.RelationshipXNamespace.NamespaceName),
+                                        new XElement(Constants.MainXNamespace + "sheets")));
+                WorkbookXml.WriteTo(writer);
             }
-            else
-            {
-                _workbookPart = _package.GetPart(Constants.WorkbookUri);
-                _worksheets = new Worksheets(_package, Stylesheet);
-
-            }
+            _worksheets = new Worksheets(_package, Stylesheet);
         }        
     }
 }

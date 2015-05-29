@@ -227,7 +227,7 @@ namespace Helper
             try
             {
                 OpenFileDialog myDialog = new OpenFileDialog();
-                myDialog.Filter = "Bacckup Files|*.bak";
+                myDialog.Filter = "Backup Files|*.bak";
 
                 if ((myDialog.ShowDialog() == true) && (myDialog.CheckFileExists))
                 {

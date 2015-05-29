@@ -36,9 +36,11 @@ namespace Helper.Controls
 
         public double CalculateHeight()
         {
-            double height = 80.0;
+            if (Items.Count == 1)
+                return 80;
+            double height = 0;            
             foreach (var i in Items)
-                height += 42.0;
+                height += 50d;
             return height;
         }
     }

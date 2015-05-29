@@ -38,13 +38,11 @@
         <Border Background="Black" Height="2" Margin="20,300,20,0" VerticalAlignment="Top"/>
         <Border Background="Black" Height="250" Width="2" Margin="20,300,20,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <Border Background="Black" Height="2" Margin="20,550,20,0" VerticalAlignment="Top"/>
-        <Border Background="Black" Height="280" Width="2" Margin="20,300,20,0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+        <Border Background="Black" Height="250" Width="2" Margin="20,300,20,0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
         <Border Background="Black" Height="2" Margin="20,340,20,0" VerticalAlignment="Top"/>
         <Border Background="Black" Height="250" Width="2" Margin="120,300,20,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Border Background="Black" Height="280" Width="2" Margin="550,300,20,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Border Background="Black" Height="260" Width="2" Margin="690,320,20,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Border Background="Black" Height="2" Margin="550,580,20,0" VerticalAlignment="Top"/>
-        <Border Background="Black" Height="2" Margin="550,320,20,0" VerticalAlignment="Top"/>
+        <Border Background="Black" Height="250" Width="2" Margin="550,300,20,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        
         <TextBlock HorizontalAlignment="Left" Margin="30,620,0,0" Text="Amount in words:" FontSize="14" VerticalAlignment="Top" FontFamily="Times New Roman"/>
         <Border Background="Black" Height="2" Margin="140,632,20,0" VerticalAlignment="Top"/>
         <Border Background="Black" Height="2" Margin="30,672,20,0" VerticalAlignment="Top"/>
@@ -75,5 +73,10 @@
         <Border Background="Black" Height="2" Margin="115,1058,330,0" VerticalAlignment="Top"/>
         <Border Background="Black" Height="2" Margin="95,1082,330,0" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="586,1044,0,0" Text="SCHOOL STAMP" FontSize="14" VerticalAlignment="Top" FontFamily="Times New Roman"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,310,0,0" Text="Ref No." FontFamily="Times New Roman" FontSize="16" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="240,310,0,0" Text="Description" FontFamily="Times New Roman" FontSize="16" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="85,800,0,0" Text="Quantity" FontFamily="Times New Roman" FontSize="16" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="350,800,0,0" Text="Description" FontFamily="Times New Roman" FontSize="16" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="665,800,0,0" Text="Total" FontFamily="Times New Roman" FontSize="16" VerticalAlignment="Top"/>
     </Grid>
 </FixedPage>

@@ -80,7 +80,7 @@ namespace UmanyiSMS.ViewModels
             PreviewCommand = new RelayCommand(o =>
             {
                 Document = DocumentHelper.GenerateDocument(transcript);
-                Reset();
+               
                 if (ShowPrintDialogAction != null)
                     ShowPrintDialogAction.Invoke(Document);
             }, o => CanSave());

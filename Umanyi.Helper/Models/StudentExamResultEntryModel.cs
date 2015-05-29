@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class StudentExamResultEntryModel
+    public class StudentExamResultEntryModel:SubjectBaseModel
     {
         public StudentExamResultEntryModel()
         {
-            NameOfSubject = "";
             Grade = "";
             Points = 0;
             MeanScore = 0;
+            Remarks = "";
         }
-
-        public string NameOfSubject { get; set; }
 
         public string Grade { get; set; }
 
@@ -33,5 +31,7 @@ namespace Helper.Models
         public int Code { get; set; }
 
         public string Tutor { get; set; }
+
+        public string Remarks { get; set; }
     }
 }

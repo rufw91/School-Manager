@@ -1,6 +1,7 @@
 ﻿using Helper;
 using Helper.Models;
 using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace UmanyiSMS.ViewModels
         protected override void InitVars()
         {
             Title = "ENTER EXAM RESULTS";
+            StudentSubjectSelection = new ObservableCollection<StudentSubjectSelectionEntryModel>();
             NewResult = new ExamResultStudentModel();
             SelectedSubject = new ExamResultSubjectEntryModel();
             AllExams = new ObservableCollection<ExamModel>();
@@ -41,6 +43,7 @@ namespace UmanyiSMS.ViewModels
                     {
                         var s = await DataAccess.GetClassIDFromStudentID(newResult.StudentID);
                         AllExams = await DataAccess.GetExamsByClass(s);
+                        StudentSubjectSelection = (await DataAccess.GetStudentSubjectSelection(newResult.StudentID)).Entries;
                     }
                 }
 
@@ -77,7 +80,8 @@ namespace UmanyiSMS.ViewModels
             o =>
             {
                 return newSubjectResult != null && newSubjectResult.SubjectID > 0 &&
-                    !newSubjectResult.HasErrors && !SubjectExists(newSubjectResult.SubjectID);
+                    !newSubjectResult.HasErrors && !SubjectExists(newSubjectResult.SubjectID) && 
+                    StudentTakesSubject(newSubjectResult.SubjectID);
             });
 
             SaveCommand = new RelayCommand(async o =>
@@ -107,6 +111,11 @@ namespace UmanyiSMS.ViewModels
             return exists;
         }
 
+        private bool StudentTakesSubject(int subjectID)
+        {
+            return StudentSubjectSelection.Any(o => o.SubjectID == subjectID);
+        }
+
         public ExamModel SelectedExam
         {
             get { return selectedExam; }
@@ -126,6 +135,7 @@ namespace UmanyiSMS.ViewModels
             AllSubjects.Clear();
             var temp = (await DataAccess.GetExamAsync(newResult.ExamID)).Entries;
             foreach (SubjectModel sm in temp)
+                if (StudentTakesSubject(sm.SubjectID))
                 AllSubjects.Add(new ExamResultSubjectEntryModel(sm) { OutOf = selectedExam.OutOf });
             newResult.Entries = (await DataAccess.GetStudentExamResultAync(newResult.StudentID, newResult.ExamID)).Entries;
         }
@@ -184,6 +194,12 @@ namespace UmanyiSMS.ViewModels
                     NotifyPropertyChanged("NewResult");
                 }
             }
+        }
+
+        private ObservableCollection<StudentSubjectSelectionEntryModel> StudentSubjectSelection
+        {
+            get;
+            set;
         }
 
         public ICommand AddSubjectResultCommand

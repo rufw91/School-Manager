@@ -20,7 +20,7 @@ namespace Helper.Controls
     public class TimeTable : ItemsControl
     {
         public static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(
-            "Columns", typeof(ObservableCollection<string>), typeof(TimeTable), new PropertyMetadata(new ObservableCollection<string>()));
+            "Columns", typeof(ObservableCollection<TimetableColumnHeaderModel>), typeof(TimeTable), new PropertyMetadata(new ObservableCollection<TimetableColumnHeaderModel>()));
         public static readonly DependencyProperty NoOfLessonsPerDayProperty = DependencyProperty.Register(
             "NoOfLessonsPerDay", typeof(int), typeof(TimeTable), new PropertyMetadata(10));
         public static readonly DependencyProperty LessonDurationProperty = DependencyProperty.Register(
@@ -37,7 +37,7 @@ namespace Helper.Controls
                 new TimeSpan(0, 10, 0),new TimeSpan(0, 30, 0),new TimeSpan(1, 10, 0)
             }));
         public static readonly DependencyProperty BreakIndicesProperty = DependencyProperty.Register(
-            "BreakIndices", typeof(List<int>), typeof(TimeTable), new PropertyMetadata(new List<int>() { 2, 4, 7 }));
+            "BreakIndices", typeof(List<int>), typeof(TimeTable), new PropertyMetadata(new List<int>() { 2, 4, 6 }));
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
             "IsReadOnly", typeof(bool), typeof(TimeTable), new PropertyMetadata(false));
 
@@ -140,16 +140,51 @@ namespace Helper.Controls
             }
             return temp;
         }
-        private ObservableCollection<string> GetColumns()
+        private ObservableCollection<TimetableColumnHeaderModel> GetColumns()
         {
-            ObservableCollection<string> temp = new ObservableCollection<string>();
+            ObservableCollection<TimetableColumnHeaderModel> temp = new ObservableCollection<TimetableColumnHeaderModel>();
             for (int i = 0; i < NoOfLessonsPerDay; i++)
             {
                 if (BreakIndices.Contains(i))
-                    temp.Add("Break");
-                temp.Add("Lesson " + (i + 1));
+                {
+                    string t = "";
+                    switch (i)
+                    {
+                        case 2: t = "Break"; break;
+                        case 4: t = "Break"; break;
+                        case 6: t = "Lunch"; break;
+                    }
+                    temp.Add(new TimetableColumnHeaderModel() { Title = t });
+                }
+                temp.Add(new TimetableColumnHeaderModel() { Title = "Lesson " + (i + 1) });
             }
+            for (int i=0;i<temp.Count;i++)            
+                temp[i].Duration = GetLessonDuration(i);
+            
             return temp;
+        }
+
+        private string GetLessonDuration(int lessonIndex)
+        {
+            TimeSpan time = LessonStartTime;
+            TimeSpan currentLesson = LessonDuration;
+            for (int i = 0; i < lessonIndex; i++)
+            {
+                if (BreakIndices.Contains(i))
+                {
+                    time += ((i == 2) ? BreaksDurations[0] : new TimeSpan(0, 0, 0));
+                    time += ((i == 4) ? BreaksDurations[1] : new TimeSpan(0, 0, 0));
+                    time += ((i == 6) ? BreaksDurations[2] : new TimeSpan(0, 0, 0));
+                }
+                else
+                    time += LessonDuration;
+            }
+            if (BreakIndices.Contains(lessonIndex))
+            {
+                currentLesson = ((lessonIndex == 2) ? BreaksDurations[0] : ((lessonIndex == 4) ? BreaksDurations[1] :
+                    ((lessonIndex == 6) ? BreaksDurations[2] : new TimeSpan(0, 0, 0))));
+            }
+            return time.ToString(@"hh\:mm") + " to " + (time += currentLesson).ToString(@"hh\:mm");
         }
 
         public override void OnApplyTemplate()
@@ -173,11 +208,11 @@ namespace Helper.Controls
                 ch.Tag = this;
         }
 
-        public ObservableCollection<string> Columns
+        public ObservableCollection<TimetableColumnHeaderModel> Columns
         {
             get
             {
-                return (ObservableCollection<string>)GetValue(ColumnsProperty);
+                return (ObservableCollection<TimetableColumnHeaderModel>)GetValue(ColumnsProperty);
             }
 
             set

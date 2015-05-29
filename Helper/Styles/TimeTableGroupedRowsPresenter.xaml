@@ -3,8 +3,32 @@
                     xmlns:controls="clr-namespace:Helper.Controls"
                     xmlns:models="clr-namespace:Helper.Models">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Helper;component/Converters/Converters.xaml"/>
+        <ResourceDictionary Source="/Helper;component/Converters/Converters.xaml"/>        
     </ResourceDictionary.MergedDictionaries>
+    
+    <Style x:Key="FlatTextBox" TargetType="TextBox">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Border x:Name="Bd"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost" RenderOptions.ClearTypeHint="Enabled"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    
     <Style TargetType="controls:TimeTableGroupedRowsPresenter">
         <Setter Property="MinHeight"
                 Value="90" />
@@ -46,7 +70,7 @@
             <Setter.Value>
                 <DataTemplate DataType="{x:Type models:ClassLessons}">
 
-                    <Grid MinWidth="80" MinHeight="50">
+                    <Grid MinWidth="80" Height="50">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="*"/>
@@ -63,8 +87,8 @@
                                     <Border Name="brd" Width="100">
                                         <Grid>
                                             <StackPanel Name="txt">
-                                                <TextBox Style="{x:Null}" TextAlignment="Center" Text="{Binding Subject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ToUpperConverter}}"/>
-                                                <TextBox Style="{x:Null}" TextAlignment="Center" Text="{Binding Tutor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ToUpperConverter}}"/>
+                                                <TextBox Style="{StaticResource FlatTextBox}" TextAlignment="Center" Text="{Binding Subject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ToUpperConverter}}"/>
+                                                <TextBox Style="{StaticResource FlatTextBox}" TextAlignment="Center" Text="{Binding Tutor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ToUpperConverter}}"/>
                                             </StackPanel>
                                         </Grid>
                                     </Border>

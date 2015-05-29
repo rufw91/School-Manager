@@ -8,15 +8,12 @@ namespace OpenXmlPackaging {
     /// Represents the Workbook
     /// </summary>
     public sealed class SpreadsheetDocument : IDisposable {
-
-
+        
         #region Private Members
 
         private Package _package;
 
         private Workbook _workbook;
-
-        bool isOpener=false;
 
         private Stylesheet _stylesheet;
 
@@ -27,22 +24,10 @@ namespace OpenXmlPackaging {
         #region Constructor
 
         public SpreadsheetDocument(string path) {
-            isOpener = File.Exists(path);
-            CreateSpreadsheetDocument(path, FileMode.OpenOrCreate);
+            CreateSpreadsheetDocument(path, FileMode.Create);
         }
         
         #endregion
-
-        public static bool Test(string path)
-        {
-            try
-            {
-                var p = Package.Open(path, FileMode.Open);
-                p.Close();
-                return true;
-            }
-            catch { return false; }
-        }
         
         #region Public Properties
         
@@ -78,17 +63,25 @@ namespace OpenXmlPackaging {
         }
         
         #endregion
+
+        public static bool Test(string path)
+        {
+            try
+            {
+                var p = Package.Open(path, FileMode.Open);
+                p.Close();
+                return true;
+            }
+            catch { return false; }
+        }
         
         #region IDisposable Member
 
         public void Dispose() {
             try {
-                if (!isOpener)
-                {
-                    _stylesheet.Save();
-                    _worksheets.Save();
-                    _package.Flush();
-                }
+                _stylesheet.Save();
+                _worksheets.Save();
+                _package.Flush();
                 _package.Close();
             } catch {
                 throw;

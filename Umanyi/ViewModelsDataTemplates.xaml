@@ -49,6 +49,9 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
+    <DataTemplate DataType="{x:Type viewModels:InstitutionSubjectsSetupVM}" >
+        <views:InstitutionSubjectsSetup/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:ClassLeavingCertificatesVM}" >
         <views:ClassLeavingCertificates/>
     </DataTemplate>
@@ -60,9 +63,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:CurrentTimeTableFullVM}" >
         <views:CurrentTimeTableFull/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:SubjectsSetupVM}" >
-        <views:SubjectsSetup/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:SubjectSelectionFastVM}" >
         <views:SubjectSelectionFast/>

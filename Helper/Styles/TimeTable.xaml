@@ -24,7 +24,7 @@
                         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                             <Grid x:Name="PART_PrintVisual" Margin="{TemplateBinding Padding}" IsHitTestVisible="{TemplateBinding IsReadOnly, Converter={StaticResource NegateConverter}}">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="50"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>

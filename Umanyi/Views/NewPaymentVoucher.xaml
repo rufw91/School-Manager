@@ -9,13 +9,17 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="New Payment Voucher" 
                    VerticalAlignment="Top"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="30,100,0,0" Text="Payee" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="80,95,0,0" VerticalAlignment="Top" Width="300"
+        <TextBlock HorizontalAlignment="Left" Margin="30,85,0,0" Text="Payee" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,80,0,0" VerticalAlignment="Top" Width="300"
                  Text="{Binding CurrentVoucher.NameOfPayee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="30,150,0,0" Text="Address" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="80,145,0,0" VerticalAlignment="Top" Width="300"
+        <TextBlock HorizontalAlignment="Left" Margin="30,135,0,0" Text="Address" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,130,0,0" VerticalAlignment="Top" Width="300"
                  Text="{Binding CurrentVoucher.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="30,185,0,0" Text="Description" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,180,0,0" VerticalAlignment="Top" Width="300"
+                 Text="{Binding CurrentVoucher.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,231,0,0" Text="Add Entry" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="40,280,0,0" Text="Decsription" VerticalAlignment="Top"/>

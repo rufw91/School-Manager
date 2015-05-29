@@ -72,7 +72,7 @@ namespace Helper
                 case DocType.Transcript2: GenerateTranscript2(); break;
                 case DocType.Balances: GenerateBalanceList(); break;
                 case DocType.ClassList: GenerateClassList(); break;
-                // case DocType.Voucher: GenerateVoucher(); break;
+                case DocType.Voucher: GenerateVoucher(); break;
                 case DocType.ClassMarkList: GenerateClassMarkList(); break;
                 case DocType.AggregateResult: GenerateAggregateResult(); break;
                 case DocType.ClassTranscripts: GenerateClassTranscripts(); break;

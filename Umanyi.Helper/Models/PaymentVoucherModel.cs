@@ -14,13 +14,16 @@ namespace Helper.Models
         private string address;
         private ObservableCollection<PaymentVoucherEntryModel> entries;
         private decimal total;
+        private string description;
 
         public PaymentVoucherModel()
         {
+            Description = "";
             PaymentVoucherID = 0;
             NameOfPayee = "";
             entries = new ObservableCollection<PaymentVoucherEntryModel>();
             Total = 0;
+            Description = "";
             entries.CollectionChanged += (o, e) =>
                 {
                     Total = 0;
@@ -99,8 +102,23 @@ namespace Helper.Models
             }
         }
 
+        public string Description
+        {
+            get { return description; }
+
+            set
+            {
+                if (value != description)
+                {
+                    description = value;
+                    NotifyPropertyChanged("Description");
+                }
+            }
+        }
+
         public override void Reset()
         {
+            Description = "";
             PaymentVoucherID = 0;
             NameOfPayee = "";
             Address = "";

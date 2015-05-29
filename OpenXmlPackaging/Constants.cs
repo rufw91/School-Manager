@@ -14,7 +14,7 @@ namespace OpenXmlPackaging {
         public const string RelationshipNamespace = @"http://schemas.openxmlformats.org/officeDocument/2006/relationships";
         public const string McIgnorableNamespace = @"http://schemas.openxmlformats.org/markup-compatibility/2006";
         public const string X14AcNamespace = @"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac";
-        public static Uri SharedStringsUri = new Uri("/xl/sharedStrings.xml", UriKind.Relative);
+
         public const string SheetUriFormatPath = "/xl/worksheets/sheet{0}.xml";
         public const string WorksheetContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml";
 

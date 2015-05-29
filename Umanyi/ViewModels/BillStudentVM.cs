@@ -156,7 +156,8 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanGetFeesStructure()
         {
-            return isInStudentMode ? selectedStudent != null && !selectedStudent.HasErrors : selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0;
+            return isInStudentMode ? selectedStudent != null && !selectedStudent.HasErrors
+                : selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0;
         }
 
 
@@ -177,7 +178,7 @@ namespace UmanyiSMS.ViewModels
             if (isInStudentMode)
             {
                 selectedStudent.CheckErrors();
-                return !selectedStudent.HasErrors;
+                return !selectedStudent.HasErrors && currentFeesStructure.Entries.Count > 0;
             }
             else
             {

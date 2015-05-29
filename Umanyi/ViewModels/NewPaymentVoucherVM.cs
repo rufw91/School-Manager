@@ -48,12 +48,11 @@ namespace UmanyiSMS.ViewModels
                 MessageBox.Show(succ ? "Successfully saved details" : "Could not save details.", succ ? "Success" : "Error",
                     MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
-                {Reset();
-
+                {
                     Document = DocumentHelper.GenerateDocument(currentVoucher);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(Document);
-
+                    Reset();
                 }
             },
                o => CanSave());
@@ -67,7 +66,7 @@ namespace UmanyiSMS.ViewModels
         {
             return !string.IsNullOrWhiteSpace(newEntry.Description)
                 && newEntry.Amount > 0
-                && newEntry.DatePaid != null ;
+                && newEntry.DatePaid != null && currentVoucher.Entries.Count<=3;
         }
         private bool CanSave()
         {
