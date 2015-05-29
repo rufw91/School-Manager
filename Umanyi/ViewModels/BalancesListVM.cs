@@ -1,5 +1,6 @@
 ﻿using Helper;
 using Helper.Models;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Documents;
@@ -10,8 +11,8 @@ namespace UmanyiSMS.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class BalancesListVM : ViewModelBase
     {
-        ClassModel selectedClass;
-        ObservableCollection<ClassModel> allClasses;
+        CombinedClassModel selectedCombinedClass;
+        ObservableCollection<CombinedClassModel> allCombinedClasses;
         private FixedDocument doc;
         public BalancesListVM()
         {
@@ -21,27 +22,35 @@ namespace UmanyiSMS.ViewModels
         protected override async void InitVars()
         {
             Title = "BALANCES LIST";
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
         }
 
         protected override void CreateCommands()
         {
             GenerateCommand = new RelayCommand(async o =>
             {
-                ClassBalancesListModel s = await DataAccess.GetBalancesList(selectedClass);
+                 ClassBalancesListModel s = new ClassBalancesListModel();
+                foreach (var c in selectedCombinedClass.Entries)
+                {
+                   var t = await DataAccess.GetBalancesList(c);
+                   foreach (var g in t.Entries)
+                       s.Entries.Add(g);
+                }
+                s.Entries = new ObservableCollection<StudentFeesDefaultModel>(s.Entries.OrderBy(f => f.StudentID));
+                s.NameOfClass = selectedCombinedClass.Description;
                 Document = DocumentHelper.GenerateDocument(s);
-            }, o => selectedClass != null);
+            }, o => selectedCombinedClass != null);
         }
 
-        public ObservableCollection<ClassModel> AllClasses
+        public ObservableCollection<CombinedClassModel> AllCombinedClasses
         {
-            get { return allClasses; }
+            get { return allCombinedClasses; }
             private set
             {
-                if (allClasses != value)
+                if (allCombinedClasses != value)
                 {
-                    allClasses = value;
-                    NotifyPropertyChanged("AllClasses");
+                    allCombinedClasses = value;
+                    NotifyPropertyChanged("AllCombinedClasses");
                 }
             }
         }
@@ -64,15 +73,15 @@ namespace UmanyiSMS.ViewModels
         public ICommand GenerateCommand
         { get; private set; }
 
-        public ClassModel SelectedClass
+        public CombinedClassModel SelectedCombinedClass
         {
-            get { return selectedClass; }
+            get { return selectedCombinedClass; }
             set
             {
-                if (value != selectedClass)
+                if (value != selectedCombinedClass)
                 {
-                    selectedClass = value;
-                    NotifyPropertyChanged("SelectedClass");
+                    selectedCombinedClass = value;
+                    NotifyPropertyChanged("SelectedCombinedClass");
                 }
             }
         }

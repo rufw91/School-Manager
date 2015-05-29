@@ -7,21 +7,23 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace OpenXmlPackaging {
+namespace OpenXmlPackaging
+{
     /// <summary>
     /// Represents a Worksheet
     /// </summary>
-    public class Worksheet {
+    public class Worksheet
+    {
 
         #region Private Members
-        
+
         private readonly Stylesheet _styleSheet;
-        private readonly PackagePart _worksheetPart; 
+        private readonly PackagePart _worksheetPart;
 
         #endregion
 
         #region Public and Internal Properties
-        
+
         public string Name { get; set; }
         public string RelationshipId { get; set; }
         public XDocument WorksheetXml { get; internal set; }
@@ -31,8 +33,8 @@ namespace OpenXmlPackaging {
         /// Indexer for all the cells.
         /// </summary>
         public Cells Cells { get; internal set; }
-        
-        internal AutoFilters AutoFilter { get; set; } 
+
+        internal AutoFilters AutoFilter { get; set; }
 
         #endregion
 
@@ -43,7 +45,8 @@ namespace OpenXmlPackaging {
         /// </summary>
         /// <param name="styleSheet">The style sheet.</param>
         /// <param name="worksheetPart">The worksheet part.</param>
-        internal Worksheet(Stylesheet styleSheet, PackagePart worksheetPart) {
+        internal Worksheet(Stylesheet styleSheet, PackagePart worksheetPart)
+        {
             _styleSheet = styleSheet;
             _worksheetPart = worksheetPart;
             MergedCells = new MergedCells();
@@ -58,7 +61,8 @@ namespace OpenXmlPackaging {
         /// <summary>
         /// Saves this worksheet file.
         /// </summary>
-        public void Save() {
+        public void Save()
+        {
             //SaveXElement();
             SaveWriter();
         }
@@ -66,19 +70,25 @@ namespace OpenXmlPackaging {
         /// <summary>
         /// Autofits all the columns
         /// </summary>
-        public void AutoFitColumns() {
-            Cells.Columns.ColumnsList.ForEach(c => {
+        public void AutoFitColumns()
+        {
+            Cells.Columns.ColumnsList.ForEach(c =>
+            {
                 // TODO: Implement autofit
                 // c.Width = Cells.CellsList.Where(cell => cell.ColumnNumber == c.Index).Max(cell => cell.ColumnWidth);
             });
         }
 
-        public void SetColumnWidth(int index, double? width) {
+        public void SetColumnWidth(int index, double? width)
+        {
             var column = Cells.Columns.ColumnsList.FirstOrDefault(c => c.Index == index);
-            if (column == null) {
+            if (column == null)
+            {
                 column = new Column { Index = index, Width = width };
                 Cells.Columns.ColumnsList.Add(column);
-            } else {
+            }
+            else
+            {
                 column.Width = width;
             }
         }
@@ -91,7 +101,8 @@ namespace OpenXmlPackaging {
         /// <param name="tableName">Table name to import</param>
         /// <param name="startFromReference">Starting cell for importing data</param>
         /// <param name="includeColumnNames">Whether to include column names in the first row</param>
-        public void ImportDataTable(DataTable table, string startFromReference, bool includeColumnNames) {
+        public void ImportDataTable(DataTable table, string startFromReference, bool includeColumnNames)
+        {
             if (table == null) throw new ArgumentNullException("table");
             Utilities.ValidateReference(startFromReference);
 
@@ -154,20 +165,26 @@ namespace OpenXmlPackaging {
 
         #region Private Methods
 
-        private void SaveWriter() {
+        private void SaveWriter()
+        {
 
-            try {
-                using (Stream stream = _worksheetPart.GetStream(FileMode.Create, FileAccess.Write)) {
-                    using (var writer = XmlWriter.Create(stream)) {
+            try
+            {
+                using (Stream stream = _worksheetPart.GetStream(FileMode.Create, FileAccess.Write))
+                {
+                    using (var writer = XmlWriter.Create(stream))
+                    {
                         writer.WriteStartElement("worksheet", Constants.MainNamespace);
                         writer.WriteAttributeString("xmlns", "r", null, Constants.RelationshipNamespace);
 
-                        if (Cells.Columns.ColumnsList.Count > 0) {
+                        if (Cells.Columns.ColumnsList.Count > 0)
+                        {
                             Cells.Columns.Write(writer);
                         }
                         Cells.Write(writer);
 
-                        if (MergedCells.Cells.Count > 0) {
+                        if (MergedCells.Cells.Count > 0)
+                        {
                             MergedCells.Write(writer);
                         }
 
@@ -175,9 +192,13 @@ namespace OpenXmlPackaging {
                         writer.WriteEndElement();
                     }
                 }
-            } catch (ObjectDisposedException) {
+            }
+            catch (ObjectDisposedException)
+            {
                 //Suppress any ObjectDisposedException thrown by multiple using statements
-            } catch {
+            }
+            catch
+            {
                 throw;
             }
         }

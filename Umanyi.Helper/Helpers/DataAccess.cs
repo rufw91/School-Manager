@@ -346,7 +346,7 @@ namespace Helper
             ObservableCollection<PurchaseModel> tempCls;
             if (supplierID.HasValue)
             {
-                selectStr = "SELECT sh.ItemReceiptID,sh.OrderDate,TotalAmt,SupplierID,IsCancelled,count(sd.ItemReceiptID),RefNo FROM " +
+                selectStr = "SELECT sh.ItemReceiptID,sh.OrderDate,TotalAmt,SupplierID,IsCancelled,ISNULL(SUM(ISNULL(sd.Quantity,0)),0),RefNo FROM " +
                                  "[Sales].[ItemReceiptHeader] sh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] sd ON(sh.ItemReceiptID=sd.ItemReceiptID) WHERE sh.SupplierID =" + supplierID;
                 if ((startTime.HasValue && endTime.HasValue) == true)
                     selectStr += " AND sh.OrderDate BETWEEN '" +
@@ -356,7 +356,7 @@ namespace Helper
             }
             else
             {
-                selectStr = "SELECT sh.ItemReceiptID,sh.OrderDate,TotalAmt,SupplierID,IsCancelled, count(sd.ItemReceiptID),RefNo FROM " +
+                selectStr = "SELECT sh.ItemReceiptID,sh.OrderDate,TotalAmt,SupplierID,IsCancelled, ISNULL(SUM(ISNULL(sd.Quantity,0)),0),RefNo FROM " +
                                      "[Sales].[ItemReceiptHeader] sh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] sd ON(sh.ItemReceiptID=sd.ItemReceiptID)";
                 if ((startTime.HasValue && endTime.HasValue) == true)
                     selectStr += " WHERE sh.OrderDate BETWEEN '" +
@@ -1564,7 +1564,7 @@ namespace Helper
                     "INSERT INTO [Institution].[FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid) " +
                     "VALUES(@id,@studentID,@amount,@dop)\r\n" +
                   "INSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,IsDiscount,PaymentID) " +
-                  "VALUES(@id2,@studentID,employeeID,@isCancelled,@dateAdded,@isDiscount,@id)";
+                  "VALUES(@id2,@studentID,@employeeID,@isCancelled,@dateAdded,@isDiscount,@id)";
 
                 int c = 0;
                 foreach (FeesStructureEntryModel obs in newSale.SaleItems)
@@ -1575,6 +1575,7 @@ namespace Helper
                     paramColl.Add(new SqlParameter(v2, obs.Amount));
                     insertStr += "\r\nINSERT INTO [Sales].[SaleDetail] (SaleID,Name,Amount) " +
                         "VALUES(@id2,@entryName,@entryAmount)";
+                    c++;
                 }
                 insertStr += "\r\nCOMMIT";
 
@@ -1583,7 +1584,6 @@ namespace Helper
                 paramColl.Add(new SqlParameter("@studentID", newPayment.StudentID));
                 paramColl.Add(new SqlParameter("@amount", newPayment.AmountPaid));
                 paramColl.Add(new SqlParameter("@dop", newPayment.DatePaid.ToString("g")));
-                paramColl.Add(new SqlParameter("@studentID", newPayment.StudentID));
                 paramColl.Add(new SqlParameter("@employeeID", newSale.EmployeeID));
                 paramColl.Add(new SqlParameter("@isCancelled", newSale.IsCancelled ? 0 : 1));
                 paramColl.Add(new SqlParameter("@dateAdded", newSale.DateAdded.ToString("g")));
@@ -1776,7 +1776,7 @@ namespace Helper
             {
                 ObservableCollection<SubjectModel> allSubjects = new ObservableCollection<SubjectModel>();
                 
-                string selectStr = "SELECT ssd.SubjectID,s.NameOfSubject,s.Tutor, s.MaximumScore,s.Code,s.IsOptional FROM [Institution].[SubjectSetupDetail] ssd " +
+                string selectStr = "SELECT ssd.SubjectID,s.NameOfSubject,ssd.Tutor, s.MaximumScore,s.Code,s.IsOptional FROM [Institution].[SubjectSetupDetail] ssd " +
                 "LEFT OUTER JOIN [Institution].[Subject] s ON (ssd.SubjectID = s.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh "+
                 "ON (ssd.SubjectSetupID = ssh.SubjectSetupID) WHERE IsACtive=1 AND ssh.ClassID="+selectedClassID+" ORDER BY s.Code";
 
@@ -1784,7 +1784,41 @@ namespace Helper
                 SubjectModel sub;
                 foreach (DataRow dtr in dt.Rows)
                 {
-                    sub = new SubjectsSetupEntryModel();
+                    sub = new SubjectModel();
+                    sub.SubjectID = (int)dtr[0];
+                    sub.NameOfSubject = dtr[1].ToString();
+                    sub.Tutor = dtr[2].ToString();
+                    sub.MaximumScore = decimal.Parse(dtr[3].ToString());
+                    sub.Code = int.Parse(dtr[4].ToString());
+                    sub.IsOptional = bool.Parse(dtr[5].ToString());
+                    if (sub.NameOfSubject.ToUpper().Trim().Contains("SKILLS"))
+                        continue;
+
+                    allSubjects.Add(sub);
+                }
+
+                return allSubjects;
+            });
+        }
+
+        public static Task<ObservableCollection<SubjectModel>> GetSubjectsRegistredToCombinedClassAsync(CombinedClassModel combinedClass)
+        {
+            return Task.Run<ObservableCollection<SubjectModel>>(() =>
+            {
+                ObservableCollection<SubjectModel> allSubjects = new ObservableCollection<SubjectModel>();
+                string classStr = "0,";
+                foreach (var c in combinedClass.Entries)
+                    classStr += c.ClassID+",";
+                classStr = classStr.Remove(classStr.Length - 1);
+                string selectStr = "SELECT DISTINCT ssd.SubjectID,s.NameOfSubject,ssd.Tutor, s.MaximumScore,s.Code,s.IsOptional FROM [Institution].[SubjectSetupDetail] ssd " +
+                "LEFT OUTER JOIN [Institution].[Subject] s ON (ssd.SubjectID = s.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh " +
+                "ON (ssd.SubjectSetupID = ssh.SubjectSetupID) WHERE IsACtive=1 AND ssh.ClassID IN(" + classStr + ") ORDER BY s.Code";
+
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                SubjectModel sub;
+                foreach (DataRow dtr in dt.Rows)
+                {
+                    sub = new SubjectModel();
                     sub.SubjectID = (int)dtr[0];
                     sub.NameOfSubject = dtr[1].ToString();
                     sub.Tutor = dtr[2].ToString();
@@ -1946,37 +1980,6 @@ namespace Helper
             });
         }
 
-        public static Task<bool> SaveNewSubjectSetupAsync(SubjectsSetupModel subjectsSetup)
-        {
-            return Task.Run<bool>(() =>
-            {
-                string insertStr = "BEGIN TRANSACTION\r\ndeclare @id int; declare @id2 int;\r\n";
-                foreach (var f in subjectsSetup.Classes)
-                {
-                    insertStr += "IF NOT EXISTS (SELECT * FROM [Institution].[SubjectSetupHeader] WHERE IsActive=1 AND ClassID=" + f.ClassID +
-                        ")BEGIN SET @id = [dbo].GetNewID('Institution.SubjectSetupHeader') " +
-                        "INSERT INTO [Institution].[SubjectSetupHeader] (SubjectSetupID,ClassID,StartDate)" +
-                                    " VALUES (@id," + f.ClassID +
-                                    ",'" + subjectsSetup.StartDate.ToString("g") + "')\r\nEND\r\nELSE SET @id=(SELECT SubjectSetupID FROM " +
-                        "[Institution].[SubjectSetupHeader] WHERE IsActive=1 AND ClassID=" + f.ClassID+")\r\n";
-
-                    foreach (SubjectsSetupEntryModel entry in subjectsSetup.Entries.Where(o=>o.SubjectSetupID==0))
-                    {
-                        insertStr += "IF NOT EXISTS (SELECT * FROM [Institution].[SubjectSetupDetail] ssd INNER JOIN" +
-                            " [Institution].[Subject] s ON(ssd.SubjectID=s.SubjectID)  WHERE s.NameOfSubject='" + entry.NameOfSubject +
-                            "' AND ssd.SubjectSetupID=@id)BEGIN\r\nSET @id2 = [dbo].GetNewID('Institution.Subject')\r\n " +
-                        "INSERT INTO [Institution].[SubjectSetupDetail] (SubjectSetupID,SubjectID)" +
-                           " VALUES (@id,@id2)\r\n" +
-                        "INSERT INTO [Institution].[Subject] (SubjectID,NameOfSubject,Code,Tutor,MaximumScore,IsOptional)" +
-                            " VALUES (@id2,'" + entry.NameOfSubject + "'," + entry.Code + ",'" + entry.Tutor + "','" +
-                            entry.MaximumScore + "'," + Convert.ToInt32(entry.IsOptional) + ")\r\nEND\r\n";
-                    }
-                }
-                insertStr += " COMMIT";
-
-                return DataAccessHelper.ExecuteNonQuery(insertStr);
-            });
-        }
 
         public static Task<bool> SaveNewClassSetupAsync(ClassesSetupModel classSetup)
         {
@@ -2956,9 +2959,13 @@ namespace Helper
 
             string selectStr = "SELECT sub.NameOfSubject, dbo.GetWeightedExamSubjectScore(" + studentID + "," + e1 +
                 ",sssd.SubjectID,"+w1+"),dbo.GetWeightedExamSubjectScore(" + studentID + "," + e2 + ",sssd.SubjectID,"+w2+
-                "),dbo.GetWeightedExamSubjectScore(" +  studentID + "," + e3 + ",sssd.SubjectID,"+w3+"),sub.Tutor,sub.Code FROM " +
+                "),dbo.GetWeightedExamSubjectScore(" +  studentID + "," + e3 + ",sssd.SubjectID,"+w3+"),ssd.Tutor,sub.Code,sub.SubjectID,std.Remarks FROM " +
                 "[Institution].[StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [Institution].[StudentSubjectSelectionHeader] sssh ON " +
-                "(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Institution].[Subject] sub ON (sssd.SubjectID=sub.SubjectID) " +
+                "(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Institution].[Subject] sub ON (sssd.SubjectID=sub.SubjectID) "+
+               "LEFT OUTER JOIN [Institution].[Student] s ON(sssh.StudentID=s.StudentID) " +
+                "LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh ON(ssh.ClassID=s.ClassID) " +
+                "LEFT OUTER JOIN [Institution].[SubjectSetupDetail] ssd ON(ssh.SubjectSetupID=ssd.SubjectSetupID AND ssd.SubjectID=sub.SubjectID) " +
+                "LEFT OUTER JOIN [Institution].[StudentTranscriptDetail] std ON(std.SubjectID=sssd.SubjectID) " +
                 "WHERE sssh.StudentID=" + studentID;
             DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
             StudentExamResultEntryModel set;
@@ -2972,6 +2979,8 @@ namespace Helper
                 set.MeanScore = (set.Cat1Score.HasValue ? set.Cat1Score.Value : 0) + (set.Cat2Score.HasValue ? set.Cat2Score.Value : 0) + (set.ExamScore.HasValue ? set.ExamScore.Value : 0);
                 set.Code = string.IsNullOrWhiteSpace(dtr[5].ToString()) ? 0 : int.Parse(dtr[5].ToString());
                 set.Tutor = dtr[4].ToString();
+                set.SubjectID = int.Parse(dtr[6].ToString());
+                set.Remarks = dtr[7].ToString();
                 set.Grade = CalculateGrade(set.MeanScore);
                 set.Points = CalculatePoints(set.Grade);
                 temp.Add(set);
@@ -2988,11 +2997,12 @@ namespace Helper
                 try
                 {
                     string insertStr = "";
-                    if (transcript.StudentTranscriptID != 0)
-                    {
-                        insertStr = "BEGIN TRANSACTION\r\n" +
-                            "IF EXISTS (SELECT * FROM [Institution].[StudentTranscriptHeader] WHERE DateSaved >='" + GetTermStart().ToString("g") + "' AND '" + GetTermEnd().ToString("g") +
+                    
+                        insertStr = "BEGIN TRANSACTION DECLARE @id int;\r\n" +
+                            "IF EXISTS (SELECT * FROM [Institution].[StudentTranscriptHeader] WHERE DateSaved BETWEEN'" + GetTermStart().ToString("g") + "' AND '" + GetTermEnd().ToString("g") +
                             "' AND StudentTranscriptID=" + transcript.StudentTranscriptID + ")\r\nBEGIN\r\n" +
+                            "SET @id=(SELECT StudentTranscriptID FROM [Institution].[StudentTranscriptHeader] WHERE DateSaved BETWEEN'" + GetTermStart().ToString("g") + "' AND '" + GetTermEnd().ToString("g") +
+                            "' AND StudentTranscriptID=" + transcript.StudentTranscriptID + ")\r\n"+
                             "UPDATE [Institution].[StudentTranscriptHeader] SET Responsibilities='" + transcript.Responsibilities + "'" +
                             ",ClubsAndSport='" + transcript.ClubsAndSport + "'" +
                             ",Boarding='" + transcript.Boarding + "'" +
@@ -3002,18 +3012,26 @@ namespace Helper
                             ",PrincipalComments='" + transcript.PrincipalComments + "'" +
                             ",OpeningDay='" + transcript.OpeningDay.ToString("g") + "'" +
                             ",ClosingDay='" + transcript.ClosingDay.ToString("g") + "'" +
+                            ",Term1Pos='" + transcript.Term1Pos + "'" +
+                            ",Term2Pos='" + transcript.Term2Pos+ "'" +
+                            ",Term3Pos='" + transcript.Term3Pos + "'" +
                             ",DateSaved='" + DateTime.Now.ToString("g") + "' WHERE StudentTranscriptID= " + transcript.StudentTranscriptID +
                             "\r\nEND\r\nELSE\r\nBEGIN\r\n" +
-                          "declare @id int; " +
                             "SET @id = [dbo].GetNewID('Institution.StudentTranscriptHeader') " +
-                            "INSERT INTO [Institution].[StudentTranscriptHeader] (StudentTranscriptID,StudentID,ClassPosition,OverAllPosition,TotalMarks,Points,MeanGrade," +
-                            "Responsibilities,ClubsAndSport,Boarding,ClassTeacher,ClassTeacherComments,Principal,PrincipalComments,OpeningDay,ClosingDay,CAT1Score,CAT2Score," +
-                            "ExamScore,Term1Pos,Term2Pos,Term3Pos,DateSaved) VALUES (@id," + transcript.StudentID + ",'" + transcript.ClassPosition + "','" + transcript.OverAllPosition + "','" +
-                            transcript.TotalMarks + "'," + transcript.Points + ",'" + transcript.MeanGrade + "','" + transcript.Responsibilities + "','" + transcript.ClubsAndSport + "','" +
+                            "INSERT INTO [Institution].[StudentTranscriptHeader] (StudentTranscriptID,StudentID," +
+                            "Responsibilities,ClubsAndSport,Boarding,ClassTeacher,ClassTeacherComments,Principal,PrincipalComments,OpeningDay,ClosingDay,"+
+                            "Term1Pos,Term2Pos,Term3Pos,DateSaved) VALUES (@id," + transcript.StudentID + ",'" + transcript.Responsibilities + "','" + transcript.ClubsAndSport + "','" +
                             transcript.Boarding + "','" + transcript.ClassTeacher + "','" + transcript.ClassTeacherComments + "','" + transcript.Principal + "','" + transcript.PrincipalComments + "','" +
-                            transcript.OpeningDay.ToString("g") + "','" + transcript.ClosingDay.ToString("g") + "'," + transcript.CAT1Score + "," + transcript.CAT2Score + "," + transcript.ExamScore + ",'" +
-                            transcript.Term1Pos + "','" + transcript.Term2Pos + "','" + transcript.Term3Pos + "','" + transcript.DateSaved.ToString("g") + "')\r\nEND\r\nCOMMIT";
-                    }
+                            transcript.OpeningDay.ToString("g") + "','" + transcript.ClosingDay.ToString("g") + "','"+
+                            transcript.Term1Pos + "','" + transcript.Term2Pos + "','" + transcript.Term3Pos + "','" + transcript.DateSaved.ToString("g") + "')\r\nEND\r\n";
+                        foreach(var s in transcript.Entries)
+                        {
+                            insertStr += "IF NOT EXISTS (SELECT * FROM [Institution].[StudentTranscriptDetail] WHERE StudentTranscriptID=@id AND SubjectID=" + s.SubjectID
+                                + ")INSERT INTO [Institution].[StudentTranscriptDetail] (StudentTranscriptID,SubjectID,Remarks) VALUES " +
+                                "(@id," + s.SubjectID + ",'" + s.Remarks + "')\r\nELSE\r\n"+
+                                "UPDATE [Institution].[StudentTranscriptDetail] SET Remarks='"+s.Remarks+"' WHERE SubjectID="+s.SubjectID+" AND StudentTranscriptID=@id\r\n";
+                        }
+                        insertStr += "COMMIT";
                     return DataAccessHelper.ExecuteNonQuery(insertStr);
                 }
                 catch { }
@@ -3114,27 +3132,8 @@ namespace Helper
                 return temp;
            
         }
-        internal static string GetSubjectCode(string nameOfSubject)
-        {
-            string abbrev = nameOfSubject.ToLowerInvariant().Substring(0, 3);
+        
 
-            switch (abbrev)
-            {
-                case "eng": return "101";
-                case "kis": return "102";
-                case "mat": return "121";
-                case "bio": return "231";
-                case "phy": return "232";
-                case "che": return "233";
-                case "his": return "311";
-                case "geo": return "312";                
-                case "cre": return "313";
-                case "agr": return "443";
-                case "bus": return "565";
-                
-            }
-            return "";
-        }
         internal static int GetTranscriptPoints(ObservableCollection<StudentExamResultEntryModel> entries)
         {
             decimal tot=0m;
@@ -3186,8 +3185,8 @@ namespace Helper
                 string insertStr = "BEGIN TRANSACTION\r\n" +
                     "declare @id int; SET @id = [dbo].GetNewID('Institution.PayoutHeader')\r\n" +
 
-                    "INSERT INTO [Institution].[PayoutHeader] (PayoutID,Payee,Address,TotalPaid)" +
-                                " VALUES (@id,'" + newVoucher.NameOfPayee + "','" + newVoucher.Address + "','" + newVoucher.Total + "')\r\n";
+                    "INSERT INTO [Institution].[PayoutHeader] (PayoutID,Payee,Description,Address,TotalPaid)" +
+                                " VALUES (@id,'" + newVoucher.NameOfPayee + "','"+newVoucher.Description+"','" + newVoucher.Address + "','" + newVoucher.Total + "')\r\n";
                 foreach (var d in newVoucher.Entries)
                 {
                     insertStr += "INSERT INTO [Institution].[PayoutDetail] (PayoutID,Description,DatePaid,Amount)" +
@@ -3195,7 +3194,6 @@ namespace Helper
                 }
 
                 insertStr += " COMMIT";
-
                 return DataAccessHelper.ExecuteNonQuery(insertStr);
             });
         }
@@ -3250,13 +3248,17 @@ namespace Helper
                 temp.NameOfClass = selectedClass.NameOfClass;
                 temp.NameOfExam = selectedExam.NameOfExam;
 
-                string selectStr = "SELECT ISNULL(AVG(ISNULL(dbo.GetWeightedExamTotalScore(s.StudentID,erh.ExamID,100),0)),0) FROM [Institution].[ExamResultDetail] erd LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON " +
-                    "(erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Institution].[Student] s ON (erh.StudentID=s.StudentID) WHERE erh.ExamID=" + selectedExam.ExamID + 
+                string selectStr = "SELECT ISNULL(AVG(ISNULL(AVG(ISNULL(erd.Score,0)*100/e.OutOf)*(AVG(c.Count)/COUNT()) FROM [Institution].[ExamResultDetail] erd LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON " +
+                    "(erd.ExamResultID=erh.ExamResultID) "+
+                    "LEFT OUTER JOIN [Institution].[ExamHeader] e ON (erh.ExamID=e.ExamID)"+
+                    "LEFT OUTER JOIN [Institution].[ExamHeader] e ON (erh.ExamID=e.ExamID)" +
+                    " LEFT OUTER JOIN [Institution].[Student] s ON (erh.StudentID=s.StudentID) WHERE e.ExamID=" + selectedExam.ExamID + 
                     " AND s.ClassID=" + selectedClass.ClassID + " AND erh.IsActive=1";
 
                 temp.TotalScore = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
 
-                selectStr = "SELECT ISNULL(AVG(ISNULL(dbo.GetWeightedExamSubjectScore(s.StudentID,erh.ExamID,sub.SubjectID,100),0)),0) FROM [Institution].[ExamResultDetail] erd LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON " +
+                selectStr = "SELECT ISNULL(AVG(ISNULL(dbo.GetWeightedExamSubjectScore(s.StudentID,erh.ExamID,sub.SubjectID,100),0)),0) "+
+                    "FROM [Institution].[ExamResultDetail] erd LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON " +
                     "(erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Institution].[Student] s ON (erh.StudentID=s.StudentID)"+
                     " LEFT OUTER JOIN [Institution].[Subject] sub ON (erd.SubjectID=sub.SubjectID) WHERE erh.ExamID=" + selectedExam.ExamID +
                     " AND s.ClassID=" + selectedClass.ClassID + " AND erh.IsActive=1";
@@ -4098,20 +4100,33 @@ namespace Helper
                 });
         }
 
-        public static Task<bool> UpdateSubjectAsync(SubjectModel subject)
+        public static Task<bool> SaveNewSubjectSetupAsync(int classID,ObservableCollection<SubjectModel> subjects)
         {
             return Task.Run<bool>(() =>
-                {
-                    string upDateStr = "UPDATE [Institution].[Subject] SET" +
-                   " NameOfSubject='" + subject.NameOfSubject +
-                   "', Code=" + subject.Code +
-                   ", Tutor='" + subject.Tutor +
-                   "', MaximumScore='" + subject.MaximumScore +
-                   "', IsOptional=" + (subject.IsOptional?"1":"0") + " WHERE SubjectID=" + subject.SubjectID;
+            {
+                string insertStr = "BEGIN TRANSACTION\r\ndeclare @id int; declare @id2 int;\r\n";
+                
+                    insertStr += "IF NOT EXISTS (SELECT * FROM [Institution].[SubjectSetupHeader] WHERE IsActive=1 AND ClassID=" +classID +
+                        ")BEGIN SET @id = [dbo].GetNewID('Institution.SubjectSetupHeader') " +
+                        "INSERT INTO [Institution].[SubjectSetupHeader] (SubjectSetupID,ClassID,StartDate)" +
+                                    " VALUES (@id," + classID +
+                                    ",'" + DateTime.Now.ToString("g") + "')\r\nEND\r\nELSE SET @id=(SELECT SubjectSetupID FROM " +
+                        "[Institution].[SubjectSetupHeader] WHERE IsActive=1 AND ClassID=" + classID + ")\r\n";
 
-                    bool succ = DataAccessHelper.ExecuteNonQuery(upDateStr);
-                    return succ;
-                });
+                    foreach (var entry in subjects)
+                    {
+                            insertStr += "SET @id2 = (SELECT SubjectID FROM [Institution].[Subject] WHERE NameOfSubject='" + entry.NameOfSubject + "')\r\n"+
+                            "IF NOT EXISTS (SELECT * FROM [Institution].[SubjectSetupDetail] ssd INNER JOIN" +
+                                " [Institution].[Subject] s ON(ssd.SubjectID=s.SubjectID)  WHERE s.NameOfSubject='" + entry.NameOfSubject +
+                                "' AND ssd.SubjectSetupID=@id)\r\n"+
+                            "INSERT INTO [Institution].[SubjectSetupDetail] (SubjectSetupID,SubjectID,Tutor)" +
+                               " VALUES (@id,@id2,'" + entry.Tutor + "')\r\n";
+                    }
+                
+                insertStr += " COMMIT";
+
+                return DataAccessHelper.ExecuteNonQuery(insertStr);
+            });
         }
 
         public static Task<ObservableCollection<LeavingCertificateModel>> GetClassLeavingCerts(ObservableCollection<ClassModel> classes)
@@ -4148,6 +4163,56 @@ namespace Helper
                     }
                     return temp;
                 });
+        }
+
+        public static Task<bool> SaveNewInstitutionSubjectSetup(ObservableCollection<SubjectModel> selectedSubjects)
+        {
+            return Task.Run<bool>(() =>
+            {
+                string insertStr = "BEGIN TRANSACTION\r\n";
+                string allSubs = "'0',";
+                foreach(var s in selectedSubjects)
+                    allSubs+="'"+s.NameOfSubject+"',";
+                allSubs = allSubs.Remove(allSubs.Length - 1);
+                foreach (var s in selectedSubjects.Where(o=>o.SubjectID==0))
+                    insertStr += "IF NOT EXISTS (SELECT * FROM[Institution].[Subject] WHERE NameOfSubject='"+s.NameOfSubject+
+                        "')INSERT INTO [Institution].[Subject] (SubjectID, NameOfSubject, Code, MaximumScore, IsOptional) " +
+                       "VALUES(dbo.GetNewID('Institution.Subject'), '" + s.NameOfSubject + "'," + s.Code + "," + s.MaximumScore + "," + (s.IsOptional ? "1" : "0") + ")\r\n";
+                insertStr += "DELETE FROM [Institution].[Subject] WHERE NameOfSubject NOT IN (" + allSubs + ")\r\n";
+                insertStr+="COMMIT";
+
+                bool succ = DataAccessHelper.ExecuteNonQuery(insertStr);
+                return succ;
+            });
+        }
+
+        public static Task<ObservableCollection<SubjectModel>> GetSubjectsRegistredToInstitutionAsync()
+        {
+            return Task.Run<ObservableCollection<SubjectModel>>(() =>
+            {
+                 ObservableCollection<SubjectModel> allSubjects = new ObservableCollection<SubjectModel>();
+                
+                string selectStr = "SELECT SubjectID,NameOfSubject,Code,IsOptional FROM [Institution].[Subject] ORDER BY Code";
+
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                SubjectModel sub;
+                foreach (DataRow dtr in dt.Rows)
+                {
+                    sub = new SubjectModel();
+                    sub.SubjectID = (int)dtr[0];
+                    sub.NameOfSubject = dtr[1].ToString();
+                    sub.Tutor = "";
+                    sub.MaximumScore = 100;
+                    sub.Code = int.Parse(dtr[2].ToString());
+                    sub.IsOptional = bool.Parse(dtr[3].ToString());
+
+                    allSubjects.Add(sub);
+                }
+
+                return allSubjects;
+
+            });
+
         }
     }
 }

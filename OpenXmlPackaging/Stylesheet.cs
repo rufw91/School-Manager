@@ -64,19 +64,14 @@ namespace OpenXmlPackaging {
         /// </summary>
         public void Save() {
             FormatCells();
-            if (!_package.PartExists(Constants.StylesUri))
-            {
-                PackagePart worksheetPart = _package.CreatePart(Constants.StylesUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml");
-                _workbookPart.CreateRelationship(new Uri("/xl/styles.xml", UriKind.Relative), TargetMode.Internal, Constants.RelationshipXNamespace.NamespaceName + "/styles");
+          /*  PackagePart worksheetPart = _package.CreatePart(Constants.StylesUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml");
+            _workbookPart.CreateRelationship(new Uri("/xl/styles.xml", UriKind.Relative), TargetMode.Internal, Constants.RelationshipXNamespace.NamespaceName + "/styles");
 
-                using (Stream stream = worksheetPart.GetStream(FileMode.Create, FileAccess.Write))
-                {
-                    using (XmlWriter writer = XmlWriter.Create(stream))
-                    {
-                        _styleXml.WriteTo(writer);
-                    }
+            using (Stream stream = worksheetPart.GetStream(FileMode.Create, FileAccess.Write)) {
+                using (XmlWriter writer = XmlWriter.Create(stream)) {
+                    _styleXml.WriteTo(writer);
                 }
-            }
+            }*/
         }
         
         #endregion

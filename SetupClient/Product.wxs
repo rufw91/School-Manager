@@ -18,7 +18,7 @@
   <?define ProductCode = "E87C0D4B-1902-4730-B169-8F776E2EFFC2" ?>
   <?endif ?>
 
-  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.6.8.1" Manufacturer="Umanyi Digital Technologies Ltd"
+  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.7.0" Manufacturer="Umanyi Digital Technologies Ltd"
            UpgradeCode="$(var.ProductCode)">
 
     <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
@@ -84,10 +84,6 @@
       <Component Id="cmp1" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)AxInterop.AcroPDFLib.dll" />
       </Component>
-      <Component Id="cmp2" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)DevDefined.OAuth.dll" />
-      </Component>
-
       <!--Confused-->
       <Component Id="cmp3" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Helper.dll" />
@@ -98,27 +94,7 @@
       <Component Id="cmp5" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Interop.AcroPDFLib.dll" />
       </Component>
-      <Component Id="cmp6" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Core.dll" />
-      </Component>
-      <Component Id="cmp7" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Data.dll" />
-      </Component>
-      <Component Id="cmp8" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Diagnostics.dll" />
-      </Component>
-      <Component Id="cmp9" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Exception.dll" />
-      </Component>
-      <Component Id="cmp10" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Retry.dll" />
-      </Component>
-      <Component Id="cmp11" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Security.dll" />
-      </Component>
-      <Component Id="cmp12" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Intuit.Ipp.Utility.dll" />
-      </Component>
+      
       <Component Id="cmp13" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)log4net.dll" />
       </Component>

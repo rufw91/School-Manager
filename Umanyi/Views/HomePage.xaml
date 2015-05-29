@@ -68,27 +68,8 @@
                     <RowDefinition Height="185"/>
                     <RowDefinition Height="185"/>
                 </Grid.RowDefinitions>
-                <controls:HomePageButton Grid.Column="0" Grid.Row="0" Caption="Students" 
-					Command="{Binding DataContext.DisplayStudentsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-					CaptionBackground="{DynamicResource Title1BackgroundBrush}">
-                    <Image Stretch="UniformToFill" Source="/UmanyiSMS;component/Resources/students_bg.jpg"/>
-                </controls:HomePageButton>
 
-                <controls:HomePageButton Grid.Column="1" Grid.Row="0" Caption="Staff"
-					Command="{Binding DataContext.DisplayStaffCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-					CaptionBackground="{DynamicResource Title2BackgroundBrush}">
-                    <controls:HomePageButton.Background>
-                        <ImageBrush ImageSource="/UmanyiSMS;component/Resources/teacher_bg.jpg"/>
-                    </controls:HomePageButton.Background>
-                </controls:HomePageButton>
-
-                <controls:HomePageButton Grid.Column="2" Grid.Row="0" Caption="Finance" Background="Khaki"
-					Command="{Binding DataContext.DisplayFeesCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-					CaptionBackground="{DynamicResource Title3BackgroundBrush}">
-                    <Image Stretch="UniformToFill" Source="/UmanyiSMS;component/Resources/finance_bg.jpg"/>
-                </controls:HomePageButton>
-
-                <controls:HomePageButton Grid.Column="3" Grid.Row="0" Caption="Institution"
+                <controls:HomePageButton Grid.Column="0" Grid.Row="0" Caption="Institution"
 					Command="{Binding DataContext.DisplayInstitutionCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
 					CaptionBackground="{DynamicResource Title4BackgroundBrush}">
                     <controls:HomePageButton.Background>
@@ -96,6 +77,26 @@
                     </controls:HomePageButton.Background>
                 </controls:HomePageButton>
 
+                <controls:HomePageButton Grid.Column="1" Grid.Row="0" Caption="Students" 
+					Command="{Binding DataContext.DisplayStudentsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					CaptionBackground="{DynamicResource Title1BackgroundBrush}">
+                    <Image Stretch="UniformToFill" Source="/UmanyiSMS;component/Resources/students_bg.jpg"/>
+                </controls:HomePageButton>
+
+                <controls:HomePageButton Grid.Column="2" Grid.Row="0" Caption="Staff"
+					Command="{Binding DataContext.DisplayStaffCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					CaptionBackground="{DynamicResource Title2BackgroundBrush}">
+                    <controls:HomePageButton.Background>
+                        <ImageBrush ImageSource="/UmanyiSMS;component/Resources/teacher_bg.jpg"/>
+                    </controls:HomePageButton.Background>
+                </controls:HomePageButton>
+
+                <controls:HomePageButton Grid.Column="3" Grid.Row="0" Caption="Finance" Background="Khaki"
+					Command="{Binding DataContext.DisplayFeesCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					CaptionBackground="{DynamicResource Title3BackgroundBrush}">
+                    <Image Stretch="UniformToFill" Source="/UmanyiSMS;component/Resources/finance_bg.jpg"/>
+                </controls:HomePageButton>
+               
                 <controls:HomePageButton Grid.Column="0" Grid.Row="1" Caption="Timetable"
 					Command="{Binding DataContext.DisplayTimeTableCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
 					CaptionBackground="{DynamicResource Title5BackgroundBrush}">

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Security.Permissions;
 using System.Windows;
+using UmanyiSMS.Presentation;
 
 namespace UmanyiSMS.ViewModels
 {
@@ -95,9 +96,39 @@ namespace UmanyiSMS.ViewModels
 
         protected override void CreateCommands()
         {
-            ExportToExcelCommand = new RelayCommand(o =>
+            ExportToExcelCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
+                if (isInClassMode)
+                {
+                    var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassCombinedExamResultAsync(selectedClass.ClassID, exams));
+                    classResult.Entries = temp.Entries;
+                    classResult.ExamID = temp.ExamID;
+                    classResult.ExamResultID = temp.ExamResultID;
 
+                    ClassModel st = await DataAccess.GetClassAsync(classResult.ClassID);
+                    classResult.NameOfClass = st.NameOfClass;
+
+                    classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
+                    ClassExamResultModel stt = DataAccess.GetClassExamResult(classResult);
+
+                    CommonCommands.ExportToExcelCommand.Execute(classResult.ResultTable);
+                }
+
+                if (isInCombinedMode)
+                {
+                    var temp = new ExamResultClassDisplayModel(await DataAccess.GetCombinedClassCombinedExamResultAsync(selectedCombinedClass.Entries, exams));
+
+                    classResult.ExamID = temp.ExamID;
+                    classResult.ExamResultID = temp.ExamResultID;
+                    classResult.NameOfClass = selectedCombinedClass.Description;
+                    classResult.Entries = temp.Entries;
+
+                    classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
+                    ClassExamResultModel st = DataAccess.GetClassExamResult(classResult);
+                    CommonCommands.ExportToExcelCommand.Execute(classResult.ResultTable);
+                }
+                IsBusy = false;
             }, o => CanGenerate());
             GenerateCommand = new RelayCommand(async o =>
             {

@@ -56,13 +56,15 @@ namespace UmanyiSMS.Presentation
                 }
                 string s = "";
 
-                if (o.GetType() != typeof(DataGrid))
+                if ((o.GetType() != typeof(DataGrid))&&(o.GetType()!=typeof(DataTable)))
                 {
                     MessageBox.Show("Only data tables can be exported to Excel.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
                 if (o.GetType() == typeof(DataGrid))
                     s = ExportDataGrid((DataGrid)o);
+                if (o.GetType() == typeof(DataTable))
+                    s = ExportTable((DataTable)o);
                 if (string.IsNullOrWhiteSpace(s))
                 {
                     MessageBox.Show("Unable to export data.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);

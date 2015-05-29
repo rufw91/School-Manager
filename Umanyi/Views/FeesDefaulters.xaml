@@ -16,10 +16,9 @@
         
         <TextBlock HorizontalAlignment="Left" Margin="290,65,0,0" Text="Class" VerticalAlignment="Top"/>
         <ComboBox HorizontalAlignment="Left" Margin="335,60,0,0" VerticalAlignment="Top" Width="180"
-                  ItemsSource="{Binding AllClasses}"
-                  SelectedValuePath="ClassID"
-                  DisplayMemberPath="NameOfClass"
-                  SelectedItem="{Binding SelectedClass}"/>
+                  ItemsSource="{Binding AllCombinedClasses}"
+                  DisplayMemberPath="Description"
+                  SelectedItem="{Binding SelectedCombinedClass}"/>
         <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="120"                
                 Command="{Binding GenerateCommand}"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,70,0,0" Text="Preview" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>

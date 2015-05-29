@@ -14,7 +14,7 @@ namespace Helper.Models
             NoOfLessons = 10;
             LessonDuration = new TimeSpan(0,40,0);
             LessonsStartTime = new TimeSpan(8,0,0);
-            BreakIndices = new List<int>(){2,4,7};
+            BreakIndices = new List<int>(){2,4,6};
             BreakDurations = new List<TimeSpan>(){new TimeSpan(0,10,0),new TimeSpan(0,30,0),new TimeSpan(0,10,0)};
         }
 

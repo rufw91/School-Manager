@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.ModifySubjectsSetup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900"
+             Background="White">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Modify Class Subjects Setup" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,67,0,0" Style="{DynamicResource ContentTextSemiBold}" TextWrapping="Wrap" Text="Select the examinable subjects for a one class stream." VerticalAlignment="Top" Width="286"/>
+        <TextBlock HorizontalAlignment="Left" Margin="89,140,0,0" TextWrapping="Wrap" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" ItemsSource="{Binding AllClasses}"
+        	DisplayMemberPath="NameOfClass" SelectedValuePath="ClassID"
+        	SelectedValue="{Binding SelectedClassID, Mode=TwoWay}" Margin="126,140,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="84,251,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="126,251,0,0"
+                 Text="{Binding CurrentSubject.NameOfSubject}" IsReadOnly="True" Background="WhiteSmoke" IsReadOnlyCaretVisible="True"/>
+        <TextBlock HorizontalAlignment="Left" Margin="31,302,0,0" TextWrapping="Wrap" Text="Maximum Score" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="126,302,0,0"
+                  Text="{Binding CurrentSubject.MaximumScore, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Background="WhiteSmoke" IsReadOnlyCaretVisible="True"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="88,351,0,0" TextWrapping="Wrap" Text="Code" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="126,351,0,0"
+                  Text="{Binding CurrentSubject.Code, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Background="WhiteSmoke" IsReadOnlyCaretVisible="True"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="88,401,0,0" Text="Tutor" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="126,401,0,0"
+                  Text="{Binding CurrentSubject.Tutor, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Button Content="Save" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" 
+        	Command="{Binding SaveCommand}" Margin="0,0,10,10"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="350,60,0,0" Style="{DynamicResource Title0}" Text="Subjects" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,68,90,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding SetDefaultCommand}">Set Institution Default</Hyperlink>
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Right" Margin="0,68,30,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding RemoveCommand}">Remove</Hyperlink>
+        </TextBlock>
+        <ListBox Margin="350,89,10,50" ItemsSource="{Binding SelectedSubjects, UpdateSourceTrigger=PropertyChanged}"
+                 DisplayMemberPath="NameOfSubject"
+                 SelectedItem="{Binding CurrentSubject, Mode=OneWayToSource}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="32,198,0,0" Text="Current Subject" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
+        
+
+    </Grid>
+</UserControl>

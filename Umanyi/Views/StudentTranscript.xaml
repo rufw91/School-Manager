@@ -4,12 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
-             d:DesignHeight="700" d:DesignWidth="984"
+             d:DesignHeight="700" d:DesignWidth="1300"
              Background="White">
     <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Visible">
+    <Grid Width="1300">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1.5*"/>
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Report Form" 
                    VerticalAlignment="Top"/>
@@ -93,21 +96,48 @@
         <DatePicker Margin="107,534,20,0" VerticalAlignment="Top"
                     SelectedDate="{Binding Transcript.OpeningDay, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Button Width="120" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,120,10" BorderBrush="Silver" BorderThickness="2"
-                Command="{Binding SaveAndPrintCommand}" Content="Save &amp; Print" Grid.Column="1"/>
-
-        <Button Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" BorderBrush="Silver" BorderThickness="2"
-                Command="{Binding SaveCommand}" Content="Save" Grid.Column="1"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Right" Margin="0,50,20,0" VerticalAlignment="Top">
+        
+        
+        <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="0,50,20,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding RefreshCommand}">Fetch Results</Hyperlink>
         </TextBlock>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Right" Margin="0,50,100,0" VerticalAlignment="Top">
+        <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="0,50,100,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding PreviewCommand}">Preview</Hyperlink>
         </TextBlock>
 
+        <DataGrid Grid.Column="2" AutoGenerateColumns="False" Margin="10,70,10,50" Height="300" VerticalAlignment="Top"
+                  ItemsSource="{Binding Path=Transcript.Entries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  CanUserAddRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" 
+                  CanUserDeleteRows="True" RowHeaderWidth="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name of Subject" Width="250*"
+                        Binding="{Binding Path=NameOfSubject}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="CAT 1" Width="150*"
+                        Binding="{Binding Path=Cat1Score}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="CAT 2" Width="150*"
+                        Binding="{Binding Path=Cat2Score}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="EXAM" Width="150*"
+                        Binding="{Binding Path=ExamScore}" IsReadOnly="True"/>
+                        
+                        <DataGridTemplateColumn Header="Remarks" Width="250*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox MaxLength="10" Style="{DynamicResource FlatTextBox}" Text="{Binding Remarks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+        </DataGrid>
+        <Button Width="120" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,120,10" BorderBrush="Silver" BorderThickness="2"
+                Command="{Binding SaveAndPrintCommand}" Content="Save &amp; Print" Grid.Column="2"/>
 
+        <Button Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" BorderBrush="Silver" BorderThickness="2"
+                Command="{Binding SaveCommand}" Content="Save" Grid.Column="2"/>
         <Border Background="#7FF5F5F5" Grid.ColumnSpan="2" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Hidden}">
             <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
         </Border>
+        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="10,45,0,0" Text="Results" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
+    </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>

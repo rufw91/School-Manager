@@ -558,25 +558,48 @@ namespace Helper
             {
                 if (string.IsNullOrWhiteSpace(fileName))
                     return false;
-                SqlConnection conn = DataAccessHelper.CreateConnection(ConnectionStringHelper.MasterConnectionString);
                 try
                 {
-                    using (conn)
-                    {
-                        var sc = new ServerConnection(conn);
-                        Server server = new Server(sc);
-                        Restore res = new Restore();
+                        string dbName = Helper.Properties.Settings.Default.DBName;
 
-                        string databaseName = Helper.Properties.Settings.Default.DBName;
+                        string alterStr = "DECLARE @dbId int\r\n" +
+    "DECLARE @isStatAsyncOn bit\r\n" +
+    "DECLARE @jobId int\r\n" +
+    "DECLARE @sqlString nvarchar(500)\r\n" +
 
-                        res.Database = databaseName;
-                        res.Action = RestoreActionType.Database;
-                        res.Devices.AddDevice(fileName, DeviceType.File);
+    "SELECT @dbId = database_id,\r\n" +
+           "@isStatAsyncOn = is_auto_update_stats_async_on\r\n" +
+    "FROM sys.databases\r\n" +
+    "WHERE name = '" + dbName + "'\r\n" +
 
-                        res.ReplaceDatabase = true;
+    "IF @isStatAsyncOn = 1\r\n" +
+    "BEGIN\r\n" +
+        "ALTER DATABASE " + dbName + " SET  AUTO_UPDATE_STATISTICS_ASYNC OFF\r\n" +
 
-                        res.SqlRestore(server);
-                    }
+        "DECLARE jobsCursor CURSOR FOR\r\n" +
+        "SELECT job_id\r\n" +
+        "FROM sys.dm_exec_background_job_queue\r\n" +
+        "WHERE database_id = @dbId\r\n" +
+
+        "OPEN jobsCursor\r\n" +
+
+        "FETCH NEXT FROM jobsCursor INTO @jobId\r\n" +
+        "WHILE @@FETCH_STATUS = 0\r\n" +
+        "BEGIN\r\n" +
+            "set @sqlString = 'KILL STATS JOB ' + STR(@jobId)\r\n" +
+            "EXECUTE sp_executesql @sqlString\r\n" +
+            "FETCH NEXT FROM jobsCursor INTO @jobId\r\n" +
+        "END\r\n" +
+
+        "CLOSE jobsCursor\r\n" +
+        "DEALLOCATE jobsCursor\r\n" +
+    "END\r\n" +
+    "ALTER DATABASE UmanyiSMS SET  SINGLE_USER\r\n"+
+    "RESTORE DATABASE [UmanyiSMS] FROM  DISK = N'" + fileName + "' WITH  FILE = 1,  NOUNLOAD,  STATS = 10";
+                        
+                        SqlConnection.ClearAllPools();
+                        DataAccessHelper.ExecuteNonQuery(alterStr, false);
+                    
                     return true;
                 }
                 catch(Exception e)

@@ -97,7 +97,7 @@ namespace UmanyiSMS.ViewModels
             if (newExam.Classes.Count== 0)
                 return;
             var temp =
-                await DataAccess.GetSubjectsRegistredToClassAsync(newExam.Classes[0].ClassID);
+                await DataAccess.GetSubjectsRegistredToCombinedClassAsync(selectedCombinedClass);
             foreach (SubjectModel sm in temp)
                 newExam.Entries.Add(new ExamSubjectEntryModel(sm));
         }

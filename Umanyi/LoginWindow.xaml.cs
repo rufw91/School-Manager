@@ -79,7 +79,7 @@ namespace UmanyiSMS
                 if (_type == LoginType.Login)
                 {
                     this.Visibility = System.Windows.Visibility.Collapsed;
-                    if (CheckFirstRun())
+                   /*if (CheckFirstRun())
                     {
                         
                         FirstRun main = new FirstRun();
@@ -89,14 +89,14 @@ namespace UmanyiSMS
                         this.Close();
                     }
                     else
-                    {
+                    {*/
                         MainWindow main = new MainWindow();
                         Application.Current.MainWindow = main;
                         main.Show();
                         shutDownApp = false;
                         this.Visibility = System.Windows.Visibility.Collapsed;
                         this.Close();
-                    }
+                   // }
 
                 }
                 else
