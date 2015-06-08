@@ -35,5 +35,8 @@
         </Controls:DropDownButton>
         <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="120"                
 			Command="{Binding GenerateCommand}"/>
+        <Border Grid.RowSpan="2" Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+        </Border>
     </Grid>
 </UserControl>

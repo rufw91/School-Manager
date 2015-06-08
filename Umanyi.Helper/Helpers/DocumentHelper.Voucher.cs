@@ -31,7 +31,7 @@ namespace Helper
        }
        private static void AddPVAmount(decimal amount, int pageNo)
        {
-           AddText(amount.ToString(), "Arial", 14, false, 0, Colors.Black, 605, 350, pageNo);
+           AddText(amount.ToString("N2"), "Arial", 14, false, 0, Colors.Black, 605, 350, pageNo);
        }
        
        private static void AddPVEntry(PaymentVoucherEntryModel item, int itemIndex, int pageNo)
@@ -41,7 +41,7 @@ namespace Helper
            double yPos = 832 + pageRelativeIndex * 30;
 
            AddText(item.Description, "Arial", 14, false, 0, Colors.Black, 230, yPos, pageNo);
-           AddText(item.Amount.ToString(), "Arial", 14, false, 0, Colors.Black, 615, yPos, pageNo);
+           AddText(item.Amount.ToString("N2"), "Arial", 14, false, 0, Colors.Black, 615, yPos, pageNo);
            AddText("1", "Arial", fontsize, false, 0, Colors.Black, 95, yPos, pageNo);
        }
        private static void AddPVEntries(ObservableCollection<PaymentVoucherEntryModel> psi, int pageNo)

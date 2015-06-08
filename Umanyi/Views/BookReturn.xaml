@@ -70,6 +70,9 @@
             </DataGrid.ContextMenu>
         </DataGrid>
         <TextBlock HorizontalAlignment="Left" Margin="380,260,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding AddCommand}">&lt;&lt;Add</Hyperlink>
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="380,285,0,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding RemoveCommand}">Remove</Hyperlink>
         </TextBlock>
         <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"

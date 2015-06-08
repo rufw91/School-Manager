@@ -50,12 +50,17 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MyDb.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\CheckSqlConnection\CheckSqlConnection.csproj">
       <Name>CheckSqlConnection</Name>
       <Project>{daccd073-85b1-4f34-a21a-2811a6e9e0a9}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\UmanyiSMSDB\UmanyiSMSDB\UmanyiSMSDB.sqlproj">
+      <Name>UmanyiSMSDB</Name>
+      <Project>{8a3e64a2-31b7-4cfa-b1d6-67042cfe63cd}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -69,6 +74,10 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CreateDbObjects.sql" />
+    <Content Include="ResetUniqueIds.sql" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--

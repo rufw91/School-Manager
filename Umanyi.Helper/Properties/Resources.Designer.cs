@@ -125,7 +125,7 @@ namespace Helper.Properties {
         ///        &lt;sys:Double x:Key=&quot;rowHeight&quot;&gt;25&lt;/sys:Double&gt;
         ///    &lt;/FixedPage.Resources&gt;
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
-        ///        &lt;Image HorizontalAlignment=&quot;Left&quot; Height= [rest of string was truncated]&quot;;.
+        ///        &lt;Image HorizontalAlignment=&quot;Left&quot; Heigh [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string LeavingCert {
             get {
@@ -256,6 +256,21 @@ namespace Helper.Properties {
         internal static string Transcript3 {
             get {
                 return ResourceManager.GetString("Transcript3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+        ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///        &lt;Border Margin=&quot;20&quot; BorderBrush=&quot;Gray&quot; BorderThickness=&quot;2&quot;&gt;
+        ///            &lt;Grid&gt;
+        ///                &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,0,0,10&quot; Text=&quot;{Binding Info.Motto, Source={x:Static Application.Current}}&quot; VerticalAlignment=&quot;Bottom&quot; FontStyle=&quot;I [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Transcript4 {
+            get {
+                return ResourceManager.GetString("Transcript4", resourceCulture);
             }
         }
         

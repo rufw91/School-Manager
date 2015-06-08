@@ -10,21 +10,40 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Subject Perfomance" 
                    VerticalAlignment="Top"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Class" VerticalAlignment="Top"/>
 
-        <ComboBox HorizontalAlignment="Left" Margin="64,80,0,0" VerticalAlignment="Top" Width="200"
+        <RadioButton Content="Class" HorizontalAlignment="Left" Margin="20,90,0,0" VerticalAlignment="Top"
+                     IsChecked="{Binding IsInClassMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     GroupName="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="59,141,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="94,141,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllClasses}" DisplayMemberPath="NameOfClass"
-                  SelectedItem="{Binding SelectedClass, Mode=TwoWay}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="28,135,0,0" Text="Exam" VerticalAlignment="Top"/>
-        <ComboBox x:Name="what" HorizontalAlignment="Left" Margin="64,135,0,0" VerticalAlignment="Top" Width="200"
-                  ItemsSource="{Binding AllExams}" DisplayMemberPath="NameOfExam" 
-                  SelectedItem="{Binding SelectedExam, Mode=TwoWay}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="350,80,0,0" Style="{DynamicResource Title0}" Text="Result" VerticalAlignment="Top"/>
+                  SelectedItem="{Binding SelectedClass}"
+                  IsEnabled="{Binding IsInClassMode}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="58,188,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="94,188,0,0" VerticalAlignment="Top" Width="180"
+        	ItemsSource="{Binding AllExams}" DisplayMemberPath="NameOfExam" 
+        	SelectedItem="{Binding SelectedExam, Mode=TwoWay}"
+            IsEnabled="{Binding IsInClassMode}"/>
 
-        <DocumentViewer Margin="350,109,10,50" BorderBrush="Silver" BorderThickness="2" Document="{Binding Document}"/>
+        <RadioButton Content="Combined Classes" HorizontalAlignment="Left" Margin="20,250,0,0" VerticalAlignment="Top"
+                     IsChecked="{Binding IsInCombinedMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     GroupName="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="59,295,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="94,295,0,0" VerticalAlignment="Top" Width="200"
+                  ItemsSource="{Binding AllCombinedClasses}" DisplayMemberPath="Description"
+                  SelectedItem="{Binding SelectedCombinedClass}"
+                  IsEnabled="{Binding IsInCombinedMode}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="58,345,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="94,345,0,0" VerticalAlignment="Top" Width="180"
+        	ItemsSource="{Binding AllExams}" DisplayMemberPath="NameOfExam" 
+        	SelectedItem="{Binding SelectedExam, Mode=TwoWay}"
+            IsEnabled="{Binding IsInCombinedMode}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="310,45,0,0" Style="{DynamicResource Title0}" Text="Result" VerticalAlignment="Top"/>
+
+        <DocumentViewer Name="viewer" Margin="310,71,10,50" BorderBrush="Silver" BorderThickness="2" Document="{Binding Document}"/>
         <Button Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" BorderBrush="Silver" BorderThickness="2"
                 Command="{Binding GenerateCommand}" Content="Generate"/>
-        <TextBlock HorizontalAlignment="Right" Margin="0,90,10,0" VerticalAlignment="Top">
+        <TextBlock HorizontalAlignment="Right" Margin="0,50,10,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding FullPreviewCommand}">Full Preview</Hyperlink>
         </TextBlock>
         <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">

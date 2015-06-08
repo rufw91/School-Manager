@@ -181,7 +181,7 @@ namespace Helper
         private static void GenerateTranscript2()
         {
             StudentTranscriptModel si = myWorkObject as StudentTranscriptModel;
-
+            
             int pageNo;
             for (pageNo = 0; pageNo < noOfPages; pageNo++)
             {
@@ -210,6 +210,7 @@ namespace Helper
                     si.CAT2Grade,
                     si.ExamGrade,
                     pageNo);
+                var t = si.CAT1Grade;
             }
         }
 

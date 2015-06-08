@@ -1,0 +1,8 @@
+﻿GRANT ALTER TO [Principal]
+    WITH GRANT OPTION;
+
+
+GO
+GRANT CONTROL TO [Principal]
+    WITH GRANT OPTION;
+

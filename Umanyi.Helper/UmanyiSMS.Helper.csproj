@@ -17,7 +17,7 @@
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersion>6.7.120.15149</AssemblyVersion>
+    <AssemblyVersion>6.7.239.15159</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -121,6 +121,7 @@
     <Compile Include="Models\ClassStudentListModel.cs" />
     <Compile Include="Models\ClassExamResultModel.cs" />
     <Compile Include="Models\ClassTranscriptsModel.cs" />
+    <Compile Include="Models\ClassTranscriptsModel2.cs" />
     <Compile Include="Models\CombinedClassModel.cs" />
     <Compile Include="Models\ComparisonModel.cs" />
     <Compile Include="Models\DisciplineModel.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Models\StudentTranscriptModel.cs" />
     <Compile Include="Models\StudentExamResultModel.cs" />
     <Compile Include="Models\StudentExamResultEntryModel.cs" />
+    <Compile Include="Models\StudentTranscriptModel2.cs" />
     <Compile Include="Models\StudentTransferModel.cs" />
     <Compile Include="Models\SubjectBaseModel.cs" />
     <Compile Include="Models\SupplierBaseModel.cs" />
@@ -224,6 +226,7 @@
     <Compile Include="Helpers\DocumentHelper.UnretunedBooks.cs" />
     <Compile Include="Helpers\DocumentHelper.ClassExamResults.cs" />
     <Compile Include="Helpers\DocumentHelper.ClassLeavingCertificates.cs" />
+    <Compile Include="Helpers\DocumentHelper.Transcript3.cs" />
     <None Include="Resources\Receipt.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -236,6 +239,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="Resources\Transcript4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -309,6 +316,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\logo.png" />
     <Content Include="Resources\noImage.png" />
     <Page Include="Resources\UnreturnedBooks.xaml">
       <SubType>Designer</SubType>

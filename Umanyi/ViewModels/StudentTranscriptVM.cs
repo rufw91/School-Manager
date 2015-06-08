@@ -17,7 +17,7 @@ namespace UmanyiSMS.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class StudentTranscriptVM: ViewModelBase
     {
-        StudentTranscriptModel transcript;
+        StudentTranscriptModel2 transcript;
         FixedDocument fd;
         ObservableCollection<ExamWeightModel> exams;
         bool resultsIsReadOnly;
@@ -29,7 +29,7 @@ namespace UmanyiSMS.ViewModels
         protected override void InitVars()
         {
             Title = "REPORT FORM";
-            Transcript = new StudentTranscriptModel();
+            Transcript = new StudentTranscriptModel2();
             exams = new ObservableCollection<ExamWeightModel>();
             ResultsIsReadOnly = false;
             transcript.PropertyChanged += async (o, e) =>
@@ -37,23 +37,24 @@ namespace UmanyiSMS.ViewModels
                     if (e.PropertyName == "StudentID")
                     {
                         exams.Clear();
+                        transcript.Clean();
                         ResultsIsReadOnly = false;
                         transcript.CheckErrors();
                         if (!transcript.HasErrors)
-                        {                            
+                        {
                             ResultsIsReadOnly = false;
                             var t = await DataAccess.GetExamsByClass(await DataAccess.GetClassIDFromStudentID(transcript.StudentID));
                             int count = 1;
-                            foreach(var ex in t)
+                            foreach (var ex in t)
                             {
                                 exams.Add(new ExamWeightModel()
                                 {
                                     ExamID = ex.ExamID,
                                     NameOfExam = ex.NameOfExam,
                                     OutOf = ex.OutOf,
-                                    Weight = count <=3 ? ex.OutOf : 0,
+                                    Weight = count <= 3 ? ex.OutOf : 0,
                                     ShowInTranscript = count > 3 ? false : true,
-                                    Index=count
+                                    Index = count
                                 });
                                 count++;
                             }
@@ -67,11 +68,11 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o => 
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewStudentTranscript(transcript);
+                bool succ = await DataAccess.SaveNewStudentTranscript(transcript,exams);
                 if (succ)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Reset(); 
+                    Reset();
                 }
                 else
                     MessageBox.Show("Could not save details.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -87,7 +88,7 @@ namespace UmanyiSMS.ViewModels
             SaveAndPrintCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewStudentTranscript(transcript);
+                bool succ = await DataAccess.SaveNewStudentTranscript(transcript,exams);
                 if (succ)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -112,7 +113,7 @@ namespace UmanyiSMS.ViewModels
                 var dx = ft.Where(o2 => o2.Entries.Any(o1 => o1.ClassID == c));
                     classes = dx.ElementAt(0).Entries;
                 
-                Transcript.CopyFrom(await DataAccess.GetStudentTranscript(transcript.StudentID,exams,classes));
+                Transcript.CopyFrom(await DataAccess.GetStudentTranscript2(transcript.StudentID,exams,classes));               
                 ResultsIsReadOnly = true;
                 IsBusy = false;
             }, o =>CanRefresh());
@@ -159,7 +160,7 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public StudentTranscriptModel Transcript
+        public StudentTranscriptModel2 Transcript
         {
             get { return this.transcript; }
 
@@ -220,5 +221,7 @@ namespace UmanyiSMS.ViewModels
         {
             transcript.Reset();
         }
+
+
     }
 }

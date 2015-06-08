@@ -24,7 +24,7 @@ namespace OpenXmlPackaging {
         #region Constructor
 
         public SpreadsheetDocument(string path) {
-            CreateSpreadsheetDocument(path, FileMode.Create);
+            CreateSpreadsheetDocument(path, FileMode.OpenOrCreate);
         }
         
         #endregion
@@ -56,7 +56,16 @@ namespace OpenXmlPackaging {
         #region Private Methods
 
         private void CreateSpreadsheetDocument(string path, FileMode mode) {
-            _package = Package.Open(path, mode);
+            if (File.Exists(path))
+            {
+                _package = Package.Open(path, FileMode.Open, FileAccess.Read);
+                IsOpener = true;
+            }
+            else
+            {
+                _package = Package.Open(path, mode);
+                IsOpener = false;
+            }
             _workbook = new Workbook(_package);
             _stylesheet = new Stylesheet(_package);
             _worksheets = new Worksheets(_package, _stylesheet);
@@ -79,9 +88,12 @@ namespace OpenXmlPackaging {
 
         public void Dispose() {
             try {
-                _stylesheet.Save();
-                _worksheets.Save();
-                _package.Flush();
+                if (!SpreadsheetDocument.IsOpener)
+                {
+                    _stylesheet.Save();
+                    _worksheets.Save();
+                    _package.Flush();
+                }
                 _package.Close();
             } catch {
                 throw;
@@ -90,5 +102,7 @@ namespace OpenXmlPackaging {
         } 
         
         #endregion
+
+        internal static bool IsOpener { get; set; }
     }
 }

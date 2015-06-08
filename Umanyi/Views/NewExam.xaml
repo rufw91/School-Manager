@@ -27,7 +27,7 @@
 
         <TextBlock  HorizontalAlignment="Left" Margin="152,166,0,0" Text="MAX (20 chararacters)" VerticalAlignment="Top" />
         <TextBlock  HorizontalAlignment="Left" Margin="300,80,0,0" Style="{DynamicResource Title0}" Text="Subjects to be Examined" VerticalAlignment="Top" />
-        <DataGrid AutoGenerateColumns="False" Margin="300,109,30,50" Name="dataGrid1"
+        <DataGrid AutoGenerateColumns="False" Margin="300,109,10,50" Name="dataGrid1"
                   ItemsSource="{Binding Path=NewExam.Entries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                   CanUserAddRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" 
                   CanUserDeleteRows="True" RowHeaderWidth="0">
@@ -52,7 +52,7 @@
         </DataGrid>
         <Button Content="_Save" HorizontalAlignment="Right" 
                 Margin="0,0,10,10" Command="{Binding SaveCommand}" VerticalAlignment="Bottom" Width="75" />
-        <TextBlock HorizontalAlignment="Right" Margin="0,88,35,0" VerticalAlignment="Top">
+        <TextBlock HorizontalAlignment="Right" Margin="0,88,10,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding RefreshCommand}">Refresh</Hyperlink>
         </TextBlock>
     </Grid>

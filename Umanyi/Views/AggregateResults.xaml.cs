@@ -13,6 +13,7 @@ namespace UmanyiSMS.Views
         public AggregateResults()
         {
             InitializeComponent();
+            viewer.FitToWidth();
             this.DataContextChanged += (o, e) =>
             {
                 if (DataContext != null)

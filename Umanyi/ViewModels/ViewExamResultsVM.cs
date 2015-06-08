@@ -76,13 +76,17 @@ namespace UmanyiSMS.ViewModels
             {
                 if (isInStudentMode)
                 {
+                    IsBusy = true;
                     StudentExamResultModel st = DataAccess.GetStudentExamResult(studentResult);
+                    IsBusy = false;
                     if (ShowStudentTranscriptAction != null)
                         ShowStudentTranscriptAction.Invoke(st);
                 }
                 else
                 {
+                    IsBusy = true;
                     ClassExamResultModel st = DataAccess.GetClassExamResult(classResult);
+                    IsBusy = false;
                     if (ShowClassTranscriptAction != null)
                         ShowClassTranscriptAction.Invoke(st);
                 }
@@ -105,7 +109,7 @@ namespace UmanyiSMS.ViewModels
                 }
 
                 if (isInClassMode)
-                {
+                {                    
                     var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(classResult.ClassID, selectedExam.ExamID,selectedExam.OutOf));
                     ClassResult.Entries = temp.Entries;
                     ClassResult.ExamID = temp.ExamID;
@@ -141,7 +145,7 @@ namespace UmanyiSMS.ViewModels
                             classResult.ClassID = cs.ClassID;
                         }                        
                     }
-                    classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
+                    classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());                    
                 }
                 IsBusy = false;
             }, o => CanDisplayResults());

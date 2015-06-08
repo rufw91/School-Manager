@@ -88,7 +88,7 @@ namespace UmanyiSMS.ViewModels
             RefreshCommand = new RelayCommand(async o =>
             {
                 ReportModel rt = new ReportModel();
-                rt.Title = "Student(s) Report";
+                rt.Title = "Academic Report";
                 rt.Entries = await GetEntries();
                 rt.Columns = new ObservableCollection<ColumnModel>(columns.Where(ox => ox.IsSelected == true));
                 Document = DocumentHelper.GenerateDocument(rt);
@@ -97,7 +97,7 @@ namespace UmanyiSMS.ViewModels
             FullPreviewCommand = new RelayCommand(async o =>
             {
                 ReportModel rt = new ReportModel();
-                rt.Title = "Student(s) Report";
+                rt.Title = "Academic Report";
                 rt.Entries = await GetEntries();
                 rt.Columns = new ObservableCollection<ColumnModel>(columns.Where(ox => ox.IsSelected == true));
                 var xdc = DocumentHelper.GenerateDocument(rt);

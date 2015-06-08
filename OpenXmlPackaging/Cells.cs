@@ -443,10 +443,14 @@ namespace OpenXmlPackaging
                                 string s = reader["r"];
                                 string sharedString = reader["t"];
                                 reader.ReadToDescendant("v", reader.NamespaceURI);
+
                                 if (string.IsNullOrWhiteSpace(sharedString))
                                     v = reader.ReadElementString("v");
                                 else
-                                    v = sharedStrings[int.Parse(reader.ReadElementString("v"))];
+                                    if (sharedStrings != null)
+
+                                        v = sharedStrings[int.Parse(reader.ReadElementString("v"))];
+                                    else v = "";
 
                                 this.AddCell(s, v);
                             }

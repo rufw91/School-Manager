@@ -1,28 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Helper.Models;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace UmanyiSMS.Views
 {
-    /// <summary>
-    /// Interaction logic for AllEvents.xaml
-    /// </summary>
     public partial class AllEvents : UserControl
     {
+        public static readonly DependencyProperty DisplayEventDetailCommandProperty =
+            DependencyProperty.Register("DisplayEventDetailCommand", typeof(ICommand), typeof(AllEvents),
+            new PropertyMetadata(null));
         public AllEvents()
         {
             InitializeComponent();
+            Binding myBinding = new Binding("DataContext.DisplayEventDetailCommand");
+            myBinding.RelativeSource = new RelativeSource(
+                RelativeSourceMode.FindAncestor, typeof(MainWindow), 1);
+
+            this.SetBinding(DisplayEventDetailCommandProperty, myBinding);
+        }
+        private void OnDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            CurrentEvent = (EventModel)(sender as ListBoxItem).Content;
+            DisplayEventDetailCommand.Execute(CurrentEvent);
+        }
+
+        private void OnClick(object sender, RoutedEventArgs e)
+        {
+            if (lbx.SelectedItem is EventModel)
+            {
+                CurrentEvent = (lbx.SelectedItem as EventModel);
+                DisplayEventDetailCommand.Execute(CurrentEvent);
+            }
+        }
+
+        public ICommand DisplayEventDetailCommand
+        {
+            get { return (ICommand)this.GetValue(DisplayEventDetailCommandProperty); }
+            set { this.SetValue(DisplayEventDetailCommandProperty, value); }
+        }
+
+        private EventModel CurrentEvent
+        {
+            get;
+            set;
         }
     }
 }

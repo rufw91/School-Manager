@@ -18,6 +18,7 @@ namespace UmanyiSMS.ViewModels
             TryAddChild(typeof(ClassReportFormsVM));
             TryAddChild(typeof(CombinedMarkListsVM));
             TryAddChild(typeof(AggregateResultsVM));
+            TryAddChild(typeof(CombinedAggregateResultsVM));
             TryAddChild(typeof(RemoveExamVM));
         }
     }

@@ -35,7 +35,7 @@
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersion>6.7.176.15149</AssemblyVersion>
+    <AssemblyVersion>6.7.358.15159</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -163,6 +163,7 @@
     <Compile Include="ViewModels\ChangeSAPasswordVM.cs" />
     <Compile Include="ViewModels\ClassLeavingCertificatesVM.cs" />
     <Compile Include="ViewModels\ClassReportFormsVM.cs" />
+    <Compile Include="ViewModels\CombinedAggregateResultsVM.cs" />
     <Compile Include="ViewModels\CombinedClassListVM.cs" />
     <Compile Include="ViewModels\CombinedMarkListsVM.cs" />
     <Compile Include="ViewModels\CurrentTimeTableFullVM.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="ViewModels\DisciplineTrackerHistoryVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerVM.cs" />
     <Compile Include="ViewModels\EnterExamResultsBySubjectVM.cs" />
+    <Compile Include="ViewModels\EventDetailsVM.cs" />
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
     <Compile Include="ViewModels\InstitutionSubjectsSetupVM.cs" />
     <Compile Include="ViewModels\ModifySubjectsSetupVM.cs" />
@@ -296,11 +298,17 @@
     <Compile Include="Views\ClassLeavingCertificates.xaml.cs">
       <DependentUpon>ClassLeavingCertificates.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CombinedAggregateResults.xaml.cs">
+      <DependentUpon>CombinedAggregateResults.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CombinedMarkLists.xaml.cs">
       <DependentUpon>CombinedMarkLists.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CurrentTimeTableFull.xaml.cs">
       <DependentUpon>CurrentTimeTableFull.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EventDetails.xaml.cs">
+      <DependentUpon>EventDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\InstitutionSubjectsSetup.xaml.cs">
       <DependentUpon>InstitutionSubjectsSetup.xaml</DependentUpon>
@@ -628,6 +636,9 @@
     <Compile Include="Views\StudentTranscript.xaml.cs">
       <DependentUpon>StudentTranscript.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StudentTranscript2.xaml.cs">
+      <DependentUpon>StudentTranscript2.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StudentTransfer.xaml.cs">
       <DependentUpon>StudentTransfer.xaml</DependentUpon>
     </Compile>
@@ -756,11 +767,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\CombinedAggregateResults.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CombinedMarkLists.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CurrentTimeTableFull.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EventDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1172,6 +1191,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\StudentTranscript2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StudentTransfer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1388,7 +1411,9 @@
     <SplashScreen Include="Resources\Starehe0078C8.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\app.manifest">
       <SubType>Designer</SubType>
     </None>

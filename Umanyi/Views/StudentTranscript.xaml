@@ -20,12 +20,14 @@
         <TextBlock HorizontalAlignment="Left" Margin="30,90,0,0" Text="Student ID" VerticalAlignment="Top"/>
 
         <TextBox Height="23" Margin="120,90,100,0" VerticalAlignment="Top" 
+                  
                  Text="{Binding Transcript.StudentID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
             ValidatesOnDataErrors=True,ValidatesOnNotifyDataErrors=True}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,135,0,0" Text="Name" VerticalAlignment="Top"/>
 
         <TextBox Height="23" Margin="120,135,20,0" VerticalAlignment="Top"
+                  
                  Text="{Binding Transcript.NameOfStudent, Mode=OneWay,
             ValidatesOnDataErrors=True,ValidatesOnNotifyDataErrors=True}"
                  IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"/>
@@ -46,6 +48,7 @@
 
         <TextBlock HorizontalAlignment="Left" Margin="30,416,0,0" Text="Boarding (comments)" Width="80" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBox Margin="107,408,20,0" VerticalScrollBarVisibility="Visible" MaxLength="20" TextWrapping="Wrap"
+                  
                  Text="{Binding Transcript.Boarding, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="70" VerticalAlignment="Top"/>
 
         
@@ -55,6 +58,7 @@
         <TextBox Margin="120,90,20,0" VerticalAlignment="Top"
                  VerticalScrollBarVisibility="Visible" MaxLength="20"
                  TextWrapping="Wrap" Height="70" 
+                  
                  Text="{Binding Transcript.Responsibilities, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,171,0,0" Text="Clubs &amp; Sports (Comments)" Width="80" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1"/>
@@ -62,23 +66,27 @@
         <TextBox  Margin="120,171,20,0" VerticalAlignment="Top"
                  VerticalScrollBarVisibility="Visible" MaxLength="20"
                  TextWrapping="Wrap" Height="70"
+                   
                  Text="{Binding Transcript.ClubsAndSport, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"/>
 
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,251,0,0" Text="Class Teacher" VerticalAlignment="Top"/>
 
         <TextBox Grid.Column="1" Margin="120,251,20,0" VerticalAlignment="Top" MaxLength="20"
-                 Text="{Binding Transcript.ClassTeacher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  
+                 Text="{Binding ClassTeacher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,296,0,0" Text="Comments" VerticalAlignment="Top"/>
 
         <TextBox Grid.Column="1" Margin="120,296,20,0" VerticalAlignment="Top"
                  VerticalScrollBarVisibility="Visible" MaxLength="20"
                  TextWrapping="Wrap" Height="70"
+                  
                  Text="{Binding Transcript.ClassTeacherComments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
 
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,381,0,0" Text="Principal" VerticalAlignment="Top"/>
         <TextBox Grid.Column="1" Margin="120,381,20,0" VerticalAlignment="Top" MaxLength="20"
+                  
                  Text="{Binding Transcript.Principal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,431,0,0" Text="Comments" VerticalAlignment="Top"/>
@@ -86,14 +94,17 @@
         <TextBox Grid.Column="1" Margin="120,426,20,0" VerticalAlignment="Top"
                  VerticalScrollBarVisibility="Visible" MaxLength="20"
                  TextWrapping="Wrap" Height="70"
+                  
                  Text="{Binding Transcript.PrincipalComments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="17,494,0,0" Text="Closing Day:" Height="16" VerticalAlignment="Top"/>
         <DatePicker Margin="107,489,20,0" 
+                     
                     SelectedDate="{Binding Transcript.ClosingDay, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="32" VerticalAlignment="Top"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="17,539,0,0" Text="Opening Day:" VerticalAlignment="Top"/>
         <DatePicker Margin="107,534,20,0" VerticalAlignment="Top"
+                     
                     SelectedDate="{Binding Transcript.OpeningDay, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
         
@@ -106,7 +117,8 @@
         </TextBlock>
 
         <DataGrid Grid.Column="2" AutoGenerateColumns="False" Margin="10,70,10,50" Height="300" VerticalAlignment="Top"
-                  ItemsSource="{Binding Path=Transcript.Entries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                   
+                  ItemsSource="{Binding Transcript.Entries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                   CanUserAddRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" 
                   CanUserDeleteRows="True" RowHeaderWidth="0">
             <DataGrid.Columns>
@@ -133,10 +145,11 @@
 
         <Button Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" BorderBrush="Silver" BorderThickness="2"
                 Command="{Binding SaveCommand}" Content="Save" Grid.Column="2"/>
-        <Border Background="#7FF5F5F5" Grid.ColumnSpan="2" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Hidden}">
+                <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="10,45,0,0" Text="Results" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
+                <Border Background="#7FF5F5F5" Grid.ColumnSpan="3" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Hidden}">
             <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
         </Border>
-        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="10,45,0,0" Text="Results" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
+        
     </Grid>
         </ScrollViewer>
     </Grid>

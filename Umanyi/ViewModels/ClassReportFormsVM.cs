@@ -14,7 +14,7 @@ namespace UmanyiSMS.ViewModels
     public class ClassReportFormsVM: ViewModelBase
     {
         private int selectedClassID;
-        private ObservableCollection<StudentTranscriptModel> classTranscripts;
+        private ObservableCollection<StudentTranscriptModel2> classTranscripts;
         private FixedDocument fd;
         private bool resultsIsReadOnly;
         private ObservableCollection<ExamWeightModel> exams;
@@ -34,7 +34,7 @@ namespace UmanyiSMS.ViewModels
         {
             GenerateCommand = new RelayCommand(o =>
             {
-                ClassTranscriptsModel cs = new ClassTranscriptsModel() { Entries = classTranscripts };
+                ClassTranscriptsModel2 cs = new ClassTranscriptsModel2() { Entries = classTranscripts };
                 foreach(var f in cs.Entries)
                 {
                     f.OpeningDay = openingDay;
@@ -55,7 +55,7 @@ namespace UmanyiSMS.ViewModels
                  var dx =ft.Where(o2=>o2.Entries.Any(o1=>o1.ClassID==selectedClassID));
                     classes = dx.ElementAt(0).Entries;
 
-                ClassTranscripts = await DataAccess.GetClassTranscriptsAsync(selectedClassID,exams,classes);
+                ClassTranscripts = await DataAccess.GetClassTranscripts2Async(selectedClassID,exams,classes);
                 ResultsIsReadOnly = true;
                 IsBusy = false;
             }, o => CanRefresh());
@@ -64,7 +64,7 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             exams = new ObservableCollection<ExamWeightModel>();
-            classTranscripts = new ObservableCollection<StudentTranscriptModel>();
+            classTranscripts = new ObservableCollection<StudentTranscriptModel2>();
             Title = "CLASS REPORT FORMS";
             SelectedClassID = 0;
             OpeningDay = DateTime.Now;
@@ -103,6 +103,7 @@ namespace UmanyiSMS.ViewModels
                     if (e.PropertyName == "SelectedClassID")
                     {
                         exams.Clear();
+                        classTranscripts.Clear();
                         ResultsIsReadOnly = false;
                         if (selectedClassID == 0)
                             return;
@@ -249,7 +250,7 @@ namespace UmanyiSMS.ViewModels
                 }
             }
         }
-        public ObservableCollection<StudentTranscriptModel> ClassTranscripts
+        public ObservableCollection<StudentTranscriptModel2> ClassTranscripts
         {
             get { return classTranscripts; }
             set

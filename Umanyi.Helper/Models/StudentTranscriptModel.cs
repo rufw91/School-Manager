@@ -451,5 +451,31 @@ namespace Helper.Models
             ExamGrade = "E";
         }
 
+        public override void Clean()
+        {
+            base.Clean();
+            StudentTranscriptID = 0;
+            KCPEScore = 0;
+            Responsibilities = "";
+            ClubsAndSport = "";
+            Boarding = "";
+            ClassTeacher = "";
+            ClassTeacherComments = "";
+            Principal = "";
+            PrincipalComments = "";
+            OpeningDay = DateTime.Now;
+            ClosingDay = DateTime.Now;
+            MeanScore = 0;
+            Term1Pos = "1/1";
+            Term2Pos = "1/1";
+            Term3Pos = "1/1";
+            Entries = new ObservableCollection<StudentExamResultEntryModel>();
+            MeanGrade = "E";
+            CAT1Grade = "E";
+            CAT2Grade = "E";
+            ExamGrade = "E";
+            DateSaved = DateTime.Now;
+        }
+
     }
 }

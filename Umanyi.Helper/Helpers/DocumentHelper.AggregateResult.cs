@@ -27,7 +27,7 @@ namespace Helper
         }
         private static void AddAGMeanScore(decimal meanScore, int pageNo)
         {
-            AddText(meanScore.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 180, 165, pageNo);
+            AddText(meanScore.ToString("N4"), "Arial", 14, true, 0, Colors.Black, 180, 165, pageNo);
         }
         private static void AddAGMeanGrade(string meanGrade, int pageNo)
         {
@@ -44,7 +44,7 @@ namespace Helper
             double yPos = 355 + pageRelativeIndex * 25;
 
             AddText(item.NameOfSubject, "Arial", 14, false, 0, Colors.Black, 45, yPos, pageNo);
-            AddText(item.MeanScore.ToString("N2"), "Arial", fontsize, false, 0, Colors.Black, 285, yPos, pageNo);
+            AddText(item.MeanScore.ToString("N4"), "Arial", fontsize, false, 0, Colors.Black, 285, yPos, pageNo);
             AddText(item.MeanGrade, "Arial", fontsize, false, 0, Colors.Black, 475, yPos, pageNo);
             AddText(item.Points.ToString(), "Arial", fontsize, false, 0, Colors.Black, 630, yPos, pageNo);
         }

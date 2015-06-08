@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace UmanyiSMS.ViewModels
@@ -26,6 +27,7 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "SUBJECT SELECTION (FAST)";
+           
             Entries = new DataTable();
             
             AllClasses = await DataAccess.GetAllClassesAsync();
@@ -35,6 +37,7 @@ namespace UmanyiSMS.ViewModels
                     {
                         if (selectedClassID==0)
                         return;
+                        IsBusy = true;
                         var f = await DataAccess.GetSubjectsRegistredToClassAsync(selectedClassID);
                         DataTable rf = new DataTable();
 
@@ -55,12 +58,23 @@ namespace UmanyiSMS.ViewModels
                             rf.Rows.Add(dtr);
                         }
                         Entries = rf;
+                        IsBusy = false;
                     }
                 };
         }
 
         protected override void CreateCommands()
         {
+            SelectAllCommand = new RelayCommand( o =>
+                {
+                    foreach (DataRow dtr in entries.Rows)
+                    {
+                        for (int i = 0; i < dtr.ItemArray.Length; i++)
+                            if (dtr[i].GetType() == typeof(bool))
+                                dtr[i] = true;
+                    }
+                    NotifyPropertyChanged("Entries");
+                });
             SaveCommand = new RelayCommand(async o =>
                 {
                     IsBusy = true;
@@ -88,7 +102,8 @@ namespace UmanyiSMS.ViewModels
                             temp.RemoveAt(i);
                     }
                     bool succ=await DataAccess.SaveNewSubjectSelection(temp);
-
+                    MessageBox.Show(succ ? "Successfully saved details." : "Could not save details.", succ ? "Success" : "Error", MessageBoxButton.OK,
+                        succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                     IsBusy = false;
                 },o=>CanSave());
         }
@@ -136,6 +151,9 @@ namespace UmanyiSMS.ViewModels
                 }
             }
         }
+
+        public ICommand SelectAllCommand
+        { get; private set; }
 
         public ICommand SaveCommand
         { get; private set; }

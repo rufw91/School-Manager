@@ -79,11 +79,13 @@ namespace UmanyiSMS.ViewModels
                     if (e.PropertyName == "SelectedSubjectID")
                     {
                         allSubjectResults.Clear();
+                        IsBusy = true;
                         if (SelectedSubjectID > 0)
                         {
                             AllSubjectResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>(await DataAccess.GetStudentSubjectsResults(selectedClassID, selectedExamID, selectedSubjectID, selectedExam.OutOf));
                             tempResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>(await DataAccess.GetStudentSubjectsResults(selectedClassID, selectedExamID, selectedSubjectID, selectedExam.OutOf));
                         }
+                        IsBusy = false;
                     }
                     if (e.PropertyName=="Tutor")
                     {
@@ -115,6 +117,7 @@ namespace UmanyiSMS.ViewModels
         {
             SaveCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                 CheckForChanges();
                 ObservableCollection<ExamResultStudentModel> temp = new ObservableCollection<ExamResultStudentModel>();
                 ExamResultStudentModel em;
@@ -135,7 +138,7 @@ namespace UmanyiSMS.ViewModels
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     Reset();
                 }
-
+                IsBusy = false;
 
             }, o => !IsBusy && CanSave());
         }

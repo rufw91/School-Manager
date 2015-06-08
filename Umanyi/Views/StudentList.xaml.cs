@@ -19,7 +19,7 @@ namespace UmanyiSMS.Views
             myBinding.RelativeSource = new RelativeSource(
                 RelativeSourceMode.FindAncestor, typeof(MainWindow), 1);
             
-            this.SetBinding(StudentList.DisplayStudentDetailCommandProperty, myBinding);
+            this.SetBinding(DisplayStudentDetailCommandProperty, myBinding);
         }
 
         private void OnDoubleClick(object sender, MouseButtonEventArgs e)

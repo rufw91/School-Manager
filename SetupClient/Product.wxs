@@ -131,12 +131,13 @@
 
   <Fragment>
     <ComponentGroup Id="CommonComponents" Directory="INSTALLFOLDER">
-      <Component Id="cmpc1" Guid="*">
-        <File Source="E:\Dev\School MS Common\eaep.pdf" />
-      </Component>
       <Component Id="cmpc2" Guid="*">
         <File Source="E:\Dev\School MS Common\gxps-9.15-win32.exe" />
       </Component>
+      <!--<Component Id="cmpc1" Guid="*">
+        <File Source="E:\Dev\School MS Common\eaep.pdf" />
+      </Component>
+      
       <Component Id="cmpc3" Guid="*">
         <File Source="E:\Dev\School MS Common\jkf.pdf" />
       </Component>
@@ -172,7 +173,7 @@
       </Component>
       <Component Id="cmpc14" Guid="*">
         <File Source="E:\Dev\School MS Common\Video2.mp4" />
-      </Component>
+      </Component>-->
     </ComponentGroup>
   </Fragment>
 

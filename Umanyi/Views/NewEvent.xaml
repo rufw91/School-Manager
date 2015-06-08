@@ -41,7 +41,7 @@
         <TextBox Height="50" Margin="350,80,50,0" VerticalAlignment="Top" FontSize="28" FontFamily="Segoe UI Light"
                  BorderBrush="Transparent" BorderThickness="0" 
                  Style="{DynamicResource AddSubjectTextBox}"
-                 DataContext="{Binding NewEvent}"
+                 DataContext="{Binding NewEvent}"  MaxLength="20"
                  Text="{Binding Subject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Border BorderThickness="1" BorderBrush="Silver" VerticalAlignment="Top" Margin="350,131,50,0"/>
         <TextBox Margin="350,138,50,60" BorderBrush="Transparent" BorderThickness="0"

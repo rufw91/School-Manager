@@ -29,6 +29,7 @@ namespace UmanyiSMS.ViewModels
         {
             GenerateCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                  ClassBalancesListModel s = new ClassBalancesListModel();
                 foreach (var c in selectedCombinedClass.Entries)
                 {
@@ -39,7 +40,9 @@ namespace UmanyiSMS.ViewModels
                 s.Entries = new ObservableCollection<StudentFeesDefaultModel>(s.Entries.OrderBy(f => f.StudentID));
                 s.NameOfClass = selectedCombinedClass.Description;
                 Document = DocumentHelper.GenerateDocument(s);
+                IsBusy = false;
             }, o => selectedCombinedClass != null);
+         
         }
 
         public ObservableCollection<CombinedClassModel> AllCombinedClasses

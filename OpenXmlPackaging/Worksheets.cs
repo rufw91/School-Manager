@@ -106,9 +106,103 @@ namespace OpenXmlPackaging {
 				throw new Exception("Please add a workbook before instantiating a Sheet");
 			}
 
-			_worksheet = new List<Worksheet>();
-		} 
+            _worksheet = GetWorkSheets(_package);
+		}
+        private List<Worksheet> GetWorkSheets(Package package)
+        {
+            List<Worksheet> temp = new List<Worksheet>();
 
+            try
+            {
+                using (Stream workbookStream = _workbookPart.GetStream(FileMode.Open, FileAccess.Read))
+                {
+
+                    using (var reader = XmlReader.Create(workbookStream))
+                    {
+                        var document = XDocument.Load(reader);
+
+                        XElement sheets = document.Descendants().FirstOrDefault(d => d.Name.Equals(Constants.MainXNamespace + "sheets"));
+
+                        var sheetElements = sheets.Descendants(Constants.MainXNamespace + "sheet");
+                        PackagePart sharedStringsPart;
+                        Dictionary<int, string> strings = null; 
+                        if (package.PartExists(Constants.SharedStringsUri))
+                        {
+                            sharedStringsPart = package.GetPart(Constants.SharedStringsUri);
+                            strings=GetSharedStrings(sharedStringsPart);
+                        }
+                        else
+                        {
+                            package.CreatePart(Constants.SharedStringsUri,Constants.SharedStringContentType);
+                            sharedStringsPart = package.GetPart(Constants.SharedStringsUri);
+                        }
+
+
+                        
+                        foreach (var s in sheetElements)
+                        {
+                            int sheetId = int.Parse(s.Attribute("sheetId").Value);
+                            string name = s.Attribute("name").Value;
+                            Uri sheetUri = new Uri(String.Format(Constants.SheetUriFormatPath, sheetId), UriKind.Relative);
+                            PackagePart worksheetPart = _package.GetPart(sheetUri);
+                            PackageRelationship sheetRelationship = _workbookPart.GetRelationships().FirstOrDefault(d => d.TargetUri == sheetUri);
+                            var worksheet = new Worksheet(_stylesheet, worksheetPart)
+                            {
+                                Name = name,
+                                // RelationshipId = sheetRelationship.Id,
+                            };
+
+                            using (var rx = XmlReader.Create(worksheetPart.GetStream(FileMode.Open, FileAccess.Read)))
+                            {
+                                worksheet.Open(rx, strings);
+
+                            }
+                            using (var rx = XmlReader.Create(worksheetPart.GetStream(FileMode.Open, FileAccess.Read)))
+                            {
+                                worksheet.WorksheetXml = XDocument.Load(rx);
+                            }
+                            temp.Add(worksheet);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // TODO :: Add exception handling logic
+                //throw;
+            }
+
+            return temp;
+        }
+
+        private Dictionary<int, string> GetSharedStrings(PackagePart sharedStringsPart)
+        {
+            Dictionary<int, string> temp = new Dictionary<int, string>();
+            int count = 0;
+            using (var reader = XmlReader.Create(sharedStringsPart.GetStream(FileMode.Open, FileAccess.Read)))
+            {
+                try
+                {
+                    while (reader.Read())
+                    {
+                        switch (reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                if (reader.Name == "t")
+                                {
+                                    string s = reader.ReadElementString();
+                                    temp.Add(count, s);
+                                    count++;
+                                }
+                                break;
+                            default: break;
+                        }
+                    }
+                }
+                catch { }
+            }
+            return temp;
+        }
 		#endregion
 
 		#region IEnumerable

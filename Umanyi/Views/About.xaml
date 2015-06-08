@@ -79,8 +79,8 @@
     </Window.Resources>
 
     <Grid>
-        
-        <TextBlock HorizontalAlignment="Left" Margin="30,164,0,0" Text="Version 6.6.5.2015" VerticalAlignment="Top" />
+
+        <TextBlock Name="txtVersion" HorizontalAlignment="Left" Margin="30,164,0,0" Text="Version 6.6.5.2015" VerticalAlignment="Top" />
 
         <TextBlock HorizontalAlignment="Left" Margin="30,185,0,0" VerticalAlignment="Top" >
             © 2015 Raphael Muindi. All Rights Reserved.
