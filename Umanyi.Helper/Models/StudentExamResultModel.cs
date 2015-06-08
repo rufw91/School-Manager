@@ -140,7 +140,7 @@ namespace Helper.Models
             }
         }
 
-        internal void CopyFrom(StudentExamResultModel newResult)
+        internal virtual void CopyFrom(StudentExamResultModel newResult)
         {
             NameOfClass = newResult.NameOfClass;
             ClassPosition = newResult.ClassPosition;
@@ -149,6 +149,18 @@ namespace Helper.Models
             Points = newResult.Points;
             MeanGrade = newResult.MeanGrade;
             Entries = newResult.Entries;
+        }
+
+        public virtual void Clean()
+        {
+            NameOfClass = "";
+            ClassPosition = "1/1";
+            OverAllPosition = "1/1";
+            TotalMarks = 0;
+            Points = 0;
+            MeanGrade = "";
+            NameOfExam = "";
+            Entries = new ObservableCollection<StudentTranscriptSubjectModel>();
         }
     }
 }

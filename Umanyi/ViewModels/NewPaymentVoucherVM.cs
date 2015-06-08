@@ -49,6 +49,8 @@ namespace UmanyiSMS.ViewModels
                     MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
                 {
+                    var t = await DataAccess.GetLastPaymentVoucherIDAsync(currentVoucher.NameOfPayee, currentVoucher.Description);
+                    currentVoucher.PaymentVoucherID = t;
                     Document = DocumentHelper.GenerateDocument(currentVoucher);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(Document);

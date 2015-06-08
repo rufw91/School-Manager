@@ -59,8 +59,8 @@
       <![CDATA[Installed OR VersionNT >= 600]]>
     </Condition>
   
- <Binary Id="CreateTablesBin"  SourceFile="MyDb.sql" />
- 
+ <Binary Id="CreateTablesBin"  SourceFile="CreateDbObjects.sql" />
+    <Binary Id="ResetIdsBin"  SourceFile="ResetUniqueIds.sql" />
 	</Product>
 
  
@@ -77,6 +77,7 @@
         <Condition>NOT Installed</Condition>
         <sql:SqlDatabase Id="MySqlDatabase" Database="[DB_DATABASE]" Server="[DB_SERVER]" CreateOnInstall="yes" CreateOnReinstall="yes" ConfirmOverwrite="yes" User="SQLUserSA" ContinueOnError="no">
           <sql:SqlScript Id="CreateTables" ExecuteOnInstall="yes" ExecuteOnUninstall="no" BinaryKey="CreateTablesBin" ContinueOnError="no" />
+          <sql:SqlScript Id="ResetIds" ExecuteOnInstall="yes" ExecuteOnUninstall="no" BinaryKey="ResetIdsBin" ContinueOnError="no" />
           </sql:SqlDatabase>
         <CreateFolder/>
       </Component>
@@ -139,11 +140,13 @@
 
   <Fragment>
     <ComponentGroup Id="CommonComponents" Directory="INSTALLFOLDER">
-      <Component Id="cmpc1" Guid="*">
-        <File Source="E:\Dev\School MS Common\eaep.pdf" />
-      </Component>
+     
       <Component Id="cmpc2" Guid="*">
         <File Source="E:\Dev\School MS Common\gxps-9.15-win32.exe" />
+      </Component>
+      <!--
+       <Component Id="cmpc1" Guid="*">
+        <File Source="E:\Dev\School MS Common\eaep.pdf" />
       </Component>
       <Component Id="cmpc3" Guid="*">
         <File Source="E:\Dev\School MS Common\jkf.pdf" />
@@ -180,7 +183,7 @@
       </Component>
       <Component Id="cmpc14" Guid="*">
         <File Source="E:\Dev\School MS Common\Video2.mp4" />
-      </Component>
+      </Component>-->
     </ComponentGroup>
   </Fragment>
 

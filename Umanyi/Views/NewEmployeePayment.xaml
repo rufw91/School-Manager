@@ -39,8 +39,11 @@
         <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0"  Text="Amount" VerticalAlignment="Top" Grid.Column="1"/>
         <TextBox Margin="100,80,40,0" VerticalAlignment="Top" Grid.Column="1" MaxLength="50"
                  Text="{Binding NewPayment.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        <Button Content="Save" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="90"
+        <Button Content="Save &amp; Print" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,120,10" VerticalAlignment="Bottom" Width="150" IsEnabled="False"
+                Command="{Binding SaveAndPrintCommand}"/>
+        <Button Content="Save" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding SaveCommand}"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="20,150,0,0" Text="Deductions" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
+        <DataGrid Grid.Column="1" Margin="20,190,10,0" VerticalAlignment="Top" Height="250" />
     </Grid>
 </UserControl>

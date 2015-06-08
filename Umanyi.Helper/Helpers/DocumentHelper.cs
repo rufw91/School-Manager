@@ -23,7 +23,7 @@ namespace Helper
         static object myWorkObject;
         enum DocType
         {
-            Statement, Transcript, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList,ClassExamResults,ClassLeavingCertificates,Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, UnreturnedBooks, Report
+            Statement, Transcript,Transcript3, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList,ClassExamResults,ClassLeavingCertificates,Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, UnreturnedBooks, Report
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -70,6 +70,7 @@ namespace Helper
                 case DocType.FeesPayment2: GenerateReceipt2(); break;
                 case DocType.Transcript: GenerateTranscript(); break;
                 case DocType.Transcript2: GenerateTranscript2(); break;
+                case DocType.Transcript3: GenerateTranscript3(); break;
                 case DocType.Balances: GenerateBalanceList(); break;
                 case DocType.ClassList: GenerateClassList(); break;
                 case DocType.Voucher: GenerateVoucher(); break;
@@ -96,6 +97,7 @@ namespace Helper
                 case DocType.Balances: resString = Helper.Properties.Resources.Balances; break;
                 case DocType.ClassList: resString = Helper.Properties.Resources.ClassList; break;
                 case DocType.Transcript2: resString = Helper.Properties.Resources.Transcript2; break;
+                case DocType.Transcript3: resString = Helper.Properties.Resources.Transcript4; break;
                 case DocType.ClassTranscripts: resString = Helper.Properties.Resources.Transcript2; break;
                 case DocType.ClassExamResults: resString = Helper.Properties.Resources.Transcript; break;
                 case DocType.Voucher: resString = Helper.Properties.Resources.PaymentVoucher; break;
@@ -117,6 +119,8 @@ namespace Helper
                 return DocType.LeavingCert;
             if (workObject is FeesStatementModel)
                 return DocType.Statement;
+            if (workObject is StudentTranscriptModel2)
+                return DocType.Transcript3;
             if (workObject is StudentTranscriptModel)
                 return DocType.Transcript2;
             if (workObject is StudentExamResultModel)
@@ -174,6 +178,8 @@ namespace Helper
             if (docType == DocType.Transcript)
                 return 1;
             if (docType == DocType.Transcript2)
+                return 1;
+            if (docType == DocType.Transcript3)
                 return 1;
             if (docType == DocType.Voucher)
                 return 1;

@@ -5,6 +5,7 @@ using System.Security.Permissions;
 using System.Windows;
 using Helper;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace UmanyiSMS
 {
@@ -15,6 +16,8 @@ namespace UmanyiSMS
         {
             InitializeComponent();
             this.DataContext = Credits.TheCredits;
+
+            txtVersion.Text = "Version "+typeof(App).Assembly.GetName().Version.ToString();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -26,7 +29,7 @@ namespace UmanyiSMS
         {
             try
             {
-                Process.Start("http://www.almondtechnologies.kbo.co.ke");
+                Process.Start("http://www.umanyi.co.ke/solutions");
             }
             catch { }
         }

@@ -95,6 +95,8 @@
 
         <Border HorizontalAlignment="Right" Margin="0,51,20,0" BorderThickness="1" Background="White" BorderBrush="Silver" Width="50" Height="15" VerticalAlignment="Top"/>
         <Border HorizontalAlignment="Right" Margin="0,75,20,0" BorderThickness="1" Background="OrangeRed" BorderBrush="Silver" Width="50" Height="15" VerticalAlignment="Top"/>
-
+        <Border Grid.RowSpan="2" Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+        </Border>
     </Grid>
 </UserControl>

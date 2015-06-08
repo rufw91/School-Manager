@@ -33,8 +33,10 @@ namespace UmanyiSMS.ViewModels
         {
             GenerateCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
                 ClassStudentListModel s = await DataAccess.GetCombinedClassStudentListAsync(selectedClass);
                 Document = DocumentHelper.GenerateDocument(s);
+                IsBusy = false;
             }, o => selectedClass != null);
         }
 

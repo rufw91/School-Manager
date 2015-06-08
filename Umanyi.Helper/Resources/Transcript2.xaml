@@ -65,16 +65,6 @@
 
         <TextBlock HorizontalAlignment="Left" Margin="30,790,0,0" Text="BOARDING (COMMENTS)" VerticalAlignment="Top"/>
         <Border HorizontalAlignment="Left" Height="60" Margin="30,810,0,0" VerticalAlignment="Top" Width="200" Background="WhiteSmoke"/>
-
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="30" Margin="550,655,0,0" VerticalAlignment="Top" Width="195"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="90" Margin="550,655,0,0" VerticalAlignment="Top" Width="195"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="1" Margin="550,714,0,0" VerticalAlignment="Top" Width="195"/>
-        <TextBlock HorizontalAlignment="Left" Margin="566,660,0,0" Text="TERM 1" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="626,660,0,0" Text="TERM 2" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="686,660,0,0" Text="TERM 2" VerticalAlignment="Top"/>
-
-        <TextBlock HorizontalAlignment="Left" Margin="516,695,0,0" Text="AVG" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="516,720,0,0" Text="POS" VerticalAlignment="Top"/>
         <Border BorderBrush="Gray" BorderThickness="1" Height="1" Margin="10,900,10,0" VerticalAlignment="Top"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,920,0,0" Text="CLASS TEACHER:" VerticalAlignment="Top"/>

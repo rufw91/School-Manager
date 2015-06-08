@@ -25,10 +25,18 @@ namespace OpenXmlPackaging {
         internal Workbook(Package package) {
             _package = package;
 
-            AddWorkbook();
+            if (!_package.PartExists(Constants.WorkbookUri))
+                AddWorkbook();
+            else
+            {
+                _workbookPart = _package.GetPart(Constants.WorkbookUri);
+                _worksheets = new Worksheets(_package, Stylesheet);
+                
+            }
         }
 
         private void AddWorkbook() {
+
             _workbookPart = _package.CreatePart(Constants.WorkbookUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml");
 
             _package.CreateRelationship(Constants.WorkbookUri, TargetMode.Internal, Constants.RelationshipNamespace + "/officeDocument");

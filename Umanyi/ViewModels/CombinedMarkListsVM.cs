@@ -36,11 +36,14 @@ namespace UmanyiSMS.ViewModels
             Title = "COMBINED MARK LIST(S)";
             classResult = new ExamResultClassDisplayModel();
             exams = new ObservableCollection<ExamWeightModel>();
+            IsInClassMode = true;
             AllClasses = await DataAccess.GetAllClassesAsync();
             AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
-            IsInClassMode = true;
+            
             PropertyChanged += async (o, e) =>
                 {
+                    if ((e.PropertyName == "IsInClassMode") || (e.PropertyName == "IsInCombinedMode"))
+                        exams.Clear();
                     if (isInClassMode)
                     if (e.PropertyName == "SelectedClass")
                     {
@@ -169,54 +172,57 @@ namespace UmanyiSMS.ViewModels
             }, o => CanGenerate());
         }
 
-        private async Task<DataTable> ConvertClassResults(List<ExamResultStudentModel> temp)
+        private Task<DataTable> ConvertClassResults(List<ExamResultStudentModel> temp)
         {
-            if (temp == null)
-                return new DataTable();
-            if (temp.Count == 0)
-                return new DataTable();
-            DataTable dt = new DataTable();
-            ObservableCollection<SubjectModel> g;
-            if (isInClassMode)
-             g = await DataAccess.GetSubjectsRegistredToClassAsync(selectedClass.ClassID);
-            else
-                g = await DataAccess.GetSubjectsRegistredToClassAsync(selectedCombinedClass.Entries[0].ClassID);
-
-            dt.Columns.Add(new DataColumn("Student ID"));
-            dt.Columns.Add(new DataColumn("Name"));
-            int subjectCount = 0;
-            foreach (var d in g)
-            {
-                dt.Columns.Add(new DataColumn(d.NameOfSubject));
-                subjectCount++;
-            }
-            dt.Columns.Add(new DataColumn("Grade"));
-            dt.Columns.Add(new DataColumn("Total"));
-            dt.Columns.Add(new DataColumn("Position"));
-            DataRow dtr;
-            ExamResultSubjectEntryModel f;
-            int pos = 1;
-            ExamResultStudentModel s;
-            for (int x = 0; x < temp.Count; x++)
-            {
-                s = temp[x];
-                dtr = dt.NewRow();
-                dtr[0] = s.StudentID;
-                dtr[1] = s.NameOfStudent;
-                for (int i = 0; i < subjectCount; i++)
+            return Task.Run<DataTable>(async () =>
                 {
-                    f = s.Entries.FirstOrDefault(o => o.NameOfSubject == g[i].NameOfSubject);
-                    dtr[i + 2] = (f != null) ? f.Score.ToString() : " - ";
-                }
-                dtr[subjectCount + 2] = s.MeanGrade;
-                dtr[subjectCount + 3] = s.Total;
-                dtr[subjectCount + 4] = pos;
-                dt.Rows.Add(dtr);
-                if ((temp.Count > x + 1) && (temp[x + 1].Total == s.Total))
-                    continue;
-                pos++;
-            }
-            return dt;
+                    if (temp == null)
+                        return new DataTable();
+                    if (temp.Count == 0)
+                        return new DataTable();
+                    DataTable dt = new DataTable();
+                    ObservableCollection<SubjectModel> g;
+                    if (isInClassMode)
+                        g = await DataAccess.GetSubjectsRegistredToClassAsync(selectedClass.ClassID);
+                    else
+                        g = await DataAccess.GetSubjectsRegistredToClassAsync(selectedCombinedClass.Entries[0].ClassID);
+
+                    dt.Columns.Add(new DataColumn("Student ID"));
+                    dt.Columns.Add(new DataColumn("Name"));
+                    int subjectCount = 0;
+                    foreach (var d in g)
+                    {
+                        dt.Columns.Add(new DataColumn(d.NameOfSubject));
+                        subjectCount++;
+                    }
+                    dt.Columns.Add(new DataColumn("Grade"));
+                    dt.Columns.Add(new DataColumn("Total"));
+                    dt.Columns.Add(new DataColumn("Position"));
+                    DataRow dtr;
+                    ExamResultSubjectEntryModel f;
+                    int pos = 1;
+                    ExamResultStudentModel s;
+                    for (int x = 0; x < temp.Count; x++)
+                    {
+                        s = temp[x];
+                        dtr = dt.NewRow();
+                        dtr[0] = s.StudentID;
+                        dtr[1] = s.NameOfStudent;
+                        for (int i = 0; i < subjectCount; i++)
+                        {
+                            f = s.Entries.FirstOrDefault(o => o.NameOfSubject == g[i].NameOfSubject);
+                            dtr[i + 2] = (f != null) ? f.Score.ToString() : " - ";
+                        }
+                        dtr[subjectCount + 2] = s.MeanGrade;
+                        dtr[subjectCount + 3] = s.Total;
+                        dtr[subjectCount + 4] = pos;
+                        dt.Rows.Add(dtr);
+                        if ((temp.Count > x + 1) && (temp[x + 1].Total == s.Total))
+                            continue;
+                        pos++;
+                    }
+                    return dt;
+                });
 
         }
 

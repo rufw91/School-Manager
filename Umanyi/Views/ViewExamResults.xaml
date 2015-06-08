@@ -86,6 +86,8 @@
         <TextBlock HorizontalAlignment="Right" Margin="0,36,50,0" VerticalAlignment="Top" Visibility="{Binding IsInClassMode, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Hyperlink Command="{Binding PrintAsReportFormCommand}">Print per Student</Hyperlink>
         </TextBlock>
-
+        <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+        </Border>
     </Grid>
 </UserControl>

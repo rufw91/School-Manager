@@ -82,7 +82,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <DocumentViewer BorderBrush="Silver" BorderThickness="2" Margin="240,50,10,10" Grid.Row="1"
+        <DocumentViewer Name="viewer" BorderBrush="Silver" BorderThickness="2" Margin="240,50,10,10" Grid.Row="1"
                         Document="{Binding Document}"/>
         <TextBlock HorizontalAlignment="Left" Margin="240,20,0,0" Grid.Row="1" Text="Preview" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,31,9,0" Grid.Row="1" VerticalAlignment="Top">

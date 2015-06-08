@@ -53,8 +53,9 @@ Binding="{Binding Remarks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </DataGrid>
         <Button Content="_Save" HorizontalAlignment="Right" Margin="0,0,9,10" VerticalAlignment="Bottom" Width="75" 
                 Command="{Binding SaveCommand}"/>
-        
-
+        <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+        </Border>
 
     </Grid>
 </UserControl>

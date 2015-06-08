@@ -108,12 +108,10 @@ namespace UmanyiSMS
             Log.I("Init Vars",this);
             InitGlobalVar();
             FileHelper.CheckFiles();
-            RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
             if (await ActivationHelper.IsActivated())
             {
                 try
                 {
-
                     Login lg = new Login();
                     MainWindow = lg;
                     lg.ShowDialog();

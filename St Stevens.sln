@@ -11,16 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenXmlPackaging", "OpenXmlPackaging\OpenXmlPackaging.csproj", "{DAD3387A-470A-4484-9427-A8C8FAEC6C0F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Script", "Script", "{BBCED93D-377D-4A11-9AE1-1B683EC84C08}"
-	ProjectSection(SolutionItems) = preProject
-		Script.sql = Script.sql
-	EndProjectSection
-EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupClient", "SetupClient\SetupClient.wixproj", "{19B72FCB-A2BF-42ED-A90D-C6AAADFD9F22}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupServer", "SetupServer\SetupServer.wixproj", "{E770E579-E088-44A7-987F-3B2D14D3A72B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckSqlConnection", "CheckSqlConnection\CheckSqlConnection.csproj", "{DACCD073-85B1-4F34-A21A-2811A6E9E0A9}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "UmanyiSMSDB", "UmanyiSMSDB\UmanyiSMSDB\UmanyiSMSDB.sqlproj", "{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,6 +141,20 @@ Global
 		{DACCD073-85B1-4F34-A21A-2811A6E9E0A9}.Release|x64.Build.0 = Release|x64
 		{DACCD073-85B1-4F34-A21A-2811A6E9E0A9}.Release|x86.ActiveCfg = Release|x86
 		{DACCD073-85B1-4F34-A21A-2811A6E9E0A9}.Release|x86.Build.0 = Release|x86
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Mixed Platforms.Deploy.0 = Debug|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|x64.ActiveCfg = Release|Any CPU
+		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

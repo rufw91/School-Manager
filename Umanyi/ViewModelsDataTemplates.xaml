@@ -49,6 +49,12 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
+    <DataTemplate DataType="{x:Type viewModels:EventDetailsVM}" >
+        <views:EventDetails/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:CombinedAggregateResultsVM}" >
+        <views:CombinedAggregateResults/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:InstitutionSubjectsSetupVM}" >
         <views:InstitutionSubjectsSetup/>
     </DataTemplate>
@@ -179,7 +185,7 @@
         <views:RemoveBill/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:StudentTranscriptVM}" >
-        <views:StudentTranscript/>
+        <views:StudentTranscript2/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:BookReturnVM}" >
         <views:BookReturn/>

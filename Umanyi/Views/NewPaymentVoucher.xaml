@@ -18,25 +18,25 @@
                  Text="{Binding CurrentVoucher.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,185,0,0" Text="Description" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,180,0,0" VerticalAlignment="Top" Width="300"
+        <TextBox HorizontalAlignment="Left" Height="124" MaxLength="200" Margin="100,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" ScrollViewer.VerticalScrollBarVisibility="Visible"
                  Text="{Binding CurrentVoucher.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,231,0,0" Text="Add Entry" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,320,0,0" Text="Add Entry" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="40,280,0,0" Text="Decsription" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="40,300,0,0" VerticalAlignment="Top" Width="300"
+        <TextBlock HorizontalAlignment="Left" Margin="40,368,0,0" Text="Decsription" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" MaxLength="30" Height="23" Margin="105,368,0,0" VerticalAlignment="Top" Width="295"
                  DataContext="{Binding NewEntry}"
                  Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="40,350,0,0" Text="Date" VerticalAlignment="Top"/>
-        <DatePicker HorizontalAlignment="Left" Height="23" Margin="40,370,0,0" VerticalAlignment="Top" Width="300"
+        <TextBlock HorizontalAlignment="Left" Margin="40,418,0,0" Text="Date" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Height="23" Margin="105,418,0,0" VerticalAlignment="Top" Width="295"
                     DataContext="{Binding NewEntry}"
                  Text="{Binding DatePaid, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="40,420,0,0" Text="Amount" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="40,440,0,0" VerticalAlignment="Top" Width="180"
+        <TextBlock HorizontalAlignment="Left" Margin="40,468,0,0" Text="Amount" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="105,468,0,0" VerticalAlignment="Top" Width="180"
                  DataContext="{Binding NewEntry}"
                  Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button Content="Add" HorizontalAlignment="Left" Margin="254,505,0,0" VerticalAlignment="Top" Width="86"
+        <Button Content="Add" HorizontalAlignment="Left" Margin="310,525,0,0" VerticalAlignment="Top" Width="86"
                 Command="{Binding AddEntryCommand}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="430,70,0,0" Text="Entries" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>

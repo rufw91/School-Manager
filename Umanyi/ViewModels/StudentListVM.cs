@@ -39,10 +39,12 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "STUDENT LIST";
+            IsBusy = true;
             collViewSource = new CollectionViewSource();
             SearchText = "";
             allStudents = await DataAccess.GetAllStudentsListAsync();
             CollViewSource.Source = allStudents;
+            IsBusy = false;
             ShowInactive = false;
             PropertyChanged += async (o, e) =>
                 {
@@ -53,6 +55,7 @@ namespace UmanyiSMS.ViewModels
                             CollViewSource.Source = allStudents;
                         }
                 };
+
         }
 
         private int GetSelectedItemsCount()
@@ -81,9 +84,11 @@ namespace UmanyiSMS.ViewModels
 
         public async override void Reset()
         {
+            IsBusy = true;
             allStudents = await DataAccess.GetAllStudentsListAsync();
             CollViewSource.Source = allStudents;
             searchText = "";
+            IsBusy = false;
         }
 
         public Action<ViewModelBase> OpenTaskWindowAction

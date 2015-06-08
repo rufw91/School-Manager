@@ -112,6 +112,11 @@ namespace UmanyiSMS.ViewModels
                 this.Source = new StudentDetailsVM((StudentListModel)o);
             }, o => (o is StudentListModel));
 
+            DisplayEventDetailCommand = new RelayCommand(o =>
+            {
+                this.Source = new EventDetailsVM() { NewEvent = (EventModel)o };
+            }, o => (o is EventModel));
+
             DisplayStaffDetailCommand = new RelayCommand(o =>
             {
                 this.Source = new StaffDetailsVM((StaffModel)o);
@@ -424,6 +429,12 @@ namespace UmanyiSMS.ViewModels
             private set;
         }
         public ICommand DisplayDisciplineDetailCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand DisplayEventDetailCommand
         {
             get;
             private set;

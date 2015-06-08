@@ -20,6 +20,10 @@ namespace UmanyiSMS.ViewModels
         {
             SaveCommand = new RelayCommand(async o => 
             {
+                if (MessageBoxResult.Yes != MessageBox.Show("This event has no Subject/Detail.\r\nAre you sure you woeld like to continue?", "Info",
+                    MessageBoxButton.YesNo, MessageBoxImage.Information))
+                    return;
+
                 bool succ = await DataAccess.SaveNewEventAsync(em);
                 if (succ)
                 {

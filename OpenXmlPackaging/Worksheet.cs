@@ -64,6 +64,7 @@ namespace OpenXmlPackaging
         public void Save()
         {
             //SaveXElement();
+            if (!SpreadsheetDocument.IsOpener)
             SaveWriter();
         }
 
