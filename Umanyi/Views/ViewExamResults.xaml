@@ -21,18 +21,18 @@
                      IsChecked="{Binding IsInStudentMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      GroupName="1"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="30,118,0,0" Text="Student ID" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="42,118,0,0" Text="Adm No." VerticalAlignment="Top"/>
 
         <TextBox HorizontalAlignment="Left" Height="23" Margin="94,118,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding StudentResult.StudentID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
             ValidatesOnDataErrors=True,ValidatesOnNotifyDataErrors=True}"
                  IsEnabled="{Binding IsInStudentMode}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="45,163,0,0" Text="Name" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="57,163,0,0" Text="Name" VerticalAlignment="Top"/>
 
         <TextBox HorizontalAlignment="Left" Height="23" Margin="94,163,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding StudentResult.NameOfStudent}"
                  IsEnabled="{Binding IsInStudentMode}" IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"/>
-        <TextBlock HorizontalAlignment="Left" Margin="58,210,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="61,210,0,0" Text="Exam" VerticalAlignment="Top"/>
         <ComboBox x:Name="what" HorizontalAlignment="Left" Margin="94,210,0,0" VerticalAlignment="Top" Width="180"
                   ItemsSource="{Binding AllExams}" DisplayMemberPath="NameOfExam" 
                   SelectedItem="{Binding SelectedExam, Mode=TwoWay}"

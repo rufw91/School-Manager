@@ -17,6 +17,7 @@ namespace Helper.Models
             Term2AvgPts = 0m;
             Term3AvgPts = 0m;
 
+            PrevYearAvgPoints = 0m;
             Term1PtsChange = 0;
             Term2PtsChange = 0;
             Term3PtsChange = 0;
@@ -24,9 +25,9 @@ namespace Helper.Models
             Term1TotalPoints = "";
             Term2TotalPoints = "";
             Term3TotalPoints = "";
-            Term1Score = 0;
-            Term2Score = 0;
-            Term3Score = 0;
+            Term1MeanScore = 0;
+            Term2MeanScore = 0;
+            Term3MeanScore = 0;
 
             Term1Grade = "";
             Term2Grade = "";
@@ -48,11 +49,11 @@ namespace Helper.Models
 
         public decimal Term1AvgPts { get; set; }
 
-        public int Term1PtsChange { get; set; }
+        public decimal Term1PtsChange { get; set; }
 
-        public int Term2PtsChange { get; set; }
+        public decimal Term2PtsChange { get; set; }
 
-        public int Term3PtsChange { get; set; }
+        public decimal Term3PtsChange { get; set; }
 
         public string Term1TotalPoints { get; set; }
 
@@ -60,11 +61,11 @@ namespace Helper.Models
 
         public string Term2TotalPoints { get; set; }
 
-        public decimal Term2Score { get; set; }
+        public decimal Term2MeanScore { get; set; }
 
-        public decimal Term3Score { get; set; }
+        public decimal Term3MeanScore { get; set; }
 
-        public decimal Term1Score { get; set; }
+        public decimal Term1MeanScore { get; set; }
 
         public string Term2Grade { get; set; }
 
@@ -95,9 +96,9 @@ namespace Helper.Models
             Term1TotalPoints = newTranscript.Term1TotalPoints;
             Term2TotalPoints = newTranscript.Term2TotalPoints;
             Term3TotalPoints = newTranscript.Term3TotalPoints;
-            Term1Score = newTranscript.Term1Score;
-            Term2Score = newTranscript.Term2Score;
-            Term3Score = newTranscript.Term3Score;
+            Term1MeanScore = newTranscript.Term1MeanScore;
+            Term2MeanScore = newTranscript.Term2MeanScore;
+            Term3MeanScore = newTranscript.Term3MeanScore;
 
             Term1Grade = newTranscript.Term1Grade;
             Term2Grade = newTranscript.Term2Grade;
@@ -125,9 +126,9 @@ namespace Helper.Models
             Term1TotalPoints = "";
             Term2TotalPoints = "";
             Term3TotalPoints = ""; 
-            Term1Score = 0;
-            Term2Score = 0;
-            Term3Score = 0;
+            Term1MeanScore = 0;
+            Term2MeanScore = 0;
+            Term3MeanScore = 0;
 
             Term1Grade = "";
             Term2Grade = "";
@@ -138,6 +139,16 @@ namespace Helper.Models
             Term3OverallPos = "";
         }
 
-        
+
+
+        public System.Collections.ObjectModel.ObservableCollection<StudentExamResultEntryModel> Term2Entries { get; set; }
+
+        public System.Collections.ObjectModel.ObservableCollection<StudentExamResultEntryModel> Term1Entries { get; set; }
+
+        public System.Collections.ObjectModel.ObservableCollection<StudentExamResultEntryModel> Term3Entries { get; set; }
+
+        public decimal PrevYearAvgPoints { get; set; }
+
+        public System.Collections.ObjectModel.ObservableCollection<StudentExamResultEntryModel> PrevYearEntries { get; set; }
     }
 }

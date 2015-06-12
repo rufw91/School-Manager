@@ -320,7 +320,7 @@ namespace UmanyiSMS.ViewModels
 
         public override void Reset()
         {
-            SelectedClassID = 0;
+            SelectedSubjectID = 0;
             Tutor = "";
         }
     }

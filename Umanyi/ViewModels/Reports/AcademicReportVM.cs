@@ -165,6 +165,86 @@ namespace UmanyiSMS.ViewModels
 
         private string GetGrades(int comparisonValue, string grade)
         {
+            switch (comparisonValue)
+            {
+                case 1: return grade;
+                case 2:
+                    {
+                        switch(grade)
+                        {
+                            case "A": return "'A'";
+                            case "A-": return "'A'";
+                            case "B+": return "'A-','A'";
+                            case "B": return "'B+','A-','A'";
+                            case "B-": return "'B','B+','A-','A'";
+                            case "C+": return "'B-','B','B+','A-','A'";
+                            case "C": return "'C+','B-','B','B+','A-','A'";
+                            case "C-": return "'C','C+','B-','B','B+','A-','A'";
+                            case "D+": return "'C-','C','C+','B-','B','B+','A-','A'";
+                            case "D": return "'D+','C-','C','C+','B-','B','B+','A-','A'";
+                            case "D-": return "'D','D+','C-','C','C+','B-','B','B+','A-','A'";
+                            case "E": return "'D-','D','D+','C-','C','C+','B-','B','B+','A-','A'";
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        switch (grade)
+                        {
+                            case "A": return "'A'";
+                            case "A-": return "'A-','A'";
+                            case "B+": return "'B+','A-','A'";
+                            case "B": return "'B',B+,'A-','A'";
+                            case "B-": return "'B-','B','B+','A-','A'";
+                            case "C+": return "'C+','B-','B','B+','A-','A'";
+                            case "C": return "'C','C+','B-','B','B+','A-','A'";
+                            case "C-": return "'C-','C','C+','B-','B','B+','A-','A'";
+                            case "D+": return "'D+','C-','C','C+','B-','B','B+','A-','A'";
+                            case "D": return "'D','D+','C-','C','C+','B-','B','B+','A-','A'";
+                            case "D-": return "'D-','D','D+','C-','C','C+','B-','B','B+','A-','A'";
+                            case "E": return "'E','D-','D','D+','C-','C','C+','B-','B','B+','A-','A'";
+                        }
+                        break;
+                    }
+                case 4:
+                    {
+                        switch (grade)
+                        {
+                            case "A": return "'E','D-','D','D+','C-','C','C+','B-','B','B+','A-'";
+                            case "A-": return "'E','D-','D','D+','C-','C','C+','B-','B','B+'";
+                            case "B+": return "'E','D-','D','D+','C-','C','C+','B-','B'";
+                            case "B": return "'E','D-','D','D+','C-','C','C+','B-'";
+                            case "B-": return "'E','D-','D','D+','C-','C','C+'";
+                            case "C+": return "'E','D-','D','D+','C-','C'";
+                            case "C": return "'E','D-','D','D+','C-'";
+                            case "C-": return "'E','D-','D','D+'";
+                            case "D+": return "'E','D-','D'";
+                            case "D": return "'E','D-'";
+                            case "D-": return "'E'";
+                            case "E": return "'E'";
+                        }
+                        break;
+                    }
+                case 5:
+                    {
+                        switch (grade)
+                        {
+                            case "A": return "E,D-,D,D+,C-,C,C+,B-,B,B+,A-,A";
+                            case "A-": return "E,D-,D,D+,C-,C,C+,B-,B,B+,A-";
+                            case "B+": return "E,D-,D,D+,C-,C,C+,B-,B,B+";
+                            case "B": return "E,D-,D,D+,C-,C,C+,B-,B";
+                            case "B-": return "E,D-,D,D+,C-,C,C+,B-";
+                            case "C+": return "E,D-,D,D+,C-,C,C+";
+                            case "C": return "E,D-,D,D+,C-,C";
+                            case "C-": return "E,D-,D,D+,C-";
+                            case "D+": return "E,D-,D,D+";
+                            case "D": return "E,D-,D";
+                            case "D-": return "E,D-";
+                            case "E": return "'E'";
+                        }
+                        break;
+                    } 
+            }
             return "";
         }
 

@@ -14,7 +14,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Report Form" 
                    VerticalAlignment="Top"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="30,90,0,0" Text="Student ID" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,90,0,0" Text="Adm No." VerticalAlignment="Top"/>
 
         <TextBox Height="23" Margin="94,90,126,0" VerticalAlignment="Top" 
                   

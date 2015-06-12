@@ -14,6 +14,7 @@ namespace UmanyiSMS.ViewModels
             TryAddChild(typeof(BillStudentVM));
             TryAddChild(typeof(FeesStatementVM));
             TryAddChild(typeof(ViewFeesStructureVM));
+            TryAddChild(typeof(ViewFullFeesStructureVM));
             TryAddChild(typeof(SetFeesStructureVM));
             TryAddChild(typeof(ReprintReceiptVM));
             TryAddChild(typeof(BalancesListVM));

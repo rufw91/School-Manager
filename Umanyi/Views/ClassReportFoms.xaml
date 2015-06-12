@@ -75,7 +75,11 @@
                 Command="{Binding GenerateCommand}"/>
 
         <Border Grid.ColumnSpan="2" Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Hidden}">
+            <Grid>
             <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,340,0,0" Text="{Binding OverallProgress, StringFormat={}{0} %}" Style="{DynamicResource Emphasis1}"/>
+                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,370,0,0" Text="{Binding ProgressText}" Style="{DynamicResource Emphasis2}"/>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

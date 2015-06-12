@@ -49,6 +49,12 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
+    <DataTemplate DataType="{x:Type viewModels:AllUnreturnedBooksVM}" >
+        <views:AllUnreturnedBooks/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ViewFullFeesStructureVM}" >
+        <views:ViewFullFeesStructure/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:EventDetailsVM}" >
         <views:EventDetails/>
     </DataTemplate>

@@ -35,7 +35,7 @@
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersion>6.7.358.15159</AssemblyVersion>
+    <AssemblyVersion>6.7.448.15163</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -157,6 +157,7 @@
     <Compile Include="Updates\UpdatesWindow.xaml.cs">
       <DependentUpon>UpdatesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AllUnreturnedBooksVM.cs" />
     <Compile Include="ViewModels\AssignNewClassVM.cs" />
     <Compile Include="ViewModels\BillStudentVM.cs" />
     <Compile Include="ViewModels\AggregateResultsVM.cs" />
@@ -291,6 +292,10 @@
     <Compile Include="ViewModels\ViewFeesStructureVM.cs" />
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ViewFullFeesStructureVM.cs" />
+    <Compile Include="Views\AllUnreturnedBooks.xaml.cs">
+      <DependentUpon>AllUnreturnedBooks.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ChangeSAPassword.xaml.cs">
       <DependentUpon>ChangeSAPassword.xaml</DependentUpon>
@@ -728,6 +733,9 @@
     <Compile Include="Views\ViewFeesStructure.xaml.cs">
       <DependentUpon>ViewFeesStructure.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ViewFullFeesStructure.xaml.cs">
+      <DependentUpon>ViewFullFeesStructure.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WaitPage.xaml.cs">
       <DependentUpon>WaitPage.xaml</DependentUpon>
     </Compile>
@@ -758,6 +766,10 @@
     <Page Include="LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AllUnreturnedBooks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ChangeSAPassword.xaml">
       <SubType>Designer</SubType>
@@ -1264,6 +1276,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ViewFeesStructure.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewFullFeesStructure.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

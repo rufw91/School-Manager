@@ -60,11 +60,11 @@ namespace Helper
 
         private static void AddTR3TotalMarks(decimal totalMarks, int pageNo)
         {
-            AddText(totalMarks.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 416, 616, pageNo);
+            AddText(totalMarks.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 410, 616, pageNo);
         }
         private static void AddTR3OutOf(decimal outOf, int pageNo)
         {
-            AddText(outOf.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 416, 640, pageNo);
+            AddText(outOf.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 410, 640, pageNo);
         }
 
         private static void AddTR3Term1TotalScore(string term1TotalScore, int pageNo)
@@ -91,26 +91,32 @@ namespace Helper
         {
             AddText(term3Avgpts>0?term3Avgpts.ToString("N2"):"-", "Arial", 14, true, 0, Colors.Black, 267, 732, pageNo);
         }
-        private static void AddTR3Term1PtsChange(int term1PtsChange, int pageNo)
+        private static void AddTR3Term1PtsChange(decimal term1PtsChange, int pageNo)
         {
-            if (term1PtsChange >= 0)
-                AddText("+" + term1PtsChange.ToString(), "Arial", 14, true, 0, Colors.Black, 320, 692, pageNo);
+            if (term1PtsChange > 0)
+                AddText("+" + term1PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 315, 692, pageNo);
+            else if (term1PtsChange < 0)
+                AddText(term1PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 315, 692, pageNo);
             else
-                AddText("-" + term1PtsChange.ToString(), "Arial", 14, true, 0, Colors.Black, 320, 692, pageNo);
+                AddText(term1PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 320, 692, pageNo);
         }
-        private static void AddTR3Term2PtsChange(int term2PtsChange, int pageNo)
+        private static void AddTR3Term2PtsChange(decimal term2PtsChange, int pageNo)
         {
-            if (term2PtsChange >= 0)
-                AddText("+"+term2PtsChange.ToString(), "Arial", 14, true, 0, Colors.Black, 320, 712, pageNo);
+            if (term2PtsChange > 0)
+                AddText("+" + term2PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 315, 712, pageNo);
+            else if (term2PtsChange < 0)
+                AddText(term2PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 315, 712, pageNo);
             else
-                AddText("-"+term2PtsChange.ToString(), "Arial", 14, true, 0, Colors.Black, 320, 712, pageNo);
+                AddText(term2PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 320, 712, pageNo);
         }
-        private static void AddTR3Term3PtsChange(int term3PtsChange, int pageNo)
+        private static void AddTR3Term3PtsChange(decimal term3PtsChange, int pageNo)
         {
-            if (term3PtsChange >= 0)
-                AddText("+" + term3PtsChange.ToString(), "Arial", 14, true, 0, Colors.Black, 320, 732, pageNo);
+            if (term3PtsChange > 0)
+                AddText("+" + term3PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 315, 732, pageNo);
+            else if (term3PtsChange<0)
+                AddText(term3PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 315, 732, pageNo);
             else
-                AddText("-" + term3PtsChange.ToString(), "Arial", 14, true, 0, Colors.Black, 320, 732, pageNo);
+                AddText(term3PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 320, 732, pageNo);
         }
         private static void AddTR3Term1TotalPts(string term1TotalPts, int pageNo)
         {
@@ -214,7 +220,7 @@ namespace Helper
                     AddTR3Term1TotalScore(si.Term1TotalScore, pageNo);
                     AddTR3Term1PtsChange(si.Term1PtsChange, pageNo);
                     AddTR3Term1TotalPts(si.Term1TotalPoints, pageNo);
-                    AddTR3Term1Score(si.Term1Score, pageNo);
+                    AddTR3Term1Score(si.Term1MeanScore, pageNo);
                     AddTR3Term1Grade(si.Term1Grade, pageNo);
                     AddTR3Term1ClassPOS(si.Term1Pos, pageNo);
                     AddTR3Term1CombinedClassPOS(si.Term1OverallPos, pageNo);
@@ -226,7 +232,7 @@ namespace Helper
                     AddTR3Term2AvgPts(si.Term2AvgPts, pageNo);
                     AddTR3Term2PtsChange(si.Term2PtsChange, pageNo);
                     AddTR3Term2TotalPts(si.Term2TotalPoints, pageNo);
-                    AddTR3Term2Score(si.Term2Score, pageNo);
+                    AddTR3Term2Score(si.Term2MeanScore, pageNo);
                     AddTR3Term2Grade(si.Term2Grade, pageNo);
                     AddTR3Term2ClassPOS(si.Term2Pos, pageNo);
                     AddTR3Term2CombinedClassPOS(si.Term2OverallPos, pageNo);
@@ -237,7 +243,7 @@ namespace Helper
                     AddTR3Term3AvgPts(si.Term3AvgPts, pageNo);
                     AddTR3Term3PtsChange(si.Term3PtsChange, pageNo);
                     AddTR3Term3TotalPts(si.Term3TotalPoints, pageNo);
-                    AddTR3Term3Score(si.Term3Score, pageNo);
+                    AddTR3Term3Score(si.Term3MeanScore, pageNo);
                     AddTR3Term3Grade(si.Term3Grade, pageNo);
                     AddTR3Term3ClassPOS(si.Term3Pos, pageNo);
                     AddTR3Term3CombinedClassPOS(si.Term3OverallPos, pageNo);

@@ -15,6 +15,7 @@ namespace Helper.Models
             NameOfExam = "";
             Entries = new ObservableCollection<ExamSubjectEntryModel>();
             OutOf = 100;
+            ExamDateTime = DateTime.Now;
         }
         ObservableCollection<ClassModel> classes;
         int examID;        
@@ -100,8 +101,11 @@ namespace Helper.Models
             ExamID = 0;
             classes.Clear();
             NameOfExam = "";
+            ExamDateTime = DateTime.Now;
             Entries = new ObservableCollection<ExamSubjectEntryModel>();
         }
+
+        public DateTime ExamDateTime { get; set; }
     }
 
     public class ExamSubjectEntryModel : SubjectModel

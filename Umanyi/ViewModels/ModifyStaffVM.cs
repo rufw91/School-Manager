@@ -30,6 +30,15 @@ namespace UmanyiSMS.ViewModels
             Title = "MODIFY STAFF DETAILS";
             NewStaff = new ModifyStaffModel();
             IsBusy = false;
+            newStaff.PropertyChanged += (o, e) =>
+                {
+                    if (e.PropertyName == "StaffID")
+                    {
+                        newStaff.CheckErrors();
+                        if (!newStaff.HasErrors)
+                            Role = UsersHelper.GetUserRole(newStaff.StaffID);
+                    }
+                };
         }
 
         protected override void CreateCommands()
@@ -60,10 +69,7 @@ namespace UmanyiSMS.ViewModels
         }
 
         private bool CanSave()
-        {
-            newStaff.CheckErrors();
-            if(!newStaff.HasErrors)
-                Role = UsersHelper.GetUserRole(newStaff.StaffID);
+        {            
             return !newStaff.HasErrors && ValidateStaff();
         }
         
