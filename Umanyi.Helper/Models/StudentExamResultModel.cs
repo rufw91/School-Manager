@@ -12,7 +12,7 @@ namespace Helper.Models
         private string classPosition;
         private string overAllPosition;
         private decimal totalMarks;
-        private int points;
+        private decimal points;
         private string meanGrade;
         private ObservableCollection<StudentTranscriptSubjectModel> entries;
         private string nameOfExam;
@@ -84,7 +84,7 @@ namespace Helper.Models
             }
         }
 
-        public int Points
+        public decimal Points
         {
             get { return this.points; }
 

@@ -17,7 +17,7 @@
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersion>6.7.239.15159</AssemblyVersion>
+    <AssemblyVersion>6.7.310.15163</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -98,6 +98,7 @@
     <Compile Include="Credits.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Helpers\DocumentHelper.AggregateResult.cs" />
+    <Compile Include="Helpers\DocumentHelper.ClassTranscripts2.cs" />
     <Compile Include="Helpers\DocumentHelper.cs" />
     <Compile Include="Helpers\DocumentHelper.Receipt.cs" />
     <Compile Include="Helpers\DocumentHelper.Report.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="ObservableCollectionObject.cs" />
     <Compile Include="ObservableImmutableDictionary.cs" />
     <Compile Include="ObservableImmutableList.cs" />
+    <Compile Include="Presentation\OperationProgress.cs" />
     <Compile Include="Presentation\ParentViewModel.cs" />
     <Compile Include="Helpers\DataAccess.cs" />
     <Compile Include="Models\ClassModel.cs" />

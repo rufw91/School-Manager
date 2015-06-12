@@ -21,6 +21,7 @@ namespace UmanyiSMS.ViewModels
             TryAddChild(typeof(NewBookVM));
             TryAddChild(typeof(ModifyBookVM));            
             TryAddChild(typeof(UnreturnedBooksVM));
+            TryAddChild(typeof(AllUnreturnedBooksVM));
             TryAddChild(typeof(ViewBooksVM));
             TryAddChild(typeof(PriceListsVM));
         }

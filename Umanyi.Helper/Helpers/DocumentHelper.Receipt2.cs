@@ -60,7 +60,7 @@ namespace Helper
                 endIndex = psi.Count - 1;
 
             for (int i = startIndex; i <= endIndex; i++)
-                AddRC2FeesItem(psi[i], i, pageNo, (startIndex >= endIndex - 2));
+                AddRC2FeesItem(psi[i], i, pageNo, (i >= endIndex - 2));
 
         }
 

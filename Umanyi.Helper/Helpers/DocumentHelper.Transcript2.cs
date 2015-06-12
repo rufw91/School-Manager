@@ -84,9 +84,9 @@ namespace Helper
         {
             AddText(meanGrade, "Arial", 14, true, 0, Colors.Black, 410, 580, pageNo);
         }
-        private static void AddTR2ClustPoints(int point, int pageNo)
+        private static void AddTR2ClustPoints(decimal point, int pageNo)
         {
-            AddText(point.ToString(), "Arial", 14, true, 0, Colors.Black, 495, 580, pageNo);
+            AddText(point.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 495, 580, pageNo);
         }
 
         private static void AddTR2SubjectScore(StudentExamResultEntryModel item, int itemIndex, int pageNo)

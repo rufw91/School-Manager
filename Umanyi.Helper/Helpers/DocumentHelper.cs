@@ -23,7 +23,7 @@ namespace Helper
         static object myWorkObject;
         enum DocType
         {
-            Statement, Transcript,Transcript3, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList,ClassExamResults,ClassLeavingCertificates,Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, UnreturnedBooks, Report
+            Statement, Transcript, Transcript3, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, ClassTranscripts2,UnreturnedBooks, Report
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -77,6 +77,7 @@ namespace Helper
                 case DocType.ClassMarkList: GenerateClassMarkList(); break;
                 case DocType.AggregateResult: GenerateAggregateResult(); break;
                 case DocType.ClassTranscripts: GenerateClassTranscripts(); break;
+                case DocType.ClassTranscripts2: GenerateClassTranscripts2(); break;
                 case DocType.UnreturnedBooks: GenerateUnreturnedBooks(); break;
                 case DocType.Report: GenerateReport(); break;
                 case DocType.ClassExamResults: GenerateClassExamResults(); break;
@@ -99,6 +100,7 @@ namespace Helper
                 case DocType.Transcript2: resString = Helper.Properties.Resources.Transcript2; break;
                 case DocType.Transcript3: resString = Helper.Properties.Resources.Transcript4; break;
                 case DocType.ClassTranscripts: resString = Helper.Properties.Resources.Transcript2; break;
+                case DocType.ClassTranscripts2: resString = Helper.Properties.Resources.Transcript4; break;
                 case DocType.ClassExamResults: resString = Helper.Properties.Resources.Transcript; break;
                 case DocType.Voucher: resString = Helper.Properties.Resources.PaymentVoucher; break;
                 case DocType.ClassMarkList: resString = Helper.Properties.Resources.ClassMarkList; break;
@@ -141,6 +143,8 @@ namespace Helper
                 return DocType.AggregateResult;
             if (workObject is UnreturnedBooksModel)
                 return DocType.UnreturnedBooks;
+            if (workObject is ClassTranscriptsModel2)
+                return DocType.ClassTranscripts2;
             if (workObject is ClassTranscriptsModel)
                 return DocType.ClassTranscripts;
             if (workObject is ReportModel)
@@ -196,7 +200,9 @@ namespace Helper
             if (workObject is ClassExamResultModel)
                 totalNoOfItems = (workObject as ClassExamResultModel).Entries.Rows.Count;
             if (workObject is UnreturnedBooksModel)
-                totalNoOfItems = (workObject as UnreturnedBooksModel).Entries.Count;            
+                totalNoOfItems = (workObject as UnreturnedBooksModel).Entries.Count;
+            if (workObject is ClassTranscriptsModel2)
+                return (workObject as ClassTranscriptsModel2).Entries.Count;
             if (workObject is ClassTranscriptsModel)
                 return (workObject as ClassTranscriptsModel).Entries.Count;
             if (workObject is ClassStudentsExamResultModel)

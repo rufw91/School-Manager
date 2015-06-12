@@ -2,6 +2,7 @@
 using Helper.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
@@ -57,7 +58,8 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanSave()
         {
-            return newStockTaking.DateTaken != null && newStockTaking.DateTaken <= DateTime.Now && 
+            Debug.WriteLine("" + newStockTaking.Items.Count);
+            return newStockTaking.DateTaken != null && newStockTaking.DateTaken.Value <= DateTime.Now && 
                     newStockTaking.Items.Count > 0;
         }
         

@@ -29,9 +29,9 @@ namespace Helper
         {
             AddText(totalMarks.ToString(), "Arial", 14, true, 0, Colors.Black, 250, 580, pageNo);
         }
-        private static void AddTRPointsPosition(int points, int pageNo)
+        private static void AddTRPointsPosition(decimal points, int pageNo)
         {
-            AddText(points.ToString(), "Arial", 14, true, 0, Colors.Black, 570, 580, pageNo);
+            AddText(points.ToString("N0"), "Arial", 14, true, 0, Colors.Black, 570, 580, pageNo);
         }
         private static void AddTRMeanGrade(string meanGrade, int pageNo)
         {

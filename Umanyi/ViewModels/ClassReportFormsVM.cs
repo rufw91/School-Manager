@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Documents;
 using System.Windows.Input;
+using Helper.Presentation;
 
 namespace UmanyiSMS.ViewModels
 {
@@ -55,10 +56,19 @@ namespace UmanyiSMS.ViewModels
                  var dx =ft.Where(o2=>o2.Entries.Any(o1=>o1.ClassID==selectedClassID));
                     classes = dx.ElementAt(0).Entries;
 
-                ClassTranscripts = await DataAccess.GetClassTranscripts2Async(selectedClassID,exams,classes);
+                ClassTranscripts = await DataAccess.GetClassTranscripts2Async(selectedClassID,exams,classes,new Progress<OperationProgress>(DisplayProgress));
+                
                 ResultsIsReadOnly = true;
                 IsBusy = false;
             }, o => CanRefresh());
+        }
+
+        private void DisplayProgress(OperationProgress progress)
+        {
+            OverallProgress = progress.OverallProgress;
+            ProgressText = progress.ProgressText;
+            NotifyPropertyChanged("OverallProgress");
+            NotifyPropertyChanged("ProgressText");
         }
 
         protected async override void InitVars()
@@ -139,6 +149,7 @@ namespace UmanyiSMS.ViewModels
             }
             return  tot == 100 && count <= 3 && count > 0;
         }
+
         public bool ResultsIsReadOnly
         {
             get { return this.resultsIsReadOnly; }
@@ -306,5 +317,9 @@ namespace UmanyiSMS.ViewModels
         }
 
         public ObservableCollection<ClassModel> AllClasses { get; set; }
+
+        public int OverallProgress { get; set; }
+
+        public string ProgressText { get; set; }
     }
 }

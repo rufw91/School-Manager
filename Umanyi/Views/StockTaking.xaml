@@ -47,7 +47,7 @@
             <Button Height="23" HorizontalAlignment="Left" Margin="70,100,0,0" VerticalAlignment="Top" 
                         Content="Add Items" Width="110" Command="{Binding FindItemsCommand}"/>
 
-            <DataGrid Margin="10,150,10,47" AutoGenerateColumns="False"  Name="dataGrid1" ItemsSource="{Binding NewStockTaking.Items, UpdateSourceTrigger=PropertyChanged}"
+            <DataGrid Margin="10,150,10,47" AutoGenerateColumns="False"  Name="dataGrid1" ItemsSource="{Binding NewStockTaking.Items,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   CanUserAddRows="False" CanUserDeleteRows="True" CanUserReorderColumns="False" CanUserSortColumns="False"
                   CanUserResizeColumns="False">
                 <DataGrid.Columns>
