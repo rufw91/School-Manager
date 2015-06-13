@@ -118,6 +118,21 @@ namespace Helper.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+        ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        ///           Height=&quot;793.76&quot; Width=&quot;1122.56&quot;&gt;
+        ///    &lt;Grid Height=&quot;793.76&quot; Width=&quot;1122.56&quot; DataContext=&quot;{Binding Source={x:Static Application.Current}}&quot;&gt;
+        ///    &lt;TextBlock HorizontalAlignment=&quot;Left&quot; Margin=&quot;230,36,0,0&quot; Text=&quot;FEES RECEIPT&quot; FontWeight=&quot;Bold&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Times New Roman&quot; FontSize=&quot;16&quot;/&gt;
+        ///       
+        ///        &lt;StackPanel Orientat [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string FullFeesStructure {
+            get {
+                return ResourceManager.GetString("FullFeesStructure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
         ///           xmlns:local=&quot;clr-namespace:UmanyiSMS&quot; 
         ///           xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot; Width=&quot;793.76&quot; Height=&quot;1122.56&quot; Background=&quot;White&quot;
         ///           xmlns:sys=&quot;clr-namespace:System;assembly=mscorlib&quot;&gt;
@@ -264,9 +279,9 @@ namespace Helper.Properties {
         ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
         ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
-        ///        &lt;Border Margin=&quot;20&quot; BorderBrush=&quot;Gray&quot; BorderThickness=&quot;2&quot;&gt;
-        ///            &lt;Grid&gt;
-        ///                &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,0,0,10&quot; Text=&quot;{Binding Info.Motto, Source={x:Static Application.Current}}&quot; VerticalAlignment=&quot;Bottom&quot; FontStyle=&quot;I [rest of string was truncated]&quot;;.
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,0,0,5&quot; Text=&quot;{Binding Info.Motto, Source={x:Static Application.Current}}&quot; VerticalAlignment=&quot;Bottom&quot; FontStyle=&quot;Italic&quot;/&gt;
+        ///        &lt;Border Margin=&quot;17&quot; BorderBrush=&quot;Black&quot; BorderThickness=&quot;3&quot;&gt;
+        ///            &lt;Grid&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Transcript4 {
             get {
@@ -288,6 +303,23 @@ namespace Helper.Properties {
         internal static string UnreturnedBooks {
             get {
                 return ResourceManager.GetString("UnreturnedBooks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+        ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
+        ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; 
+        ///                   Text=&quot;{Binding Info.FullName, Source={x:Static Application.Current}}&quot; 
+        ///                   VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
+        ///
+        ///        &lt;Image Horiz [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string UnreturnedBooks2 {
+            get {
+                return ResourceManager.GetString("UnreturnedBooks2", resourceCulture);
             }
         }
     }

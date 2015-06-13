@@ -13,6 +13,9 @@
         </Border>
         <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="120"                
                 Command="{Binding GenerateCommand}"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,39,10,0"  VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FullPreviewCommand}">Full Preview</Hyperlink>
+        </TextBlock>
 
     </Grid>
 </UserControl>

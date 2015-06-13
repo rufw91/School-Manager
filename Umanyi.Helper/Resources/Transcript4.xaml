@@ -44,6 +44,9 @@
                 <TextBlock HorizontalAlignment="Left" Margin="435,248,0,0" TextWrapping="Wrap" Text="KCPE SCORE:" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="16"/>
                 <TextBlock HorizontalAlignment="Left" Margin="30,215,0,0" TextWrapping="Wrap" Text="NAME:" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="16"/>
                 <TextBlock HorizontalAlignment="Left" Margin="435,215,0,0" TextWrapping="Wrap" Text="CLASS:" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="16"/>
+
+                <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="0,240,0,0" VerticalAlignment="Top"/>
+
                 <Border BorderBrush="Black" BorderThickness="2"  Height="2" Margin="0,201,0,0" VerticalAlignment="Top"/>
                 <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="0,274,0,0" VerticalAlignment="Top"/>
                 <Border BorderBrush="Black" BorderThickness="2" Width="2" HorizontalAlignment="Left"

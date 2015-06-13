@@ -17,7 +17,7 @@
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersion>6.7.310.15163</AssemblyVersion>
+    <AssemblyVersion>6.7.326.15163</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -100,6 +100,7 @@
     <Compile Include="Helpers\DocumentHelper.AggregateResult.cs" />
     <Compile Include="Helpers\DocumentHelper.ClassTranscripts2.cs" />
     <Compile Include="Helpers\DocumentHelper.cs" />
+    <Compile Include="Helpers\DocumentHelper.FullFeesStructure.cs" />
     <Compile Include="Helpers\DocumentHelper.Receipt.cs" />
     <Compile Include="Helpers\DocumentHelper.Report.cs" />
     <Compile Include="Helpers\DocumentHelper.Statement.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Models\AcademicReportModel.cs" />
     <Compile Include="Models\AggregateResultEntryModel.cs" />
     <Compile Include="Models\AggregateResultModel.cs" />
+    <Compile Include="Models\AllUnreturnedBooksModel.cs" />
     <Compile Include="Models\BookIssueModel.cs" />
     <Compile Include="Models\BookModel.cs" />
     <Compile Include="Models\BookReturnModel.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="Models\ExamWeightModel.cs" />
     <Compile Include="Models\FeePaymentReceipt2Model.cs" />
     <Compile Include="Models\FeesPaymentReceiptModel.cs" />
+    <Compile Include="Models\FullFeesStructureModel.cs" />
     <Compile Include="Models\IssueModel.cs" />
     <Compile Include="Models\ItemIssueEntryModel.cs" />
     <Compile Include="Models\ItemIssueModel.cs" />
@@ -229,6 +232,7 @@
     <Compile Include="Helpers\DocumentHelper.ClassExamResults.cs" />
     <Compile Include="Helpers\DocumentHelper.ClassLeavingCertificates.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript3.cs" />
+    <Compile Include="Helpers\DocumentHelper.AllUnreturnedBooks.cs" />
     <None Include="Resources\Receipt.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -241,7 +245,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Resources\FullFeesStructure.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
     <Page Include="Resources\Transcript4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UnreturnedBooks2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
