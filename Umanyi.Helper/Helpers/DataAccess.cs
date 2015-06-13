@@ -3226,6 +3226,24 @@ namespace Helper
             return temp[index-1];
         }
 
+        static decimal GetTermExamWeight(IEnumerable<ExamWeightModel> exams, int index)
+        {
+            decimal[] temp = new decimal[3];
+            decimal e1, e2, e3;
+            e1 = 0; e2 = 0; e3 = 0;
+            if (exams.Any(o => o.Index == 1))
+                e1 = exams.Where(o => o.Index == 1).ElementAt(0).Weight;
+            if (exams.Any(o => o.Index == 2))
+                e2 = exams.Where(o => o.Index == 2).ElementAt(0).Weight;
+            if (exams.Any(o => o.Index == 3))
+                e3 = exams.Where(o => o.Index == 3).ElementAt(0).Weight;
+            temp[0] = e1;
+            temp[1] = e2;
+            temp[2] = e3;
+
+            return temp[index - 1];
+        }
+
         static List<ExamWeightModel> GetOtherTermExams(int studentID, List<int>otherTerms)
         {
             string selecteStr = "SELECT eh.ExamID,eh.NameOfExam,eh.ExamDatetime,ISNULL(eh.OutOf,100) OutOf, "+
@@ -3313,12 +3331,32 @@ namespace Helper
                 {
                     var c = await GetClassIDFromStudentID(studentID);
                     int pyT3E1=0,pyT3E2=0,pyT3E3=0,t1E1 = 0, t1E2 = 0, t1E3 = 0, t2E1 = 0, t2E2 = 0, t2E3 = 0, t3E1 = 0, t3E2 = 0, t3E3 = 0;
+                    decimal pyT3E1W=0,pyT3E2W=0,pyT3E3W=0,t1E1W = 0, t1E2W = 0, t1E3W = 0, t2E1W = 0, t2E2W = 0, t2E3W = 0, t3E1W = 0, t3E2W = 0, t3E3W = 0;
                     int currentTerm = GetTerm();
                     switch (currentTerm)
                     {
-                        case 1: t1E1 = GetTermExamID(exams, 1); t1E2 = GetTermExamID(exams, 2); t1E3 = GetTermExamID(exams, 3); break;
-                        case 2: t2E1 = GetTermExamID(exams, 1); t2E2 = GetTermExamID(exams, 2); t2E3 = GetTermExamID(exams, 3); break;
-                        case 3: t3E1 = GetTermExamID(exams, 1); t3E2 = GetTermExamID(exams, 2); t3E3 = GetTermExamID(exams, 3); break;
+                        case 1:
+                            t1E1 = GetTermExamID(exams, 1);
+                            t1E1W = GetTermExamWeight(exams, 1);
+                            t1E2 = GetTermExamID(exams, 2);
+                            t1E2W = GetTermExamWeight(exams, 2);
+                            t1E3 = GetTermExamID(exams, 3); 
+                            t1E3W = GetTermExamWeight(exams, 3);
+                            break;
+                        case 2: 
+                            t2E1 = GetTermExamID(exams, 1);
+                            t2E1W = GetTermExamWeight(exams, 1);
+                            t2E2 = GetTermExamID(exams, 2);
+                            t2E2W = GetTermExamWeight(exams, 2);
+                            t2E3 = GetTermExamID(exams, 3); 
+                            t2E3W = GetTermExamWeight(exams, 3);break;
+                        case 3: 
+                            t3E1 = GetTermExamID(exams, 1);
+                            t3E1W = GetTermExamWeight(exams, 1);
+                            t3E2 = GetTermExamID(exams, 2);
+                            t3E2W = GetTermExamWeight(exams, 2);
+                            t3E3 = GetTermExamID(exams, 3); 
+                            t3E3W = GetTermExamWeight(exams, 3);break;
                     }
 
 
@@ -3330,26 +3368,38 @@ namespace Helper
                         if (term == -1)
                         {
                             pyT3E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == -1).ExamID : 0;
+                            pyT3E1W = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == -1).Weight : 0;
                             pyT3E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == -1).ExamID : 0;
+                            pyT3E2W = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == -1).Weight : 0;
                             pyT3E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == -1).ExamID : 0;
+                            pyT3E3W = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == -1).Weight : 0;
                         }
                         else if (term == 1)
                         {
                             t1E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 1).ExamID : 0;
+                            t1E1W = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 1).Weight : 0;
                             t1E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 1).ExamID : 0;
+                            t1E2W = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 1).Weight : 0;
                             t1E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 1).ExamID : 0;
+                            t1E3W = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 1).Weight : 0;
                         }
                         else if (term == 2)
                         {
                             t2E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 2).ExamID : 0;
+                            t2E1W = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 2).Weight : 0;
                             t2E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 2).ExamID : 0;
+                            t2E2W = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 2).Weight : 0;
                             t2E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 2).ExamID : 0;
+                            t2E3W = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 2).Weight : 0;
                         }
                         else
                         {
                             t3E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 3).ExamID : 0;
+                            t3E1W = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 3).Weight : 0;
                             t3E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 3).ExamID : 0;
+                            t3E2W = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 3).Weight : 0;
                             t3E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 3).ExamID : 0;
+                            t3E3W = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 3).Weight : 0;
                         }
                     }
 
@@ -3370,27 +3420,27 @@ namespace Helper
                         "t2.T2OverAllPosition,t2.T2Exam1Score,t2.T2Exam2Score,t2.T2Exam3Score,t3.T3ClassPosition,t3.T3OverAllPosition,t3.T3Exam1Score,t3.T3Exam2Score,t3.T3Exam3Score," +
                         "pyT3.PyT3Exam1Score,pyT3.PyT3Exam2Score,pyt3.PyT3Exam3Score FROM (SELECT s.StudentID, s.NameOfStudent,s.KCPEScore, c.NameOfClass,ISNULL(sth.StudentTranscriptID,0) StudentTranscriptID,Responsibilities,ClubsAndSport," +
                         " Boarding,ClassTeacherComments,PrincipalComments,OpeningDay,ClosingDay,DateSaved,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) " +
-                        "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t1E1 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t1E2 +
-                        "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t1E3 + "),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + c + " AND IsActive=1)" +
+                        "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E1 + "," + t1E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E2 +
+                        "," + t1E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E3 + ","+t1E3W+"),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + c + " AND IsActive=1)" +
                         " no_of_students FROM [Institution].[Student] WHERE CLassID=" + c + " AND IsActive=1 group by StudentID ) x WHERE x.StudentID=s.StudentID) ClassPosition," +
-                        "(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t1E1 +
-                        "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t2E2 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t1E3 + "),0) DESC) row_no, StudentID," +
+                        "(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E1 +
+                        "," + t1E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E2 + "," + t1E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E3 + ","+t1E3W+"),0) DESC) row_no, StudentID," +
                         "(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr + ") AND IsActive=1) no_of_students FROM [Institution].[Student] WHERE CLassID IN (" + cStr +
-                        ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID) OverAllPosition,dbo.GetExamTotalScore(s.StudentID," + t1E1 + ") Exam1Score,dbo.GetExamTotalScore(s.StudentID," + t1E2 +
-                        ")Exam2Score,dbo.GetExamTotalScore(s.StudentID," + t1E3 + ")Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID)" +
+                        ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID) OverAllPosition,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E1 + "," + t1E1W + ") Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E2 +
+                        "," + t1E2W + ")Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E3 + ","+t1E3W+")Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID)" +
                         " LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] sth ON(sth.StudentID=s.StudentID " +
                         ") LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.StudentID=" + studentID +
                         ") t1 " +
 
 
                         "LEFT OUTER JOIN (SELECT s.StudentID,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() " +
-                        "OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t2E1 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t2E2 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t2E3 +
-                        "),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + c + " AND IsActive=1) no_of_students FROM [Institution].[Student]" +
+                        "OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E1 + "," + t2E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E2 + "," + t2E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E3 +
+                        ","+t2E3W+"),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + c + " AND IsActive=1) no_of_students FROM [Institution].[Student]" +
                         " WHERE CLassID=" + c + " AND IsActive=1 group by StudentID ) x WHERE x.StudentID=s.StudentID) T2ClassPosition,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) " +
-                        "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t2E1 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t2E2 +
-                        "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t2E3 + "),0) DESC) row_no, StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr +
+                        "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E1 + "," + t2E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E2 +
+                        "," + t2E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E3 + ","+t2E3W+"),0) DESC) row_no, StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr +
                         ") AND IsActive=1) no_of_students FROM [Institution].[Student] WHERE CLassID IN (" + cStr + ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID)" +
-                        " T2OverAllPosition,dbo.GetExamTotalScore(s.StudentID," + t2E1 + ") T2Exam1Score,dbo.GetExamTotalScore(s.StudentID," + t2E2 + ")T2Exam2Score,dbo.GetExamTotalScore(s.StudentID," + t2E3 + ")T2Exam3Score " +
+                        " T2OverAllPosition,dbo.GetWeightedExamTotalScore(s.StudentID," + t2E1 + "," + t2E1W + ") T2Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t2E2 + "," + t2E2W + ")T2Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t2E3 + ","+t2E3W+")T2Exam3Score " +
                         "FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                         "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) " +
@@ -3399,21 +3449,21 @@ namespace Helper
 
 
                         "LEFT OUTER JOIN (SELECT s.StudentID,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() " +
-                        "OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t3E1 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t3E2 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t3E3 +
-                        "),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + c + " AND IsActive=1) no_of_students FROM [Institution].[Student] " +
+                        "OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E1 + "," + t3E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E2 + "," + t3E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E3 +
+                        ","+t3E3W+"),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + c + " AND IsActive=1) no_of_students FROM [Institution].[Student] " +
                         "WHERE CLassID=" + c + " AND IsActive=1 group by StudentID ) x WHERE x.StudentID=s.StudentID) T3ClassPosition,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) " +
-                        "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t3E1 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t3E2 +
-                        "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t3E3 + "),0) DESC) row_no, StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr +
+                        "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E1 + "," + t3E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E2 +
+                        "," + t3E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E3 + ","+t3E3W+"),0) DESC) row_no, StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr +
                         ") AND IsActive=1) no_of_students FROM [Institution].[Student] WHERE CLassID IN (" + cStr + ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID) " +
-                        "T3OverAllPosition,dbo.GetExamTotalScore(s.StudentID," + t3E1 + ") T3Exam1Score,dbo.GetExamTotalScore(s.StudentID," + t3E2 + ")T3Exam2Score,dbo.GetExamTotalScore(s.StudentID," + t3E3 + ")T3Exam3Score " +
+                        "T3OverAllPosition,dbo.GetWeightedExamTotalScore(s.StudentID," + t3E1 + "," + t3E1W + ") T3Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t3E2 + "," + t3E2W + ")T3Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t3E3 + ","+t3E3W+")T3Exam3Score " +
                         "FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                         "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID)" +
                         " WHERE s.StudentID=" + studentID + " )t3  ON (t3.StudentID=t1.StudentID) " +
 
 
-                        "LEFT OUTER JOIN (SELECT s.StudentID, dbo.GetExamTotalScore(s.StudentID," + pyT3E1 + ") PyT3Exam1Score,dbo.GetExamTotalScore(s.StudentID," + pyT3E2 + ") PyT3Exam2Score," +
-                        "dbo.GetExamTotalScore(s.StudentID," + pyT3E3 + ")PyT3Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
+                        "LEFT OUTER JOIN (SELECT s.StudentID, dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E1 + "," + pyT3E1W + ") PyT3Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E2 + ","+pyT3E2W+") PyT3Exam2Score," +
+                        "dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E3 + ","+pyT3E3W+")PyT3Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                         "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID)" +
                         " WHERE s.StudentID=" + studentID + ")pyT3  ON (pyT3.StudentID=t1.StudentID)";
@@ -3727,10 +3777,10 @@ namespace Helper
                "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
                " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
                " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID=" + selectedClass.ClassID +
-               " AND ssh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID;
+               " AND ssh.IsActive=1 AND erh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID;
 
                 temp.MeanScore = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
-                temp.MeanGrade = CalculateGrade(temp.MeanScore);
+                temp.MeanGrade = CalculateGrade(temp.MeanScore*100/selectedExam.OutOf);
                 temp.Points = CalculatePoints(temp.MeanGrade);
                 temp.Entries = GetAggregateResultEntries(selectedClass, selectedExam);
                 return temp;
@@ -3766,7 +3816,7 @@ namespace Helper
                "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
                " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
                " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID IN (" + classStr +
-               ") AND ssh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID;
+               ") AND ssh.IsActive=1 AND erh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID;
 
                 temp.MeanScore = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
                 temp.MeanGrade = CalculateGrade(temp.MeanScore);
@@ -3787,14 +3837,15 @@ namespace Helper
                 {
                     temp.NameOfExam += e.NameOfExam + ", ";
 
-                    string selectStr = "SELECT ROUND(AVG((ISNULL(erd.Score,0)*" + (e.Weight / 100) + ")),4) FROM " +
+                    string selectStr = "SELECT ROUND(AVG((ISNULL(erd.Score,0))),4) FROM " +
                    "[Institution].[SubjectSetupDetail] ssd " +
                    "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
                    "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
                    "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
                    " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
+                   " LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (eh.ExamID=erh.ExamID)" +
                    " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID=" + selectedClass.ClassID +
-                   " AND ssh.IsActive=1 AND erh.ExamID=" + e.ExamID;
+                   " AND ssh.IsActive=1 AND erh.IsActive=1 AND erh.ExamID=" + e.ExamID;
                     temp.MeanScore += decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
                 }
                 
@@ -3820,14 +3871,15 @@ namespace Helper
                 {
                     temp.NameOfExam += e.NameOfExam + ", ";
 
-                    string selectStr = "SELECT ROUND(AVG((ISNULL(erd.Score,0)*" + (e.Weight / 100) + ")),4) FROM " +
+                    string selectStr = "SELECT ROUND(AVG((ISNULL(erd.Score,0))),4) FROM " +
                        "[Institution].[SubjectSetupDetail] ssd " +
                        "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
                        "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
                        "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
                        " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
+                       " LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (erh.ExamID=eh.ExamID)" +
                        " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID IN(" + classStr +
-                       ") AND ssh.IsActive=1 AND erh.ExamID=" + e.ExamID;
+                       ") AND ssh.IsActive=1 AND erh.IsActive=1 AND erh.ExamID=" + e.ExamID;
                     temp.MeanScore += decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
                 }
                 temp.MeanGrade = CalculateGrade(temp.MeanScore);
@@ -3851,7 +3903,7 @@ namespace Helper
                 "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
                 " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
                 " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID IN (" + classStr +
-                ") AND ssh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
+                ") AND ssh.IsActive=1 AND erh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
 
             DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
             AggregateResultEntryModel cls;
@@ -3860,7 +3912,7 @@ namespace Helper
                 cls = new AggregateResultEntryModel();
                 cls.NameOfSubject = dtr[1].ToString();
                 cls.MeanScore = decimal.Parse(dtr[2].ToString());
-                cls.MeanGrade = CalculateGrade(cls.MeanScore);
+                cls.MeanGrade = CalculateGrade(cls.MeanScore*100/selectedExam.OutOf);
                 cls.Points = CalculatePoints(cls.MeanGrade);
                 temp.Add(cls);
             }
@@ -3877,8 +3929,8 @@ namespace Helper
                 "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN "+
                 "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)"+
                 " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)"+
-                " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID=" + selectedClass.ClassID + 
-                " AND ssh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
+                " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID=" + selectedClass.ClassID +
+                " AND ssh.IsActive=1  AND erh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
             
             DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
             AggregateResultEntryModel cls;
@@ -3887,7 +3939,7 @@ namespace Helper
                 cls = new AggregateResultEntryModel();
                 cls.NameOfSubject = dtr[1].ToString();
                 cls.MeanScore = decimal.Parse(dtr[2].ToString());
-                cls.MeanGrade = CalculateGrade(cls.MeanScore);
+                cls.MeanGrade = CalculateGrade(cls.MeanScore*100/selectedExam.OutOf);
                 cls.Points = CalculatePoints(cls.MeanGrade);
                 temp.Add(cls);
             }
@@ -3904,14 +3956,14 @@ namespace Helper
 
             foreach (var e in exams)
             {
-                string selectStr = "SELECT ssd.SubjectID,sub.NameOfSubject, ROUND(AVG((ISNULL(erd.Score,0)*" + (e.Weight / 100) + ")),4) FROM " +
+                string selectStr = "SELECT ssd.SubjectID,sub.NameOfSubject, ROUND(AVG((ISNULL(erd.Score,0))),4) FROM " +
                     "[Institution].[SubjectSetupDetail] ssd " +
                     "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
                     "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
                     "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
                     " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
                     " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID IN (" +classStr +
-                    ") AND ssh.IsActive=1 AND erh.ExamID=" + e.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
+                    ") AND ssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + e.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
 
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                 AggregateResultEntryModel cls;
@@ -3921,7 +3973,7 @@ namespace Helper
 
                     cls.NameOfSubject = dtr[1].ToString();
                     cls.MeanScore = decimal.Parse(dtr[2].ToString());
-                    cls.MeanGrade = CalculateGrade(cls.MeanScore);
+                    cls.MeanGrade = CalculateGrade(cls.MeanScore*100/e.OutOf);
                     cls.Points = CalculatePoints(cls.MeanGrade);
                     temp.Add(cls);
                 }
@@ -3945,14 +3997,15 @@ namespace Helper
             
             foreach (var e in exams)
             {
-                string selectStr = "SELECT ssd.SubjectID,sub.NameOfSubject, ROUND(AVG((ISNULL(erd.Score,0)*" + (e.Weight / 100) + ")),4) FROM " +
+                string selectStr = "SELECT ssd.SubjectID,sub.NameOfSubject, ROUND(AVG((ISNULL(erd.Score,0))),4) FROM " +
                     "[Institution].[SubjectSetupDetail] ssd " +
                     "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
                     "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
                     "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
                     " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
+                    " LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (eh.ExamID=erh.ExamID)" +
                     " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID=" + selectedClass.ClassID +
-                    " AND ssh.IsActive=1 AND erh.ExamID=" + e.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
+                    " AND ssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + e.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
 
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                 AggregateResultEntryModel cls;
@@ -3962,7 +4015,7 @@ namespace Helper
 
                     cls.NameOfSubject = dtr[1].ToString();
                     cls.MeanScore = decimal.Parse(dtr[2].ToString());
-                    cls.MeanGrade = CalculateGrade(cls.MeanScore);
+                    cls.MeanGrade = CalculateGrade(cls.MeanScore*100/e.OutOf);
                     cls.Points = CalculatePoints(cls.MeanGrade);
                     temp.Add(cls);
                 }
@@ -4036,6 +4089,35 @@ namespace Helper
                     "WHERE bih.StudentID=" + studenID + " AND NOT EXISTS(SELECT brd.BookID FROM [Institution].[BookReturnDetail] brd " +
                     "INNER JOIN [Institution].[BookReturnHeader] brh ON(brd.BookReturnID=brh.BookReturnID) " +
                     "WHERE brh.DateReturned>bih.DateIssued AND brd.BookID=bid.BookID AND brh.StudentID=" + studenID + ")) x LEFT OUTER JOIN [Institution].[Book] b " +
+                    "ON (x.BookID=b.BookID))";
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                BookModel book;
+                foreach (DataRow dtr in dt.Rows)
+                {
+                    book = new BookModel();
+                    book.BookID = int.Parse(dtr[0].ToString());
+                    book.ISBN = dtr[1].ToString();
+                    book.Title = dtr[2].ToString();
+                    book.Author = dtr[3].ToString();
+                    book.Publisher = dtr[4].ToString();
+                    book.SPhoto = (dtr[5] != null && !(dtr[5] is DBNull)) ? (byte[])dtr[5] : new byte[0];
+                    book.Price = decimal.Parse(dtr[6].ToString());
+                    temp.Add(book);
+                }
+                return temp;
+            });
+        }
+
+        public static Task<ObservableCollection<BookModel>> GetUnreturnedBooksAsync()
+        {
+            return Task.Run<ObservableCollection<BookModel>>(() =>
+            {
+                ObservableCollection<BookModel> temp = new ObservableCollection<BookModel>();
+                string selectStr = "SELECT x.BookID,b.ISBN,b.Name,b.Author,b.Publisher,b.SPhoto,b.Price FROM ((SELECT bid.BookID FROM [Institution].[BookIssueDetail]" +
+                    " bid INNER JOIN [Institution].[BookIssueHeader] bih ON(bid.BookIssueID=bih.BookIssueID) " +
+                    "WHERE NOT EXISTS(SELECT brd.BookID FROM [Institution].[BookReturnDetail] brd " +
+                    "INNER JOIN [Institution].[BookReturnHeader] brh ON(brd.BookReturnID=brh.BookReturnID) " +
+                    "WHERE brh.DateReturned>bih.DateIssued AND brd.BookID=bid.BookID)) x LEFT OUTER JOIN [Institution].[Book] b " +
                     "ON (x.BookID=b.BookID))";
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                 BookModel book;
@@ -4306,47 +4388,77 @@ namespace Helper
                 progressReporter.Report(new OperationProgress(3, "Obtaning Exam Data"));
                 ObservableCollection<StudentTranscriptModel2> tempCls = new ObservableCollection<StudentTranscriptModel2>();
                 int pyT3E1 = 0, pyT3E2 = 0, pyT3E3 = 0, t1E1 = 0, t1E2 = 0, t1E3 = 0, t2E1 = 0, t2E2 = 0, t2E3 = 0, t3E1 = 0, t3E2 = 0, t3E3 = 0;
+decimal pyT3E1W=0,pyT3E2W=0,pyT3E3W=0,t1E1W = 0, t1E2W = 0, t1E3W = 0, t2E1W = 0, t2E2W = 0, t2E3W = 0, t3E1W = 0, t3E2W = 0, t3E3W = 0;
                 int currentTerm = GetTerm();
                 switch (currentTerm)
-                {
-                    case 1: t1E1 = GetTermExamID(exams, 1); t1E2 = GetTermExamID(exams, 2); t1E3 = GetTermExamID(exams, 3); break;
-                    case 2: t2E1 = GetTermExamID(exams, 1); t2E2 = GetTermExamID(exams, 2); t2E3 = GetTermExamID(exams, 3); break;
-                    case 3: t3E1 = GetTermExamID(exams, 1); t3E2 = GetTermExamID(exams, 2); t3E3 = GetTermExamID(exams, 3); break;
-                }
-                
-
+                    {
+                        case 1:
+                            t1E1 = GetTermExamID(exams, 1);
+                            t1E1W = GetTermExamWeight(exams, 1);
+                            t1E2 = GetTermExamID(exams, 2);
+                            t1E2W = GetTermExamWeight(exams, 2);
+                            t1E3 = GetTermExamID(exams, 3); 
+                            t1E3W = GetTermExamWeight(exams, 3);
+                            break;
+                        case 2: 
+                            t2E1 = GetTermExamID(exams, 1);
+                            t2E1W = GetTermExamWeight(exams, 1);
+                            t2E2 = GetTermExamID(exams, 2);
+                            t2E2W = GetTermExamWeight(exams, 2);
+                            t2E3 = GetTermExamID(exams, 3); 
+                            t2E3W = GetTermExamWeight(exams, 3);break;
+                        case 3: 
+                            t3E1 = GetTermExamID(exams, 1);
+                            t3E1W = GetTermExamWeight(exams, 1);
+                            t3E2 = GetTermExamID(exams, 2);
+                            t3E2W = GetTermExamWeight(exams, 2);
+                            t3E3 = GetTermExamID(exams, 3); 
+                            t3E3W = GetTermExamWeight(exams, 3);break;
+                    }
 
                 List<int> otherTerms = new List<int>(new List<int>(3) { -1, 1, 2, 3 }.Where(o => o != currentTerm));
                 
                 var s = GetOtherTermClassExams(classID, otherTerms);
                 foreach (int term in otherTerms)
-                {
-                    if (term == -1)
                     {
-                        pyT3E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == -1).ExamID : 0;
-                        pyT3E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == -1).ExamID : 0;
-                        pyT3E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == -1).ExamID : 0;
+                        if (term == -1)
+                        {
+                            pyT3E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == -1).ExamID : 0;
+                            pyT3E1W = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == -1).Weight : 0;
+                            pyT3E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == -1).ExamID : 0;
+                            pyT3E2W = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == -1).Weight : 0;
+                            pyT3E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == -1).ExamID : 0;
+                            pyT3E3W = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == -1) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == -1).Weight : 0;
+                        }
+                        else if (term == 1)
+                        {
+                            t1E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 1).ExamID : 0;
+                            t1E1W = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 1).Weight : 0;
+                            t1E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 1).ExamID : 0;
+                            t1E2W = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 1).Weight : 0;
+                            t1E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 1).ExamID : 0;
+                            t1E3W = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 1).Weight : 0;
+                        }
+                        else if (term == 2)
+                        {
+                            t2E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 2).ExamID : 0;
+                            t2E1W = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 2).Weight : 0;
+                            t2E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 2).ExamID : 0;
+                            t2E2W = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 2).Weight : 0;
+                            t2E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 2).ExamID : 0;
+                            t2E3W = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 2).Weight : 0;
+                        }
+                        else
+                        {
+                            t3E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 3).ExamID : 0;
+                            t3E1W = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 3).Weight : 0;
+                            t3E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 3).ExamID : 0;
+                            t3E2W = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 3).Weight : 0;
+                            t3E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 3).ExamID : 0;
+                            t3E3W = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 3).Weight : 0;
+                        }
                     }
-                    else if (term == 1)
-                    {
-                        t1E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 1).ExamID : 0;
-                        t1E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 1).ExamID : 0;
-                        t1E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 1) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 1).ExamID : 0;
-                    }
-                    else if (term == 2)
-                    {
-                        t2E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 2).ExamID : 0;
-                        t2E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 2).ExamID : 0;
-                        t2E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 2) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 2).ExamID : 0;
-                    }
-                    else
-                    {
-                        t3E1 = s.Any(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 1 && GetTerm(o.ExamDateTime) == 3).ExamID : 0;
-                        t3E2 = s.Any(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 2 && GetTerm(o.ExamDateTime) == 3).ExamID : 0;
-                        t3E3 = s.Any(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 3) ? s.First(o => o.Index == 3 && GetTerm(o.ExamDateTime) == 3).ExamID : 0;
-                    }
-                }
-                progressReporter.Report(new OperationProgress(5, "Filtering Data"));
+progressReporter.Report(new OperationProgress(5, "Filtering Data"));
                 string cStr = "0,";
                 foreach (var t in classes)
                     cStr += t.ClassID + ",";
@@ -4364,27 +4476,27 @@ namespace Helper
                     "t2.T2OverAllPosition,t2.T2Exam1Score,t2.T2Exam2Score,t2.T2Exam3Score,t3.T3ClassPosition,t3.T3OverAllPosition,t3.T3Exam1Score,t3.T3Exam2Score,t3.T3Exam3Score," +
                     "pyT3.PyT3Exam1Score,pyT3.PyT3Exam2Score,pyt3.PyT3Exam3Score FROM (SELECT s.StudentID, s.NameOfStudent,s.KCPEScore, c.NameOfClass,ISNULL(sth.StudentTranscriptID,0) StudentTranscriptID,Responsibilities,ClubsAndSport," +
                     " Boarding,ClassTeacherComments,PrincipalComments,OpeningDay,ClosingDay,DateSaved,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) " +
-                    "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t1E1 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t1E2 +
-                    "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t1E3 + "),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + classID + " AND IsActive=1)" +
+                    "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E1 + "," + t1E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E2 +
+                    "," + t1E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E3 + ","+t1E3W+"),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + classID + " AND IsActive=1)" +
                     " no_of_students FROM [Institution].[Student] WHERE CLassID=" + classID + " AND IsActive=1 group by StudentID ) x WHERE x.StudentID=s.StudentID) ClassPosition," +
-                    "(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t1E1 +
-                    "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t2E2 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t1E3 + "),0) DESC) row_no, StudentID," +
+                    "(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E1 +
+                    "," + t1E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E2 + "," + t1E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E3 + ","+t1E3W+"),0) DESC) row_no, StudentID," +
                     "(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr + ") AND IsActive=1) no_of_students FROM [Institution].[Student] WHERE CLassID IN (" + cStr +
-                    ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID) OverAllPosition,dbo.GetExamTotalScore(s.StudentID," + t1E1 + ") Exam1Score,dbo.GetExamTotalScore(s.StudentID," + t1E2 +
-                    ")Exam2Score,dbo.GetExamTotalScore(s.StudentID," + t1E3 + ")Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID)" +
+                    ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID) OverAllPosition,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E1 + "," + t1E1W + ") Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E2 +
+                    "," + t1E2W + ")Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E3 + ","+t1E3W+")Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID)" +
                     " LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] sth ON(sth.StudentID=s.StudentID  AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')" +
                     ") LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.ClassID=" + classID + ") t1 " +
 
 
                     "LEFT OUTER JOIN (SELECT s.StudentID,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() " +
-                    "OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t2E1 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t2E2 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t2E3 +
-                    "),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + classID + " AND IsActive=1) no_of_students FROM [Institution].[Student]" +
+                    "OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E1 + "," + t2E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E2 + "," + t2E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E3 +
+                    ","+t2E3W+"),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + classID + " AND IsActive=1) no_of_students FROM [Institution].[Student]" +
                     " WHERE CLassID=" + classID +" AND IsActive=1 group by StudentID ) x WHERE x.StudentID=s.StudentID) T2ClassPosition,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) " +
-                    "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t2E1 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t2E2 +
-                    "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t2E3 + "),0) DESC) row_no, StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr +
+                    "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E1 + "," + t2E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E2 +
+                    "," + t2E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E3 + ","+t3E3W+"),0) DESC) row_no, StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr +
                     ") AND IsActive=1) no_of_students FROM [Institution].[Student] WHERE CLassID IN (" + cStr + ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID)" +
-                    " T2OverAllPosition,dbo.GetExamTotalScore(s.StudentID," + t2E1 + ") T2Exam1Score,dbo.GetExamTotalScore(s.StudentID," + t2E2 + ")T2Exam2Score,dbo.GetExamTotalScore(s.StudentID," + t2E3 + ")T2Exam3Score " +
+                    " T2OverAllPosition,dbo.GetWeightedExamTotalScore(s.StudentID," + t2E1 + "," + t2E1W + ") T2Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t2E2 + "," + t2E2W + ")T2Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t2E3 + ","+t2E3W+")T2Exam3Score " +
                     "FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                     "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) " +
@@ -4393,32 +4505,32 @@ namespace Helper
 
 
                     "LEFT OUTER JOIN (SELECT s.StudentID,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() " +
-                    "OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t3E1 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t3E2 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t3E3 +
-                    "),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + classID + " AND IsActive=1) no_of_students FROM [Institution].[Student] " +
+                    "OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E1 + "," + t3E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E2 + "," + t3E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E3 +
+                    ","+t3E3W+"),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + classID + " AND IsActive=1) no_of_students FROM [Institution].[Student] " +
                     "WHERE CLassID=" + classID + " AND IsActive=1 group by StudentID ) x WHERE x.StudentID=s.StudentID) T3ClassPosition,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) " +
-                    "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetExamTotalScore(StudentID," + t3E1 + "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t3E2 +
-                    "),0)+ISNULL(dbo.GetExamTotalScore(StudentID," + t3E3 + "),0) DESC) row_no, StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr +
+                    "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E1 + "," + t3E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E2 +
+                    "," + t3E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t3E3 + ","+t3E3W+"),0) DESC) row_no, StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr +
                     ") AND IsActive=1) no_of_students FROM [Institution].[Student] WHERE CLassID IN (" + cStr + ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID) " +
-                    "T3OverAllPosition,dbo.GetExamTotalScore(s.StudentID," + t3E1 + ") T3Exam1Score,dbo.GetExamTotalScore(s.StudentID," + t3E2 + ")T3Exam2Score,dbo.GetExamTotalScore(s.StudentID," + t3E3 + ")T3Exam3Score " +
+                    "T3OverAllPosition,dbo.GetWeightedExamTotalScore(s.StudentID," + t3E1 + "," + t3E1W + ") T3Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t3E2 + "," + t3E2W + ")T3Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t3E3 + ","+t3E3W+")T3Exam3Score " +
                     "FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                     "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID)" +
                     " WHERE s.ClassID=" + classID + " )t3  ON (t3.StudentID=t1.StudentID) " +
 
 
-                    "LEFT OUTER JOIN (SELECT s.StudentID, dbo.GetExamTotalScore(s.StudentID," + pyT3E1 + ") PyT3Exam1Score,dbo.GetExamTotalScore(s.StudentID," + pyT3E2 + ") PyT3Exam2Score," +
-                    "dbo.GetExamTotalScore(s.StudentID," + pyT3E3 + ")PyT3Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) "+
+                    "LEFT OUTER JOIN (SELECT s.StudentID, dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E1 + "," + pyT3E1W + ") PyT3Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E2 + ","+pyT3E2W+") PyT3Exam2Score," +
+                    "dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E3 + "," + pyT3E3W + ")PyT3Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) " +
                     "LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                     "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID)" +
                     " WHERE s.ClassID=" + classID + " )pyT3  ON (pyT3.StudentID=t1.StudentID)";
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                 progressReporter.Report(new OperationProgress(15, "Filling Report Forms"));
-                StudentTranscriptModel2 temp;
+                
                 double count= 0d;
                 foreach (DataRow dtr in dt.Rows)
                 {
-                    temp = new StudentTranscriptModel2();
+                    StudentTranscriptModel2 temp = new StudentTranscriptModel2();
                     temp.StudentTranscriptID = int.Parse(dtr[0].ToString());
                     temp.StudentID = int.Parse(dtr[1].ToString());
                     temp.NameOfStudent =dtr[2].ToString();
@@ -4462,12 +4574,12 @@ namespace Helper
 
                     decimal? term1TotScore = (string.IsNullOrWhiteSpace(dtr[15].ToString()) &&
                         string.IsNullOrWhiteSpace(dtr[16].ToString()) &&
-                        string.IsNullOrWhiteSpace(dtr[17].ToString())) ? null : (decimal?)
+                        string.IsNullOrWhiteSpace(dtr[17].ToString())) ? null :( (decimal?)
                         ((string.IsNullOrWhiteSpace(dtr[15].ToString()) ? 0 : decimal.Parse(dtr[15].ToString())) +
                         (string.IsNullOrWhiteSpace(dtr[16].ToString()) ? 0 : decimal.Parse(dtr[16].ToString())) +
-                        (string.IsNullOrWhiteSpace(dtr[17].ToString()) ? 0 : decimal.Parse(dtr[17].ToString())));
+                        (string.IsNullOrWhiteSpace(dtr[17].ToString()) ? 0 : decimal.Parse(dtr[17].ToString()))));
 
-                    temp.Term1TotalScore = term1TotScore + " of " + (100 * temp.Term1Entries.Count);
+                    temp.Term1TotalScore = (term1TotScore.HasValue?term1TotScore.Value.ToString("N0"):"") + " of " + (100 * temp.Term1Entries.Count);
 
                     temp.Term2Pos =dtr[18].ToString();
                     temp.Term2OverallPos =dtr[19].ToString();
@@ -4479,7 +4591,7 @@ namespace Helper
                         (string.IsNullOrWhiteSpace(dtr[21].ToString()) ? 0 : decimal.Parse(dtr[21].ToString())) +
                         (string.IsNullOrWhiteSpace(dtr[22].ToString()) ? 0 : decimal.Parse(dtr[22].ToString())));
 
-                    temp.Term2TotalScore = term2TotScore + " of " + (100 * temp.Term2Entries.Count);
+                    temp.Term2TotalScore = (term2TotScore.HasValue ? term2TotScore.Value.ToString("N0") : "") + " of " + (100 * temp.Term2Entries.Count);
 
                     temp.Term3Pos =dtr[23].ToString();
                     temp.Term3OverallPos =dtr[24].ToString();
@@ -4490,7 +4602,7 @@ namespace Helper
                         (string.IsNullOrWhiteSpace(dtr[26].ToString()) ? 0 : decimal.Parse(dtr[26].ToString())) +
                         (string.IsNullOrWhiteSpace(dtr[27].ToString()) ? 0 : decimal.Parse(dtr[27].ToString())));
 
-                    temp.Term3TotalScore = term3TotScore + " of " + (100 * temp.Term3Entries.Count);
+                    temp.Term3TotalScore = (term3TotScore.HasValue ? term3TotScore.Value.ToString("N0") : "") + " of " + (100 * temp.Term3Entries.Count);
 
                     decimal? prevYearTotScore = (string.IsNullOrWhiteSpace(dtr[28].ToString()) &&
                         string.IsNullOrWhiteSpace(dtr[29].ToString()) &&

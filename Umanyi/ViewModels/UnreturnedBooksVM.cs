@@ -55,6 +55,20 @@ namespace UmanyiSMS.ViewModels
                 brm.Entries = unreturnedBooks;
                 Document = DocumentHelper.GenerateDocument(brm);
             }, o => CanGenerate());
+
+            FullPreviewCommand = new RelayCommand(async o =>
+            {
+                var c = DataAccess.GetClass(await DataAccess.GetClassIDFromStudentID(selectedStudent.StudentID));
+                UnreturnedBooksModel brm = new UnreturnedBooksModel();
+                brm.StudentID = selectedStudent.StudentID;
+                brm.NameOfStudent = selectedStudent.NameOfStudent;
+                brm.ClassID = c.ClassID;
+                brm.NameOfClass = c.NameOfClass;
+                brm.Entries = unreturnedBooks;
+                var dc = DocumentHelper.GenerateDocument(brm);
+                if (ShowFullPreviewAction != null)
+                    ShowFullPreviewAction.Invoke(dc);
+            }, o => CanGenerate());
         }
 
         private bool CanGenerate()
@@ -101,8 +115,15 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
+        public Action<FixedDocument> ShowFullPreviewAction
+        { get; set; }
+
         public ICommand GenerateCommand
         { get; private set; }
+
+        public ICommand FullPreviewCommand
+        { get; private set; }
+
         public override void Reset()
         {
             selectedStudent.Reset();

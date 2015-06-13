@@ -23,7 +23,7 @@ namespace Helper
         static object myWorkObject;
         enum DocType
         {
-            Statement, Transcript, Transcript3, LeavingCert, FeesPayment, FeesPayment2, Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, ClassTranscripts2,UnreturnedBooks, Report
+            Statement, Transcript, Transcript3, LeavingCert, FeesStructure, FeesPayment, FeesPayment2, Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, ClassTranscripts2,UnreturnedBooks,UnreturnedBooks2, Report
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -67,6 +67,8 @@ namespace Helper
                 case DocType.ClassLeavingCertificates: GenerateClassLeavingCerts(); break;
                 case DocType.Statement: GenerateStatement(); break;
                 case DocType.FeesPayment: GenerateReceipt(); break;
+                case DocType.FeesStructure: GenerateFeesStructure(); break;
+                    
                 case DocType.FeesPayment2: GenerateReceipt2(); break;
                 case DocType.Transcript: GenerateTranscript(); break;
                 case DocType.Transcript2: GenerateTranscript2(); break;
@@ -79,6 +81,7 @@ namespace Helper
                 case DocType.ClassTranscripts: GenerateClassTranscripts(); break;
                 case DocType.ClassTranscripts2: GenerateClassTranscripts2(); break;
                 case DocType.UnreturnedBooks: GenerateUnreturnedBooks(); break;
+                case DocType.UnreturnedBooks2: GenerateUnreturnedBooks2(); break;
                 case DocType.Report: GenerateReport(); break;
                 case DocType.ClassExamResults: GenerateClassExamResults(); break;
             }
@@ -93,6 +96,7 @@ namespace Helper
                 case DocType.LeavingCert: resString = Helper.Properties.Resources.LeavingCert; break;
                 case DocType.ClassLeavingCertificates: resString = Helper.Properties.Resources.LeavingCert; break;
                 case DocType.FeesPayment: resString = Helper.Properties.Resources.Receipt; break;
+                case DocType.FeesStructure: resString = Helper.Properties.Resources.FullFeesStructure; break;
                 case DocType.FeesPayment2: resString = Helper.Properties.Resources.Receipt2; break;
                 case DocType.Transcript: resString = Helper.Properties.Resources.Transcript; break;
                 case DocType.Balances: resString = Helper.Properties.Resources.Balances; break;
@@ -106,6 +110,7 @@ namespace Helper
                 case DocType.ClassMarkList: resString = Helper.Properties.Resources.ClassMarkList; break;
                 case DocType.AggregateResult: resString = Helper.Properties.Resources.AggregateResult; break;
                 case DocType.UnreturnedBooks: resString = Helper.Properties.Resources.UnreturnedBooks; break;
+                case DocType.UnreturnedBooks2: resString = Helper.Properties.Resources.UnreturnedBooks2; break;
                 case DocType.Report: resString = Helper.Properties.Resources.Report; break;
                 default: throw new ArgumentException();
             }
@@ -119,6 +124,8 @@ namespace Helper
         {
             if (workObject is LeavingCertificateModel)
                 return DocType.LeavingCert;
+            if (workObject is FullFeesStructureModel)
+                return DocType.FeesStructure;
             if (workObject is FeesStatementModel)
                 return DocType.Statement;
             if (workObject is StudentTranscriptModel2)
@@ -149,6 +156,8 @@ namespace Helper
                 return DocType.ClassTranscripts;
             if (workObject is ReportModel)
                 return DocType.Report;
+            if (workObject is AllUnreturnedBooksModel)
+                return DocType.UnreturnedBooks2;
             if (workObject is ClassStudentsExamResultModel)
                 return DocType.ClassExamResults;
             if (workObject is ClassLeavingCertificatesModel)
@@ -188,6 +197,8 @@ namespace Helper
             if (docType == DocType.Voucher)
                 return 1;
             if (docType == DocType.AggregateResult)
+                return 1;
+            if (docType == DocType.FeesStructure)
                 return 1;
             if (workObject is SaleModel)
                 totalNoOfItems = (workObject as SaleModel).SaleItems.Count;

@@ -17,6 +17,7 @@ namespace Helper.Models
         byte[] sPhoto;
         private string publisher;
         private decimal price;
+        private int availableCopies;
 
         public BookModel()
         {
@@ -27,6 +28,21 @@ namespace Helper.Models
             SPhoto = new byte[0];
             Publisher = "";
             Price = 0;
+            AvailableCopies = 0;
+        }
+
+        public int AvailableCopies
+        {
+            get { return this.availableCopies; }
+
+            set
+            {
+                if (value != this.availableCopies)
+                {
+                    this.availableCopies = value;
+                    NotifyPropertyChanged("AvailableCopies");
+                }
+            }
         }
 
         public int BookID

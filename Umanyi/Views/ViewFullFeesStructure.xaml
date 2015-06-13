@@ -19,5 +19,14 @@
                     SelectedDate="{Binding CurrentDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,126,0,0" Style="{DynamicResource Title0}" Text="Preview" VerticalAlignment="Top"/>
         <DocumentViewer Margin="20,161,20,20" Document="{Binding CurrentStructure.Entries}"/>
+
+        <TextBlock HorizontalAlignment="Right" Margin="0,140,80,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FullPreviewCommand}">Full Preview</Hyperlink>
+        </TextBlock>
+
+        <TextBlock HorizontalAlignment="Right" Margin="0,140,20,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding GenerateCommand}">Generate</Hyperlink>
+        </TextBlock>
+
     </Grid>
 </UserControl>

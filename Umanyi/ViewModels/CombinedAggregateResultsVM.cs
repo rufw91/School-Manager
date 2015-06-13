@@ -108,7 +108,7 @@ namespace UmanyiSMS.ViewModels
 
                 if (isInCombinedMode)
                 {
-                    AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedClass, exams);
+                    AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedCombinedClass, exams);
                     var doc = DocumentHelper.GenerateDocument(fs);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(doc);
