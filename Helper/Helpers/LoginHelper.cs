@@ -46,7 +46,7 @@ namespace Helper
                 else
                 {
                     SqlConnection conn = DataAccessHelper.CreateConnection();
-                    string maxRole=UserRole.None.ToString();
+
                     string[] temp = new string[1];
                     temp[0] = "None";
                     try

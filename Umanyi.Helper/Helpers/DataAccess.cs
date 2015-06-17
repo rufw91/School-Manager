@@ -2109,7 +2109,7 @@ namespace Helper
             return Task.Run<KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>>>(() =>
             {
                 string selectStr = "SELECT ed.SubjectID, s.NameOfSubject, ed.ExamDateTime FROM [Institution].[ExamDetail] ed LEFT OUTER JOIN " +
-                    "[Institution].[Subject] s ON (ed.SubjectID = s.SubjectID) WHERE ed.ExamID =" + examID;
+                    "[Institution].[Subject] s ON (ed.SubjectID = s.SubjectID) WHERE ed.ExamID =" + examID+" ORDER BY s.[Code]";
                 KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>> temp;
 
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
@@ -2182,9 +2182,9 @@ namespace Helper
             });
         }
 
-        public static Task<ExamResultStudentModel> GetStudentExamResultAync(int studentID, int examID)
+        public static Task<ExamResultStudentModel> GetStudentExamResultAync(int studentID, int examID,decimal outOf)
         {
-            string selectStr = "SELECT sssd.SubjectID, s.NameOfSubject, ISNULL(erd.Score,0), erd.Remarks,ssd.Tutor,s.Code FROM [Institution].[StudentSubjectSelectionDetail] sssd " +
+            string selectStr = "SELECT sssd.SubjectID, s.NameOfSubject, ISNULL(erd.Score,0), erd.Remarks,ssd.Tutor,s.Code,erh.ExamResultID FROM [Institution].[StudentSubjectSelectionDetail] sssd " +
                     "LEFT OUTER JOIN [Institution].[StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) " +
                     "LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (sssh.StudentID=erh.StudentID) " +
                     "LEFT OUTER JOIN [Institution].[ExamResultDetail] erd ON (erh.ExamResultID = erd.ExamResultID AND erd.SubjectID=sssd.SubjectID) " +
@@ -2193,7 +2193,7 @@ namespace Helper
                     "LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh ON (ssh.ClassID=st.ClassID) "+
                     "LEFT OUTER JOIN [Institution].[SubjectSetupDetail] ssd ON (ssd.SubjectID=sssd.SubjectID AND ssd.SubjectSetupID=ssh.SubjectSetupID) "+
                     " WHERE ssh.IsActive=1 AND sssh.IsActive=1 AND erh.IsActive=1 " +
-                    "AND sssh.StudentID=" + studentID + " AND erh.ExamID=" + examID;
+                    "AND sssh.StudentID=" + studentID + " AND erh.ExamID=" + examID+" ORDER BY s.[Code]";
                 
             return Task.Run<ExamResultStudentModel>(() =>
             {
@@ -2206,13 +2206,15 @@ namespace Helper
                 foreach (DataRow dtr in dt.Rows)
                 {
                     ersm = new ExamResultSubjectEntryModel();
-                    //ersm.ExamResultID = id;
+                    
                     ersm.SubjectID = int.Parse(dtr[0].ToString());
                     ersm.NameOfSubject = dtr[1].ToString();
                     ersm.Remarks = dtr[3].ToString();
+                    ersm.OutOf = outOf;
                     ersm.Score = string.IsNullOrWhiteSpace(dtr[2].ToString())?0: decimal.Parse(dtr[2].ToString());
                     ersm.Tutor = dtr[4].ToString();
                     ersm.Code = int.Parse(dtr[5].ToString());
+                    ersm.ExamResultID = int.Parse(dtr[6].ToString()); ;
                     temp.Entries.Add(ersm);
                 }
                 return temp;
@@ -3429,7 +3431,7 @@ namespace Helper
                         ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID) OverAllPosition,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E1 + "," + t1E1W + ") Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E2 +
                         "," + t1E2W + ")Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E3 + ","+t1E3W+")Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID)" +
                         " LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] sth ON(sth.StudentID=s.StudentID " +
-                        ") LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.StudentID=" + studentID +
+                        ") LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.IsActive=1 AND s.StudentID=" + studentID +
                         ") t1 " +
 
 
@@ -3444,7 +3446,7 @@ namespace Helper
                         "FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                         "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) " +
-                        "LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.StudentID=" + studentID +
+                        "LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.IsActive=1 AND s.StudentID=" + studentID +
                         ") t2 ON (t1.StudentID=t2.StudentID) " +
 
 
@@ -3459,14 +3461,14 @@ namespace Helper
                         "FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                         "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID)" +
-                        " WHERE s.StudentID=" + studentID + " )t3  ON (t3.StudentID=t1.StudentID) " +
+                        " WHERE s.IsActive=1 AND s.StudentID=" + studentID + " )t3  ON (t3.StudentID=t1.StudentID) " +
 
 
                         "LEFT OUTER JOIN (SELECT s.StudentID, dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E1 + "," + pyT3E1W + ") PyT3Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E2 + ","+pyT3E2W+") PyT3Exam2Score," +
                         "dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E3 + ","+pyT3E3W+")PyT3Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                         "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID)" +
-                        " WHERE s.StudentID=" + studentID + ")pyT3  ON (pyT3.StudentID=t1.StudentID)";
+                        " WHERE s.IsActive=1 AND s.StudentID=" + studentID + ")pyT3  ON (pyT3.StudentID=t1.StudentID)";
                     DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
 
                     StudentTranscriptModel2 temp = new StudentTranscriptModel2();
@@ -3747,6 +3749,143 @@ namespace Helper
             return temp;
         }
 
+
+        private static ObservableCollection<AggregateResultEntryModel> GetAggregateResultEntries(ObservableCollection<ClassModel> classes, ExamModel selectedExam)
+        {
+            ObservableCollection<AggregateResultEntryModel> temp = new ObservableCollection<AggregateResultEntryModel>();
+
+            string selectStr = "SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) FROM [Institution].[ExamDetail] ed INNER JOIN " +
+                    "[Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh " +
+                    "ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN " +
+                    "[Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID)" +
+                    " INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN " +
+                    "[Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) " +
+                    "WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + selectedExam.ExamID +
+                    " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG(erd.Score),4) DESC";
+
+            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            AggregateResultEntryModel cls;
+            foreach (DataRow dtr in dt.Rows)
+            {
+                cls = new AggregateResultEntryModel();
+                cls.NameOfSubject = dtr[1].ToString();
+                cls.MeanScore = decimal.Parse(dtr[2].ToString());
+                cls.MeanGrade = CalculateGrade(cls.MeanScore * 100 / selectedExam.OutOf);
+                cls.Points = CalculatePoints(cls.MeanGrade);
+                temp.Add(cls);
+            }
+            return temp;
+        }
+
+        private static ObservableCollection<AggregateResultEntryModel> GetAggregateResultEntries(ClassModel selectedClass, ExamModel selectedExam)
+        {
+            ObservableCollection<AggregateResultEntryModel> temp = new ObservableCollection<AggregateResultEntryModel>();
+
+            string selectStr = "SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) FROM [Institution].[ExamDetail] ed INNER JOIN " +
+                    "[Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh " +
+                    "ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN " +
+                    "[Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID)" +
+                    " INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN " +
+                    "[Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) " +
+                    "WHERE s.ClassID=" + selectedClass.ClassID + " AND sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + selectedExam.ExamID +
+                    " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG(erd.Score),4) DESC";
+
+            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            AggregateResultEntryModel cls;
+            foreach (DataRow dtr in dt.Rows)
+            {
+                cls = new AggregateResultEntryModel();
+                cls.NameOfSubject = dtr[1].ToString();
+                cls.MeanScore = decimal.Parse(dtr[2].ToString());
+                cls.MeanGrade = CalculateGrade(cls.MeanScore * 100 / selectedExam.OutOf);
+                cls.Points = CalculatePoints(cls.MeanGrade);
+                temp.Add(cls);
+            }
+            return temp;
+        }
+
+        private static ObservableCollection<AggregateResultEntryModel> GetCombinedAggregateResultEntries(ClassModel selectedClass, ObservableCollection<ExamWeightModel> exams)
+        {
+            ObservableCollection<AggregateResultEntryModel> temp = new ObservableCollection<AggregateResultEntryModel>();
+
+            foreach (var e in exams)
+            {
+                string selectStr = "SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG((erd.Score*" + e.Weight + "/eh.OutOf)),4) FROM [Institution].[ExamDetail] ed INNER JOIN " +
+                    "[Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh " +
+                    "ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN " +
+                    "[Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID)" +
+                    " INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN " +
+                    "[Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) " +
+                    "WHERE s.ClassID=" + selectedClass.ClassID + " AND sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + e.ExamID +
+                    " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG((erd.Score*" + e.Weight + "/eh.OutOf)),4) DESC";
+
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                AggregateResultEntryModel cls;
+                foreach (DataRow dtr in dt.Rows)
+                {
+                    cls = new AggregateResultEntryModel();
+
+                    cls.NameOfSubject = dtr[1].ToString();
+                    cls.MeanScore = decimal.Parse(dtr[2].ToString());
+                    cls.MeanGrade = CalculateGrade(cls.MeanScore * 100 / e.Weight);
+                    cls.Points = CalculatePoints(cls.MeanGrade);
+                    temp.Add(cls);
+                }
+            }
+
+            ObservableCollection<AggregateResultEntryModel> tempCls = new ObservableCollection<AggregateResultEntryModel>();
+            for (int i = 0; i < temp.Count; i++)
+            {
+                if (tempCls.Any(o => o.NameOfSubject == temp[i].NameOfSubject))
+                    tempCls.Where(x => x.NameOfSubject == temp[i].NameOfSubject).First().MeanScore += temp[i].MeanScore;
+                else
+                    tempCls.Add(temp[i]);
+            }
+
+            return tempCls;
+        }
+
+        private static ObservableCollection<AggregateResultEntryModel> GetCombinedAggregateResultEntries(ObservableCollection<ClassModel> classes, ObservableCollection<ExamWeightModel> exams)
+        {
+            ObservableCollection<AggregateResultEntryModel> temp = new ObservableCollection<AggregateResultEntryModel>();
+          
+            foreach (var e in exams)
+            {
+                string selectStr = "SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG((erd.Score*" + e.Weight + "/eh.OutOf)),4) FROM [Institution].[ExamDetail] ed INNER JOIN " +
+                    "[Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh " +
+                    "ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN " +
+                    "[Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID)" +
+                    " INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN " +
+                    "[Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) " +
+                    "WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + e.ExamID +
+                    " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG((erd.Score*" + e.Weight + "/eh.OutOf)),4) DESC";
+
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                AggregateResultEntryModel cls;
+                foreach (DataRow dtr in dt.Rows)
+                {
+                    cls = new AggregateResultEntryModel();
+
+                    cls.NameOfSubject = dtr[1].ToString();
+                    cls.MeanScore = decimal.Parse(dtr[2].ToString());
+                    cls.MeanGrade = CalculateGrade(cls.MeanScore * 100 / e.Weight);
+                    cls.Points = CalculatePoints(cls.MeanGrade);
+                    temp.Add(cls);
+                }
+            }
+
+            ObservableCollection<AggregateResultEntryModel> tempCls = new ObservableCollection<AggregateResultEntryModel>();
+            for (int i = 0; i < temp.Count; i++)
+            {
+                if (tempCls.Any(o => o.NameOfSubject == temp[i].NameOfSubject))
+                    tempCls.Where(x => x.NameOfSubject == temp[i].NameOfSubject).First().MeanScore += temp[i].MeanScore;
+                else
+                    tempCls.Add(temp[i]);
+            }
+
+            return tempCls;
+        }
+
         public static Task<AggregateResultModel> GetAggregateResultAsync(ClassModel selectedClass, ExamModel selectedExam)
         {
             return Task.Run<AggregateResultModel>(() =>
@@ -3755,32 +3894,17 @@ namespace Helper
                 temp.NameOfClass = selectedClass.NameOfClass;
                 temp.NameOfExam = selectedExam.NameOfExam;
 
-                string selectStr = "SELECT ROUND((SUM(ISNULL(erd.Score,0))/(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID=" + selectedClass.ClassID + ")),4) FROM "+
-                    "[Institution].[ExamResultDetail] erd  " +
-                    "LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamResultID=erh.ExamResultID) " +
-                    " LEFT OUTER JOIN [Institution].[Student] s ON (erh.StudentID=s.StudentID) WHERE erh.ExamID=" + selectedExam.ExamID + 
-                    " AND s.ClassID=" + selectedClass.ClassID + " AND erh.IsActive=1";
-
-                temp.TotalScore = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
-
-                selectStr = "SELECT ROUND(AVG(ISNULL(erd.Score,0)),4) "+
-                    "FROM [Institution].[ExamResultDetail] erd LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON " +
-                    "(erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Institution].[Student] s ON (erh.StudentID=s.StudentID)"+
-                    " WHERE erh.ExamID=" + selectedExam.ExamID +
-                    " AND s.ClassID=" + selectedClass.ClassID + " AND erh.IsActive=1";
-
-
-                selectStr = "SELECT ROUND(AVG(ISNULL(erd.Score,0)),4) FROM " +
-               "[Institution].[SubjectSetupDetail] ssd " +
-               "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
-               "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
-               "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
-               " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
-               " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID=" + selectedClass.ClassID +
-               " AND ssh.IsActive=1 AND erh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID;
+                string selectStr = "SELECT AVG(x.[Average]) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [Institution].[ExamDetail] ed INNER JOIN " +
+                     "[Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh " +
+                     "ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN " +
+                     "[Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID)" +
+                     " INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN " +
+                     "[Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) " +
+                     "WHERE s.ClassID=" + selectedClass.ClassID + " AND sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + selectedExam.ExamID +
+                     " GROUP BY sub.SubjectID,sub.NameOfSubject) x";
 
                 temp.MeanScore = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
-                temp.MeanGrade = CalculateGrade(temp.MeanScore*100/selectedExam.OutOf);
+                temp.MeanGrade = CalculateGrade(temp.MeanScore * 100 / selectedExam.OutOf);
                 temp.Points = CalculatePoints(temp.MeanGrade);
                 temp.Entries = GetAggregateResultEntries(selectedClass, selectedExam);
                 return temp;
@@ -3795,38 +3919,24 @@ namespace Helper
                 temp.NameOfClass = selectedCombinedClass.Description;
                 temp.NameOfExam = selectedExam.NameOfExam;
 
-                string classStr = "0,";
-                foreach (var c in selectedCombinedClass.Entries)
-                    classStr += c.ClassID + ",";
-                classStr = classStr.Remove(classStr.Length - 1);
-
-                string selectStr = "SELECT ROUND((SUM(ISNULL(erd.Score,0))/(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN (" +classStr + "))),4) FROM " +
-                    "[Institution].[ExamResultDetail] erd  " +
-                    "LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamResultID=erh.ExamResultID) " +
-                    " LEFT OUTER JOIN [Institution].[Student] s ON (erh.StudentID=s.StudentID) WHERE erh.ExamID=" + selectedExam.ExamID +
-                    " AND s.ClassID IN (" + classStr + ") AND erh.IsActive=1";
-
-                temp.TotalScore = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
-                
-
-                selectStr = "SELECT ROUND(AVG(ISNULL(erd.Score,0)),4) FROM " +
-               "[Institution].[SubjectSetupDetail] ssd " +
-               "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
-               "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
-               "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
-               " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
-               " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID IN (" + classStr +
-               ") AND ssh.IsActive=1 AND erh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID;
+                string selectStr = "SELECT AVG(x.[Average]) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [Institution].[ExamDetail] ed INNER JOIN " +
+                     "[Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh " +
+                     "ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN " +
+                     "[Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID)" +
+                     " INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN " +
+                     "[Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) " +
+                     "WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + selectedExam.ExamID +
+                     " GROUP BY sub.SubjectID,sub.NameOfSubject) x";
 
                 temp.MeanScore = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
-                temp.MeanGrade = CalculateGrade(temp.MeanScore);
+                temp.MeanGrade = CalculateGrade(temp.MeanScore * 100 / selectedExam.OutOf);
                 temp.Points = CalculatePoints(temp.MeanGrade);
                 temp.Entries = GetAggregateResultEntries(selectedCombinedClass.Entries, selectedExam);
                 return temp;
             });
         }
 
-        public static Task<AggregateResultModel> GetAggregateResultAsync(ClassModel selectedClass, ObservableCollection<ExamWeightModel> exams)
+        public static Task<AggregateResultModel> GetCombinedAggregateResultAsync(ClassModel selectedClass, ObservableCollection<ExamWeightModel> exams)
         {
             return Task.Run<AggregateResultModel>(() =>
             {
@@ -3837,200 +3947,50 @@ namespace Helper
                 {
                     temp.NameOfExam += e.NameOfExam + ", ";
 
-                    string selectStr = "SELECT ROUND(AVG((ISNULL(erd.Score,0))),4) FROM " +
-                   "[Institution].[SubjectSetupDetail] ssd " +
-                   "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
-                   "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
-                   "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
-                   " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
-                   " LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (eh.ExamID=erh.ExamID)" +
-                   " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID=" + selectedClass.ClassID +
-                   " AND ssh.IsActive=1 AND erh.IsActive=1 AND erh.ExamID=" + e.ExamID;
+                    string selectStr = "SELECT AVG(x.[Average]) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG((erd.Score*"+e.Weight+"/eh.OutOf)),4) [Average] FROM [Institution].[ExamDetail] ed INNER JOIN " +
+                      "[Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh " +
+                      "ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN " +
+                      "[Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID)" +
+                      " INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN " +
+                      "[Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) " +
+                      "WHERE s.ClassID=" + selectedClass.ClassID + " AND sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + e.ExamID +
+                      " GROUP BY sub.SubjectID,sub.NameOfSubject) x";
                     temp.MeanScore += decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
                 }
                 
                 temp.MeanGrade = CalculateGrade(temp.MeanScore);
                 temp.Points = CalculatePoints(temp.MeanGrade);
-                temp.Entries = GetAggregateResultEntries(selectedClass, exams);
+                temp.Entries = GetCombinedAggregateResultEntries(selectedClass, exams);
                 return temp;
             });
         }
 
-        public static Task<AggregateResultModel> GetAggregateResultAsync(CombinedClassModel selectedCombinedClass, ObservableCollection<ExamWeightModel> exams)
+        public static Task<AggregateResultModel> GetCombinedAggregateResultAsync(CombinedClassModel selectedCombinedClass, ObservableCollection<ExamWeightModel> exams)
         {
             return Task.Run<AggregateResultModel>(() =>
             {
                 AggregateResultModel temp = new AggregateResultModel();
                 temp.NameOfClass = selectedCombinedClass.Description;
-                string classStr = "0,";
-                foreach (var c in selectedCombinedClass.Entries)
-                    classStr += c.ClassID + ",";
-                classStr = classStr.Remove(classStr.Length - 1);
 
                 foreach (var e in exams)
                 {
                     temp.NameOfExam += e.NameOfExam + ", ";
 
-                    string selectStr = "SELECT ROUND(AVG((ISNULL(erd.Score,0))),4) FROM " +
-                       "[Institution].[SubjectSetupDetail] ssd " +
-                       "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
-                       "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
-                       "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
-                       " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
-                       " LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (erh.ExamID=eh.ExamID)" +
-                       " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID IN(" + classStr +
-                       ") AND ssh.IsActive=1 AND erh.IsActive=1 AND erh.ExamID=" + e.ExamID;
+                    string selectStr = "SELECT AVG(x.[Average]) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG((erd.Score*"+e.Weight+"/eh.OutOf)),4) [Average] FROM [Institution].[ExamDetail] ed INNER JOIN " +
+                     "[Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh " +
+                     "ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN " +
+                     "[Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID)" +
+                     " INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN " +
+                     "[Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) " +
+                     "WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + e.ExamID +
+                     " GROUP BY sub.SubjectID,sub.NameOfSubject) x";
                     temp.MeanScore += decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr));
                 }
                 temp.MeanGrade = CalculateGrade(temp.MeanScore);
                 temp.Points = CalculatePoints(temp.MeanGrade);
-                temp.Entries = GetAggregateResultEntries(selectedCombinedClass.Entries, exams);
+                temp.Entries = GetCombinedAggregateResultEntries(selectedCombinedClass.Entries, exams);
                 return temp;
             });
-        }
-
-        private static ObservableCollection<AggregateResultEntryModel> GetAggregateResultEntries(ObservableCollection<ClassModel> classes, ExamModel selectedExam)
-        {
-            ObservableCollection<AggregateResultEntryModel> temp = new ObservableCollection<AggregateResultEntryModel>();
-            string classStr = "0,";
-            foreach (var c in classes)
-                classStr += c.ClassID + ",";
-            classStr = classStr.Remove(classStr.Length - 1);
-            string selectStr = "SELECT ssd.SubjectID,sub.NameOfSubject, ROUND(AVG(ISNULL(erd.Score,0)),4) FROM " +
-                "[Institution].[SubjectSetupDetail] ssd " +
-                "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
-                "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
-                "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
-                " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
-                " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID IN (" + classStr +
-                ") AND ssh.IsActive=1 AND erh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
-
-            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
-            AggregateResultEntryModel cls;
-            foreach (DataRow dtr in dt.Rows)
-            {
-                cls = new AggregateResultEntryModel();
-                cls.NameOfSubject = dtr[1].ToString();
-                cls.MeanScore = decimal.Parse(dtr[2].ToString());
-                cls.MeanGrade = CalculateGrade(cls.MeanScore*100/selectedExam.OutOf);
-                cls.Points = CalculatePoints(cls.MeanGrade);
-                temp.Add(cls);
-            }
-            return temp;
-        }
-
-        private static ObservableCollection<AggregateResultEntryModel> GetAggregateResultEntries(ClassModel selectedClass, ExamModel selectedExam)
-        {
-            ObservableCollection<AggregateResultEntryModel> temp = new ObservableCollection<AggregateResultEntryModel>();
-
-            string selectStr = "SELECT ssd.SubjectID,sub.NameOfSubject, ROUND(AVG(ISNULL(erd.Score,0)),4) FROM " +
-                "[Institution].[SubjectSetupDetail] ssd " +
-                "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
-                "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN "+
-                "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)"+
-                " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)"+
-                " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID=" + selectedClass.ClassID +
-                " AND ssh.IsActive=1  AND erh.IsActive=1 AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
-            
-            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
-            AggregateResultEntryModel cls;
-            foreach (DataRow dtr in dt.Rows)
-            {
-                cls = new AggregateResultEntryModel();
-                cls.NameOfSubject = dtr[1].ToString();
-                cls.MeanScore = decimal.Parse(dtr[2].ToString());
-                cls.MeanGrade = CalculateGrade(cls.MeanScore*100/selectedExam.OutOf);
-                cls.Points = CalculatePoints(cls.MeanGrade);
-                temp.Add(cls);
-            }
-            return temp;
-        }
-
-        private static ObservableCollection<AggregateResultEntryModel> GetAggregateResultEntries(ObservableCollection<ClassModel> classes, ObservableCollection<ExamWeightModel> exams)
-        {
-            ObservableCollection<AggregateResultEntryModel> temp = new ObservableCollection<AggregateResultEntryModel>();
-            string classStr = "0,";
-            foreach (var c in classes)
-                classStr += c.ClassID + ",";
-            classStr = classStr.Remove(classStr.Length - 1);
-
-            foreach (var e in exams)
-            {
-                string selectStr = "SELECT ssd.SubjectID,sub.NameOfSubject, ROUND(AVG((ISNULL(erd.Score,0))),4) FROM " +
-                    "[Institution].[SubjectSetupDetail] ssd " +
-                    "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
-                    "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
-                    "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
-                    " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
-                    " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID IN (" +classStr +
-                    ") AND ssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + e.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
-
-                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
-                AggregateResultEntryModel cls;
-                foreach (DataRow dtr in dt.Rows)
-                {
-                    cls = new AggregateResultEntryModel();
-
-                    cls.NameOfSubject = dtr[1].ToString();
-                    cls.MeanScore = decimal.Parse(dtr[2].ToString());
-                    cls.MeanGrade = CalculateGrade(cls.MeanScore*100/e.OutOf);
-                    cls.Points = CalculatePoints(cls.MeanGrade);
-                    temp.Add(cls);
-                }
-            }
-
-            ObservableCollection<AggregateResultEntryModel> tempCls = new ObservableCollection<AggregateResultEntryModel>();
-            for (int i = 0; i < temp.Count; i++)
-            {
-                if (tempCls.Any(o => o.NameOfSubject == temp[i].NameOfSubject))
-                    tempCls.Where(x => x.NameOfSubject == temp[i].NameOfSubject).First().MeanScore += temp[i].MeanScore;
-                else
-                    tempCls.Add(temp[i]);
-            }
-
-            return tempCls;
-        }
-
-        private static ObservableCollection<AggregateResultEntryModel> GetAggregateResultEntries(ClassModel selectedClass, ObservableCollection<ExamWeightModel> exams)
-        {
-            ObservableCollection<AggregateResultEntryModel> temp = new ObservableCollection<AggregateResultEntryModel>();
-            
-            foreach (var e in exams)
-            {
-                string selectStr = "SELECT ssd.SubjectID,sub.NameOfSubject, ROUND(AVG((ISNULL(erd.Score,0))),4) FROM " +
-                    "[Institution].[SubjectSetupDetail] ssd " +
-                    "LEFT OUTER JOIN [Institution].[Subject] sub on (ssd.SubjectID = sub.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh on " +
-                    "(ssh.SubjectSetupID = ssd.SubjectSetupID) LEFT OUTER JOIN " +
-                    "[Institution].[ExamResultDetail] erd ON (ssd.SubjectID=erd.SubjectID)" +
-                    " LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erd.ExamresultID=erh.ExamResultID)" +
-                    " LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (eh.ExamID=erh.ExamID)" +
-                    " LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=erh.StudentID) WHERE ssh.ClassID=" + selectedClass.ClassID +
-                    " AND ssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + e.ExamID + " GROUP BY ssd.SubjectID,sub.NameOfSubject";
-
-                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
-                AggregateResultEntryModel cls;
-                foreach (DataRow dtr in dt.Rows)
-                {
-                    cls = new AggregateResultEntryModel();
-
-                    cls.NameOfSubject = dtr[1].ToString();
-                    cls.MeanScore = decimal.Parse(dtr[2].ToString());
-                    cls.MeanGrade = CalculateGrade(cls.MeanScore*100/e.OutOf);
-                    cls.Points = CalculatePoints(cls.MeanGrade);
-                    temp.Add(cls);
-                }
-            }
-
-            ObservableCollection<AggregateResultEntryModel> tempCls = new ObservableCollection<AggregateResultEntryModel>();
-            for (int i = 0; i < temp.Count; i++)
-            {
-                if (tempCls.Any(o => o.NameOfSubject == temp[i].NameOfSubject))
-                    tempCls.Where(x => x.NameOfSubject == temp[i].NameOfSubject).First().MeanScore += temp[i].MeanScore;
-                else
-                    tempCls.Add(temp[i]);
-            }
-
-            return tempCls;
         }
 
         public static Task<ObservableCollection<BookModel>> GetAllBooksAsync()
@@ -4486,7 +4446,7 @@ progressReporter.Report(new OperationProgress(5, "Filtering Data"));
                     "," + t1E2W + ")Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E3 + ","+t1E3W+")Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID)" +
                     " LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] sth ON(sth.StudentID=s.StudentID  AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')" +
-                    ") LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.ClassID=" + classID + ") t1 " +
+                    ") LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.IsActive=1 AND s.ClassID=" + classID + ") t1 " +
 
 
                     "LEFT OUTER JOIN (SELECT s.StudentID,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() " +
@@ -4500,7 +4460,7 @@ progressReporter.Report(new OperationProgress(5, "Filtering Data"));
                     "FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                     "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) " +
-                    "LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.ClassID=" + classID + 
+                    "LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.IsActive=1 AND s.ClassID=" + classID + 
                     ") t2 ON (t1.StudentID=t2.StudentID) " +
 
 
@@ -4515,7 +4475,7 @@ progressReporter.Report(new OperationProgress(5, "Filtering Data"));
                     "FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                     "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID)" +
-                    " WHERE s.ClassID=" + classID + " )t3  ON (t3.StudentID=t1.StudentID) " +
+                    " WHERE s.IsActive=1 AND s.ClassID=" + classID + " )t3  ON (t3.StudentID=t1.StudentID) " +
 
 
                     "LEFT OUTER JOIN (SELECT s.StudentID, dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E1 + "," + pyT3E1W + ") PyT3Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + pyT3E2 + ","+pyT3E2W+") PyT3Exam2Score," +
@@ -4523,7 +4483,7 @@ progressReporter.Report(new OperationProgress(5, "Filtering Data"));
                     "LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] " +
                     "sth ON(sth.StudentID=s.StudentID AND sth.DateSaved BETWEEN CONVERT(datetime,'" + GetTermStart().ToString("g") + "') AND CONVERT(datetime,'" + GetTermEnd().ToString("g") +
                         "')) LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID)" +
-                    " WHERE s.ClassID=" + classID + " )pyT3  ON (pyT3.StudentID=t1.StudentID)";
+                    " WHERE s.IsActive=1 AND s.ClassID=" + classID + " )pyT3  ON (pyT3.StudentID=t1.StudentID)";
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                 progressReporter.Report(new OperationProgress(15, "Filling Report Forms"));
                 
@@ -4777,11 +4737,11 @@ progressReporter.Report(new OperationProgress(5, "Filtering Data"));
                 DateTime s = GetTermStart();
                 DateTime e = GetTermEnd();
                 string selectStr = "SELECT sd.Name,ISNULL(SUM(sd.Amount),0) FROM [Sales].[SaleDetail] sd LEFT OUTER JOIN [Sales].[SaleHeader] sh " +
-                    "ON (sd.SaleID=sh.SaleID)" +
-                    " WHERE CONVERT(INT,CustomerID) IN (SELECT StudentID FROM [Institution].[Student] WHERE CLassID=" + classID +
-                    ") AND sh.OrderDate BETWEEN '" +
-       s.Day.ToString() + "/" + s.Month.ToString() + "/" + s.Year.ToString() + " 00:00:00.000' AND '"
-       + e.Day.ToString() + "/" + e.Month.ToString() + "/" + e.Year.ToString() + " 23:59:59.998' GROUP BY sd.Name";
+                    "ON (sd.SaleID=sh.SaleID) INNER JOIN [Institution].[Student] s ON (s.StudentID=CONVERT(INT,CustomerID))" +
+                    " WHERE s.CLassID=" + classID +
+                    " AND s.IsActive=1 AND sh.OrderDate BETWEEN CONVERT(datetime,'" +
+       s.Day.ToString() + "/" + s.Month.ToString() + "/" + s.Year.ToString() + " 00:00:00.000') AND CONVERT(datetime,'"
+       + e.Day.ToString() + "/" + e.Month.ToString() + "/" + e.Year.ToString() + " 23:59:59.998') GROUP BY sd.Name";
 
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
 
@@ -4963,7 +4923,8 @@ progressReporter.Report(new OperationProgress(5, "Filtering Data"));
 
                     string selectStr = "SELECT sub.NameOfSubject,sssd.SubjectID FROM [Institution].[StudentSubjectSelectionDetail] sssd"+
                         " LEFT OUTER JOIN [Institution].[StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID = sssh.StudentSubjectSelectionID)"+
-                        " LEFT OUTER JOIN [Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) WHERE sssh.IsActive=1 AND sssh.StudentID=" + studentID;
+                        " LEFT OUTER JOIN [Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) WHERE sssh.IsActive=1 AND sssh.StudentID=" + studentID+
+                        " ORDER BY sub.[Code]";
                     DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
                     StudentSubjectSelectionEntryModel sssm;
 

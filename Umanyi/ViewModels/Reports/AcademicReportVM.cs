@@ -24,7 +24,7 @@ namespace UmanyiSMS.ViewModels
         private int selectedComparisonValue1;
         private int selectedComparisonValue2;
         private ObservableCollection<ExamModel> allExams;
-        public AcademicReportVM():base()
+        public AcademicReportVM()
         {
             InitVars();
             CreateCommands();

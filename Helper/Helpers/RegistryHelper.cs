@@ -44,7 +44,7 @@ namespace Helper
                     OpenSubKey("Microsoft SQL Server").
                     OpenSubKey("Umanyi").OpenSubKey("MSSQLServer").OpenSubKey("CurrentVersion");
                 string res = rekey.GetValue("CurrentVersion") as string;
-                Version.TryParse(res, out tempCls);
+                tempCls = Version.Parse(res);
             }
             catch { }
             return tempCls;
@@ -63,7 +63,6 @@ namespace Helper
         {
             try
             {
-                RegistryKey MainKey =
                     Registry.CurrentUser.OpenSubKey("SOFTWARE").CreateSubKey("Umanyi").
                     CreateSubKey(Properties.Settings.Default.ApplicationName).CreateSubKey("Updates");
                 
@@ -78,7 +77,7 @@ namespace Helper
         {
             try
             {
-                RegistryKey existingMainKey =
+                
                     Registry.CurrentUser.OpenSubKey("SOFTWARE").
                     OpenSubKey("Umanyi").OpenSubKey(Properties.Settings.Default.ApplicationName).OpenSubKey("Updates");                
                 

@@ -14,6 +14,7 @@ namespace UmanyiSMS.ViewModels
     public class NetworkOptionsVM:ViewModelBase
     {
         bool canTest=true;
+        bool isTested;
         string prevServ;
         ApplicationModel newSchool;
         public NetworkOptionsVM()
@@ -25,18 +26,20 @@ namespace UmanyiSMS.ViewModels
         {
             this.canTest = canTest;
             InitVars();
+            isTested = true;
             CreateCommands();            
         }
         protected override void InitVars()
         {
             Title = "NETWORK OPTIONS";
+            isTested = false;
             prevServ = App.Info.ServerName;
             newSchool = App.Info;
         }
 
         public bool CanTest
         { get { return canTest; } }
-
+        
         public ApplicationModel NewSchool
         {
             get { return this.newSchool; }
@@ -49,8 +52,8 @@ namespace UmanyiSMS.ViewModels
                 Helper.Properties.Settings.Default.Save();
                 App.Info.CopyFrom(new ApplicationModel(Helper.Properties.Settings.Default.Info));
                 MessageBox.Show("Successfully saved settings.\r\nYou need to RESTART the system for these changes to take effect.","Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                App.Restart();                
-            }, o => !IsBusy);
+                App.Restart();
+            }, o => !IsBusy && isTested);
 
             TestCommand = new RelayCommand(async o =>
             {
@@ -58,7 +61,7 @@ namespace UmanyiSMS.ViewModels
                 bool succ = await DataAccessHelper.TestDb(ConnectionStringHelper.CreateTestConnSTr(newSchool.ServerName));
                 MessageBox.Show(succ ? "Test Succeeded." : "Test Failed.", "Info", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
-                
+                isTested = succ;
                 IsBusy = false;
             }, o => !IsBusy);
         }

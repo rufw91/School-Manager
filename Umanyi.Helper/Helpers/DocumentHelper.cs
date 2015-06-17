@@ -48,7 +48,7 @@ namespace Helper
             try
             {
                 FixedPage p;
-                for (int i = 0; i < noOfPages; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     PageContent pageContent = new PageContent();
                     p = GetPage(docType);
@@ -174,6 +174,7 @@ namespace Helper
                 case DocType.ClassList: return 34;
                 case DocType.Balances: return 34;
                 case DocType.UnreturnedBooks: return 34;
+                case DocType.UnreturnedBooks2: return 34;
                 case DocType.Report: return 37;
                 default: return 31;
             }
