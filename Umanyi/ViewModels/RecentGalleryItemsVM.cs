@@ -17,7 +17,7 @@ using System.Windows.Input;
 namespace UmanyiSMS.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "User")]
-    public class RecentGalleryItemsVM: ViewModelBase
+    public class RecentGalleryItemsVM: ViewModelBase, IDisposable
     {    
         private ObservableImmutableList<GalleryItemModel> entries;
         private Process process;
@@ -34,10 +34,13 @@ namespace UmanyiSMS.ViewModels
 
         ~RecentGalleryItemsVM()
         {
-            if (tfx!=null)
-            {    tfx.Delete();
-                tfx = null;
-            }
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (tfx != null)
+                tfx.Delete();
         }
 
         protected async override void InitVars()

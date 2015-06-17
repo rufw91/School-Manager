@@ -100,7 +100,7 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 if (isInClassMode)
                 {
-                    AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedClass, exams);
+                    AggregateResultModel fs = await DataAccess.GetCombinedAggregateResultAsync(selectedClass, exams);
                     var doc = DocumentHelper.GenerateDocument(fs);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(doc);
@@ -108,7 +108,7 @@ namespace UmanyiSMS.ViewModels
 
                 if (isInCombinedMode)
                 {
-                    AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedCombinedClass, exams);
+                    AggregateResultModel fs = await DataAccess.GetCombinedAggregateResultAsync(selectedCombinedClass, exams);
                     var doc = DocumentHelper.GenerateDocument(fs);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(doc);

@@ -17,7 +17,7 @@
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersion>6.7.326.15163</AssemblyVersion>
+    <AssemblyVersion>6.7.359.15165</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,7 +29,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>x86</PlatformTarget>
@@ -136,7 +136,6 @@
     <Compile Include="Models\IssueModel.cs" />
     <Compile Include="Models\ItemIssueEntryModel.cs" />
     <Compile Include="Models\ItemIssueModel.cs" />
-    <Compile Include="Models\ModifyBookModel.cs" />
     <Compile Include="Models\PaymentVoucherEntryModel.cs" />
     <Compile Include="Models\PaymentVoucherModel.cs" />
     <Compile Include="Models\ReportModel.cs" />

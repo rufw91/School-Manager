@@ -145,9 +145,9 @@ namespace UmanyiSMS.ViewModels
 
         private void CheckForChanges()
         {
-            if (tempResults.Count!=allSubjectResults.Count)
+            if (tempResults.Any(o => !allSubjectResults.Any(a => a.StudentID == o.StudentID)))
             {
-                var t=tempResults.Where(o => allSubjectResults.Where(a => a.StudentID == o.StudentID)==null?true:allSubjectResults.Where(a => a.StudentID == o.StudentID).Count()==0);
+                var t = tempResults.Where(o => !allSubjectResults.Any(a => a.StudentID == o.StudentID));
                 if (t != null && t.Count() > 0)
                 {
                     int count =0;
@@ -159,17 +159,19 @@ namespace UmanyiSMS.ViewModels
                             msg += ".....";
                             break;
                         }
-                        msg += " -  Student: [" + i.NameOfStudent + "] Score: [" + i.Score + "]\r\n";
+                        msg += " -  Student: ["+i.StudentID+" - " + i.NameOfStudent + "] Score: [" + i.Score + "]\r\n";
                             count++;
 
                     }
-                    msg += "Do you want to DELETE these students's results for selected subject?";
-                    removeInvalid = (MessageBox.Show(msg, "Info", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes) ? true : false;
+                    msg += "Do you want to DELETE these student(s) results for selected subject?";
+                    removeInvalid = (MessageBox.Show(msg, "Info", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes);
                     if (removeInvalid)
                     {
                         string remStr="";
                         foreach (var i in t)
-                            remStr += "DELETE FROM [Institution].[ExamResultDetail] WHERE SubjectID=" + i.SubjectID + " AND ExamResultID=" + i.ExamResultID + "\r\n";                            
+                            remStr += "DELETE FROM [Institution].[ExamResultDetail] WHERE SubjectID=" + i.SubjectID + " AND ExamResultID=" + i.ExamResultID + "\r\n"+
+                                "IF NOT EXISTS (SELECT * FROM [Institution].[ExamResultDetail] WHERE ExamResultID="+i.ExamResultID+")\r\n"+
+                                "DELETE FROM [Institution].[ExamResultHeader] WHERE ExamResultID=" + i.ExamResultID;                            
                         
                         bool succ = DataAccessHelper.ExecuteNonQuery(remStr);
                     }

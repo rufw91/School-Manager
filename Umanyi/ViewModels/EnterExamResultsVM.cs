@@ -14,7 +14,9 @@ namespace UmanyiSMS.ViewModels
     public class EnterExamResultsVM : ViewModelBase
     {
         ExamResultStudentModel newResult;
+        ExamResultStudentModel tempResult;
         ExamResultSubjectEntryModel newSubjectResult;
+        
         ObservableCollection<ExamModel> allExams;
         ObservableCollection<ExamResultSubjectEntryModel> allSubjects;
         private ExamModel selectedExam;
@@ -30,6 +32,7 @@ namespace UmanyiSMS.ViewModels
             Title = "ENTER EXAM RESULTS";
             StudentSubjectSelection = new ObservableCollection<StudentSubjectSelectionEntryModel>();
             NewResult = new ExamResultStudentModel();
+            tempResult = new ExamResultStudentModel();
             SelectedSubject = new ExamResultSubjectEntryModel();
             AllExams = new ObservableCollection<ExamModel>();
             AllSubjects = new ObservableCollection<ExamResultSubjectEntryModel>();
@@ -58,6 +61,7 @@ namespace UmanyiSMS.ViewModels
                         if (selectedExam != null)
                         {
                             newResult.ExamID = selectedExam.ExamID;
+
                             await RefreshSubjectEntries();
                         }
                         else
@@ -86,17 +90,60 @@ namespace UmanyiSMS.ViewModels
 
             SaveCommand = new RelayCommand(async o =>
             {
+                IsBusy = true;
+                CheckForChanges();
                 bool succ = await DataAccess.SaveNewExamResultAsync(newResult);
+                MessageBox.Show(succ ? "Successfully saved details" : "Could not save details.", succ ? "Success" : "Error",
+                            MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
                     Reset();
-
+                IsBusy = false;
             }, o => !IsBusy && CanSave());
+        }
+
+        private void CheckForChanges()
+        {
+            bool removeInvalid=false;
+            if (tempResult.Entries.Any(o => !newResult.Entries.Any(a => a.SubjectID == o.SubjectID)))
+            {
+                var t = tempResult.Entries.Where(o => !newResult.Entries.Any(a => a.SubjectID == o.SubjectID));
+                if (t != null && t.Count() > 0)
+                {
+                    int count = 0;
+                    string msg = "The following results were removed:\r\n";
+                    foreach (var i in t)
+                    {
+                        if (count > 20)
+                        {
+                            msg += ".....";
+                            break;
+                        }
+                        msg += " -  Subject: [" + i.NameOfSubject + "] Score: [" + i.Score + "]\r\n";
+                        count++;
+
+                    }
+                    msg += "Do you want to DELETE these subject(s) results for selected student?";
+                    removeInvalid = (MessageBox.Show(msg, "Info", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes);
+                    if (removeInvalid)
+                    {
+                        string remStr = "";
+                        foreach (var i in t)
+                            remStr += "DELETE FROM [Institution].[ExamResultDetail] WHERE SubjectID=" + i.SubjectID + " AND ExamResultID=" + i.ExamResultID + "\r\n" +
+                                "IF NOT EXISTS (SELECT * FROM [Institution].[ExamResultDetail] WHERE ExamResultID=" + i.ExamResultID + ")\r\n" +
+                                "DELETE FROM [Institution].[ExamResultHeader] WHERE ExamResultID=" + i.ExamResultID;
+
+                        bool succ = DataAccessHelper.ExecuteNonQuery(remStr);
+                    }
+
+                }
+                else return;
+            }
         }
 
         private bool CanSave()
         {
             newResult.CheckErrors();
-            return !newResult.HasErrors;
+            return !newResult.HasErrors && selectedExam!=null;
         }
 
         private bool SubjectExists(int ID)
@@ -129,15 +176,16 @@ namespace UmanyiSMS.ViewModels
                 }
             }
         }
-        
+
         private async Task RefreshSubjectEntries()
         {
             AllSubjects.Clear();
-            var temp = (await DataAccess.GetExamAsync(newResult.ExamID)).Entries;
+            var temp = (await DataAccess.GetExamAsync(newResult.ExamID)).Entries.Where(o => StudentSubjectSelection.Any(a => a.SubjectID == o.SubjectID));
             foreach (SubjectModel sm in temp)
                 if (StudentTakesSubject(sm.SubjectID))
-                AllSubjects.Add(new ExamResultSubjectEntryModel(sm) { OutOf = selectedExam.OutOf });
-            newResult.Entries = (await DataAccess.GetStudentExamResultAync(newResult.StudentID, newResult.ExamID)).Entries;
+                    AllSubjects.Add(new ExamResultSubjectEntryModel(sm) { OutOf = selectedExam.OutOf });
+            newResult.Entries = (await DataAccess.GetStudentExamResultAync(newResult.StudentID, newResult.ExamID, selectedExam.OutOf)).Entries;
+            tempResult.Entries = (await DataAccess.GetStudentExamResultAync(newResult.StudentID, newResult.ExamID, selectedExam.OutOf)).Entries;
         }
 
         public ExamResultSubjectEntryModel SelectedSubject

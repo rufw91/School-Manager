@@ -129,14 +129,15 @@ namespace Helper
             using (FileStream ms = File.Open(file, FileMode.Create))
             {
                 Package p = Package.Open(ms, FileMode.Create, FileAccess.ReadWrite);
-                XpsDocument doc = new XpsDocument(p, CompressionOption.NotCompressed);
+                using (XpsDocument doc = new XpsDocument(p, CompressionOption.NotCompressed))
+                {
+                    var paginator = ((IDocumentPaginatorSource)flowDoc).DocumentPaginator;
+                    paginator.PageSize = new Size(1122.52, 793.70);
 
-                var paginator = ((IDocumentPaginatorSource)flowDoc).DocumentPaginator;
-                paginator.PageSize = new Size(1122.52, 793.70);
-
-                XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(doc);
-                writer.Write(paginator);
-                p.Flush(); ms.Close();
+                    XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(doc);
+                    writer.Write(paginator);
+                    p.Flush(); ms.Close();
+                }
             }
             return file;
         }

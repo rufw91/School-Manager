@@ -111,7 +111,7 @@ namespace Helper
             catch (Exception e)
             {
                 Log.E(e.ToString(), typeof(DataAccessHelper));
-                throw e;
+                throw;
             }
             return conn;
         }
@@ -126,7 +126,7 @@ namespace Helper
             catch (Exception e)
             {
                 Log.E(e.ToString(), typeof(DataAccessHelper));
-                throw e;
+                throw;
             }
             return conn;
         }
@@ -141,7 +141,7 @@ namespace Helper
             catch (Exception e)
             {
                 Log.E(e.ToString(), typeof(DataAccessHelper));
-                throw e;
+                throw;
             }
             return conn;
         }
@@ -160,8 +160,8 @@ namespace Helper
             }
             catch (Exception e)
             {
-                Log.E(e.ToString(), typeof(DataAccessHelper)); 
-                throw e;
+                Log.E(e.ToString(), typeof(DataAccessHelper));
+                throw;
             }
             return conn;
         }
@@ -197,7 +197,7 @@ namespace Helper
             catch (Exception e)
             {
                 Log.E(e.ToString(), typeof(DataAccessHelper));
-                throw e;
+                throw;
             }
         }
 
@@ -244,7 +244,7 @@ namespace Helper
             catch (Exception e)
             {
                 Log.E(e.ToString(), typeof(DataAccessHelper));
-                throw e;
+                throw;
             }
             return result;
         }
@@ -280,20 +280,21 @@ namespace Helper
             {
                 using (SqlConnection DBConnection = CreateConnection())
                 {
-                    SqlCommand dta = new SqlCommand();
-                    dta.CommandText = "USE " + Helper.Properties.Settings.Default.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
-                    dta.Connection = DBConnection;
-                    foreach (SqlParameter param in paramColl)
-                    { dta.Parameters.Add(param); }
-                    dta.ExecuteNonQuery();
-                    dta.Dispose();
+                    using (SqlCommand dta = new SqlCommand())
+                    {
+                        dta.CommandText = "USE " + Helper.Properties.Settings.Default.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                        dta.Connection = DBConnection;
+                        foreach (SqlParameter param in paramColl)
+                        { dta.Parameters.Add(param); }
+                        dta.ExecuteNonQuery();
+                    }
                 }
                 result = true;
             }
             catch (Exception e)
             {
                 Log.E(e.ToString(), typeof(DataAccessHelper));
-                throw e;
+                throw;
             }
             return result;
         }
@@ -327,7 +328,7 @@ namespace Helper
             catch (Exception e)
             {
                 Log.E(e.ToString(), typeof(DataAccessHelper));
-                throw e;
+                throw;
             }
             return result;
         }
@@ -356,7 +357,7 @@ namespace Helper
             catch (Exception e)
             {
                 Log.E(e.ToString(), typeof(DataAccessHelper));
-                throw e;
+                throw;
             }
             return succ;
 
@@ -389,7 +390,6 @@ namespace Helper
                 catch (Exception e)
                 {
                     Log.E(e.ToString(), typeof(DataAccessHelper));
-                    throw e;
                 }
                 return succ;
             });
@@ -647,7 +647,7 @@ namespace Helper
                     catch (Exception e)
                     {
                         Log.E(e.ToString(), typeof(DataAccessHelper));
-                        throw e;
+                        throw;
                     }
                     return succ;
                 }

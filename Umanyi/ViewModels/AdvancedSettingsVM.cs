@@ -11,7 +11,6 @@ namespace UmanyiSMS.ViewModels
     public class AdvancedSettingsVM: ViewModelBase
     {
         public AdvancedSettingsVM()
-            : base()
         {
             InitVars();
             CreateCommands();

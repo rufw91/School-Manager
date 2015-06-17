@@ -97,7 +97,7 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 if (isInStudentMode)
                 {
-                    var temp = new ExamResultStudentDisplayModel(await DataAccess.GetStudentExamResultAync(studentResult.StudentID, selectedExam.ExamID));
+                    var temp = new ExamResultStudentDisplayModel(await DataAccess.GetStudentExamResultAync(studentResult.StudentID, selectedExam.ExamID,selectedExam.OutOf));
                     StudentResult.Entries = temp.Entries;
                     StudentResult.ExamID = temp.ExamID;
                     StudentResult.ExamResultID = temp.ExamResultID;
