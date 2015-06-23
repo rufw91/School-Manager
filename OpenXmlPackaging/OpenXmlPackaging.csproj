@@ -16,7 +16,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <AssemblyVersion>1.0.102.15165</AssemblyVersion>
+    <AssemblyVersion>1.0.118.15174</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

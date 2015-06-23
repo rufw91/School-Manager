@@ -17,6 +17,11 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
+    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <AssemblyVersion>6.7.540.15174</AssemblyVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,11 +36,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersion>6.7.510.15165</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -162,6 +162,8 @@
     <Compile Include="ViewModels\AssignNewClassVM.cs" />
     <Compile Include="ViewModels\BillStudentVM.cs" />
     <Compile Include="ViewModels\AggregateResultsVM.cs" />
+    <Compile Include="ViewModels\BookReceiptHistoryVM.cs" />
+    <Compile Include="ViewModels\BooksVM.cs" />
     <Compile Include="ViewModels\ChangeSAPasswordVM.cs" />
     <Compile Include="ViewModels\ClassLeavingCertificatesVM.cs" />
     <Compile Include="ViewModels\ClassReportFormsVM.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="ViewModels\PDFViewVM.cs" />
     <Compile Include="ViewModels\PriceListsVM.cs" />
     <Compile Include="ViewModels\QuickBooksVM.cs" />
+    <Compile Include="ViewModels\ReceiveBooksVM.cs" />
     <Compile Include="ViewModels\RemoveExamVM.cs" />
     <Compile Include="ViewModels\RemovePayment.cs" />
     <Compile Include="ViewModels\ReportsHomeVM.cs" />
@@ -298,6 +301,12 @@
     <Compile Include="Views\AllUnreturnedBooks.xaml.cs">
       <DependentUpon>AllUnreturnedBooks.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BookReceiptHistory.xaml.cs">
+      <DependentUpon>BookReceiptHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Books.xaml.cs">
+      <DependentUpon>Books.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ChangeSAPassword.xaml.cs">
       <DependentUpon>ChangeSAPassword.xaml</DependentUpon>
     </Compile>
@@ -316,6 +325,9 @@
     <Compile Include="Views\EventDetails.xaml.cs">
       <DependentUpon>EventDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FindBooks.xaml.cs">
+      <DependentUpon>FindBooks.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\InstitutionSubjectsSetup.xaml.cs">
       <DependentUpon>InstitutionSubjectsSetup.xaml</DependentUpon>
     </Compile>
@@ -327,6 +339,9 @@
     </Compile>
     <Compile Include="Views\QuickBooksSync.xaml.cs">
       <DependentUpon>QuickBooksSync.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReceiveBooks.xaml.cs">
+      <DependentUpon>ReceiveBooks.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RemoveExam.xaml.cs">
       <DependentUpon>RemoveExam.xaml</DependentUpon>
@@ -772,6 +787,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\BookReceiptHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Books.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ChangeSAPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -796,6 +819,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\FindBooks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\InstitutionSubjectsSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -809,6 +836,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\QuickBooksSync.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReceiveBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

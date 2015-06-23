@@ -2,7 +2,6 @@
 using Helper.Controls;
 using Helper.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
@@ -14,27 +13,27 @@ using System.Windows.Threading;
 
 namespace UmanyiSMS.Views
 {
-    public partial class FindItems : CustomWindow, INotifyPropertyChanged
+    public partial class FindBooks : CustomWindow, INotifyPropertyChanged
     {
-        ItemFindModel selectedItem;
-        ObservableCollection<ItemFindModel> selectedItems;
-
+        BookModel selectedItem;
+        ObservableCollection<BookModel> selectedItems;
+        
         string searchText;
-        public FindItems()
+        public FindBooks()
         {
-            selectedItems = new ObservableCollection<ItemFindModel>();
+            selectedItems = new ObservableCollection<BookModel>();
             InitializeComponent();
             SearchText = "";
             GetAllItems(this.Dispatcher);
-            AllItems = new ObservableCollection<ItemModel>();
-
+            AllItems = new ObservableCollection<BookModel>();
+            
             dtGrid.SelectionChanged += (o, e) =>
-            {
-                this.selectedItems.Clear();
-                this.selectedItem = new ItemFindModel(dtGrid.SelectedItem as ItemModel);
-                foreach (var i in dtGrid.SelectedItems)
-                    this.SelectedItems.Add(new ItemFindModel(i as ItemModel));
-            };
+                {
+                    this.selectedItems.Clear();
+                    this.selectedItem = dtGrid.SelectedItem as BookModel;
+                    foreach (var i in dtGrid.SelectedItems)
+                        this.SelectedItems.Add((i as BookModel));
+                };
             DataContext = this;
         }
 
@@ -43,10 +42,12 @@ namespace UmanyiSMS.Views
             dtGrid.Items.Filter = null;
             dtGrid.Items.Filter = new Predicate<object>((item) =>
             {
-                ItemFindModel findItem = item as ItemFindModel;
+                BookModel findItem = item as BookModel;
                 if (findItem != null)
-                    return findItem.Description.ToUpperInvariant().Contains(searchText.ToUpperInvariant()) ||
-                        (findItem.ItemID.ToString().ToUpperInvariant().Contains(searchText.ToUpperInvariant()));
+                    return findItem.Title.ToUpperInvariant().Contains(searchText.ToUpperInvariant()) ||
+                        findItem.Publisher.ToUpperInvariant().Contains(searchText.ToUpperInvariant()) ||
+                        findItem.ISBN.ToUpperInvariant().Contains(searchText.ToUpperInvariant()) ||
+                        (findItem.Author.ToString().ToUpperInvariant().Contains(searchText.ToUpperInvariant()));
                 else
                     return true;
 
@@ -54,13 +55,13 @@ namespace UmanyiSMS.Views
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private ObservableCollection<ItemModel> allItems;
+        private ObservableCollection<BookModel> allItems;
         protected void NotifyPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = this.PropertyChanged;
             if (handler != null) { var e = new PropertyChangedEventArgs(propertyName); handler(this, e); }
         }
-        public ItemFindModel SelectedItem
+        public BookModel SelectedItem
         {
             get { return selectedItem; }
             private set
@@ -73,7 +74,7 @@ namespace UmanyiSMS.Views
             }
         }
 
-        public ObservableCollection<ItemFindModel> SelectedItems
+        public ObservableCollection<BookModel> SelectedItems
         {
             get { return selectedItems; }
         }
@@ -90,7 +91,7 @@ namespace UmanyiSMS.Views
                 }
             }
         }
-
+        
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = System.Windows.Visibility.Collapsed;
@@ -106,15 +107,13 @@ namespace UmanyiSMS.Views
         {
             await Task.Run(() =>
             {
-                string selectStr = "SELECT ItemID," +
-                                   "Description," +
-                                   "DateAdded," +
-                                   "ItemCategoryID," +
-                                   "Price," +
-                                   "Cost," +
-                                   "StartQuantity," +
-                                   "VatID" +
-                                   " FROM [Sales].[Item]";
+                string selectStr = "SELECT BookID," +
+                                   "ISBN," +
+                                   "[Name]," +
+                                   "Author," +
+                                   "Publisher," +
+                                   "Price" +
+                                   " FROM [Institution].[Book]";
                 try
                 {
                     using (SqlConnection DBConnection = DataAccessHelper.CreateConnection())
@@ -123,19 +122,17 @@ namespace UmanyiSMS.Views
                         cmd.CommandText = "USE UmanyiSMS\r\nSET DATEFORMAT DMY\r\n" + selectStr;
                         cmd.Connection = DBConnection;
                         SqlDataReader reader = cmd.ExecuteReader();
-                        ItemModel im;
+                        BookModel im;
                         while (reader.Read())
                         {
                             var dtr = (IDataRecord)reader;
-                            im = new ItemModel();
-                            im.ItemID = long.Parse(dtr[0].ToString());
-                            im.Description = dtr[1].ToString();
-                            im.DateAdded = DateTime.Parse(dtr[2].ToString());
-                            im.ItemCategoryID = int.Parse(dtr[3].ToString());
-                            im.Price = decimal.Parse(dtr[4].ToString());
-                            im.Cost = decimal.Parse(dtr[5].ToString());
-                            im.StartQuantity = decimal.Parse(dtr[6].ToString());
-                            im.VatID = int.Parse(dtr[7].ToString());
+                            im = new BookModel();
+                            im.BookID = int.Parse(dtr[0].ToString());
+                            im.ISBN = dtr[1].ToString();
+                            im.Title = dtr[2].ToString();
+                            im.Author = dtr[3].ToString();
+                            im.Publisher = dtr[4].ToString();
+                            im.Price = decimal.Parse(dtr[5].ToString());
                             dispatcher.Invoke(() => { AllItems.Add(im); });
                         }
 
@@ -160,7 +157,7 @@ namespace UmanyiSMS.Views
                 FocusManager.SetFocusedElement(this, btnFinish);
         }
 
-        public ObservableCollection<ItemModel> AllItems
+        public ObservableCollection<BookModel> AllItems
         {
             get { return allItems; }
             private set

@@ -16,7 +16,7 @@ namespace UmanyiSMS.ViewModels
     {
         private int studentID;
         private int classID;
-        private int examID;
+        private ExamModel selectedExam;
         private string grade;
         private decimal? score;
         private FixedDocument document;
@@ -24,6 +24,7 @@ namespace UmanyiSMS.ViewModels
         private int selectedComparisonValue1;
         private int selectedComparisonValue2;
         private ObservableCollection<ExamModel> allExams;
+        decimal outOf = 0;
         public AcademicReportVM()
         {
             InitVars();
@@ -44,8 +45,8 @@ namespace UmanyiSMS.ViewModels
            new ColumnModel(true, "s.NameOfStudent", "Name of Student", 1),
            new ColumnModel(true, "c.NameOfClass", "Class", 1),
             new ColumnModel(true, "e.NameOfExam","Exam", 1),
-            new ColumnModel(true, "dbo.GetGrade(ISNUll(AVG(CONVERT(decimal,erd.Score)),0)) MeanGrade", "Grade", .3),
-            new ColumnModel(true, "ISNULL(SUM(CONVERT(decimal,erd.Score)),0) TotalScore","Total Score", .5)
+            new ColumnModel(true, "dbo.GetGrade(ISNUll(AVG(CONVERT(decimal,erd.Score*100/e.OutOf)),0)) MeanGrade", "Grade (From Mean Score)", .3),
+            new ColumnModel(true, "ISNULL(SUM(CONVERT(decimal,erd.Score*"+outOf+"/e.OutOf)),0) TotalScore","Total Score", .5)
             };
             PropertyChanged += async(o, e) =>
                 {
@@ -73,8 +74,11 @@ namespace UmanyiSMS.ViewModels
                         Grade = null;
                     if ((e.PropertyName == "SelectedComparisonValue2") && (selectedComparisonValue2 == 0))
                         Score = null;
-                    
-                    
+                    if (e.PropertyName == "SelectedExam"&&selectedExam !=null&&selectedExam.ExamID>0)                   
+                        OutOf = selectedExam.OutOf;
+                    if (e.PropertyName == "OutOf")
+                        Columns[5].Name = "ISNULL(SUM(CONVERT(decimal,erd.Score*" + outOf + "/e.OutOf)),0) TotalScore";
+
                 };
             var f = await DataAccess.GetAllClassesAsync();
             AllClasses.Add(new ClassModel() { NameOfClass = "None", ClassID = 0 });
@@ -108,7 +112,7 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanRefresh()
         {
-            return !IsBusy && examID > 0 && (studentID > 0 || classID > 0) && ((selectedComparisonValue1 > 0) ? !string.IsNullOrWhiteSpace(grade) : true)
+            return !IsBusy && selectedExam!=null&&selectedExam.ExamID> 0 && (studentID > 0 || classID > 0) && ((selectedComparisonValue1 > 0) ? !string.IsNullOrWhiteSpace(grade) : true)
                 && ((selectedComparisonValue2 > 0) ? score.HasValue : true);
         }
 
@@ -128,7 +132,7 @@ namespace UmanyiSMS.ViewModels
                     selectStr += " AND s.ClassID=" + classID;
                 else if (studentID>0)
                     selectStr += " AND s.StudentID=" + studentID;
-                selectStr += " AND erh.ExamID=" + examID;
+                selectStr += " AND erh.ExamID=" + selectedExam.ExamID;
                 selectStr += " GROUP BY s.StudentID,s.NameOfStudent,c.NameOfClass,e.NameOfExam) x";
                 if (selectedComparisonValue1>0)
                 {
@@ -194,7 +198,7 @@ namespace UmanyiSMS.ViewModels
                             case "A": return "'A'";
                             case "A-": return "'A-','A'";
                             case "B+": return "'B+','A-','A'";
-                            case "B": return "'B',B+,'A-','A'";
+                            case "B": return "'B','B+','A-','A'";
                             case "B-": return "'B-','B','B+','A-','A'";
                             case "C+": return "'C+','B-','B','B+','A-','A'";
                             case "C": return "'C','C+','B-','B','B+','A-','A'";
@@ -229,17 +233,17 @@ namespace UmanyiSMS.ViewModels
                     {
                         switch (grade)
                         {
-                            case "A": return "E,D-,D,D+,C-,C,C+,B-,B,B+,A-,A";
-                            case "A-": return "E,D-,D,D+,C-,C,C+,B-,B,B+,A-";
-                            case "B+": return "E,D-,D,D+,C-,C,C+,B-,B,B+";
-                            case "B": return "E,D-,D,D+,C-,C,C+,B-,B";
-                            case "B-": return "E,D-,D,D+,C-,C,C+,B-";
-                            case "C+": return "E,D-,D,D+,C-,C,C+";
-                            case "C": return "E,D-,D,D+,C-,C";
-                            case "C-": return "E,D-,D,D+,C-";
-                            case "D+": return "E,D-,D,D+";
-                            case "D": return "E,D-,D";
-                            case "D-": return "E,D-";
+                            case "A": return "'E','D-','D','D+','C-','C','C'+,'B-','B','B+','A-','A'";
+                            case "A-": return "'E','D-','D','D+','C'-,'C','C+','B-','B,'B+','A-'";
+                            case "B+": return "'E','D-','D','D+','C-','C','C+','B-','B','B+'";
+                            case "B": return "'E','D-','D','D+','C-','C','C+','B-','B'";
+                            case "B-": return "'E','D-','D','D+','C-','C','C+','B-'";
+                            case "C+": return "'E','D-','D','D+','C-','C','C+'";
+                            case "C": return "'E','D-','D','D+','C-','C'";
+                            case "C-": return "'E','D-','D','D+','C-'";
+                            case "D+": return "'E','D-','D','D+'";
+                            case "D": return "'E','D-','D'";
+                            case "D-": return "'E','D-'";
                             case "E": return "'E'";
                         }
                         break;
@@ -304,16 +308,16 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public int ExamID
+        public ExamModel SelectedExam
         {
-            get { return this.examID; }
+            get { return this.selectedExam; }
 
             set
             {
-                if (value != this.examID)
+                if (value != this.selectedExam)
                 {
-                    this.examID = value;
-                    NotifyPropertyChanged("ExamID");
+                    this.selectedExam = value;
+                    NotifyPropertyChanged("SelectedExam");
                 }
             }
         }
@@ -422,6 +426,18 @@ namespace UmanyiSMS.ViewModels
         {
             get;
             private set;
+        }
+        public decimal OutOf {
+            get { return outOf; }
+
+            private set
+            {
+                if (value != outOf)
+                {
+                    outOf = value;
+                    NotifyPropertyChanged("OutOf");
+                }
+            }
         }
     }
 }

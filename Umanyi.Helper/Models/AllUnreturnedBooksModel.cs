@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class AllUnreturnedBooksModel:ObservableCollection<BookModel>
+    public class AllUnreturnedBooksModel : ObservableCollection<UnreturnedBookModel>
     {
         public AllUnreturnedBooksModel()
         {
                 
         }
-        public AllUnreturnedBooksModel(IEnumerable<BookModel> newEntries)
+        public AllUnreturnedBooksModel(IEnumerable<UnreturnedBookModel> newEntries)
             : base(newEntries)
         {
             

@@ -49,6 +49,15 @@
         <views:InventoryMgmt/>
     </DataTemplate>
     <!--Child View Models-->
+    <DataTemplate DataType="{x:Type viewModels:BookReceiptHistoryVM}" >
+        <views:BookReceiptHistory/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ReceiveBooksVM}" >
+        <views:ReceiveBooks/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:BooksVM}" >
+        <views:Books/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:AllUnreturnedBooksVM}" >
         <views:AllUnreturnedBooks/>
     </DataTemplate>

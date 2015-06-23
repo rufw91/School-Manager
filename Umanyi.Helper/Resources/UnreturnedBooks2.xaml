@@ -32,6 +32,6 @@
         <TextBlock HorizontalAlignment="Left" Margin="140,215,0,0" Text="TITLE" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="300,215,0,0" Text="AUTHOR" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="450,215,0,0" Text="PUBLISHER" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="600,215,0,0" Text="PRICE" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="600,215,0,0" Text="UNRETURNED" VerticalAlignment="Top"/>
     </Grid>
 </FixedPage>

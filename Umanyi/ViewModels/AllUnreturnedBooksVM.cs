@@ -16,7 +16,7 @@ namespace UmanyiSMS.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class AllUnreturnedBooksVM: ViewModelBase
     {
-        ObservableCollection<BookModel> unreturnedBooks;
+        ObservableCollection<UnreturnedBookModel> unreturnedBooks;
         private FixedDocument fd;
         public AllUnreturnedBooksVM()
         {
@@ -26,7 +26,7 @@ namespace UmanyiSMS.ViewModels
         protected override void InitVars()
         {
             Title = "ALL UNRETURNED BOOKS";
-            unreturnedBooks = new ObservableCollection<BookModel>();
+            unreturnedBooks = new ObservableCollection<UnreturnedBookModel>();
         }
 
 
