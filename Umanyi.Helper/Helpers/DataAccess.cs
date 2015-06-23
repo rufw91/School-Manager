@@ -51,6 +51,47 @@ namespace Helper
             });
         }
 
+        public static Task<ObservableCollection<FeesStructureModel>> GetFullFeesStructure(DateTime currentDate)
+        {
+            return Task.Run<ObservableCollection<FeesStructureModel>>(() =>
+            {
+                ObservableCollection<FeesStructureModel> temp = new ObservableCollection<FeesStructureModel>();
+                
+                var f = GetAllCombinedClassesAsync().Result;
+                foreach (var c in f)
+                {
+                    FeesStructureModel tempModel = new FeesStructureModel();
+                    string fdate = currentDate.Date.ToString("g");
+                    string selectStr = "DECLARE @id int\r\n" +
+                    "SET @id=(SELECT TOP 1 FeesStructureID FROM [Institution].[FeesStructureHeader] WHERE ClassID=" + c.Entries[0].ClassID + "\r\n" +
+                    "AND IsActive=1)\r\n" +
+                    "SELECT ISNULL(@id,0)";
+
+                    tempModel.NameOfCombinedClass = f.First(o => o.Entries.Any(a => a.ClassID == c.Entries[0].ClassID)).Description;
+
+                    int feesStructureID = int.Parse(DataAccessHelper.ExecuteScalar(selectStr));
+
+                    if (feesStructureID <= 0)
+                        return temp;
+
+                    selectStr = "SELECT Name, Amount FROM [Institution].[FeesStructureDetail] WHERE FeesStructureID =" + feesStructureID;
+
+                    DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                    FeesStructureEntryModel fssem;
+                    foreach (DataRow dtr in dt.Rows)
+                    {
+                        fssem = new FeesStructureEntryModel();
+                        fssem.Amount = decimal.Parse(dtr[1].ToString());
+                        fssem.Name = dtr[0].ToString();
+                        tempModel.Entries.Add(fssem);
+                    }
+
+                    temp.Add(tempModel);
+                }
+                return temp;
+            });
+        }
+
         public static Task<ObservableCollection<FeePaymentModel>> GetRecentPaymentsAsync(StudentBaseModel student)
         {
             return Task.Run<ObservableCollection<FeePaymentModel>>(() =>
@@ -394,6 +435,61 @@ namespace Helper
             return tempCls;
         }
 
+        private static ObservableCollection<BooksPurchaseModel> GetBookReceipts(bool includeAllDetails,
+          int? supplierID, DateTime? startTime, DateTime? endTime)
+        {
+            string selectStr;
+            BooksPurchaseModel temp;
+            ObservableCollection<BooksPurchaseModel> tempCls;
+            if (supplierID.HasValue)
+            {
+                selectStr = "SELECT sh.BookReceiptID,sh.DateReceived,TotalAmt,SupplierID,IsCancelled,ISNULL(SUM(ISNULL(sd.Quantity,0)),0),RefNo FROM " +
+                                 "[Sales].[BookReceiptHeader] sh LEFT OUTER JOIN [Sales].[BookReceiptDetail] sd ON(sh.BookReceiptID=sd.BookReceiptID) WHERE sh.SupplierID =" + supplierID;
+                if ((startTime.HasValue && endTime.HasValue) == true)
+                    selectStr += " AND sh.DateReceived BETWEEN CONVERT(datetime,'" +
+       startTime.Value.Day.ToString() + "/" + startTime.Value.Month.ToString() + "/" + startTime.Value.Year.ToString() + " 00:00:00.000') AND CONVERT(datetime,'"
+       + endTime.Value.Day.ToString() + "/" + endTime.Value.Month.ToString() + "/" + endTime.Value.Year.ToString() + " 23:59:59.998')"
+       + "\r\n GROUP BY sh.BookReceiptID,sh.DateReceived, TotalAmt,SupplierID,IsCancelled,RefNo";
+            }
+            else
+            {
+                selectStr = "SELECT sh.BookReceiptID,sh.DateReceived,TotalAmt,SupplierID,IsCancelled, ISNULL(SUM(ISNULL(sd.Quantity,0)),0),RefNo FROM " +
+                                     "[Sales].[BookReceiptHeader] sh LEFT OUTER JOIN [Sales].[BookReceiptDetail] sd ON(sh.BookReceiptID=sd.BookReceiptID)";
+                if ((startTime.HasValue && endTime.HasValue) == true)
+                    selectStr += " WHERE sh.DateReceived BETWEEN CONVERT(datetime,'" +
+       startTime.Value.Day.ToString() + "/" + startTime.Value.Month.ToString() + "/" + startTime.Value.Year.ToString() + " 00:00:00.000') AND CONVERT(datetime,'"
+       + endTime.Value.Day.ToString() + "/" + endTime.Value.Month.ToString() + "/" + endTime.Value.Year.ToString() + " 23:59:59.998')"
+       + "\r\n GROUP BY sh.BookReceiptID,sh.DateReceived, TotalAmt,SupplierID,IsCancelled,RefNo";
+            }
+
+            DataTable res = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+
+            if (res.Rows.Count == 0)
+                return new ObservableCollection<BooksPurchaseModel>();
+
+            tempCls = new ObservableCollection<BooksPurchaseModel>();
+            foreach (DataRow d in res.Rows)
+            {
+                temp = new BooksPurchaseModel();
+                temp.PurchaseID = int.Parse(d[0].ToString());
+                temp.OrderDate = DateTime.Parse(d[1].ToString());
+                temp.OrderTotal = decimal.Parse(d[2].ToString());
+                if (supplierID.HasValue)
+                    temp.SupplierID = supplierID.Value;
+                else temp.SupplierID = int.Parse(d[3].ToString());
+                temp.IsCancelled = bool.Parse(d[4].ToString());
+                temp.NoOfItems = decimal.Parse(d[5].ToString());
+                temp.RefNo = d[6].ToString();
+                if (includeAllDetails)
+                {
+                    temp.Items = GetBooksReceiptItems(temp.PurchaseID);
+                    temp.NoOfItems = temp.Items.Count;
+                }
+                tempCls.Add(temp);
+            }
+            return tempCls;
+        }
+
         public static ObservableCollection<ItemPurchaseModel> GetItemsReceiptItems(int saleId)
         {
             ObservableCollection<ItemPurchaseModel> tempcls = new ObservableCollection<ItemPurchaseModel>();
@@ -411,6 +507,30 @@ namespace Helper
                 decimal.TryParse(dtr[2].ToString(), out pr);
                 decimal.TryParse(dtr[3].ToString(), out qt);
                 tempcls.Add(new ItemPurchaseModel(id, dtr[1].ToString(), qt, pr));
+            }
+            return tempcls;
+        }
+
+        public static ObservableCollection<BookReceiptModel> GetBooksReceiptItems(int bookReceiptID)
+        {
+            ObservableCollection<BookReceiptModel> tempcls = new ObservableCollection<BookReceiptModel>();
+
+            string selectStr = "SELECT sod.BookID,p.Author,p.Title,p.ISBN,,sod.UnitPrice,sod.Quantity FROM " +
+                "[Sales].[BookReceiptDetail] sod LEFT OUTER JOIN [Institution].[Book] p ON( sod.BookID = p.BookID)" +
+                " WHERE sod.BookReceiptID = " + bookReceiptID;
+
+            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            BookReceiptModel brm;
+            foreach (DataRow dtr in dt.Rows)
+            {
+                brm=new BookReceiptModel();
+                brm.BookID = int.Parse(dtr[0].ToString());
+                brm.Author = dtr[1].ToString();
+                brm.Title = dtr[2].ToString();
+                brm.ISBN = dtr[3].ToString();
+                brm.Price = decimal.Parse(dtr[4].ToString());
+                brm.Quantity = decimal.Parse(dtr[5].ToString());
+                tempcls.Add(brm);
             }
             return tempcls;
         }
@@ -447,6 +567,13 @@ namespace Helper
            int? supplierID, DateTime? startTime, DateTime? endTime)
         {
             return Task.Run<ObservableCollection<PurchaseModel>>(() => GetItemReceipts(includeAllDetails, supplierID, startTime, endTime));
+
+        }
+
+        public static Task<ObservableCollection<BooksPurchaseModel>> GetBookReceiptsAsync(bool includeAllDetails,
+           int? supplierID, DateTime? startTime, DateTime? endTime)
+        {
+            return Task.Run<ObservableCollection<BooksPurchaseModel>>(() => GetBookReceipts(includeAllDetails, supplierID, startTime, endTime));
 
         }
 
@@ -856,6 +983,26 @@ namespace Helper
                 {
                     insertStr += "\r\nINSERT INTO [Sales].[ItemReceiptDetail] (ItemReceiptID,ItemID,UnitCost,Quantity,LineTotal) " +
                         "VALUES(@id," + obs.ItemID + "," + obs.Cost + "," + obs.Quantity + "," + obs.TotalAmt + ")";
+                }
+                insertStr += "\r\nCOMMIT";
+                DataAccessHelper.ExecuteNonQuery(insertStr);
+                return true;
+            });
+        }
+
+        public static Task<bool> SaveNewBooksPurchaseAsync(BooksPurchaseModel currentPurchase)
+        {
+            return Task.Run<bool>(() =>
+            {
+                string insertStr = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Sales.BookReceiptHeader')\r\n" +
+                   "INSERT INTO [Sales].[BookReceiptHeader] (BookReceiptID,SupplierID,DateReceived,RefNo,IsCancelled) " +
+                   "VALUES(@id," + currentPurchase.SupplierID + ",'" + currentPurchase.OrderDate.ToString("g") + "','"
+                   + currentPurchase.RefNo + "'," + (currentPurchase.IsCancelled ? "1" : "0") + ")";
+
+                foreach (BookReceiptModel obs in currentPurchase.Items)
+                {
+                    insertStr += "\r\nINSERT INTO [Sales].[BookReceiptDetail] (BookReceiptID,BookID,UnitCost,Quantity,LineTotal) " +
+                        "VALUES(@id," + obs.BookID + "," + obs.Cost + "," + obs.Quantity + "," + obs.TotalAmt + ")";
                 }
                 insertStr += "\r\nCOMMIT";
                 DataAccessHelper.ExecuteNonQuery(insertStr);
@@ -2667,7 +2814,7 @@ namespace Helper
             return GetTerm(DateTime.Now);
         }
 
-        private static int GetTerm(DateTime date)
+        internal static int GetTerm(DateTime date)
         {
             if (date.Year == DateTime.Now.Year)
             {
@@ -3033,7 +3180,7 @@ namespace Helper
                 set.Code = string.IsNullOrWhiteSpace(dtr[5].ToString()) ? 0 : int.Parse(dtr[5].ToString());
                 set.Tutor = dtr[4].ToString();
                 set.SubjectID = int.Parse(dtr[6].ToString());
-                set.Remarks = dtr[7].ToString();
+                set.Remarks = set.GetRemark(set.MeanScore);
                 set.Grade = CalculateGrade(set.MeanScore);
                 set.Points = CalculatePoints(set.Grade);
                 temp.Add(set);
@@ -4068,22 +4215,22 @@ namespace Helper
             });
         }
 
-        public static Task<ObservableCollection<BookModel>> GetUnreturnedBooksAsync()
+        public static Task<ObservableCollection<UnreturnedBookModel>> GetUnreturnedBooksAsync()
         {
-            return Task.Run<ObservableCollection<BookModel>>(() =>
+            return Task.Run<ObservableCollection<UnreturnedBookModel>>(() =>
             {
-                ObservableCollection<BookModel> temp = new ObservableCollection<BookModel>();
-                string selectStr = "SELECT x.BookID,b.ISBN,b.Name,b.Author,b.Publisher,b.SPhoto,b.Price FROM ((SELECT bid.BookID FROM [Institution].[BookIssueDetail]" +
+                ObservableCollection<UnreturnedBookModel> temp = new ObservableCollection<UnreturnedBookModel>();
+                string selectStr = "SELECT x.BookID,b.ISBN,b.Name,b.Author,b.Publisher,b.SPhoto,b.Price,dbo.GetUnreturnedCopies(x.BookID) FROM ((SELECT bid.BookID FROM [Institution].[BookIssueDetail]" +
                     " bid INNER JOIN [Institution].[BookIssueHeader] bih ON(bid.BookIssueID=bih.BookIssueID) " +
                     "WHERE NOT EXISTS(SELECT brd.BookID FROM [Institution].[BookReturnDetail] brd " +
                     "INNER JOIN [Institution].[BookReturnHeader] brh ON(brd.BookReturnID=brh.BookReturnID) " +
                     "WHERE brh.DateReturned>bih.DateIssued AND brd.BookID=bid.BookID)) x LEFT OUTER JOIN [Institution].[Book] b " +
                     "ON (x.BookID=b.BookID))";
                 DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
-                BookModel book;
+                UnreturnedBookModel book;
                 foreach (DataRow dtr in dt.Rows)
                 {
-                    book = new BookModel();
+                    book = new UnreturnedBookModel();
                     book.BookID = int.Parse(dtr[0].ToString());
                     book.ISBN = dtr[1].ToString();
                     book.Title = dtr[2].ToString();
@@ -4091,6 +4238,7 @@ namespace Helper
                     book.Publisher = dtr[4].ToString();
                     book.SPhoto = (dtr[5] != null && !(dtr[5] is DBNull)) ? (byte[])dtr[5] : new byte[0];
                     book.Price = decimal.Parse(dtr[6].ToString());
+                    book.UnreturnedCopies = decimal.Parse(dtr[7].ToString());
                     temp.Add(book);
                 }
                 return temp;

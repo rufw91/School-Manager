@@ -9,6 +9,7 @@ namespace Helper.Models
         public FeesStructureModel()
         {
             FeesStructureID = 0;
+            NameOfCombinedClass = "";
             ClassID = 0;
             IsActive = true;
             StartDate = DateTime.Now;
@@ -18,6 +19,7 @@ namespace Helper.Models
 
         public override void Reset()
         {
+            NameOfCombinedClass = "";
             FeesStructureID = 0;
             ClassID = 0;
             IsActive = true;
@@ -27,6 +29,9 @@ namespace Helper.Models
         }
          
         public int FeesStructureID
+        { get; set; }
+
+        public string NameOfCombinedClass
         { get; set; }
 
         public int ClassID

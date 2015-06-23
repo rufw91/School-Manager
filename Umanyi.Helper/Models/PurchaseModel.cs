@@ -21,12 +21,13 @@ namespace Helper.Models
             Items = new ObservableCollection<ItemPurchaseModel>();
             OrderDate = DateTime.Now;
             RefNo = "";
+            OrderTotal = 0;
+            IsCancelled = false;
             Items.CollectionChanged += (o, e) =>
                 {
                     RefreshOrderTotal();
                 };
-            OrderTotal = 0;
-            IsCancelled = false;
+            
         }
 
         public void RefreshOrderTotal()

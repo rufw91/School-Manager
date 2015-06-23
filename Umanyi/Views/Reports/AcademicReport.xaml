@@ -34,40 +34,44 @@
         <TabControl HorizontalAlignment="Left" Margin="10,20,0,10" Grid.Row="1" Width="220"
                     BorderThickness="1" BorderBrush="Silver" Style="{x:Null}">
             <TabItem Header="Filters" Height="22" VerticalAlignment="Bottom">
-                <Grid>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,20,0,0" Text="Student ID is:" VerticalAlignment="Top"/>
-                    <TextBox Margin="10,40,10,0" VerticalAlignment="Top" 
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,20,0,0" Text="Student ID is:" VerticalAlignment="Top"/>
+                        <TextBox Margin="10,40,10,0" VerticalAlignment="Top" 
                              Text="{Binding StudentID, UpdateSourceTrigger=PropertyChanged, Delay=10}"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,80,0,0" Text="Class is:" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,100,10,0" VerticalAlignment="Top"
+                        <TextBlock HorizontalAlignment="Left" Margin="10,80,0,0" Text="Class is:" VerticalAlignment="Top"/>
+                        <ComboBox Margin="10,100,10,0" VerticalAlignment="Top"
                               ItemsSource="{Binding AllClasses}"
                               DisplayMemberPath="NameOfClass" SelectedValuePath="ClassID"
                               SelectedValue="{Binding ClassID, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,140,0,0" Text="Exam is:" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,160,10,0" VerticalAlignment="Top"
+                        <TextBlock HorizontalAlignment="Left" Margin="10,140,0,0" Text="Exam is:" VerticalAlignment="Top"/>
+                        <ComboBox Margin="10,160,10,0" VerticalAlignment="Top"
                               ItemsSource="{Binding AllExams}"
-                              DisplayMemberPath="NameOfExam" SelectedValuePath="ExamID"
-                              SelectedValue="{Binding ExamID, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,200,0,0" Text="Grade" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,220,10,0" VerticalAlignment="Top" 
+                              DisplayMemberPath="NameOfExam" SelectedItem="{Binding SelectedExam, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,200,0,0" Text="Grade" VerticalAlignment="Top"/>
+                        <ComboBox Margin="10,220,10,0" VerticalAlignment="Top" 
                               ItemsSource="{Binding Comparisons}"
                               DisplayMemberPath="Description" SelectedValuePath="Value"
                               SelectedValue="{Binding SelectedComparisonValue1, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,260,0,0" Text="Value" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,280,10,0" VerticalAlignment="Top" 
+                        <TextBlock HorizontalAlignment="Left" Margin="10,260,0,0" Text="Value" VerticalAlignment="Top"/>
+                        <ComboBox Margin="10,280,10,0" VerticalAlignment="Top" 
                               ItemsSource="{Binding AllGrades}"
                               SelectedItem="{Binding Grade, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,320,0,0" Text="Score" VerticalAlignment="Top"/>
-                    <ComboBox Margin="10,340,10,0" VerticalAlignment="Top" 
+                        <TextBlock HorizontalAlignment="Left" Margin="10,320,0,0" Text="Score" VerticalAlignment="Top"/>
+                        <ComboBox Margin="10,340,10,0" VerticalAlignment="Top" 
                               ItemsSource="{Binding Comparisons}"
                               DisplayMemberPath="Description" SelectedValuePath="Value"
                               SelectedValue="{Binding SelectedComparisonValue2, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,380,0,0" Text="Value" VerticalAlignment="Top"/>
-                    <TextBox Margin="10,400,10,0" VerticalAlignment="Top" 
+                        <TextBlock HorizontalAlignment="Left" Margin="10,380,0,0" Text="Value" VerticalAlignment="Top"/>
+                        <TextBox Margin="10,400,10,0" VerticalAlignment="Top" 
                              Text="{Binding Score, UpdateSourceTrigger=PropertyChanged, Delay=10}"/>
-                    <Button Content="Refresh" Margin="20,0,20,10" VerticalAlignment="Bottom"
+                        <TextBlock HorizontalAlignment="Left" Margin="10,440,0,0" Text="Convert to Out of Value" VerticalAlignment="Top"/>
+                        <TextBox Margin="10,460,10,0" VerticalAlignment="Top" 
+                             Text="{Binding OutOf, UpdateSourceTrigger=PropertyChanged, Delay=10}"/>
+                        <Button Content="Refresh" Margin="20,520,20,10" VerticalAlignment="Top"
                             Command="{Binding RefreshCommand}"/>
-                </Grid>
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="Columns">
                 <Grid>

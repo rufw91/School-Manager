@@ -16,9 +16,11 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="View Full Fees Structure" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="89,75,0,0" Text="Date" VerticalAlignment="Top"/>
         <DatePicker HorizontalAlignment="Left" Margin="120,75,0,0" VerticalAlignment="Top" Width="200"
-                    SelectedDate="{Binding CurrentDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    SelectedDate="{Binding CurrentDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Long"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,126,0,0" Style="{DynamicResource Title0}" Text="Preview" VerticalAlignment="Top"/>
-        <DocumentViewer Margin="20,161,20,20" Document="{Binding CurrentStructure.Entries}"/>
+        <Border Margin="20,160,20,20" BorderBrush="Silver" BorderThickness="2">
+            <DocumentViewer Name="viewer" Document="{Binding Document}"/>
+        </Border>
 
         <TextBlock HorizontalAlignment="Right" Margin="0,140,80,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding FullPreviewCommand}">Full Preview</Hyperlink>

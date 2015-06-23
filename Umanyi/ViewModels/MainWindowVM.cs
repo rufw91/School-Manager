@@ -51,6 +51,16 @@ namespace UmanyiSMS.ViewModels
 
         protected override void CreateCommands()
         {
+            DisplayReceiveBooksCommand = new RelayCommand(o =>
+            {
+                this.Source = new ReceiveBooksVM();
+            }, o => true);
+
+            DisplayBooksReceiptHistoryCommand = new RelayCommand(o =>
+            {
+                this.Source = new BookReceiptHistoryVM();
+            }, o => true);
+
             DisplayAcademicReportCommand = new RelayCommand(o =>
             {
                 this.Source = new AcademicReportVM();
@@ -368,6 +378,18 @@ namespace UmanyiSMS.ViewModels
         {
             get;
             set;
+        }
+
+        public ICommand DisplayReceiveBooksCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand DisplayBooksReceiptHistoryCommand
+        {
+            get;
+            private set;
         }
 
         public ICommand DisplayAcademicReportCommand

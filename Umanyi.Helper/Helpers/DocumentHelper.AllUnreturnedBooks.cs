@@ -18,7 +18,7 @@ namespace Helper
             AddText(dateTime.ToString("dd-MMM-yyyy"), "Arial", 14, true, 0, Colors.Black, 630, 85, pageNo);
         }
 
-        private static void AddUB2Entry(BookModel item, int itemIndex, int pageNo)
+        private static void AddUB2Entry(UnreturnedBookModel item, int itemIndex, int pageNo)
         {
             double fontsize = 14;
             int pageRelativeIndex = itemIndex - itemsPerPage * pageNo;
@@ -28,9 +28,9 @@ namespace Helper
             AddText(item.Title, "Arial", fontsize, false, 0, Colors.Black, 145, yPos, pageNo);
             AddText(item.Author, "Arial", fontsize, false, 0, Colors.Black, 305, yPos, pageNo);
             AddText(item.Publisher, "Arial", fontsize, false, 0, Colors.Black, 455, yPos, pageNo);
-            AddText(item.Price.ToString("N2"), "Arial", fontsize, false, 0, Colors.Black, 605, yPos, pageNo);
+            AddText(item.UnreturnedCopies.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 605, yPos, pageNo);
         }
-        private static void AddUB2Entries(ObservableCollection<BookModel> psi, int pageNo)
+        private static void AddUB2Entries(ObservableCollection<UnreturnedBookModel> psi, int pageNo)
         {
 
             int startIndex = pageNo * itemsPerPage;
@@ -41,7 +41,7 @@ namespace Helper
                 endIndex = psi.Count - 1;
 
             for (int i = startIndex; i <= endIndex; i++)
-                AddUBEntry(psi[i], i, pageNo);
+                AddUB2Entry(psi[i], i, pageNo);
         }
 
         private static void GenerateUnreturnedBooks2()

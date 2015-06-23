@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Helper
 {
-    public abstract class ViewModelBase : NotifiesPropertyChanged, IDisposable
+    public abstract class ViewModelBase : NotifiesPropertyChanged
     {
         string title;
         bool isBusy;
@@ -15,10 +15,6 @@ namespace Helper
             Title = "";
             IsBusy = false;
             isActive = false;
-        }
-        public void Dispose()
-        {
-            Reset();
         }
 
         protected abstract void InitVars();

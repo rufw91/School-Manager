@@ -48,7 +48,7 @@ namespace Helper
             try
             {
                 FixedPage p;
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < noOfPages; i++)
                 {
                     PageContent pageContent = new PageContent();
                     p = GetPage(docType);
@@ -200,7 +200,7 @@ namespace Helper
             if (docType == DocType.AggregateResult)
                 return 1;
             if (docType == DocType.FeesStructure)
-                return 1;
+                return (workObject as FullFeesStructureModel).Count;
             if (workObject is SaleModel)
                 totalNoOfItems = (workObject as SaleModel).SaleItems.Count;
             if (workObject is FeesStatementModel)
@@ -223,6 +223,8 @@ namespace Helper
                 return (workObject as ClassLeavingCertificatesModel).Entries.Count;
             if (workObject is ReportModel)
                 totalNoOfItems = (workObject as ReportModel).Entries.Rows.Count;
+            if (workObject is AllUnreturnedBooksModel)
+                totalNoOfItems = (workObject as AllUnreturnedBooksModel).Count;
             return (totalNoOfItems % itemsPerPage) != 0 ?
                 (totalNoOfItems / itemsPerPage) + 1 : (totalNoOfItems / itemsPerPage);
         }

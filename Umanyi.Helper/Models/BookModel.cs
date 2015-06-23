@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-
+﻿
 namespace Helper.Models
 {
     public class BookModel:ModelBase
@@ -17,7 +10,6 @@ namespace Helper.Models
         byte[] sPhoto;
         private string publisher;
         private decimal price;
-        private int availableCopies;
 
         public BookModel()
         {
@@ -28,23 +20,19 @@ namespace Helper.Models
             SPhoto = new byte[0];
             Publisher = "";
             Price = 0;
-            AvailableCopies = 0;
         }
 
-        public int AvailableCopies
+        public BookModel(BookModel book)
         {
-            get { return this.availableCopies; }
-
-            set
-            {
-                if (value != this.availableCopies)
-                {
-                    this.availableCopies = value;
-                    NotifyPropertyChanged("AvailableCopies");
-                }
-            }
+            BookID = book.bookID;
+            Title = book.title;
+            Author = book.author;
+            ISBN = book.isbn;
+            SPhoto = book.sPhoto;
+            Publisher = book.publisher;
+            Price = book.price;
         }
-
+        
         public int BookID
         {
             get { return this.bookID; }

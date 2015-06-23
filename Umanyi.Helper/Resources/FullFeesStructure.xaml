@@ -1,58 +1,38 @@
 ﻿<FixedPage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-           Height="793.76" Width="1122.56">
-    <Grid Height="793.76" Width="1122.56" DataContext="{Binding Source={x:Static Application.Current}}">
-    <TextBlock HorizontalAlignment="Left" Margin="230,36,0,0" Text="FEES RECEIPT" FontWeight="Bold" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="16"/>
-       
-        <StackPanel Orientation="Horizontal" Margin="269,153,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <TextBlock HorizontalAlignment="Center" 
-                   Text="{Binding Info.Address, StringFormat='P.O. BOX {0} '}"
-                   VerticalAlignment="Top" FontFamily="Times New Roman" />
-            <TextBlock HorizontalAlignment="Center"
-                   Text="{Binding Info.City, StringFormat=' {0}'}"
-                   VerticalAlignment="Top" FontFamily="Times New Roman"/>
-        </StackPanel>
-        <TextBlock HorizontalAlignment="Left" Margin="269,105,0,0" Text="{Binding Info.FullNameAlt}" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="18"/>
-        <TextBlock HorizontalAlignment="Left" Margin="269,135,0,0" Text="{Binding Info.AltInfo}" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-
-        <TextBlock HorizontalAlignment="Left" Margin="269,171,0,0" Text="{Binding Info.PhoneNo, StringFormat='TEL: {0}'}" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-        <TextBlock HorizontalAlignment="Left" Margin="269,189,0,0" Text="{Binding Info.Email, StringFormat='email: {0}'}" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-
-    <TextBlock HorizontalAlignment="Left" Margin="30,231,0,0" Text="Adm No:" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-    <TextBlock HorizontalAlignment="Left" Margin="30,249,0,0" Text="NAME:" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-    <TextBlock HorizontalAlignment="Left" Margin="30,267,0,0" Text="Class:" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-    <TextBlock HorizontalAlignment="Left" Margin="30,285,0,0" Text="Term:" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-
-    <TextBlock HorizontalAlignment="Left" Margin="30,317,0,0" Text="Item" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Times New Roman"/>
-    <TextBlock HorizontalAlignment="Left" Margin="250,317,0,0" Text="Amount" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Times New Roman"/>
-        <Image HorizontalAlignment="Left" Height="169" Margin="10,25,0,0" VerticalAlignment="Top" Width="186" 
-               Source="{Binding Info.Logo, Source={x:Static Application.Current}}" 
-               RenderTransformOrigin="0.5,0.5"/>
-    <TextBlock  HorizontalAlignment="Left" Margin="661,0,0,20" Text="In Pursuit Of Excellence" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Segoe UI" FontStyle="Italic"/>
-
-    <TextBlock  HorizontalAlignment="Left" Margin="791,36,0,0" Text="FEES RECEIPT" FontWeight="Bold" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="16"/>
-        <TextBlock  HorizontalAlignment="Left" Margin="830,105,0,0" Text="{Binding Info.FullNameAlt}" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="18"/>
-        <TextBlock  HorizontalAlignment="Left" Margin="830,135,0,0" Text="{Binding Info.AltInfo}" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-    
-        <StackPanel Orientation="Horizontal" Margin="830,153,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <TextBlock HorizontalAlignment="Center" 
-                   Text="{Binding Info.Address, StringFormat='P.O. BOX {0} '}"
-                   VerticalAlignment="Top" FontFamily="Times New Roman" />
-            <TextBlock HorizontalAlignment="Center"
-                   Text="{Binding Info.City, StringFormat=' {0}'}"
-                   VerticalAlignment="Top" FontFamily="Times New Roman"/>
-        </StackPanel>
-        <TextBlock  HorizontalAlignment="Left" Margin="830,171,0,0" Text="{Binding Info.PhoneNo, StringFormat='TEL: {0}'}" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-        <TextBlock  HorizontalAlignment="Left" Margin="830,189,0,0" Text="{Binding Info.Email, StringFormat='email: {0}'}" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-
-    <TextBlock  HorizontalAlignment="Left" Margin="591,231,0,0" Text="Adm No:" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-    <TextBlock  HorizontalAlignment="Left" Margin="591,249,0,0" Text="NAME:" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-    <TextBlock  HorizontalAlignment="Left" Margin="591,267,0,0" Text="Class:" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-    <TextBlock  HorizontalAlignment="Left" Margin="591,285,0,0" Text="Term:" VerticalAlignment="Top" FontFamily="Times New Roman"/>
-
-    <TextBlock  HorizontalAlignment="Left" Margin="591,317,0,0" Text="Item" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Times New Roman"/>
-    <TextBlock  HorizontalAlignment="Left" Margin="811,317,0,0" Text="Amount" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Times New Roman"/>
-        <Image  HorizontalAlignment="Left" Height="169" Margin="571,25,0,0" VerticalAlignment="Top" Width="186" Source="{Binding Info.Logo, Source={x:Static Application.Current}}" RenderTransformOrigin="0.5,0.5"/>
-    <TextBlock  HorizontalAlignment="Left" Margin="100,0,0,20" Text="In Pursuit Of Excellence" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Segoe UI" FontStyle="Italic"/>
-  </Grid>
+           Height="1122.56" Width="793.76">
+    <Grid Height="1122.56" Width="793.76" DataContext="{Binding Source={x:Static Application.Current}}">
+        <TextBlock HorizontalAlignment="Center" Margin="210,10,210,0" Text="MBEE HIGH SCHOOL" VerticalAlignment="Top" FontFamily="Cambria" FontSize="28" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Center" Margin="16,48,520,0"  VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="16" FontWeight="Bold" Width="214" 
+                           TextWrapping="Wrap">P.O. BOX 40 - 90105 Kathiani<LineBreak/>TEL: +254 729 897 871</TextBlock>
+        <Image HorizontalAlignment="Center" Margin="244,50,399.76,0" VerticalAlignment="Top" Stretch="Fill" Width="150" Height="100" 
+                       Source="{Binding Info.Logo, Source={x:Static Application.Current}}"/>
+        
+        <TextBlock HorizontalAlignment="Center" Margin="0,185,0,0" TextWrapping="Wrap" Text="FEES STRUCTURE" VerticalAlignment="Top" FontFamily="Times New Roman" FontWeight="Bold" FontSize="16"/>
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,230,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,280,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,320,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,360,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,400,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,440,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,480,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,520,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,560,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,600,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,640,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,680,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,720,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,760,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,800,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,840,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" HorizontalAlignment="Left" BorderThickness="2" Width="2" Height="700" Margin="20,230,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" HorizontalAlignment="Left" BorderThickness="2" Width="2" Height="610" Margin="70,230,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" HorizontalAlignment="Left" BorderThickness="2" Width="2" Height="700" Margin="570,230,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" HorizontalAlignment="Right" BorderThickness="2" Width="2" Height="700" Margin="20,230,20,0" VerticalAlignment="Top" />
+        <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,930,20,0" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Center" Margin="0,0,0,15" Text="{Binding Info.Motto, Source={x:Static Application.Current}}" VerticalAlignment="Bottom" FontStyle="Italic"/>
+        <TextBlock HorizontalAlignment="Left" Margin="268,873,0,0" TextWrapping="Wrap" Text="TOTAL" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="18" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="245,245,0,0" TextWrapping="Wrap" Text="DESCRIPTION" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="18" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="625,245,0,0" TextWrapping="Wrap" Text="AMOUNT" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="18" FontWeight="Bold"/>
+    </Grid>
 </FixedPage>

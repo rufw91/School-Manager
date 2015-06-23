@@ -14,33 +14,33 @@ namespace Helper
         #region FeesStructure
         private static void AddFSDate(DateTime dt, int pageNo)
         {
-            //AddText(dt.ToString("dd MMM yyyy hh:mm:ss"), 12.5, false, 0, Colors.Black, 640, 70, pageNo);
+            AddText(dt.ToString("dd MMM yyyy"), 14, false, 0, Colors.Black, 660, 95, pageNo);
         }
-        private static void AddFSPeriod(string period, int pageNo)
+        private static void AddFSTerm(int term, int pageNo)
         {
-         //   AddText(period, 16, true, 0, Colors.Black, 165, 240, pageNo);
+            AddText("TERM " + term, 16, true, 0, Colors.Black, 365, 165, pageNo);
+        }
+        private static void AddFSClassName(string nameOfClass, int pageNo)
+        {
+            AddText(nameOfClass, 16, true, 0, Colors.Black, 365, 205, pageNo);
         }
         
+        private static void AddFSTotal(decimal total, int pageNo)
+        {
+            AddText(total.ToString("N2"), 16, true, 0, Colors.Black, 630, 875, pageNo);
+        }
+
         private static void AddFSEntry(FeesStructureEntryModel item, int itemIndex, int pageNo)
         {
-            /*double fontsize = 14;
-            int pageRelativeIndex = itemIndex - itemsPerPage * pageNo;
-            double yPos = 405 + pageRelativeIndex * 25;
-            if ((pageNo == 0) && (itemIndex == 0))
-                AddText(item.TransactionAmt.ToString("N2"), 16, true, 0, Colors.Black, 70, 340, pageNo);
-            else
-            {
-                AddText(item.TransactionDateTime.ToString("dd-MM-yyyy"), fontsize, false, 0, Colors.Black, 55, yPos, pageNo);
-                AddText(item.TransactionID, fontsize, false, 0, Colors.Black, 220, yPos, pageNo);
-                AddText((item.TransactionType == TransactionTypes.Credit) ? "Fees Paid-" + item.TransactionID : "Fees Due-" + item.TransactionID,
-                    fontsize, false, 0, Colors.Black, 430, yPos, pageNo);
-                AddText(item.TransactionAmt.ToString("N2"), fontsize, false, 0, Colors.Black, 665, yPos, pageNo);
-
-            }*/
+            int pageRelativeIndex = itemIndex;
+            double yPos = 290 + pageRelativeIndex * 40;
+            AddText((itemIndex+1).ToString(), 16, true, 0, Colors.Black, 40, yPos, pageNo);
+            AddText(item.Name, 16, true, 0, Colors.Black, 130, yPos, pageNo);
+            AddText(item.Amount.ToString("N2"), 16, true, 0, Colors.Black, 630, yPos, pageNo);
         }
         private static void AddFSEntries(ObservableCollection<FeesStructureEntryModel> psi, int pageNo)
         {
-           /* int startIndex = pageNo * itemsPerPage;
+            int startIndex = 0;
             int endIndex = startIndex + itemsPerPage - 1;
             if (startIndex >= psi.Count)
                 return;
@@ -48,7 +48,7 @@ namespace Helper
                 endIndex = psi.Count - 1;
 
             for (int i = startIndex; i <= endIndex; i++)
-                AddFSEntry(psi[i], i, pageNo);*/
+                AddFSEntry(psi[i], i, pageNo);
 
         }
 
@@ -58,9 +58,14 @@ namespace Helper
             int pageNo;
             for (pageNo = 0; pageNo < noOfPages; pageNo++)
             {
-                //AddFSDate(si.DateOfStatement, pageNo);
-                //AddFSPeriod(si.StudentID, pageNo);
-                //AddFSEntries(si.Transactions, pageNo);
+                AddFSDate(DateTime.Now, pageNo);
+                AddFSClassName(si[pageNo].NameOfCombinedClass, pageNo);
+                AddFSTerm(DataAccess.GetTerm(si[pageNo].StartDate), pageNo);
+                AddFSEntries(si[pageNo].Entries, pageNo);
+                decimal tot = 0;
+                foreach (var t in si[pageNo].Entries)
+                    tot += t.Amount;
+                AddFSTotal(tot, pageNo);
             }
         }
         #endregion

@@ -32,15 +32,16 @@ namespace UmanyiSMS.ViewModels
             CreateCommands();
         }
 
-        ~RecentGalleryItemsVM()
-        {
-            Dispose();
+        public void Dispose(bool freeAll)
+        {            
+            if (tfx != null)
+                tfx.Delete();
         }
 
         public void Dispose()
         {
-            if (tfx != null)
-                tfx.Delete();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected async override void InitVars()

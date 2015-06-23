@@ -78,7 +78,7 @@ namespace UmanyiSMS
                 App.Info.CurrentUser = UsersHelper.CurrentUser;
                 if (_type == LoginType.Login)
                 {
-                    this.Visibility = System.Windows.Visibility.Collapsed;
+                   // this.Visibility = System.Windows.Visibility.Collapsed;
                    /*if (CheckFirstRun())
                     {
                         
@@ -94,7 +94,7 @@ namespace UmanyiSMS
                         Application.Current.MainWindow = main;
                         main.Show();
                         shutDownApp = false;
-                        this.Visibility = System.Windows.Visibility.Collapsed;
+                        //this.Visibility = System.Windows.Visibility.Collapsed;
                         this.Close();
                    // }
 
