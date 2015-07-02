@@ -1,7 +1,10 @@
-﻿using System.Management;
+﻿using System;
+using System.Management;
+using System.Security.Cryptography;
+using System.Text;
 namespace Helper
 {
-    public static class SystemInfo
+    public class SystemInfo
     {
         static SystemInfo()
         {
@@ -33,7 +36,14 @@ namespace Helper
             {
                 BIOSSerial = i3["SerialNumber"].ToString();
             }
+
+            byte[] data = Encoding.UTF8.GetBytes(MotherBoardSerial + ProcessorID);
+            using (SHA1Managed d = new SHA1Managed())
+            {
+                SystemHash = Convert.ToBase64String(d.ComputeHash(data));
+            }
         }
+     
         public static string MotherBoardSerial
         {
             get;
@@ -50,6 +60,12 @@ namespace Helper
             set;
         }
         public static string BIOSSerial
+        {
+            get;
+            set;
+        }
+
+        public static string SystemHash
         {
             get;
             set;

@@ -1626,7 +1626,6 @@ namespace Helper
                 if (r.Rows.Count != 0)
                 {
                     StudentListModel CurrentStudent;
-                    bool x;
                     foreach (DataRow dtr in r.Rows)
                     {
                         CurrentStudent = new StudentListModel();

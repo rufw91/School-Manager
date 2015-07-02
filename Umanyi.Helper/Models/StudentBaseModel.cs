@@ -85,7 +85,7 @@ namespace Helper.Models
             return HasErrors;
         }
 
-        public virtual void CopyFrom(StudentBaseModel student)
+        public void CopyFrom(StudentBaseModel student)
         {
             this.StudentID = student.StudentID;
             this.NameOfStudent = student.NameOfStudent;

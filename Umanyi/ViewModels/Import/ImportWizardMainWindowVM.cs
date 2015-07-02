@@ -38,6 +38,8 @@ namespace UmanyiSMS.ViewModels
         string addressColumn;
         string cityColumn;
         string kcpeScoreColumn;
+        string bedNoColumn;
+        string dormitoryColumn;
         
         private int testProgressStudentID;
         private int testProgressFirstName;
@@ -59,8 +61,7 @@ namespace UmanyiSMS.ViewModels
         private int progress;
         private string progressText;
         private string informationText;
-        private string bedNoColumn;
-        private string dormitoryColumn;
+        
 
         public ImportWizardMainWindowVM()
         {

@@ -24,13 +24,13 @@ namespace UmanyiSMS.ViewModels
         }
         protected override void CreateCommands()
         {
-            RefreshCommand = new RelayCommand(async o =>
+            RefreshCommand = new RelayCommand( o =>
             {
                 //Entries = await DataAccess.GetCurrentTimeTableAsync((int)selectedDay);
             }, o => true);
         }
 
-        protected async override void InitVars()
+        protected override void InitVars()
         {            
             Title = "CURRENT TIMETABLE";
             DaysOfTheWeek = Enum.GetValues(typeof(DayOfWeek));

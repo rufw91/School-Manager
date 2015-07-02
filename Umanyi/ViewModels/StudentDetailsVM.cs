@@ -9,7 +9,6 @@ namespace UmanyiSMS.ViewModels
     public class StudentDetailsVM : ViewModelBase
     {
         StudentListModel currentStudent;
-        private bool isReadonly;
         public StudentDetailsVM()
         {
             InitVars();

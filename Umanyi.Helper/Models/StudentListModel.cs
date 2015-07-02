@@ -91,20 +91,6 @@ namespace Helper.Models
             }
         }
 
-        public bool IsActive
-        {
-            get { return this.isActive; }
-
-            set
-            {
-                if (value != this.isActive)
-                {
-                    this.isActive = value;
-                    NotifyPropertyChanged("IsActive");
-                }
-            }
-        }
-
         public bool IsTransferred
         {
             get { return this.isTransferred; }

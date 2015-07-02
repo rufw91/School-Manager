@@ -18,7 +18,6 @@ namespace UmanyiSMS.ViewModels
         ObservableCollection<StudentListModel> allStudents;
         string searchText="";
         CollectionViewSource collViewSource;
-        bool showCleared;
         bool showInactive;
         public StudentListVM()
         {
