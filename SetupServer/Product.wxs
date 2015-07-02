@@ -18,7 +18,7 @@
   <?define ProductCode = "b4eb6134-f631-4d04-926f-ea97dfbd6bc2" ?>
   <?endif ?>
   
-  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.7.0" Manufacturer="Umanyi Digital Technologies Ltd" 
+  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.7.556.5661" Manufacturer="Umanyi Digital Technologies Ltd" 
            UpgradeCode="$(var.ProductCode)">
     
 		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />

@@ -5,35 +5,65 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Helper.Helpers
 {
     public static class ActivationHelper
     {
-        public static bool CheckLicense()
+
+        static void CheckLicense()
         {
-            return true;
-        }
-        public async static Task<bool> Activate(string license)
-        {
-                string s1=DataProtection.GetSha1Hash(SystemInfo.MotherBoardSerial);
-                string s2 = DataProtection.GetSha1Hash(license);
-                JObject res=await WebHelper.SendPostRequest("http://monsoondigital.co.ke/activation/",new List<KeyValuePair<string,string>>()
+            if (RegistryHelper.GetKeyValue(null, "adata") == null)
+                return;
+            if (RegistryHelper.GetKeyValue(null, "ah") == null)
+                return;
+            string s = RegistryHelper.GetKeyValue(null, "adata").ToString();
+            if (s.Length < 29)
+                return;
+            if (Security.DataProtection.GetSha1Hash(s) != RegistryHelper.GetKeyValue(null, "ah").ToString())
+                return;
+            if (s[0] == 'X')
+                return;
+            if (s.Length > 29)
+            {
+                if (Helper.Properties.Settings.Default.DBLogFilePath != DateTime.Now.Date.ToString())
                 {
-                    new KeyValuePair<string,string>("tag","activate"),
-                    new KeyValuePair<string,string>("s1",s1),
-                    new KeyValuePair<string,string>("s2",s2)
-                });
-                if (res == null)
-                    return false;
-                if (res["success"].ToString() == "1")
-                    return true;
-                else return false;
+                    int i = int.Parse(s.Substring(29)) + 1;
+                    s = s.Substring(0, 29) + i;
+                    RegistryHelper.SetKeyValue(null, "adata", s);
+                    RegistryHelper.SetKeyValue(null, "ah", Security.DataProtection.GetSha1Hash(s));
+                    Helper.Properties.Settings.Default.DBLogFilePath = DateTime.Now.Date.ToString();
+                }
+            }
+            else
+            {
+                s = s + "0";
+                RegistryHelper.SetKeyValue(null, "adata", s);
+                RegistryHelper.SetKeyValue(null, "ah", Security.DataProtection.GetSha1Hash(s));
+            }
         }
 
         public static Task<bool> IsActivated()
-        {
-            return Task.Run<bool>(() => { return true; });
+        {            
+            return Task.Run<bool>(() => 
+            {
+                CheckLicense();
+                if (RegistryHelper.GetKeyValue(null, "adata") == null)
+                    return false;
+                if (RegistryHelper.GetKeyValue(null, "ah") == null)
+                    return false;
+                string s = RegistryHelper.GetKeyValue(null, "adata").ToString();
+                if (s.Length < 29)
+                    return false;
+                if (Security.DataProtection.GetSha1Hash(s) != RegistryHelper.GetKeyValue(null, "ah").ToString())
+                    return false;
+                if (s[0] == 'X')
+                    return false;
+                if ((s.Length > 29) && (int.Parse(s.Substring(29)) > 30))
+                    return false;
+                return true; 
+            });
         }
 
         private async static Task<bool> DeActivate()

@@ -364,7 +364,7 @@ namespace Helper.Models
             KCPEScore = 0;
             PrevBalance = 0;
         }
-        public new void CopyFrom(StudentModel student)
+        public void CopyFrom(StudentModel student)
         {
             base.CopyFrom(student);
             this.Address = student.Address;

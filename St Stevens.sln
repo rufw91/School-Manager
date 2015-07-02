@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Performance1.psess = Performance1.psess
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActivateMe", "ActivateMe\ActivateMe.csproj", "{1F221629-C956-4CA8-8899-8B7B105E4776}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -160,6 +162,18 @@ Global
 		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
 		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|x64.ActiveCfg = Release|Any CPU
 		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Release|x64.ActiveCfg = Release|Any CPU
+		{1F221629-C956-4CA8-8899-8B7B105E4776}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
