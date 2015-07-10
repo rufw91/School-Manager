@@ -1778,7 +1778,7 @@ namespace Helper
                     case 2: startTime = new DateTime(DateTime.Now.Year, 5, 1); endTime = new DateTime(DateTime.Now.Year, 8, 31); break;
                     case 3: startTime = new DateTime(DateTime.Now.Year, 9, 1); endTime = new DateTime(DateTime.Now.Year, 12, 31); break;
                 }
-                string selectStuds = "SELECT StudentID FROM [Institution].[Student] WHERE ClassID=" + newSale.CustomerID;
+                string selectStuds = "SELECT StudentID FROM [Institution].[Student] WHERE IsActive=1 AND ClassID=" + newSale.CustomerID;
                 var studs = DataAccessHelper.CopyFromDBtoObservableCollection(selectStuds);
                 string insertStr = "BEGIN TRANSACTION\r\n DECLARE @id int;\r\n";
                 foreach (string s in studs)
@@ -3184,7 +3184,11 @@ namespace Helper
                 set.Points = CalculatePoints(set.Grade);
                 temp.Add(set);
             }
-
+            var optionals = new List<int>() { 311, 312, 443, 565 };
+            decimal min = temp.Where(a => optionals.Contains(a.Code)).Min(o => o.MeanScore);
+            var t = temp.First(a => optionals.Contains(a.Code) && a.MeanScore == min);
+            if (temp.Count<11)
+                temp.Remove(t);
             return temp;
         }
 
@@ -5402,6 +5406,84 @@ progressReporter.Report(new OperationProgress(5, "Filtering Data"));
                 else
                     return 0;
             });
+        }
+
+        public static Task<bool> SaveNewPayslip(PayslipModel newSlip)
+        {
+            return Task.Run<bool>(() =>
+            {
+                string insertStr =
+                    "BEGIN TRANSACTION\r\n" +
+                    "DECLARE @id INT; SET @id=dbo.GetNewID('Institution.PayslipHeader')" +
+                    "INSERT INTO [Institution].[PayslipHeader] (PayslipID,StaffID,AmountPaid,DatePaid) " +
+                     "VALUES(@id,@staffID,@amountPaid,@datePaid)\r\n" +
+                     "COMMIT";
+
+                ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                paramColl.Add(new SqlParameter("@staffID", newSlip.StaffID));
+                paramColl.Add(new SqlParameter("@amountPaid", newSlip.AmountPaid));
+                paramColl.Add(new SqlParameter("@datePaid", newSlip.DatePaid.ToString("g")));
+
+                int count = 0;
+               
+                foreach (var e in newSlip.Entries)
+                {
+                    string param1 = "@desc"+count;
+                    string param2 = "@amt"+count;
+                    insertStr += "\r\nINSERT INTO [Institution].[PayslipDetail] (PayslipID,Description,Amount) " +
+                        "VALUES(@id," + param1 + "," + param2 + ")";
+                    paramColl.Add(new SqlParameter(param1, e.Name));
+                    paramColl.Add(new SqlParameter(param2, e.Amount));
+                    count++;
+                }
+
+                return DataAccessHelper.ExecuteNonQueryWithParameters(insertStr, paramColl);
+            });
+        }
+
+        public static Task<ObservableCollection<PayslipModel>> GetRecentPayslipsAsync(StaffSelectModel selectedStaff)
+        {
+            return Task.Run<ObservableCollection<PayslipModel>>(() =>
+            {
+                ObservableCollection<PayslipModel> temp = new ObservableCollection<PayslipModel>();
+                string selectStr = "SELECT TOP 20 PayslipID,AmountPaid, DatePaid FROM [Institution].[PayslipHeader] WHERE StaffID =" +
+                    selectedStaff.StaffID + " ORDER BY [DatePaid] desc";
+
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                PayslipModel fpm;
+                foreach (DataRow dtr in dt.Rows)
+                {
+                    fpm = new PayslipModel();
+                    fpm.PayslipID = int.Parse(dtr[0].ToString());
+                    fpm.AmountPaid = decimal.Parse(dtr[1].ToString());
+                    fpm.StaffID = selectedStaff.StaffID;
+                    fpm.Name = selectedStaff.Name;
+                    fpm.DatePaid = DateTime.Parse(dtr[2].ToString());
+                    fpm.Entries = GetPayslipEntries(fpm.PayslipID);
+                    temp.Add(fpm);
+                }
+
+                return temp;
+            });
+        }
+
+        private static ObservableCollection<FeesStructureEntryModel> GetPayslipEntries(int paySlipID)
+        {
+            ObservableCollection<FeesStructureEntryModel> temp = new ObservableCollection<FeesStructureEntryModel>();
+            string selectStr = "SELECT [Description], [Amount] FROM [Institution].[PayslipDetail] WHERE PaySlipID =" +
+                paySlipID;
+
+            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            FeesStructureEntryModel fpm;
+            foreach (DataRow dtr in dt.Rows)
+            {
+                fpm = new FeesStructureEntryModel();
+                fpm.Amount = decimal.Parse(dtr[1].ToString());
+                fpm.Name = dtr[0].ToString();
+                temp.Add(fpm);
+            }
+
+            return temp;
         }
     }
 }

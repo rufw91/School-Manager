@@ -36,6 +36,7 @@ namespace ActivateMe
 
             RegistryHelper.SetKeyValue(null, "adata", finalkey);
             RegistryHelper.SetKeyValue(null, "ah", GetSha1Hash(finalkey));
+            MessageBox.Show("Successfully saved activation data.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         static string GetSha1Hash(string data)

@@ -31,6 +31,7 @@ namespace UmanyiSMS.ViewModels
             {
                 IsBusy = true;
                  ClassBalancesListModel s = new ClassBalancesListModel();
+
                 foreach (var c in selectedCombinedClass.Entries)
                 {
                    var t = await DataAccess.GetBalancesList(c);
