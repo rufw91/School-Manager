@@ -23,6 +23,11 @@ namespace Helper
             AddText(total.ToString("N2"), "Arial", 16, true, 0, Colors.Black, 80, 1050, pageNo);
         }
 
+        private static void AddBLTotalUnpaid(decimal total, int pageNo)
+        {
+            AddText(total.ToString("N2"), "Arial", 16, true, 0, Colors.Black, 310, 1050, pageNo);
+        }
+
         private static void AddBLStudentBalance(StudentFeesDefaultModel item, int itemIndex, int pageNo)
         {
             double fontsize = 14;
@@ -51,14 +56,22 @@ namespace Helper
         private static void GenerateBalanceList()
         {
             ClassBalancesListModel si = myWorkObject as ClassBalancesListModel;
-
+            decimal tu = 0,tot=0;
+            foreach (var e in si.Entries)
+            {
+                tu += e.Balance > 0 ? e.Balance : 0;
+                tot += e.Balance;
+            }
             int pageNo;
             for (pageNo = 0; pageNo < noOfPages; pageNo++)
             {
                 AddBLClass(si.NameOfClass, pageNo);
                 AddBLDate(si.Date, pageNo);
                 if (pageNo == 0)
-                    AddBLTotal(si.Total, pageNo);
+                {
+                    AddBLTotal(tot, pageNo);
+                    AddBLTotalUnpaid(tu, pageNo);
+                }
                 AddBLStudentBalances(si.Entries, pageNo);
             }
         }

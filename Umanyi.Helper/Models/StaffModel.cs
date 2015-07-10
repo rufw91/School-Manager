@@ -7,10 +7,9 @@ using System.Collections.ObjectModel;
 
 namespace Helper.Models
 {
-    public class StaffModel: ModelBase
+    public class StaffModel : StaffBaseModel
     {
-        private int staffId=0;
-        private string nameOfStaff = "";
+
         private DateTime dateOfAdmission = DateTime.Now;
         private string nationalId = "";
         private string phoneNo = "";
@@ -18,37 +17,15 @@ namespace Helper.Models
         private string address = "";
         private string city = "";
         private string postalCode = "";
-        private byte[] sPhoto=new byte[0];
+        private byte[] sPhoto = new byte[0];
+        private bool isActive;
 
-        public StaffModel() { }
-
-        public int StaffID
+        public StaffModel()
         {
-            get { return this.staffId; }
-
-            set
-            {
-                if (value != this.staffId)
-                {
-                    this.staffId = value;
-                    NotifyPropertyChanged("StaffID");
-                }
-            }
+            IsActive = true;
         }
 
-        public string Name
-        {
-            get { return this.nameOfStaff; }
 
-            set
-            {
-                if (value != this.nameOfStaff)
-                {
-                    this.nameOfStaff = value;
-                    NotifyPropertyChanged("Name");
-                }
-            }
-        }
 
         public DateTime DateOfAdmission
         {
@@ -60,6 +37,20 @@ namespace Helper.Models
                 {
                     this.dateOfAdmission = value;
                     NotifyPropertyChanged("DateOfAdmission");
+                }
+            }
+        }
+
+        public bool IsActive
+        {
+            get { return this.isActive; }
+
+            set
+            {
+                if (value != this.isActive)
+                {
+                    this.isActive = value;
+                    NotifyPropertyChanged("IsActive");
                 }
             }
         }
@@ -119,7 +110,7 @@ namespace Helper.Models
                 }
             }
         }
-        
+
         public string City
         {
             get { return this.city; }
@@ -146,8 +137,8 @@ namespace Helper.Models
                     NotifyPropertyChanged("PostalCode");
                 }
             }
-        }       
-        
+        }
+
         public byte[] SPhoto
         {
             get { return this.sPhoto; }
@@ -161,18 +152,18 @@ namespace Helper.Models
                 }
             }
         }
-        
+
         public override bool CheckErrors()
         {
             ErrorCheckingStatus = Helper.ErrorCheckingStatus.Incomplete;
             try
             {
                 ClearAllErrors();
-                var s = DataAccess.GetStaff(staffId);
+                var s = DataAccess.GetStaff(StaffID);
                 if (s.StaffID > 0)
                 {
                     List<string> errors = new List<string>();
-                    errors.Add("Staff already exists. (" + s.nameOfStaff.ToUpper() + ")");
+                    errors.Add("Staff Member already exists. (" + s.Name.ToUpper() + ")");
                     SetErrors("StaffID", errors);
                 }
             }
@@ -189,9 +180,8 @@ namespace Helper.Models
 
         public override void Reset()
         {
-            StaffID = 0;
-            Name = "";
-            DateOfAdmission = new DateTime(1900,1,1);
+            base.Reset();
+            DateOfAdmission = new DateTime(1900, 1, 1);
             NationalID = "";
             PhoneNo = "";
             Email = "";
@@ -201,8 +191,8 @@ namespace Helper.Models
             SPhoto = new byte[0];
         }
 
-        
+
     }
 
-    
+
 }

@@ -1,23 +1,23 @@
 ﻿using Helper;
 using Helper.Models;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Security.Permissions;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace UmanyiSMS.ViewModels
 {
-    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
-    public class ReprintReceiptVM:ViewModelBase
+    public class ReprintPaySlipVM:ViewModelBase
     {
+        private StaffSelectModel selectedStaff;
+        private ObservableCollection<PayslipModel> recentPayments;
         private FixedDocument fd;
-        ObservableCollection<FeePaymentModel> recentPayments;
-        private StudentSelectModel selectedStudent;
-        private FeePaymentModel selectedPayment;
-
-        public ReprintReceiptVM()
+        private PayslipModel selectedPayment;
+        public ReprintPaySlipVM()
         {
             InitVars();
             CreateCommands();
@@ -25,35 +25,33 @@ namespace UmanyiSMS.ViewModels
 
         protected override void InitVars()
         {
-            Title = "REPRINT RECEIPT";
-            RecentPayments = new ObservableCollection<FeePaymentModel>();
-            SelectedStudent = new StudentSelectModel();
-            selectedStudent.PropertyChanged += async (o, e) =>
+            Title = "REPRINT PAYSLIP";
+            RecentPayments = new ObservableCollection<PayslipModel>();
+            SelectedStaff = new StaffSelectModel();
+            selectedStaff.PropertyChanged += async (o, e) =>
+            {
+                if ((e.PropertyName == "StaffID") && (selectedStaff.StaffID > 0))
                 {
-                    if ((e.PropertyName == "StudentID") && (selectedStudent.StudentID > 0))
-                    {
-                        selectedStudent.CheckErrors();
-                        await RefreshRecentPayments();
-                    }
+                    selectedStaff.CheckErrors();
+                    await RefreshRecentPayments();
+                }
 
-                };
+            };
         }
 
         protected override void CreateCommands()
         {
-            FullPreviewCommand = new RelayCommand(async o=>
+            FullPreviewCommand = new RelayCommand(o =>
             {
-                var fs = await DataAccess.GetTermInvoice(selectedPayment.StudentID, selectedPayment.DatePaid);
-                var temp = await DataAccess.GetReceiptAsync(selectedPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
-                var doc = DocumentHelper.GenerateDocument(temp);
+                selectedPayment.RefreshTotal();
+                var doc = DocumentHelper.GenerateDocument(selectedPayment);
                 if (ShowPrintDialogAction != null)
                     ShowPrintDialogAction.Invoke(doc);
-            }, o => CanGenerate() && Document!=null);
-            GenerateCommand = new RelayCommand(async o =>
+            }, o => CanGenerate() && Document != null);
+            GenerateCommand = new RelayCommand(o =>
             {
-                var fs = await DataAccess.GetTermInvoice(selectedPayment.StudentID, selectedPayment.DatePaid);
-                var temp = await DataAccess.GetReceiptAsync(selectedPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
-                Document = DocumentHelper.GenerateDocument(temp);
+                selectedPayment.RefreshTotal();
+                Document = DocumentHelper.GenerateDocument(selectedPayment);
             },
                o => CanGenerate());
         }
@@ -66,11 +64,10 @@ namespace UmanyiSMS.ViewModels
         private async Task RefreshRecentPayments()
         {
             recentPayments.Clear();
-            RecentPayments = await DataAccess.GetRecentPaymentsAsync(selectedStudent);
-            
+            RecentPayments = await DataAccess.GetRecentPayslipsAsync(selectedStaff);
         }
 
-        public FeePaymentModel SelectedPayment
+        public PayslipModel SelectedPayment
         {
             get { return selectedPayment; }
             set
@@ -84,21 +81,21 @@ namespace UmanyiSMS.ViewModels
         }
 
 
-        public StudentSelectModel SelectedStudent
+        public StaffSelectModel SelectedStaff
         {
-            get { return selectedStudent; }
+            get { return selectedStaff; }
 
             set
             {
-                if (value != selectedStudent)
+                if (value != selectedStaff)
                 {
-                    selectedStudent = value;
-                    NotifyPropertyChanged("SelectedStudent");
+                    selectedStaff = value;
+                    NotifyPropertyChanged("SelectedStaff");
                 }
             }
         }
 
-        public ObservableCollection<FeePaymentModel> RecentPayments
+        public ObservableCollection<PayslipModel> RecentPayments
         {
             get { return recentPayments; }
 
@@ -127,7 +124,7 @@ namespace UmanyiSMS.ViewModels
             private set;
         }
 
-        
+
         public override void Reset()
         {
 

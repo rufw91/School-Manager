@@ -23,7 +23,7 @@ namespace Helper
         static object myWorkObject;
         enum DocType
         {
-            Statement, Transcript, Transcript3, LeavingCert, FeesStructure, FeesPayment, FeesPayment2, Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, ClassTranscripts2,UnreturnedBooks,UnreturnedBooks2, Report
+            Statement, Transcript, Transcript3, LeavingCert, FeesStructure, FeesPayment, FeesPayment2, Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, ClassTranscripts2,UnreturnedBooks,UnreturnedBooks2, Report,Payslip
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -84,6 +84,7 @@ namespace Helper
                 case DocType.UnreturnedBooks2: GenerateUnreturnedBooks2(); break;
                 case DocType.Report: GenerateReport(); break;
                 case DocType.ClassExamResults: GenerateClassExamResults(); break;
+                case DocType.Payslip: GeneratePayslip(); break;
             }
         }
 
@@ -112,6 +113,7 @@ namespace Helper
                 case DocType.UnreturnedBooks: resString = Helper.Properties.Resources.UnreturnedBooks; break;
                 case DocType.UnreturnedBooks2: resString = Helper.Properties.Resources.UnreturnedBooks2; break;
                 case DocType.Report: resString = Helper.Properties.Resources.Report; break;
+                case DocType.Payslip: resString = Helper.Properties.Resources.Payslip; break;
                 default: throw new ArgumentException();
             }
             StringReader stringReader = new StringReader(resString);
@@ -162,6 +164,8 @@ namespace Helper
                 return DocType.ClassExamResults;
             if (workObject is ClassLeavingCertificatesModel)
                 return DocType.ClassLeavingCertificates;
+            if (workObject is PayslipModel)
+                return DocType.Payslip;
             throw new ArgumentException();
         }
 
@@ -198,6 +202,8 @@ namespace Helper
             if (docType == DocType.Voucher)
                 return 1;
             if (docType == DocType.AggregateResult)
+                return 1;
+            if (docType == DocType.Payslip)
                 return 1;
             if (docType == DocType.FeesStructure)
                 return (workObject as FullFeesStructureModel).Count;

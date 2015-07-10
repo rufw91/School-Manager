@@ -10,6 +10,8 @@ namespace UmanyiSMS.ViewModels
         {
             TryAddChild(typeof(NewEmployeePaymentVM));
             TryAddChild(typeof(PaymentHistoryVM));
+            TryAddChild(typeof(NewPaySlipVM));
+            TryAddChild(typeof(ReprintPaySlipVM));
             TryAddChild(typeof(PAYEInfoVM));
         }
     }

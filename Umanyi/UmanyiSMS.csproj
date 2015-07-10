@@ -186,6 +186,7 @@
     <Compile Include="ViewModels\LocalTutorialsVM.cs" />
     <Compile Include="ViewModels\NetworkOptionsVM.cs" />
     <Compile Include="ViewModels\NewPaymentVoucherVM.cs" />
+    <Compile Include="ViewModels\NewPaySlipVM.cs" />
     <Compile Include="ViewModels\NewReportVM.cs" />
     <Compile Include="ViewModels\OnlineResourcesVM.cs" />
     <Compile Include="ViewModels\PAYEInfoVM.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="ViewModels\Reports\LibraryReportVM.cs" />
     <Compile Include="ViewModels\Reports\StaffReportVM.cs" />
     <Compile Include="ViewModels\Reports\StudentsReportVM.cs" />
+    <Compile Include="ViewModels\ReprintPaySlipVM.cs" />
     <Compile Include="ViewModels\StudentClearanceVM.cs" />
     <Compile Include="ViewModels\StudentTranscriptVM.cs" />
     <Compile Include="ViewModels\AllBooksVM.cs" />
@@ -336,6 +338,9 @@
     </Compile>
     <Compile Include="Views\ModifyTimeTableFull.xaml.cs">
       <DependentUpon>ModifyTimeTableFull.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewPaySlip.xaml.cs">
+      <DependentUpon>NewPaySlip.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QuickBooksSync.xaml.cs">
       <DependentUpon>QuickBooksSync.xaml</DependentUpon>
@@ -612,6 +617,9 @@
     <Compile Include="Views\ReportsHome.xaml.cs">
       <DependentUpon>ReportsHome.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReprintPaySlip.xaml.cs">
+      <DependentUpon>ReprintPaySlip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ReprintReceipt.xaml.cs">
       <DependentUpon>ReprintReceipt.xaml</DependentUpon>
     </Compile>
@@ -832,6 +840,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ModifyTimeTableFull.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewPaySlip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1195,6 +1207,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ReprintPaySlip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ReprintReceipt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1428,6 +1444,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Test.resx">
       <DependentUpon>Test.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

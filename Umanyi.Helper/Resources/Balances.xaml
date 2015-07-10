@@ -11,5 +11,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="575,130,0,0" Text="Guardian Phone No" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Arial" FontSize="14"/>
         <Border Height="1" Margin="20,0,20,90" VerticalAlignment="Bottom" Background="Black"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,1050,0,0" Text="Total:" VerticalAlignment="Top" FontFamily="Arial" FontSize="16" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="200,1050,0,0" Text="Total Unpaid:" VerticalAlignment="Top" FontFamily="Arial" FontSize="16" FontWeight="Bold"/>
+        
     </Grid>
 </FixedPage>

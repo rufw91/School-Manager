@@ -101,6 +101,7 @@
     <Compile Include="Helpers\DocumentHelper.ClassTranscripts2.cs" />
     <Compile Include="Helpers\DocumentHelper.cs" />
     <Compile Include="Helpers\DocumentHelper.FullFeesStructure.cs" />
+    <Compile Include="Helpers\DocumentHelper.Payslip.cs" />
     <Compile Include="Helpers\DocumentHelper.Receipt.cs" />
     <Compile Include="Helpers\DocumentHelper.Report.cs" />
     <Compile Include="Helpers\DocumentHelper.Statement.cs" />
@@ -140,7 +141,10 @@
     <Compile Include="Models\ItemIssueModel.cs" />
     <Compile Include="Models\PaymentVoucherEntryModel.cs" />
     <Compile Include="Models\PaymentVoucherModel.cs" />
+    <Compile Include="Models\PayslipModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
+    <Compile Include="Models\StaffBaseModel.cs" />
+    <Compile Include="Models\StaffSelectModel.cs" />
     <Compile Include="Models\StudentClearancerModel.cs" />
     <Compile Include="Models\StudentFeesDefaultModel.cs" />
     <Compile Include="Models\StudentListModel.cs" />
@@ -334,6 +338,10 @@
   <ItemGroup>
     <Content Include="Resources\logo.png" />
     <Content Include="Resources\noImage.png" />
+    <Page Include="Resources\Payslip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\UnreturnedBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
