@@ -15,9 +15,10 @@ using System.Windows;
 using System.Windows.Threading;
 using System.Windows.Media;
 using System.Windows.Interop;
+using Helper.Presentation;
 namespace UmanyiSMS
 {
-    public partial class App : Application, ISingleInstanceApp 
+    public partial class App : Application, ISingleInstanceApp,IApp
     {       
         private const string Unique = "UmanyiSMS";
         private static ApplicationModel info;
@@ -63,6 +64,12 @@ namespace UmanyiSMS
                     info = value;
             }
         }
+
+        public ApplicationModel AppInfo
+        {
+            get { return App.info; }
+        }
+
         public static void Restart()
         {
             try
@@ -108,6 +115,9 @@ namespace UmanyiSMS
             Log.I("Init Vars",this);
             InitGlobalVar();
             FileHelper.CheckFiles();
+            if (!await ActivationHelper.LicenseExists())
+                new InvalidLicense().ShowDialog();
+            
             if (await ActivationHelper.IsActivated())
             {
                 try
@@ -132,7 +142,7 @@ namespace UmanyiSMS
         }
         
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        {
+        {            
             Log.E(e.Exception.ToString(), this);
             e.Handled = true;            
         }

@@ -40,6 +40,11 @@ namespace UmanyiSMS.ViewModels
                 }
                 s.Entries = new ObservableCollection<StudentFeesDefaultModel>(s.Entries.OrderBy(f => f.StudentID));
                 s.NameOfClass = selectedCombinedClass.Description;
+                foreach (var v in s.Entries)
+                    s.Total += v.Balance;
+
+                foreach (var v in s.Entries)
+                    s.TotalUnpaid += (v.Balance > 0) ? v.Balance : 0;
                 Document = DocumentHelper.GenerateDocument(s);
                 IsBusy = false;
             }, o => selectedCombinedClass != null);

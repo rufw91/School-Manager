@@ -27,30 +27,36 @@
         <TextBlock HorizontalAlignment="Left" Margin="475,155,0,0" Text="(Max 35 char)" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="475,200,0,0" Text="(Max 40 char)" VerticalAlignment="Top"/>
 
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Style="{DynamicResource SmallTitle}" Text="Alt Info" VerticalAlignment="Top" 
-                   Margin="590,75,0,0"/>
-        <TextBlock HorizontalAlignment="Left" Margin="590,110,0,0" Text="Alt Info" VerticalAlignment="Top"/>
+        <TextBox Name="txtSyncID" Height="23" Margin="590,110,20,0" MaxLength="25" VerticalAlignment="Top" IsEnabled="False" Background="WhiteSmoke"
+        	Text="{Binding NewSchool.ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="590,130,0,0" MaxLength="25" VerticalAlignment="Top" Width="200"
+        <TextBox Name="txtSyncAddr" Height="23" Margin="590,200,20,0" MaxLength="255" VerticalAlignment="Top" IsEnabled="False" Background="WhiteSmoke"
+        	Text="{Binding NewSchool.SyncAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Alt Info" VerticalAlignment="Top" 
+                   Margin="26,246,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="590,75,0,0" Text="Web Sync ID" VerticalAlignment="Top" Style="{DynamicResource SmallTitle}"/>
+
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,245,0,0" MaxLength="25" VerticalAlignment="Top" Width="200"
         	Text="{Binding NewSchool.AltInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="20,244,0,0" Style="{DynamicResource SmallTitle}" Text="Contact Info." VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="26,291,0,0" Text="Address" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="95,284,0,0" MaxLength="20" VerticalAlignment="Top" Width="185"
+        <TextBlock HorizontalAlignment="Left" Margin="20,290,0,0" Style="{DynamicResource SmallTitle}" Text="Contact Info." VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="26,337,0,0" Text="Address" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="95,330,0,0" MaxLength="20" VerticalAlignment="Top" Width="165"
         	Text="{Binding NewSchool.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="26,336,0,0" Text="City" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="95,329,0,0" MaxLength="20" VerticalAlignment="Top" Width="185"
+        <TextBlock HorizontalAlignment="Left" Margin="278,340,0,0" Text="City" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="305,330,0,0" MaxLength="20" VerticalAlignment="Top" Width="165"
         	Text="{Binding NewSchool.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock HorizontalAlignment="Left" Margin="29,419,0,0" Text="Tel. No." VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="95,419,0,0" MaxLength="20" VerticalAlignment="Top" Width="185"
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="95,419,0,0" MaxLength="20" VerticalAlignment="Top" Width="165"
         	Text="{Binding NewSchool.PhoneNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock HorizontalAlignment="Left" Margin="26,381,0,0" Text="Email" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Margin="95,374,0,0" MaxLength="49" VerticalAlignment="Top" Width="300"
         	Text="{Binding NewSchool.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Border Margin="0,200,20,10" Width="250" Height="200" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Silver" BorderThickness="2">
+        <Border Margin="0,285,20,0" Width="290" Height="200" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Silver" BorderThickness="2">
             <Image Source="{Binding NewSchool.Logo}"/>
         </Border>
-        <Button Content="Browse" HorizontalAlignment="Right" Margin="0,410,20,0" VerticalAlignment="Top" Width="100"
+        <Button Content="Browse" HorizontalAlignment="Right" Margin="0,495,20,0" VerticalAlignment="Top" Width="100"
                 Command="{Binding BrowseCommand}"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,472,0,0" Style="{DynamicResource Title0}" Text="Motto (opt.)" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Margin="46,507,0,0"
@@ -58,6 +64,9 @@
         	Text="{Binding NewSchool.Motto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,20,20" Width="90" Height="32" VerticalAlignment="Bottom"
                 Command="{Binding SaveCommand}"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Style="{DynamicResource SmallTitle}" Text="Logo" VerticalAlignment="Top" 
+        	Margin="590,250,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="590,165,0,0" Text="Web Sync Address" VerticalAlignment="Top" Style="{DynamicResource SmallTitle}"/>
 
 
     </Grid>

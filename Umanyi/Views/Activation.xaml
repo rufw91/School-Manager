@@ -17,7 +17,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="40,250,0,0" Text="This will only take a sec :)" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="40,300,0,0" Text="License Key (XXXXX-XXXXX-XXXXX-XXXXX-XXXXX)" Style="{DynamicResource ContentTextBold}" VerticalAlignment="Top"/>
         <TextBox Name="txtLicense" HorizontalAlignment="Left" Height="23" Margin="40,336,0,0" Text="" FontSize="16" VerticalAlignment="Top" Width="358" MaxLength="25"/>
-        <Button Content="Activate" HorizontalAlignment="Right" Margin="0,0,20,20" VerticalAlignment="Bottom" Width="130" Click="Button_Click"/>
+        <Button Content="Activate" IsCancel="True" HorizontalAlignment="Right" Margin="0,0,20,20" VerticalAlignment="Bottom" Width="130" Click="Button_Click"/>
 
 
 

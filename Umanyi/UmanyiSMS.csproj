@@ -279,6 +279,7 @@
     <Compile Include="ViewModels\SupplierListVM.cs" />
     <Compile Include="ViewModels\SupplierReportsVM.cs" />
     <Compile Include="ViewModels\SuppliersVM.cs" />
+    <Compile Include="ViewModels\SyncCloudVM.cs" />
     <Compile Include="ViewModels\UnreturnedBooksVM.cs" />
     <Compile Include="ViewModels\UpcomingEventsVM.cs" />
     <Compile Include="ViewModels\RecentGalleryItemsVM.cs" />
@@ -332,6 +333,9 @@
     </Compile>
     <Compile Include="Views\InstitutionSubjectsSetup.xaml.cs">
       <DependentUpon>InstitutionSubjectsSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InvalidLicense.xaml.cs">
+      <DependentUpon>InvalidLicense.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ModifySubjectsSetup.xaml.cs">
       <DependentUpon>ModifySubjectsSetup.xaml</DependentUpon>
@@ -683,6 +687,9 @@
     <Compile Include="Views\Suppliers.xaml.cs">
       <DependentUpon>Suppliers.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SyncCloud.xaml.cs">
+      <DependentUpon>SyncCloud.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Test.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -832,6 +839,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\InstitutionSubjectsSetup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InvalidLicense.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1275,6 +1286,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SyncCloud.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UnreturnedBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1579,8 +1594,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>D:\Software\Dev\ConfuserEx_bin\Confuser.CLI.exe "$(ProjectDir)Umanyi.crproj"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

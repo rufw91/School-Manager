@@ -84,17 +84,12 @@
       <Component Id="cmp1" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)AxInterop.AcroPDFLib.dll" />
       </Component>
-      <!--Confused-->
-      <Component Id="cmp3" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Helper.dll" />
-      </Component>
-
-
-
       <Component Id="cmp5" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Interop.AcroPDFLib.dll" />
       </Component>
-      
+      <Component Id="cmp6" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)System.Collections.Immutable.dll" />
+      </Component>
       <Component Id="cmp13" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)log4net.dll" />
       </Component>
@@ -107,24 +102,21 @@
       <Component Id="cmp16" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Newtonsoft.Json.dll" />
       </Component>
-
       <!--Confused-->
       <Component Id="cmp17" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)OpenXmlPackaging.dll" />
+        <File Source="$(var.UmanyiSMS.TargetDir)Confused\Helper.dll" />
       </Component>
-
-
+      <!--Confused-->
       <Component Id="cmp18" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Collections.Immutable.dll" />
-      </Component>
-
+        <File Source="$(var.UmanyiSMS.TargetDir)Confused\OpenXmlPackaging.dll" />
+      </Component>      
       <!--Confused-->
       <Component Id="cmp19" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe" />
+        <File Source="$(var.UmanyiSMS.TargetDir)Confused\UmanyiSMS.exe" />
       </Component>
       <!--Confused-->
       <Component Id="cmp20" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.Helper.dll" />
+        <File Source="$(var.UmanyiSMS.TargetDir)Confused\UmanyiSMS.Helper.dll" />
       </Component>
     </ComponentGroup>
   </Fragment>

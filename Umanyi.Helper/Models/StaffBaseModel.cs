@@ -46,7 +46,8 @@ namespace Helper.Models
 
         public override void Reset()
         {
-
+            StaffID = 0;
+            Name = "";
         }
     }
 }

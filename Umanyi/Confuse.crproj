@@ -1,0 +1,6 @@
+<project outputDir="E:\Dev\Projects\St Stevens\Code\Umanyi\bin\Release\Confused" baseDir="E:\Dev\Projects\St Stevens\Code\Umanyi\bin\Release" xmlns="http://confuser.codeplex.com">
+  <module path="Helper.dll" />
+  <module path="OpenXmlPackaging.dll" />
+  <module path="UmanyiSMS.exe" />
+  <module path="UmanyiSMS.Helper.dll" />
+</project>
