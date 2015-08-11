@@ -152,7 +152,8 @@ namespace Helper
             try
             {
                 conn = new SqlConnection(connectionString);
-                conn.Credential = cred;
+                if (cred != null)
+                    conn.Credential = cred;
                 conn.Open();
                 if (conn.State == ConnectionState.Connecting)
                     while (conn.State != ConnectionState.Open)
@@ -652,6 +653,27 @@ namespace Helper
                     return succ;
                 }
                 catch (Exception e) { Log.E(e.ToString(), typeof(DataAccessHelper)); return false; }
+            });
+        }
+
+        internal async static Task SetOffline()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    string commandText = "ALTER DATABASE UmanyiSMS SET OFFLINE";
+                    using (SqlConnection DBConnection = CreateConnection(null,ConnectionStringHelper.Win32ConnectionString))
+                    {
+                        SqlCommand dta = new SqlCommand(commandText, DBConnection);
+                        dta.ExecuteNonQuery();
+                        dta.Dispose();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.E(e.ToString(), typeof(DataAccessHelper));
+                }
             });
         }
     }

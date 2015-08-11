@@ -1,6 +1,0 @@
-<project outputDir="C:\Users\Raphael\Desktop\Confuser\Confused" baseDir="C:\Users\Raphael\Desktop\Confuser" xmlns="http://confuser.codeplex.com">
-  <module path="D:\Dev\Repos\St Marys\St Mary's Girls\Starehe\bin\Release\Helper.dll" snKey="D:\Dev\Repos\St Marys\St Mary's Girls\Starehe\MonsoonDigital.pfx" snKeyPass="Kasamba0002#" />
-  <module path="D:\Dev\Repos\St Marys\St Mary's Girls\Starehe\bin\Release\OpenXmlPackaging.dll" snKey="D:\Dev\Repos\St Marys\St Mary's Girls\Starehe\MonsoonDigital.pfx" snKeyPass="Kasamba0002#" />
-  <module path="D:\Dev\Repos\St Marys\St Mary's Girls\Starehe\bin\Release\Starehe.exe" />
-  <module path="D:\Dev\Repos\St Marys\St Mary's Girls\Starehe\bin\Release\Starehe.Helper.dll" snKey="D:\Dev\Repos\St Marys\St Mary's Girls\Starehe\MonsoonDigital.pfx" snKeyPass="Kasamba0002#" />
-</project>

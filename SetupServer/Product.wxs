@@ -18,7 +18,7 @@
   <?define ProductCode = "b4eb6134-f631-4d04-926f-ea97dfbd6bc2" ?>
   <?endif ?>
   
-  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.7.557.5661" Manufacturer="Umanyi Digital Technologies Ltd" 
+  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.7.620.5671" Manufacturer="Umanyi Digital Technologies Ltd" 
            UpgradeCode="$(var.ProductCode)">
     
 		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
@@ -94,15 +94,11 @@
       </Component>
       <!--Confused--> 
       <Component Id="cmp3" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Helper.dll" />
-      </Component>
-      
-      
-      
+        <File Source="$(var.UmanyiSMS.TargetDir)Confused\Helper.dll" />
+      </Component>      
       <Component Id="cmp5" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Interop.AcroPDFLib.dll" />
       </Component>
-
       <Component Id="cmp13" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)log4net.dll" />
       </Component>
@@ -114,25 +110,21 @@
       </Component>
       <Component Id="cmp16" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Newtonsoft.Json.dll" />
-      </Component>
-      
+      </Component>      
         <!--Confused-->
       <Component Id="cmp17" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)OpenXmlPackaging.dll" />
+        <File Source="$(var.UmanyiSMS.TargetDir)Confused\OpenXmlPackaging.dll" />
       </Component>
-      
-        
       <Component Id="cmp18" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)System.Collections.Immutable.dll" />
-      </Component>
-      
+      </Component>      
         <!--Confused-->
        <Component Id="cmp19" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe" />
+        <File Source="$(var.UmanyiSMS.TargetDir)Confused\UmanyiSMS.exe" />
       </Component>
       <!--Confused-->
       <Component Id="cmp20" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.Helper.dll" />
+        <File Source="$(var.UmanyiSMS.TargetDir)Confused\UmanyiSMS.Helper.dll" />
       </Component>
 		</ComponentGroup>
 	</Fragment>

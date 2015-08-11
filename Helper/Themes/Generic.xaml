@@ -27,6 +27,7 @@
         <ResourceDictionary Source="/Helper;component/Styles/RadioButton.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/ScrollBar.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/Slider.xaml"/>
+        <ResourceDictionary Source="/Helper;component/Styles/SyncIcon.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/TabControl.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/TextBlock.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/TextBox.xaml"/>

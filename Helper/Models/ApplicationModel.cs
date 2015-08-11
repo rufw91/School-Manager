@@ -14,7 +14,9 @@ namespace Helper.Models
     public sealed class ApplicationModel : NotifiesPropertyChanged
     {
         int culture;
+        string syncAddress;
         byte[] sPhoto;
+        private string id;
         private string name;
         private UserModel currentUser;
         private string serverName;
@@ -36,6 +38,8 @@ namespace Helper.Models
                     Logo = GetImage();
                 }
             };
+            SyncAddress = "http://127.0.0.1/mobile_api/";
+            ID = "mbee";
             Name = "Mbee High School";
             FullName = "MBEE HIGH SCHOOL - KATHIANI";
             FullNameAlt = "Mbee High School";
@@ -61,6 +65,8 @@ namespace Helper.Models
                     Logo = GetImage();
                 }
             };
+            SyncAddress = info.SyncAddress;
+            ID = info.ID;
             Name = info.Name;
             FullName = info.FullName;
             FullNameAlt = info.FullNameAlt;
@@ -76,6 +82,33 @@ namespace Helper.Models
             Logo = GetImage();
             Motto = info.Motto;
         }
+
+        public string SyncAddress
+        {
+            get { return syncAddress; }
+            set
+            {
+                if (this.syncAddress != value)
+                {
+                    this.syncAddress = value;
+                    NotifyPropertyChanged("SyncAddress");
+                }
+            }
+        }
+
+        public string ID
+        {
+            get { return id; }
+            set
+            {
+                if (this.id != value)
+                {
+                    this.id = value;
+                    NotifyPropertyChanged("ID");
+                }
+            }
+        }
+
         public string Name
         {
             get { return name; }
@@ -272,6 +305,8 @@ namespace Helper.Models
 
         public void CopyFrom(ApplicationModel info)
         {
+            SyncAddress = info.SyncAddress;
+            ID = info.ID;
             Name = info.Name;
             FullName = info.FullName;
             FullNameAlt = info.FullNameAlt;

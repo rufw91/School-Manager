@@ -24,5 +24,7 @@ namespace Helper.Models
         { get; set; }
 
         public decimal Total { get; set; }
+
+        public decimal TotalUnpaid { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "SETTINGS";
             TryAddChild(typeof(GeneralSettingsVM));
+            TryAddChild(typeof(SyncCloudVM));
             TryAddChild(typeof(NetworkOptionsVM));
             TryAddChild(typeof(AdvancedSettingsVM));
             TryAddChild(typeof(ChangeSAPasswordVM));

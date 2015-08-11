@@ -18,6 +18,9 @@ namespace Helper
         static readonly string masterConnString = "Data Source=" +
                 Helper.Properties.Settings.Default.Info.ServerName +
                 ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
+        static readonly string win32ConnString = "Data Source=" +
+                Helper.Properties.Settings.Default.Info.ServerName +
+                ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;Integrated Security='SSPI'";
         static readonly string testConnString = "Data Source=" +
                Helper.Properties.Settings.Default.Info.ServerName +
                ";Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
@@ -34,6 +37,11 @@ namespace Helper
         public static string TestConnectionString
         {
             get { return testConnString; }
+        }
+
+        public static string Win32ConnectionString
+        {
+            get { return win32ConnString; }
         }
 
         public static string CreateTestConnSTr(string serverName)

@@ -14,6 +14,8 @@ namespace Helper.Models
         }
         public ApplicationPersistModel(ApplicationModel value)
         {
+            SyncAddress = value.SyncAddress;
+            ID = value.ID;
             Name = value.Name;
             FullName = value.FullName;
             FullNameAlt = value.FullNameAlt;
@@ -27,6 +29,8 @@ namespace Helper.Models
             ServerName = value.ServerName;
             Culture = value.Culture;
         }
+        public string SyncAddress { get; set; }
+        public string ID { get; set; }
         public string Name { get; set; }
         public string FullName { get; set; }
         public string FullNameAlt { get; set; }

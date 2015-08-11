@@ -56,12 +56,7 @@ namespace Helper
         private static void GenerateBalanceList()
         {
             ClassBalancesListModel si = myWorkObject as ClassBalancesListModel;
-            decimal tu = 0,tot=0;
-            foreach (var e in si.Entries)
-            {
-                tu += e.Balance > 0 ? e.Balance : 0;
-                tot += e.Balance;
-            }
+            
             int pageNo;
             for (pageNo = 0; pageNo < noOfPages; pageNo++)
             {
@@ -69,8 +64,8 @@ namespace Helper
                 AddBLDate(si.Date, pageNo);
                 if (pageNo == 0)
                 {
-                    AddBLTotal(tot, pageNo);
-                    AddBLTotalUnpaid(tu, pageNo);
+                    AddBLTotal(si.Total, pageNo);
+                    AddBLTotalUnpaid(si.TotalUnpaid, pageNo);
                 }
                 AddBLStudentBalances(si.Entries, pageNo);
             }

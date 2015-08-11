@@ -44,26 +44,32 @@ namespace Helper.Helpers
             }
         }
 
-        public static Task<bool> IsActivated()
-        {            
-            return Task.Run<bool>(() => 
-            {
+        public async static Task<bool> LicenseExists()
+        {
+            if (RegistryHelper.GetKeyValue(null, "adata") == null)
+            { await DataAccessHelper.SetOffline(); return false; }
+            if (RegistryHelper.GetKeyValue(null, "ah") == null)
+            { await DataAccessHelper.SetOffline(); return false; }
+            return true;
+        }
+
+        public async static Task<bool> IsActivated()
+        {    
                 CheckLicense();
                 if (RegistryHelper.GetKeyValue(null, "adata") == null)
-                    return false;
+                { await DataAccessHelper.SetOffline(); return false; }
                 if (RegistryHelper.GetKeyValue(null, "ah") == null)
-                    return false;
+                {  await DataAccessHelper.SetOffline(); return false;}
                 string s = RegistryHelper.GetKeyValue(null, "adata").ToString();
                 if (s.Length < 29)
-                    return false;
+                { await DataAccessHelper.SetOffline();   return false;}
                 if (Security.DataProtection.GetSha1Hash(s) != RegistryHelper.GetKeyValue(null, "ah").ToString())
-                    return false;
+                { await DataAccessHelper.SetOffline();  return false;}
                 if (s[0] == 'X')
-                    return false;
+                { await DataAccessHelper.SetOffline();  return false;}
                 if ((s.Length > 29) && (int.Parse(s.Substring(29)) > 30))
-                    return false;
-                return true; 
-            });
+                { await DataAccessHelper.SetOffline();  return false;}
+                return true;             
         }
 
         private async static Task<bool> DeActivate()
