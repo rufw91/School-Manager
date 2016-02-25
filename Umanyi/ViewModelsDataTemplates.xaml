@@ -21,9 +21,6 @@
     <DataTemplate DataType="{x:Type viewModels:InstitutionVM}" >
         <views:Institution/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:TimeTableVM}" >
-        <views:TimeTable/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:QueryEditorVM}" >
         <views:QueryEditor/>
     </DataTemplate>
@@ -91,9 +88,6 @@
     <DataTemplate DataType="{x:Type viewModels:ChangeSAPasswordVM}" >
         <views:ChangeSAPassword/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:CurrentTimeTableFullVM}" >
-        <views:CurrentTimeTableFull/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:SubjectSelectionFastVM}" >
         <views:SubjectSelectionFast/>
     </DataTemplate>
@@ -108,9 +102,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:QuickBooksSyncVM}" >
         <views:QuickBooksSync/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ModifyTimeTableFullVM}" >
-        <views:ModifyTimeTableFull/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:NewReportVM}" >
         <views:NewReport/>
@@ -300,9 +291,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:InstitutionInfoVM}" >
         <views:InstitutionInfo/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:CurrentTimeTableVM}" >
-        <views:CurrentTimeTable/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:NewExamVM}" >
         <views:NewExam/>

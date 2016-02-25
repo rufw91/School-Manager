@@ -37,6 +37,7 @@
         <ResourceDictionary Source="/Helper;component/Styles/TimeTable.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/ToggleSwitch.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/ToolTip.xaml"/>
+        <ResourceDictionary Source="/Helper;component/Styles/TopWindow.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/TreeView.xaml"/>
 
     </ResourceDictionary.MergedDictionaries>

@@ -6,11 +6,11 @@
         <Setter Property="FocusVisualStyle" 
                 Value="{x:Null}"/>
         <Setter Property="Background"
-                Value="Transparent"/>
+                Value="#994682B4"/>
         <Setter Property="BorderBrush"
-                Value="{DynamicResource TitleBackgroundBrush}"/>
+                Value="#3FADD8E6"/>
         <Setter Property="BorderThickness"
-                Value="2"/>
+                Value="1"/>
         <Setter Property="Foreground"
                 Value="{DynamicResource ButtonText}"/>
         <Setter Property="HorizontalContentAlignment"
@@ -22,11 +22,9 @@
         <Setter Property="Width" 
                 Value="240"/>        
         <Setter Property="Height" 
-                Value="175"/>
+                Value="135"/>
         <Setter Property="HorizontalAlignment" 
                 Value="Left"/>
-        <Setter Property="CaptionBackground" 
-                Value="{DynamicResource TitleBackgroundBrush}"/>
         <Setter Property="VerticalAlignment" 
                 Value="Top"/>
         <Setter Property="Template">
@@ -35,19 +33,16 @@
                     <Grid>
                         <Border Name="Chrome" 
                                         Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding CaptionBackground}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="{TemplateBinding BorderThickness}"
                                         SnapsToDevicePixels="true">
-                            <Grid>
-                                <ContentPresenter/>
-                                <Border Name="CaptionBorder" Margin="0,145,0,0" Background="{TemplateBinding CaptionBackground}"
-                                    BorderThickness="0">
-                                    <Grid>
-                                        <TextBlock Margin="6,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                                           Text="{TemplateBinding Caption}" Foreground="{DynamicResource WhiteBrush}"
-                                           FontWeight="Bold" Style="{DynamicResource GroupTitle}"/>
-                                    </Grid>
-                                </Border>
+                            <Grid VerticalAlignment="Center">
+
+                                <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="30" TextWrapping="Wrap" 
+                                           Text="{TemplateBinding Title}" VerticalAlignment="Top" Margin="0,0,0,0"/>
+                                <TextBlock Margin="10,40,10,10" TextAlignment="Center" Foreground="LightBlue" TextWrapping="Wrap" 
+                                           Text="{TemplateBinding Description}"/>
+                                   
                             </Grid>
                         </Border>
                         <Border Name="MouseOverBorder" BorderBrush="Transparent" BorderThickness="0"/>
@@ -58,14 +53,18 @@
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="MouseOverBorder" Property="Background" Value="#99C8C8C8"/>
-                            
+                            <Setter TargetName="Chrome" Property="BorderBrush" Value="LightBlue"/>
+                            <Setter TargetName="Chrome" Property="Background" Value="SteelBlue"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="BorderThickness" Value="4"/>
+                            <Setter TargetName="MouseOverBorder" Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="1.5"/>
+                            <Setter TargetName="Chrome" Property="BorderBrush" Value="LightBlue"/>
+                            <Setter TargetName="Chrome" Property="Background" Value="SteelBlue"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="true">
-                            <Setter Property="BorderThickness" Value="4"/>
-                            <Setter Property="BorderBrush" Value="#99C8C8C8"/>
+                            <Setter TargetName="Chrome" Property="BorderBrush" Value="LightBlue"/>
+                            <Setter TargetName="Chrome" Property="Background" Value="SteelBlue"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

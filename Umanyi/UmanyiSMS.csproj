@@ -170,7 +170,6 @@
     <Compile Include="ViewModels\CombinedAggregateResultsVM.cs" />
     <Compile Include="ViewModels\CombinedClassListVM.cs" />
     <Compile Include="ViewModels\CombinedMarkListsVM.cs" />
-    <Compile Include="ViewModels\CurrentTimeTableFullVM.cs" />
     <Compile Include="ViewModels\DisciplineDetailsVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerHistoryVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerVM.cs" />
@@ -179,7 +178,6 @@
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
     <Compile Include="ViewModels\InstitutionSubjectsSetupVM.cs" />
     <Compile Include="ViewModels\ModifySubjectsSetupVM.cs" />
-    <Compile Include="ViewModels\ModifyTimeTableFullVM.cs" />
     <Compile Include="ViewModels\IssueItemsVM.cs" />
     <Compile Include="ViewModels\ItemIssueHistoryVM.cs" />
     <Compile Include="ViewModels\LeavingCertificateVM.cs" />
@@ -242,7 +240,6 @@
     <Compile Include="ViewModels\AllEventsVM.cs" />
     <Compile Include="ViewModels\AllGalleryItemsVM.cs" />
     <Compile Include="ViewModels\BackupVM.cs" />
-    <Compile Include="ViewModels\CurrentTimeTableVM.cs" />
     <Compile Include="ViewModels\EnterExamResultsVM.cs" />
     <Compile Include="ViewModels\ExamsVM.cs" />
     <Compile Include="ViewModels\FeesStatementVM.cs" />
@@ -291,7 +288,6 @@
     <Compile Include="ViewModels\StartupRepairVM.cs" />
     <Compile Include="ViewModels\StudentListVM.cs" />
     <Compile Include="ViewModels\StudentsVM.cs" />
-    <Compile Include="ViewModels\TimeTableVM.cs" />
     <Compile Include="ViewModels\VATAnalysisVM.cs" />
     <Compile Include="ViewModels\VATsVM.cs" />
     <Compile Include="ViewModels\ViewBooksVM.cs" />
@@ -321,9 +317,6 @@
     </Compile>
     <Compile Include="Views\CombinedMarkLists.xaml.cs">
       <DependentUpon>CombinedMarkLists.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CurrentTimeTableFull.xaml.cs">
-      <DependentUpon>CurrentTimeTableFull.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EventDetails.xaml.cs">
       <DependentUpon>EventDetails.xaml</DependentUpon>
@@ -548,9 +541,6 @@
       <DependentUpon>ClassesSetup.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ClassesSetupVM.cs" />
-    <Compile Include="Views\CurrentTimeTable.xaml.cs">
-      <DependentUpon>CurrentTimeTable.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
@@ -746,9 +736,6 @@
     <Compile Include="Views\Students.xaml.cs">
       <DependentUpon>Students.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TimeTable.xaml.cs">
-      <DependentUpon>TimeTable.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\VATAnalysis.xaml.cs">
       <DependentUpon>VATAnalysis.xaml</DependentUpon>
     </Compile>
@@ -823,10 +810,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CombinedMarkLists.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CurrentTimeTableFull.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1122,10 +1105,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CurrentTimeTable.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Library.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1315,10 +1294,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Students.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TimeTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1594,7 +1569,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>D:\Software\Dev\ConfuserEx_bin\Confuser.CLI.exe "$(ProjectDir)Umanyi.crproj"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

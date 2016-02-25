@@ -15,7 +15,7 @@
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Style="{DynamicResource SmallTitle}" Text="Name of Institution" VerticalAlignment="Top" 
                    Margin="20,75,0,0"/>
         <TextBlock HorizontalAlignment="Left" Margin="26,110,0,0" Text="Short Name" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,110,0,0" MaxLength="15" VerticalAlignment="Top" Width="370"
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,110,0,0" MaxLength="16" VerticalAlignment="Top" Width="370"
         	Text="{Binding NewSchool.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock HorizontalAlignment="Left" Margin="26,155,0,0" Text="Full Name" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="100,155,0,0" MaxLength="35" VerticalAlignment="Top" Width="370"

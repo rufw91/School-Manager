@@ -44,7 +44,7 @@
         <ComboBox HorizontalAlignment="Left" Margin="520,150,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllClasses}" DisplayMemberPath="NameOfClass"
                   SelectedValuePath="ClassID"
-                  SelectedValue="{Binding NewClassID}"/>
+                  SelectedValue="{Binding NewClassID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding SaveCommand}"/>
 

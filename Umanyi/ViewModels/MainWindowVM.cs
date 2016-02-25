@@ -151,12 +151,7 @@ namespace UmanyiSMS.ViewModels
             {
                 this.Source = new InstitutionVM();
             }, o => true);
-
-            DisplayTimeTableCommand = new RelayCommand(o =>
-            {
-                this.Source = new TimeTableVM();
-            }, o => true);
-
+            
             DisplayExamsCommand = new RelayCommand(o =>
             {
                 this.Source = new ExamsVM();
@@ -498,12 +493,6 @@ namespace UmanyiSMS.ViewModels
             private set;
         }
         
-        public ICommand DisplayTimeTableCommand
-        {
-            get;
-            private set;
-        }
-
         public ICommand DisplayExamsCommand
         {
             get;
