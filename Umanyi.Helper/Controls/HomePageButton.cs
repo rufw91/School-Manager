@@ -7,24 +7,24 @@ namespace Helper.Controls
 {
     public class HomePageButton : Button
     {      
-        public static readonly DependencyProperty CaptionProperty = DependencyProperty.Register("Caption", typeof(string),
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string),
             typeof(HomePageButton), new PropertyMetadata(""));
 
-        public static readonly DependencyProperty CaptionBackgroundProperty = DependencyProperty.Register("CaptionBackground",
-            typeof(Brush),typeof(HomePageButton), new PropertyMetadata(Brushes.Transparent));
+        public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description",
+            typeof(string),typeof(HomePageButton), new PropertyMetadata(""));
         public HomePageButton()
         {
         }
-        public string Caption
+        public string Title
         {
-            get { return (string)GetValue(CaptionProperty); }
-            set { SetValue(CaptionProperty, value); }
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
         }
 
-        public Brush CaptionBackground
+        public string Description
         {
-            get { return (Brush)GetValue(CaptionBackgroundProperty); }
-            set { SetValue(CaptionBackgroundProperty, value); }
+            get { return (string)GetValue(DescriptionProperty); }
+            set { SetValue(DescriptionProperty, value); }
         }
     
     }

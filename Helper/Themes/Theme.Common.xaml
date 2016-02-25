@@ -4,7 +4,7 @@
 
     <SolidColorBrush x:Key="BlackBrush" Color="#252526" />
     <SolidColorBrush x:Key="WhiteBrush" Color="White" />
-    
+    <!--
     <Color x:Key="Title0BackgroundColor">#545AA7</Color>
     <Color x:Key="Title1BackgroundColor">#8B4513</Color>
     <Color x:Key="Title2BackgroundColor">#BE4F62</Color>
@@ -33,7 +33,7 @@
     <SolidColorBrush x:Key="Title10BackgroundBrush" Color="{DynamicResource Title10BackgroundColor}"/>
     <SolidColorBrush x:Key="Title11BackgroundBrush" Color="{DynamicResource Title11BackgroundColor}"/>
     <SolidColorBrush x:Key="Title12BackgroundBrush" Color="{DynamicResource Title12BackgroundColor}"/>
-
+-->
     <FontFamily x:Key="ContentControlThemeFontFamily">Segoe UI</FontFamily>
     <sys:Double x:Key="ControlContentThemeFontSize">14.667</sys:Double>
     <sys:Double x:Key="SmallFontSize">13</sys:Double>

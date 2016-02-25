@@ -15,10 +15,6 @@
                 <ResourceDictionary Source="GalleryListBoxItem.xaml" />
                 <ResourceDictionary Source="DropDown.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="Button" BasedOn="{StaticResource BackButton}" x:Key="BackButtonX">
-                <Setter Property="Command"
-                        Value="{Binding Path=DataContext.BackCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}"/>
-            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

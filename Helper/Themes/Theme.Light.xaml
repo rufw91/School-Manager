@@ -2,8 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <Color x:Key="AccentColor">#0078C8</Color>
+    <Color x:Key="AccentColor">SteelBlue</Color>
     <SolidColorBrush x:Key="Accent" Color="{DynamicResource AccentColor}" />
+
+    <Color x:Key="Accent2Color">LightBlue</Color>
+    <SolidColorBrush x:Key="Accent2" Color="{DynamicResource Accent2Color}" />
+
     <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
     <Color x:Key="WindowBackgroundColor">#ffffff</Color>
 

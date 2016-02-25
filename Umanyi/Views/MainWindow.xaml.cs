@@ -5,11 +5,12 @@ using System;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Media;
+using Helper.Presentation;
 
 namespace UmanyiSMS.Views
 {
 
-    public sealed partial class MainWindow : CustomWindow
+    public sealed partial class MainWindow : CustomWindow, IMainWindow
     {
         bool canClose = false;
         public MainWindow()

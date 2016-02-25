@@ -40,21 +40,21 @@ namespace Helper
         {
             double fontsize = 14;
             int pageRelativeIndex = itemIndex;
-            double yPos = 280 + pageRelativeIndex * 30;
+            double yPos = 320 + pageRelativeIndex * 30;
 
             if (isAggregate)
             {
-                AddText(item.Name, 16, true, 0, Colors.Black, 70, yPos, pageNo);
-                AddText(item.Amount.ToString("N2"), 16, true, 0, Colors.Black, 250, yPos, pageNo);
-                AddText(item.Name, 16, true, 0, Colors.Black, 70 + page2Offset, yPos, pageNo);
-                AddText(item.Amount.ToString("N2"), 16, true, 0, Colors.Black, 250 + page2Offset, yPos, pageNo);
+                AddText(item.Name, 16, true, 0, Colors.Black, 50, yPos, pageNo);
+                AddText(item.Amount.ToString("N2"), 16, true, 0, Colors.Black, 280, yPos, pageNo);
+                AddText(item.Name, 16, true, 0, Colors.Black, 50 + page2Offset, yPos, pageNo);
+                AddText(item.Amount.ToString("N2"), 16, true, 0, Colors.Black, 280 + page2Offset, yPos, pageNo);
             }
             else
             {
-                AddText(item.Name, fontsize, false, 0, Colors.Black, 70, yPos, pageNo);
-                AddText(item.Amount.ToString("N2"), fontsize, false, 0, Colors.Black, 250, yPos, pageNo);
-                AddText(item.Name, fontsize, false, 0, Colors.Black, 70 + page2Offset, yPos, pageNo);
-                AddText(item.Amount.ToString("N2"), fontsize, false, 0, Colors.Black, 250 + page2Offset, yPos, pageNo);
+                AddText(item.Name, fontsize, false, 0, Colors.Black, 50, yPos, pageNo);
+                AddText(item.Amount.ToString("N2"), fontsize, false, 0, Colors.Black, 280, yPos, pageNo);
+                AddText(item.Name, fontsize, false, 0, Colors.Black, 50 + page2Offset, yPos, pageNo);
+                AddText(item.Amount.ToString("N2"), fontsize, false, 0, Colors.Black, 280 + page2Offset, yPos, pageNo);
             }
         }
         private static void AddPSEntries(IList<FeesStructureEntryModel> psi, int pageNo)
@@ -67,7 +67,7 @@ namespace Helper
                 endIndex = psi.Count - 1;
 
             for (int i = startIndex; i <= endIndex; i++)
-                AddRCFeesItem(psi[i], i, pageNo, (i == endIndex));
+                AddPSEntry(psi[i], i, pageNo, (i == endIndex));
 
         }
 

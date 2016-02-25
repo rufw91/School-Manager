@@ -136,6 +136,7 @@
     <Compile Include="Models\TimeTableModel.cs" />
     <Compile Include="Models\TimeTableSettingsModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Presentation\IMainWindow.cs" />
     <Compile Include="Presentation\NotifyPropertyChanged.cs" />
     <Compile Include="Presentation\RelayCommand.cs" />
     <Compile Include="Constants.cs" />
@@ -328,6 +329,10 @@
     <Page Include="Styles\ToolTip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TopWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TreeView.xaml">
       <Generator>MSBuild:Compile</Generator>
