@@ -1,26 +1,25 @@
-﻿using UmanyiSMS;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System;
+using UmanyiSMS;
 
 namespace Helper.Models
 {
     public class FeePaymentReceiptModel : FeePaymentModel
     {
-        public FeePaymentReceiptModel()
-        { }
+        public string NameOfClass
+        {
+            get;
+            set;
+        }
 
-
+        public ObservableImmutableList<FeesStructureEntryModel> Entries
+        {
+            get;
+            set;
+        }
 
         public override void Reset()
         {
             base.Reset();
         }
-
-        public string NameOfClass { get; set; }
-
-        public ObservableImmutableList<FeesStructureEntryModel> Entries { get; set; }
     }
 }

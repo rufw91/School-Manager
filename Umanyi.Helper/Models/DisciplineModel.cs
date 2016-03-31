@@ -1,84 +1,105 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class DisciplineModel:StudentBaseModel
+    public class DisciplineModel : StudentBaseModel
     {
-        int disciplineID;
-        string issue;
+        private int disciplineID;
+
+        private string issue;
+
         private byte[] sPhoto;
+
         private DateTime dateAdded;
-        public DisciplineModel()
-        {
-            DisciplineID = 0;
-            Issue = "";
-            SPhoto = new byte[0];
-            DateAdded = DateTime.Now;
-        }
-        public override void Reset()
-        {
-            DisciplineID = 0;
-            Issue ="";
-            SPhoto = new byte[0];
-            DateAdded = DateTime.Now;
-        }
 
         public int DisciplineID
         {
-            get { return disciplineID; }
+            get
+            {
+                return this.disciplineID;
+            }
             set
             {
-                if (disciplineID != value)
-                    disciplineID = value;
-                NotifyPropertyChanged("DisciplineID");
+                if (this.disciplineID != value)
+                {
+                    this.disciplineID = value;
+                }
+                base.NotifyPropertyChanged("DisciplineID");
             }
         }
 
         public string Issue
         {
-            get { return issue; }
+            get
+            {
+                return this.issue;
+            }
             set
             {
-                if (issue != value)
-                    issue = value;
-                NotifyPropertyChanged("Issue");
+                if (this.issue != value)
+                {
+                    this.issue = value;
+                }
+                base.NotifyPropertyChanged("Issue");
             }
         }
 
         public byte[] SPhoto
         {
-            get { return sPhoto; }
+            get
+            {
+                return this.sPhoto;
+            }
             set
             {
-                if (sPhoto != value)
-                    sPhoto = value;
-                NotifyPropertyChanged("SPhoto");
+                if (this.sPhoto != value)
+                {
+                    this.sPhoto = value;
+                }
+                base.NotifyPropertyChanged("SPhoto");
             }
         }
 
         public DateTime DateAdded
         {
-            get { return dateAdded; }
+            get
+            {
+                return this.dateAdded;
+            }
             set
             {
-                if (dateAdded != value)
-                    dateAdded = value;
-                NotifyPropertyChanged("DateAdded");
+                if (this.dateAdded != value)
+                {
+                    this.dateAdded = value;
+                }
+                base.NotifyPropertyChanged("DateAdded");
             }
+        }
+
+        public DisciplineModel()
+        {
+            this.DisciplineID = 0;
+            this.Issue = "";
+            this.SPhoto = new byte[0];
+            this.DateAdded = DateTime.Now;
+        }
+
+        public override void Reset()
+        {
+            this.DisciplineID = 0;
+            this.Issue = "";
+            this.SPhoto = new byte[0];
+            this.DateAdded = DateTime.Now;
         }
 
         public void CopyFrom(DisciplineModel discipline)
         {
-            DisciplineID = discipline.DisciplineID;
-            Issue = discipline.Issue;
-            DateAdded = discipline.DateAdded;
-            StudentID= discipline.StudentID;
-            NameOfStudent= discipline.NameOfStudent;
-            SPhoto=discipline.SPhoto;
+            this.DisciplineID = discipline.DisciplineID;
+            this.Issue = discipline.Issue;
+            this.DateAdded = discipline.DateAdded;
+            base.StudentID = discipline.StudentID;
+            base.NameOfStudent = discipline.NameOfStudent;
+            this.SPhoto = discipline.SPhoto;
         }
     }
 }

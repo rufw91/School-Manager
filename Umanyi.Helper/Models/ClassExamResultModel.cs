@@ -1,36 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
-using System.Text;
 
 namespace Helper.Models
 {
-    public class ClassExamResultModel:ClassModel
+    public class ClassExamResultModel : ClassModel
     {
-        DataTable entries;
-        public ClassExamResultModel()
-        {
-            Entries = new DataTable();
-        }
+        private DataTable entries;
+
         public DataTable Entries
         {
-            get { return entries; }
-
+            get
+            {
+                return this.entries;
+            }
             set
             {
                 if (value != this.entries)
                 {
                     this.entries = value;
-                    NotifyPropertyChanged("Entries");
+                    base.NotifyPropertyChanged("Entries");
                 }
             }
         }
 
+        public ClassExamResultModel()
+        {
+            this.Entries = new DataTable();
+        }
+
         public override void Reset()
         {
-            entries.Clear();
+            this.entries.Clear();
         }
     }
 }

@@ -1,31 +1,36 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace Helper.Models
 {
-    public class ClassStudentsExamResultModel:ModelBase
+    public class ClassStudentsExamResultModel : ModelBase
     {
         private ObservableCollection<StudentExamResultModel> entries;
-        public ClassStudentsExamResultModel()
-        {
-            entries = new ObservableCollection<StudentExamResultModel>();
-        }
+
         public ObservableCollection<StudentExamResultModel> Entries
         {
-            get { return this.entries; }
-
+            get
+            {
+                return this.entries;
+            }
             set
             {
                 if (value != this.entries)
                 {
                     this.entries = value;
-                    NotifyPropertyChanged("Entries");
+                    base.NotifyPropertyChanged("Entries");
                 }
             }
         }
 
+        public ClassStudentsExamResultModel()
+        {
+            this.entries = new ObservableCollection<StudentExamResultModel>();
+        }
+
         public override void Reset()
         {
-            entries.Clear();
+            this.entries.Clear();
         }
     }
 }

@@ -1,52 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class CombinedClassModel:ModelBase
+    public class CombinedClassModel : ModelBase
     {
-        string description;
-        ObservableCollection<ClassModel> entries;
-        public CombinedClassModel()
-        {
-            Description = "";
-            Entries = new ObservableCollection<ClassModel>();
-        }
+        private string description;
+
+        private ObservableCollection<ClassModel> entries;
 
         public string Description
         {
-            get { return description; }
+            get
+            {
+                return this.description;
+            }
             set
             {
-                if (description != value)
+                if (this.description != value)
                 {
-                    description = value;
-                    NotifyPropertyChanged("Description");
+                    this.description = value;
+                    base.NotifyPropertyChanged("Description");
                 }
             }
         }
 
         public ObservableCollection<ClassModel> Entries
         {
-            get { return entries; }
+            get
+            {
+                return this.entries;
+            }
             set
             {
-                if (entries != value)
+                if (this.entries != value)
                 {
-                    entries = value;
-                    NotifyPropertyChanged("Entries");
+                    this.entries = value;
+                    base.NotifyPropertyChanged("Entries");
                 }
             }
         }
 
+        public CombinedClassModel()
+        {
+            this.Description = "";
+            this.Entries = new ObservableCollection<ClassModel>();
+        }
+
         public override void Reset()
         {
-            entries.Clear();
-            Description = "";
+            this.entries.Clear();
+            this.Description = "";
         }
     }
 }

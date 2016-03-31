@@ -1,76 +1,161 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class StudentExamResultEntryModel:SubjectBaseModel
+    public class StudentExamResultEntryModel : SubjectBaseModel
     {
+        public string Grade
+        {
+            get;
+            set;
+        }
+
+        public decimal? Cat1Score
+        {
+            get;
+            set;
+        }
+
+        public decimal? Cat2Score
+        {
+            get;
+            set;
+        }
+
+        public decimal? ExamScore
+        {
+            get;
+            set;
+        }
+
+        public decimal MeanScore
+        {
+            get;
+            set;
+        }
+
+        public int Points
+        {
+            get;
+            set;
+        }
+
+        public int Code
+        {
+            get;
+            set;
+        }
+
+        public string Tutor
+        {
+            get;
+            set;
+        }
+
+        public string Remarks
+        {
+            get;
+            set;
+        }
+
         public StudentExamResultEntryModel()
         {
-            Grade = "";
-            Points = 0;
-            MeanScore = 0;
-            Remarks = "";
+            this.Grade = "";
+            this.Points = 0;
+            this.MeanScore = 0m;
+            this.Remarks = "";
         }
 
         internal string GetRemark(decimal score)
         {
-            int points = DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(score, 100, 100)));
-
-            if (NameOfSubject.ToUpper().Trim() != "KISWAHILI")
-                switch (points)
+            int num = DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(score, 100m, 100m)));
+            string result;
+            if (base.NameOfSubject.ToUpper().Trim() != "KISWAHILI")
+            {
+                switch (num)
                 {
-                    case 12: return "EXCELLENT";
-                    case 11: return "VERY GOOD";
-                    case 10: return "VERY GOOD";
-                    case 9: return "GOOD";
-                    case 8: return "ABOVE AVERAGE";
-                    case 7: return "AVERAGE";
-                    case 6: return "AVERAGE";
-                    case 5: return "FAIR";
-                    case 4: return "BELOW AVERAGE";
-                    case 3: return "POOR";
-                    case 2: return "VERY POOR";
-                    case 1: return "WAKE UP";
+                    case 1:
+                        result = "WAKE UP";
+                        return result;
+                    case 2:
+                        result = "VERY POOR";
+                        return result;
+                    case 3:
+                        result = "POOR";
+                        return result;
+                    case 4:
+                        result = "BELOW AVERAGE";
+                        return result;
+                    case 5:
+                        result = "FAIR";
+                        return result;
+                    case 6:
+                        result = "AVERAGE";
+                        return result;
+                    case 7:
+                        result = "AVERAGE";
+                        return result;
+                    case 8:
+                        result = "ABOVE AVERAGE";
+                        return result;
+                    case 9:
+                        result = "GOOD";
+                        return result;
+                    case 10:
+                        result = "VERY GOOD";
+                        return result;
+                    case 11:
+                        result = "VERY GOOD";
+                        return result;
+                    case 12:
+                        result = "EXCELLENT";
+                        return result;
                 }
+            }
             else
-                switch (points)
+            {
+                switch (num)
                 {
-                    case 12: return "HONGERA";
-                    case 11: return "PONGEZI";
-                    case 10: return "VIZURI SANA";
-                    case 9: return "VIZURI";
-                    case 8: return "HEKO";
-                    case 7: return "WASTANI";
-                    case 6: return "CHINI YA WASTANI";
-                    case 5: return "TIA BIDII";
-                    case 4: return "TIA BIDII";
-                    case 3: return "AMKA";
-                    case 2: return "PUNGUZA MZAHA";
-                    case 1: return "ZINDUKA";
+                    case 1:
+                        result = "ZINDUKA";
+                        return result;
+                    case 2:
+                        result = "PUNGUZA MZAHA";
+                        return result;
+                    case 3:
+                        result = "AMKA";
+                        return result;
+                    case 4:
+                        result = "TIA BIDII";
+                        return result;
+                    case 5:
+                        result = "TIA BIDII";
+                        return result;
+                    case 6:
+                        result = "CHINI YA WASTANI";
+                        return result;
+                    case 7:
+                        result = "WASTANI";
+                        return result;
+                    case 8:
+                        result = "HEKO";
+                        return result;
+                    case 9:
+                        result = "VIZURI";
+                        return result;
+                    case 10:
+                        result = "VIZURI SANA";
+                        return result;
+                    case 11:
+                        result = "PONGEZI";
+                        return result;
+                    case 12:
+                        result = "HONGERA";
+                        return result;
                 }
-            return "";
+            }
+            result = "";
+            return result;
         }
-
-        public string Grade { get; set; }
-
-        public decimal? Cat1Score { get; set; }
-
-        public decimal? Cat2Score { get; set; }
-
-        public decimal? ExamScore { get; set; }
-
-        public decimal MeanScore { get; set; }
-
-        public int Points { get; set; }
-
-        public int Code { get; set; }
-
-        public string Tutor { get; set; }
-
-        public string Remarks { get; set; }
     }
 }

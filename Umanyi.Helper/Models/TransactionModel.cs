@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Helper
+namespace Helper.Models
 {
     public class TransactionModel : ModelBase
     {

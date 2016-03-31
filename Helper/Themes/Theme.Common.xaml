@@ -35,9 +35,9 @@
     <SolidColorBrush x:Key="Title12BackgroundBrush" Color="{DynamicResource Title12BackgroundColor}"/>
 -->
     <FontFamily x:Key="ContentControlThemeFontFamily">Segoe UI</FontFamily>
-    <sys:Double x:Key="ControlContentThemeFontSize">14.667</sys:Double>
+    <sys:Double x:Key="ControlContentThemeFontSize">13</sys:Double>
     <sys:Double x:Key="SmallFontSize">13</sys:Double>
-    <sys:Double x:Key="MediumFontSize">14.667</sys:Double>
+    <sys:Double x:Key="MediumFontSize">13</sys:Double>
     <sys:Double x:Key="LargerFontSize">16.667</sys:Double>
     <sys:Double x:Key="LargeFontSize">20</sys:Double>
     <FontFamily x:Key="MenuItemFontFamily">Calibri</FontFamily>

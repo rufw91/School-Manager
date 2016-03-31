@@ -69,6 +69,11 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.QBFC13, Version=13.0.0.23, Culture=neutral, PublicKeyToken=31d8aec643e18259">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\Windows\assembly\GAC\Interop.QBFC13\13.0.0.23__31d8aec643e18259\Interop.QBFC13.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Samples &amp; Libraries\Newtonsoft.Json.dll</HintPath>
@@ -102,6 +107,7 @@
     <Compile Include="Converters\ItemListToItemFindListConverter.cs" />
     <Compile Include="Credits.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Helpers\CloudSyncHelper.cs" />
     <Compile Include="Helpers\DocumentHelper.AggregateResult.cs" />
     <Compile Include="Helpers\DocumentHelper.ClassTranscripts2.cs" />
     <Compile Include="Helpers\DocumentHelper.cs" />
@@ -113,9 +119,14 @@
     <Compile Include="Helpers\DocumentHelper.Transcript.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript2.cs" />
     <Compile Include="Helpers\DocumentHelper.Voucher.cs" />
+    <Compile Include="Models\ClassBalancesListModel.cs" />
+    <Compile Include="Models\ClassesSetupEntryModel.cs" />
+    <Compile Include="Models\ClassesSetupModel.cs" />
+    <Compile Include="Models\DonationModel.cs" />
+    <Compile Include="Models\DonorListModel.cs" />
+    <Compile Include="Models\DonorModel.cs" />
     <Compile Include="Helpers\PrintHelper.cs" />
     <Compile Include="Helpers\QBSyncHelper.cs" />
-    <Compile Include="Helpers\StudentTranscriptSubjectModel.cs" />
     <Compile Include="Helpers\SyncHelper.cs" />
     <Compile Include="Models\AcademicReportModel.cs" />
     <Compile Include="Models\AggregateResultEntryModel.cs" />
@@ -127,7 +138,6 @@
     <Compile Include="Models\BookReturnModel.cs" />
     <Compile Include="Models\BookSelectModel.cs" />
     <Compile Include="Models\BooksPurchaseModel.cs" />
-    <Compile Include="Models\ClassFeesDefaultModel.cs" />
     <Compile Include="Models\ClassLeavingCertificatesModel.cs" />
     <Compile Include="Models\ClassStudentsExamResultModel.cs" />
     <Compile Include="Models\ClassStudentListModel.cs" />
@@ -138,9 +148,12 @@
     <Compile Include="Models\ComparisonModel.cs" />
     <Compile Include="Models\DisciplineModel.cs" />
     <Compile Include="Models\ExamResultStudentSubjectEntryModel.cs" />
+    <Compile Include="Models\ExamSubjectEntryModel.cs" />
     <Compile Include="Models\ExamWeightModel.cs" />
     <Compile Include="Models\FeePaymentReceipt2Model.cs" />
+    <Compile Include="Models\FeesPaymentDisplayModel.cs" />
     <Compile Include="Models\FeesPaymentReceiptModel.cs" />
+    <Compile Include="Models\FeesStructureEntryModel.cs" />
     <Compile Include="Models\FullFeesStructureModel.cs" />
     <Compile Include="Models\IssueModel.cs" />
     <Compile Include="Models\ItemIssueEntryModel.cs" />
@@ -148,13 +161,17 @@
     <Compile Include="Models\PaymentVoucherEntryModel.cs" />
     <Compile Include="Models\PaymentVoucherModel.cs" />
     <Compile Include="Models\PayslipModel.cs" />
+    <Compile Include="Models\ProjectBaseModel.cs" />
+    <Compile Include="Models\ProjectDetailModel.cs" />
+    <Compile Include="Models\ProjectListModel.cs" />
+    <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="Models\ProjectTaskModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\StaffBaseModel.cs" />
     <Compile Include="Models\StaffSelectModel.cs" />
     <Compile Include="Models\StudentClearancerModel.cs" />
     <Compile Include="Models\StudentFeesDefaultModel.cs" />
     <Compile Include="Models\StudentListModel.cs" />
-    <Compile Include="Models\ClassSetupModel.cs" />
     <Compile Include="Models\DormitoryMemberModel.cs" />
     <Compile Include="Models\EmployeePaymentModel.cs" />
     <Compile Include="Models\EventModel.cs" />
@@ -195,6 +212,7 @@
     <Compile Include="Models\StudentExamResultModel.cs" />
     <Compile Include="Models\StudentExamResultEntryModel.cs" />
     <Compile Include="Models\StudentTranscriptModel2.cs" />
+    <Compile Include="Models\StudentTranscriptSubjectModel.cs" />
     <Compile Include="Models\StudentTransferModel.cs" />
     <Compile Include="Models\SubjectBaseModel.cs" />
     <Compile Include="Models\SupplierBaseModel.cs" />

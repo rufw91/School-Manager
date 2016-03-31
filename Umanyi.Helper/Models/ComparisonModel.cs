@@ -1,28 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Helper.Models
 {
     public class ComparisonModel
     {
+        public string Description
+        {
+            get;
+            set;
+        }
+
+        public int Value
+        {
+            get;
+            set;
+        }
+
         public ComparisonModel()
         {
-            
         }
 
         public ComparisonModel(string description, int value)
         {
-            Description = description;
-            Value = value;
+            this.Description = description;
+            this.Value = value;
         }
-
-        public string Description
-        { get; set; }
-
-        public int Value
-        { get; set; }
     }
 }

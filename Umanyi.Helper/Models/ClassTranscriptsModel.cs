@@ -1,37 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class ClassTranscriptsModel:ModelBase
+    public class ClassTranscriptsModel : ModelBase
     {
         private ObservableCollection<StudentTranscriptModel> entries;
-        public ClassTranscriptsModel()
-        {
-            entries = new ObservableCollection<StudentTranscriptModel>();
-        }
 
         public ObservableCollection<StudentTranscriptModel> Entries
         {
-            get { return entries; }
+            get
+            {
+                return this.entries;
+            }
             set
             {
-                if (value != entries)
+                if (value != this.entries)
                 {
-                    entries = value;
-                    NotifyPropertyChanged("Entries");
-
+                    this.entries = value;
+                    base.NotifyPropertyChanged("Entries");
                 }
             }
         }
 
+        public ClassTranscriptsModel()
+        {
+            this.entries = new ObservableCollection<StudentTranscriptModel>();
+        }
+
         public override void Reset()
         {
-            entries.Clear();
+            this.entries.Clear();
         }
     }
 }

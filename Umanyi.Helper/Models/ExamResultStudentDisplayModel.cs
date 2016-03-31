@@ -1,58 +1,66 @@
-﻿
+﻿using System;
+
 namespace Helper.Models
 {
     public class ExamResultStudentDisplayModel : ExamResultStudentModel
     {
-        string nameOfClass = "";
-        string nameOfExam = "";
-        public ExamResultStudentDisplayModel()
-        {
-            NameOfClass = "";
-            NameOfExam = "";
-        }
+        private string nameOfClass = "";
 
-        public ExamResultStudentDisplayModel(ExamResultStudentModel examResultModel)
-        {
-            NameOfClass = "";
-            NameOfExam = "";
-            this.Entries = examResultModel.Entries;
-            this.ExamID = examResultModel.ExamID;
-            this.ExamResultID = examResultModel.ExamResultID;
-            this.StudentID = examResultModel.StudentID;
-        }
+        private string nameOfExam = "";
 
         public string NameOfClass
         {
-            get { return this.nameOfClass; }
-
+            get
+            {
+                return this.nameOfClass;
+            }
             set
             {
                 if (value != this.nameOfClass)
                 {
                     this.nameOfClass = value;
-                    NotifyPropertyChanged("NameOfClass");
+                    base.NotifyPropertyChanged("NameOfClass");
                 }
             }
         }
 
         public string NameOfExam
         {
-            get { return this.nameOfExam; }
-
+            get
+            {
+                return this.nameOfExam;
+            }
             set
             {
                 if (value != this.nameOfExam)
                 {
                     this.nameOfExam = value;
-                    NotifyPropertyChanged("NameOfExam");
+                    base.NotifyPropertyChanged("NameOfExam");
                 }
             }
         }
+
+        public ExamResultStudentDisplayModel()
+        {
+            this.NameOfClass = "";
+            this.NameOfExam = "";
+        }
+
+        public ExamResultStudentDisplayModel(ExamResultStudentModel examResultModel)
+        {
+            this.NameOfClass = "";
+            this.NameOfExam = "";
+            base.Entries = examResultModel.Entries;
+            base.ExamID = examResultModel.ExamID;
+            base.ExamResultID = examResultModel.ExamResultID;
+            base.StudentID = examResultModel.StudentID;
+        }
+
         public override void Reset()
         {
             base.Reset();
-            NameOfClass = "";
-            NameOfExam = "";
+            this.NameOfClass = "";
+            this.NameOfExam = "";
         }
     }
 }

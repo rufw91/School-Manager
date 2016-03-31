@@ -1,369 +1,479 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Windows.Media.Imaging;
 
 namespace Helper.Models
 {
     public class StudentModel : StudentBaseModel
     {
         private string firstName = "";
+
         private string middleName = "";
+
         private string lastName = "";
-        private DateTime dateOfBirth = new DateTime(1999,1,1);
+
+        private DateTime dateOfBirth = new DateTime(1999, 1, 1);
+
         private DateTime dateOfAdmission = DateTime.Now;
+
         private string nameOfGuardian = "";
+
         private string guardianPhoneNo = "";
+
         private string email = "";
+
         private string address = "";
+
         private string city = "";
+
         private string postalCode = "";
+
         private byte[] sPhoto = null;
+
         private decimal prevBalance;
+
         private Gender gender;
+
         private int classID = 0;
+
         private int dormitoryID = 0;
+
         private string bedNo = "";
+
         private string prevInstitution = "";
+
         private bool isBoarder;
+
         private int kcpescore;
+
         private bool isActive;
 
-        public StudentModel()
-        {
-            PropertyChanged += delegate(object o, PropertyChangedEventArgs pcea)
-                {
-                    if ((pcea.PropertyName == "FirstName") ||
-                    (pcea.PropertyName == "MiddleName") ||
-                    (pcea.PropertyName == "LastName"))
-                    {
-                        NameOfStudent = FirstName + " " + MiddleName + " " + lastName;                     
-                    }
-                };
-            Email = "test@example.com";
-            PrevBalance = 0;
-            IsBoarder = true;
-            IsActive = true;
-            SPhoto = new byte[1];
-            sPhoto[0] = 1;
-        }
-       
-      
         public string FirstName
         {
-            get { return this.firstName; }
-
+            get
+            {
+                return this.firstName;
+            }
             set
             {
                 if (value != this.firstName)
                 {
                     this.firstName = value;
-                    NotifyPropertyChanged("FirstName");
+                    base.NotifyPropertyChanged("FirstName");
                 }
             }
         }
+
         public string MiddleName
         {
-            get { return this.middleName; }
-
+            get
+            {
+                return this.middleName;
+            }
             set
             {
                 if (value != this.middleName)
                 {
                     this.middleName = value;
-                    NotifyPropertyChanged("MiddleName");
+                    base.NotifyPropertyChanged("MiddleName");
                 }
             }
         }
+
         public string LastName
         {
-            get { return this.lastName; }
-
+            get
+            {
+                return this.lastName;
+            }
             set
             {
                 if (value != this.lastName)
                 {
                     this.lastName = value;
-                    NotifyPropertyChanged("LastName");
+                    base.NotifyPropertyChanged("LastName");
                 }
             }
         }
 
         public Gender Gender
         {
-            get { return this.gender; }
-
+            get
+            {
+                return this.gender;
+            }
             set
             {
                 if (value != this.gender)
                 {
                     this.gender = value;
-                    NotifyPropertyChanged("Gender");
+                    base.NotifyPropertyChanged("Gender");
                 }
             }
         }
 
         public DateTime DateOfBirth
         {
-            get { return this.dateOfBirth; }
-
+            get
+            {
+                return this.dateOfBirth;
+            }
             set
             {
                 if (value != this.dateOfBirth)
                 {
                     this.dateOfBirth = value;
-                    NotifyPropertyChanged("DateOfBirth");
+                    base.NotifyPropertyChanged("DateOfBirth");
                 }
             }
         }
+
         public DateTime DateOfAdmission
         {
-            get { return this.dateOfAdmission; }
-
+            get
+            {
+                return this.dateOfAdmission;
+            }
             set
             {
                 if (value != this.dateOfAdmission)
                 {
                     this.dateOfAdmission = value;
-                    NotifyPropertyChanged("DateOfAdmission");
+                    base.NotifyPropertyChanged("DateOfAdmission");
                 }
             }
         }
+
         public string NameOfGuardian
         {
-            get { return this.nameOfGuardian; }
-
+            get
+            {
+                return this.nameOfGuardian;
+            }
             set
             {
                 if (value != this.nameOfGuardian)
                 {
                     this.nameOfGuardian = value;
-                    NotifyPropertyChanged("NameOfGuardian");
+                    base.NotifyPropertyChanged("NameOfGuardian");
                 }
             }
         }
+
         public string GuardianPhoneNo
         {
-            get { return this.guardianPhoneNo; }
-
+            get
+            {
+                return this.guardianPhoneNo;
+            }
             set
             {
                 if (value != this.guardianPhoneNo)
                 {
                     this.guardianPhoneNo = value;
-                    NotifyPropertyChanged("GuardianPhoneNo");
+                    base.NotifyPropertyChanged("GuardianPhoneNo");
                 }
             }
         }
+
         public string Email
         {
-            get { return this.email; }
-
+            get
+            {
+                return this.email;
+            }
             set
             {
                 if (value != this.email)
                 {
                     this.email = value;
-                    NotifyPropertyChanged("Email");
+                    base.NotifyPropertyChanged("Email");
                 }
             }
         }
+
         public string Address
         {
-            get { return this.address; }
-
+            get
+            {
+                return this.address;
+            }
             set
             {
                 if (value != this.address)
                 {
                     this.address = value;
-                    NotifyPropertyChanged("Address");
+                    base.NotifyPropertyChanged("Address");
                 }
             }
         }
+
         public string City
         {
-            get { return this.city; }
-
+            get
+            {
+                return this.city;
+            }
             set
             {
                 if (value != this.city)
                 {
                     this.city = value;
-                    NotifyPropertyChanged("City");
+                    base.NotifyPropertyChanged("City");
                 }
             }
         }
+
         public string PostalCode
         {
-            get { return this.postalCode; }
-
+            get
+            {
+                return this.postalCode;
+            }
             set
             {
                 if (value != this.postalCode)
                 {
                     this.postalCode = value;
-                    NotifyPropertyChanged("PostalCode");
+                    base.NotifyPropertyChanged("PostalCode");
                 }
             }
         }
+
         public byte[] SPhoto
         {
-            get { return this.sPhoto; }
-
+            get
+            {
+                return this.sPhoto;
+            }
             set
             {
                 if (value != this.sPhoto)
                 {
                     this.sPhoto = value;
-                    NotifyPropertyChanged("SPhoto");
+                    base.NotifyPropertyChanged("SPhoto");
                 }
             }
         }
 
         public int ClassID
         {
-            get { return this.classID; }
-
+            get
+            {
+                return this.classID;
+            }
             set
             {
                 if (value != this.classID)
                 {
                     this.classID = value;
-                    NotifyPropertyChanged("ClassID");
+                    base.NotifyPropertyChanged("ClassID");
                 }
             }
         }
+
         public int DormitoryID
         {
-            get { return this.dormitoryID; }
-
+            get
+            {
+                return this.dormitoryID;
+            }
             set
             {
                 if (value != this.dormitoryID)
                 {
                     this.dormitoryID = value;
-                    NotifyPropertyChanged("DormitoryID");
+                    base.NotifyPropertyChanged("DormitoryID");
                 }
             }
         }
+
         public string BedNo
         {
-            get { return this.bedNo; }
-
+            get
+            {
+                return this.bedNo;
+            }
             set
             {
                 if (value != this.bedNo)
                 {
                     this.bedNo = value;
-                    NotifyPropertyChanged("BedNo");
+                    base.NotifyPropertyChanged("BedNo");
                 }
             }
         }
+
         public decimal PrevBalance
         {
-            get { return this.prevBalance; }
-
+            get
+            {
+                return this.prevBalance;
+            }
             set
             {
                 if (value != this.prevBalance)
                 {
                     this.prevBalance = value;
-                    NotifyPropertyChanged("PrevBalance");
+                    base.NotifyPropertyChanged("PrevBalance");
                 }
             }
         }
+
         public string PrevInstitution
         {
-            get { return this.prevInstitution; }
-
+            get
+            {
+                return this.prevInstitution;
+            }
             set
             {
                 if (value != this.prevInstitution)
                 {
                     this.prevInstitution = value;
-                    NotifyPropertyChanged("PrevInstitution");
+                    base.NotifyPropertyChanged("PrevInstitution");
                 }
             }
         }
 
         public bool IsActive
         {
-            get { return this.isActive; }
-
+            get
+            {
+                return this.isActive;
+            }
             set
             {
                 if (value != this.isActive)
                 {
                     this.isActive = value;
-                    NotifyPropertyChanged("IsActive");
+                    base.NotifyPropertyChanged("IsActive");
                 }
             }
         }
 
+        public bool IsBoarder
+        {
+            get
+            {
+                return this.isBoarder;
+            }
+            set
+            {
+                if (value != this.isBoarder)
+                {
+                    this.isBoarder = value;
+                }
+                base.NotifyPropertyChanged("IsBoarder");
+            }
+        }
+
+        public int KCPEScore
+        {
+            get
+            {
+                return this.kcpescore;
+            }
+            set
+            {
+                if (value != this.kcpescore)
+                {
+                    this.kcpescore = value;
+                }
+                base.NotifyPropertyChanged("KCPEScore");
+            }
+        }
+
+        public StudentModel()
+        {
+            base.PropertyChanged += delegate (object o, PropertyChangedEventArgs pcea)
+            {
+                if (pcea.PropertyName == "FirstName" || pcea.PropertyName == "MiddleName" || pcea.PropertyName == "LastName")
+                {
+                    base.NameOfStudent = string.Concat(new string[]
+                    {
+                        this.FirstName,
+                        " ",
+                        this.MiddleName,
+                        " ",
+                        this.lastName
+                    });
+                }
+            };
+            this.Email = "test@example.com";
+            this.PrevBalance = 0m;
+            this.IsBoarder = true;
+            this.IsActive = true;
+            this.SPhoto = new byte[1];
+            this.sPhoto[0] = 1;
+        }
+
         public override string ToString()
         {
-            return NameOfStudent;
+            return base.NameOfStudent;
         }
+
         public override bool CheckErrors()
         {
-            ErrorCheckingStatus = Helper.ErrorCheckingStatus.Incomplete;
+            base.ErrorCheckingStatus = ErrorCheckingStatus.Incomplete;
             try
             {
-                ClearAllErrors();
-                var s = DataAccess.GetStudent(StudentID);
-                if (s.StudentID>0)
+                base.ClearAllErrors();
+                StudentModel student = DataAccess.GetStudent(base.StudentID);
+                if (student.StudentID > 0)
                 {
-                    List<string> errors = new List<string>();
-                    errors.Add("Student already exists. (" + s.NameOfStudent.ToUpper() + ")");
-                    SetErrors("StudentID", errors);
+                    base.SetErrors("StudentID", new List<string>
+                    {
+                        "Student already exists. (" + student.NameOfStudent.ToUpper() + ")"
+                    });
                 }
-                var f = DataAccess.GetBedNoUser(BedNo);
-                if ((f.StudentID > 0)&&(!isBoarder))
+                StudentBaseModel bedNoUser = DataAccess.GetBedNoUser(this.BedNo);
+                if (bedNoUser.StudentID > 0 && !this.isBoarder)
                 {
-                    List<string> errors = new List<string>();
-                    errors.Add("Bed No already in use by: (" + s.NameOfStudent.ToUpper() + ")");
-                    SetErrors("BedNo", errors);
+                    base.SetErrors("BedNo", new List<string>
+                    {
+                        "Bed No already in use by: (" + student.NameOfStudent.ToUpper() + ")"
+                    });
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                List<string> errors = new List<string>();
-                errors.Add(e.Message);
-                SetErrors("", errors);
+                base.SetErrors("", new List<string>
+                {
+                    ex.Message
+                });
             }
-            NotifyPropertyChanged("HasErrors");
-            ErrorCheckingStatus = Helper.ErrorCheckingStatus.Complete;
-            return HasErrors;
+            base.NotifyPropertyChanged("HasErrors");
+            base.ErrorCheckingStatus = ErrorCheckingStatus.Complete;
+            return base.HasErrors;
         }
+
         public override void Reset()
         {
             base.Reset();
-            FirstName = "";
-            MiddleName = "";
-            LastName = "";
-            DateOfBirth = new DateTime(1999, 1, 1);
-            DateOfAdmission = DateTime.Now;
-            NameOfGuardian = "";
-            GuardianPhoneNo = "";
-            Address = "";
-            City = "";
-            PostalCode = "";
-            IsActive = true;
-            SPhoto = new byte[1];
-            sPhoto[0] = 1;
-            ClassID = 0;
-            DormitoryID = 0;
-            BedNo = "";
-            PrevInstitution = "";
-            IsBoarder = true;
-            Gender = Helper.Gender.Male;
-            KCPEScore = 0;
-            PrevBalance = 0;
+            this.FirstName = "";
+            this.MiddleName = "";
+            this.LastName = "";
+            this.DateOfBirth = new DateTime(1999, 1, 1);
+            this.DateOfAdmission = DateTime.Now;
+            this.NameOfGuardian = "";
+            this.GuardianPhoneNo = "";
+            this.Address = "";
+            this.City = "";
+            this.PostalCode = "";
+            this.IsActive = true;
+            this.SPhoto = new byte[1];
+            this.sPhoto[0] = 1;
+            this.ClassID = 0;
+            this.DormitoryID = 0;
+            this.BedNo = "";
+            this.PrevInstitution = "";
+            this.IsBoarder = true;
+            this.Gender = Gender.Male;
+            this.KCPEScore = 0;
+            this.PrevBalance = 0m;
         }
+
         public void CopyFrom(StudentModel student)
         {
             base.CopyFrom(student);
@@ -371,7 +481,7 @@ namespace Helper.Models
             this.NameOfGuardian = student.NameOfGuardian;
             this.GuardianPhoneNo = student.GuardianPhoneNo;
             this.City = student.City;
-            this.StudentID = student.StudentID;
+            base.StudentID = student.StudentID;
             this.FirstName = student.FirstName;
             this.MiddleName = student.MiddleName;
             this.LastName = student.LastName;
@@ -390,26 +500,5 @@ namespace Helper.Models
             this.Gender = student.Gender;
             this.KCPEScore = student.KCPEScore;
         }
-        public bool IsBoarder
-        {
-            get { return isBoarder; }
-            set
-            {
-                if (value != isBoarder)
-                    isBoarder = value;
-                NotifyPropertyChanged("IsBoarder");
-            }
-        }
-        public int KCPEScore
-        {
-            get { return kcpescore; }
-            set
-            {
-                if (value != kcpescore)
-                    kcpescore = value;
-                NotifyPropertyChanged("KCPEScore");
-            }
-        }
     }
-
 }

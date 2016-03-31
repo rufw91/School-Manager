@@ -39,6 +39,7 @@ namespace Helper
                 if (!string.IsNullOrWhiteSpace(file))
                 {
                     string pdfPath = Path.GetTempFileName() + ".pdf";
+                    Log.E(pdfPath,null);
                     try
                     {
                         Process.Start("gxps-9.15-win32.exe", "-sDEVICE=pdfwrite -sOutputFile=" +

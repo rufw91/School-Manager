@@ -28,7 +28,7 @@
         <Image HorizontalAlignment="Left" Height="169" Margin="10,25,0,0" VerticalAlignment="Top" Width="186" 
                Source="{Binding Info.Logo, Source={x:Static Application.Current}}" 
                RenderTransformOrigin="0.5,0.5"/>
-    <TextBlock  HorizontalAlignment="Left" Margin="661,0,0,20" Text="In Pursuit Of Excellence" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Segoe UI" FontStyle="Italic"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="661,0,0,20" Text="{Binding Info.Motto}" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Segoe UI" FontStyle="Italic"/>
 
     <TextBlock  HorizontalAlignment="Left" Margin="791,36,0,0" Text="FEES RECEIPT" FontWeight="Bold" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="16"/>
         <TextBlock  HorizontalAlignment="Left" Margin="830,105,0,0" Text="{Binding Info.FullNameAlt}" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="18"/>
@@ -53,6 +53,6 @@
     <TextBlock  HorizontalAlignment="Left" Margin="591,317,0,0" Text="Item" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Times New Roman"/>
     <TextBlock  HorizontalAlignment="Left" Margin="811,317,0,0" Text="Amount" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Times New Roman"/>
         <Image  HorizontalAlignment="Left" Height="169" Margin="571,25,0,0" VerticalAlignment="Top" Width="186" Source="{Binding Info.Logo, Source={x:Static Application.Current}}" RenderTransformOrigin="0.5,0.5"/>
-    <TextBlock  HorizontalAlignment="Left" Margin="100,0,0,20" Text="In Pursuit Of Excellence" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Segoe UI" FontStyle="Italic"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="100,0,0,20" Text="{Binding Info.Motto}" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Segoe UI" FontStyle="Italic"/>
   </Grid>
 </FixedPage>

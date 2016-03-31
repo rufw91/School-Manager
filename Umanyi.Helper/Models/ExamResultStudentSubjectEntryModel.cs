@@ -1,67 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Helper.Models
 {
     public class ExamResultStudentSubjectEntryModel : ExamResultSubjectEntryModel
     {
-        int studentID;
-        string name;
-        public ExamResultStudentSubjectEntryModel()
-        {            
-            StudentID = 0;
-            NameOfStudent = "";
-            PropertyChanged += (o, e) =>
-                {
-                    if (e.PropertyName == "MaximumScore" || e.PropertyName == "Score")
-                        CheckErrors();
-                };
-        }
+        private int studentID;
+
+        private string name;
 
         public int StudentID
         {
-            get { return this.studentID; }
-
+            get
+            {
+                return this.studentID;
+            }
             set
             {
                 if (value != this.studentID)
                 {
                     this.studentID = value;
-                    NotifyPropertyChanged("StudentID");
+                    base.NotifyPropertyChanged("StudentID");
                 }
             }
         }
+
         public string NameOfStudent
         {
-            get { return this.name; }
-
+            get
+            {
+                return this.name;
+            }
             set
             {
                 if (value != this.name)
                 {
                     this.name = value;
-                    NotifyPropertyChanged("NameOfStudent");
+                    base.NotifyPropertyChanged("NameOfStudent");
                 }
             }
         }
 
+        public ExamResultStudentSubjectEntryModel()
+        {
+            this.StudentID = 0;
+            this.NameOfStudent = "";
+            base.PropertyChanged += delegate (object o, PropertyChangedEventArgs e)
+            {
+                if (e.PropertyName == "MaximumScore" || e.PropertyName == "Score")
+                {
+                    this.CheckErrors();
+                }
+            };
+        }
+
         public override bool CheckErrors()
         {
-            ClearAllErrors();
-            if (Score > OutOf)
-                SetErrors("Score", new List<string>() { "Score value [" + Score + "] is invalid. Should be non negative number greater than zero and less than or equal to [" + MaximumScore + "]" });
-            return HasErrors;
+            base.ClearAllErrors();
+            if (base.Score > base.OutOf)
+            {
+                base.SetErrors("Score", new List<string>
+                {
+                    string.Concat(new object[]
+                    {
+                        "Score value [",
+                        base.Score,
+                        "] is invalid. Should be non negative number greater than zero and less than or equal to [",
+                        base.MaximumScore,
+                        "]"
+                    })
+                });
+            }
+            return base.HasErrors;
         }
 
         public override void Reset()
         {
             base.Reset();
-            StudentID = 0;
-            NameOfStudent = "";
-            
+            this.StudentID = 0;
+            this.NameOfStudent = "";
         }
     }
 }
