@@ -1,72 +1,74 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Helper.Models
 {
     public class StudentSelectModel : StudentBaseModel
     {
         private bool isActive;
-        public StudentSelectModel()
-        {
-            this.IsActive = true;
-            CheckErrors();
-        }
 
         public bool IsActive
         {
-            get { return this.isActive; }
-
+            get
+            {
+                return this.isActive;
+            }
             set
             {
                 if (value != this.isActive)
                 {
                     this.isActive = value;
-                    NotifyPropertyChanged("IsActive");
+                    base.NotifyPropertyChanged("IsActive");
                 }
             }
         }
+
+        public StudentSelectModel()
+        {
+            this.IsActive = true;
+            this.CheckErrors();
+        }
+
         public override bool CheckErrors()
         {
-            ClearAllErrors();
-            if (StudentID == 0)
+            base.ClearAllErrors();
+            if (base.StudentID == 0)
             {
-                List<string> errors = new List<string>();
-                errors.Add("Student does not exist.");
-                SetErrors("StudentID", errors);
-                NameOfStudent = "";
+                base.SetErrors("StudentID", new List<string>
+                {
+                    "Student does not exist."
+                });
+                base.NameOfStudent = "";
                 this.IsActive = true;
             }
             else
             {
-                StudentModel student = DataAccess.GetStudent(StudentID);
+                StudentModel student = DataAccess.GetStudent(base.StudentID);
                 if (student.StudentID == 0)
                 {
-                    List<string> errors = new List<string>();
-                    errors.Add("Student does not exist.");
-                    SetErrors("StudentID", errors);
-                    NameOfStudent = "";
+                    base.SetErrors("StudentID", new List<string>
+                    {
+                        "Student does not exist."
+                    });
+                    base.NameOfStudent = "";
                 }
                 else
                 {
-                    ClearErrors("StudentID");
-                    this.StudentID = student.StudentID;
-                    this.NameOfStudent = student.NameOfStudent;
+                    base.ClearErrors("StudentID");
+                    base.StudentID = student.StudentID;
+                    base.NameOfStudent = student.NameOfStudent;
                     this.IsActive = student.IsActive;
                     if (!this.isActive)
                     {
-                        List<string> errors = new List<string>();
-                        errors.Add("Student is not active.");
-                        SetErrors("StudentID", errors);
+                        base.SetErrors("StudentID", new List<string>
+                        {
+                            "Student is not active."
+                        });
                     }
-
                 }
             }
-
-            NotifyPropertyChanged("HasErrors");
-            return HasErrors;
+            base.NotifyPropertyChanged("HasErrors");
+            return base.HasErrors;
         }
     }
 }

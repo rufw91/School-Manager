@@ -57,7 +57,7 @@
         <Setter Property="Background" Value="{DynamicResource InputBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource InputText}" />
         <Setter Property="BorderBrush" Value="{DynamicResource InputBorder}" />
-        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
         <Setter Property="MinHeight" Value="32"/>

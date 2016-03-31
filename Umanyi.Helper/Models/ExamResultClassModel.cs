@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 
@@ -8,82 +7,92 @@ namespace Helper.Models
     public class ExamResultClassModel : ExamResultBaseModel
     {
         private string nameOfClass;
-        private int classID;
-        ObservableCollection<ExamResultStudentModel> entries;
-        private DataTable resultTable;
 
-        public ExamResultClassModel()
-        {
-            ClassID = 0;
-            NameOfClass = "";
-            Entries = new ObservableCollection<ExamResultStudentModel>();
-            ResultTable = new DataTable();
-        }
+        private int classID;
+
+        private ObservableCollection<ExamResultStudentModel> entries;
+
+        private DataTable resultTable;
 
         public ObservableCollection<ExamResultStudentModel> Entries
         {
-            get { return entries; }
-
+            get
+            {
+                return this.entries;
+            }
             set
             {
                 if (value != this.entries)
                 {
                     this.entries = value;
-                    NotifyPropertyChanged("Entries");
+                    base.NotifyPropertyChanged("Entries");
                 }
             }
         }
 
         public int ClassID
         {
-            get { return this.classID; }
-
+            get
+            {
+                return this.classID;
+            }
             set
             {
                 if (value != this.classID)
                 {
                     this.classID = value;
-                    NotifyPropertyChanged("ClassID");
+                    base.NotifyPropertyChanged("ClassID");
                 }
             }
         }
+
         public string NameOfClass
         {
-            get { return this.nameOfClass; }
-
+            get
+            {
+                return this.nameOfClass;
+            }
             set
             {
                 if (value != this.nameOfClass)
                 {
                     this.nameOfClass = value;
-                    NotifyPropertyChanged("NameOfClass");
+                    base.NotifyPropertyChanged("NameOfClass");
                 }
             }
         }
 
         public DataTable ResultTable
         {
-            get { return this.resultTable; }
-
+            get
+            {
+                return this.resultTable;
+            }
             set
             {
                 if (value != this.resultTable)
                 {
                     this.resultTable = value;
-                    NotifyPropertyChanged("ResultTable");
+                    base.NotifyPropertyChanged("ResultTable");
                 }
             }
+        }
+
+        public ExamResultClassModel()
+        {
+            this.ClassID = 0;
+            this.NameOfClass = "";
+            this.Entries = new ObservableCollection<ExamResultStudentModel>();
+            this.ResultTable = new DataTable();
         }
 
         public override void Reset()
         {
             base.Reset();
-            ClassID = 0;
-            NameOfClass = "";
-            Entries = new ObservableCollection<ExamResultStudentModel>();
-            ResultTable = new DataTable();
+            this.ClassID = 0;
+            this.NameOfClass = "";
+            this.Entries = new ObservableCollection<ExamResultStudentModel>();
+            this.ResultTable = new DataTable();
         }
-
     }
 }
-

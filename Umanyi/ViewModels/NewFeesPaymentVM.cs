@@ -8,6 +8,7 @@ using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Collections.Generic;
 
 namespace UmanyiSMS.ViewModels
 {
@@ -137,11 +138,28 @@ namespace UmanyiSMS.ViewModels
                o => CanSavePayment());
         }
 
+        public List<string> PaymentMethods
+        {
+            get;
+            set;
+        }
+
         protected override void InitVars()
         {
             Title = "NEW FEES PAYMENT";
             CurrentPayment = new FeePaymentModel();
             RecentPayments = new ObservableCollection<FeePaymentModel>();
+            this.PaymentMethods = new List<string>
+            {
+                "M-PESA",
+                "CASH",
+                "CHEQUE",
+                "BANK DEPOSIT/TRANSFER",
+                "MONEY ORDER",
+                "OTHER"
+            };
+            base.NotifyPropertyChanged("PaymentMethods");
+
             currentPayment.PropertyChanged += async (o, e) =>
             {
                 if (e.PropertyName != "StudentID")

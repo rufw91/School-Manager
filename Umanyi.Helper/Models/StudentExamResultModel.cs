@@ -1,166 +1,187 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 
 namespace Helper.Models
 {
     public class StudentExamResultModel : StudentSelectModel
     {
         private string nameOfClass;
+
         private string classPosition;
+
         private string overAllPosition;
+
         private decimal totalMarks;
+
         private decimal points;
+
         private string meanGrade;
+
         private ObservableCollection<StudentTranscriptSubjectModel> entries;
+
         private string nameOfExam;
-        public StudentExamResultModel()
-        {
-            NameOfClass = "";
-            ClassPosition = "1/1";
-            OverAllPosition = "1/1";
-            TotalMarks = 0;
-            Points = 0;
-            MeanGrade = "";
-            NameOfExam = "";
-            Entries = new ObservableCollection<StudentTranscriptSubjectModel>();
-        }
 
         public string NameOfClass
         {
-            get { return this.nameOfClass; }
-
+            get
+            {
+                return this.nameOfClass;
+            }
             set
             {
                 if (value != this.nameOfClass)
                 {
                     this.nameOfClass = value;
-                    NotifyPropertyChanged("NameOfClass");
+                    base.NotifyPropertyChanged("NameOfClass");
                 }
             }
         }
 
         public string ClassPosition
         {
-            get { return this.classPosition; }
-
+            get
+            {
+                return this.classPosition;
+            }
             set
             {
                 if (value != this.classPosition)
                 {
                     this.classPosition = value;
-                    NotifyPropertyChanged("ClassPosition");
+                    base.NotifyPropertyChanged("ClassPosition");
                 }
             }
         }
 
         public string OverAllPosition
         {
-            get { return this.overAllPosition; }
-
+            get
+            {
+                return this.overAllPosition;
+            }
             set
             {
                 if (value != this.overAllPosition)
                 {
                     this.overAllPosition = value;
-                    NotifyPropertyChanged("OverAllPosition");
+                    base.NotifyPropertyChanged("OverAllPosition");
                 }
             }
         }
 
         public decimal TotalMarks
         {
-            get { return this.totalMarks; }
-
+            get
+            {
+                return this.totalMarks;
+            }
             set
             {
                 if (value != this.totalMarks)
                 {
                     this.totalMarks = value;
-                    NotifyPropertyChanged("TotalMarks");
+                    base.NotifyPropertyChanged("TotalMarks");
                 }
             }
         }
 
         public decimal Points
         {
-            get { return this.points; }
-
+            get
+            {
+                return this.points;
+            }
             set
             {
                 if (value != this.points)
                 {
                     this.points = value;
-                    NotifyPropertyChanged("Points");
+                    base.NotifyPropertyChanged("Points");
                 }
             }
         }
 
         public string MeanGrade
         {
-            get { return this.meanGrade; }
-
+            get
+            {
+                return this.meanGrade;
+            }
             set
             {
                 if (value != this.meanGrade)
                 {
                     this.meanGrade = value;
-                    NotifyPropertyChanged("MeanGrade");
+                    base.NotifyPropertyChanged("MeanGrade");
                 }
             }
         }
 
         public string NameOfExam
         {
-            get { return this.nameOfExam; }
-
+            get
+            {
+                return this.nameOfExam;
+            }
             set
             {
                 if (value != this.nameOfExam)
                 {
                     this.nameOfExam = value;
-                    NotifyPropertyChanged("NameOfExam");
+                    base.NotifyPropertyChanged("NameOfExam");
                 }
             }
         }
 
         public ObservableCollection<StudentTranscriptSubjectModel> Entries
         {
-            get { return this.entries; }
-
+            get
+            {
+                return this.entries;
+            }
             set
             {
                 if (value != this.entries)
                 {
                     this.entries = value;
-                    NotifyPropertyChanged("Entries");
+                    base.NotifyPropertyChanged("Entries");
                 }
             }
         }
 
+        public StudentExamResultModel()
+        {
+            this.NameOfClass = "";
+            this.ClassPosition = "1/1";
+            this.OverAllPosition = "1/1";
+            this.TotalMarks = 0m;
+            this.Points = 0m;
+            this.MeanGrade = "";
+            this.NameOfExam = "";
+            this.Entries = new ObservableCollection<StudentTranscriptSubjectModel>();
+        }
+
         internal virtual void CopyFrom(StudentExamResultModel newResult)
         {
-            NameOfClass = newResult.NameOfClass;
-            ClassPosition = newResult.ClassPosition;
-            OverAllPosition = newResult.OverAllPosition;
-            TotalMarks = newResult.TotalMarks;
-            Points = newResult.Points;
-            MeanGrade = newResult.MeanGrade;
-            Entries = newResult.Entries;
+            this.NameOfClass = newResult.NameOfClass;
+            this.ClassPosition = newResult.ClassPosition;
+            this.OverAllPosition = newResult.OverAllPosition;
+            this.TotalMarks = newResult.TotalMarks;
+            this.Points = newResult.Points;
+            this.MeanGrade = newResult.MeanGrade;
+            this.Entries = newResult.Entries;
         }
 
         public virtual void Clean()
         {
-            NameOfClass = "";
-            ClassPosition = "1/1";
-            OverAllPosition = "1/1";
-            TotalMarks = 0;
-            Points = 0;
-            MeanGrade = "";
-            NameOfExam = "";
-            Entries = new ObservableCollection<StudentTranscriptSubjectModel>();
+            this.NameOfClass = "";
+            this.ClassPosition = "1/1";
+            this.OverAllPosition = "1/1";
+            this.TotalMarks = 0m;
+            this.Points = 0m;
+            this.MeanGrade = "";
+            this.NameOfExam = "";
+            this.Entries = new ObservableCollection<StudentTranscriptSubjectModel>();
         }
     }
 }

@@ -1,71 +1,95 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
 
 namespace Helper.Models
 {
     public class FeePaymentModel : StudentSelectModel
     {
-        int feePaymentID;
-        decimal amtPaid;
-        DateTime datePaid;
-        public FeePaymentModel()
-            : base()
-        {
-            DatePaid = DateTime.Now;
-            FeePaymentID = 0;
-            AmountPaid = 0;
-        }
+        private int feePaymentID;
+
+        private decimal amtPaid;
+
+        private DateTime datePaid;
+
+        private string paymentMethod;
 
         public DateTime DatePaid
         {
-            get { return this.datePaid; }
-
+            get
+            {
+                return this.datePaid;
+            }
             set
             {
                 if (value != this.datePaid)
                 {
                     this.datePaid = value;
-                    NotifyPropertyChanged("DatePaid");
+                    base.NotifyPropertyChanged("DatePaid");
                 }
             }
         }
+
         public int FeePaymentID
         {
-            get { return this.feePaymentID; }
-
+            get
+            {
+                return this.feePaymentID;
+            }
             set
             {
                 if (value != this.feePaymentID)
                 {
                     this.feePaymentID = value;
-                    NotifyPropertyChanged("FeePaymentID");
+                    base.NotifyPropertyChanged("FeePaymentID");
                 }
             }
         }
+
         public decimal AmountPaid
         {
-            get { return this.amtPaid; }
-
+            get
+            {
+                return this.amtPaid;
+            }
             set
             {
                 if (value != this.amtPaid)
                 {
                     this.amtPaid = value;
-                    NotifyPropertyChanged("AmountPaid");
+                    base.NotifyPropertyChanged("AmountPaid");
                 }
             }
         }
-        
+
+        public string PaymentMethod
+        {
+            get
+            {
+                return this.paymentMethod;
+            }
+            set
+            {
+                if (value != this.paymentMethod)
+                {
+                    this.paymentMethod = value;
+                    base.NotifyPropertyChanged("PaymentMethod");
+                }
+            }
+        }
+
+        public FeePaymentModel()
+        {
+            this.DatePaid = DateTime.Now;
+            this.FeePaymentID = 0;
+            this.AmountPaid = 0m;
+            this.PaymentMethod = "";
+        }
+
         public override void Reset()
         {
             base.Reset();
-            DatePaid = DateTime.Now;
-            AmountPaid = 0;
-            FeePaymentID = 0;
+            this.DatePaid = DateTime.Now;
+            this.AmountPaid = 0m;
+            this.FeePaymentID = 0;
         }
-
     }
 }

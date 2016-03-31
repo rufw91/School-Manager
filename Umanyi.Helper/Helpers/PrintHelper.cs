@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Packaging;
-using System.Linq;
 using System.Printing;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -18,24 +14,25 @@ namespace Helper
     {
         public static void PrintVisual(Visual visual)
         {
-            if (visual == null)
-                return;
-            string s = GetXps(visual);
-            PrintXPS(s);
+            if (visual != null)
+            {
+                string xps = PrintHelper.GetXps(visual);
+                PrintHelper.PrintXPS(xps);
+            }
         }
 
         private static string GetXps(Visual visual)
         {
-            string s = Path.GetTempFileName();
-            Package package = Package.Open(s, FileMode.Create);
-            XpsDocument doc = new XpsDocument(package, CompressionOption.NotCompressed);
-            XpsDocumentWriter xpsdw = XpsDocument.CreateXpsDocumentWriter(doc);
-            VisualsToXpsDocument vToXpsD = (VisualsToXpsDocument)xpsdw.CreateVisualsCollator();
-            vToXpsD.WriteAsync(visual);
-            vToXpsD.EndBatchWrite();
-            doc.Close();
+            string tempFileName = Path.GetTempFileName();
+            Package package = Package.Open(tempFileName, FileMode.Create);
+            XpsDocument xpsDocument = new XpsDocument(package, CompressionOption.NotCompressed);
+            XpsDocumentWriter xpsDocumentWriter = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+            VisualsToXpsDocument visualsToXpsDocument = (VisualsToXpsDocument)xpsDocumentWriter.CreateVisualsCollator();
+            visualsToXpsDocument.WriteAsync(visual);
+            visualsToXpsDocument.EndBatchWrite();
+            xpsDocument.Close();
             package.Close();
-            return s;
+            return tempFileName;
         }
 
         public static void PrintXPSDirect(string filePath)
@@ -44,51 +41,48 @@ namespace Helper
             {
                 LocalPrintServer localPrintServer = new LocalPrintServer();
                 PrintQueue defaultPrintQueue = LocalPrintServer.GetDefaultPrintQueue();
-
                 if (!File.Exists(filePath))
+                {
                     throw new ArgumentException("The file specified does not exist.");
-                FileInfo f = new FileInfo(filePath);
+                }
+                FileInfo fileInfo = new FileInfo(filePath);
                 try
                 {
-                    PrintSystemJobInfo xpsPrintJob = defaultPrintQueue.AddJob(f.Name, filePath, false);
+                    PrintSystemJobInfo printSystemJobInfo = defaultPrintQueue.AddJob(fileInfo.Name, filePath, false);
                 }
-                catch (PrintJobException e)
+                catch (PrintJobException ex)
                 {
-                    Log.E(e.ToString(), null);
+                    Log.E(ex.ToString(), null);
                 }
-                catch (Exception e)
+                catch (Exception ex2)
                 {
-                    Log.E(e.ToString(), null);
+                    Log.E(ex2.ToString(), null);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex2)
             {
-                Log.E(e.ToString(), null);
+                Log.E(ex2.ToString(), null);
             }
         }
+
         public static void PrintXPS(string filePath)
         {
             try
             {
-                PrintDialog pDialog = new PrintDialog();
-                pDialog.PageRangeSelection = PageRangeSelection.AllPages;
-                pDialog.UserPageRangeEnabled = true;
-
-                Nullable<Boolean> print = pDialog.ShowDialog();
-                if (print == true)
+                PrintDialog printDialog = new PrintDialog();
+                printDialog.PageRangeSelection = PageRangeSelection.AllPages;
+                printDialog.UserPageRangeEnabled = true;
+                if (printDialog.ShowDialog() == true)
                 {
                     XpsDocument xpsDocument = new XpsDocument(filePath, FileAccess.ReadWrite);
-                    FixedDocumentSequence fixedDocSeq = xpsDocument.GetFixedDocumentSequence();
-                    pDialog.PrintDocument(fixedDocSeq.DocumentPaginator, "Timetable Print");
+                    FixedDocumentSequence fixedDocumentSequence = xpsDocument.GetFixedDocumentSequence();
+                    printDialog.PrintDocument(fixedDocumentSequence.DocumentPaginator, "Timetable Print");
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Log.E(e.ToString(), null);
+                Log.E(ex.ToString(), null);
             }
         }
     }
-
-
 }
-

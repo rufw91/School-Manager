@@ -1,53 +1,80 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class PayslipModel:StaffSelectModel
+    public class PayslipModel : StaffSelectModel
     {
         private ObservableCollection<FeesStructureEntryModel> entries;
-        
-        public PayslipModel()
-        {
-            Entries = new ObservableCollection<FeesStructureEntryModel>();
-            DatePaid = DateTime.Now;
-        }
 
         public ObservableCollection<FeesStructureEntryModel> Entries
-        { get { return entries; }
+        {
+            get
+            {
+                return this.entries;
+            }
             set
             {
-                if (value != entries)
+                if (value != this.entries)
                 {
-                    entries = value;
-                    NotifyPropertyChanged("Entries");
+                    this.entries = value;
+                    base.NotifyPropertyChanged("Entries");
                 }
             }
         }
 
-        public void RefreshTotal()
+        public decimal AmountPaid
         {
-            decimal tot = 0;
-            foreach (var e in entries)
-                tot += e.Amount;
-            tot = AmountPaid - tot;
-            if (!entries.Any(o => o.Name == "TOTAL"))
-                Entries.Add(new FeesStructureEntryModel() { Name = "TOTAL", Amount = tot });
-            else
-                entries.First(o => o.Name == "TOTAL").Amount = tot;
+            get;
+            set;
         }
 
-        public decimal AmountPaid { get; set; }
-
         public DateTime DatePaid
-        { get; set; }
+        {
+            get;
+            set;
+        }
 
-        public string Designation { get; set; }
+        public string Designation
+        {
+            get;
+            set;
+        }
 
-        public int PayslipID { get; set; }
+        public int PayslipID
+        {
+            get;
+            set;
+        }
+
+        public PayslipModel()
+        {
+            this.Entries = new ObservableCollection<FeesStructureEntryModel>();
+            this.DatePaid = DateTime.Now;
+            this.Designation = "";
+        }
+
+        public void RefreshTotal()
+        {
+            decimal num = 0m;
+            foreach (FeesStructureEntryModel current in this.entries)
+            {
+                num += current.Amount;
+            }
+            num = this.AmountPaid - num;
+            if (!this.entries.Any((FeesStructureEntryModel o) => o.Name == "TOTAL"))
+            {
+                this.Entries.Add(new FeesStructureEntryModel
+                {
+                    Name = "TOTAL",
+                    Amount = num
+                });
+            }
+            else
+            {
+                this.entries.First((FeesStructureEntryModel o) => o.Name == "TOTAL").Amount = num;
+            }
+        }
     }
 }

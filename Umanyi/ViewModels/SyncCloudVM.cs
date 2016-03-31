@@ -29,10 +29,10 @@ namespace UmanyiSMS.ViewModels
 
         protected override void CreateCommands()
         {
-            SyncCommand = new RelayCommand(async o => {
+            SyncCommand = new RelayCommand( o => {
                 SyncStarted = true;
                 IsBusy = true; 
-                await SyncHelper.Sync(new Progress<SyncOperationProgress>(DisplayProgress)); 
+                //await SyncHelper.Sync(new Progress<SyncOperationProgress>(DisplayProgress)); 
                 IsBusy = false;
                 if (!IsSyncSucceeded)
                     MessageBox.Show("Sync did not complete successfully. Check your network connection and try again.", 

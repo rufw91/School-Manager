@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
 
 namespace Helper.Models
 {
@@ -6,38 +6,40 @@ namespace Helper.Models
     {
         private string nameOfExam;
 
-        public ExamResultClassDisplayModel()
-        {
-            NameOfExam = "";
-        }
-
-        public ExamResultClassDisplayModel(ExamResultClassModel classExamResult)
-        {
-            NameOfExam = "";
-            this.ClassID = classExamResult.ClassID;
-            this.Entries = classExamResult.Entries;
-            this.ExamID = classExamResult.ExamID;
-            this.ExamResultID = classExamResult.ExamResultID;            
-        }
-
         public string NameOfExam
         {
-            get { return this.nameOfExam; }
-
+            get
+            {
+                return this.nameOfExam;
+            }
             set
             {
                 if (value != this.nameOfExam)
                 {
                     this.nameOfExam = value;
-                    NotifyPropertyChanged("NameOfExam");
+                    base.NotifyPropertyChanged("NameOfExam");
                 }
             }
+        }
+
+        public ExamResultClassDisplayModel()
+        {
+            this.NameOfExam = "";
+        }
+
+        public ExamResultClassDisplayModel(ExamResultClassModel classExamResult)
+        {
+            this.NameOfExam = "";
+            base.ClassID = classExamResult.ClassID;
+            base.Entries = classExamResult.Entries;
+            base.ExamID = classExamResult.ExamID;
+            base.ExamResultID = classExamResult.ExamResultID;
         }
 
         public override void Reset()
         {
             base.Reset();
-            NameOfExam = "";
+            this.NameOfExam = "";
         }
     }
 }

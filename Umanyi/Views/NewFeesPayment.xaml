@@ -22,7 +22,7 @@
 
             <TextBlock HorizontalAlignment="Left" Margin="20,175,0,0" Style="{DynamicResource Title0}" Text="Payment" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="30,210,0,0" TextWrapping="Wrap" Text="Payment" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Margin="92,210,0,0" VerticalAlignment="Top" Width="150"                 
+            <TextBox HorizontalAlignment="Left" Margin="92,210,0,0" VerticalAlignment="Top" Width="57"                 
                  Text="{Binding CurrentPayment.AmountPaid, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <TextBlock HorizontalAlignment="Left" Margin="30,252,0,0" Text="Date Paid/Deposited" TextWrapping="Wrap" VerticalAlignment="Top" Height="33" Width="56"/>
             <DatePicker HorizontalAlignment="Left" Margin="92,255,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
@@ -51,6 +51,9 @@
             <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
                 <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
             </Border>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="161,210,0,0" Text="Payment Method" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="51"/>
+            <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="217,208,0,0" VerticalAlignment="Top" Width="120"
+                      ItemsSource="{Binding PaymentMethods}" SelectedValue="{Binding CurrentPayment.PaymentMethod, UpdateSourceTrigger=PropertyChanged}"/>
 
         </Grid>
     </Grid>

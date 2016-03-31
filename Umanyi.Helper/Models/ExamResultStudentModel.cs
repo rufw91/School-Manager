@@ -1,174 +1,197 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace Helper.Models
 {
     public class ExamResultStudentModel : ExamResultBaseModel
     {
         private string nameOfStudent;
-        private string meanGrade;
-        private int studentID;
-        private decimal total;
-        ObservableCollection<ExamResultSubjectEntryModel> entries;
-        private bool isActive;
 
-        public ExamResultStudentModel()
-        {
-            StudentID = 0;
-            NameOfStudent = "";
-            Total = 0;
-            CheckErrors();
-            Entries = new ObservableCollection<ExamResultSubjectEntryModel>();
-            entries.CollectionChanged += (o, e) =>
-                {
-                    Total = 0;
-                    MeanGrade = "";
-                    int points = 0;
-                    foreach (var s in entries)
-                    {
-                        Total += s.Score;
-                    points+=DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(s.Score, s.OutOf, 100)));
-                        MeanGrade = DataAccess.CalculateGradeFromPoints(entries.Count > 0 ? (int)decimal.Ceiling((decimal)points / (decimal)entries.Count) : 1);
-                    }
-                };
-            IsActive = true;
-        }
+        private string meanGrade;
+
+        private int studentID;
+
+        private decimal total;
+
+        private ObservableCollection<ExamResultSubjectEntryModel> entries;
+
+        private bool isActive;
 
         public bool IsActive
         {
-            get { return this.isActive; }
-
+            get
+            {
+                return this.isActive;
+            }
             set
             {
                 if (value != this.isActive)
                 {
                     this.isActive = value;
-                    NotifyPropertyChanged("IsActive");
+                    base.NotifyPropertyChanged("IsActive");
                 }
             }
         }
 
         public ObservableCollection<ExamResultSubjectEntryModel> Entries
         {
-            get { return entries; }
-
+            get
+            {
+                return this.entries;
+            }
             set
             {
                 if (value != this.entries)
                 {
                     this.entries = value;
-                    NotifyPropertyChanged("Entries");
+                    base.NotifyPropertyChanged("Entries");
                 }
             }
         }
 
         public int StudentID
         {
-            get { return this.studentID; }
-
+            get
+            {
+                return this.studentID;
+            }
             set
             {
                 if (value != this.studentID)
                 {
                     this.studentID = value;
-                    NotifyPropertyChanged("StudentID");
+                    base.NotifyPropertyChanged("StudentID");
                 }
             }
         }
+
         public decimal Total
         {
-            get { return this.total; }
-
+            get
+            {
+                return this.total;
+            }
             set
             {
                 if (value != this.total)
                 {
                     this.total = value;
-                    NotifyPropertyChanged("Total");
+                    base.NotifyPropertyChanged("Total");
                 }
             }
         }
+
         public string NameOfStudent
         {
-            get { return this.nameOfStudent; }
-
+            get
+            {
+                return this.nameOfStudent;
+            }
             set
             {
                 if (value != this.nameOfStudent)
                 {
                     this.nameOfStudent = value;
-                    NotifyPropertyChanged("NameOfStudent");
+                    base.NotifyPropertyChanged("NameOfStudent");
                 }
             }
         }
 
         public string MeanGrade
         {
-            get { return meanGrade; }
+            get
+            {
+                return this.meanGrade;
+            }
             set
             {
                 if (value != this.meanGrade)
                 {
                     this.meanGrade = value;
-                    NotifyPropertyChanged("MeanGrade");
+                    base.NotifyPropertyChanged("MeanGrade");
                 }
             }
+        }
+
+        public ExamResultStudentModel()
+        {
+            this.StudentID = 0;
+            this.NameOfStudent = "";
+            this.Total = 0m;
+            this.CheckErrors();
+            this.Entries = new ObservableCollection<ExamResultSubjectEntryModel>();
+            this.entries.CollectionChanged += delegate (object o, NotifyCollectionChangedEventArgs e)
+            {
+                this.Total = 0m;
+                this.MeanGrade = "";
+                int num = 0;
+                foreach (ExamResultSubjectEntryModel current in this.entries)
+                {
+                    this.Total += current.Score;
+                    num += DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(current.Score, current.OutOf, 100m)));
+                    this.MeanGrade = DataAccess.CalculateGrade(decimal.Parse((this.Total / this.entries.Count).ToString("N2")));
+                }
+            };
+            this.IsActive = true;
         }
 
         public override void Reset()
         {
             base.Reset();
-            StudentID = 0;
-            NameOfStudent = "";
-            Entries = new ObservableCollection<ExamResultSubjectEntryModel>();
+            this.StudentID = 0;
+            this.NameOfStudent = "";
+            this.Entries = new ObservableCollection<ExamResultSubjectEntryModel>();
         }
 
         public override bool CheckErrors()
         {
             try
             {
-                ClearAllErrors();
-                if (StudentID == 0)
+                base.ClearAllErrors();
+                if (this.StudentID == 0)
                 {
-                    List<string> errors = new List<string>();
-                    errors.Add("Student does not exist.");
-                    SetErrors("StudentID", errors);
+                    base.SetErrors("StudentID", new List<string>
+                    {
+                        "Student does not exist."
+                    });
                 }
                 else
                 {
-                    StudentModel student = DataAccess.GetStudent(StudentID);
+                    StudentModel student = DataAccess.GetStudent(this.StudentID);
                     if (student.StudentID == 0)
                     {
-                        List<string> errors = new List<string>();
-                        errors.Add("Student does not exist.");
-                        SetErrors("StudentID", errors);
+                        base.SetErrors("StudentID", new List<string>
+                        {
+                            "Student does not exist."
+                        });
                     }
                     else
                     {
-                        ClearErrors("StudentID");
+                        base.ClearErrors("StudentID");
                         this.StudentID = student.StudentID;
                         this.NameOfStudent = student.NameOfStudent;
                         this.IsActive = student.IsActive;
                         if (!this.isActive)
                         {
-                            List<string> errors = new List<string>();
-                            errors.Add("Student is not active.");
-                            SetErrors("StudentID", errors);
+                            base.SetErrors("StudentID", new List<string>
+                            {
+                                "Student is not active."
+                            });
                         }
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                List<string> errors = new List<string>();
-                errors.Add(e.Message);
-                SetErrors("", errors);
+                base.SetErrors("", new List<string>
+                {
+                    ex.Message
+                });
             }
-            NotifyPropertyChanged("HasErrors");
-            return HasErrors;
+            base.NotifyPropertyChanged("HasErrors");
+            return base.HasErrors;
         }
-
-        
     }
 }

@@ -22,10 +22,11 @@ namespace UmanyiSMS.ViewModels
 
         protected override void CreateCommands()
         {
-            SyncCommand = new RelayCommand(async o =>
+            SyncCommand = new RelayCommand( o =>
              {
                  IsBusy = true;
-                 bool succ = await QBSyncHelper.SyncInvoice(new SaleModel());
+                 bool succ = true;
+                 // = await QBSyncHelper.SyncInvoice(new SaleModel());
                  IsBusy = false;
                  MessageBox.Show(succ ? "Successfully completed operation." : "An error occured. The operation could not be completed.",
                      succ ? "Success" : "Error", MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);

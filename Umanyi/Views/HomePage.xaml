@@ -52,53 +52,19 @@
                     <RowDefinition Height="145*"/>
                 </Grid.RowDefinitions>
 
-                <controls:HomePageButton Grid.Column="0" Grid.Row="0" Title="Students" 
-					Command="{Binding DataContext.DisplayStudentsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-					Description="Registration, Class Lists, Subject Selection, Assign Class, Transfer, Clear, Leaving Cert." 
-                                         HorizontalAlignment="Stretch" Margin="0,0,10,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
 
-                <controls:HomePageButton Grid.Column="1" Grid.Row="0" Title="Staff"
-					Command="{Binding DataContext.DisplayStaffCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-                    Description="Register new members, Staff Lists, Edit details"
-                                         HorizontalAlignment="Stretch" Margin="0,0,10,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
-
-
-                <controls:HomePageButton Grid.Column="2" Grid.Row="0" Title="Finance" 
+                <controls:HomePageButton Grid.Column="0" Grid.Row="0" Title="Finance" 
 					Command="{Binding DataContext.DisplayFeesCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
 					Description="Fee payments, Statements, Fees Structure, Balances Lists, Payment vouchers, Payments by voteheads"
                                          HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
-
-                <controls:HomePageButton Grid.Column="0" Grid.Row="1" Title="Exams"
-					Command="{Binding DataContext.DisplayExamsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-					Description="Enter results, View results, Generate report cards, Generate mark lists, Gen. aggregate subjects results"
-                                         HorizontalAlignment="Stretch" Margin="0,0,10,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
-
-                <controls:HomePageButton Grid.Column="1" Grid.Row="1" Title="Inventory Mgmt."
-					Command="{Binding DataContext.DisplayInventoryMgmtCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-					Description="Record purchases, Issue inv., Record supplier payments, Purchase / Issue history, Stock taking"
-                                         HorizontalAlignment="Stretch" Margin="0,0,10,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
-
-                <controls:HomePageButton Grid.Column="2" Grid.Row="1" Title="Library"
-					Command="{Binding DataContext.DisplayEventsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-					HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
-
-                <controls:HomePageButton Grid.Column="0" Grid.Row="2" Title="Gallery &amp; Events "
-					Command="{Binding DataContext.DisplayGalleryCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-					HorizontalAlignment="Stretch" Margin="0,0,10,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
-
-                <controls:HomePageButton Grid.Column="1" Grid.Row="2" Title="Payroll"
-					Command="{Binding DataContext.DisplayPayrollCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-				HorizontalAlignment="Stretch" Margin="0,0,10,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
-
-                <controls:HomePageButton Grid.Column="3" Grid.Row="2" Title="Reports"
-					Command="{Binding DataContext.DisplayBoardingCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-					HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
 
             </Grid>
             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,4" Height="16" Width="33"><Hyperlink Foreground="LightGray" 
 					Command="{Binding DataContext.AboutCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"><Run Text="About"/></Hyperlink></TextBlock>
             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,66,4" Height="16"><Hyperlink Foreground="LightGray" 
 							Command="{Binding DataContext.DisplaySettingsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"><Run Text="Settings"/></Hyperlink></TextBlock>
+            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,126,4" Height="16">
+                <Hyperlink Command="{Binding DataContext.DisplayInstitutionCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}" Foreground="LightGray"><Run Text="Institution"/></Hyperlink></TextBlock>
         </Grid>
     </Grid>
 </UserControl>
