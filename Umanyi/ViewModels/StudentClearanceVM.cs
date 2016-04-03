@@ -17,12 +17,17 @@ namespace UmanyiSMS.ViewModels
     {
         StudentBaseModel selectedStudent;
         private byte[] sPhoto;
+        private bool isInClassMode;
+        private bool isInStudentMode;
+        private int selectedClassID;
+        private ObservableCollection<ClassModel> allClasses;
+
         public StudentClearanceVM()
         {
             InitVars();
             CreateCommands();
         }
-        protected override void InitVars()
+        protected async override void InitVars()
         {
             Title = "CLEAR STUDENT";
             selectedStudent = new StudentBaseModel();
@@ -36,23 +41,66 @@ namespace UmanyiSMS.ViewModels
                         SPhoto = (await DataAccess.GetStudentAsync(selectedStudent.StudentID)).SPhoto;
                 }
             };
+
+            SelectedClassID = 0;
+            IsInStudentMode = true;
+            AllClasses = await DataAccess.GetAllClassesAsync();
         }
 
         protected override void CreateCommands()
         {
-            SetClearedCommand = new RelayCommand(async o =>
+            SaveCommand = new RelayCommand(async o =>
             {
+                bool succ;
+                if (isInStudentMode)
+                { 
                 StudentClearancerModel st = new StudentClearancerModel();
                 st.StudentID = selectedStudent.StudentID;
                 st.NameOfStudent = selectedStudent.NameOfStudent;
                 st.DateCleared = DateTime.Now;
-                bool succ = await DataAccess.SaveNewStudentClearancesAsync(new ObservableCollection<StudentClearancerModel>() { st });
+                 succ = await DataAccess.SaveNewStudentClearancesAsync(new ObservableCollection<StudentClearancerModel>() { st });
+            }
+                else
+                {
+                    succ = await DataAccess.SaveNewClassClearance(selectedClassID);
+                }
                 MessageBox.Show(succ ? "Succesfully saved details." : "Could not save details at this time.", succ ? "Success" : "Warning",
                     MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
                     Reset();
-            }, o => !selectedStudent.HasErrors);
+            }, o => isInStudentMode?!selectedStudent.HasErrors:selectedClassID>0);
         }
+
+        public bool IsInStudentMode
+        {
+            get { return isInStudentMode; }
+
+            set
+            {
+                if (value != isInStudentMode)
+                {
+                    isInStudentMode = value;
+                    NotifyPropertyChanged("IsInStudentMode");
+                    selectedStudent.Reset();
+                }
+            }
+        }
+
+        public bool IsInClassMode
+        {
+            get { return isInClassMode; }
+
+            set
+            {
+                if (value != isInClassMode)
+                {
+                    isInClassMode = value;
+                    NotifyPropertyChanged("IsInClassMode");
+                    selectedClassID = 0;
+                }
+            }
+        }
+
         public StudentBaseModel SelectedStudent
         {
             get { return selectedStudent; }
@@ -63,6 +111,35 @@ namespace UmanyiSMS.ViewModels
                 {
                     selectedStudent = value;
                     NotifyPropertyChanged("SelectedStudent");
+                }
+            }
+        }
+
+        public ObservableCollection<ClassModel> AllClasses
+        {
+            get { return allClasses; }
+
+            private set
+            {
+                if (value != allClasses)
+                {
+                    allClasses = value;
+                    NotifyPropertyChanged("AllClasses");
+                }
+            }
+        }
+
+
+        public int SelectedClassID
+        {
+            get { return selectedClassID; }
+
+            private set
+            {
+                if (value != selectedClassID)
+                {
+                    selectedClassID = value;
+                    NotifyPropertyChanged("SelectedClassID");
                 }
             }
         }
@@ -81,7 +158,7 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public ICommand SetClearedCommand
+        public ICommand SaveCommand
         { get; private set; }
         public override void Reset()
         {

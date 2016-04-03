@@ -10,14 +10,14 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Enter Results by Subject" 
                    VerticalAlignment="Top"/>
         <TextBlock  HorizontalAlignment="Left" Margin="40,90,0,0" Text="Class" VerticalAlignment="Top" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="80,90,0,0" VerticalAlignment="Top" Width="200"         	
+        <ComboBox HorizontalAlignment="Left" Margin="80,90,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllClasses}"
         	DisplayMemberPath="NameOfClass" 
                   SelectedValuePath="ClassID"
         	SelectedValue="{Binding SelectedClassID, Mode=TwoWay}" />
 
         <TextBlock  HorizontalAlignment="Left" Margin="39,140,0,0" Text="Exam" VerticalAlignment="Top" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="80,140,0,0" VerticalAlignment="Top" Width="200"         	
+        <ComboBox HorizontalAlignment="Left" Margin="80,140,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllExams}"
         	DisplayMemberPath="NameOfExam" 
                   SelectedValuePath="ExamID"
@@ -25,7 +25,7 @@
         	SelectedValue="{Binding SelectedExamID, Mode=TwoWay}"/>
 
         <TextBlock  HorizontalAlignment="Left" Margin="28,190,0,0" Text="Subject" VerticalAlignment="Top" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="80,190,0,0" VerticalAlignment="Top" Width="200"         	
+        <ComboBox HorizontalAlignment="Left" Margin="80,190,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllSubjects}"
         	DisplayMemberPath="NameOfSubject" 
                   SelectedValuePath="SubjectID"

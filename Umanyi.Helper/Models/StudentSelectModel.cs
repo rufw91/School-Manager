@@ -55,7 +55,6 @@ namespace Helper.Models
                 else
                 {
                     base.ClearErrors("StudentID");
-                    base.StudentID = student.StudentID;
                     base.NameOfStudent = student.NameOfStudent;
                     this.IsActive = student.IsActive;
                     if (!this.isActive)

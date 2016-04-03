@@ -51,13 +51,46 @@
                     <RowDefinition Height="145*"/>
                     <RowDefinition Height="145*"/>
                 </Grid.RowDefinitions>
+                <controls:HomePageButton Grid.Column="0" Grid.Row="0" Title="Students" 
+					Command="{Binding DataContext.DisplayStudentsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					Description="Student Reistration, Modify Details, Class Lists, Subject Selection, Assign Classes, Student Transfer, Clear Students, Leaving Certificate ..."
+                                         HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
 
-
-                <controls:HomePageButton Grid.Column="0" Grid.Row="0" Title="Finance" 
+                <controls:HomePageButton Grid.Column="1" Grid.Row="0" Title="Staff" 
+					Command="{Binding DataContext.DisplayStaffCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					Description="Register new members, Staff List, Modify Details"
+                                         HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
+                <controls:HomePageButton Grid.Column="2" Grid.Row="0" Title="Finance" 
 					Command="{Binding DataContext.DisplayFeesCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
 					Description="Fee payments, Statements, Fees Structure, Balances Lists, Payment vouchers, Payments by voteheads"
                                          HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
+                <controls:HomePageButton Grid.Column="0" Grid.Row="1" Title="Exams" 
+					Command="{Binding DataContext.DisplayExamsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					Description="Exam Registration, Enter Exam Results, View Exam Results, Report Cards, Mark List, Aggregat results"
+                                         HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
+                <controls:HomePageButton Grid.Column="1" Grid.Row="1" Title="Inventory Management" 
+					Command="{Binding DataContext.DisplayInventoryMgmtCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					Description="New Items, Issue Items, Receive Items, Supplier Payments, Stock taking ..."
+                                         HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
 
+                <controls:HomePageButton Grid.Column="2" Grid.Row="1" Title="Library" 
+					Command="{Binding DataContext.DisplayLibraryCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					Description="Book Issue, Returns, View Unreturned Books, Modify Details"
+                                         HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
+                <controls:HomePageButton Grid.Column="0" Grid.Row="2" Title="Gallery &amp; Events" 
+					Command="{Binding DataContext.DisplayGalleryCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					Description="Add Gallery Items, Show Items, New Event, Show Upcoming EVents"
+                                         HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
+
+                <controls:HomePageButton Grid.Column="1" Grid.Row="2" Title="Payroll" 
+					Command="{Binding DataContext.DisplayPayrollCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					Description="New payments, View payment history, Print payslips, P.A.Y.E Info"
+                                         HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
+
+                <controls:HomePageButton Grid.Column="2" Grid.Row="2" Title="External Modules" 
+					Command="{Binding DataContext.DisplayCustomModulesCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
+					Description="Additional, Customized modules ..."
+                                         HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
             </Grid>
             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,4" Height="16" Width="33"><Hyperlink Foreground="LightGray" 
 					Command="{Binding DataContext.AboutCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"><Run Text="About"/></Hyperlink></TextBlock>

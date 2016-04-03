@@ -13,41 +13,29 @@
     <Grid Name="mnGrid">
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="New Exam" 
                    VerticalAlignment="Top"/>
-        <TextBlock Text="Class" HorizontalAlignment="Left" Margin="41,80,0,0" VerticalAlignment="Top" />
-        <ComboBox DisplayMemberPath="Description" HorizontalAlignment="Left" Margin="74,80,0,0" 
+        <TextBlock HorizontalAlignment="Left" Margin="45,70,0,0" Text="Exam Details" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+        <TextBlock Text="Name" HorizontalAlignment="Left" Margin="58,142,0,0" Name="label3" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="126,142,0,0" MaxLength="20" 
+                 Text="{Binding Path=NewExam.NameOfExam, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="250" />
+        <TextBlock Text="Out Of" HorizontalAlignment="Left" Margin="58,197,0,0" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="126,197,0,0" MaxLength="20" 
+                 Text="{Binding Path=NewExam.OutOf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="250" />
+        <TextBlock Text="Class" HorizontalAlignment="Left" Margin="58,253,0,0" VerticalAlignment="Top" />
+        <ComboBox DisplayMemberPath="Description" HorizontalAlignment="Left" Margin="126,253,0,0" 
                   ItemsSource="{Binding AllCombinedClasses}"
                   SelectedItem="{Binding Path=SelectedCombinedClass, Mode=TwoWay}"
-                  VerticalAlignment="Top" Width="194"/>
-        <TextBlock Text="Name" HorizontalAlignment="Left" Margin="36,130,0,0" Name="label3" VerticalAlignment="Top" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="74,130,0,0" MaxLength="20" 
-                 Text="{Binding Path=NewExam.NameOfExam, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="194" />
-        <TextBlock Text="Out Of" HorizontalAlignment="Left" Margin="30,200,0,0" VerticalAlignment="Top" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="74,200,0,0" MaxLength="20" 
-                 Text="{Binding Path=NewExam.OutOf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="194" />
-
-        <TextBlock  HorizontalAlignment="Left" Margin="152,166,0,0" Text="MAX (20 chararacters)" VerticalAlignment="Top" />
-        <TextBlock  HorizontalAlignment="Left" Margin="300,80,0,0" Style="{DynamicResource Title0}" Text="Subjects to be Examined" VerticalAlignment="Top" />
-        <DataGrid AutoGenerateColumns="False" Margin="300,109,10,50" Name="dataGrid1"
+                  VerticalAlignment="Top" Width="250"/>
+        
+        <TextBlock  HorizontalAlignment="Left" Margin="258,120,0,0" Text="MAX (20 chararacters)" VerticalAlignment="Top" />
+        <TextBlock  HorizontalAlignment="Left" Margin="450,92,0,0" Style="{DynamicResource Title0}" Text="Subjects to be Examined" VerticalAlignment="Top" />
+        <DataGrid AutoGenerateColumns="False" Margin="450,120,10,50" Name="dataGrid1"
                   ItemsSource="{Binding Path=NewExam.Entries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                   CanUserAddRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" 
                   CanUserDeleteRows="True" RowHeaderWidth="0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name of Subject" Width="200*"
                         Binding="{Binding Path=NameOfSubject}" IsReadOnly="True"/>
-                <DataGridTemplateColumn Header="Exam Date" Width="200*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <DatePicker SelectedDate="{Binding ExamDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Long" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Time" Width="200*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Controls:TimePicker SelectedTime="{Binding ExamTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="_Save" HorizontalAlignment="Right" 

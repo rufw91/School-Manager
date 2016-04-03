@@ -123,13 +123,12 @@ namespace UmanyiSMS.ViewModels
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     currentPayment.FeePaymentID = await DataAccess.GetLastPaymentIDAsync(currentPayment.StudentID,currentPayment.DatePaid);                    
                     FeePaymentReceiptModel fprm = await DataAccess.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(sm.SaleItems));
-                    RefreshRecentPayments();
-                    Reset();
+                    RefreshRecentPayments();                    
                     
                     Document = DocumentHelper.GenerateDocument(fprm);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(Document);
-                    
+                    Reset();
                 }
                 else
                     MessageBox.Show("Could not save details.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

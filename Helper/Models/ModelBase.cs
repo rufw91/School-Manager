@@ -49,6 +49,7 @@ namespace Helper
             errors.Add(propertyName, propertyErrors);
             if (ErrorsChanged != null)
                 ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
+            NotifyPropertyChanged("HasErrors");
         }
 
         protected void ClearErrors(string propertyName)

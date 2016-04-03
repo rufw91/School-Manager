@@ -11,6 +11,7 @@ namespace UmanyiSMS.ViewModels
         public ExamsVM()
         {
             TryAddChild(typeof(NewExamVM));
+            TryAddChild(typeof(ExamRegistrationVM));            
             TryAddChild(typeof(EnterExamResultsVM));
             TryAddChild(typeof(EnterExamResultsBySubjectVM));            
             TryAddChild(typeof(ViewExamResultsVM));

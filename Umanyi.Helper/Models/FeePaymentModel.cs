@@ -90,6 +90,7 @@ namespace Helper.Models
             this.DatePaid = DateTime.Now;
             this.AmountPaid = 0m;
             this.FeePaymentID = 0;
+            this.PaymentMethod = "";
         }
     }
 }

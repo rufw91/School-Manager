@@ -27,6 +27,7 @@ namespace UmanyiSMS.ViewModels
             {
                 IsBusy = true;
                 bool succ = await DataAccess.SaveNewExamAsync(newExam);
+
                 MessageBox.Show(succ ? "Successfully saved details." : "Could not save details.", succ ? "Success" : "Error", MessageBoxButton.OK, 
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
