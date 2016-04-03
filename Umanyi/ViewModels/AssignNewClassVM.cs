@@ -49,7 +49,6 @@ namespace UmanyiSMS.ViewModels
         {
             SaveCommand = new RelayCommand(async o =>
              {
-                 MessageBox.Show(newClassID + ":old class"+selectedClassID);
                  bool succ = false;
                  if (isInStudentMode)
                  succ = await DataAccess.AssignStudentNewClass(selectedStudent.StudentID, newClassID);

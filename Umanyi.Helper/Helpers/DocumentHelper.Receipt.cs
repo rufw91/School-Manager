@@ -39,6 +39,18 @@ namespace Helper
             AddText(term, 14, true, 0, Colors.Black, 80 + page2Offset, 285, pageNo);
         }
 
+        private static void AddRCPaymentMethod(string method, int pageNo)
+        {
+            AddText(method, 14, true, 0, Colors.Black, 121, 301, pageNo);
+            AddText(method, 14, true, 0, Colors.Black, 121 + page2Offset, 301, pageNo);
+        }
+
+        private static void AddRCReceiptNo(string receiptNo, int pageNo)
+        {
+            AddText(receiptNo, 14, true, 0, Colors.Black, 452, 24, pageNo);
+            AddText(receiptNo, 14, true, 0, Colors.Black, 452 + page2Offset, 24, pageNo);
+        }
+
         private static void AddRCFeesItem(FeesStructureEntryModel item, int itemIndex, int pageNo, bool isAggregate)
         {
             double fontsize = 14;
@@ -86,6 +98,8 @@ namespace Helper
                 AddRCStudentName(si.NameOfStudent, pageNo);
                 AddRCTerm(GetTerm(), pageNo);
                 AddRCClass(si.NameOfClass, pageNo);
+                AddRCPaymentMethod(si.PaymentMethod, pageNo);
+                AddRCReceiptNo(si.FeePaymentID.ToString(), pageNo);
                 AddRCFeesItems(si.Entries, pageNo);
             }
         }

@@ -147,6 +147,7 @@
     <Compile Include="Models\CombinedClassModel.cs" />
     <Compile Include="Models\ComparisonModel.cs" />
     <Compile Include="Models\DisciplineModel.cs" />
+    <Compile Include="Models\ExamRegistrationStudentModel.cs" />
     <Compile Include="Models\ExamResultStudentSubjectEntryModel.cs" />
     <Compile Include="Models\ExamSubjectEntryModel.cs" />
     <Compile Include="Models\ExamWeightModel.cs" />

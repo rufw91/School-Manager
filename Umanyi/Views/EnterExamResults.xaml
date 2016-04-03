@@ -19,7 +19,7 @@
         <TextBox HorizontalAlignment="Left" Margin="120,125,0,0" VerticalAlignment="Top" Width="200" 
                          Text="{Binding NewResult.NameOfStudent}" Background="WhiteSmoke" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
         <TextBlock  HorizontalAlignment="Left" Margin="87,170,0,0" Text="Exam" VerticalAlignment="Top" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="120,170,0,0" VerticalAlignment="Top" Width="200" 
+        <ComboBox HorizontalAlignment="Left" Margin="120,170,0,0" VerticalAlignment="Top" Width="200" 
         	SelectedValuePath="ExamID" 
         	DisplayMemberPath="NameOfExam"
         	ItemsSource="{Binding AllExams}"
@@ -28,7 +28,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="40,225,0,0" Style="{DynamicResource Title0}" Text="Subject Scores" VerticalAlignment="Top"/>
 
         <TextBlock  HorizontalAlignment="Left" Margin="76,270,0,0" Text="Subject" VerticalAlignment="Top" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="120,270,0,0" VerticalAlignment="Top" Width="200"         	
+        <ComboBox HorizontalAlignment="Left" Margin="120,270,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllSubjects}"
         	DisplayMemberPath="NameOfSubject" 
         	SelectedItem="{Binding SelectedSubject, Mode=TwoWay}"/>

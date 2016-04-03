@@ -85,7 +85,7 @@ namespace UmanyiSMS.ViewModels
             {
                 this.Source = new BoardingReportVM();
             }, o => true);
-
+                        
             DisplayLibraryReportCommand = new RelayCommand(o =>
             {
                 this.Source = new LibraryReportVM();
@@ -130,7 +130,12 @@ namespace UmanyiSMS.ViewModels
             DisplayStaffDetailCommand = new RelayCommand(o =>
             {
                 this.Source = new StaffDetailsVM((StaffModel)o);
-            }, o => (o is StudentModel));
+            }, o => (o is StaffModel));
+
+            DisplayCustomModulesCommand = new RelayCommand(o =>
+            {
+                this.Source = new CustomModulesVM();
+            }, o => true);
 
             DisplayStudentsCommand = new RelayCommand(o =>
             {
@@ -157,7 +162,7 @@ namespace UmanyiSMS.ViewModels
                 this.Source = new ExamsVM();
             }, o => true);
 
-            DisplayEventsCommand = new RelayCommand(o =>
+            DisplayLibraryCommand = new RelayCommand(o =>
             {
                 this.Source = new LibraryVM();
             }, o => true);
@@ -375,6 +380,12 @@ namespace UmanyiSMS.ViewModels
             set;
         }
 
+        public ICommand DisplayCustomModulesCommand
+        {
+            get;
+            private set;
+        }        
+
         public ICommand DisplayReceiveBooksCommand
         {
             get;
@@ -499,7 +510,7 @@ namespace UmanyiSMS.ViewModels
             private set;
         }
                 
-        public ICommand DisplayEventsCommand
+        public ICommand DisplayLibraryCommand
         {
             get;
             private set;

@@ -26,9 +26,9 @@
         <TextBlock HorizontalAlignment="Left" Margin="186,120,0,0" Text="{Binding SyncProgress, StringFormat='({0:N1}%)'}" Visibility="{Binding IsSyncActive, Converter={StaticResource BooleanToVisibilityConverter}}"
                    FontFamily="Calibri" FontWeight="Bold"  FontSize="16" VerticalAlignment="Top"/>
 
-
-        <Button Content="Sync Now" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="120"
-                Command="{Binding SyncCommand}"/>
-
+        <TextBlock HorizontalAlignment="Center" Margin="0,220,0,0" Style="{DynamicResource Title0}" Foreground="{DynamicResource Accent}" Text="This feature is currently unavailbale in this version of Umanyi School MS." 
+                   VerticalAlignment="Top"/>
+        <Button Content="Sync Now" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center"
+                Command="{Binding SyncCommand}" Width="200" Height="50" IsEnabled="False"/>
     </Grid>
 </UserControl>

@@ -5,8 +5,6 @@ namespace Helper.Models
 {
     public class ExamModel : ModelBase
     {
-        private ObservableCollection<ClassModel> classes;
-
         private int examID;
 
         private string nameOfExam;
@@ -16,6 +14,7 @@ namespace Helper.Models
         private decimal outOf;
 
         private bool isRemovingInvalid;
+        private ObservableCollection<ClassModel> classes;
 
         public string NameOfExam
         {
@@ -48,6 +47,22 @@ namespace Helper.Models
                 }
             }
         }
+        
+        public ObservableCollection<ExamSubjectEntryModel> Entries
+        {
+            get
+            {
+                return this.entries;
+            }
+            set
+            {
+                if (value != this.entries)
+                {
+                    this.entries = value;
+                    base.NotifyPropertyChanged("Entries");
+                }
+            }
+        }
 
         public ObservableCollection<ClassModel> Classes
         {
@@ -61,22 +76,6 @@ namespace Helper.Models
                 {
                     this.classes = value;
                     base.NotifyPropertyChanged("Classes");
-                }
-            }
-        }
-
-        public ObservableCollection<ExamSubjectEntryModel> Entries
-        {
-            get
-            {
-                return this.entries;
-            }
-            set
-            {
-                if (value != this.entries)
-                {
-                    this.entries = value;
-                    base.NotifyPropertyChanged("Entries");
                 }
             }
         }
