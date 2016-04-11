@@ -2,7 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:UmanyiSMS.ViewModels"
              xmlns:views="clr-namespace:UmanyiSMS.Views">
-  
+
+    <DataTemplate DataType="{x:Type viewModels:FeesPaymentHistoryVM}" >
+        <views:FeesPaymentHistory/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:HomePageVM}" >
         <views:HomePage/>
     </DataTemplate>
@@ -50,6 +53,9 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:AccountsVM}" >
         <views:Accounts/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:AccountsMainVM}" >
+        <views:AccountsMain/>
     </DataTemplate>
     <!--Child View Models-->
     <DataTemplate DataType="{x:Type viewModels:ExamRegistrationVM}" >

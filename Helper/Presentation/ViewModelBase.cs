@@ -9,12 +9,14 @@ namespace Helper
         string title;
         bool isBusy;
         private bool isActive;
+        private bool isVisible;
         private ViewModelBase parent;
         public ViewModelBase()
         {
             Title = "";
             IsBusy = false;
-            isActive = false;
+            IsActive = false;
+            IsVisible = true;
         }
 
         protected abstract void InitVars();
@@ -58,6 +60,18 @@ namespace Helper
                 {
                     this.isBusy = value;
                     NotifyPropertyChanged("IsBusy");
+                }
+            }
+        }
+        public bool IsVisible
+        {
+            get { return isVisible; }
+            set
+            {
+                if (value != this.isVisible)
+                {
+                    this.isVisible = value;
+                    NotifyPropertyChanged("IsVisible");
                 }
             }
         }

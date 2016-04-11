@@ -153,6 +153,7 @@
     <Compile Include="Models\ExamWeightModel.cs" />
     <Compile Include="Models\FeePaymentReceipt2Model.cs" />
     <Compile Include="Models\FeesPaymentDisplayModel.cs" />
+    <Compile Include="Models\FeesPaymentHistoryModel.cs" />
     <Compile Include="Models\FeesPaymentReceiptModel.cs" />
     <Compile Include="Models\FeesStructureEntryModel.cs" />
     <Compile Include="Models\FullFeesStructureModel.cs" />
