@@ -12,17 +12,18 @@ namespace UmanyiSMS.ViewModels
             Title = "FINANCE";
             TryAddChild(typeof(NewFeesPaymentVM));
             TryAddChild(typeof(BillStudentVM));
-            TryAddChild(typeof(FeesStatementVM));
+            TryAddChild(typeof(FeesStatementVM),false);
             TryAddChild(typeof(ViewFeesStructureVM));
             TryAddChild(typeof(ViewFullFeesStructureVM));
             TryAddChild(typeof(SetFeesStructureVM));
             TryAddChild(typeof(ReprintReceiptVM));
-            TryAddChild(typeof(BalancesListVM));
+            TryAddChild(typeof(BalancesListVM),false);
             TryAddChild(typeof(RemovePaymentVM));
             TryAddChild(typeof(RemoveBillVM));
             TryAddChild(typeof(NewPaymentVoucherVM));
             TryAddChild(typeof(PaymentVoucherHistoryVM));
-            TryAddChild(typeof(PaymentsByVoteHeadVM));
+            TryAddChild(typeof(FeesPaymentHistoryVM),false);
+            TryAddChild(typeof(PaymentsByVoteHeadVM),false);
         }
     }
 }

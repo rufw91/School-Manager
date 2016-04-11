@@ -286,7 +286,7 @@ namespace Helper
             return Task.Run<ObservableCollection<FeePaymentModel>>(delegate
             {
                 ObservableCollection<FeePaymentModel> observableCollection = new ObservableCollection<FeePaymentModel>();
-                string commandText = "SELECT TOP 20 FeesPaymentID,AmountPaid, DatePaid FROM [Institution].[FeesPayment] WHERE StudentID =" + student.StudentID + " ORDER BY [DatePaid] desc";
+                string commandText = "SELECT TOP 20 FeesPaymentID,AmountPaid, DatePaid, PaymentMethod FROM [Institution].[FeesPayment] WHERE StudentID =" + student.StudentID + " ORDER BY [DatePaid] desc";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -296,7 +296,8 @@ namespace Helper
                         AmountPaid = decimal.Parse(dataRow[1].ToString()),
                         StudentID = student.StudentID,
                         NameOfStudent = student.NameOfStudent,
-                        DatePaid = DateTime.Parse(dataRow[2].ToString())
+                        DatePaid = DateTime.Parse(dataRow[2].ToString()),
+                        PaymentMethod=dataRow[3].ToString()
                     });
                 }
                 return observableCollection;
@@ -979,6 +980,62 @@ namespace Helper
             }
             return result;
         }
+
+
+        public static Task<ObservableCollection<FeesPaymentHistoryModel>> GetFeesPaymentsHistoryAsync(DateTime? from, DateTime? to)
+        {
+            return Task.Run<ObservableCollection<FeesPaymentHistoryModel>>(() => DataAccess.GetFeesPaymentsHistory(from, to));
+        }
+
+        private static ObservableCollection<FeesPaymentHistoryModel> GetFeesPaymentsHistory( DateTime? from, DateTime? to)
+        {
+            ObservableCollection<FeesPaymentHistoryModel> observableCollection = new ObservableCollection<FeesPaymentHistoryModel>();
+            ObservableCollection<FeesPaymentHistoryModel> result;
+            try
+            {
+                string text = "SELECT ISNULL(PaymentMethod,''), SUM(CONVERT(decimal(18,0),AmountPaid)) FROM [Institution].[FeesPayment] ";
+               if (from.HasValue && to.HasValue)
+                {
+                    string text2 = text;
+                    text = string.Concat(new string[]
+                    {
+                        text2,
+                        " WHERE DatePaid BETWEEN CONVERT(datetime,'",
+                        from.Value.Day.ToString(),
+                        "/",
+                        from.Value.Month.ToString(),
+                        "/",
+                        from.Value.Year.ToString(),
+                        " 00:00:00.000') AND CONVERT(datetime,'",
+                        to.Value.Day.ToString(),
+                        "/",
+                        to.Value.Month.ToString(),
+                        "/",
+                        to.Value.Year.ToString(),
+                        " 23:59:59.998')"
+                    });
+                }
+
+                text += "\r\nGROUP BY PaymentMethod";
+                DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(text);
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    observableCollection.Add(new FeesPaymentHistoryModel
+                    {
+                        PaymentMode = string.IsNullOrWhiteSpace(dataRow[0].ToString())?"UNSET":
+                        dataRow[0].ToString(),
+                        Amount = decimal.Parse(dataRow[1].ToString())
+                    });
+                }
+                result = observableCollection;
+            }
+            catch
+            {
+                result = new ObservableCollection<FeesPaymentHistoryModel>();
+            }
+            return result;
+        }
+
 
         public static Task<ObservableCollection<PayslipModel>> GetPayslipsAsync(int? employeeId, DateTime? from, DateTime? to)
         {

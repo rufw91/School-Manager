@@ -273,7 +273,7 @@ namespace UmanyiSMS.ViewModels
         private bool CanSavePayment()
         {
             return !currentPayment.HasErrors &&
-                (currentPayment.AmountPaid > 0);
+                (currentPayment.AmountPaid > 0)&&!string.IsNullOrWhiteSpace(currentPayment.PaymentMethod);
         }
 
         public Action<FixedDocument> ShowPrintDialogAction

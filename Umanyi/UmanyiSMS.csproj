@@ -158,7 +158,15 @@
     <Compile Include="Updates\UpdatesWindow.xaml.cs">
       <DependentUpon>UpdatesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AccountsBalanceSheetVM.cs" />
+    <Compile Include="ViewModels\AccountsGeneralLedgerVM.cs" />
+    <Compile Include="ViewModels\AccountsIncomeStatementVM.cs" />
+    <Compile Include="ViewModels\AccountsJournalVM.cs" />
+    <Compile Include="ViewModels\AccountsMainVM.cs" />
+    <Compile Include="ViewModels\AccountsTransactionsVM.cs" />
+    <Compile Include="ViewModels\AccountsTrialBalanceVM.cs" />
     <Compile Include="ViewModels\AccountsVM.cs" />
+    <Compile Include="ViewModels\AdjustJournalVM.cs" />
     <Compile Include="ViewModels\AllUnreturnedBooksVM.cs" />
     <Compile Include="ViewModels\AssignNewClassVM.cs" />
     <Compile Include="ViewModels\BillStudentVM.cs" />
@@ -178,6 +186,7 @@
     <Compile Include="ViewModels\EnterExamResultsBySubjectVM.cs" />
     <Compile Include="ViewModels\EventDetailsVM.cs" />
     <Compile Include="ViewModels\ExamRegistrationVM.cs" />
+    <Compile Include="ViewModels\FeesPaymentHistoryVM.cs" />
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
     <Compile Include="ViewModels\InstitutionSubjectsSetupVM.cs" />
     <Compile Include="ViewModels\ModifySubjectsSetupVM.cs" />
@@ -303,6 +312,9 @@
     <Compile Include="Views\Accounts.xaml.cs">
       <DependentUpon>Accounts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AccountsMain.xaml.cs">
+      <DependentUpon>AccountsMain.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AllUnreturnedBooks.xaml.cs">
       <DependentUpon>AllUnreturnedBooks.xaml</DependentUpon>
     </Compile>
@@ -332,6 +344,9 @@
     </Compile>
     <Compile Include="Views\ExamRegistration.xaml.cs">
       <DependentUpon>ExamRegistration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FeesPaymentHistory.xaml.cs">
+      <DependentUpon>FeesPaymentHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FindBooks.xaml.cs">
       <DependentUpon>FindBooks.xaml</DependentUpon>
@@ -801,6 +816,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AccountsMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AllUnreturnedBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -838,6 +857,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExamRegistration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FeesPaymentHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

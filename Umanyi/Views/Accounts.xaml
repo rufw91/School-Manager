@@ -9,10 +9,7 @@
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Accounts" 
                    VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,75,0,0" Text="Click 'Sync' below to start syncing to quickbooks." VerticalAlignment="Top"/>
-
-        <TextBlock HorizontalAlignment="Center" Margin="0,220,0,0" Style="{DynamicResource Title0}" Foreground="{DynamicResource Accent}" Text="This feature is currently unavailbale in this version of Umanyi School MS." 
-                   VerticalAlignment="Top"/>
-        <Button Content="Start" Width="200" Height="50" IsEnabled="False"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,75,0,0" Text="Click 'Start' below to open Accounts module." VerticalAlignment="Top"/>
+        <Button Content="Start" Width="200" Height="50" Command="{Binding StartCommand}"/>
     </Grid>
 </UserControl>
