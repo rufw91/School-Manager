@@ -14,12 +14,11 @@ namespace UmanyiSMS.ViewModels
         public AccountsMainVM()
         {
             TryAddChild(typeof(AccountsTransactionsVM));
-            TryAddChild(typeof(AccountsJournalVM));
-            TryAddChild(typeof(AdjustJournalVM));
             TryAddChild(typeof(AccountsGeneralLedgerVM));
             TryAddChild(typeof(AccountsTrialBalanceVM));
             TryAddChild(typeof(AccountsBalanceSheetVM));
             TryAddChild(typeof(AccountsIncomeStatementVM));
+            TryAddChild(typeof(ChartOfAccountsVM));
         }
     }
 }

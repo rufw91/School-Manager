@@ -7,7 +7,7 @@
              mc:Ignorable="d"
 	 Background="White">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource Title8BackgroundColor}"/>
+        <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>

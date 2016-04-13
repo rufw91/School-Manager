@@ -119,6 +119,7 @@
     <Compile Include="Helpers\DocumentHelper.Transcript.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript2.cs" />
     <Compile Include="Helpers\DocumentHelper.Voucher.cs" />
+    <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\ClassBalancesListModel.cs" />
     <Compile Include="Models\ClassesSetupEntryModel.cs" />
     <Compile Include="Models\ClassesSetupModel.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="Helpers\DocumentHelper.ClassLeavingCertificates.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript3.cs" />
     <Compile Include="Helpers\DocumentHelper.AllUnreturnedBooks.cs" />
+    <Compile Include="Helpers\DocumentHelper.Accounts.cs" />
     <None Include="Resources\Receipt.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -287,6 +289,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\FullFeesStructure.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\AccountsGeneralLedger.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
