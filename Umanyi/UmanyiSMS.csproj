@@ -114,6 +114,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>true</DelaySign>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -167,6 +170,7 @@
     <Compile Include="ViewModels\AccountsTrialBalanceVM.cs" />
     <Compile Include="ViewModels\AccountsVM.cs" />
     <Compile Include="ViewModels\AdjustJournalVM.cs" />
+    <Compile Include="ViewModels\ChartOfAccountsVM.cs" />
     <Compile Include="ViewModels\AllUnreturnedBooksVM.cs" />
     <Compile Include="ViewModels\AssignNewClassVM.cs" />
     <Compile Include="ViewModels\BillStudentVM.cs" />
@@ -312,8 +316,23 @@
     <Compile Include="Views\Accounts.xaml.cs">
       <DependentUpon>Accounts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AccountsBalanceSheet.xaml.cs">
+      <DependentUpon>AccountsBalanceSheet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountsGeneralLedger.xaml.cs">
+      <DependentUpon>AccountsGeneralLedger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountsIncomeStatement.xaml.cs">
+      <DependentUpon>AccountsIncomeStatement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AccountsMain.xaml.cs">
       <DependentUpon>AccountsMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountsTransactions.xaml.cs">
+      <DependentUpon>AccountsTransactions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountsTrialBalance.xaml.cs">
+      <DependentUpon>AccountsTrialBalance.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AllUnreturnedBooks.xaml.cs">
       <DependentUpon>AllUnreturnedBooks.xaml</DependentUpon>
@@ -326,6 +345,9 @@
     </Compile>
     <Compile Include="Views\ChangeSAPassword.xaml.cs">
       <DependentUpon>ChangeSAPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartOfAccounts.xaml.cs">
+      <DependentUpon>ChartOfAccounts.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ClassLeavingCertificates.xaml.cs">
       <DependentUpon>ClassLeavingCertificates.xaml</DependentUpon>
@@ -816,7 +838,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AccountsBalanceSheet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AccountsGeneralLedger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AccountsIncomeStatement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AccountsMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AccountsTransactions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AccountsTrialBalance.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -833,6 +875,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ChangeSAPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartOfAccounts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1574,7 +1620,7 @@
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
     <COMReference Include="AxAcroPDFLib">
       <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>

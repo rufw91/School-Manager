@@ -23,7 +23,9 @@ namespace Helper
         static object myWorkObject;
         enum DocType
         {
-            Statement, Transcript, Transcript3, LeavingCert, FeesStructure, FeesPayment, FeesPayment2, Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult, ClassTranscripts, ClassTranscripts2,UnreturnedBooks,UnreturnedBooks2, Report,Payslip
+            Statement, Transcript, Transcript3, LeavingCert, FeesStructure, FeesPayment, FeesPayment2,
+            Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult,
+            ClassTranscripts, ClassTranscripts2,UnreturnedBooks,UnreturnedBooks2, Report,Payslip, AccountsGeneralLedger
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -85,6 +87,8 @@ namespace Helper
                 case DocType.Report: GenerateReport(); break;
                 case DocType.ClassExamResults: GenerateClassExamResults(); break;
                 case DocType.Payslip: GeneratePayslip(); break;
+                case DocType.AccountsGeneralLedger: GenerateAccountsGeneralLedger(); break;
+                default: throw new ArgumentException();
             }
         }
 
@@ -114,6 +118,7 @@ namespace Helper
                 case DocType.UnreturnedBooks2: resString = Helper.Properties.Resources.UnreturnedBooks2; break;
                 case DocType.Report: resString = Helper.Properties.Resources.Report; break;
                 case DocType.Payslip: resString = Helper.Properties.Resources.Payslip; break;
+                case DocType.AccountsGeneralLedger: resString = Helper.Properties.Resources.AccountsGeneralLedger; break;
                 default: throw new ArgumentException();
             }
             StringReader stringReader = new StringReader(resString);
@@ -166,6 +171,8 @@ namespace Helper
                 return DocType.ClassLeavingCertificates;
             if (workObject is PayslipModel)
                 return DocType.Payslip;
+            if (workObject is ObservableCollection<AccountModel>)
+                return DocType.AccountsGeneralLedger;
             throw new ArgumentException();
         }
 
@@ -231,6 +238,8 @@ namespace Helper
                 totalNoOfItems = (workObject as ReportModel).Entries.Rows.Count;
             if (workObject is AllUnreturnedBooksModel)
                 totalNoOfItems = (workObject as AllUnreturnedBooksModel).Count;
+            if (workObject is ObservableCollection<AccountModel>)
+                return CalculatePagesAccountsGenLedger(workObject as ObservableCollection<AccountModel>);
             return (totalNoOfItems % itemsPerPage) != 0 ?
                 (totalNoOfItems / itemsPerPage) + 1 : (totalNoOfItems / itemsPerPage);
         }

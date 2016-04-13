@@ -36,6 +36,16 @@ namespace Helper
 
     }
 
+        public static Task<ObservableCollection<AccountModel>> GetGeneralLedgerAccountsAsync()
+        {
+            return Task.Run<ObservableCollection<AccountModel>>(() =>
+            {
+                ObservableCollection<AccountModel> temp = new ObservableCollection<AccountModel>();
+
+                return temp;
+            });
+        }
+
         public static Task<bool> SaveNewExamRegistrationAsync(ExamRegistrationStudentModel student)
         {
             return Task.Run<bool>(()=>
@@ -981,6 +991,86 @@ namespace Helper
             return result;
         }
 
+
+        public static Task<ObservableCollection<TransactionModel>> GetAccountsTransactionHistoryAsync(TransactionTypes type, DateTime? from, DateTime? to)
+        {
+            return Task.Run<ObservableCollection<TransactionModel>>(() => DataAccess.GetAccountsTransactionHistory(type,from, to));
+        }
+
+        private static ObservableCollection<TransactionModel> GetAccountsTransactionHistory(TransactionTypes type, DateTime? from, DateTime? to)
+        {
+            ObservableCollection<TransactionModel> observableCollection = new ObservableCollection<TransactionModel>();
+            
+            try
+            {
+                string text = "SELECT SaleID,OrderDate, TotalAmt FROM [Sales].[SaleHeader] ";
+                if (from.HasValue && to.HasValue)
+                {
+                    string text2 = text;
+                    text = string.Concat(new string[]
+                    {
+                            text2,
+                            "WHERE OrderDate BETWEEN CONVERT(DATE,'",
+                            from.Value.ToString("dd-MM-yyyy"),
+                            " 00:00:00.000') AND CONVERT(DATE,'",
+                            to.Value.ToString("dd-MM-yyyy"),
+                            " 23:59:59.998')"
+                    });
+                }
+                string text3 = "SELECT FeesPaymentID, DatePaid, AmountPaid FROM [Institution].[FeesPayment] ";
+                if (from.HasValue && to.HasValue)
+                {
+                    string text2 = text3;
+                    text3 = string.Concat(new string[]
+                    {
+                            text2,
+                            "WHERE DatePaid BETWEEN CONVERT(DATETIME, '",
+                            from.Value.ToString("dd-MM-yyyy"),
+                            " 00:00:00.000') AND CONVERT(DATETIME, '",
+                            to.Value.ToString("dd-MM-yyyy"),
+                            " 23:59:59.998')"
+                    });
+                }
+                DataTable dataTable = null;
+                DataTable dataTable2 = null;
+                if ((type ==  TransactionTypes.Debit)|| (type==TransactionTypes.All))
+                    dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(text);
+                if ((type==  TransactionTypes.Credit)|| (type==TransactionTypes.All))
+                    dataTable2 = DataAccessHelper.ExecuteNonQueryWithResultTable(text3);
+
+                if (dataTable!=null)
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    DateTime transactionDateTime;
+                    DateTime.TryParse(dataRow[1].ToString(), out transactionDateTime);
+                    decimal num;
+                    decimal.TryParse(dataRow[2].ToString(), out num);
+                    observableCollection.Add(new TransactionModel(TransactionTypes.Credit, "SALE-"+dataRow[0].ToString(), transactionDateTime, num));
+
+                }
+
+                if (dataTable2 != null)
+                    foreach (DataRow dataRow in dataTable2.Rows)
+                {
+                    DateTime transactionDateTime;
+                    DateTime.TryParse(dataRow[1].ToString(), out transactionDateTime);
+                    decimal num;
+                    decimal.TryParse(dataRow[2].ToString(), out num);
+                    observableCollection.Add(new TransactionModel(TransactionTypes.Credit, "PMT-"+dataRow[0].ToString(), transactionDateTime, num));
+                    
+                }
+                IEnumerable<TransactionModel> enumerable = from fruit in observableCollection
+                                                           orderby fruit.TransactionDateTime
+                                                           select fruit;
+                observableCollection = new ObservableCollection<TransactionModel>(enumerable);
+
+
+            }
+            catch
+            {
+            }
+            return observableCollection;
+        }
 
         public static Task<ObservableCollection<FeesPaymentHistoryModel>> GetFeesPaymentsHistoryAsync(DateTime? from, DateTime? to)
         {

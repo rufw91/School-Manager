@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.AccountsGeneralLedger"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UmanyiSMS.Views"
+           Background="White"
+             mc:Ignorable="d" d:DesignHeight="722" d:DesignWidth="1024">
+    <Grid >
+
+        <TextBlock Text="General Ledger" Style="{StaticResource Title}" HorizontalAlignment="Left"  Margin="10,10,0,0"
+                       VerticalAlignment="Top"/>
+
+        <DocumentViewer BorderBrush="LightGray" BorderThickness="2" Margin="20,50,20,50" Grid.Column="1" Document="{Binding Document}" Name="viewer"/>
+        <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,20,10" VerticalAlignment="Bottom" Width="100" Command="{Binding GenerateCommand}"/>
+
+    </Grid>
+</UserControl>

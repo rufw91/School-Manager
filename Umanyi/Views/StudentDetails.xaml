@@ -11,7 +11,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/UmanyiSMS.Helper;component/Converters/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource Title1BackgroundColor}"/>
+            <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>

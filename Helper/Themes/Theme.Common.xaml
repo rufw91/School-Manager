@@ -6,33 +6,33 @@
     <SolidColorBrush x:Key="WhiteBrush" Color="White" />
     <!--
     <Color x:Key="Title0BackgroundColor">#545AA7</Color>
-    <Color x:Key="Title1BackgroundColor">#8B4513</Color>
-    <Color x:Key="Title2BackgroundColor">#BE4F62</Color>
-    <Color x:Key="Title3BackgroundColor">#3CD070</Color>
-    <Color x:Key="Title4BackgroundColor">#563C5C</Color>
-    <Color x:Key="Title5BackgroundColor">#000F89</Color>
-    <Color x:Key="Title6BackgroundColor">#E1AD21</Color>
-    <Color x:Key="Title7BackgroundColor">#414A4C</Color>
-    <Color x:Key="Title8BackgroundColor">#ED1C24</Color>
-    <Color x:Key="Title9BackgroundColor">#FF4500</Color>
-    <Color x:Key="Title10BackgroundColor">#8000FF</Color>
-    <Color x:Key="Title11BackgroundColor">#4C3C08</Color>
-    <Color x:Key="Title12BackgroundColor">Black</Color>
+    <Color x:Key="AccentColor">#8B4513</Color>
+    <Color x:Key="AccentColor">#BE4F62</Color>
+    <Color x:Key="AccentColor">#3CD070</Color>
+    <Color x:Key="AccentColor">#563C5C</Color>
+    <Color x:Key="AccentColor">#000F89</Color>
+    <Color x:Key="AccentColor">#E1AD21</Color>
+    <Color x:Key="AccentColor">#414A4C</Color>
+    <Color x:Key="AccentColor">#ED1C24</Color>
+    <Color x:Key="AccentColor">#FF4500</Color>
+    <Color x:Key="AccentColor">#8000FF</Color>
+    <Color x:Key="AccentColor">#4C3C08</Color>
+    <Color x:Key="AccentColor">Black</Color>
 
 
     
-    <SolidColorBrush x:Key="Title1BackgroundBrush" Color="{DynamicResource Title1BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title2BackgroundBrush" Color="{DynamicResource Title2BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title3BackgroundBrush" Color="{DynamicResource Title3BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title4BackgroundBrush" Color="{DynamicResource Title4BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title5BackgroundBrush" Color="{DynamicResource Title5BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title6BackgroundBrush" Color="{DynamicResource Title6BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title7BackgroundBrush" Color="{DynamicResource Title7BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title8BackgroundBrush" Color="{DynamicResource Title8BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title9BackgroundBrush" Color="{DynamicResource Title9BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title10BackgroundBrush" Color="{DynamicResource Title10BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title11BackgroundBrush" Color="{DynamicResource Title11BackgroundColor}"/>
-    <SolidColorBrush x:Key="Title12BackgroundBrush" Color="{DynamicResource Title12BackgroundColor}"/>
+    <SolidColorBrush x:Key="Title1BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title2BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title3BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title4BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title5BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title6BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title7BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title8BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title9BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title10BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title11BackgroundBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="Title12BackgroundBrush" Color="{DynamicResource AccentColor}"/>
 -->
     <FontFamily x:Key="ContentControlThemeFontFamily">Segoe UI</FontFamily>
     <sys:Double x:Key="ControlContentThemeFontSize">13</sys:Double>

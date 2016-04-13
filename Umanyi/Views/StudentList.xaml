@@ -13,7 +13,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/UmanyiSMS;component/ModelsDataTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource Title1BackgroundColor}"/>
+            <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
             <Style x:Key="dt" TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                 <EventSetter Event="ListBoxItem.MouseDoubleClick" Handler="OnDoubleClick" />
             </Style>
