@@ -118,6 +118,14 @@
                 <TextBlock HorizontalAlignment="Left" Margin="200,20,0,0" Text="All fields outside 'Optional' category are mandatory" VerticalAlignment="Top" Foreground="{DynamicResource Accent}"/>
                 <Button Content="_Save" HorizontalAlignment="Right" Margin="0,0,10,9" VerticalAlignment="Bottom" Width="75" 
                 Command="{Binding SaveCommand}"/>
+                
+                <TextBlock HorizontalAlignment="Left" Margin="825,70,0,0" Style="{DynamicResource ResourceKey=Title0}" Text="Optional" 
+        	VerticalAlignment="Top"/>
+                <Border BorderBrush="LightGray" BorderThickness="2" HorizontalAlignment="Left" Height="290" Margin="825,110,20,0" VerticalAlignment="Top" Width="400">
+                    <Image Source="{Binding NewStudent.SPhoto}"/>
+                </Border>
+                <Button x:Name="button" Content="Browse" Command="{Binding BrowseCommand}" HorizontalAlignment="Left" Margin="1125,411,0,0" VerticalAlignment="Top" Width="100"/>
+
             </Grid>
         </Grid>
     </ScrollViewer>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helper.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UmanyiSMS.ViewModels;
 
 namespace UmanyiSMS.Views
 {
@@ -24,6 +26,25 @@ namespace UmanyiSMS.Views
         {
             InitializeComponent();
             viewer.FitToWidth();
+            this.DataContextChanged += (o, e) =>
+            {
+                if (DataContext != null)
+                {
+                    AccountsGeneralLedgerVM nfpvm = DataContext as AccountsGeneralLedgerVM;
+                    nfpvm.ShowPrintDialogAction = (p) =>
+                    {
+                        CustomWindow w = new CustomWindow();
+                        w.MinHeight = 610;
+                        w.MinWidth = 810;
+                        w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                        w.WindowState = WindowState.Maximized;
+
+                        w.Content = new PrintDialog(p);
+                        w.ShowDialog();
+
+                    };
+                }
+            };
         }
         
     }

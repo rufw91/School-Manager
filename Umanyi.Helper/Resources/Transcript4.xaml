@@ -112,6 +112,7 @@
                 <Border BorderBrush="Black" BorderThickness="2" Width="2" HorizontalAlignment="Left"
                 	Height="315" Margin="485,275,0,0" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="447,287,0,0" TextWrapping="Wrap" Text="PTS" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="14"/>
+                <Image x:Name="image" HorizontalAlignment="Left" Height="90" Margin="634,0,0,0" VerticalAlignment="Top" Width="120"/>
             </Grid>
         </Border>
     </Grid>

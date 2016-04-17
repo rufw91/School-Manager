@@ -2,7 +2,19 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            Width="793.76" Height="1122.56">
     <Grid Width="793.76" Height="1122.56">
-        <Border Margin="10,10,10,30" BorderBrush="Gray" BorderThickness="1"/>
+        <Border Margin="10,10,10,30" BorderBrush="Gray" BorderThickness="1">
+            <Grid>
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="941" Margin="10,130,0,0" VerticalAlignment="Top" Width="752"/>
+                <Border BorderBrush="Black" Margin="10,130,10,0" Height="40" VerticalAlignment="Top" BorderThickness="0,1" />
+                <Border BorderBrush="Black" Margin="10,130,10,0" Height="941" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" BorderThickness="0,0,1,0" />
+                <Border BorderBrush="Black" Margin="350,130,10,0" Height="941" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" BorderThickness="1,0,1,0" />
+                <Border BorderBrush="Black" Margin="450,130,10,0" Height="941" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" BorderThickness="0,0,1,0" />
+                <Border BorderBrush="Black" Margin="550,130,10,0" Height="941" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" BorderThickness="0,0,1,0" />
+                <Border BorderBrush="Black" Margin="10,0,10,50" Height="1" VerticalAlignment="Bottom" BorderThickness="1" />
+                
+
+            </Grid>
+        </Border>
         <TextBlock HorizontalAlignment="Center" Margin="0,20,0,0" 
                    Text="{Binding Info.FullName, Source={x:Static Application.Current}}" 
                    VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="26"/>
@@ -23,6 +35,12 @@
         <Image HorizontalAlignment="Left" Height="101" Margin="20,16,0,0" VerticalAlignment="Top" Width="140" 
               Source="{Binding Info.Logo, Source={x:Static Application.Current}}" />
         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,10" Text="{Binding Info.Motto, Source={x:Static Application.Current}}" VerticalAlignment="Bottom" FontStyle="Italic"/>
-        <TextBlock HorizontalAlignment="Center" Margin="0,90,0,0" Text="GENERAL LEDGER" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="20" TextDecorations="Underline"/>
-        </Grid>
+        <TextBlock HorizontalAlignment="Center" Margin="321,84,319.76,0" Text="GENERAL LEDGER" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="20" TextDecorations="Underline"/>
+        <TextBlock HorizontalAlignment="Left" Margin="36,152,0,0" TextWrapping="Wrap" Text="DATE" FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="190,152,0,0" TextWrapping="Wrap" Text="DESCRIPTION" FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="385,152,0,0" TextWrapping="Wrap" Text="REF." FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="485,152,0,0" TextWrapping="Wrap" Text="DEBIT" FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="585,152,0,0" TextWrapping="Wrap" Text="CREDIT" FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="685,152,0,0" TextWrapping="Wrap" Text="BALANCE" FontWeight="Bold" VerticalAlignment="Top"/>
+    </Grid>
 </FixedPage>

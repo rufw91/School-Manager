@@ -17,5 +17,6 @@
     <converters:ToLowerConverter x:Key="ToLowerConverter" />    
     <converters:UriToImageSourceConverter x:Key="UriToImageSourceConverter"/>
     <converters:ValidationErrorConverter x:Key="ValidationErrorConverter"/>
+    <converters:NullOrNotImageToVisibilityConverter x:Key="NullOrNotImageToVisibilityConverter"/>    
     
 </ResourceDictionary>

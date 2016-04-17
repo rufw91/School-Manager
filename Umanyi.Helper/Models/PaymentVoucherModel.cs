@@ -15,6 +15,7 @@ namespace Helper.Models
         private ObservableCollection<PaymentVoucherEntryModel> entries;
         private decimal total;
         private string description;
+        private DateTime datePaid;
 
         public PaymentVoucherModel()
         {
@@ -24,6 +25,7 @@ namespace Helper.Models
             entries = new ObservableCollection<PaymentVoucherEntryModel>();
             Total = 0;
             Description = "";
+            DatePaid = DateTime.Now;
             entries.CollectionChanged += (o, e) =>
                 {
                     Total = 0;
@@ -42,6 +44,20 @@ namespace Helper.Models
                 {
                     paymentVoucherID = value;
                     NotifyPropertyChanged("PaymentVoucherID");
+                }
+            }
+        }
+
+        public DateTime DatePaid
+        {
+            get { return datePaid; }
+
+            set
+            {
+                if (value != datePaid)
+                {
+                    datePaid = value;
+                    NotifyPropertyChanged("DatePaid");
                 }
             }
         }

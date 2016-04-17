@@ -72,10 +72,10 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>65DB674C04E0A11442B614F5D70FD070BBBBC2E7</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>9364DCEA6EB3E899A5C12E781F91024834939A0D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Starehe_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>UmanyiSMS_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
@@ -115,7 +115,7 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <DelaySign>true</DelaySign>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -133,6 +133,7 @@
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />

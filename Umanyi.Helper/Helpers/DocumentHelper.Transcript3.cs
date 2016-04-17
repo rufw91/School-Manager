@@ -32,6 +32,11 @@ namespace Helper
             AddText(kcpeScore.ToString(), "Arial", 14, true, 0, Colors.Black, 580, 270, pageNo);
         }
 
+        private static void AddTR3Image(byte[] image, int pageNo)
+        {
+            AddImage(image,135,150, 640, 17, 0, pageNo);
+        }
+
         private static void AddTR3SubjectScore(StudentExamResultEntryModel item, int itemIndex, int pageNo)
         {
             double fontsize = 14;
@@ -209,7 +214,7 @@ namespace Helper
                 AddTR3Name(si.NameOfStudent, pageNo);
                 AddTR3ClassName(si.NameOfClass, pageNo);
                 AddTR3KCPEScore(si.KCPEScore, pageNo);
-
+                AddTR3Image(si.SPhoto, pageNo);
                 AddTR3SubjectScores(si.Entries, pageNo);
 
                 AddTR3TotalMarks(si.TotalMarks, pageNo);
