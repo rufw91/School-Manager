@@ -22,6 +22,95 @@ namespace Helper
             return Task.Run<ObservableCollection<FeePaymentModel>>(() => DataAccess.GetFeesPayments(studentID, startTime, endTime, paymentMethod));
         }
 
+        private static ObservableCollection<SaleModel> GetSales(bool includeAllDetails, int? studentID, DateTime? startTime, DateTime? endTime)
+        {
+            string text;
+            if (studentID.HasValue)
+            {
+                text = "SELECT SaleID,CustomerID,EmployeeID,OrderDate,TotalAmt FROM [Sales].[SaleHeader] WHERE CustomerID=" + studentID;
+                if (startTime.HasValue && endTime.HasValue)
+                {
+                    string text2 = text;
+                    text = string.Concat(new string[]
+                    {
+                        text2,
+                        " AND OrderDate BETWEEN CONVERT(datetime,'",
+                        startTime.Value.Day.ToString(),
+                        "-",
+                        startTime.Value.Month.ToString(),
+                        "-",
+                        startTime.Value.Year.ToString(),
+                        " 00:00:00.000') AND convert(datetime,'",
+                        endTime.Value.Day.ToString(),
+                        "-",
+                        endTime.Value.Month.ToString(),
+                        "-",
+                        endTime.Value.Year.ToString(),
+                        " 23:59:59.998')\r\n"
+                    });
+                }
+            }
+            else
+            {
+                text = "SELECT SaleID,CustomerID,EmployeeID,OrderDate,TotalAmt FROM [Sales].[SaleHeader]";
+                if (startTime.HasValue && endTime.HasValue)
+                {
+                    string text2 = text;
+                    text = string.Concat(new string[]
+                    {
+                        text2,
+                        " WHERE OrderDate BETWEEN CONVERT(datetime,'",
+                        startTime.Value.Day.ToString(),
+                        "-",
+                        startTime.Value.Month.ToString(),
+                        "-",
+                        startTime.Value.Year.ToString(),
+                        " 00:00:00.000') AND convert(datetime,'",
+                        endTime.Value.Day.ToString(),
+                        "-",
+                        endTime.Value.Month.ToString(),
+                        "-",
+                        endTime.Value.Year.ToString(),
+                        " 23:59:59.998')\r\n"
+                    });
+                }
+            }
+            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(text);
+            ObservableCollection<SaleModel> result;
+            if (dataTable.Rows.Count == 0)
+            {
+                result = new ObservableCollection<SaleModel>();
+            }
+            else
+            {
+                ObservableCollection<SaleModel> observableCollection = new ObservableCollection<SaleModel>();
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    SaleModel saleModel = new SaleModel();
+                    saleModel.SaleID = int.Parse(dataRow[0].ToString());
+                    if (studentID.HasValue)
+                    {
+                        saleModel.CustomerID = studentID.Value;
+                    }
+                    else
+                    {
+                        saleModel.CustomerID = int.Parse(dataRow[1].ToString());
+                    }
+                    saleModel.EmployeeID = int.Parse(dataRow[2].ToString());
+                    saleModel.DateAdded = DateTime.Parse(dataRow[3].ToString());
+                    saleModel.OrderTotal = decimal.Parse(dataRow[4].ToString());
+
+                    if (includeAllDetails)
+                    {
+                        saleModel.SaleItems = DataAccess.GetSaleItems(saleModel.SaleID);
+                    }
+                    observableCollection.Add(saleModel);
+                }
+                result = observableCollection;
+            }
+            return result;
+        }
+
         public static Task<bool> CheckIfRegisteredForExam(int studentID, int examID)
         {
             return Task.Run<bool>(()=>
@@ -36,11 +125,94 @@ namespace Helper
 
     }
 
-        public static Task<ObservableCollection<AccountModel>> GetGeneralLedgerAccountsAsync()
+        public static Task<GeneralLedgerModel> GetGeneralLedgerAsync(GeneralLedgerAccounts accType, DateTime from, DateTime to)
         {
-            return Task.Run<ObservableCollection<AccountModel>>(() =>
+            return Task.Run<GeneralLedgerModel>(() =>
             {
-                ObservableCollection<AccountModel> temp = new ObservableCollection<AccountModel>();
+                GeneralLedgerModel temp = new GeneralLedgerModel();
+                string selectStr;
+                switch(accType)
+                {
+                    case GeneralLedgerAccounts.AccountsPayable:
+                        {
+                            temp.AccountName = "Accounts Payable";
+                            var t = GetItemReceipts(false, null, from, to);
+                            
+                            List<TransactionModel> r = new List<TransactionModel>();
+
+                            foreach (var y in t)
+                                r.Add(new TransactionModel() { TransactionID = "PUR-" + y.PurchaseID, TransactionAmt = y.OrderTotal, TransactionDateTime = y.OrderDate, TransactionType = TransactionTypes.Credit });
+                            
+                            var f = r.OrderBy(o => o.TransactionDateTime);
+                            foreach (var h in f)
+                                temp.Entries.Add(new TransactionModel() { TransactionID = h.TransactionID, TransactionAmt = h.TransactionAmt, TransactionDateTime = h.TransactionDateTime, TransactionType = h.TransactionType });
+                            break;
+                        }
+                    case GeneralLedgerAccounts.AccountsReceivable:
+                        {
+                            temp.AccountName = "Accounts Receivable";
+                            var t = GetSales(false, null, from, to);
+
+                            List<TransactionModel> r = new List<TransactionModel>();
+
+                            foreach (var y in t)
+                                r.Add(new TransactionModel() { TransactionID = "SALE-" + y.SaleID, TransactionAmt = y.OrderTotal, TransactionDateTime = y.DateAdded, TransactionType = TransactionTypes.Debit });
+
+                            var f = r.OrderBy(o => o.TransactionDateTime);
+                            foreach (var h in f)
+                                temp.Entries.Add(new TransactionModel() { TransactionID = h.TransactionID, TransactionAmt = h.TransactionAmt, TransactionDateTime = h.TransactionDateTime, TransactionType = h.TransactionType });
+                            break;
+                        }
+                    case GeneralLedgerAccounts.Cash:
+                        {
+                            temp.AccountName = "Cash Account";
+                            var t = GetFeesPayments(null, from, to, "CASH");
+                            List<TransactionModel> r = new List<TransactionModel>();
+
+                            foreach (var y in t)
+                                r.Add(new TransactionModel() { TransactionID = "PMT-" + y.FeePaymentID, TransactionAmt = y.AmountPaid, TransactionDateTime = y.DatePaid, TransactionType = TransactionTypes.Debit });
+
+                            var f = r.OrderBy(o => o.TransactionDateTime);
+                            foreach (var h in f)
+                                temp.Entries.Add(new TransactionModel() { TransactionID = h.TransactionID, TransactionAmt = h.TransactionAmt, TransactionDateTime = h.TransactionDateTime, TransactionType = h.TransactionType });
+                            break;
+                        }
+                    case GeneralLedgerAccounts.OtherExpenses:
+                        {
+                            temp.AccountName = "Other Expenses";
+                            var t =  GetPaymentVouchersAsync(false,from,to).Result;
+
+                            List<TransactionModel> r = new List<TransactionModel>();
+
+                            foreach (var y in t)
+                                r.Add(new TransactionModel() { TransactionID = "EXP-" + y.PaymentVoucherID, TransactionAmt = y.Total, TransactionDateTime = y.DatePaid, TransactionType = TransactionTypes.Debit });
+
+                            var f = r.OrderBy(o => o.TransactionDateTime);
+                            foreach (var h in f)
+                                temp.Entries.Add(new TransactionModel() { TransactionID = h.TransactionID, TransactionAmt = h.TransactionAmt, TransactionDateTime = h.TransactionDateTime, TransactionType = h.TransactionType });
+                            break;
+                        }
+                    case GeneralLedgerAccounts.Salaries: temp.AccountName = "Payroll Expenses"; break;
+                    case GeneralLedgerAccounts.Sales:
+                        {
+                            temp.AccountName = "Sales";
+                            var t = GetSales(false, null, from, to);
+
+                            List<TransactionModel> r = new List<TransactionModel>();
+
+                            foreach (var y in t)
+                                r.Add(new TransactionModel() { TransactionID = "SALE-" + y.SaleID, TransactionAmt = y.OrderTotal, TransactionDateTime = y.DateAdded, TransactionType = TransactionTypes.Credit });
+
+                            var f = r.OrderBy(o => o.TransactionDateTime);
+                            foreach (var h in f)
+                                temp.Entries.Add(new TransactionModel() { TransactionID = h.TransactionID, TransactionAmt = h.TransactionAmt, TransactionDateTime = h.TransactionDateTime, TransactionType = h.TransactionType });
+                            break;
+                        }
+                    case GeneralLedgerAccounts.OtherRevenue: temp.AccountName = "Other Revenue"; break;
+                }
+
+                temp.Date = DateTime.Now;
+                
 
                 return temp;
             });
@@ -2310,7 +2482,10 @@ namespace Helper
         {
             return Task.Run<ObservableCollection<StudentListModel>>(delegate
             {
-                string commandText = "SELECT TOP 1000000 s.StudentID,s.FirstName,s.LastName,s.MiddleName,s.ClassID, c.NameOfClass,s.DateOfBirth,s.DateOfAdmission,s.NameOfGuardian,s.GuardianPhoneNo,s.Address,s.City,s.PostalCode,s.BedNo,s.PreviousInstitution,s.KCPEScore, s.DormitoryID, s.PreviousBalance,d.NameOfDormitory, s.IsActive,s.IsBoarder,s.Gender FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON (s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[Dormitory] d ON (s.DormitoryID=d.DormitoryID)";
+                string commandText = "SELECT TOP 1000000 s.StudentID,s.FirstName,s.LastName,s.MiddleName,s.ClassID, c.NameOfClass,s.DateOfBirth,"+
+                "s.DateOfAdmission,s.NameOfGuardian,s.GuardianPhoneNo,s.Address,s.City,s.PostalCode,s.BedNo,s.PreviousInstitution,s.KCPEScore, s.DormitoryID, "+
+                "s.PreviousBalance,d.NameOfDormitory, s.IsActive,s.IsBoarder,s.Gender, s.SPhoto FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON "+
+                "(s.ClassID=c.ClassID) LEFT OUTER JOIN [Institution].[Dormitory] d ON (s.DormitoryID=d.DormitoryID)";
                 ObservableCollection<StudentListModel> observableCollection = new ObservableCollection<StudentListModel>();
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
                 if (dataTable.Rows.Count != 0)
@@ -2340,7 +2515,8 @@ namespace Helper
                             NameOfDormitory = dataRow[18].ToString(),
                             IsActive = bool.Parse(dataRow[19].ToString()),
                             IsBoarder = bool.Parse(dataRow[20].ToString()),
-                            Gender = (Gender)Enum.Parse(typeof(Gender), dataRow[21].ToString())
+                            Gender = (Gender)Enum.Parse(typeof(Gender), dataRow[21].ToString()),
+                            SPhoto = (byte[])dataRow[22]
                         });
                     }
                 }
@@ -4831,16 +5007,16 @@ namespace Helper
                 string selectStr = (transcriptID == 0) ? "SELECT t1.StudentTranscriptID,t1.StudentID, t1.NameOfStudent,t1.KCPEScore, t1.NameOfClass,t1.Responsibilities,t1.ClubsAndSport,t1.Boarding,t1.ClassTeacherComments, " +
                     "t1.PrincipalComments,t1.OpeningDay,t1.ClosingDay,t1.DateSaved,t1.ClassPosition,t1.OverAllPosition,t1.Exam1Score,t1.Exam2Score,t1.Exam3Score,t2.T2ClassPosition," +
                     "t2.T2OverAllPosition,t2.T2Exam1Score,t2.T2Exam2Score,t2.T2Exam3Score,t3.T3ClassPosition,t3.T3OverAllPosition,t3.T3Exam1Score,t3.T3Exam2Score,t3.T3Exam3Score," +
-                    "pyT3.PyT3Exam1Score,pyT3.PyT3Exam2Score,pyt3.PyT3Exam3Score FROM (SELECT s.StudentID, s.NameOfStudent,s.KCPEScore, c.NameOfClass,ISNULL(sth.StudentTranscriptID,0) StudentTranscriptID,Responsibilities,ClubsAndSport," +
+                    "pyT3.PyT3Exam1Score,pyT3.PyT3Exam2Score,pyt3.PyT3Exam3Score,t1.SPhoto FROM (SELECT s.StudentID, s.NameOfStudent,s.KCPEScore, c.NameOfClass,ISNULL(sth.StudentTranscriptID,0) StudentTranscriptID,Responsibilities,ClubsAndSport," +
                     " Boarding,ClassTeacherComments,PrincipalComments,OpeningDay,ClosingDay,DateSaved,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) " +
-                    "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E1 + "," + t1E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E2 +
+                    " FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E1 + "," + t1E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E2 +
                     "," + t1E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E3 + "," + t1E3W + "),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + c + " AND IsActive=1)" +
                     " no_of_students FROM [Institution].[Student] WHERE CLassID=" + c + " AND IsActive=1 group by StudentID ) x WHERE x.StudentID=s.StudentID) ClassPosition," +
                     "(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E1 +
                     "," + t1E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E2 + "," + t1E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E3 + "," + t1E3W + "),0) DESC) row_no, StudentID," +
                     "(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr + ") AND IsActive=1) no_of_students FROM [Institution].[Student] WHERE CLassID IN (" + cStr +
                     ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID) OverAllPosition,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E1 + "," + t1E1W + ") Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E2 +
-                    "," + t1E2W + ")Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E3 + "," + t1E3W + ")Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID)" +
+                    "," + t1E2W + ")Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E3 + "," + t1E3W + ")Exam3Score,SPhoto FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID)" +
                     " LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] sth ON(sth.StudentID=s.StudentID " +
                     ") LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.IsActive=1 AND s.StudentID=" + studentID +
                     ") t1 " +
@@ -4886,7 +5062,7 @@ namespace Helper
                     "SELECT t1.StudentTranscriptID,t1.StudentID, t1.NameOfStudent,t1.KCPEScore, t1.NameOfClass,t1.Responsibilities,t1.ClubsAndSport,t1.Boarding,t1.ClassTeacherComments, " +
                     "t1.PrincipalComments,t1.OpeningDay,t1.ClosingDay,t1.DateSaved,t1.ClassPosition,t1.OverAllPosition,t1.Exam1Score,t1.Exam2Score,t1.Exam3Score,t2.T2ClassPosition," +
                     "t2.T2OverAllPosition,t2.T2Exam1Score,t2.T2Exam2Score,t2.T2Exam3Score,t3.T3ClassPosition,t3.T3OverAllPosition,t3.T3Exam1Score,t3.T3Exam2Score,t3.T3Exam3Score," +
-                    "pyT3.PyT3Exam1Score,pyT3.PyT3Exam2Score,pyt3.PyT3Exam3Score FROM (SELECT s.StudentID, s.NameOfStudent,s.KCPEScore, c.NameOfClass,ISNULL(sth.StudentTranscriptID,0) StudentTranscriptID,Responsibilities,ClubsAndSport," +
+                    "pyT3.PyT3Exam1Score,pyT3.PyT3Exam2Score,pyt3.PyT3Exam3Score,t1.SPhoto FROM (SELECT s.StudentID, s.NameOfStudent,s.KCPEScore, c.NameOfClass,ISNULL(sth.StudentTranscriptID,0) StudentTranscriptID,Responsibilities,ClubsAndSport," +
                     " Boarding,ClassTeacherComments,PrincipalComments,OpeningDay,ClosingDay,DateSaved,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) " +
                     "FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E1 + "," + t1E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E2 +
                     "," + t1E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E3 + "," + t1E3W + "),0) DESC) row_no, StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =" + c + " AND IsActive=1)" +
@@ -4895,7 +5071,7 @@ namespace Helper
                     "," + t1E1W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t2E2 + "," + t1E2W + "),0)+ISNULL(dbo.GetWeightedExamTotalScore(StudentID," + t1E3 + "," + t1E3W + "),0) DESC) row_no, StudentID," +
                     "(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(" + cStr + ") AND IsActive=1) no_of_students FROM [Institution].[Student] WHERE CLassID IN (" + cStr +
                     ") AND IsActive=1 GROUP by StudentID ) x WHERE x.StudentID=s.StudentID) OverAllPosition,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E1 + "," + t1E1W + ") Exam1Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E2 +
-                    "," + t1E2W + ")Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E3 + "," + t1E3W + ")Exam3Score FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID)" +
+                    "," + t1E2W + ")Exam2Score,dbo.GetWeightedExamTotalScore(s.StudentID," + t1E3 + "," + t1E3W + ")Exam3Score,SPhoto FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[Class] c ON(s.ClassID=c.ClassID)" +
                     " LEFT OUTER JOIN [Institution].[StudentTranscriptHeader] sth ON(sth.StudentID=s.StudentID " +
                     ") LEFT OUTER JOIN [Institution].[StudentTranscriptExamDetail] sted ON (sted.StudentTranscriptID=sth.StudentTranscriptID) WHERE s.IsActive=1 AND s.StudentID=" + studentID +
                     ") t1 " +
@@ -5022,6 +5198,8 @@ namespace Helper
                     ((string.IsNullOrWhiteSpace(dt.Rows[0][28].ToString()) ? 0 : decimal.Parse(dt.Rows[0][28].ToString())) +
                     (string.IsNullOrWhiteSpace(dt.Rows[0][29].ToString()) ? 0 : decimal.Parse(dt.Rows[0][29].ToString())) +
                     (string.IsNullOrWhiteSpace(dt.Rows[0][30].ToString()) ? 0 : decimal.Parse(dt.Rows[0][30].ToString())));
+
+                temp.SPhoto = (byte[])dt.Rows[0][31];
 
                 decimal term1TotPoints = GetTranscriptTotPoints(temp.Term1Entries);
                 decimal term2TotPoints = GetTranscriptTotPoints(temp.Term2Entries);
@@ -5223,6 +5401,35 @@ namespace Helper
                 return observableCollection;
             });
         }
+
+        public static Task<ObservableCollection<PaymentVoucherModel>> GetPaymentVouchersAsync(bool includeDetails,DateTime? from, DateTime? to)
+        {
+            return Task.Run<ObservableCollection<PaymentVoucherModel>>(delegate
+            {
+                ObservableCollection<PaymentVoucherModel> observableCollection = new ObservableCollection<PaymentVoucherModel>();
+                string commandText = "SELECT PayoutID,Payee,Address,TotalPaid,ISNULL(DatePaid,[ModifiedDate]) FROM [Institution].[PayoutHeader]";
+                if (from.HasValue && to.HasValue)
+                    commandText += " WHERE ISNULL(DatePaid,[ModifiedDate]) BETWEEN CONVERT(datetime,'" +
+                        from.Value.Day.ToString() + "-" + from.Value.Month.ToString() + "-" + from.Value.Year.ToString() +
+                        " 00:00:00.000') AND convert(datetime,'" + to.Value.Day.ToString() + "-" + to.Value.Month.ToString() +
+                        "-" + to.Value.Year.ToString() + " 23:59:59.998')\r\n";
+                DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    PaymentVoucherModel paymentVoucherModel = new PaymentVoucherModel();
+                    paymentVoucherModel.PaymentVoucherID = int.Parse(dataRow[0].ToString());
+                    paymentVoucherModel.NameOfPayee = dataRow[1].ToString();
+                    paymentVoucherModel.Address = dataRow[2].ToString();
+                    paymentVoucherModel.Total = decimal.Parse(dataRow[3].ToString());
+                    paymentVoucherModel.DatePaid = DateTime.Parse(dataRow[4].ToString());
+                    if (includeDetails)
+                    paymentVoucherModel.Entries = DataAccess.GetPaymentVoucherEntries(paymentVoucherModel.PaymentVoucherID);
+                    observableCollection.Add(paymentVoucherModel);
+                }
+                return observableCollection;
+            });
+        }
+
 
         private static ObservableCollection<PaymentVoucherEntryModel> GetPaymentVoucherEntries(int paymentVoucherID)
         {

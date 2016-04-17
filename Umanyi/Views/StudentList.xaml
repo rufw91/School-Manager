@@ -71,8 +71,22 @@
                 <DataGridTextColumn Header="KCPE Score" Binding="{Binding KCPEScore}" Width="200" IsReadOnly="True"/>
             </DataGrid.Columns>
             <DataGrid.Resources>
+                <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource {x:Type ToolTip}}">
+                    <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ToolTip}">
+                                <Grid Margin="4" Background="WhiteSmoke" Visibility="{Binding SPhoto,Converter={StaticResource NullOrNotImageToVisibilityConverter}}">
+                                    <Image Width="100" Height="80" Margin="5" Source="{Binding SPhoto, Converter={StaticResource StreamToImageSourceConverter}}"/>
+
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
                 <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                     <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                    <Setter Property="ToolTip" Value="{Binding DataContext, RelativeSource={x:Static RelativeSource.Self}}"/>
                     <Setter Property="Tag" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
                     <Setter Property="ContextMenu">
                         <Setter.Value>
@@ -87,7 +101,7 @@
                             <Setter Property="Background" Value="OrangeRed"/>
                         </DataTrigger>
                     </Style.Triggers>
-                </Style>
+                </Style>                           
             </DataGrid.Resources>
         </DataGrid>
         <TextBlock HorizontalAlignment="Right" Margin="0,51,80,0" Text="Active" VerticalAlignment="Top"/>

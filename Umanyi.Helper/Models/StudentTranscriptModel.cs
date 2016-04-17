@@ -32,9 +32,11 @@ namespace Helper.Models
         private string cat1Grade;
         private string cat2Grade;
         private string examGrade;
+        private byte[] sPhoto;
 
         public StudentTranscriptModel()
         {
+            SPhoto = null;
             StudentTranscriptID = 0;
             KCPEScore = 0;
             Responsibilities = "";
@@ -75,6 +77,21 @@ namespace Helper.Models
                     }
                 };
         }
+
+        public byte[] SPhoto
+        {
+            get { return this.sPhoto; }
+
+            set
+            {
+                if (value != this.sPhoto)
+                {
+                    this.sPhoto = value;
+                    NotifyPropertyChanged("SPhoto");
+                }
+            }
+        }
+
         public int StudentTranscriptID
         {
             get { return this.studentTranscriptID; }
@@ -400,6 +417,7 @@ namespace Helper.Models
         public void CopyFrom(StudentTranscriptModel newTranscript)
         {
             base.CopyFrom(newTranscript);
+            SPhoto = newTranscript.SPhoto;
             StudentTranscriptID = newTranscript.StudentTranscriptID;
             KCPEScore = newTranscript.KCPEScore;
             Responsibilities = newTranscript.Responsibilities;
@@ -427,6 +445,7 @@ namespace Helper.Models
         public override void Reset()
         {
             base.Reset();
+            SPhoto = null;
             StudentTranscriptID = 0;
             KCPEScore = 0;
             Responsibilities = "";

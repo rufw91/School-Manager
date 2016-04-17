@@ -37,6 +37,8 @@ namespace Helper.Models
             Term2OverallPos = "";
             Term3OverallPos = "";
         }
+
+        
         public string Term1TotalScore { get; set; }
 
         public string Term2TotalScore { get; set; }

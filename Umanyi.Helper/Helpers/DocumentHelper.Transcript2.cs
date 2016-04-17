@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Helper
 {
@@ -68,6 +69,11 @@ namespace Helper
             AddText(kcpeScore.ToString(), "Arial", 14, true, 0, Colors.Black, 135, 173, pageNo);
         }
 
+        private static void AddTR2Image(byte[] image, int pageNo)
+        {
+            AddImage(image, double.NaN,double.NaN, 642, 10, 0, pageNo);
+        }
+        
         private static void AddTR2ClassPosition(string classPosition, int pageNo)
         {
             AddText(classPosition, "Arial", 14, true, 0, Colors.Black, 75, 580, pageNo);
@@ -205,6 +211,7 @@ namespace Helper
                 AddTR2Closing(si.ClosingDay, pageNo);
                 AddTR2ClustPoints(si.Points, pageNo);
                 AddTR2ClassTRComments(si.ClassTeacherComments, pageNo);
+                AddTR2Image(si.SPhoto,pageNo);
                 TR2DrawGraph(DataAccess.CalculateGrade(decimal.Ceiling(Convert.ToDecimal(si.KCPEScore) / 5m)),
                     si.CAT1Grade,
                     si.CAT2Grade,

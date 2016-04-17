@@ -171,7 +171,7 @@ namespace Helper
                 return DocType.ClassLeavingCertificates;
             if (workObject is PayslipModel)
                 return DocType.Payslip;
-            if (workObject is ObservableCollection<AccountModel>)
+            if (workObject is GeneralLedgerModel)
                 return DocType.AccountsGeneralLedger;
             throw new ArgumentException();
         }
@@ -238,8 +238,8 @@ namespace Helper
                 totalNoOfItems = (workObject as ReportModel).Entries.Rows.Count;
             if (workObject is AllUnreturnedBooksModel)
                 totalNoOfItems = (workObject as AllUnreturnedBooksModel).Count;
-            if (workObject is ObservableCollection<AccountModel>)
-                return CalculatePagesAccountsGenLedger(workObject as ObservableCollection<AccountModel>);
+            if (workObject is GeneralLedgerModel)
+                totalNoOfItems = (workObject as GeneralLedgerModel).Entries.Count;
             return (totalNoOfItems % itemsPerPage) != 0 ?
                 (totalNoOfItems / itemsPerPage) + 1 : (totalNoOfItems / itemsPerPage);
         }
@@ -325,7 +325,27 @@ namespace Helper
             Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(text1);
         }
+        private static void AddImage(byte[] image, double width, double height, double left, double top, double rotateAngle, int pageNo)
+        {
+            Image text1 = new Image();
+            text1.Stretch = Stretch.Fill;
 
+            if (rotateAngle != 0)
+            {
+                RotateTransform rotateTransform1 =
+                    new RotateTransform(rotateAngle);
+                text1.RenderTransform = rotateTransform1;
+            }
+
+            text1.HorizontalAlignment = (left == -1) ? HorizontalAlignment.Center : HorizontalAlignment.Left;
+            text1.VerticalAlignment = VerticalAlignment.Top;
+            text1.Margin = new Thickness((left == -1) ? 0 : left, top, 0, 0);
+            text1.Width = width;
+            text1.Height = height;
+            text1.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(image);
+            Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
+            g.Children.Add(text1);
+        }
         private static void AddText(string text, double left, double top, int pageNo)
         {
             AddText(text, 12, false, 0, Colors.Black, left, top, pageNo);

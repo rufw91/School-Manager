@@ -84,6 +84,7 @@
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -158,6 +159,7 @@
     <Compile Include="Models\FeesPaymentReceiptModel.cs" />
     <Compile Include="Models\FeesStructureEntryModel.cs" />
     <Compile Include="Models\FullFeesStructureModel.cs" />
+    <Compile Include="Models\GeneralLedgerModel.cs" />
     <Compile Include="Models\IssueModel.cs" />
     <Compile Include="Models\ItemIssueEntryModel.cs" />
     <Compile Include="Models\ItemIssueModel.cs" />

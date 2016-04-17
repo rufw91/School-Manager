@@ -17,7 +17,7 @@ namespace Helper.Converters
                 if (value != null)
                 {                    
                     byte[] newB = (byte[])value;
-                    if (newB.Length > 0)
+                    if (newB.Length > 10)
                     {
                         BitmapImage gy = new BitmapImage();
                         using (MemoryStream mem = new MemoryStream(newB))

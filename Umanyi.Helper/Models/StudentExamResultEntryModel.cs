@@ -58,6 +58,7 @@ namespace Helper.Models
             set;
         }
 
+      
         public StudentExamResultEntryModel()
         {
             this.Grade = "";

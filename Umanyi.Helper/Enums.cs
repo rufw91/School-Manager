@@ -14,4 +14,16 @@ namespace Helper
         Fees,
         Projects
     }
+
+    public enum GeneralLedgerAccounts
+    {
+        Cash,
+        Sales,
+        AccountsPayable,
+        AccountsReceivable,
+        Salaries,
+        OtherExpenses,
+        OtherRevenue
+    }
+    
 }
