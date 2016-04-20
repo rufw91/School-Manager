@@ -133,7 +133,7 @@
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -194,6 +194,7 @@
     <Compile Include="ViewModels\FeesPaymentHistoryVM.cs" />
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
     <Compile Include="ViewModels\InstitutionSubjectsSetupVM.cs" />
+    <Compile Include="ViewModels\LogWindowVM.cs" />
     <Compile Include="ViewModels\ModifySubjectsSetupVM.cs" />
     <Compile Include="ViewModels\IssueItemsVM.cs" />
     <Compile Include="ViewModels\ItemIssueHistoryVM.cs" />
@@ -379,6 +380,9 @@
     </Compile>
     <Compile Include="Views\InvalidLicense.xaml.cs">
       <DependentUpon>InvalidLicense.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogWindow.xaml.cs">
+      <DependentUpon>LogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ModifySubjectsSetup.xaml.cs">
       <DependentUpon>ModifySubjectsSetup.xaml</DependentUpon>
@@ -920,6 +924,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\InvalidLicense.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

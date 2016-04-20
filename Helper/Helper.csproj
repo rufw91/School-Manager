@@ -91,6 +91,11 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Collections.Immutable\v4.0_1.1.37.0__b03f5f7f11d50a3a\System.Collections.Immutable.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
@@ -132,13 +137,18 @@
     <Compile Include="Models\ApplicationPersistModel.cs" />
     <Compile Include="Models\ClassLessons.cs" />
     <Compile Include="Models\ColumnModel.cs" />
+    <Compile Include="Models\ComparisonModel.cs" />
     <Compile Include="Models\Lesson.cs" />
     <Compile Include="Models\TimetableColumnHeaderModel.cs" />
     <Compile Include="Models\TimeTableModel.cs" />
     <Compile Include="Models\TimeTableSettingsModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Presentation\ComparisonCollection.cs" />
     <Compile Include="Presentation\IMainWindow.cs" />
     <Compile Include="Presentation\NotifyPropertyChanged.cs" />
+    <Compile Include="Presentation\ObservableCollectionObject.cs" />
+    <Compile Include="Presentation\ObservableImmutableDictionary.cs" />
+    <Compile Include="Presentation\ObservableImmutableList.cs" />
     <Compile Include="Presentation\RelayCommand.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\CustomWindow.cs" />

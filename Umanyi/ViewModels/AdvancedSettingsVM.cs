@@ -109,12 +109,28 @@ namespace UmanyiSMS.ViewModels
                 OpenTaskWindowCommand.Execute(new QueryEditorVM());
                 IsBusy = false;
             }, o => true);
+
+            ShowLogCommand = new RelayCommand(o =>
+            {
+                IsBusy = true;
+                if (OpenTaskWindowAction2 != null)
+                {
+                    OpenTaskWindowAction2.Invoke(new LogWindowVM());
+                }
+                IsBusy = false;
+            }, o => true);
         }
         public Action BackupAction
         { get; internal set; }
 
         public Action<ViewModelBase> OpenTaskWindowAction
         { get; internal set; }
+
+        public Action<ViewModelBase> OpenTaskWindowAction2
+        { get; internal set; }        
+
+        public ICommand ShowLogCommand
+        { get; private set; }
 
         public ICommand CleanDbCommand
         { get; private set; }

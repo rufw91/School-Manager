@@ -58,6 +58,10 @@
         <views:AccountsMain/>
     </DataTemplate>
     <!--Child View Models-->
+
+    <DataTemplate DataType="{x:Type viewModels:LogWindowVM}" >
+        <views:LogWindow/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:ChartOfAccountsVM}" >
         <views:ChartOfAccounts/>
     </DataTemplate>
