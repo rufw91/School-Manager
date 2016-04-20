@@ -29,6 +29,19 @@ namespace UmanyiSMS.Views
                     w.Content = p;
                     w.ShowDialog();
                 };
+                dbtvm.OpenTaskWindowAction2 = (p) =>
+                {
+                    w = new CustomWindow();
+
+                    w.MinHeight = 610;
+                    w.MinWidth = 810;
+                    w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                    w.WindowState = WindowState.Maximized;
+
+
+                    w.Content = p;
+                    w.Show();
+                };
             };
         }
 

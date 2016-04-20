@@ -84,7 +84,7 @@
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -102,7 +102,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComparisonCollection.cs" />
     <Compile Include="Controls\HomePageButton.cs" />
     <Compile Include="Converters\ImageConverters.cs" />
     <Compile Include="Converters\ItemListToItemFindListConverter.cs" />
@@ -147,7 +146,6 @@
     <Compile Include="Models\ClassTranscriptsModel.cs" />
     <Compile Include="Models\ClassTranscriptsModel2.cs" />
     <Compile Include="Models\CombinedClassModel.cs" />
-    <Compile Include="Models\ComparisonModel.cs" />
     <Compile Include="Models\DisciplineModel.cs" />
     <Compile Include="Models\ExamRegistrationStudentModel.cs" />
     <Compile Include="Models\ExamResultStudentSubjectEntryModel.cs" />
@@ -239,9 +237,6 @@
     <Compile Include="Models\VATAnalysisModel.cs" />
     <Compile Include="Models\VatModel.cs" />
     <Compile Include="Models\VoteHeadModel.cs" />
-    <Compile Include="ObservableCollectionObject.cs" />
-    <Compile Include="ObservableImmutableDictionary.cs" />
-    <Compile Include="ObservableImmutableList.cs" />
     <Compile Include="Presentation\IApp.cs" />
     <Compile Include="Presentation\OperationProgress.cs" />
     <Compile Include="Presentation\ParentViewModel.cs" />

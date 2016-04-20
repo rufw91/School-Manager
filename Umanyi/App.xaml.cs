@@ -16,12 +16,17 @@ using System.Windows.Threading;
 using System.Windows.Media;
 using System.Windows.Interop;
 using Helper.Presentation;
+using System.Collections.ObjectModel;
+using System.Collections.Immutable;
+
 namespace UmanyiSMS
 {
     public partial class App : Application, ISingleInstanceApp,IApp
     {       
         private const string Unique = "UmanyiSMS";
         private static ApplicationModel info;
+        private IImmutableList<string> log;
+
         [STAThread]
         public static void Main()
         {
@@ -30,8 +35,8 @@ namespace UmanyiSMS
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
             if (SingleInstance<App>.InitializeAsFirstInstance(Unique))
             {
-               
-                var application = new App();
+                
+                 var application = new App();
 
                 application.InitializeComponent();
                 application.Run();
@@ -65,6 +70,11 @@ namespace UmanyiSMS
             }
         }
 
+        public IImmutableList<string> LogEntries
+        {
+            get { return log; }
+        }
+
         public ApplicationModel AppInfo
         {
             get { return App.info; }
@@ -89,6 +99,7 @@ namespace UmanyiSMS
 
         private void InitGlobalVar()
         {
+            log = new ObservableImmutableList<string>();
             try
             {
                 if (Helper.Properties.Settings.Default.Info == null)
@@ -111,9 +122,10 @@ namespace UmanyiSMS
         {
             SplashScreen splashScreen = new SplashScreen("/Resources/Starehe0078C8.png");
             splashScreen.Show(true);
-
-            Log.I("Init Vars",this);
             InitGlobalVar();
+            Log.Init(ref log);
+            Log.I("Init Vars",this);
+            
             FileHelper.CheckFiles();
             if (!await ActivationHelper.LicenseExists())
                 new InvalidLicense().ShowDialog();
