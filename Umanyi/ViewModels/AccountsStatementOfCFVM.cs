@@ -10,10 +10,10 @@ using System.Windows.Input;
 
 namespace UmanyiSMS.ViewModels
 {
-    public class AccountsIncomeStatementVM : ViewModelBase
+    public class AccountsStatementOfCFVM : ViewModelBase
     {
         private FixedDocument fd;
-        public AccountsIncomeStatementVM()
+        public AccountsStatementOfCFVM()
         {
             InitVars();
             CreateCommands();
@@ -24,10 +24,10 @@ namespace UmanyiSMS.ViewModels
 
         protected override void CreateCommands()
         {
-            GenerateCommand = new RelayCommand(async o =>
+            GenerateCommand = new RelayCommand(o =>
             {
                 IsBusy = true;
-                IncomeStatementModel im = await DataAccess.GetIncomeStatement(new DateTime(DateTime.Now.Year,1,1),new DateTime(DateTime.Now.Year,12,31));
+                STCashFlowsModel im = new STCashFlowsModel();
                 Document = DocumentHelper.GenerateDocument(im);
                 IsBusy = false;
             }, o => true);
@@ -35,7 +35,7 @@ namespace UmanyiSMS.ViewModels
 
         protected override void InitVars()
         {
-            Title = "INCOME STATEMENT";
+            Title = "STATEMENT OF CASH FLOWS";
         }
 
         public FixedDocument Document

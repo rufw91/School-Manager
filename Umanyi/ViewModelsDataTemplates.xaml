@@ -59,6 +59,10 @@
     </DataTemplate>
     <!--Child View Models-->
 
+    <DataTemplate DataType="{x:Type viewModels:ExamSetupVM}" >
+        <views:ExamSetup/>
+    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:LogWindowVM}" >
         <views:LogWindow/>
     </DataTemplate>
@@ -71,14 +75,8 @@
     <DataTemplate DataType="{x:Type viewModels:AccountsBalanceSheetVM}" >
         <views:AccountsBalanceSheet/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AccountsTrialBalanceVM}" >
-        <views:AccountsTrialBalance/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AccountsGeneralLedgerVM}" >
-        <views:AccountsGeneralLedger/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AccountsTransactionsVM}" >
-        <views:AccountsTransactions/>
+    <DataTemplate DataType="{x:Type viewModels:AccountsStatementOfCFVM}" >
+        <views:AccountsStatementOfCF/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:ExamRegistrationVM}" >
         <views:ExamRegistration/>
@@ -202,9 +200,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:AssignNewClassVM}" >
         <views:AssignNewClass/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:PriceListsVM}" >
-        <views:PriceLists/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:NetworkOptionsVM}" >
         <views:NetworkOptions/>

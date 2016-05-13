@@ -14,7 +14,7 @@ namespace UmanyiSMS.ViewModels
             TryAddChild(typeof(BooksVM));
             TryAddChild(typeof(SuppliersVM));
             TryAddChild(typeof(StockTakingsVM));
-            TryAddChild(typeof(VATsVM));
+            //TryAddChild(typeof(VATsVM));
             ActiveView = new ItemsVM();
         }
 

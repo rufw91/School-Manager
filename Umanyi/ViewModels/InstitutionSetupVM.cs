@@ -1,5 +1,6 @@
 ﻿using Helper;
 using Helper.Models;
+using System;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
@@ -10,7 +11,7 @@ namespace UmanyiSMS.ViewModels
     public class InstitutionSetupVM: ViewModelBase
     {
         ApplicationModel newSchool;
-
+        bool isInStartup=false;
         public InstitutionSetupVM()
         {
             InitVars();
@@ -21,6 +22,14 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "INSTITUTION SETUP";
             newSchool =new ApplicationModel( Helper.Properties.Settings.Default.Info);
+        }
+
+        public InstitutionSetupVM(bool isInStartup)
+        {
+            this.isInStartup = isInStartup;
+            newSchool = new ApplicationModel();
+            Title = "INSTITUTION SETUP";
+            CreateCommands();
         }
 
         public ApplicationModel NewSchool
@@ -35,22 +44,38 @@ namespace UmanyiSMS.ViewModels
                 newSchool.SPhoto = FileHelper.BrowseImageAsByteArray();
             }, o => true);
 
-            SaveCommand = new RelayCommand(o => 
+            SaveCommand = new RelayCommand(o =>
             {
                 Helper.Properties.Settings.Default.Info = new ApplicationPersistModel(newSchool);
                 Helper.Properties.Settings.Default.Save();
+
                 App.Info.CopyFrom(new ApplicationModel(Helper.Properties.Settings.Default.Info));
-                if (MessageBoxResult.Yes == MessageBox.Show("You may need to restart the School Management system for all changes to be saved. Do you want to restart now? ",
+                if (MessageBoxResult.Yes == MessageBox.Show("You need to restart the School Management system for the changes to be saved. Do you want to restart now? ",
                     "Warning", MessageBoxButton.YesNo, MessageBoxImage.Information))
                 {
                     App.Restart();
                 }
-            }, o => !IsBusy);
+            }, o => !IsBusy && CanSave());
+        }
+
+        private bool CanSave()
+        {
+            return !string.IsNullOrWhiteSpace(newSchool.Name) && !string.IsNullOrWhiteSpace(newSchool.Address)
+                && !string.IsNullOrWhiteSpace(newSchool.AltInfo) && !string.IsNullOrWhiteSpace(newSchool.City)
+                && !string.IsNullOrWhiteSpace(newSchool.Email) && !string.IsNullOrWhiteSpace(newSchool.FullName)
+                && !string.IsNullOrWhiteSpace(newSchool.FullNameAlt) && !string.IsNullOrWhiteSpace(newSchool.Motto)
+                && !string.IsNullOrWhiteSpace(newSchool.PhoneNo);
         }
 
         public override void Reset()
         {
             newSchool = new ApplicationModel(Helper.Properties.Settings.Default.Info);
+        }
+
+        public Action CloseWindowAction
+        {
+            get;
+            set;
         }
 
         public ICommand SaveCommand

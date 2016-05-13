@@ -38,22 +38,22 @@ namespace Helper.Models
                     Logo = GetImage();
                 }
             };
-            SyncAddress = "http://127.0.0.1/mobile_api/";
-            ID = "mbee";
-            Name = "Mbee High School";
-            FullName = "MBEE HIGH SCHOOL - KATHIANI";
-            FullNameAlt = "Mbee High School";
-            AltInfo = "Mixed Secondary School";
-            Address = "40 - 90105";
-            City = "Kathiani";
-            PhoneNo = "+254 729 897 871";
+            SyncAddress = "";
+            ID = "";
+            Name = "";
+            FullName = "";
+            FullNameAlt = "";
+            AltInfo = "";
+            Address = "";
+            City = "";
+            PhoneNo = "";
             CurrentUser = new UserModel();
-            Email = "info@monsoondigital.co.ke";
+            Email = "";
             ServerName = Environment.MachineName + "\\Umanyi";
             Culture = new CultureInfo("en-GB").LCID;
             SPhoto = null;
             Logo = GetImage();
-            Motto = "Strive for Excellence";
+            Motto = "";
             
         }
         public ApplicationModel(ApplicationPersistModel info)

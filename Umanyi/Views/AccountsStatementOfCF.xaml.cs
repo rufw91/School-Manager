@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace UmanyiSMS.Views
 {
     /// <summary>
-    /// Interaction logic for AccountsTransactions.xaml
+    /// Interaction logic for AccountsStatementOfCF.xaml
     /// </summary>
-    public partial class AccountsTransactions : UserControl
+    public partial class AccountsStatementOfCF : UserControl
     {
-        public AccountsTransactions()
+        public AccountsStatementOfCF()
         {
             InitializeComponent();
         }
