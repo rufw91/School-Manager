@@ -36,6 +36,8 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -132,11 +134,12 @@
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
-      <HintPath>..\..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -162,24 +165,37 @@
     <Compile Include="Updates\UpdatesWindow.xaml.cs">
       <DependentUpon>UpdatesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AccountsBalanceSheetVM.cs" />
     <Compile Include="ViewModels\AccountsGeneralLedgerVM.cs" />
     <Compile Include="ViewModels\AccountsIncomeStatementVM.cs" />
     <Compile Include="ViewModels\AccountsJournalVM.cs" />
     <Compile Include="ViewModels\AccountsMainVM.cs" />
+    <Compile Include="ViewModels\AccountsStatementOfCFVM.cs" />
     <Compile Include="ViewModels\AccountsTransactionsVM.cs" />
     <Compile Include="ViewModels\AccountsTrialBalanceVM.cs" />
     <Compile Include="ViewModels\AccountsVM.cs" />
-    <Compile Include="ViewModels\AdjustJournalVM.cs" />
-    <Compile Include="ViewModels\ChartOfAccountsVM.cs" />
+    <Compile Include="ViewModels\AdvancedSettingsVM.cs" />
+    <Compile Include="ViewModels\AggregateResultsVM.cs" />
+    <Compile Include="ViewModels\AllBooksVM.cs" />
+    <Compile Include="ViewModels\AllEventsVM.cs" />
+    <Compile Include="ViewModels\AllGalleryItemsVM.cs" />
     <Compile Include="ViewModels\AllUnreturnedBooksVM.cs" />
     <Compile Include="ViewModels\AssignNewClassVM.cs" />
+    <Compile Include="ViewModels\BackupVM.cs" />
+    <Compile Include="ViewModels\BalancesListVM.cs" />
     <Compile Include="ViewModels\BillStudentVM.cs" />
-    <Compile Include="ViewModels\AggregateResultsVM.cs" />
     <Compile Include="ViewModels\BookReceiptHistoryVM.cs" />
+    <Compile Include="ViewModels\BookReturnVM.cs" />
     <Compile Include="ViewModels\BooksVM.cs" />
+    <Compile Include="ViewModels\ChangeDbVM.cs" />
     <Compile Include="ViewModels\ChangeSAPasswordVM.cs" />
+    <Compile Include="ViewModels\ChartOfAccountsVM.cs" />
+    <Compile Include="ViewModels\ClassesSetupVM.cs" />
     <Compile Include="ViewModels\ClassLeavingCertificatesVM.cs" />
+    <Compile Include="ViewModels\ClassListVM.cs" />
     <Compile Include="ViewModels\ClassReportFormsVM.cs" />
     <Compile Include="ViewModels\CombinedAggregateResultsVM.cs" />
     <Compile Include="ViewModels\CombinedClassListVM.cs" />
@@ -188,33 +204,86 @@
     <Compile Include="ViewModels\DisciplineDetailsVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerHistoryVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerVM.cs" />
+    <Compile Include="ViewModels\DormitoryMembersVM.cs" />
     <Compile Include="ViewModels\EnterExamResultsBySubjectVM.cs" />
+    <Compile Include="ViewModels\EnterExamResultsVM.cs" />
     <Compile Include="ViewModels\EventDetailsVM.cs" />
     <Compile Include="ViewModels\ExamRegistrationVM.cs" />
+    <Compile Include="ViewModels\ExamSetupVM.cs" />
+    <Compile Include="ViewModels\ExamsVM.cs" />
     <Compile Include="ViewModels\FeesPaymentHistoryVM.cs" />
+    <Compile Include="ViewModels\FeesStatementVM.cs" />
+    <Compile Include="ViewModels\FinanceVM.cs" />
     <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
+    <Compile Include="ViewModels\GalleryVM.cs" />
+    <Compile Include="ViewModels\GeneralSettingsVM.cs" />
+    <Compile Include="ViewModels\HomePageVM.cs" />
+    <Compile Include="ViewModels\Import\ImportWizardMainWindowVM.cs" />
+    <Compile Include="ViewModels\Import\ImportWizardPage1VM.cs" />
+    <Compile Include="ViewModels\Import\ImportWizardPage2VM.cs" />
+    <Compile Include="ViewModels\Import\ImportWizardPage3VM.cs" />
+    <Compile Include="ViewModels\Import\ImportWizardPage4VM.cs" />
+    <Compile Include="ViewModels\InstitutionInfoVM.cs" />
+    <Compile Include="ViewModels\InstitutionSetupVM.cs" />
     <Compile Include="ViewModels\InstitutionSubjectsSetupVM.cs" />
-    <Compile Include="ViewModels\LogWindowVM.cs" />
-    <Compile Include="ViewModels\ModifySubjectsSetupVM.cs" />
+    <Compile Include="ViewModels\InstitutionVM.cs" />
+    <Compile Include="ViewModels\InventoryMgmtVM.cs" />
+    <Compile Include="ViewModels\IssueBookVM.cs" />
     <Compile Include="ViewModels\IssueItemsVM.cs" />
+    <Compile Include="ViewModels\ItemCategoryListVM.cs" />
     <Compile Include="ViewModels\ItemIssueHistoryVM.cs" />
+    <Compile Include="ViewModels\ItemListVM.cs" />
+    <Compile Include="ViewModels\ItemReceiptHistoryVM.cs" />
+    <Compile Include="ViewModels\ItemsVM.cs" />
     <Compile Include="ViewModels\LeavingCertificateVM.cs" />
+    <Compile Include="ViewModels\LibraryVM.cs" />
     <Compile Include="ViewModels\LocalTutorialsVM.cs" />
+    <Compile Include="ViewModels\LogWindowVM.cs" />
+    <Compile Include="ViewModels\MainWindowVM.cs" />
+    <Compile Include="ViewModels\ModifyBookVM.cs" />
+    <Compile Include="ViewModels\ModifyDormitoryVM.cs" />
+    <Compile Include="ViewModels\ModifyItemVM.cs" />
+    <Compile Include="ViewModels\ModifyStaffVM.cs" />
+    <Compile Include="ViewModels\ModifyStudentVM.cs" />
+    <Compile Include="ViewModels\ModifySubjectsSetupVM.cs" />
+    <Compile Include="ViewModels\ModifySupplierVM.cs" />
     <Compile Include="ViewModels\NetworkOptionsVM.cs" />
+    <Compile Include="ViewModels\NewBookVM.cs" />
+    <Compile Include="ViewModels\NewDormitoryVM.cs" />
+    <Compile Include="ViewModels\NewEmployeePaymentVM.cs" />
+    <Compile Include="ViewModels\NewEventVM.cs" />
+    <Compile Include="ViewModels\NewExamVM.cs" />
+    <Compile Include="ViewModels\NewFeesPaymentVM.cs" />
+    <Compile Include="ViewModels\NewGalleryItemVM.cs" />
+    <Compile Include="ViewModels\NewItemCategoryVM.cs" />
+    <Compile Include="ViewModels\NewItemVM.cs" />
     <Compile Include="ViewModels\NewPaymentVoucherVM.cs" />
     <Compile Include="ViewModels\NewPaySlipVM.cs" />
     <Compile Include="ViewModels\NewReportVM.cs" />
+    <Compile Include="ViewModels\NewStaffVM.cs" />
+    <Compile Include="ViewModels\NewStudentVM.cs" />
+    <Compile Include="ViewModels\NewSupplierVM.cs" />
+    <Compile Include="ViewModels\NewVATRateVM.cs" />
     <Compile Include="ViewModels\OnlineResourcesVM.cs" />
     <Compile Include="ViewModels\PAYEInfoVM.cs" />
+    <Compile Include="ViewModels\PaymentHistoryVM.cs" />
     <Compile Include="ViewModels\PaymentsByVoteHeadVM.cs" />
+    <Compile Include="ViewModels\PaymentToSupplierHistoryVM.cs" />
+    <Compile Include="ViewModels\PaymentToSupplierVM.cs" />
     <Compile Include="ViewModels\PaymentVoucherHistoryVM.cs" />
+    <Compile Include="ViewModels\PayrollVM.cs" />
     <Compile Include="ViewModels\PDFViewVM.cs" />
-    <Compile Include="ViewModels\PriceListsVM.cs" />
+    <Compile Include="ViewModels\QueryEditorVM.cs" />
     <Compile Include="ViewModels\QuickBooksVM.cs" />
     <Compile Include="ViewModels\ReceiveBooksVM.cs" />
+    <Compile Include="ViewModels\ReceiveItemsVM.cs" />
+    <Compile Include="ViewModels\RecentGalleryItemsVM.cs" />
+    <Compile Include="ViewModels\RemoveBillVM.cs" />
     <Compile Include="ViewModels\RemoveExamVM.cs" />
     <Compile Include="ViewModels\RemovePayment.cs" />
+    <Compile Include="ViewModels\RemoveSupplierVM.cs" />
     <Compile Include="ViewModels\ReportsHomeVM.cs" />
+    <Compile Include="ViewModels\ReportsVM.cs" />
     <Compile Include="ViewModels\Reports\AcademicReportVM.cs" />
     <Compile Include="ViewModels\Reports\BoardingReportVM.cs" />
     <Compile Include="ViewModels\Reports\EventsReportVM.cs" />
@@ -223,71 +292,21 @@
     <Compile Include="ViewModels\Reports\StaffReportVM.cs" />
     <Compile Include="ViewModels\Reports\StudentsReportVM.cs" />
     <Compile Include="ViewModels\ReprintPaySlipVM.cs" />
-    <Compile Include="ViewModels\StudentClearanceVM.cs" />
-    <Compile Include="ViewModels\StudentTranscriptVM.cs" />
-    <Compile Include="ViewModels\AllBooksVM.cs" />
-    <Compile Include="ViewModels\ReportsVM.cs" />
-    <Compile Include="ViewModels\BookReturnVM.cs" />
-    <Compile Include="ViewModels\ChangeDbVM.cs" />
-    <Compile Include="ViewModels\ClassListVM.cs" />
-    <Compile Include="ViewModels\DormitoryMembersVM.cs" />
-    <Compile Include="ViewModels\IssueBookVM.cs" />
-    <Compile Include="ViewModels\LibraryVM.cs" />
-    <Compile Include="ViewModels\BalancesListVM.cs" />
-    <Compile Include="ViewModels\Import\ImportWizardMainWindowVM.cs" />
-    <Compile Include="ViewModels\Import\ImportWizardPage1VM.cs" />
-    <Compile Include="ViewModels\Import\ImportWizardPage2VM.cs" />
-    <Compile Include="ViewModels\Import\ImportWizardPage3VM.cs" />
-    <Compile Include="ViewModels\Import\ImportWizardPage4VM.cs" />
-    <Compile Include="ViewModels\InstitutionInfoVM.cs" />
-    <Compile Include="ViewModels\InventoryMgmtVM.cs" />
-    <Compile Include="ViewModels\ItemCategoryListVM.cs" />
-    <Compile Include="ViewModels\ItemListVM.cs" />
-    <Compile Include="ViewModels\ItemReceiptHistoryVM.cs" />
-    <Compile Include="ViewModels\ItemsVM.cs" />
-    <Compile Include="ViewModels\ModifyBookVM.cs" />
-    <Compile Include="ViewModels\ModifyDormitoryVM.cs" />
-    <Compile Include="ViewModels\ModifyItemVM.cs" />
-    <Compile Include="ViewModels\ModifyStaffVM.cs" />
-    <Compile Include="ViewModels\ModifySupplierVM.cs" />
-    <Compile Include="ViewModels\NewBookVM.cs" />
-    <Compile Include="ViewModels\NewDormitoryVM.cs" />
-    <Compile Include="ViewModels\NewEmployeePaymentVM.cs" />
-    <Compile Include="ViewModels\NewGalleryItemVM.cs" />
-    <Compile Include="ViewModels\AdvancedSettingsVM.cs" />
-    <Compile Include="ViewModels\AllEventsVM.cs" />
-    <Compile Include="ViewModels\AllGalleryItemsVM.cs" />
-    <Compile Include="ViewModels\BackupVM.cs" />
-    <Compile Include="ViewModels\EnterExamResultsVM.cs" />
-    <Compile Include="ViewModels\ExamsVM.cs" />
-    <Compile Include="ViewModels\FeesStatementVM.cs" />
-    <Compile Include="ViewModels\NewItemCategoryVM.cs" />
-    <Compile Include="ViewModels\NewItemVM.cs" />
-    <Compile Include="ViewModels\NewSupplierVM.cs" />
-    <Compile Include="ViewModels\NewVATRateVM.cs" />
-    <Compile Include="ViewModels\PaymentHistoryVM.cs" />
-    <Compile Include="ViewModels\PaymentToSupplierHistoryVM.cs" />
-    <Compile Include="ViewModels\PaymentToSupplierVM.cs" />
-    <Compile Include="ViewModels\PayrollVM.cs" />
-    <Compile Include="ViewModels\QueryEditorVM.cs" />
-    <Compile Include="ViewModels\ReceiveItemsVM.cs" />
-    <Compile Include="ViewModels\RemoveSupplierVM.cs" />
     <Compile Include="ViewModels\ReprintReceiptVM.cs" />
     <Compile Include="ViewModels\SetFeesStructureVM.cs" />
-    <Compile Include="ViewModels\FinanceVM.cs" />
-    <Compile Include="ViewModels\GalleryVM.cs" />
-    <Compile Include="ViewModels\GeneralSettingsVM.cs" />
-    <Compile Include="ViewModels\HomePageVM.cs" />
-    <Compile Include="ViewModels\MainWindowVM.cs" />
-    <Compile Include="ViewModels\NewEventVM.cs" />
-    <Compile Include="ViewModels\NewExamVM.cs" />
-    <Compile Include="ViewModels\NewFeesPaymentVM.cs" />
-    <Compile Include="ViewModels\NewStaffVM.cs" />
+    <Compile Include="ViewModels\SettingsVM.cs" />
     <Compile Include="ViewModels\StaffDetailsVM.cs" />
+    <Compile Include="ViewModels\StaffListVM.cs" />
+    <Compile Include="ViewModels\StaffVM.cs" />
+    <Compile Include="ViewModels\StartupRepairVM.cs" />
     <Compile Include="ViewModels\StockTakeResultsVM.cs" />
     <Compile Include="ViewModels\StockTakingsVM.cs" />
     <Compile Include="ViewModels\StockTakingVM.cs" />
+    <Compile Include="ViewModels\StudentClearanceVM.cs" />
     <Compile Include="ViewModels\StudentDetailsVM.cs" />
+    <Compile Include="ViewModels\StudentListVM.cs" />
+    <Compile Include="ViewModels\StudentsVM.cs" />
+    <Compile Include="ViewModels\StudentTranscriptVM.cs" />
     <Compile Include="ViewModels\StudentTransferVM.cs" />
     <Compile Include="ViewModels\SubjectSelectionFastVM.cs" />
     <Compile Include="ViewModels\SubjectSelectionVM.cs" />
@@ -297,23 +316,11 @@
     <Compile Include="ViewModels\SyncCloudVM.cs" />
     <Compile Include="ViewModels\UnreturnedBooksVM.cs" />
     <Compile Include="ViewModels\UpcomingEventsVM.cs" />
-    <Compile Include="ViewModels\RecentGalleryItemsVM.cs" />
-    <Compile Include="ViewModels\InstitutionSetupVM.cs" />
-    <Compile Include="ViewModels\InstitutionVM.cs" />
-    <Compile Include="ViewModels\SettingsVM.cs" />
-    <Compile Include="ViewModels\StaffListVM.cs" />
-    <Compile Include="ViewModels\StaffVM.cs" />
-    <Compile Include="ViewModels\StartupRepairVM.cs" />
-    <Compile Include="ViewModels\StudentListVM.cs" />
-    <Compile Include="ViewModels\StudentsVM.cs" />
     <Compile Include="ViewModels\VATAnalysisVM.cs" />
     <Compile Include="ViewModels\VATsVM.cs" />
     <Compile Include="ViewModels\ViewBooksVM.cs" />
     <Compile Include="ViewModels\ViewExamResultsVM.cs" />
     <Compile Include="ViewModels\ViewFeesStructureVM.cs" />
-    <Compile Include="LoginWindow.xaml.cs">
-      <DependentUpon>LoginWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\ViewFullFeesStructureVM.cs" />
     <Compile Include="Views\Accounts.xaml.cs">
       <DependentUpon>Accounts.xaml</DependentUpon>
@@ -321,20 +328,14 @@
     <Compile Include="Views\AccountsBalanceSheet.xaml.cs">
       <DependentUpon>AccountsBalanceSheet.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AccountsGeneralLedger.xaml.cs">
-      <DependentUpon>AccountsGeneralLedger.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\AccountsIncomeStatement.xaml.cs">
       <DependentUpon>AccountsIncomeStatement.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AccountsMain.xaml.cs">
       <DependentUpon>AccountsMain.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AccountsTransactions.xaml.cs">
-      <DependentUpon>AccountsTransactions.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AccountsTrialBalance.xaml.cs">
-      <DependentUpon>AccountsTrialBalance.xaml</DependentUpon>
+    <Compile Include="Views\AccountsStatementOfCF.xaml.cs">
+      <DependentUpon>AccountsStatementOfCF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AllUnreturnedBooks.xaml.cs">
       <DependentUpon>AllUnreturnedBooks.xaml</DependentUpon>
@@ -368,6 +369,9 @@
     </Compile>
     <Compile Include="Views\ExamRegistration.xaml.cs">
       <DependentUpon>ExamRegistration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExamSetup.xaml.cs">
+      <DependentUpon>ExamSetup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FeesPaymentHistory.xaml.cs">
       <DependentUpon>FeesPaymentHistory.xaml</DependentUpon>
@@ -594,7 +598,6 @@
     <Compile Include="Views\ClassesSetup.xaml.cs">
       <DependentUpon>ClassesSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ClassesSetupVM.cs" />
     <Compile Include="Views\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
@@ -646,9 +649,6 @@
     <Compile Include="Views\PDFViewer.Designer.cs">
       <DependentUpon>PDFViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\PriceLists.xaml.cs">
-      <DependentUpon>PriceLists.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\QueryEditor.xaml.cs">
       <DependentUpon>QueryEditor.xaml</DependentUpon>
     </Compile>
@@ -658,7 +658,6 @@
     <Compile Include="Views\RemoveBill.xaml.cs">
       <DependentUpon>RemoveBill.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\RemoveBillVM.cs" />
     <Compile Include="Views\RemovePayment.xaml.cs">
       <DependentUpon>RemovePayment.xaml</DependentUpon>
     </Compile>
@@ -764,8 +763,6 @@
     <Compile Include="Views\NewStudent.xaml.cs">
       <DependentUpon>NewStudent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ModifyStudentVM.cs" />
-    <Compile Include="ViewModels\NewStudentVM.cs" />
     <Compile Include="Views\Help.xaml.cs">
       <DependentUpon>Help.xaml</DependentUpon>
     </Compile>
@@ -847,10 +844,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AccountsGeneralLedger.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\AccountsIncomeStatement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -859,11 +852,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AccountsTransactions.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AccountsTrialBalance.xaml">
+    <Page Include="Views\AccountsStatementOfCF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -908,6 +897,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExamRegistration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExamSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1272,10 +1265,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PDFView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PriceLists.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

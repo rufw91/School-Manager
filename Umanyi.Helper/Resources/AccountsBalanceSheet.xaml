@@ -1,0 +1,55 @@
+<FixedPage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           Width="793.76" Height="1122.56">
+    <Grid Width="793.76" Height="1122.56">
+        <Border Margin="10,10,10,30" BorderBrush="Gray" BorderThickness="1">
+            <Grid>
+
+                <Border HorizontalAlignment="Left" Height="944" Margin="295,127,0,0" Background="WhiteSmoke" VerticalAlignment="Top" Width="467">
+                    <Border Margin="0,10,0,10" Width="1" BorderThickness="1" BorderBrush="Silver" HorizontalAlignment="Center"/>
+                </Border>
+                <Border BorderBrush="Gray" Margin="10,126,10,50" Height="1" VerticalAlignment="Top" BorderThickness="1" />
+                <TextBlock HorizontalAlignment="Left" Margin="42,185,0,0" TextWrapping="Wrap" Text="CASH" FontFamily="Arial" FontSize="14"  VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,210,0,0" TextWrapping="Wrap" Text="ACCOUNTS RECEIVABLE" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,235,0,0" TextWrapping="Wrap" Text="TOTAL" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,290,0,0" TextWrapping="Wrap" Text="LAND" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,315,0,0" TextWrapping="Wrap" Text="EQUIPMENT (net)" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,340,0,0" TextWrapping="Wrap" Text="BUILDINGS (net)" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,365,0,0" TextWrapping="Wrap" Text="TOTAL" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,400,0,0" TextWrapping="Wrap" Text="TOTAL ASSETS" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,510,0,0" TextWrapping="Wrap" Text="ACCOUNTS PAYABLE" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,535,0,0" TextWrapping="Wrap" Text="TOTAL" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,590,0,0" TextWrapping="Wrap" Text="CAPITAL" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,615,0,0" TextWrapping="Wrap" Text="TOTAL" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,655,0,0" TextWrapping="Wrap" Text="TOTAL" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+            </Grid>
+        </Border>
+        <TextBlock HorizontalAlignment="Center" Margin="0,20,0,0" 
+                   Text="{Binding Info.FullName, Source={x:Static Application.Current}}" 
+                   VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="26"/>
+        <StackPanel Orientation="Horizontal" Margin="0,58,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                    DataContext="{Binding Source={x:Static Application.Current}}">
+            <TextBlock HorizontalAlignment="Center" 
+                   Text="{Binding Info.Address, StringFormat='P.O. BOX {0} '}"
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+
+            <TextBlock HorizontalAlignment="Center"
+                   Text="{Binding Info.City, StringFormat=' {0}, '}"
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+            <TextBlock HorizontalAlignment="Center" 
+                   Text="{Binding Info.PhoneNo, StringFormat='TEL {0}'}"
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+        </StackPanel>
+
+        <Image HorizontalAlignment="Left" Height="101" Margin="20,16,0,0" VerticalAlignment="Top" Width="140" 
+              Source="{Binding Info.Logo, Source={x:Static Application.Current}}" />
+        <TextBlock HorizontalAlignment="Center" Margin="0,0,0,10" Text="{Binding Info.Motto, Source={x:Static Application.Current}}" VerticalAlignment="Bottom" FontStyle="Italic"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,84,0,0" Text="BALANCE SHEET" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="20" TextDecorations="Underline"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,140,0,0" TextWrapping="Wrap" Text="ASSETS" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,165,0,0" TextWrapping="Wrap" Text="CURRENT ASSETS" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,270,0,0" TextWrapping="Wrap" Text="NON-CURRENT ASSETS" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,490,0,0" TextWrapping="Wrap" Text="LIABILITIES" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,450,0,0" TextWrapping="Wrap" Text="LIABILITIES &amp; EQUITY" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,570,0,0" TextWrapping="Wrap" Text="EQUITY" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Top"/>
+    </Grid>
+</FixedPage>

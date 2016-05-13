@@ -1,23 +1,21 @@
 ﻿using Helper;
+using Helper.Controls;
 using Helper.Helpers;
 using Helper.Models;
-using log4net;
+using Helper.Presentation;
 using log4net.Config;
 using Microsoft.Shell;
-using UmanyiSMS.Views;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
+using System.Security.Principal;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using System.Windows.Media;
-using System.Windows.Interop;
-using Helper.Presentation;
-using System.Collections.ObjectModel;
-using System.Collections.Immutable;
+using UmanyiSMS.ViewModels;
+using UmanyiSMS.Views;
 
 namespace UmanyiSMS
 {
@@ -98,12 +96,10 @@ namespace UmanyiSMS
         }
 
         private void InitGlobalVar()
-        {
-            log = new ObservableImmutableList<string>();
+        {            
             try
             {
-                if (Helper.Properties.Settings.Default.Info == null)
-                    Helper.Properties.Settings.Default.Info = new ApplicationPersistModel(new ApplicationModel());
+                
                 Info = new ApplicationModel(Helper.Properties.Settings.Default.Info);
                 if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.DBName))
                     Helper.Properties.Settings.Default.DBName = "UmanyiSMS";
@@ -122,11 +118,56 @@ namespace UmanyiSMS
         {
             SplashScreen splashScreen = new SplashScreen("/Resources/Starehe0078C8.png");
             splashScreen.Show(true);
-            InitGlobalVar();
+
+            info = new ApplicationModel();
+            log = new ObservableImmutableList<string>();
             Log.Init(ref log);
-            Log.I("Init Vars",this);
+            Log.I("Init Vars", this);
+
+            if (Helper.Properties.Settings.Default.Info == null)
+            {
+                GenericIdentity MyIdentity = new GenericIdentity("DefaultSetupUser");
+                GenericPrincipal MyPrincipal =
+                    new GenericPrincipal(MyIdentity, new string[] { "Deputy" });
+                AppDomain.CurrentDomain.SetThreadPrincipal(MyPrincipal);
+                CustomWindow cm = new CustomWindow();
+                cm.Content = new InstitutionSetupVM(true);
+                cm.MinHeight = 610;
+                cm.MinWidth = 810;
+                cm.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                cm.WindowState = WindowState.Maximized;
+                bool canClose = false;
+                bool isExiting = false;
+                cm.DataContextChanged += (o,e1) =>
+                  {
+                      InstitutionSetupVM vm = cm.DataContext as InstitutionSetupVM;
+                      if (vm != null)
+                          vm.CloseWindowAction = () =>
+                          {
+                              canClose = true;
+                              cm.Close();
+                          };
+                     
+                  };
+                cm.Closed += (o2, e2) =>
+                  {
+                      if (!canClose)
+                          isExiting = true;
+                  };
+                cm.ShowDialog();
+                if (isExiting)
+                {
+                    Shutdown();
+                    return;
+                }
+
+               Restart();
+                return;
+            }
+                       
+            InitGlobalVar();
             
-            FileHelper.CheckFiles();
+
             if (!await ActivationHelper.LicenseExists())
                 new InvalidLicense().ShowDialog();
             

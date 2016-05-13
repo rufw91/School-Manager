@@ -7965,5 +7965,203 @@ namespace Helper
                 return flag && DataAccessHelper.ExecuteNonQueryWithParameters(text, observableCollection);
             });
         }
+
+        public static Task<IncomeStatementModel> GetIncomeStatement(DateTime from, DateTime to)
+        {
+            return Task.Run<IncomeStatementModel>(() =>
+            {
+                IncomeStatementModel temp = new IncomeStatementModel();
+                temp.StartTime = from;
+                temp.EndTime = to;
+                temp.ExpenseEntries = GetISExpenses(from, to);
+                temp.RevenueEntries = GetISRevenues(from, to);
+                temp.GainEntries = GetISGains(from, to);
+                temp.LossEntries = GetISLosses(from, to);
+                return temp;
+            });
+        }
+
+        private static List<TransactionModel> GetISExpenses(DateTime startTime, DateTime endTime)
+        {
+            ///PARYROLL
+            ///POSTAGE & PRINNTING
+            ///MINTENANCE
+            ///OTHER
+            ///COGS
+            List<TransactionModel> temp = new List<TransactionModel>();
+            string selectstr = "SELECT ISNULL(SUM(AmountPaid),0) FROM [Institution].[PayslipHeader] WHERE DatePaid BETWEEN CONVERT(datetime,'"+
+                        startTime.Day.ToString()+
+                        "-"+
+                        startTime.Month.ToString()+
+                        "-"+
+                        startTime.Year.ToString()+
+                        " 00:00:00.000') AND convert(datetime,'"+
+                        endTime.Day.ToString()+
+                        "-"+
+                        endTime.Month.ToString()+
+                        "-"+
+                        endTime.Year.ToString()+
+                        " 23:59:59.998')";
+
+
+            decimal payroll = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            temp.Add(new TransactionModel(){TransactionID="PAYROLL", TransactionAmt=payroll});
+
+            selectstr = "SELECT ISNULL(SUM(CONVERT(decimal,TotalPaid)),0) FROM [Institution].[PayoutHeader] WHERE Category='Postage & Printing' AND ISNULL(DatePaid,ModifiedDate) BETWEEN CONVERT(datetime,'" +
+                        startTime.Day.ToString() +
+                        "-" +
+                        startTime.Month.ToString() +
+                        "-" +
+                        startTime.Year.ToString() +
+                        " 00:00:00.000') AND convert(datetime,'" +
+                        endTime.Day.ToString() +
+                        "-" +
+                        endTime.Month.ToString() +
+                        "-" +
+                        endTime.Year.ToString() +
+                        " 23:59:59.998')";
+
+            decimal printing = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            temp.Add(new TransactionModel() { TransactionID = "PRINTING", TransactionAmt = printing });
+
+            selectstr = "SELECT ISNULL(SUM(CONVERT(decimal,TotalPaid)),0) FROM [Institution].[PayoutHeader] WHERE Category='Equipment Maintenance' AND ISNULL(DatePaid,ModifiedDate) BETWEEN CONVERT(datetime,'" +
+                        startTime.Day.ToString() +
+                        "-" +
+                        startTime.Month.ToString() +
+                        "-" +
+                        startTime.Year.ToString() +
+                        " 00:00:00.000') AND convert(datetime,'" +
+                        endTime.Day.ToString() +
+                        "-" +
+                        endTime.Month.ToString() +
+                        "-" +
+                        endTime.Year.ToString() +
+                        " 23:59:59.998')";
+            decimal maintenance = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            temp.Add(new TransactionModel() { TransactionID = "MAINTENANCE", TransactionAmt = maintenance });
+
+            selectstr = "SELECT ISNULL(SUM(CONVERT(decimal,TotalPaid)),0) FROM [Institution].[PayoutHeader] WHERE Category='Other' AND ISNULL(DatePaid,ModifiedDate) BETWEEN CONVERT(datetime,'" +
+                       startTime.Day.ToString() +
+                       "-" +
+                       startTime.Month.ToString() +
+                       "-" +
+                       startTime.Year.ToString() +
+                       " 00:00:00.000') AND convert(datetime,'" +
+                       endTime.Day.ToString() +
+                       "-" +
+                       endTime.Month.ToString() +
+                       "-" +
+                       endTime.Year.ToString() +
+                       " 23:59:59.998')";
+            decimal other1 = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            
+
+            selectstr = "SELECT ISNULL(SUM(ird.LineTotal),0) FROM [Sales].[ItemReceiptHeader] irh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON "+
+                "(irh.ItemReceiptID = ird.ItemReceiptID) LEFT OUTER JOIN [Sales].[Item] i ON (i.ItemID = ird.ItemID) LEFT OUTER JOIN [Sales].[ItemCategory] "+
+                "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] IN ('FOOD') AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
+                       startTime.Day.ToString() +
+                       "-" +
+                       startTime.Month.ToString() +
+                       "-" +
+                       startTime.Year.ToString() +
+                       " 00:00:00.000') AND convert(datetime,'" +
+                       endTime.Day.ToString() +
+                       "-" +
+                       endTime.Month.ToString() +
+                       "-" +
+                       endTime.Year.ToString() +
+                       " 23:59:59.998')";
+            decimal food = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            temp.Add(new TransactionModel() { TransactionID = "FOOD", TransactionAmt = food });
+
+            selectstr = "SELECT ISNULL(SUM(ird.LineTotal),0) FROM [Sales].[ItemReceiptHeader] irh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON " +
+               "(irh.ItemReceiptID = ird.ItemReceiptID) LEFT OUTER JOIN [Sales].[Item] i ON (i.ItemID = ird.ItemID) LEFT OUTER JOIN [Sales].[ItemCategory] " +
+               "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] IN ('OFFICE SUPPLIES') AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
+                      startTime.Day.ToString() +
+                      "-" +
+                      startTime.Month.ToString() +
+                      "-" +
+                      startTime.Year.ToString() +
+                      " 00:00:00.000') AND convert(datetime,'" +
+                      endTime.Day.ToString() +
+                      "-" +
+                      endTime.Month.ToString() +
+                      "-" +
+                      endTime.Year.ToString() +
+                      " 23:59:59.998')";
+            decimal office = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            temp.Add(new TransactionModel() { TransactionID = "OFFICE SUPPLIES", TransactionAmt = office });
+
+            selectstr = "SELECT ISNULL(SUM(ird.LineTotal),0) FROM [Sales].[ItemReceiptHeader] irh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON " +
+              "(irh.ItemReceiptID = ird.ItemReceiptID) LEFT OUTER JOIN [Sales].[Item] i ON (i.ItemID = ird.ItemID) LEFT OUTER JOIN [Sales].[ItemCategory] " +
+              "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] IN ('OTHER') AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
+                     startTime.Day.ToString() +
+                     "-" +
+                     startTime.Month.ToString() +
+                     "-" +
+                     startTime.Year.ToString() +
+                     " 00:00:00.000') AND convert(datetime,'" +
+                     endTime.Day.ToString() +
+                     "-" +
+                     endTime.Month.ToString() +
+                     "-" +
+                     endTime.Year.ToString() +
+                     " 23:59:59.998')";
+            decimal other2 = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            temp.Add(new TransactionModel() { TransactionID = "OTHER", TransactionAmt = (other1+other2) });
+
+            return temp;
+        }
+
+        private static List<TransactionModel> GetISRevenues(DateTime startTime, DateTime endTime)
+        {
+            List<TransactionModel> temp = new List<TransactionModel>();
+            string selectstr = "SELECT ISNULL(SUM(ird.LineTotal),0) FROM [Sales].[ItemReceiptHeader] irh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON " +
+              "(irh.ItemReceiptID = ird.ItemReceiptID) LEFT OUTER JOIN [Sales].[Item] i ON (i.ItemID = ird.ItemID) LEFT OUTER JOIN [Sales].[ItemCategory] " +
+              "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] IN ('OTHER') AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
+                     startTime.Day.ToString() +
+                     "-" +
+                     startTime.Month.ToString() +
+                     "-" +
+                     startTime.Year.ToString() +
+                     " 00:00:00.000') AND convert(datetime,'" +
+                     endTime.Day.ToString() +
+                     "-" +
+                     endTime.Month.ToString() +
+                     "-" +
+                     endTime.Year.ToString() +
+                     " 23:59:59.998')";
+            decimal fees = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            temp.Add(new TransactionModel() { TransactionID = "FEES", TransactionAmt = fees });
+
+            selectstr = "SELECT ISNULL(SUM(AmountDonated),0) FROM [Institution].[Donation] WHERE DateDonated BETWEEN CONVERT(datetime,'" +
+                     startTime.Day.ToString() +
+                     "-" +
+                     startTime.Month.ToString() +
+                     "-" +
+                     startTime.Year.ToString() +
+                     " 00:00:00.000') AND convert(datetime,'" +
+                     endTime.Day.ToString() +
+                     "-" +
+                     endTime.Month.ToString() +
+                     "-" +
+                     endTime.Year.ToString() +
+                     " 23:59:59.998')";
+            decimal donations = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            temp.Add(new TransactionModel() { TransactionID = "DONATIONS", TransactionAmt = donations });
+            return temp;
+        }
+
+        private static List<TransactionModel> GetISGains(DateTime from, DateTime to)
+        {
+            List<TransactionModel> temp = new List<TransactionModel>();
+            return temp;
+        }
+
+        private static List<TransactionModel> GetISLosses(DateTime from, DateTime to)
+        {
+            List<TransactionModel> temp = new List<TransactionModel>();
+            return temp;
+        }
     }
 }

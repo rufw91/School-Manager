@@ -23,7 +23,6 @@ namespace UmanyiSMS.ViewModels
             TryAddChild(typeof(UnreturnedBooksVM));
             TryAddChild(typeof(AllUnreturnedBooksVM));
             TryAddChild(typeof(ViewBooksVM));
-            TryAddChild(typeof(PriceListsVM));
         }
     }
 }

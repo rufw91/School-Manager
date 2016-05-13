@@ -83,7 +83,7 @@
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
-      <HintPath>..\..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
+      <HintPath>..\..\..\..\System.Collections.Immutable.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
@@ -120,6 +120,7 @@
     <Compile Include="Helpers\DocumentHelper.Transcript2.cs" />
     <Compile Include="Helpers\DocumentHelper.Voucher.cs" />
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\BalanceSheetModel.cs" />
     <Compile Include="Models\ClassBalancesListModel.cs" />
     <Compile Include="Models\ClassesSetupEntryModel.cs" />
     <Compile Include="Models\ClassesSetupModel.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Models\FeesStructureEntryModel.cs" />
     <Compile Include="Models\FullFeesStructureModel.cs" />
     <Compile Include="Models\GeneralLedgerModel.cs" />
+    <Compile Include="Models\IncomeStatementModel.cs" />
     <Compile Include="Models\IssueModel.cs" />
     <Compile Include="Models\ItemIssueEntryModel.cs" />
     <Compile Include="Models\ItemIssueModel.cs" />
@@ -172,6 +174,7 @@
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\StaffBaseModel.cs" />
     <Compile Include="Models\StaffSelectModel.cs" />
+    <Compile Include="Models\STCashFlowsModel.cs" />
     <Compile Include="Models\StudentClearancerModel.cs" />
     <Compile Include="Models\StudentFeesDefaultModel.cs" />
     <Compile Include="Models\StudentListModel.cs" />
@@ -290,6 +293,18 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\AccountsGeneralLedger.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\AccountsIncomeStatement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\AccountsBalanceSheet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\AccountsSTOfCashFlows.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>

@@ -7,24 +7,25 @@ using System.Threading.Tasks;
 
 namespace UmanyiSMS.ViewModels
 {
-    public class AdjustJournalVM : ViewModelBase
+    public class ExamSetupVM:ViewModelBase
     {
-        public AdjustJournalVM()
+        public ExamSetupVM()
         {
             InitVars();
             CreateCommands();
         }
-        public override void Reset()
+
+        protected override void InitVars()
         {
+            Title = "EXAMS & GRADES SETUP";
         }
 
         protected override void CreateCommands()
         {
         }
 
-        protected override void InitVars()
+        public override void Reset()
         {
-            Title = "ADJUST TRANSACTIONS";
         }
     }
 }

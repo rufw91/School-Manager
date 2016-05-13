@@ -25,7 +25,8 @@ namespace Helper
         {
             Statement, Transcript, Transcript3, LeavingCert, FeesStructure, FeesPayment, FeesPayment2,
             Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult,
-            ClassTranscripts, ClassTranscripts2,UnreturnedBooks,UnreturnedBooks2, Report,Payslip, AccountsGeneralLedger
+            ClassTranscripts, ClassTranscripts2, UnreturnedBooks, UnreturnedBooks2, Report, Payslip, AccountsGeneralLedger, AccountsIncomeStatement,
+            AccountsBalanceSheet, AccountsSTofCashFlow
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -88,6 +89,9 @@ namespace Helper
                 case DocType.ClassExamResults: GenerateClassExamResults(); break;
                 case DocType.Payslip: GeneratePayslip(); break;
                 case DocType.AccountsGeneralLedger: GenerateAccountsGeneralLedger(); break;
+                case DocType.AccountsIncomeStatement: GenerateAccountsIncomeStatement(); break;
+                case DocType.AccountsBalanceSheet: GenerateAccountsBalanceSheet(); break;
+                case DocType.AccountsSTofCashFlow: GenerateAccountsSTofCashFlows(); break;
                 default: throw new ArgumentException();
             }
         }
@@ -119,6 +123,9 @@ namespace Helper
                 case DocType.Report: resString = Helper.Properties.Resources.Report; break;
                 case DocType.Payslip: resString = Helper.Properties.Resources.Payslip; break;
                 case DocType.AccountsGeneralLedger: resString = Helper.Properties.Resources.AccountsGeneralLedger; break;
+                case DocType.AccountsIncomeStatement: resString = Helper.Properties.Resources.AccountsIncomeStatement; break;
+                case DocType.AccountsBalanceSheet: resString = Helper.Properties.Resources.AccountsBalanceSheet; break;
+                case DocType.AccountsSTofCashFlow: resString = Helper.Properties.Resources.AccountsSTOfCashFlows; break;    
                 default: throw new ArgumentException();
             }
             StringReader stringReader = new StringReader(resString);
@@ -173,6 +180,12 @@ namespace Helper
                 return DocType.Payslip;
             if (workObject is GeneralLedgerModel)
                 return DocType.AccountsGeneralLedger;
+            if (workObject is IncomeStatementModel)
+                return DocType.AccountsIncomeStatement;
+            if (workObject is BalanceSheetModel)
+                return DocType.AccountsBalanceSheet;
+            if (workObject is STCashFlowsModel)
+                return DocType.AccountsSTofCashFlow;
             throw new ArgumentException();
         }
 
@@ -240,6 +253,12 @@ namespace Helper
                 totalNoOfItems = (workObject as AllUnreturnedBooksModel).Count;
             if (workObject is GeneralLedgerModel)
                 totalNoOfItems = (workObject as GeneralLedgerModel).Entries.Count;
+            if (workObject is IncomeStatementModel)
+                return 1;
+            if (workObject is BalanceSheetModel)
+                return 1;
+            if (workObject is STCashFlowsModel)
+                return 1;
             return (totalNoOfItems % itemsPerPage) != 0 ?
                 (totalNoOfItems / itemsPerPage) + 1 : (totalNoOfItems / itemsPerPage);
         }

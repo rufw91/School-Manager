@@ -69,5 +69,57 @@ namespace Helper
             }
         }
         #endregion
+
+        #region Income Statement
+        private static void GenerateAccountsIncomeStatement()
+        {
+
+            IncomeStatementModel si = myWorkObject as IncomeStatementModel;
+
+            int pageNo;
+            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            {
+                AddAISPeriod(si.StartTime,si.EndTime, pageNo);
+                AddAISDate(si.StartTime, pageNo);
+                AddAISAccount(si.AccountName, pageNo);
+                AddAISTotal(si.Total, pageNo);
+                AddAISEntries(si.Entries, pageNo);
+            }
+        }
+        #endregion
+
+        #region BalanceSheet
+        private static void GenerateAccountsBalanceSheet()
+        {
+            /*
+            GeneralLedgerModel si = myWorkObject as GeneralLedgerModel;
+
+            int pageNo;
+            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            {
+                AddAISDate(si.Date, pageNo);
+                AddAISAccount(si.AccountName, pageNo);
+                AddAISTotal(si.Total, pageNo);
+                AddAISEntries(si.Entries, pageNo);
+            }*/
+        }
+        #endregion
+
+        #region Statement of Cashflows Statement
+        private static void GenerateAccountsSTofCashFlows()
+        {
+            /*
+            GeneralLedgerModel si = myWorkObject as GeneralLedgerModel;
+
+            int pageNo;
+            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            {
+                AddAISDate(si.Date, pageNo);
+                AddAISAccount(si.AccountName, pageNo);
+                AddAISTotal(si.Total, pageNo);
+                AddAISEntries(si.Entries, pageNo);
+            }*/
+        }
+        #endregion
     }
 }

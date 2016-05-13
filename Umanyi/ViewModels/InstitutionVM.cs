@@ -13,7 +13,8 @@ namespace UmanyiSMS.ViewModels
             TryAddChild(typeof(InstitutionInfoVM));
             TryAddChild(typeof(InstitutionSetupVM));
             TryAddChild(typeof(InstitutionSubjectsSetupVM));
-            TryAddChild(typeof(ClassesSetupVM));            
+            TryAddChild(typeof(ClassesSetupVM));
+            TryAddChild(typeof(ExamSetupVM));
             TryAddChild(typeof(ModifySubjectsSetupVM));            
             TryAddChild(typeof(NewDormitoryVM));
             TryAddChild(typeof(DormitoryMembersVM));
