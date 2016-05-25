@@ -16,6 +16,12 @@ namespace UmanyiSMS.Views
                     var j = DataContext as FinanceVM;
                     j.ToggleMenuVisibility();
                 }
+
+                if ((e.Key == Key.D) && (Keyboard.Modifiers == ModifierKeys.Control) && (this.DataContext != null))
+                {
+                    var j = DataContext as FinanceVM;
+                    j.ToggleMenuVisibility();
+                }
             };
         }
     }

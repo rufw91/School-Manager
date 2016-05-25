@@ -1,10 +1,7 @@
 ﻿using Helper.Converters;
-using Microsoft.SqlServer.Management.Common;
-using Microsoft.SqlServer.Management.Smo;
 using Microsoft.Win32;
 using OpenXmlPackaging;
 using System;
-using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -231,7 +228,7 @@ namespace Helper
 
                 if ((myDialog.ShowDialog() == true) && (myDialog.CheckFileExists))
                 {
-                    if (!await TestBackupFile(myDialog.FileName))
+                    if (!await DataAccessHelper.TestBackupFile(myDialog.FileName))
                     {
                         MessageBox.Show("Invalid file.");
                         return null;
@@ -243,33 +240,11 @@ namespace Helper
             return null;
         }
 
-        private static Task<bool> TestBackupFile(string fileName)
+        internal static string GetNewNetworkServiceTempFilePath(string pref)
         {
-            return Task.Run<bool>(() =>
-            {
-                try
-                {
-                    bool verifySuccessful = false;
-                    SqlConnection conn = DataAccessHelper.CreateConnection();
-
-                    using (conn)
-                    {
-                        var sc = new ServerConnection(conn);
-                        Server server = new Server(sc);
-                        Restore rest = new Restore();
-
-
-                        rest.Devices.AddDevice(fileName, DeviceType.File);
-                        verifySuccessful = rest.SqlVerify(server);
-                    }
-                    return verifySuccessful;
-
-                }
-                catch
-                {
-                    return false;
-                }
-            });
+            //C:\Windows\ServiceProfiles\NetworkService
+           return Environment.GetFolderPath(Environment.SpecialFolder.Windows) + "\\ServiceProfiles\\NetworkService\\AppData\\Local\\Temp\\" + "UmanyiSMS_"+pref + DateTime.Now.ToString("dd.MM.yyyy.hh.mm.ss");
+            
         }
 
         public static Uri BrowseImageAsUri()
