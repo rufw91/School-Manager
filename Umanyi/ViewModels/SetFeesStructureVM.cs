@@ -3,6 +3,7 @@ using Helper.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
+using System.Windows;
 using System.Windows.Input;
 
 namespace UmanyiSMS.ViewModels
@@ -54,13 +55,14 @@ namespace UmanyiSMS.ViewModels
                 o => CanAddNewEntry());
             SaveCommand = new RelayCommand(async o =>
             {
+                bool succ = true;
                 if (saveForAllClasses)
                 {
                     foreach (var s in allCombinedClasses)
                         foreach (var c in s.Entries)
                         {
                             currentStruct.ClassID = c.ClassID;
-                            await DataAccess.SaveNewFeesStructureAsync(currentStruct);
+                            succ = succ&&await DataAccess.SaveNewFeesStructureAsync(currentStruct);
                         }
                 }
                 else
@@ -69,9 +71,11 @@ namespace UmanyiSMS.ViewModels
                     foreach (var c in selectedCombinedClass.Entries)
                     {
                         currentStruct.ClassID = c.ClassID;
-                        await DataAccess.SaveNewFeesStructureAsync(currentStruct);
+                        succ = succ && await DataAccess.SaveNewFeesStructureAsync(currentStruct);
                     }
                 }
+                MessageBox.Show(succ ? "Successfully saved details" : "Could not save details.", succ ? "Success" : "Error",
+                                MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 this.Reset();
             }, o => CanSave());
         }

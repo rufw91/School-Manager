@@ -224,10 +224,12 @@ namespace Helper
             {
                 string text = 
                     "BEGIN TRANSACTION\r\n"+
-                    "INSERT INTO [Institution].[ExamStudentDetail] (ExamID,StudentID) VALUES ("+ student.ExamID+
-                    ","+student.StudentID+
-                    ")\r\n"+" COMMIT";
-                return DataAccessHelper.ExecuteNonQuery(text);
+                    "IF NOT EXISTS(SELECT * FROM [Institution].[ExamStudentDetail] WHERE StudentID=@studentID AND ExamID=@examID)\r\n"+
+                    "INSERT INTO [Institution].[ExamStudentDetail] (ExamID,StudentID) VALUES (@examID,@studentID)\r\n" + " COMMIT";
+                ObservableCollection<SqlParameter> pms = new ObservableCollection<SqlParameter>();
+                pms.Add(new SqlParameter("@studentID", student.StudentID));
+                pms.Add(new SqlParameter("@examID", student.ExamID));
+                return DataAccessHelper.ExecuteNonQueryWithParameters(text,pms);
             });
         }
 
@@ -1163,6 +1165,86 @@ namespace Helper
             return result;
         }
 
+        public static Task<ObservableCollection<PayslipModel>> GetEmployeePayslipsAsync(int? employeeId, DateTime? from, DateTime? to)
+        {
+            return Task.Run<ObservableCollection<PayslipModel>>(() => DataAccess.GetEmployeePayslips(employeeId, from, to));
+        }
+
+        private static ObservableCollection<PayslipModel> GetEmployeePayslips(int? employeeId, DateTime? from, DateTime? to)
+        {
+            ObservableCollection<PayslipModel> observableCollection = new ObservableCollection<PayslipModel>();
+            ObservableCollection<PayslipModel> result;
+            try
+            {
+                string text = "SELECT ph.PayslipID,ph.StaffID,s.Name, ph.AmountPaid,ph.DatePaid,ph.PaymentPeriod FROM [Institution].[PayslipHeader] ph LEFT OUTER JOIN [Institution].[Staff] s ON (ph.StaffID=s.StaffID)";
+                if (employeeId.HasValue)
+                {
+                    text = text + " WHERE ph.StaffID =" + employeeId;
+                    if (from.HasValue && to.HasValue)
+                    {
+                        string text2 = text;
+                        text = string.Concat(new string[]
+                        {
+                            text2,
+                            " AND ph.DatePaid BETWEEN CONVERT(datetime,'",
+                            from.Value.Day.ToString(),
+                            "/",
+                            from.Value.Month.ToString(),
+                            "/",
+                            from.Value.Year.ToString(),
+                            " 00:00:00.000') AND CONVERT(datetime,'",
+                            to.Value.Day.ToString(),
+                            "/",
+                            to.Value.Month.ToString(),
+                            "/",
+                            to.Value.Year.ToString(),
+                            " 23:59:59.998')"
+                        });
+                    }
+                }
+                else if (from.HasValue && to.HasValue)
+                {
+                    string text2 = text;
+                    text = string.Concat(new string[]
+                    {
+                        text2,
+                        " WHERE ph.DatePaid BETWEEN CONVERT(datetime,'",
+                        from.Value.Day.ToString(),
+                        "/",
+                        from.Value.Month.ToString(),
+                        "/",
+                        from.Value.Year.ToString(),
+                        " 00:00:00.000') AND CONVERT(datetime,'",
+                        to.Value.Day.ToString(),
+                        "/",
+                        to.Value.Month.ToString(),
+                        "/",
+                        to.Value.Year.ToString(),
+                        " 23:59:59.998')"
+                    });
+                }
+                DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(text);
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    observableCollection.Add(new PayslipModel
+                    {
+                        PayslipID = int.Parse(dataRow[0].ToString()),
+                        StaffID = int.Parse(dataRow[1].ToString()),
+                        Name = dataRow[2].ToString(),
+                        AmountPaid = decimal.Parse(dataRow[3].ToString()),
+                        DatePaid = DateTime.Parse(dataRow[4].ToString()),
+                        PaymentPeriod = dataRow[5].ToString()
+                    });
+                }
+                result = observableCollection;
+            }
+            catch
+            {
+                result = new ObservableCollection<PayslipModel>();
+            }
+            return result;
+        }
+
 
         public static Task<ObservableCollection<TransactionModel>> GetAccountsTransactionHistoryAsync(TransactionTypes type, DateTime? from, DateTime? to)
         {
@@ -1687,7 +1769,7 @@ namespace Helper
         {
             return Task.Run<bool>(delegate
             {
-                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Sales.StockTakingHeader')\r\nINSERT INTO [Sales].[StockTakingHeader] (StockTakingID,DateTaken) VALUES(@id,'" + newStockTaking.DateTaken.Value.ToString("dd-MM-yyyy") + "')";
+                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Sales.StockTakingHeader')\r\nINSERT INTO [Sales].[StockTakingHeader] (StockTakingID,DateTaken) VALUES(@id,'" + newStockTaking.DateTaken.Value.ToString("g") + "')";
                 foreach (ItemStockTakingModel current in newStockTaking.Items)
                 {
                     object obj = text;
@@ -2206,7 +2288,7 @@ namespace Helper
             StaffModel staffModel = new StaffModel();
             try
             {
-                string commandText = "SELECT Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto FROM [Institution].[Staff] WHERE StaffID='" + staffID + "'";
+                string commandText = "SELECT Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto,Designation FROM [Institution].[Staff] WHERE StaffID='" + staffID + "'";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
                 if (dataTable.Rows.Count != 0)
                 {
@@ -2220,6 +2302,7 @@ namespace Helper
                     staffModel.City = dataTable.Rows[0][6].ToString();
                     staffModel.PostalCode = dataTable.Rows[0][7].ToString();
                     staffModel.SPhoto = (byte[])dataTable.Rows[0][8];
+                    staffModel.Designation = dataTable.Rows[0][9].ToString();
                 }
             }
             catch
@@ -2529,7 +2612,7 @@ namespace Helper
             return Task.Run<bool>(delegate
             {
                 bool flag = newStaff.StaffID == 0;
-                string commandText = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('Institution.Staff'); INSERT INTO [Institution].[Staff] (StaffID,Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto) VALUES(" + (flag ? "@id" : "@staffID") + ",@name,@nationalID,@doa,@phoneNo,@email,@address,@city,@postalCode,@photo)\r\nCOMMIT";
+                string commandText = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('Institution.Staff'); INSERT INTO [Institution].[Staff] (StaffID,Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto,Designation) VALUES(" + (flag ? "@id" : "@staffID") + ",@name,@nationalID,@doa,@phoneNo,@email,@address,@city,@postalCode,@photo,@designation)\r\nCOMMIT";
                 return DataAccessHelper.ExecuteNonQueryWithParameters(commandText, new ObservableCollection<SqlParameter>
                 {
                     new SqlParameter("@staffID", newStaff.StaffID),
@@ -2541,7 +2624,8 @@ namespace Helper
                     new SqlParameter("@address", newStaff.Address),
                     new SqlParameter("@city", newStaff.City),
                     new SqlParameter("@postalCode", newStaff.PostalCode),
-                    new SqlParameter("@photo", newStaff.SPhoto)
+                    new SqlParameter("@photo", newStaff.SPhoto),
+                    new SqlParameter("@designation", newStaff.Designation)
                 });
             });
         }
@@ -2582,7 +2666,7 @@ namespace Helper
             return Task.Run<bool>(delegate
             {
                 ObservableCollection<SqlParameter> observableCollection = new ObservableCollection<SqlParameter>();
-                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Institution.FeesPayment')\r\nDECLARE @id2 int; SET @id2 = dbo.GetNewID('Sales.SaleHeader')\r\nINSERT INTO [Institution].[FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid) VALUES(@id,@studentID,@amount,@dop)\r\nINSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,IsDiscount,PaymentID) VALUES(@id2,@studentID,@employeeID,@isCancelled,@dateAdded,@isDiscount,@id)";
+                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Institution.FeesPayment')\r\nDECLARE @id2 int; SET @id2 = dbo.GetNewID('Sales.SaleHeader')\r\nINSERT INTO [Institution].[FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid,PaymentMethod) VALUES(@id,@studentID,@amount,@dop,@paym)\r\nINSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,IsDiscount,PaymentID) VALUES(@id2,@studentID,@employeeID,@isCancelled,@dateAdded,@isDiscount,@id)";
                 int num = 1;
                 foreach (FeesStructureEntryModel current in newSale.SaleItems)
                 {
@@ -2605,6 +2689,7 @@ namespace Helper
                 text += "\r\nCOMMIT";
                 observableCollection.Add(new SqlParameter("@studentID", newPayment.StudentID));
                 observableCollection.Add(new SqlParameter("@amount", newPayment.AmountPaid));
+                observableCollection.Add(new SqlParameter("@paym", newPayment.PaymentMethod));
                 observableCollection.Add(new SqlParameter("@dop", newPayment.DatePaid.ToString("g")));
                 observableCollection.Add(new SqlParameter("@employeeID", newSale.EmployeeID));
                 observableCollection.Add(new SqlParameter("@isCancelled", newSale.IsCancelled ? 0 : 1));
@@ -2866,17 +2951,16 @@ namespace Helper
                     text = text + current.ClassID + ",";
                 }
                 text = text.Remove(text.Length - 1);
-                string commandText = "SELECT DISTINCT ssd.SubjectID,s.NameOfSubject,ssd.Tutor, s.MaximumScore,s.Code,s.IsOptional FROM [Institution].[SubjectSetupDetail] ssd LEFT OUTER JOIN [Institution].[Subject] s ON (ssd.SubjectID = s.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh ON (ssd.SubjectSetupID = ssh.SubjectSetupID) WHERE IsACtive=1 AND ssh.ClassID IN(" + text + ") ORDER BY s.Code";
+                string commandText = "SELECT DISTINCT ssd.SubjectID,s.NameOfSubject, s.MaximumScore,s.Code,s.IsOptional FROM [Institution].[SubjectSetupDetail] ssd LEFT OUTER JOIN [Institution].[Subject] s ON (ssd.SubjectID = s.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh ON (ssd.SubjectSetupID = ssh.SubjectSetupID) WHERE IsACtive=1 AND ssh.ClassID IN(" + text + ") ORDER BY s.Code";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     SubjectModel subjectModel = new SubjectModel();
                     subjectModel.SubjectID = (int)dataRow[0];
                     subjectModel.NameOfSubject = dataRow[1].ToString();
-                    subjectModel.Tutor = dataRow[2].ToString();
-                    subjectModel.MaximumScore = decimal.Parse(dataRow[3].ToString());
-                    subjectModel.Code = int.Parse(dataRow[4].ToString());
-                    subjectModel.IsOptional = bool.Parse(dataRow[5].ToString());
+                    subjectModel.MaximumScore = decimal.Parse(dataRow[2].ToString());
+                    subjectModel.Code = int.Parse(dataRow[3].ToString());
+                    subjectModel.IsOptional = bool.Parse(dataRow[4].ToString());
                     if (!subjectModel.NameOfSubject.ToUpper().Trim().Contains("SKILLS"))
                     {
                         observableCollection.Add(subjectModel);
@@ -3627,12 +3711,12 @@ namespace Helper
             });
         }
 
-        public static Task<bool> SaveNewStudentClearancesAsync(ObservableCollection<StudentClearancerModel> students)
+        public static Task<bool> SaveNewStudentClearancesAsync(ObservableCollection<StudentClearanceModel> students)
         {
             return Task.Run<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\n";
-                foreach (StudentClearancerModel current in students)
+                foreach (StudentClearanceModel current in students)
                 {
                     object obj = text;
                     text = string.Concat(new object[]
@@ -4456,13 +4540,18 @@ namespace Helper
                 443,
                 565
             };
-            decimal min = (from a in observableCollection
+            var opts= (from a in observableCollection
                            where optionals.Contains(a.Code)
-                           select a).Min((StudentExamResultEntryModel o) => o.MeanScore);
-            StudentExamResultEntryModel item = observableCollection.First((StudentExamResultEntryModel a) => optionals.Contains(a.Code) && a.MeanScore == min);
-            if (observableCollection.Count < 11 && observableCollection.Count > 7)
+                           select a);
+
+            if (opts.Count() > 0)
             {
-                observableCollection.Remove(item);
+                decimal min = opts.Min((StudentExamResultEntryModel o) => o.MeanScore);
+                StudentExamResultEntryModel item = observableCollection.First((StudentExamResultEntryModel a) => optionals.Contains(a.Code) && a.MeanScore == min);
+                if (observableCollection.Count < 11 && observableCollection.Count > 7)
+                {
+                    observableCollection.Remove(item);
+                }
             }
             return observableCollection;
         }
@@ -5348,25 +5437,21 @@ namespace Helper
             return Task.Run<bool>(delegate
             {
                 ObservableCollection<SqlParameter> observableCollection = new ObservableCollection<SqlParameter>();
-                string text = "BEGIN TRANSACTION\r\ndeclare @id int; SET @id = [dbo].GetNewID('Institution.PayoutHeader')\r\nINSERT INTO [Institution].[PayoutHeader] (PayoutID,Payee,Description,Address,TotalPaid) VALUES (@id,@p1,@p2,@p3,@p4)\r\n";
+                string text = "BEGIN TRANSACTION\r\ndeclare @id int; SET @id = [dbo].GetNewID('Institution.PayoutHeader')\r\nINSERT INTO [Institution].[PayoutHeader] (PayoutID,Payee,Description,Address,TotalPaid,Category,DatePaid) VALUES (@id,@p1,@p2,@p3,@p4,@p5,@p6)\r\n";
                 int num = 4;
                 foreach (PaymentVoucherEntryModel current in newVoucher.Entries)
                 {
                     num++;
                     string text2 = "@pd" + num;
-                    string text3 = "@ps" + num;
                     string text4 = "@pa" + num;
                     observableCollection.Add(new SqlParameter(text2, current.Description));
-                    observableCollection.Add(new SqlParameter(text3, current.DatePaid.ToString("g")));
                     observableCollection.Add(new SqlParameter(text4, current.Amount));
                     string text5 = text;
                     text = string.Concat(new string[]
                     {
                         text5,
-                        "INSERT INTO [Institution].[PayoutDetail] (PayoutID,Description,DatePaid,Amount) VALUES(@id,",
+                        "INSERT INTO [Institution].[PayoutDetail] (PayoutID,Description,Amount) VALUES(@id,",
                         text2,
-                        ",",
-                        text3,
                         ",",
                         text4,
                         ")\r\n"
@@ -5377,6 +5462,8 @@ namespace Helper
                 observableCollection.Add(new SqlParameter("@p2", newVoucher.Description));
                 observableCollection.Add(new SqlParameter("@p3", newVoucher.Address));
                 observableCollection.Add(new SqlParameter("@p4", newVoucher.Total));
+                observableCollection.Add(new SqlParameter("@p5", newVoucher.Category));
+                observableCollection.Add(new SqlParameter("@p6", newVoucher.DatePaid.ToString("g")));
                 return DataAccessHelper.ExecuteNonQueryWithParameters(text, observableCollection);
             });
         }
@@ -5434,15 +5521,14 @@ namespace Helper
         private static ObservableCollection<PaymentVoucherEntryModel> GetPaymentVoucherEntries(int paymentVoucherID)
         {
             ObservableCollection<PaymentVoucherEntryModel> observableCollection = new ObservableCollection<PaymentVoucherEntryModel>();
-            string commandText = "SELECT Description,DatePaid,Amount FROM [Institution].[PayoutDetail]";
+            string commandText = "SELECT Description,Amount FROM [Institution].[PayoutDetail]";
             DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 observableCollection.Add(new PaymentVoucherEntryModel
                 {
                     Description = dataRow[0].ToString(),
-                    DatePaid = DateTime.Parse(dataRow[1].ToString()),
-                    Amount = decimal.Parse(dataRow[2].ToString())
+                    Amount = decimal.Parse(dataRow[1].ToString())
                 });
             }
             return observableCollection;
@@ -5584,7 +5670,7 @@ namespace Helper
                 aggregateResultModel.NameOfExam = selectedExam.NameOfExam;
                 string commandText = string.Concat(new object[]
                 {
-                    "SELECT AVG(x.[Average]) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [Institution].[ExamDetail] ed INNER JOIN [Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) WHERE s.ClassID=",
+                    "SELECT ISNULL(AVG(x.[Average]),0) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [Institution].[ExamDetail] ed INNER JOIN [Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) WHERE s.ClassID=",
                     selectedClass.ClassID,
                     " AND sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=",
                     selectedExam.ExamID,
@@ -5605,7 +5691,7 @@ namespace Helper
                 AggregateResultModel aggregateResultModel = new AggregateResultModel();
                 aggregateResultModel.NameOfClass = selectedCombinedClass.Description;
                 aggregateResultModel.NameOfExam = selectedExam.NameOfExam;
-                string commandText = "SELECT AVG(x.[Average]) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [Institution].[ExamDetail] ed INNER JOIN [Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY sub.SubjectID,sub.NameOfSubject) x";
+                string commandText = "SELECT ISNULL(AVG(x.[Average]),0) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [Institution].[ExamDetail] ed INNER JOIN [Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY sub.SubjectID,sub.NameOfSubject) x";
                 aggregateResultModel.MeanScore = decimal.Parse(DataAccessHelper.ExecuteScalar(commandText));
                 aggregateResultModel.MeanGrade = DataAccess.CalculateGrade(aggregateResultModel.MeanScore * 100m / selectedExam.OutOf);
                 aggregateResultModel.Points = DataAccess.CalculatePoints(aggregateResultModel.MeanGrade);
@@ -6507,7 +6593,7 @@ namespace Helper
                     ",",
                     num12
                 });
-                progressReporter.Report(new OperationProgress(4, "Executing Query"));
+                progressReporter.Report(new OperationProgress(4, "Fetching Data..."));
                 string commandText = string.Concat(new object[]
                 {
                     "SELECT t1.StudentTranscriptID,t1.StudentID, t1.NameOfStudent,t1.KCPEScore, t1.NameOfClass,t1.Responsibilities,t1.ClubsAndSport,t1.Boarding,t1.ClassTeacherComments, t1.PrincipalComments,t1.OpeningDay,t1.ClosingDay,t1.DateSaved,t1.ClassPosition,t1.OverAllPosition,t1.Exam1Score,t1.Exam2Score,t1.Exam3Score,t2.T2ClassPosition,t2.T2OverAllPosition,t2.T2Exam1Score,t2.T2Exam2Score,t2.T2Exam3Score,t3.T3ClassPosition,t3.T3OverAllPosition,t3.T3Exam1Score,t3.T3Exam2Score,t3.T3Exam3Score,pyT3.PyT3Exam1Score,pyT3.PyT3Exam2Score,pyt3.PyT3Exam3Score FROM (SELECT s.StudentID, s.NameOfStudent,s.KCPEScore, c.NameOfClass,ISNULL(sth.StudentTranscriptID,0) StudentTranscriptID,Responsibilities,ClubsAndSport, Boarding,ClassTeacherComments,PrincipalComments,OpeningDay,ClosingDay,DateSaved,(SELECT CONVERT(varchar(50),row_no)+'/'+CONVERT(varchar(50),no_of_students) FROM (SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(dbo.GetWeightedExamTotalScore(StudentID,",
@@ -7684,15 +7770,17 @@ namespace Helper
             });
         }
 
-        public static Task<int> GetLastPaymentVoucherIDAsync(string payee, string description)
+        public static Task<int> GetPaymentVoucherIDAsync(PaymentVoucherModel voucher)
         {
             return Task.Run<int>(delegate
             {
-                string commandText = "SELECT TOP 1 PayoutID FROM [Institution].[PayoutHeader] WHERE Payee=@payee AND Description=@description";
+                string commandText = "SELECT TOP 1 PayoutID FROM [Institution].[PayoutHeader] WHERE Payee=@payee AND Description=@description AND Category=@cat AND DatePaid=CONVERT(DATETIME,@datepaid)";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(commandText, new ObservableCollection<SqlParameter>
                 {
-                    new SqlParameter("@payee", payee),
-                    new SqlParameter("@description", description)
+                    new SqlParameter("@payee", voucher.NameOfPayee),
+                    new SqlParameter("@description", voucher.Description),                    
+                    new SqlParameter("@datepaid", voucher.DatePaid.ToString("g")),
+                    new SqlParameter("@cat", voucher.Category)
                 });
                 int result;
                 if (dataTable.Rows.Count > 0)
@@ -7711,11 +7799,12 @@ namespace Helper
         {
             return Task.Run<bool>(delegate
             {
-                string text = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('Institution.PayslipHeader')INSERT INTO [Institution].[PayslipHeader] (PayslipID,StaffID,AmountPaid,DatePaid,Designation) VALUES(@id,@staffID,@amountPaid,@datePaid,@designation)\r\n";
+                string text = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('Institution.PayslipHeader')INSERT INTO [Institution].[PayslipHeader] (PayslipID,StaffID,AmountPaid,DatePaid,Designation,PaymentPeriod) VALUES(@id,@staffID,@amountPaid,@datePaid,@designation,@paymtperiod)\r\n";
                 ObservableCollection<SqlParameter> observableCollection = new ObservableCollection<SqlParameter>();
                 observableCollection.Add(new SqlParameter("@staffID", newSlip.StaffID));
                 observableCollection.Add(new SqlParameter("@designation", newSlip.Designation));
                 observableCollection.Add(new SqlParameter("@amountPaid", newSlip.AmountPaid));
+                observableCollection.Add(new SqlParameter("@paymtperiod", newSlip.PaymentPeriod));
                 observableCollection.Add(new SqlParameter("@datePaid", newSlip.DatePaid.ToString("g")));
                 int num = 0;
                 foreach (FeesStructureEntryModel current in newSlip.Entries)
@@ -7746,7 +7835,7 @@ namespace Helper
             return Task.Run<ObservableCollection<PayslipModel>>(delegate
             {
                 ObservableCollection<PayslipModel> observableCollection = new ObservableCollection<PayslipModel>();
-                string commandText = "SELECT TOP 20 PayslipID,AmountPaid, DatePaid,Designation FROM [Institution].[PayslipHeader] WHERE StaffID =" + selectedStaff.StaffID + " ORDER BY [DatePaid] desc";
+                string commandText = "SELECT TOP 20 PayslipID,AmountPaid, DatePaid,Designation,PaymentPeriod FROM [Institution].[PayslipHeader] WHERE StaffID =" + selectedStaff.StaffID + " ORDER BY [DatePaid] desc";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -7757,6 +7846,7 @@ namespace Helper
                     payslipModel.Name = selectedStaff.Name;
                     payslipModel.DatePaid = DateTime.Parse(dataRow[2].ToString());
                     payslipModel.Designation = dataRow[3].ToString();
+                    payslipModel.PaymentPeriod = dataRow[4].ToString();
                     payslipModel.Entries = DataAccess.GetPayslipEntries(payslipModel.PayslipID);
                     observableCollection.Add(payslipModel);
                 }
@@ -7983,13 +8073,33 @@ namespace Helper
 
         private static List<TransactionModel> GetISExpenses(DateTime startTime, DateTime endTime)
         {
+            ///FOOD
             ///PARYROLL
+            ///OFFICE SUPP
             ///POSTAGE & PRINNTING
             ///MINTENANCE
             ///OTHER
-            ///COGS
             List<TransactionModel> temp = new List<TransactionModel>();
-            string selectstr = "SELECT ISNULL(SUM(AmountPaid),0) FROM [Institution].[PayslipHeader] WHERE DatePaid BETWEEN CONVERT(datetime,'"+
+            string selectstr = "SELECT ISNULL(SUM(ird.LineTotal),0) FROM [Sales].[ItemReceiptHeader] irh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON " +
+                "(irh.ItemReceiptID = ird.ItemReceiptID) LEFT OUTER JOIN [Sales].[Item] i ON (i.ItemID = ird.ItemID) LEFT OUTER JOIN [Sales].[ItemCategory] " +
+                "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] ='FOOD' AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
+                       startTime.Day.ToString() +
+                       "-" +
+                       startTime.Month.ToString() +
+                       "-" +
+                       startTime.Year.ToString() +
+                       " 00:00:00.000') AND convert(datetime,'" +
+                       endTime.Day.ToString() +
+                       "-" +
+                       endTime.Month.ToString() +
+                       "-" +
+                       endTime.Year.ToString() +
+                       " 23:59:59.998')";
+            decimal food = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            temp.Add(new TransactionModel() { TransactionID = "FOOD", TransactionAmt = food });
+                
+                
+                selectstr = "SELECT ISNULL(SUM(AmountPaid),0) FROM [Institution].[PayslipHeader] WHERE DatePaid BETWEEN CONVERT(datetime,'"+
                         startTime.Day.ToString()+
                         "-"+
                         startTime.Month.ToString()+
@@ -8007,7 +8117,25 @@ namespace Helper
             decimal payroll = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
             temp.Add(new TransactionModel(){TransactionID="PAYROLL", TransactionAmt=payroll});
 
-            selectstr = "SELECT ISNULL(SUM(CONVERT(decimal,TotalPaid)),0) FROM [Institution].[PayoutHeader] WHERE Category='Postage & Printing' AND ISNULL(DatePaid,ModifiedDate) BETWEEN CONVERT(datetime,'" +
+            selectstr = "SELECT ISNULL(SUM(ird.LineTotal),0) FROM [Sales].[ItemReceiptHeader] irh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON " +
+               "(irh.ItemReceiptID = ird.ItemReceiptID) LEFT OUTER JOIN [Sales].[Item] i ON (i.ItemID = ird.ItemID) LEFT OUTER JOIN [Sales].[ItemCategory] " +
+               "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] ='OFFICE SUPPLIES' AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
+                      startTime.Day.ToString() +
+                      "-" +
+                      startTime.Month.ToString() +
+                      "-" +
+                      startTime.Year.ToString() +
+                      " 00:00:00.000') AND convert(datetime,'" +
+                      endTime.Day.ToString() +
+                      "-" +
+                      endTime.Month.ToString() +
+                      "-" +
+                      endTime.Year.ToString() +
+                      " 23:59:59.998')";
+            decimal office = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
+            temp.Add(new TransactionModel() { TransactionID = "OFFICE SUPPLIES", TransactionAmt = office });
+
+            selectstr = "SELECT ISNULL(SUM(CONVERT(decimal,TotalPaid)),0) FROM [Institution].[PayoutHeader] WHERE [Description]='POSTAGE & PRINTING' AND ISNULL(DatePaid,ModifiedDate) BETWEEN CONVERT(datetime,'" +
                         startTime.Day.ToString() +
                         "-" +
                         startTime.Month.ToString() +
@@ -8024,7 +8152,7 @@ namespace Helper
             decimal printing = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
             temp.Add(new TransactionModel() { TransactionID = "PRINTING", TransactionAmt = printing });
 
-            selectstr = "SELECT ISNULL(SUM(CONVERT(decimal,TotalPaid)),0) FROM [Institution].[PayoutHeader] WHERE Category='Equipment Maintenance' AND ISNULL(DatePaid,ModifiedDate) BETWEEN CONVERT(datetime,'" +
+            selectstr = "SELECT ISNULL(SUM(CONVERT(decimal,TotalPaid)),0) FROM [Institution].[PayoutHeader] WHERE [Description]='EQUIPMENT MAINTENANCE' AND ISNULL(DatePaid,ModifiedDate) BETWEEN CONVERT(datetime,'" +
                         startTime.Day.ToString() +
                         "-" +
                         startTime.Month.ToString() +
@@ -8040,7 +8168,7 @@ namespace Helper
             decimal maintenance = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
             temp.Add(new TransactionModel() { TransactionID = "MAINTENANCE", TransactionAmt = maintenance });
 
-            selectstr = "SELECT ISNULL(SUM(CONVERT(decimal,TotalPaid)),0) FROM [Institution].[PayoutHeader] WHERE Category='Other' AND ISNULL(DatePaid,ModifiedDate) BETWEEN CONVERT(datetime,'" +
+            selectstr = "SELECT ISNULL(SUM(CONVERT(decimal,TotalPaid)),0) FROM [Institution].[PayoutHeader] WHERE [Description]='OTHER' AND ISNULL(DatePaid,ModifiedDate) BETWEEN CONVERT(datetime,'" +
                        startTime.Day.ToString() +
                        "-" +
                        startTime.Month.ToString() +
@@ -8056,45 +8184,13 @@ namespace Helper
             decimal other1 = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
             
 
-            selectstr = "SELECT ISNULL(SUM(ird.LineTotal),0) FROM [Sales].[ItemReceiptHeader] irh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON "+
-                "(irh.ItemReceiptID = ird.ItemReceiptID) LEFT OUTER JOIN [Sales].[Item] i ON (i.ItemID = ird.ItemID) LEFT OUTER JOIN [Sales].[ItemCategory] "+
-                "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] IN ('FOOD') AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
-                       startTime.Day.ToString() +
-                       "-" +
-                       startTime.Month.ToString() +
-                       "-" +
-                       startTime.Year.ToString() +
-                       " 00:00:00.000') AND convert(datetime,'" +
-                       endTime.Day.ToString() +
-                       "-" +
-                       endTime.Month.ToString() +
-                       "-" +
-                       endTime.Year.ToString() +
-                       " 23:59:59.998')";
-            decimal food = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
-            temp.Add(new TransactionModel() { TransactionID = "FOOD", TransactionAmt = food });
+            
 
-            selectstr = "SELECT ISNULL(SUM(ird.LineTotal),0) FROM [Sales].[ItemReceiptHeader] irh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON " +
-               "(irh.ItemReceiptID = ird.ItemReceiptID) LEFT OUTER JOIN [Sales].[Item] i ON (i.ItemID = ird.ItemID) LEFT OUTER JOIN [Sales].[ItemCategory] " +
-               "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] IN ('OFFICE SUPPLIES') AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
-                      startTime.Day.ToString() +
-                      "-" +
-                      startTime.Month.ToString() +
-                      "-" +
-                      startTime.Year.ToString() +
-                      " 00:00:00.000') AND convert(datetime,'" +
-                      endTime.Day.ToString() +
-                      "-" +
-                      endTime.Month.ToString() +
-                      "-" +
-                      endTime.Year.ToString() +
-                      " 23:59:59.998')";
-            decimal office = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
-            temp.Add(new TransactionModel() { TransactionID = "OFFICE SUPPLIES", TransactionAmt = office });
+            
 
             selectstr = "SELECT ISNULL(SUM(ird.LineTotal),0) FROM [Sales].[ItemReceiptHeader] irh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON " +
               "(irh.ItemReceiptID = ird.ItemReceiptID) LEFT OUTER JOIN [Sales].[Item] i ON (i.ItemID = ird.ItemID) LEFT OUTER JOIN [Sales].[ItemCategory] " +
-              "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] IN ('OTHER') AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
+              "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] ='OTHER' AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
                      startTime.Day.ToString() +
                      "-" +
                      startTime.Month.ToString() +
@@ -8116,9 +8212,7 @@ namespace Helper
         private static List<TransactionModel> GetISRevenues(DateTime startTime, DateTime endTime)
         {
             List<TransactionModel> temp = new List<TransactionModel>();
-            string selectstr = "SELECT ISNULL(SUM(ird.LineTotal),0) FROM [Sales].[ItemReceiptHeader] irh LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON " +
-              "(irh.ItemReceiptID = ird.ItemReceiptID) LEFT OUTER JOIN [Sales].[Item] i ON (i.ItemID = ird.ItemID) LEFT OUTER JOIN [Sales].[ItemCategory] " +
-              "ic ON(i.ItemCategoryID=ic.ItemCategoryID) WHERE ic.[Description] IN ('OTHER') AND irh.OrderDate BETWEEN CONVERT(datetime,'" +
+            string selectstr = "SELECT ISNULL(SUM(CONVERT(decimal,AmountPaid)),0) FROM [Institution].[FeesPayment] WHERE DatePaid BETWEEN CONVERT(datetime,'" +
                      startTime.Day.ToString() +
                      "-" +
                      startTime.Month.ToString() +
@@ -8149,6 +8243,7 @@ namespace Helper
                      " 23:59:59.998')";
             decimal donations = decimal.Parse(DataAccessHelper.ExecuteScalar(selectstr));
             temp.Add(new TransactionModel() { TransactionID = "DONATIONS", TransactionAmt = donations });
+            temp.Add(new TransactionModel() { TransactionID = "OTHER", TransactionAmt = 0 });
             return temp;
         }
 
@@ -8162,6 +8257,21 @@ namespace Helper
         {
             List<TransactionModel> temp = new List<TransactionModel>();
             return temp;
+        }
+
+        public static Task<STCashFlowsModel> GetStatementOfCashFlowsAsync(DateTime startTime, DateTime endTime)
+        {
+            return Task.Run<STCashFlowsModel>(() =>
+                {
+                    STCashFlowsModel st  = new STCashFlowsModel(GetIncomeStatement(startTime, endTime).Result);
+                    st.StartBalance = GetSTCStartBalance(startTime, endTime);
+                    return st;
+                });
+        }
+
+        private static decimal GetSTCStartBalance(DateTime startTime, DateTime endTime)
+        {
+            return 0;
         }
     }
 }

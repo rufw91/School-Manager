@@ -1,6 +1,7 @@
 ﻿using Helper;
 using Helper.Models;
 using System;
+using System.Collections.Generic;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Documents;
@@ -13,6 +14,7 @@ namespace UmanyiSMS.ViewModels
     {
         PaymentVoucherModel currentVoucher;
         PaymentVoucherEntryModel newEntry;
+        private List<string> allCategories;
         public NewPaymentVoucherVM()
         {
             InitVars();
@@ -23,6 +25,7 @@ namespace UmanyiSMS.ViewModels
             Title = "NEW PAYMENT VOUCHER";
             currentVoucher = new PaymentVoucherModel();
             NewEntry = new PaymentVoucherEntryModel();
+            allCategories= new List<string>() { "POSTAGE & PRINTING", "EQUIPMENT MAINTENANCE", "OTHER" }; 
         }
 
         protected override void CreateCommands()
@@ -49,7 +52,7 @@ namespace UmanyiSMS.ViewModels
                     MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
                 {
-                    var t = await DataAccess.GetLastPaymentVoucherIDAsync(currentVoucher.NameOfPayee, currentVoucher.Description);
+                    var t = await DataAccess.GetPaymentVoucherIDAsync(currentVoucher);
                     currentVoucher.PaymentVoucherID = t;
                     Document = DocumentHelper.GenerateDocument(currentVoucher);
                     if (ShowPrintDialogAction != null)
@@ -72,9 +75,15 @@ namespace UmanyiSMS.ViewModels
         }
         private bool CanSave()
         {
-            return currentVoucher.Entries.Count > 0;
+            return currentVoucher.Entries.Count > 0&& !string.IsNullOrWhiteSpace(currentVoucher.Category)
+                &&!string.IsNullOrWhiteSpace(currentVoucher.Description)&&!string.IsNullOrWhiteSpace(currentVoucher.NameOfPayee)
+                &&currentVoucher.Total>0;
         }
-        
+
+        public List<string> AllCategories
+        {
+            get { return allCategories;}
+        }
 
         public PaymentVoucherEntryModel NewEntry
         {

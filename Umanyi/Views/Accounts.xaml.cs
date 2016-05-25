@@ -1,4 +1,5 @@
-﻿using Helper.Controls;
+﻿using Helper;
+using Helper.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,9 +37,16 @@ namespace UmanyiSMS.Views
                     w.MinWidth = 810;
                     w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                     w.WindowState = WindowState.Maximized;
-
-
+                    (p as AccountsMainVM).CloseAction = () =>
+                        {                           
+                            w.Close();
+                        };
                     w.Content = p;
+                    w.DataContext =p;
+                    (w.DataContext as AccountsMainVM).CloseAction = () =>
+                    {
+                        w.Close();
+                    };
                     w.ShowDialog();
                 };
             };

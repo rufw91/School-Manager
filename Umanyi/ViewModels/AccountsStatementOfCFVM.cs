@@ -24,10 +24,10 @@ namespace UmanyiSMS.ViewModels
 
         protected override void CreateCommands()
         {
-            GenerateCommand = new RelayCommand(o =>
+            GenerateCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                STCashFlowsModel im = new STCashFlowsModel();
+                STCashFlowsModel im = await DataAccess.GetStatementOfCashFlowsAsync(new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
                 Document = DocumentHelper.GenerateDocument(im);
                 IsBusy = false;
             }, o => true);

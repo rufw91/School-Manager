@@ -17,30 +17,37 @@
         <TextBox HorizontalAlignment="Left" Height="23" Margin="100,130,0,0" VerticalAlignment="Top" Width="300"
                  Text="{Binding CurrentVoucher.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="30,185,0,0" Text="Description" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="124" MaxLength="200" Margin="100,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" ScrollViewer.VerticalScrollBarVisibility="Visible"
-                 Text="{Binding CurrentVoucher.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,320,0,0" Text="Add Entry" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="40,368,0,0" Text="Decsription" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" MaxLength="30" Height="23" Margin="105,368,0,0" VerticalAlignment="Top" Width="295"
+        <TextBlock HorizontalAlignment="Left" Margin="30,185,0,0" Text="Category" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left"  Margin="100,180,0,0" VerticalAlignment="Top" Width="300" 
+                  ItemsSource="{Binding AllCategories}"
+                 SelectedItem="{Binding CurrentVoucher.Category, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="30,235,0,0" Text="Description" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="75" Margin="100,230,0,0" VerticalAlignment="Top" Width="300"
+                 Text="{Binding CurrentVoucher.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxLength="199" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+       
+        <TextBlock HorizontalAlignment="Left" Margin="40,330,0,0" Text="Date" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Height="23" Margin="100,325,0,0" VerticalAlignment="Top" Width="300" SelectedDateFormat="Long"
+                 SelectedDate="{Binding CurrentVoucher.DatePaid,  Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,390,0,0" Text="Add Entry" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="40,440,0,0" Text="Decsription" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" MaxLength="30" Height="23" Margin="105,440,0,0" VerticalAlignment="Top" Width="295"
                  DataContext="{Binding NewEntry}"
                  Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="40,418,0,0" Text="Date" VerticalAlignment="Top"/>
-        <DatePicker HorizontalAlignment="Left" Height="23" Margin="105,418,0,0" VerticalAlignment="Top" Width="295"
-                    DataContext="{Binding NewEntry}"
-                 Text="{Binding DatePaid, UpdateSourceTrigger=PropertyChanged}"/>
+        
 
-        <TextBlock HorizontalAlignment="Left" Margin="40,468,0,0" Text="Amount" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="105,468,0,0" VerticalAlignment="Top" Width="180"
+        <TextBlock HorizontalAlignment="Left" Margin="40,490,0,0" Text="Amount" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="105,490,0,0" VerticalAlignment="Top" Width="180"
                  DataContext="{Binding NewEntry}"
                  Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button Content="Add" HorizontalAlignment="Left" Margin="310,525,0,0" VerticalAlignment="Top" Width="86"
+        <Button Content="Add" HorizontalAlignment="Left" Margin="310,540,0,0" VerticalAlignment="Top" Width="86"
                 Command="{Binding AddEntryCommand}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="430,70,0,0" Text="Entries" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
-        <ListBox Margin="430,110,10,50" ItemsSource="{Binding CurrentVoucher.Entries}" ItemTemplate="{DynamicResource FeesStructureEntryModel}"/>
+        <ListBox Margin="430,110,10,50" ItemsSource="{Binding CurrentVoucher.Entries}" ItemTemplate="{DynamicResource PaymentVoucherEntryModel}"/>
         <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding SaveCommand}"/>
         <Button Content="Save &amp; Print" HorizontalAlignment="Right" Margin="0,0,120,10" VerticalAlignment="Bottom" Width="150"

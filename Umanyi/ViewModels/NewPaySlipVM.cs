@@ -18,8 +18,11 @@ namespace UmanyiSMS.ViewModels
         PayslipModel newSlip;
         private FeesStructureEntryModel newEntry;
 private  FixedDocument fd;
+private int selectedYear;
+private string selectedMonth;
         public NewPaySlipVM()
         {
+           
             InitVars();
             CreateCommands();
         }
@@ -27,7 +30,10 @@ private  FixedDocument fd;
         protected override void InitVars()
         {
             Title = "NEW PAYSLIP";
+            
             NewSlip = new PayslipModel();
+            
+
             NewEntry = new FeesStructureEntryModel();
             newSlip.PropertyChanged += (o, e) =>
             {
@@ -36,6 +42,29 @@ private  FixedDocument fd;
                 if (newSlip.StaffID > 0)
                     newSlip.CheckErrors();
             };
+            PropertyChanged += (o, e) =>
+                {
+                    if (e.PropertyName == "SelectedMonth" || e.PropertyName == "SelectedYear")
+                        newSlip.PaymentPeriod = selectedMonth + " " + selectedYear;
+                };
+            SelectedMonth = DateTime.Now.ToString("MMMM");
+            SelectedYear = DateTime.Now.Year;
+        }
+
+        public List<string> MonthsOfTheYear
+        {
+            get { return new List<string>() { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }; }
+        }
+
+        public List<int> FutureYears
+        {
+            get
+            {
+                List<int> temp = new List<int>();
+                for (int i = 2015; i < 2025; i++)
+                    temp.Add(i);
+                 return temp;
+            }
         }
 
         protected override void CreateCommands()
@@ -62,7 +91,7 @@ private  FixedDocument fd;
                 IsBusy = true;
                 newSlip.RefreshTotal();
 
-                MessageBox.Show("Dont forget to save the transaction!!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Don't forget to save the transaction!!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 
                 Document = DocumentHelper.GenerateDocument(newSlip);
                 if (ShowPrintDialogAction != null)
@@ -144,6 +173,34 @@ private  FixedDocument fd;
             }
         }
 
+        public string SelectedMonth
+        {
+            get { return this.selectedMonth; }
+
+            set
+            {
+                if (value != this.selectedMonth)
+                {
+                    this.selectedMonth = value;
+                    NotifyPropertyChanged("SelectedMonth");
+                }
+            }
+        }
+
+        public int SelectedYear
+        {
+            get { return this.selectedYear; }
+
+            set
+            {
+                if (value != this.selectedYear)
+                {
+                    this.selectedYear = value;
+                    NotifyPropertyChanged("SelectedYear");
+                }
+            }
+        }
+
         public FeesStructureEntryModel NewEntry
         {
             get { return newEntry; }
@@ -197,7 +254,7 @@ private  FixedDocument fd;
 
         public override void Reset()
         {
-            
+            newSlip.Reset();
         }
     }
 }

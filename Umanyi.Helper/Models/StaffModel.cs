@@ -19,6 +19,7 @@ namespace Helper.Models
         private string postalCode = "";
         private byte[] sPhoto = new byte[0];
         private bool isActive;
+        private string designation;
 
         public StaffModel()
         {
@@ -79,6 +80,20 @@ namespace Helper.Models
                 {
                     this.phoneNo = value;
                     NotifyPropertyChanged("PhoneNo");
+                }
+            }
+        }
+
+        public string Designation
+        {
+            get { return this.designation; }
+
+            set
+            {
+                if (value != this.designation)
+                {
+                    this.designation = value;
+                    NotifyPropertyChanged("Designation");
                 }
             }
         }
@@ -188,6 +203,7 @@ namespace Helper.Models
             Address = "";
             City = "";
             PostalCode = "";
+            Designation = "";
             SPhoto = new byte[0];
         }
 

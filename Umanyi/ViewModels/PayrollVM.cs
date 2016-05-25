@@ -7,11 +7,10 @@ namespace UmanyiSMS.ViewModels
     public class PayrollVM : ParentViewModel
     {
         public PayrollVM()
-        {
-            TryAddChild(typeof(NewEmployeePaymentVM));
-            TryAddChild(typeof(PaymentHistoryVM));
+        {            
             TryAddChild(typeof(NewPaySlipVM));
             TryAddChild(typeof(ReprintPaySlipVM));
+            TryAddChild(typeof(PayslipsHistoryVM));
             TryAddChild(typeof(PAYEInfoVM));
         }
     }

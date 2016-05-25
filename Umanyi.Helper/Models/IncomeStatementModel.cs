@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class IncomeStatementModel: ModelBase
+    public class IncomeStatementModel : ModelBase
     {
         private List<TransactionModel> revenueEntries;
         private List<TransactionModel> expenseEntries;
@@ -25,10 +25,10 @@ namespace Helper.Models
             gainEntries = new List<TransactionModel>();
             lossEntries = new List<TransactionModel>();
         }
-        
+
         public List<TransactionModel> RevenueEntries
         {
-            get { return revenueEntries;}
+            get { return revenueEntries; }
             set { revenueEntries = value; }
         }
 
@@ -61,5 +61,32 @@ namespace Helper.Models
         public DateTime StartTime { get { return startTime; } set { startTime = value; } }
 
         public DateTime EndTime { get { return endTime; } set { endTime = value; } }
+
+        public decimal NetIncome { get { return (TotalRevenue - TotalExpense); } }
+
+        public decimal TotalRevenue
+        {
+            get { return GetTotalRevenue(); }
+        }
+
+        private decimal GetTotalExpense()
+        {
+            decimal j = 0;
+            foreach (var t in expenseEntries)
+                j += t.TransactionAmt;
+            return j;
+        }
+        private decimal GetTotalRevenue()
+        {
+            decimal j = 0;
+            foreach (var t in revenueEntries)
+                j += t.TransactionAmt;
+            return j;
+        }
+
+        public decimal TotalExpense
+        {
+            get { return GetTotalExpense(); }
+        }
     }
 }

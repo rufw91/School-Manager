@@ -134,7 +134,7 @@ namespace UmanyiSMS.ViewModels
                 && !string.IsNullOrWhiteSpace(newStaff.Email) && !(newStaff.DateOfAdmission == null)
                    && !string.IsNullOrWhiteSpace(newStaff.PhoneNo) && !string.IsNullOrWhiteSpace(newStaff.Address)
                     && !string.IsNullOrWhiteSpace(newStaff.City) && !string.IsNullOrWhiteSpace(newStaff.PostalCode)
-                      && (EmailValidator.IsValidEmail(newStaff.Email));
+                      && (EmailValidator.IsValidEmail(newStaff.Email)) && !string.IsNullOrWhiteSpace(newStaff.Designation);
             return isOk;
         }
 

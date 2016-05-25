@@ -38,7 +38,7 @@ namespace Helper
        {
            double fontsize = 14;
            int pageRelativeIndex = itemIndex;
-           double yPos = 832 + pageRelativeIndex * 30;
+           double yPos = 682 + pageRelativeIndex * 30;
 
            AddText(item.Description, "Arial", 14, false, 0, Colors.Black, 230, yPos, pageNo);
            AddText(item.Amount.ToString("N2"), "Arial", 14, false, 0, Colors.Black, 615, yPos, pageNo);
@@ -60,7 +60,7 @@ namespace Helper
            {
                AddPVAddress(si.Address, pageNo);
                AddPVPayee(si.NameOfPayee, pageNo);
-               AddPVVoucherNo("0", pageNo);
+               AddPVVoucherNo(si.PaymentVoucherID.ToString(), pageNo);
                AddPVDescription(si.Description, pageNo);
                AddPVAmount(si.Total,pageNo);
                AddPVEntries(si.Entries, pageNo);

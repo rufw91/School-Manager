@@ -10,13 +10,14 @@
                 </Border>
                 <Border BorderBrush="Gray" Margin="10,126,10,50" Height="1" VerticalAlignment="Top" BorderThickness="1" />
                 <TextBlock HorizontalAlignment="Left" Margin="42,175,0,0" TextWrapping="Wrap" Text="CASH COLLECTED FROM CUSTOMERS" FontFamily="Arial" FontSize="14"  VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,200,0,0" TextWrapping="Wrap" Text="CASH PAID FOR FOOD PURCHASES" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,225,0,0" TextWrapping="Wrap" Text="CASH PAID FOR EQUIPMENT MAINTENANCE" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,250,0,0" TextWrapping="Wrap" Text="CASH PAID FOR OFFICE SUPPLIES" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,275,0,0" TextWrapping="Wrap" Text="CASH PAID FOR POSTAGE &amp; PRINTING" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,300,0,0" TextWrapping="Wrap" Text="CASH PAID FOR SALARIES" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,325,0,0" TextWrapping="Wrap" Text="CASH PAID FOR MISC. EXPENSES" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="20,360,0,0" TextWrapping="Wrap" Text="TOTAL CASH INFLOW FROM OPERATING ACTIVITIES" FontWeight="SemiBold" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,200,0,0" TextWrapping="Wrap" Text="CASH COLLECTED FROM DONATIONS" FontFamily="Arial" FontSize="14"  VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,225,0,0" TextWrapping="Wrap" Text="CASH PAID FOR FOOD PURCHASES" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,250,0,0" TextWrapping="Wrap" Text="CASH PAID FOR EQUIPMENT MAINTENANCE" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,275,0,0" TextWrapping="Wrap" Text="CASH PAID FOR OFFICE SUPPLIES" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,300,0,0" TextWrapping="Wrap" Text="CASH PAID FOR POSTAGE &amp; PRINTING" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,325,0,0" TextWrapping="Wrap" Text="CASH PAID FOR SALARIES" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="42,350,0,0" TextWrapping="Wrap" Text="CASH PAID FOR MISC. EXPENSES" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="20,385,0,0" TextWrapping="Wrap" Text="TOTAL CASH INFLOW FROM OPERATING ACTIVITIES" FontWeight="SemiBold" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
             </Grid>
         </Border>
         <TextBlock HorizontalAlignment="Center" Margin="0,20,0,0" 
@@ -45,7 +46,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="30,450,0,0" TextWrapping="Wrap" Text="CASH FROM INVESTING ACTIVIYIES" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,579,0,0" TextWrapping="Wrap" Text="CASH FROM FINANCING ACTIVITIES" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="134,620,0,0" TextWrapping="Wrap" Text="__" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,700,0,0" TextWrapping="Wrap" Text="CASH BALANCE" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,740,0,0" TextWrapping="Wrap" Text="CASH BALANCE" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,700,0,0" TextWrapping="Wrap" Text="STARTING CASH BALANCE" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,740,0,0" TextWrapping="Wrap" Text="CURRENT CASH BALANCE" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
     </Grid>
 </FixedPage>

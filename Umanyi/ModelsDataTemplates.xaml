@@ -114,6 +114,23 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="PaymentVoucherEntryModel">
+        <Grid Height="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Item:"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Cost:"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Amount}"/>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="FeesStructureEditableEntryModel">
         <Grid Height="40">
             <Grid.RowDefinitions>

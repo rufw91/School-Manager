@@ -168,11 +168,11 @@ namespace UmanyiSMS
             InitGlobalVar();
             
 
-            if (!await ActivationHelper.LicenseExists())
+           /* if (!await ActivationHelper.LicenseExists())
                 new InvalidLicense().ShowDialog();
-            
-            if (await ActivationHelper.IsActivated())
-            {
+            */
+           // if (await ActivationHelper.IsActivated())
+            //{
                 try
                 {
                     Login lg = new Login();
@@ -180,7 +180,7 @@ namespace UmanyiSMS
                     lg.ShowDialog();
                 }
                 catch { }
-            }
+            /*}
             else
             {
                 try
@@ -190,7 +190,7 @@ namespace UmanyiSMS
                     a.ShowDialog();
                 }
                 catch { }
-            }
+            }*/
 
         }
         

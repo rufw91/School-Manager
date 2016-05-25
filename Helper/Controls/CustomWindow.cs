@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Helper.Presentation;
+using System;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Helper.Controls
 {
-    public class CustomWindow: Window
+    public class CustomWindow: Window, IMainWindow
     {
         public static readonly DependencyProperty ShowRestoreProperty = DependencyProperty.Register("ShowRestore", typeof(bool), typeof(CustomWindow), new PropertyMetadata(false));
         public static readonly DependencyProperty ShowMaximizeProperty = DependencyProperty.Register("ShowMaximize", typeof(bool), typeof(CustomWindow), new PropertyMetadata(true));
