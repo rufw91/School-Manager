@@ -20,15 +20,14 @@ namespace Helper
 
         private static void AddUB2Entry(UnreturnedBookModel item, int itemIndex, int pageNo)
         {
-            double fontsize = 14;
+            double fontsize = 12;
             int pageRelativeIndex = itemIndex - itemsPerPage * pageNo;
             double yPos = 245 + pageRelativeIndex * 25;
 
-            AddText(item.ISBN, "Arial", 14, false, 0, Colors.Black, 40, yPos, pageNo);
-            AddText(item.Title, "Arial", fontsize, false, 0, Colors.Black, 145, yPos, pageNo);
-            AddText(item.Author, "Arial", fontsize, false, 0, Colors.Black, 305, yPos, pageNo);
-            AddText(item.Publisher, "Arial", fontsize, false, 0, Colors.Black, 455, yPos, pageNo);
-            AddText(item.UnreturnedCopies.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 605, yPos, pageNo);
+            AddText(item.ISBN, "Arial Narrow", fontsize, false, 0, Colors.Black, 18, yPos, pageNo);
+            AddText(item.Title, "Arial Narrow", fontsize, false, 0, Colors.Black, 200, yPos, pageNo);
+            AddText(item.Publisher, "Arial Narrow", fontsize, false, 0, Colors.Black, 540, yPos, pageNo);
+            AddText(item.UnreturnedCopies.ToString("N0"), "Arial Narrow", fontsize, false, 0, Colors.Black, 700, yPos, pageNo);
         }
         private static void AddUB2Entries(ObservableCollection<UnreturnedBookModel> psi, int pageNo)
         {

@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Helper.Models
 {
-    public class StudentClearancerModel: StudentBaseModel
+    public class StudentClearanceModel: StudentBaseModel
     {
         private DateTime dateCleared;
-        public StudentClearancerModel()
+        public StudentClearanceModel()
         {
             DateCleared = DateTime.Now;
         }

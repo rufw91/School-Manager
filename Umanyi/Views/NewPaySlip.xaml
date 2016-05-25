@@ -23,22 +23,31 @@
             <TextBox HorizontalAlignment="Left" Height="23" Margin="92,180,0,0" VerticalAlignment="Top" Width="200"
             	Text="{Binding NewSlip.Designation, Delay=20, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
             <TextBlock HorizontalAlignment="Left" Margin="20,226,0,0" Style="{DynamicResource Title0}" Text="Basic Pay (Gross)" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="30,261,0,0" TextWrapping="Wrap" Text="Amount" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Margin="92,261,0,0" VerticalAlignment="Top" Width="150"                 
+            <TextBlock HorizontalAlignment="Left" Margin="30,260,0,0" TextWrapping="Wrap" Text="Amount" VerticalAlignment="Top"/>
+            <TextBox HorizontalAlignment="Left" Margin="92,260,0,0" VerticalAlignment="Top" Width="150"                 
                  Text="{Binding NewSlip.AmountPaid, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="30,303,0,0" Text="Date Paid/Deposited" TextWrapping="Wrap" VerticalAlignment="Top" Height="33" Width="56"/>
-            <DatePicker HorizontalAlignment="Left" Margin="92,306,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
+            <TextBlock HorizontalAlignment="Left" Margin="30,305,0,0" Text="Date Paid/Deposited" TextWrapping="Wrap" VerticalAlignment="Top" Height="33" Width="56"/>
+            <DatePicker HorizontalAlignment="Left" Margin="92,305,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
                  SelectedDate="{Binding NewSlip.DatePaid, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
-            <TextBlock HorizontalAlignment="Left" Margin="39,420,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Height="23" Margin="120,420,0,0" VerticalAlignment="Top" Width="200"
+            <TextBlock HorizontalAlignment="Left" Margin="30,355,0,0" TextWrapping="Wrap" Text="Period for Payment" VerticalAlignment="Top" Width="56"/>
+            <ComboBox HorizontalAlignment="Left" Margin="92,355,0,0" VerticalAlignment="Top" Width="130"
+                      ItemsSource="{Binding MonthsOfTheYear}"
+                 SelectedItem="{Binding SelectedMonth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+            <ComboBox HorizontalAlignment="Left" Margin="240,355,0,0" VerticalAlignment="Top" Width="80"
+                      ItemsSource="{Binding FutureYears}"
+                 SelectedItem="{Binding SelectedYear, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+            <TextBlock HorizontalAlignment="Left" Margin="39,443,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top"/>
+            <TextBox HorizontalAlignment="Left" Height="23" Margin="120,443,0,0" VerticalAlignment="Top" Width="200"
                  DataContext="{Binding NewEntry}"
                  Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="42,465,0,0" TextWrapping="Wrap" Text="Amount (KES)" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Height="23" Margin="120,465,0,0" VerticalAlignment="Top" Width="150"
+            <TextBlock HorizontalAlignment="Left" Margin="42,488,0,0" TextWrapping="Wrap" Text="Amount (KES)" VerticalAlignment="Top"/>
+            <TextBox HorizontalAlignment="Left" Height="23" Margin="120,488,0,0" VerticalAlignment="Top" Width="150"
                  DataContext="{Binding NewEntry}"
                  Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Add Entry" HorizontalAlignment="Left" Margin="215,505,0,0" VerticalAlignment="Top" Width="105"
+            <Button Content="Add Entry" HorizontalAlignment="Left" Margin="215,528,0,0" VerticalAlignment="Top" Width="105"
                 Command="{Binding AddEntryCommand}"/>
 
             <TextBlock HorizontalAlignment="Left" Margin="350,70,0,0" Style="{DynamicResource Title0}" Text="Entries" VerticalAlignment="Top"/>
@@ -56,9 +65,10 @@
             <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
                 <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
             </Border>
-            <TextBlock HorizontalAlignment="Left" Margin="20,372,0,0" Style="{DynamicResource Title0}" Text="Add Deduction" VerticalAlignment="Top"/>
-            
-            
+            <TextBlock HorizontalAlignment="Left" Margin="20,405,0,0" Style="{DynamicResource Title0}" Text="Add Deduction" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="229,360,0,0" Text="-" FontSize="14" VerticalAlignment="Top"/>
+
+
 
         </Grid>
     </Grid>

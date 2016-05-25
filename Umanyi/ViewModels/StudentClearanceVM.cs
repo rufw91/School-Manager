@@ -15,7 +15,7 @@ namespace UmanyiSMS.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class StudentClearanceVM: ViewModelBase
     {
-        StudentBaseModel selectedStudent;
+        StudentClearanceModel selectedStudent;
         private byte[] sPhoto;
         private bool isInClassMode;
         private bool isInStudentMode;
@@ -30,7 +30,7 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "CLEAR STUDENT";
-            selectedStudent = new StudentBaseModel();
+            selectedStudent = new StudentClearanceModel();
             selectedStudent.CheckErrors();
             selectedStudent.PropertyChanged += async (o, e) =>
             {
@@ -54,11 +54,11 @@ namespace UmanyiSMS.ViewModels
                 bool succ;
                 if (isInStudentMode)
                 { 
-                StudentClearancerModel st = new StudentClearancerModel();
+                StudentClearanceModel st = new StudentClearanceModel();
                 st.StudentID = selectedStudent.StudentID;
                 st.NameOfStudent = selectedStudent.NameOfStudent;
                 st.DateCleared = DateTime.Now;
-                 succ = await DataAccess.SaveNewStudentClearancesAsync(new ObservableCollection<StudentClearancerModel>() { st });
+                 succ = await DataAccess.SaveNewStudentClearancesAsync(new ObservableCollection<StudentClearanceModel>() { st });
             }
                 else
                 {
@@ -101,7 +101,7 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public StudentBaseModel SelectedStudent
+        public StudentClearanceModel SelectedStudent
         {
             get { return selectedStudent; }
 

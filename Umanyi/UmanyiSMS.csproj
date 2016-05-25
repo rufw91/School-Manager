@@ -272,6 +272,7 @@
     <Compile Include="ViewModels\PaymentToSupplierVM.cs" />
     <Compile Include="ViewModels\PaymentVoucherHistoryVM.cs" />
     <Compile Include="ViewModels\PayrollVM.cs" />
+    <Compile Include="ViewModels\PayslipsHistoryVM.cs" />
     <Compile Include="ViewModels\PDFViewVM.cs" />
     <Compile Include="ViewModels\QueryEditorVM.cs" />
     <Compile Include="ViewModels\QuickBooksVM.cs" />
@@ -396,6 +397,9 @@
     </Compile>
     <Compile Include="Views\NewPaySlip.xaml.cs">
       <DependentUpon>NewPaySlip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PayslipsHistory.xaml.cs">
+      <DependentUpon>PayslipsHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QuickBooksSync.xaml.cs">
       <DependentUpon>QuickBooksSync.xaml</DependentUpon>
@@ -933,6 +937,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewPaySlip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PayslipsHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

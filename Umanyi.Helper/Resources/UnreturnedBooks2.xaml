@@ -27,11 +27,10 @@
         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,20" VerticalAlignment="Bottom" FontStyle="Italic"
                    Text="{Binding Info.Motto, Source={x:Static Application.Current}}" />
         <TextBlock HorizontalAlignment="Center" Margin="0,115,0,0" Text="UNRETURNED BOOKS" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="20"/>
-        <Border BorderBrush="Gray" BorderThickness="1" Height="32" Margin="30,208,29.76,0" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="40,215,0,0" Text="ISBN" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="140,215,0,0" Text="TITLE" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="300,215,0,0" Text="AUTHOR" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="450,215,0,0" Text="PUBLISHER" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="600,215,0,0" Text="UNRETURNED" VerticalAlignment="Top"/>
+        <Border BorderBrush="Gray" BorderThickness="1" Height="32" Margin="10,208,15,0" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="18,215,0,0" Text="ISBN" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="240,215,0,0" Text="TITLE" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="580,215,0,0" Text="PUBLISHER" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="700,208,0,0" TextWrapping="Wrap" Text="UNRETURNED COPIES" VerticalAlignment="Top" Width="77" Height="42"/>
     </Grid>
 </FixedPage>

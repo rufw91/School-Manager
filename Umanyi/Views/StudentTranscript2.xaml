@@ -34,8 +34,8 @@
             <DataGrid.Columns>
 
                 <DataGridTextColumn Binding="{Binding Path=NameOfExam, Mode=OneWay}" Header="Name" Width="1*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Path=Weight,StringFormat={}{0:N2}, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Weight" Width="1*"/>
-                <DataGridTextColumn Binding="{Binding Path=Index, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Index" Width="1*"/>
+                <DataGridTextColumn Binding="{Binding Path=Weight,StringFormat={}{0:N2}, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Out Of" Width="1*"/>
+                <DataGridTextColumn Binding="{Binding Path=Index, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Display Order" Width="1*"/>
 
             </DataGrid.Columns>
         </DataGrid>

@@ -15,10 +15,10 @@ namespace Helper
             AddText(dt.ToString("dd MMM yyyy hh:mm:ss"), 12.5, false, 0, Colors.Black, 380, 100, pageNo);
             AddText(dt.ToString("dd MMM yyyy hh:mm:ss"), 12.5, false, 0, Colors.Black, 380 + page2Offset, 100, pageNo);
         }
-        private static void AddPSDatePaid(DateTime datePaid, int pageNo)
+        private static void AddPSPaymentPeriod(string paymentPeriod, int pageNo)
         {
-            AddText(datePaid.ToString("MMM yyyy"), 14, true, 0, Colors.Black, 145, 145, pageNo);
-            AddText(datePaid.ToString("MMM yyyy"),14, true, 0, Colors.Black, 145 + page2Offset, 145, pageNo);
+            AddText(paymentPeriod, 14, true, 0, Colors.Black, 145, 145, pageNo);
+            AddText(paymentPeriod, 14, true, 0, Colors.Black, 145 + page2Offset, 145, pageNo);
         }
         private static void AddPSStaffName(string staffName, int pageNo)
         {
@@ -79,7 +79,7 @@ namespace Helper
             for (pageNo = 0; pageNo < noOfPages; pageNo++)
             {
                 AddPSDate(DateTime.Now, pageNo);
-                AddPSDatePaid(si.DatePaid, pageNo);
+                AddPSPaymentPeriod(si.PaymentPeriod, pageNo);
                 AddPSStaffName(si.Name, pageNo);
                 AddPSDesignation(si.Designation, pageNo);
                 AddPSBasicPay(si.AmountPaid, pageNo);

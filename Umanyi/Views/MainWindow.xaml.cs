@@ -10,7 +10,7 @@ using Helper.Presentation;
 namespace UmanyiSMS.Views
 {
 
-    public sealed partial class MainWindow : CustomWindow, IMainWindow
+    public sealed partial class MainWindow : CustomWindow
     {
         bool canClose = false;
         public MainWindow()

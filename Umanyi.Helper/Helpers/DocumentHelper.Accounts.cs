@@ -80,46 +80,131 @@ namespace Helper
             for (pageNo = 0; pageNo < noOfPages; pageNo++)
             {
                 AddAISPeriod(si.StartTime,si.EndTime, pageNo);
-                AddAISDate(si.StartTime, pageNo);
-                AddAISAccount(si.AccountName, pageNo);
-                AddAISTotal(si.Total, pageNo);
-                AddAISEntries(si.Entries, pageNo);
+                for (int i = 0; i < 3; i++)
+                {
+                    AddAISRevenueAccount(si.RevenueEntries[i].TransactionAmt,195+(i*25), pageNo);
+                }
+                AddAISTotalRevenue(si.TotalRevenue, pageNo);
+                for (int i = 0; i < 6; i++)
+                {
+                    AddAISExpenseAccount(si.ExpenseEntries[i].TransactionAmt,325+(i*25), pageNo);
+                }
+                AddAISTotalExpenses(si.TotalExpense, pageNo);
+                AddAISNetIncome(si.NetIncome, pageNo);
             }
         }
+
+        private static void AddAISPeriod(DateTime start, DateTime end, int pageNo)
+        {
+            AddText("PERIOD " + start.ToString("dd-MMM-yyyy") + " to " + end.ToString("dd-MMM-yyyy"), "Arial", 14, true, 0, Colors.Black, 290, 115, pageNo);
+        }
+
+        private static void AddAISRevenueAccount(decimal amount,double yPos, int pageNo)
+        {
+            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 350, yPos, pageNo);
+        }
+
+        private static void AddAISExpenseAccount(decimal amount,double yPos, int pageNo)
+        {
+            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 350, yPos, pageNo);
+        }
+
+        private static void AddAISTotalRevenue(decimal amount, int pageNo)
+        {
+            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 590, 260, pageNo);
+        }
+
+        private static void AddAISTotalExpenses(decimal amount, int pageNo)
+        {
+            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 590, 470, pageNo);
+        }
+
+        private static void AddAISNetIncome(decimal amount, int pageNo)
+        {
+            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 590, 690, pageNo);
+        }
+
+        
         #endregion
 
         #region BalanceSheet
         private static void GenerateAccountsBalanceSheet()
         {
-            /*
-            GeneralLedgerModel si = myWorkObject as GeneralLedgerModel;
-
-            int pageNo;
-            for (pageNo = 0; pageNo < noOfPages; pageNo++)
-            {
-                AddAISDate(si.Date, pageNo);
-                AddAISAccount(si.AccountName, pageNo);
-                AddAISTotal(si.Total, pageNo);
-                AddAISEntries(si.Entries, pageNo);
-            }*/
+            
         }
         #endregion
 
         #region Statement of Cashflows Statement
         private static void GenerateAccountsSTofCashFlows()
         {
-            /*
-            GeneralLedgerModel si = myWorkObject as GeneralLedgerModel;
+            STCashFlowsModel si = myWorkObject as STCashFlowsModel;
 
             int pageNo;
             for (pageNo = 0; pageNo < noOfPages; pageNo++)
             {
-                AddAISDate(si.Date, pageNo);
-                AddAISAccount(si.AccountName, pageNo);
-                AddAISTotal(si.Total, pageNo);
-                AddAISEntries(si.Entries, pageNo);
-            }*/
+                AddAISPeriod(si.StartTime, si.EndTime, pageNo);
+                for (int i = 0; i < 8; i++)
+                {
+                    AddASTCActivityEntry(si.OperatingActivitiesEntries[i].TransactionAmt, 185 + (i * 25), pageNo);
+                }
+                AddASTCActivityTotal(si.OperatingActivitiesTotal, 400d, pageNo);
+
+                AddASTCActivityTotal(si.StartBalance, 700d, pageNo);
+                AddASTCActivityTotal(si.EndBalance, 740d, pageNo);
+            }
         }
+
+        private static void AddASTCActivityEntry(decimal amount, double yPos, int pageNo)
+        {
+            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 450, yPos, pageNo); 
+        }
+
+        private static void AddASTCActivityTotal(decimal amount, double yPos, int pageNo)
+        {
+            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 635, yPos, pageNo); 
+        }
+        #endregion
+
+        #region Trial Balance
+        private static void GenerateTrialBalance()
+        {
+            TrialBalanceModel si = myWorkObject as TrialBalanceModel;
+
+            int pageNo;
+            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            {
+                AddATBPeriod(si.StartTime, si.EndTime, pageNo);
+                for (int i = 0; i < si.Accounts.Count; i++)
+                {
+                    AddATBAccount(si.Accounts[i], 185 + (i * 25), pageNo);
+                }
+                AddATBCreditTotals(si.CreditTotals,  pageNo);
+                AddATBDebitTotals(si.CreditTotals, pageNo);
+            }
+        }
+
+        private static void AddATBPeriod(DateTime startTime, DateTime endTime, int pageNo)
+        {
+            AddText(startTime.ToString("dd MMM yyyy")+" to "+endTime.ToString("dd MMM yyyy"), "Arial", 14, true, 0, Colors.Black, 450, 0, pageNo);
+        }
+
+        private static void AddATBAccount(TransactionModel transaction, double yPos, int pageNo)
+        {
+            AddText(transaction.TransactionID, "Arial", 14, true, 0, Colors.Black, 635, yPos, pageNo);
+            if (transaction.TransactionType== TransactionTypes.Credit)
+            AddText(transaction.TransactionID, "Arial", 14, true, 0, Colors.Black, 635, yPos, pageNo);
+        }
+
+        private static void AddATBCreditTotals(decimal total, int pageNo)
+        {
+            AddText(total.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 635, 0, pageNo);
+        }
+
+        private static void AddATBDebitTotals(decimal total, int pageNo)
+        {
+            AddText(total.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 635, 0, pageNo);
+        }
+
         #endregion
     }
 }

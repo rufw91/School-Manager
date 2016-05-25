@@ -289,6 +289,34 @@ namespace Helper
             g.Children.Add(text1);
         }
 
+        private static void AddText(string text, string fontFamily, double fontSize, bool isBold, double rotateAngle,
+            Color fontColor, double left, double top,double maxWidth, int pageNo)
+        {
+
+            TextBlock text1 = new TextBlock();
+            text1.Text = text;
+            text1.FontFamily = new FontFamily(fontFamily);
+            text1.FontSize = fontSize;
+            text1.MaxWidth = maxWidth;
+            text1.Foreground = new SolidColorBrush(fontColor);
+            if (isBold)
+                text1.FontWeight = System.Windows.FontWeights.Bold;
+            if (rotateAngle != 0)
+            {
+                RotateTransform rotateTransform1 =
+                    new RotateTransform(rotateAngle);
+                text1.RenderTransform = rotateTransform1;
+            }
+
+            text1.HorizontalAlignment = (left == -1) ? HorizontalAlignment.Center : HorizontalAlignment.Left;
+            text1.VerticalAlignment = VerticalAlignment.Top;
+            text1.Margin = new Thickness((left == -1) ? 0 : left, top, 0, 0);
+
+            Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
+            g.Children.Add(text1);
+        }
+
+
         private static void AddTextWithWrap(string text, string fontFamily, double width, double height, double fontSize, bool isBold, double rotateAngle,
            Color fontColor, double left, double top, int pageNo)
         {

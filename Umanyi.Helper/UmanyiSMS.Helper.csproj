@@ -235,6 +235,7 @@
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\TimetableClassModel.cs" />
     <Compile Include="Models\TranscriptItem.cs" />
+    <Compile Include="Models\TrialBalanceModel.cs" />
     <Compile Include="Models\UnreturnedBookModel.cs" />
     <Compile Include="Models\UnreturnedBooksModel.cs" />
     <Compile Include="Models\VATAnalysisModel.cs" />

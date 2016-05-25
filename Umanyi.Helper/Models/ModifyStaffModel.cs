@@ -41,7 +41,8 @@ namespace Helper.Models
                         this.NationalID = staff.NationalID;
                         this.PhoneNo = staff.PhoneNo;
                         this.PostalCode = staff.PostalCode;
-                        this.SPhoto = staff.SPhoto;                        
+                        this.SPhoto = staff.SPhoto;
+                        this.Designation = staff.Designation;   
                     }
                 }
             }

@@ -141,5 +141,7 @@ namespace Helper.Models
             entries.Clear();
             Total = 0;
         }
+
+        public string Category { get; set; }
     }
 }

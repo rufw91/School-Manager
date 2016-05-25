@@ -15,7 +15,7 @@ namespace UmanyiSMS.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class StudentTransferVM:ViewModelBase
     {
-        StudentSelectModel selectedStudent;
+        StudentTransferModel selectedStudent;
         private byte[] sPhoto;
         public StudentTransferVM()
         {
@@ -25,7 +25,7 @@ namespace UmanyiSMS.ViewModels
         protected override void InitVars()
         {
             Title = "STUDENT TRANSFER";
-            selectedStudent = new StudentSelectModel();
+            selectedStudent = new StudentTransferModel();
             selectedStudent.PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName == "StudentID")
@@ -58,7 +58,7 @@ namespace UmanyiSMS.ViewModels
             o => !selectedStudent.HasErrors);
         }
 
-        public StudentSelectModel SelectedStudent
+        public StudentTransferModel SelectedStudent
         {
             get { return selectedStudent; }
 

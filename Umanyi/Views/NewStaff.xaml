@@ -48,6 +48,10 @@
                 <TextBox  Margin="115,420,20,0" VerticalAlignment="Top"  MaxLength="50"
         	 Text="{Binding NewStaff.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+                <TextBlock  HorizontalAlignment="Left" Margin="20,470,0,0" Text="Designation" VerticalAlignment="Top" />
+                <TextBox  Margin="115,470,20,0" VerticalAlignment="Top"  MaxLength="50"
+        	 Text="{Binding NewStaff.Designation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                 <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="20,40,0,0" Style="{DynamicResource Title0}" Text="Login" VerticalAlignment="Top"/>
                 <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,80,0,0" Text="Role" VerticalAlignment="Top"/>
                 <ComboBox Name="cbxRoles" Grid.Column="1" Margin="110,80,20,0" VerticalAlignment="Top"

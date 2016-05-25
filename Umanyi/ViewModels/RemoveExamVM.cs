@@ -75,12 +75,15 @@ namespace UmanyiSMS.ViewModels
         {
             RemoveCommand = new RelayCommand(async o =>
             {
-                if (MessageBoxResult.Yes==MessageBox.Show("This action is IRREVERSIBLE.\r\nAre you sure you would like to continue?","Information", MessageBoxButton.YesNo, MessageBoxImage.Information))
+                if (MessageBoxResult.Yes==MessageBox.Show("This action is IRREVERSIBLE.\r\nAre you sure you would like to continue?","Information", MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
-                    bool succ = await DataAccess.RemoveExam(selectedExamID);
-                    MessageBox.Show(succ ? "Successfully completed operation" : "Operation failed!", succ ? "Success" : "Error", MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Error);
-                    if (succ)
-                        Reset();
+                    if (MessageBoxResult.Yes == MessageBox.Show("Are you ABSOLUTELY sure you would like to delete this exam? This will delete the results for all students who took the exam.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Information))
+                    {
+                        bool succ = await DataAccess.RemoveExam(selectedExamID);
+                        MessageBox.Show(succ ? "Successfully completed operation" : "Operation failed!", succ ? "Success" : "Error", MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Error);
+                        if (succ)
+                            Reset();
+                    }
                 }
             }, o => CanRemove());
         }

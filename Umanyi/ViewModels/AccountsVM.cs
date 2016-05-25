@@ -20,7 +20,7 @@ namespace UmanyiSMS.ViewModels
 
         public ICommand OpenTaskWindowCommand
         { get; private set; }
-
+                
         public override void Reset()
         {
         }
@@ -52,7 +52,7 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "ACCOUNTS";
         }
-
+        
         public Action<ViewModelBase> OpenTaskWindowAction
         { get; internal set; }
 
