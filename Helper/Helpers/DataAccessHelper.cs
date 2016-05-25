@@ -4,13 +4,15 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.VisualBasic.FileIO;
 namespace Helper
 {
     public static class DataAccessHelper
     {
-        public static Task<DataTable> ExecuteQueryWithResultAsync(string query)
+        public static Task<DataTable> ExecuteQueryWithResultAsyc(string query)
         {
             return Task.Run<DataTable>(() =>
             {
@@ -531,6 +533,7 @@ namespace Helper
                     using (conn)
                     {
                         string dbName = Helper.Properties.Settings.Default.DBName;
+                        string bkPath = FileHelper.GetNewNetworkServiceTempFilePath("Bak");
                         var sc = new ServerConnection(conn);
                         Server server = new Server(sc);
                         Database db = server.Databases[dbName];
@@ -540,9 +543,11 @@ namespace Helper
                         b.BackupSetDescription = "Full backup of " + dbName;
                         b.BackupSetName = dbName + " Backup";
                         b.Database = dbName;
-                        b.Devices.AddDevice(pathToFile, DeviceType.File);
+                        b.Devices.AddDevice(bkPath, DeviceType.File);
                         b.Incremental = false;
                         b.SqlBackup(server);
+                        FileSystem.CopyFile(bkPath, pathToFile, UIOption.AllDialogs, UICancelOption.ThrowException);
+
                     }
                     return true;
                 }
@@ -562,8 +567,11 @@ namespace Helper
                 try
                 {
                         string dbName = Helper.Properties.Settings.Default.DBName;
+                        string bkFile=FileHelper.GetNewNetworkServiceTempFilePath("Rest");
+                        FileSystem.CopyFile(fileName, bkFile, UIOption.AllDialogs, UICancelOption.ThrowException);
 
-                        string alterStr = "DECLARE @dbId int\r\n" +
+                        string alterStr = "USE master\r\n"+
+                            "DECLARE @dbId int\r\n" +
     "DECLARE @isStatAsyncOn bit\r\n" +
     "DECLARE @jobId int\r\n" +
     "DECLARE @sqlString nvarchar(500)\r\n" +
@@ -595,8 +603,9 @@ namespace Helper
         "CLOSE jobsCursor\r\n" +
         "DEALLOCATE jobsCursor\r\n" +
     "END\r\n" +
+    "USE master\r\n" +
     "ALTER DATABASE UmanyiSMS SET  SINGLE_USER\r\n"+
-    "RESTORE DATABASE [UmanyiSMS] FROM  DISK = N'" + fileName + "' WITH  FILE = 1,  NOUNLOAD,  STATS = 10";
+    "RESTORE DATABASE [UmanyiSMS] FROM  DISK = N'" + bkFile + "' WITH  FILE = 1,  NOUNLOAD,  STATS = 10";
                         
                         SqlConnection.ClearAllPools();
                         DataAccessHelper.ExecuteNonQuery(alterStr, false);
@@ -606,6 +615,38 @@ namespace Helper
                 catch(Exception e)
                 {
                     Log.E(e.ToString(), typeof(DataAccessHelper));
+                    return false;
+                }
+            });
+        }
+
+        internal static Task<bool> TestBackupFile(string fileName)
+        {
+            string error;
+            return Task.Run<bool>(() =>
+            {
+                try
+                {
+                    bool verifySuccessful = false;
+                    SqlConnection conn = DataAccessHelper.CreateConnection();
+
+                    using (conn)
+                    {
+                        var sc = new ServerConnection(conn);
+                        Server server = new Server(sc);
+                        Restore rest = new Restore();
+
+                        string pathToFile = FileHelper.GetNewNetworkServiceTempFilePath("Test");
+                        FileSystem.CopyFile(fileName, pathToFile, UIOption.AllDialogs, UICancelOption.ThrowException);
+
+                        rest.Devices.AddDevice(pathToFile, DeviceType.File);
+                        verifySuccessful = rest.SqlVerify(server, out error);
+                    }
+                    return verifySuccessful;
+
+                }
+                catch
+                {
                     return false;
                 }
             });

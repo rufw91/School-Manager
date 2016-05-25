@@ -28,9 +28,9 @@ namespace UmanyiSMS.ViewModels
             {
                 IsBusy = true;
                 bool hasReturn=await HasReturn(query);
-                if (hasReturn)
-                    Result = await DataAccessHelper.ExecuteQueryWithResultAsync(query);
-                else
+                //if (hasReturn)
+                //    Result = await DataAccessHelper.ExecuteQueryWithResultAsync(query);
+                //else
                     Result = await DataAccessHelper.ExecuteQueryAsync(query);
                 IsBusy = false; 
             }, o => true);
