@@ -74,7 +74,7 @@
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
-      <HintPath>..\..\..\..\Samples &amp; Libraries\System.Collections.Immutable.dll</HintPath>
+      <HintPath>..\..\..\..\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
