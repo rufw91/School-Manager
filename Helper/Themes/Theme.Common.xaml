@@ -4,6 +4,14 @@
 
     <SolidColorBrush x:Key="BlackBrush" Color="#252526" />
     <SolidColorBrush x:Key="WhiteBrush" Color="White" />
+    <LinearGradientBrush x:Key="HomeTitleBrush">
+        <GradientStop Color="DarkGoldenrod" Offset="1" />
+        <GradientStop Color="DarkGoldenrod" Offset="0.28" />
+        <GradientStop Color="DarkGoldenrod" />
+        <GradientStop Color="#FF704F00" Offset="0.28" />
+        <GradientStop Color="#FF704F00" Offset="0.31" />
+        <GradientStop Color="DarkGoldenrod" Offset="0.31" />
+    </LinearGradientBrush>
     <!--
     <Color x:Key="Title0BackgroundColor">#545AA7</Color>
     <Color x:Key="AccentColor">#8B4513</Color>

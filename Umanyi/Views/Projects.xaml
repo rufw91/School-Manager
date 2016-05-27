@@ -1,0 +1,8 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.Projects"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            Tag="Projects"
+             Style="{StaticResource TopWindow}"
+	 Background="White">
+</UserControl>
+

@@ -13,6 +13,5 @@ namespace UmanyiSMS.Views
         {
             InitializeComponent();
         }
-
     }
 }

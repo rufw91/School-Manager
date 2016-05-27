@@ -25,14 +25,6 @@ namespace UmanyiSMS.ViewModels
             TryAddChild(typeof(FeesPaymentHistoryVM),false);
             TryAddChild(typeof(PaymentsByVoteHeadVM),false);
         }
-
-        internal void ToggleDonationsVisible(bool isVisible)
-        {
-            if (isVisible)
-            {
-                TryAddChild(typeof(NewDonorVM), false);25.5.2016
-                TryAddChild(typeof(PaymentsByVoteHeadVM), false);
-            }
-        }
+        
     }
 }

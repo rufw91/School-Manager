@@ -3,9 +3,7 @@
                     xmlns:viewModels="clr-namespace:UmanyiSMS.ViewModels"
              xmlns:views="clr-namespace:UmanyiSMS.Views">
 
-    <DataTemplate DataType="{x:Type viewModels:FeesPaymentHistoryVM}" >
-        <views:FeesPaymentHistory/>
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:HomePageVM}" >
         <views:HomePage/>
     </DataTemplate>
@@ -57,12 +55,41 @@
     <DataTemplate DataType="{x:Type viewModels:AccountsMainVM}" >
         <views:AccountsMain/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ProjectsVM}" >
+        <views:AccountsMain/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:DonationsVM}" >
+        <views:Donations/>
+    </DataTemplate>
     <!--Child View Models-->
 
+    <DataTemplate DataType="{x:Type viewModels:NewDonorVM}" >
+        <views:NewDonor/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewDonationVM}" >
+        <views:NewDonation/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewPledgeVM}" >
+        <views:NewPledge/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:AllDonorsVM}" >
+        <views:AllDonors/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:FeesPaymentHistoryVM}" >
+        <views:FeesPaymentHistory/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewProjectVM}" >
+        <views:NewProject/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:PayslipsHistoryVM}" >
         <views:PayslipsHistory/>
     </DataTemplate>
-
+    <DataTemplate DataType="{x:Type viewModels:ProjectTimelineVM}" >
+        <views:ProjectTimeline/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:AllProjectsVM}" >
+        <views:AllProjects/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:ExamSetupVM}" >
         <views:ExamSetup/>
     </DataTemplate>

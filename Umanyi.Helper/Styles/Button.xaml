@@ -2,74 +2,52 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Helper.Controls">
 
-    <Style TargetType="{x:Type controls:HomePageButton}">
-        <Setter Property="FocusVisualStyle" 
-                Value="{x:Null}"/>
-        <Setter Property="Background"
-                Value="#994682B4"/>
-        <Setter Property="BorderBrush"
-                Value="#3FADD8E6"/>
-        <Setter Property="BorderThickness"
-                Value="1"/>
-        <Setter Property="Foreground"
-                Value="{DynamicResource ButtonText}"/>
-        <Setter Property="HorizontalContentAlignment"
-                Value="Center"/>
-        <Setter Property="VerticalContentAlignment"
-                Value="Center"/>
-        <Setter Property="Padding"
-                Value="5"/>        
-        <Setter Property="Width" 
-                Value="240"/>        
-        <Setter Property="Height" 
-                Value="135"/>
-        <Setter Property="HorizontalAlignment" 
-                Value="Left"/>
-        <Setter Property="VerticalAlignment" 
-                Value="Top"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:HomePageButton}">
-                    <Grid>
-                        <Border Name="Chrome" 
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        SnapsToDevicePixels="true">
-                            <Grid VerticalAlignment="Center">
-
-                                <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="30" TextWrapping="Wrap" 
-                                           Text="{TemplateBinding Title}" VerticalAlignment="Top" Margin="0,0,0,0"/>
-                                <TextBlock Margin="10,40,10,10" TextAlignment="Center" Foreground="LightBlue" TextWrapping="Wrap" 
-                                           Text="{TemplateBinding Description}"/>
-                                   
-                            </Grid>
-                        </Border>
-                        <Border Name="MouseOverBorder" BorderBrush="Transparent" BorderThickness="0"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="MouseOverBorder" Property="Background" Value="#99C8C8C8"/>
-                            <Setter TargetName="Chrome" Property="BorderBrush" Value="LightBlue"/>
-                            <Setter TargetName="Chrome" Property="Background" Value="SteelBlue"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="MouseOverBorder" Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderThickness" Value="1.5"/>
-                            <Setter TargetName="Chrome" Property="BorderBrush" Value="LightBlue"/>
-                            <Setter TargetName="Chrome" Property="Background" Value="SteelBlue"/>
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="true">
-                            <Setter TargetName="Chrome" Property="BorderBrush" Value="LightBlue"/>
-                            <Setter TargetName="Chrome" Property="Background" Value="SteelBlue"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-</ResourceDictionary>
+        <Style x:Key="{x:Type controls:HomePageButton}" TargetType="{x:Type controls:HomePageButton}">
+            <Setter Property="FrameworkElement.FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Control.Background" Value="#00FFFFFF" />
+            <Setter Property="Control.BorderBrush" Value="#FFFFD700" />
+            <Setter Property="Control.BorderThickness" Value="0,0,0,1" />
+            <Setter Property="Control.Foreground" Value="{DynamicResource ButtonText}" />
+            <Setter Property="Control.HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Control.VerticalContentAlignment" Value="Center" />
+            <Setter Property="Control.Padding" Value="5" />
+            <Setter Property="FrameworkElement.MinWidth" Value="100" />
+            <Setter Property="FrameworkElement.MinHeight" Value="30" />
+            <Setter Property="controls:HomePageButton.CaptionBackground" Value="{DynamicResource Accent}" />
+            <Setter Property="FrameworkElement.Margin" Value="2" />
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:HomePageButton}">
+                        <Grid>
+                            <Border Name="Chrome" Background="{TemplateBinding controls:HomePageButton.CaptionBackground}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter Grid.Column="0" />
+                                <TextBlock Grid.Column="1" Margin="6,2,0,0" Width="{TemplateBinding Width}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{TemplateBinding controls:HomePageButton.Caption}" Style="{DynamicResource GroupTitle}" />
+                                </Grid>
+                            </Border>
+                            <Border Name="MouseOverBorder" BorderBrush="#00FFFFFF" BorderThickness="0" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="UIElement.IsEnabled" Value="False">
+                                <Setter Value="{DynamicResource ButtonTextDisabled}" Property="Control.Foreground" />
+                            </Trigger>
+                            <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                <Setter TargetName="MouseOverBorder" Property="Border.Background" Value="#99C8C8C8" />
+                            </Trigger>
+                            <Trigger Property="ButtonBase.IsPressed" Value="True">
+                                <Setter Property="Control.BorderThickness" Value="4" />
+                            </Trigger>
+                            <Trigger Property="UIElement.IsFocused" Value="True">
+                            <Setter TargetName="Chrome" Property="Border.Background" Value="{DynamicResource Title4BackgroundBrush}" />
+                                <Setter Property="Control.BorderBrush" Value="#99C8C8C8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ResourceDictionary>

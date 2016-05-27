@@ -620,11 +620,7 @@ namespace Helper
                         text = string.Concat(new object[]
                         {
                             obj,
-                            "INSERT INTO [Institution].[Gallery] (Name,DateAdded,Data) VALUES('",
-                            current.Name,
-                            "','",
-                            DateTime.Now.ToString("g"),
-                            "',@item",
+                            "INSERT INTO [Institution].[Gallery] (Name,DateAdded,Data) VALUES(@name",num,",@time,@item",
                             num,
                             ")\r\n"
                         });
@@ -633,9 +629,12 @@ namespace Helper
                         {
                             Value = (result2 == null) ? DBNull.Value : result2
                         });
+                        observableCollection.Add(new SqlParameter("@name" + num, current.Name));
+
                         num++;
                     }
                     text += "COMMIT";
+                    observableCollection.Add(new SqlParameter("@time", DateTime.Now.ToString("g")));
                     result = DataAccessHelper.ExecuteNonQueryWithParameters(text, observableCollection);
                 }
                 catch

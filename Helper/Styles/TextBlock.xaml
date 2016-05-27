@@ -37,8 +37,10 @@
 
     <Style x:Key="GroupTitle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="White"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+        <Setter Property="FontWeight" Value="Light"/>
     </Style>
     
     <Style x:Key="HeaderTextStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">

@@ -180,8 +180,10 @@
     <Compile Include="ViewModels\AdvancedSettingsVM.cs" />
     <Compile Include="ViewModels\AggregateResultsVM.cs" />
     <Compile Include="ViewModels\AllBooksVM.cs" />
+    <Compile Include="ViewModels\AllDonorsVM.cs" />
     <Compile Include="ViewModels\AllEventsVM.cs" />
     <Compile Include="ViewModels\AllGalleryItemsVM.cs" />
+    <Compile Include="ViewModels\AllProjectsVM.cs" />
     <Compile Include="ViewModels\AllUnreturnedBooksVM.cs" />
     <Compile Include="ViewModels\AssignNewClassVM.cs" />
     <Compile Include="ViewModels\BackupVM.cs" />
@@ -204,6 +206,8 @@
     <Compile Include="ViewModels\DisciplineDetailsVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerHistoryVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerVM.cs" />
+    <Compile Include="ViewModels\DonationsHistoryVM.cs" />
+    <Compile Include="ViewModels\DonationsVM.cs" />
     <Compile Include="ViewModels\DormitoryMembersVM.cs" />
     <Compile Include="ViewModels\EnterExamResultsBySubjectVM.cs" />
     <Compile Include="ViewModels\EnterExamResultsVM.cs" />
@@ -249,6 +253,8 @@
     <Compile Include="ViewModels\ModifySupplierVM.cs" />
     <Compile Include="ViewModels\NetworkOptionsVM.cs" />
     <Compile Include="ViewModels\NewBookVM.cs" />
+    <Compile Include="ViewModels\NewDonationVM.cs" />
+    <Compile Include="ViewModels\NewDonorVM.cs" />
     <Compile Include="ViewModels\NewDormitoryVM.cs" />
     <Compile Include="ViewModels\NewEmployeePaymentVM.cs" />
     <Compile Include="ViewModels\NewEventVM.cs" />
@@ -259,6 +265,8 @@
     <Compile Include="ViewModels\NewItemVM.cs" />
     <Compile Include="ViewModels\NewPaymentVoucherVM.cs" />
     <Compile Include="ViewModels\NewPaySlipVM.cs" />
+    <Compile Include="ViewModels\NewPledgeVM.cs" />
+    <Compile Include="ViewModels\NewProjectVM.cs" />
     <Compile Include="ViewModels\NewReportVM.cs" />
     <Compile Include="ViewModels\NewStaffVM.cs" />
     <Compile Include="ViewModels\NewStudentVM.cs" />
@@ -274,6 +282,8 @@
     <Compile Include="ViewModels\PayrollVM.cs" />
     <Compile Include="ViewModels\PayslipsHistoryVM.cs" />
     <Compile Include="ViewModels\PDFViewVM.cs" />
+    <Compile Include="ViewModels\ProjectsVM.cs" />
+    <Compile Include="ViewModels\ProjectTimelineVM.cs" />
     <Compile Include="ViewModels\QueryEditorVM.cs" />
     <Compile Include="ViewModels\QuickBooksVM.cs" />
     <Compile Include="ViewModels\ReceiveBooksVM.cs" />
@@ -338,6 +348,12 @@
     <Compile Include="Views\AccountsStatementOfCF.xaml.cs">
       <DependentUpon>AccountsStatementOfCF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AllDonors.xaml.cs">
+      <DependentUpon>AllDonors.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AllProjects.xaml.cs">
+      <DependentUpon>AllProjects.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AllUnreturnedBooks.xaml.cs">
       <DependentUpon>AllUnreturnedBooks.xaml</DependentUpon>
     </Compile>
@@ -364,6 +380,9 @@
     </Compile>
     <Compile Include="Views\CustomModules.xaml.cs">
       <DependentUpon>CustomModules.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Donations.xaml.cs">
+      <DependentUpon>Donations.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EventDetails.xaml.cs">
       <DependentUpon>EventDetails.xaml</DependentUpon>
@@ -395,11 +414,29 @@
     <Compile Include="Views\ModifyTimeTableFull.xaml.cs">
       <DependentUpon>ModifyTimeTableFull.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NewDonation.xaml.cs">
+      <DependentUpon>NewDonation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewDonor.xaml.cs">
+      <DependentUpon>NewDonor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NewPaySlip.xaml.cs">
       <DependentUpon>NewPaySlip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NewPledge.xaml.cs">
+      <DependentUpon>NewPledge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewProject.xaml.cs">
+      <DependentUpon>NewProject.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PayslipsHistory.xaml.cs">
       <DependentUpon>PayslipsHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Projects.xaml.cs">
+      <DependentUpon>Projects.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProjectTimeline.xaml.cs">
+      <DependentUpon>ProjectTimeline.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QuickBooksSync.xaml.cs">
       <DependentUpon>QuickBooksSync.xaml</DependentUpon>
@@ -860,6 +897,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AllDonors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AllProjects.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AllUnreturnedBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -893,6 +938,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CustomModules.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Donations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -936,11 +985,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\NewDonation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewDonor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NewPaySlip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\NewPledge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewProject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PayslipsHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Projects.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProjectTimeline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1665,6 +1738,24 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\avatar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\library.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\external.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\avatar2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bg.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

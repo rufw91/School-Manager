@@ -162,6 +162,16 @@ namespace UmanyiSMS.ViewModels
                 this.Source = new ExamsVM();
             }, o => true);
 
+            DisplayDonationsCommand = new RelayCommand(o =>
+            {
+                this.Source = new DonationsVM();
+            }, o => true);
+
+            DisplayProjectsCommand = new RelayCommand(o =>
+            {
+                this.Source = new ProjectsVM();
+            }, o => true);
+
             DisplayLibraryCommand = new RelayCommand(o =>
             {
                 this.Source = new LibraryVM();
@@ -511,6 +521,18 @@ namespace UmanyiSMS.ViewModels
         }
                 
         public ICommand DisplayLibraryCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand DisplayDonationsCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand DisplayProjectsCommand
         {
             get;
             private set;

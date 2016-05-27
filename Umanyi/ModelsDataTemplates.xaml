@@ -97,6 +97,29 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="ProjectTaskModel">
+        <Grid Height="100">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Name:" />
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding NameOfTask}" />
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Allocation:" />
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Allocation}" />
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Starts:" />
+            <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding StartDate, StringFormat={}{0:dd MMM yyyy}}" />
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Ends:" />
+            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding EndDate, StringFormat={}{0:dd MMM yyyy}}" />
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="FeesStructureEntryModel">
         <Grid Height="40">
             <Grid.RowDefinitions>

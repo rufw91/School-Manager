@@ -4,12 +4,14 @@
         xmlns:helper="clr-namespace:Helper.Controls;assembly=Helper"
         Title="Login" Height="350" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
     <Grid Name="mnGrid">
-        <Border Background="{DynamicResource Accent}" Height="120"  VerticalAlignment="Top"/>
+        <Border Background="{DynamicResource Accent2}" Height="120"  VerticalAlignment="Top">
+            <Border Background="{DynamicResource HomeTitleBrush}" VerticalAlignment="Bottom" Height="10"/>
+        </Border>
 
         <TextBlock HorizontalAlignment="Left" Margin="10,30,0,0" 
                    Text="{Binding Info.Name, Source={x:Static Application.Current}, Converter={StaticResource ToLowerConverter}}" VerticalAlignment="Top"
                    Style="{DynamicResource LargeTitle}" Foreground="White" FontSize="48"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,95,0,0" Text="MANAGEMENT SYSTEM" VerticalAlignment="Top"
+        <TextBlock HorizontalAlignment="Left" Margin="10,85,0,0" Text="MANAGEMENT SYSTEM" VerticalAlignment="Top"
                    Foreground="White" Style="{DynamicResource ContentTextSemiBold}"/>
 
 
