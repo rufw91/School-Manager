@@ -13,3 +13,21 @@ ic.column_id) AS ColumnName FROM sys.indexes AS i
     ;
 
 
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetTablePrimaryKeyColumn] TO [Teacher]
+    AS [dbo];
+
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetTablePrimaryKeyColumn] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetTablePrimaryKeyColumn] TO [Deputy]
+    AS [dbo];
+

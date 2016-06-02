@@ -9,10 +9,13 @@
     [City]            VARCHAR (50)     NULL,
     [PostalCode]      VARCHAR (50)     NULL,
     [SPhoto]          VARBINARY (MAX)  NULL,
+    [Designation]     VARCHAR (50)     NULL,
     [ModifiedDate]    DATETIME         CONSTRAINT [DF_Staff_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
     [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Staff_rowguid] DEFAULT (newid()) NOT NULL,
     CONSTRAINT [PK_Staff] PRIMARY KEY CLUSTERED ([StaffID] ASC)
 );
+
+
 
 
 GO

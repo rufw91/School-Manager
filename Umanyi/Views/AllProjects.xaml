@@ -6,6 +6,8 @@
                 <DataGridTextColumn Header="Project ID" Width="80*" Binding="{Binding Path=ProjectID}" />
                 <DataGridTextColumn Header="Name of Project" Width="170*" Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="Budget" Width="100*" Binding="{Binding Path=Budget, Mode=OneWay}" />
+                <DataGridTextColumn Header="Starts" Width="100*" Binding="{Binding Path=StartDate,StringFormat={}{0:dd MMM yyyy}, Mode=OneWay}" />
+                <DataGridTextColumn Header="Ends" Width="100*" Binding="{Binding Path=EndDate,StringFormat={}{0:dd MMM yyyy}, Mode=OneWay}" />
                 <DataGridTextColumn Header="Currently Allocated" Width="100*" Binding="{Binding Path=CurrentAllocation, Mode=OneWay, StringFormat={}{0:N2}}" />
             </DataGrid.Columns>
         </DataGrid>

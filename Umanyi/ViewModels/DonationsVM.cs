@@ -18,6 +18,7 @@ namespace UmanyiSMS.ViewModels
             base.TryAddChild(typeof(NewPledgeVM));
             base.TryAddChild(typeof(DonationsHistoryVM));
             base.TryAddChild(typeof(AllDonorsVM));
+
         }
     }
 }

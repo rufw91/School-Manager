@@ -12,6 +12,8 @@
 );
 
 
+
+
 GO
 CREATE TRIGGER [Institution].[TR_TimeTableSettings_UpdateID]
  ON [Institution].[TimeTableSettings] AFTER INSERT 
@@ -103,5 +105,17 @@ GRANT UPDATE
 GO
 GRANT SELECT
     ON OBJECT::[Institution].[TimeTableSettings] TO [User]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[TimeTableSettings] TO [Teacher]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[TimeTableSettings] TO [Accounts]
     AS [dbo];
 

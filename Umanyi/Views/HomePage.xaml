@@ -171,8 +171,8 @@
 
         <Grid Grid.Row="1" Background="#FF704F00">
             
-            <MediaElement Name="mediaE" Stretch="UniformToFill" Source="{Binding VideoSource}" Visibility="{Binding ShowVideoFeed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            <Controls:MyImage Stretch="UniformToFill" ImageSource="{Binding ImageSource, IsAsync=True}" Visibility="{Binding ShowImageFeed, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <MediaElement Name="mediaE" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Stop" IsMuted="{Binding IsMuted}" Source="{Binding VideoSource}" Visibility="{Binding ShowVideoFeed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <Controls:MyImage Stretch="Uniform" ImageSource="{Binding ImageSource, IsAsync=True}" Visibility="{Binding ShowImageFeed, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Controls:MyImage.Triggers>
                     <EventTrigger RoutedEvent="Controls:MyImage.ImageSourceChanged">
                         <BeginStoryboard>
@@ -184,6 +184,13 @@
                     </EventTrigger>
                 </Controls:MyImage.Triggers>
             </Controls:MyImage>
+            <hpb:SlideShowButtons Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,25"
+                                  HasAudioOrVideo="{Binding IsVisible, ElementName=mediaE}"
+                                  NextCommand="{Binding NextCommand}"
+                                  PauseCommand="{Binding PauseCommand}"
+                                  ResumeCommand="{Binding ResumeCommand}"
+                                  MuteCommand="{Binding MuteCommand}"
+                                  UnmuteCommand="{Binding UnmuteCommand}"/>
             <Grid Height="20" Margin="0,0,0,0" VerticalAlignment="Bottom">
                 <Grid.Background>
                     <LinearGradientBrush EndPoint="01,1" StartPoint="0,0">

@@ -2,6 +2,8 @@
     AUTHORIZATION [dbo];
 
 
+
+
 GO
 GRANT CONTROL
     ON SCHEMA::[Institution] TO [SystemAdmin];

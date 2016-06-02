@@ -1,4 +1,5 @@
 ﻿using Helper;
+using Helper.Controls;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,7 +16,7 @@ using System.Windows.Threading;
 namespace UmanyiSMS.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "None")]
-    public class HomePageVM: ViewModelBase
+    public class HomePageVM : ViewModelBase
     {
         private List<ItemInfo> filesInfo;
         private Window window;
@@ -25,15 +26,12 @@ namespace UmanyiSMS.ViewModels
         private Uri videoSource;
         DispatcherTimer t;
         int currIndex = 0;
+        private bool isMuted;
+        private TimeSpan currentMediaDuration;
         public HomePageVM()
         {
             InitVars();
             CreateCommands();            
-        }
-        ~ HomePageVM()
-        {
-            if (t!=null)
-            t.IsEnabled=false;
         }
 
         protected async override void InitVars()
@@ -43,8 +41,15 @@ namespace UmanyiSMS.ViewModels
             ImageSource = GetDefaultImage();
             filesInfo = await LoadFileInfos();
             if (filesInfo.Count>0)
-            t = new DispatcherTimer(new TimeSpan(0,0,20), DispatcherPriority.DataBind,LoadFeeds,Dispatcher.CurrentDispatcher);
+            t = new DispatcherTimer(new TimeSpan(0,0,15), DispatcherPriority.DataBind,LoadFeeds,Dispatcher.CurrentDispatcher);
+            
             t.Start();
+            PropertyChanged += (o, e1) =>
+                {
+                    if (e1.PropertyName == "VideoSource" && VideoSource != null && ShowVideoFeed)
+                        if (PlayAction != null)
+                            PlayAction.Invoke();
+                };
         }
 
         private Task<List<ItemInfo>> LoadFileInfos()
@@ -91,11 +96,45 @@ namespace UmanyiSMS.ViewModels
                 }
 
             }, o => true);
+
+            PauseCommand=new RelayCommand(o =>
+            {
+               t.Stop();
+                if (PauseAction!=null)
+                    PauseAction.Invoke();
+            }, o => t!=null&& t.IsEnabled);
+
+            ResumeCommand = new RelayCommand(o =>
+            {
+               t.Start();
+                if (PlayAction!=null)
+                    PlayAction.Invoke();
+            }, o => t != null && !t.IsEnabled);
+
+            MuteCommand = new RelayCommand(o =>
+            {
+                IsMuted = true;
+            }, o => showVideoFeed && t != null && t.IsEnabled);
+
+            UnmuteCommand = new RelayCommand(o =>
+            {
+                IsMuted = false;
+            }, o => showVideoFeed && t != null && t.IsEnabled && isMuted);
+
+            NextCommand = new RelayCommand(o =>
+            {
+                currIndex++;
+                LoadFeeds(null);
+            }, o => true);
         }
 
         private void LoadFeeds(object state, EventArgs e)
         {
-            
+            LoadFeeds(state);
+        }
+
+        internal void LoadFeeds(object state)
+        {
             if (currIndex >= filesInfo.Count)
                 currIndex = 0;
             string path = Task.Run<string>(async () => { return await LoadMediaData(filesInfo[currIndex]); }).Result;
@@ -107,6 +146,7 @@ namespace UmanyiSMS.ViewModels
                     ShowVideoFeed = false;
                 }
                 ImageSource = GetNextImage(path);
+                t.Interval = new TimeSpan(0,0,15);
                 VideoSource = null;
             }
             else
@@ -117,6 +157,12 @@ namespace UmanyiSMS.ViewModels
                     ShowImageFeed = false;
                 }
                 VideoSource = GetNextMedia(path);
+                this.PropertyChanged += (o, e) =>
+                    {
+                        if (e.PropertyName=="CurrentMediaDuration")
+                            t.Interval = CurrentMediaDuration;
+                    };
+                
             }
             currIndex++;
         }
@@ -181,14 +227,70 @@ namespace UmanyiSMS.ViewModels
             return true;
         }
 
+        public Action PlayAction
+        {
+            get;
+            set;
+        }
+
+        public Action PauseAction
+        {
+            get;
+            set;
+        }
+
         public ICommand LogoutCommand
         {
             get;
             private set;
         }
+
+        public ICommand PauseCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ResumeCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand MuteCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand UnmuteCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand NextCommand
+        {
+            get;
+            private set;
+        }
+
         public override void Reset()
         {
             
+        }
+
+        public bool IsMuted
+        {
+            get { return isMuted; }
+            set
+            {
+                if (value != this.isMuted)
+                {
+                    this.isMuted = value;
+                    NotifyPropertyChanged("IsMuted");
+                }
+            }
         }
 
         public bool ShowVideoFeed
@@ -257,5 +359,19 @@ namespace UmanyiSMS.ViewModels
             public string Name { get; set; }
         }
 
+
+
+        public TimeSpan CurrentMediaDuration
+        {
+            get { return currentMediaDuration; }
+            set
+            {
+                if (value != this.currentMediaDuration)
+                {
+                    this.currentMediaDuration = value;
+                    NotifyPropertyChanged("CurrentMediaDuration");
+                }
+            }
+        }
     }
 }

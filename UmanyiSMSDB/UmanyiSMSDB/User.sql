@@ -2,6 +2,8 @@
     AUTHORIZATION [dbo];
 
 
+
+
 GO
 GRANT ALTER
     ON ROLE::[User] TO [Principal]
@@ -12,4 +14,8 @@ GO
 GRANT CONTROL
     ON ROLE::[User] TO [Principal]
     WITH GRANT OPTION;
+
+
+GO
+EXECUTE sp_addrolemember @rolename = N'User', @membername = N'3';
 

@@ -1163,6 +1163,86 @@ namespace Helper
             }
             return result;
         }
+        public static Task<ObservableCollection<DonationModel>> GetDonationsAsync(int? donorID, DateTime? from, DateTime? to)
+        {
+            return Task.Run<ObservableCollection<DonationModel>>(() => DataAccess.GetDonations(donorID, from, to));
+        }
+
+        private static ObservableCollection<DonationModel> GetDonations(int? donorID, DateTime? from, DateTime? to)
+        {
+            ObservableCollection<DonationModel> observableCollection = new ObservableCollection<DonationModel>();
+            ObservableCollection<DonationModel> result;
+            try
+            {
+                string text = "SELECT dn.DonationID,dn.DonorID,d.NameOfDonor,dn.AmountDonated, dn.DonateTo,dn.[Type],dn.DateDonated FROM [Institution].[Donation] dn LEFT OUTER JOIN [Institution].[Donor]d ON(dn.DonorID=d.DonorID)";
+                if (donorID.HasValue)
+                {
+                    text = text + " WHERE dn.DonorID =" + donorID.Value;
+                    if (from.HasValue && to.HasValue)
+                    {
+                        string text2 = text;
+                        text = string.Concat(new string[]
+                        {
+                            text2,
+                            " AND dn.DateDonated BETWEEN CONVERT(datetime,'",
+                            from.Value.Day.ToString(),
+                            "/",
+                            from.Value.Month.ToString(),
+                            "/",
+                            from.Value.Year.ToString(),
+                            " 00:00:00.000') AND CONVERT(datetime,'",
+                            to.Value.Day.ToString(),
+                            "/",
+                            to.Value.Month.ToString(),
+                            "/",
+                            to.Value.Year.ToString(),
+                            " 23:59:59.998')"
+                        });
+                    }
+                }
+                else if (from.HasValue && to.HasValue)
+                {
+                    string text2 = text;
+                    text = string.Concat(new string[]
+                    {
+                        text2,
+                        " WHERE dn.DateDonated BETWEEN CONVERT(datetime,'",
+                        from.Value.Day.ToString(),
+                        "/",
+                        from.Value.Month.ToString(),
+                        "/",
+                        from.Value.Year.ToString(),
+                        " 00:00:00.000') AND CONVERT(datetime,'",
+                        to.Value.Day.ToString(),
+                        "/",
+                        to.Value.Month.ToString(),
+                        "/",
+                        to.Value.Year.ToString(),
+                        " 23:59:59.998')"
+                    });
+                }
+                DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(text);
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    observableCollection.Add(new DonationModel
+                    {
+                        DonationID = int.Parse(dataRow[0].ToString()),
+                        DonorID = int.Parse(dataRow[1].ToString()),
+                        NameOfDonor = dataRow[2].ToString(),
+                        Amount = decimal.Parse(dataRow[3].ToString()),
+                        DonateTo = (DonateTo)Enum.Parse(typeof(DonateTo), dataRow[4].ToString()),
+                        DateDonated = DateTime.Parse(dataRow[6].ToString())
+                    });
+                }
+                result = observableCollection;
+            }
+            catch
+            {
+                result = new ObservableCollection<DonationModel>();
+            }
+            return result;
+        }
+
 
         public static Task<ObservableCollection<PayslipModel>> GetEmployeePayslipsAsync(int? employeeId, DateTime? from, DateTime? to)
         {
@@ -7937,7 +8017,7 @@ namespace Helper
             ObservableCollection<ProjectListModel> observableCollection = new ObservableCollection<ProjectListModel>();
             string commandText = string.Concat(new object[]
             {
-                "SELECT p.ProjectID, p.NameOfProject,p.Budget, ISNULL(SUM(CONVERT(decimal(18,0),pd.Allocation)),0) FROM [Institution].[ProjectHeader] p LEFT OUTER JOIN [Institution].[ProjectDetail]pd ON (p.ProjectID=pd.ProjectID) WHERE p.StartDateTime >= CONVERT(datetime,'",
+                "SELECT p.ProjectID, p.NameOfProject,p.Budget, ISNULL(SUM(CONVERT(decimal(18,0),pd.Allocation)),0), p.StartDateTime,p.EndDateTime FROM [Institution].[ProjectHeader] p LEFT OUTER JOIN [Institution].[ProjectDetail]pd ON (p.ProjectID=pd.ProjectID) WHERE p.StartDateTime >= CONVERT(datetime,'",
                 startDate.Day,
                 "/",
                 startDate.Month,
@@ -7949,7 +8029,7 @@ namespace Helper
                 endDate.Month,
                 "/",
                 endDate.Year,
-                " 23:59:59.998') GROUP BY p.ProjectID, p.NameOfProject,p.Budget"
+                " 23:59:59.998') GROUP BY p.ProjectID, p.NameOfProject,p.Budget,p.StartDateTime,p.EndDateTime"
             });
             DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
@@ -7959,7 +8039,9 @@ namespace Helper
                     ProjectID = int.Parse(dataRow[0].ToString()),
                     Name = dataRow[1].ToString(),
                     Budget = decimal.Parse(dataRow[2].ToString()),
-                    CurrentAllocation = decimal.Parse(dataRow[3].ToString())
+                    CurrentAllocation = decimal.Parse(dataRow[3].ToString()),
+                    StartDate = DateTime.Parse(dataRow[4].ToString()),
+                EndDate = DateTime.Parse(dataRow[5].ToString())
                 });
             }
             return observableCollection;

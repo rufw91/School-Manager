@@ -2,12 +2,13 @@
     [PayoutDetailID] INT              CONSTRAINT [DF_PayoutDetail_PayoutDetailID] DEFAULT ([dbo].[Link_GetNewID]('Institution.PayoutDetail')) NOT NULL,
     [PayoutID]       INT              NOT NULL,
     [Description]    VARCHAR (50)     NOT NULL,
-    [DatePaid]       DATETIME         NOT NULL,
     [Amount]         VARCHAR (50)     NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_PayoutDetail_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_PayoutDetail_rowguid] DEFAULT (newid()) NOT NULL,
     CONSTRAINT [PK_PayoutDetail] PRIMARY KEY CLUSTERED ([PayoutDetailID] ASC)
 );
+
+
 
 
 GO

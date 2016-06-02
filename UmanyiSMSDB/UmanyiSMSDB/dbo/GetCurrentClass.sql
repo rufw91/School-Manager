@@ -1,12 +1,12 @@
-﻿CREATE FUNCTION [dbo].[GetCurrentClass](@studentID int)
+﻿CREATE FUNCTION [dbo].[GetCurrentClass](@studentID int, @period datetime)
     RETURNS int
     AS
     BEGIN
  DECLARE @currentClassID int;
- IF NOT EXISTS (SELECT ClassID FROM [Institution].[CurrentClass] WHERE StudentID=@studentID AND IsActive=1)
+ IF NOT EXISTS (SELECT ClassID FROM [Institution].[CurrentClass] WHERE StudentID=@studentID AND StartDateTime<@period AND EndDateTime>@period)
  RETURN 0
  ELSE
-    set @currentClassID = (SELECT ClassID FROM [Institution].[CurrentClass] WHERE StudentID=@studentID AND IsActive=1);
+    set @currentClassID = (SELECT ClassID FROM [Institution].[CurrentClass] WHERE StudentID=@studentID AND StartDateTime<@period AND EndDateTime>@period);
     
  RETURN @currentClassID;
  END

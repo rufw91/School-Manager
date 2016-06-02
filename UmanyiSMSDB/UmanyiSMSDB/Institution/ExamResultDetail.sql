@@ -12,6 +12,8 @@
 );
 
 
+
+
 GO
 CREATE TRIGGER [Institution].[TR_ExamResultDetail_UpdateID]
  ON [Institution].[ExamResultDetail] AFTER INSERT 
@@ -109,5 +111,11 @@ GRANT UPDATE
 GO
 GRANT SELECT
     ON OBJECT::[Institution].[ExamResultDetail] TO [User]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[ExamResultDetail] TO [Accounts]
     AS [dbo];
 

@@ -8,6 +8,8 @@
 );
 
 
+
+
 GO
 CREATE TRIGGER [Institution].[TR_ExamClassDetail_UpdateID]
  ON [Institution].[ExamClassDetail] AFTER INSERT 
@@ -99,5 +101,11 @@ GRANT SELECT
 GO
 GRANT UPDATE
     ON OBJECT::[Institution].[ExamClassDetail] TO [Teacher]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[ExamClassDetail] TO [Accounts]
     AS [dbo];
 

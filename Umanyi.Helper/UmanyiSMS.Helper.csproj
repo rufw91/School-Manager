@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\HomePageButton.cs" />
+    <Compile Include="Controls\SlideShowButtons.cs" />
     <Compile Include="Converters\ImageConverters.cs" />
     <Compile Include="Converters\ItemListToItemFindListConverter.cs" />
     <Compile Include="Credits.cs" />
@@ -391,6 +392,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\logo.png" />
+    <Resource Include="Resources\unmute.png" />
+    <Resource Include="Resources\mute.png" />
     <Content Include="Resources\noImage.png" />
     <Page Include="Resources\Payslip.xaml">
       <SubType>Designer</SubType>

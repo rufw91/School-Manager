@@ -4,8 +4,8 @@
     [LastName]            VARCHAR (50)     NOT NULL,
     [MiddleName]          VARCHAR (50)     NOT NULL,
     [NameOfStudent]       AS               (((([FirstName]+' ')+[MiddleName])+' ')+[LastName]),
-    [Gender]              VARCHAR (50)     NOT NULL,
-    [ClassID]             AS               ([dbo].[GetCurrentClass]([StudentID])),
+    [Gender]              VARCHAR (50)     NULL,
+    [ClassID]             AS               ([dbo].[GetCurrentClass]([StudentID],sysdatetime())),
     [DateOfBirth]         VARCHAR (50)     NOT NULL,
     [DateOfAdmission]     VARCHAR (50)     NOT NULL,
     [NameOfGuardian]      VARCHAR (50)     NOT NULL,
@@ -26,6 +26,8 @@
     [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Student_rowguid] DEFAULT (newid()) NOT NULL,
     CONSTRAINT [PK_Student] PRIMARY KEY CLUSTERED ([StudentID] ASC)
 );
+
+
 
 
 GO

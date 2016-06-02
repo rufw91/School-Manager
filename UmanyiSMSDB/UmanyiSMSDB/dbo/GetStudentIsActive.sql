@@ -2,9 +2,9 @@
     RETURNS bit
     AS
     BEGIN
- IF EXISTS (SELECT * FROM [Institution].[StudentClearance] WHERE StudentID=@studentID)
+ IF EXISTS (SELECT * FROM [Institution].[StudentClearance] WHERE StudentID=@studentID AND DateCleared<SYSDATETIME())
  RETURN 0;
-  IF EXISTS (SELECT * FROM [Institution].[StudentTransfer] WHERE StudentID=@studentID)
+  IF EXISTS (SELECT * FROM [Institution].[StudentTransfer] WHERE StudentID=@studentID AND DateTransferred<SYSDATETIME())
  RETURN 0;    
  RETURN 1;
  END

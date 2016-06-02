@@ -13,6 +13,8 @@
 );
 
 
+
+
 GO
 CREATE TRIGGER [Sales].[TR_SaleHeader_UpdateID]
  ON [Sales].[SaleHeader] AFTER INSERT 
@@ -82,5 +84,11 @@ GRANT SELECT
 GO
 GRANT UPDATE
     ON OBJECT::[Sales].[SaleHeader] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Sales].[SaleHeader] TO [Deputy]
     AS [dbo];
 

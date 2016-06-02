@@ -9,6 +9,8 @@
 );
 
 
+
+
 GO
 CREATE TRIGGER [Institution].[TR_ExamDetail_UpdateID]
  ON [Institution].[ExamDetail] AFTER INSERT 
@@ -106,5 +108,11 @@ GRANT UPDATE
 GO
 GRANT SELECT
     ON OBJECT::[Institution].[ExamDetail] TO [User]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[ExamDetail] TO [Accounts]
     AS [dbo];
 

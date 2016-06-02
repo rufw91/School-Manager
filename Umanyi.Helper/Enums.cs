@@ -25,5 +25,9 @@ namespace Helper
         OtherExpenses,
         OtherRevenue
     }
+
+    public enum MediaType { Image, AudioOrVideo }
+
+    public enum SlideshowStates { Playing, Paused }
     
 }

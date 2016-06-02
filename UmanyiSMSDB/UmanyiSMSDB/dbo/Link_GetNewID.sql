@@ -8,3 +8,21 @@
     ;
 
 
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[Link_GetNewID] TO [Teacher]
+    AS [dbo];
+
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[Link_GetNewID] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[Link_GetNewID] TO [Deputy]
+    AS [dbo];
+

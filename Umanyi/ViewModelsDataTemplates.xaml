@@ -62,7 +62,9 @@
         <views:Donations/>
     </DataTemplate>
     <!--Child View Models-->
-
+    <DataTemplate DataType="{x:Type viewModels:DonationsHistoryVM}" >
+        <views:DonationsHistory/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:NewDonorVM}" >
         <views:NewDonor/>
     </DataTemplate>

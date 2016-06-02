@@ -2,12 +2,16 @@
     [PayoutID]     INT              NOT NULL,
     [Payee]        VARCHAR (50)     NOT NULL,
     [Address]      VARCHAR (50)     NOT NULL,
+    [Category]     VARCHAR (50)     NULL,
     [Description]  VARCHAR (200)    NULL,
     [TotalPaid]    VARCHAR (50)     NOT NULL,
+    [DatePaid]     DATETIME         NULL,
     [ModifiedDate] DATETIME         CONSTRAINT [DF_PayoutHeader_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
     [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_PayoutHeader_rowguid] DEFAULT (newid()) NOT NULL,
     CONSTRAINT [PK_PayoutHeader] PRIMARY KEY CLUSTERED ([PayoutID] ASC)
 );
+
+
 
 
 GO

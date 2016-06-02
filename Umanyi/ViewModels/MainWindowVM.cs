@@ -30,11 +30,11 @@ namespace UmanyiSMS.ViewModels
             set
             {
                 if (value != this.source)
-                {                   
+                {
                     this.source = value;                    
                     NotifyPropertyChanged("Source");
                     if (!navigatingBack)
-                        BackJournal.Add(source);
+                        backJournal.Add(source);
                 }
             }
         }
@@ -46,6 +46,13 @@ namespace UmanyiSMS.ViewModels
         {
             navigatingBack = false;
             backJournal = new ObservableCollection<ViewModelBase>();
+            backJournal.CollectionChanged += (o, e) =>
+                {
+                    for (int i = 0; i < backJournal.Count; i++)
+                    {
+                        backJournal[i].IsActive = false;
+                    }
+                };
             Source = new HomePageVM();
         }
 
@@ -280,6 +287,8 @@ namespace UmanyiSMS.ViewModels
                 int index = backJournal.Count - 2;
                 backJournal.RemoveAt(index + 1);
                 this.Source = backJournal[index];
+                this.Source.IsActive = true;
+                
                 navigatingBack = false;
             }, o => CanGoBack());
         }

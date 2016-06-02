@@ -114,7 +114,7 @@ namespace UmanyiSMS
             catch(Exception e) { Log.E(e.ToString(),this); }
         }
 
-        private async void Application_Startup(object sender, StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
             SplashScreen splashScreen = new SplashScreen("/Resources/Starehe0078C8.png");
             splashScreen.Show(true);
@@ -123,6 +123,10 @@ namespace UmanyiSMS
             log = new ObservableImmutableList<string>();
             Log.Init(ref log);
             Log.I("Init Vars", this);
+
+            Helper.Properties.Settings.Default.Info = GetDefaultInfo();
+            Helper.Properties.Settings.Default.Save();
+
 
             if (Helper.Properties.Settings.Default.Info == null)
             {
@@ -192,6 +196,23 @@ namespace UmanyiSMS
                 catch { }
             }*/
 
+        }
+
+        private ApplicationPersistModel GetDefaultInfo()
+        {
+            ApplicationModel defaultInfo = new ApplicationModel();
+            defaultInfo.Address = "";
+            defaultInfo.AltInfo = "";
+            defaultInfo.City = "";
+            defaultInfo.Email = "";
+            defaultInfo.FullName = "I CAN FLY SCHOOL - MUVUTI";
+            defaultInfo.FullNameAlt = "I Can Fly High School";
+            defaultInfo.Motto = "Strive towards Excellence";
+            defaultInfo.Name = "I Can Fly";
+            defaultInfo.PhoneNo = "";
+            defaultInfo.SPhoto = null;
+            
+            return new ApplicationPersistModel(defaultInfo);
         }
         
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

@@ -3,10 +3,13 @@
     [StudentID]     INT              NOT NULL,
     [AmountPaid]    VARCHAR (50)     NOT NULL,
     [DatePaid]      DATETIME         NOT NULL,
+    [PaymentMethod] VARCHAR (50)     NULL,
     [ModifiedDate]  DATETIME         CONSTRAINT [DF_FeesPayment_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
     [rowguid]       UNIQUEIDENTIFIER CONSTRAINT [DF_FeesPayment_rowguid] DEFAULT (newid()) NOT NULL,
     CONSTRAINT [PK_FeesPayment] PRIMARY KEY CLUSTERED ([FeesPaymentID] ASC)
 );
+
+
 
 
 GO

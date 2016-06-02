@@ -1,9 +1,6 @@
 ﻿CREATE TABLE [Institution].[StudentTranscriptHeader] (
     [StudentTranscriptID]  INT              NOT NULL,
     [StudentID]            INT              NOT NULL,
-    [Exam1ID]              INT              NULL,
-    [Exam2ID]              INT              NULL,
-    [Exam3ID]              INT              NULL,
     [IsActive]             BIT              CONSTRAINT [DF_StudentTranscriptHeader_IsActive] DEFAULT ((1)) NULL,
     [Responsibilities]     VARCHAR (50)     NULL,
     [ClubsAndSport]        VARCHAR (50)     NULL,
@@ -14,14 +11,13 @@
     [PrincipalComments]    VARCHAR (50)     NULL,
     [OpeningDay]           DATETIME         NULL,
     [ClosingDay]           DATETIME         NULL,
-    [Term1Pos]             VARCHAR (50)     NULL,
-    [Term2Pos]             VARCHAR (50)     NULL,
-    [Term3Pos]             VARCHAR (50)     NULL,
     [DateSaved]            DATETIME         NOT NULL,
     [ModifiedDate]         DATETIME         CONSTRAINT [DF_StudentTranscriptHeader_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
     [rowguid]              UNIQUEIDENTIFIER CONSTRAINT [DF_StudentTranscriptHeader_rowguid] DEFAULT (newid()) NOT NULL,
     CONSTRAINT [PK_StudentTranscriptHeader] PRIMARY KEY CLUSTERED ([StudentTranscriptID] ASC)
 );
+
+
 
 
 GO
@@ -123,3 +119,21 @@ GRANT UPDATE
     ON OBJECT::[Institution].[StudentTranscriptHeader] TO [Teacher]
     AS [dbo];
 
+
+GO
+CREATE TRIGGER [Institution].[TR_StudentTranscriptHeader_SetActive_EndDate]
+ ON [Institution].[StudentTranscriptHeader] AFTER INSERT 
+ NOT FOR REPLICATION
+AS
+BEGIN
+ IF @@ROWCOUNT = 0 RETURN
+ SET NOCOUNT ON;
+
+ IF exists (SELECT * FROM inserted)
+   BEGIN
+   declare @id int;
+   set @id = (SELECT TOP 1 StudentTranscriptID FROM [Institution].[StudentTranscriptHeader] ORDER BY DateSaved DESC)
+     UPDATE [Institution].[StudentTranscriptHeader] SET IsActive = 0 WHERE StudentTranscriptID <>@id;
+     UPDATE [Institution].[StudentTranscriptHeader] SET IsActive = 1 WHERE StudentTranscriptID =@id;
+   END
+END

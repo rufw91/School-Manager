@@ -5,11 +5,13 @@
     [AvailableQuantity]   FLOAT (53)       NOT NULL,
     [Expected]            AS               ([dbo].[GetCurrentQuantity]([ItemID])),
     [VarianceQty]         AS               ([dbo].[GetCurrentQuantity]([ItemID])-[AvailableQuantity]),
-    [VariancePc]          AS               ((([dbo].[GetCurrentQuantity]([ItemID])-[AvailableQuantity])*(100))/[dbo].[GetCurrentQuantity]([ItemID])),
+    [VariancePc]          AS               (([dbo].[GetCurrentQuantity]([ItemID])-[AvailableQuantity])*(100)),
     [ModifiedDate]        DATETIME         CONSTRAINT [DF_StockTakingDetail_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
     [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_StockTakingDetail_rowguid] DEFAULT (newid()) NOT NULL,
     CONSTRAINT [PK_StockTakingDetail] PRIMARY KEY CLUSTERED ([StockTakingDetailID] ASC)
 );
+
+
 
 
 GO

@@ -384,6 +384,9 @@
     <Compile Include="Views\Donations.xaml.cs">
       <DependentUpon>Donations.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DonationsHistory.xaml.cs">
+      <DependentUpon>DonationsHistory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EventDetails.xaml.cs">
       <DependentUpon>EventDetails.xaml</DependentUpon>
     </Compile>
@@ -942,6 +945,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Donations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DonationsHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

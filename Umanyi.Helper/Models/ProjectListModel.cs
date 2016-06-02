@@ -7,6 +7,41 @@ namespace Helper.Models
         private decimal budget;
 
         private decimal curentAllocation;
+        private DateTime endDate;
+        private DateTime startDate;
+
+
+        public DateTime StartDate
+        {
+            get
+            {
+                return this.startDate;
+            }
+            set
+            {
+                if (value != this.startDate)
+                {
+                    this.startDate = value;
+                    base.NotifyPropertyChanged("StartDate");
+                }
+            }
+        }
+
+        public DateTime EndDate
+        {
+            get
+            {
+                return this.endDate;
+            }
+            set
+            {
+                if (value != this.endDate)
+                {
+                    this.endDate = value;
+                    base.NotifyPropertyChanged("EndDate");
+                }
+            }
+        }
 
         public decimal Budget
         {

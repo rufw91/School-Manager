@@ -25,7 +25,7 @@ namespace Helper.Models
                 if (value != this.donationID)
                 {
                     this.donationID = value;
-                    base.NotifyPropertyChanged("DonatetionID");
+                    base.NotifyPropertyChanged("DonationID");
                 }
             }
         }
@@ -82,7 +82,6 @@ namespace Helper.Models
         {
             this.DonateTo = DonateTo.Fees;
             this.DateDonated = DateTime.Now;
-            this.CheckErrors();
         }
 
         public override void Reset()

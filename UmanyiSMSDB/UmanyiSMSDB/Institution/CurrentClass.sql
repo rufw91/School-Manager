@@ -2,11 +2,15 @@
     [CurrentClassID] INT              CONSTRAINT [DF_CurrentClass_CurrentClassID] DEFAULT ([dbo].[Link_GetNewID]('Institution.CurrentClass')) NOT NULL,
     [StudentID]      INT              NOT NULL,
     [ClassID]        INT              NOT NULL,
+    [StartDateTime]  DATETIME         NULL,
+    [EndDateTime]    DATETIME         NULL,
     [IsActive]       BIT              CONSTRAINT [DF_CurrentClass_IsActive] DEFAULT ((1)) NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_CurrentClass_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_CurrentClass_rowguid] DEFAULT (newid()) NOT NULL,
     CONSTRAINT [PK_CurrentClass] PRIMARY KEY CLUSTERED ([CurrentClassID] ASC)
 );
+
+
 
 
 GO

@@ -9,6 +9,8 @@
 );
 
 
+
+
 GO
 CREATE TRIGGER [Institution].[TR_ExamHeader_UpdateID]
  ON [Institution].[ExamHeader] AFTER INSERT 
@@ -106,5 +108,11 @@ GRANT UPDATE
 GO
 GRANT SELECT
     ON OBJECT::[Institution].[ExamHeader] TO [User]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[ExamHeader] TO [Accounts]
     AS [dbo];
 

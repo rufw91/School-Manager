@@ -9,6 +9,8 @@
 );
 
 
+
+
 GO
 CREATE TRIGGER [Institution].[TR_StudentTranscriptDetail_UpdateID]
  ON [Institution].[StudentTranscriptDetail] AFTER INSERT 
@@ -29,4 +31,82 @@ BEGIN
    END
 END
 
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Teacher]
+    AS [dbo];
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Teacher]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Accounts]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Teacher]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Teacher]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[StudentTranscriptDetail] TO [Deputy]
+    AS [dbo];
 
