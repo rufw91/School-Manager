@@ -12,6 +12,7 @@ namespace Helper
         ObservableCollection<ViewModelBase> menuItems;
         ObservableCollection<ViewModelBase> hiddenMenuItems;
         private  ViewModelBase activeView;
+        private bool persistViews;
         public ParentViewModel()
         {
             menuItems = new ObservableCollection<ViewModelBase>();
@@ -22,6 +23,7 @@ namespace Helper
                 if (menuItems.Count > 0)
                     ActiveView = menuItems[0];
             };
+            PersistViews = false;
         }
         protected override void InitVars()
         {
@@ -32,9 +34,10 @@ namespace Helper
         {
             get
             {
-                if (activeView != null)
-                    return (ViewModelBase)Activator.CreateInstance(activeView.GetType());
-                else return activeView;
+                if (persistViews)
+                    return activeView;
+                else return (ViewModelBase)Activator.CreateInstance(activeView.GetType());
+                 
             }
             set
             {
@@ -46,6 +49,22 @@ namespace Helper
                     if (activeView != null)
                     activeView.IsActive = true;
                     NotifyPropertyChanged("ActiveView");
+                }
+            }
+        }
+
+        public bool PersistViews
+        {
+            get
+            {
+                return persistViews;
+            }
+            set
+            {
+                if (persistViews != value)
+                {
+                    persistViews = value;
+                    NotifyPropertyChanged("PersistViews");
                 }
             }
         }
