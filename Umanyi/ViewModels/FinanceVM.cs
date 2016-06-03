@@ -30,8 +30,8 @@ namespace UmanyiSMS.ViewModels
         {
             if (isVisible)
             {
-                TryAddChild(typeof(NewDonorVM), false);25.5.2016
-                TryAddChild(typeof(PaymentsByVoteHeadVM), false);
+               // TryAddChild(typeof(NewDonorVM), false);25.5.2016
+                //TryAddChild(typeof(PaymentsByVoteHeadVM), false);
             }
         }
     }
