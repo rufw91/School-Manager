@@ -19,8 +19,8 @@ using UmanyiSMS.Views;
 
 namespace UmanyiSMS
 {
-    public partial class App : Application, ISingleInstanceApp,IApp
-    {       
+    public partial class App : Application, ISingleInstanceApp, IApp
+    {
         private const string Unique = "UmanyiSMS";
         private static ApplicationModel info;
         private IImmutableList<string> log;
@@ -33,8 +33,8 @@ namespace UmanyiSMS
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
             if (SingleInstance<App>.InitializeAsFirstInstance(Unique))
             {
-                
-                 var application = new App();
+
+                var application = new App();
 
                 application.InitializeComponent();
                 application.Run();
@@ -45,7 +45,7 @@ namespace UmanyiSMS
             }
         }
         #region ISingleInstanceApp Members
-        
+
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
             if (this.MainWindow == null)
@@ -82,7 +82,7 @@ namespace UmanyiSMS
         {
             try
             {
-                
+
                 MainWindow m = (Application.Current.MainWindow as MainWindow);
                 if (m != null)
                 {
@@ -96,10 +96,10 @@ namespace UmanyiSMS
         }
 
         private void InitGlobalVar()
-        {            
+        {
             try
             {
-                
+
                 Info = new ApplicationModel(Helper.Properties.Settings.Default.Info);
                 if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.DBName))
                     Helper.Properties.Settings.Default.DBName = "UmanyiSMS";
@@ -107,11 +107,11 @@ namespace UmanyiSMS
                     Helper.Properties.Settings.Default.MostRecentBackup = "";
 
                 Helper.Properties.Settings.Default.PropertyChanged += (o, e) =>
-                    {
-                        Helper.Properties.Settings.Default.Save();
-                    };
+                {
+                    Helper.Properties.Settings.Default.Save();
+                };
             }
-            catch(Exception e) { Log.E(e.ToString(),this); }
+            catch (Exception e) { Log.E(e.ToString(), this); }
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -123,6 +123,10 @@ namespace UmanyiSMS
             log = new ObservableImmutableList<string>();
             Log.Init(ref log);
             Log.I("Init Vars", this);
+
+            Helper.Properties.Settings.Default.Info = GetDefaultInfo();
+            Helper.Properties.Settings.Default.Save();
+
 
             if (Helper.Properties.Settings.Default.Info == null)
             {
@@ -138,22 +142,22 @@ namespace UmanyiSMS
                 cm.WindowState = WindowState.Maximized;
                 bool canClose = false;
                 bool isExiting = false;
-                cm.DataContextChanged += (o,e1) =>
-                  {
-                      InstitutionSetupVM vm = cm.DataContext as InstitutionSetupVM;
-                      if (vm != null)
-                          vm.CloseWindowAction = () =>
-                          {
-                              canClose = true;
-                              cm.Close();
-                          };
-                     
-                  };
+                cm.DataContextChanged += (o, e1) =>
+                {
+                    InstitutionSetupVM vm = cm.DataContext as InstitutionSetupVM;
+                    if (vm != null)
+                        vm.CloseWindowAction = () =>
+                        {
+                            canClose = true;
+                            cm.Close();
+                        };
+
+                };
                 cm.Closed += (o2, e2) =>
-                  {
-                      if (!canClose)
-                          isExiting = true;
-                  };
+                {
+                    if (!canClose)
+                        isExiting = true;
+                };
                 cm.ShowDialog();
                 if (isExiting)
                 {
@@ -161,25 +165,25 @@ namespace UmanyiSMS
                     return;
                 }
 
-               Restart();
+                Restart();
                 return;
             }
-                       
-            InitGlobalVar();
-            
 
-           /* if (!await ActivationHelper.LicenseExists())
-                new InvalidLicense().ShowDialog();
-            */
-           // if (await ActivationHelper.IsActivated())
+            InitGlobalVar();
+
+
+            /* if (!await ActivationHelper.LicenseExists())
+                 new InvalidLicense().ShowDialog();
+             */
+            // if (await ActivationHelper.IsActivated())
             //{
-                try
-                {
-                    Login lg = new Login();
-                    MainWindow = lg;
-                    lg.ShowDialog();
-                }
-                catch { }
+            try
+            {
+                Login lg = new Login();
+                MainWindow = lg;
+                lg.ShowDialog();
+            }
+            catch { }
             /*}
             else
             {
@@ -193,15 +197,32 @@ namespace UmanyiSMS
             }*/
 
         }
-        
+
+        private ApplicationPersistModel GetDefaultInfo()
+        {
+            ApplicationModel defaultInfo = new ApplicationModel();
+            defaultInfo.Address = "80 - 90108";
+            defaultInfo.AltInfo = "Catholic Mission";
+            defaultInfo.City = "Kola";
+            defaultInfo.Email = "stmarysgirlskola@yahoo.com";
+            defaultInfo.FullName = "ST MARYS GIRLS - KOLA";
+            defaultInfo.FullNameAlt = "St Marys Girls Secondary School";
+            defaultInfo.Motto = "In Pursuit of Excellence";
+            defaultInfo.Name = "St Marys Girls";
+            defaultInfo.PhoneNo = "+254 721 437 475";
+            defaultInfo.SPhoto = null;
+
+            return new ApplicationPersistModel(defaultInfo);
+        }
+
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        {            
+        {
             Log.E(e.Exception.ToString(), this);
-            e.Handled = true;            
+            e.Handled = true;
         }
 
         private void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
-        {        
+        {
         }
     }
 }
