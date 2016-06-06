@@ -20,6 +20,7 @@ namespace UmanyiSMS.ViewModels
 
         protected async override void InitVars()
         {
+            Title = "NEW SUPPLIER PAYMENT";
             IsBusy = true;
             NewPayment = new SupplierPaymentModel();
             AllSuppliers = await DataAccess.GetAllSuppliersAsync();

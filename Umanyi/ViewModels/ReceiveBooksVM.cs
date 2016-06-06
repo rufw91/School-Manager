@@ -25,7 +25,7 @@ namespace UmanyiSMS.ViewModels
 
         protected async override void InitVars()
         {
-            Title = "Receive Books";
+            Title = "NEW BOOK PURCHASE";
             IsBusy = true;
             NewReceipt = new BooksPurchaseModel();
             AllSuppliers = await DataAccess.GetAllSuppliersAsync();

@@ -51,16 +51,6 @@ namespace UmanyiSMS.ViewModels
 
         protected override void CreateCommands()
         {
-            DisplayReceiveBooksCommand = new RelayCommand(o =>
-            {
-                this.Source = new ReceiveBooksVM();
-            }, o => true);
-
-            DisplayBooksReceiptHistoryCommand = new RelayCommand(o =>
-            {
-                this.Source = new BookReceiptHistoryVM();
-            }, o => true);
-
             DisplayAcademicReportCommand = new RelayCommand(o =>
             {
                 this.Source = new AcademicReportVM();
@@ -96,10 +86,6 @@ namespace UmanyiSMS.ViewModels
                 this.Source = new EventsReportVM();
             }, o => true);
 
-            DisplayIssueItemsCommand = new RelayCommand(o =>
-            {
-                this.Source = new IssueItemsVM();
-            }, o => true);
             DisplayDisciplineDetailCommand = new RelayCommand(o =>
             {
                 this.Source = new DisciplineDetailsVM((DisciplineModel)o);
@@ -109,14 +95,7 @@ namespace UmanyiSMS.ViewModels
                 if (AboutAction != null)
                     AboutAction.Invoke();
             }, o => true);
-            DisplayVATAnalysisCommand = new RelayCommand(o =>
-            {
-                this.Source = new VATAnalysisVM();
-            }, o => true);
-            DisplayNewVATRateCommand = new RelayCommand(o =>
-            {
-                this.Source = new NewVATRateVM();
-            }, o => true);
+
             DisplayStudentDetailCommand = new RelayCommand(o =>
             {
                 this.Source = new StudentDetailsVM((StudentListModel)o);
@@ -135,6 +114,11 @@ namespace UmanyiSMS.ViewModels
             DisplayCustomModulesCommand = new RelayCommand(o =>
             {
                 this.Source = new CustomModulesVM();
+            }, o => true);
+
+            DisplayAccountsCommand = new RelayCommand(o =>
+            {
+                this.Source = new AccountsVM();
             }, o => true);
 
             DisplayStudentsCommand = new RelayCommand(o =>
@@ -193,75 +177,21 @@ namespace UmanyiSMS.ViewModels
             }, o => true);
 
             #region Inventory Mgmt
-            DisplayNewItemCommand = new RelayCommand(o =>
+            DisplayItemsCommand = new RelayCommand(o =>
             {
-                this.Source = new NewItemVM();
+                this.Source = new ItemsVM();
             }, o => true);
 
-            DisplayNewItemCategoryCommand = new RelayCommand(o =>
+            DisplaySuppliersCommand = new RelayCommand(o =>
             {
-                this.Source = new NewItemCategoryVM();
+                this.Source = new SuppliersVM();
             }, o => true);
 
-            DisplayReceiveItemsCommand = new RelayCommand(o =>
+            DisplayBooksCommand = new RelayCommand(o =>
             {
-                this.Source = new ReceiveItemsVM();
+                this.Source = new BooksVM();
             }, o => true);
 
-            DisplayItemListCommand = new RelayCommand(o =>
-            {
-                this.Source = new ItemListVM();
-            }, o => true);
-
-            DisplayModifyItemCommand = new RelayCommand(o =>
-            {
-                this.Source = new ModifyItemVM();
-            }, o => true);
-
-            DisplayItemReceiptHistoryCommand = new RelayCommand(o =>
-            {
-                this.Source = new ItemReceiptHistoryVM();
-            }, o => true);
-
-            DisplayItemIssueHistoryCommand = new RelayCommand(o =>
-            {
-                this.Source = new ItemIssueHistoryVM();
-            }, o => true); 
-            
-            DisplaySupplierListCommand = new RelayCommand(o =>
-            {
-                this.Source = new SupplierListVM();
-            }, o => true);
-
-            DisplayModifySupplierCommand = new RelayCommand(o =>
-        {
-            this.Source = new ModifySupplierVM();
-        }, o => true);
-            DisplayNewSupplierPaymentCommand = new RelayCommand(o =>
-            {
-                this.Source = new PaymentToSupplierVM();
-            }, o => true);
-
-            DisplayNewSupplierCommand = new RelayCommand(o =>
-            {
-                this.Source = new NewSupplierVM();
-            }, o => true);
-
-            DisplaySupplierPaymentsHistoryCommand = new RelayCommand(o =>
-            {
-                this.Source = new PaymentToSupplierHistoryVM();
-            }, o => true);
-
-            DisplayStockTakeResultsCommand = new RelayCommand(o =>
-            {
-                this.Source = new StockTakeResultsVM();
-            }, o => true);
-
-            DisplayNewStockTakingCommand = new RelayCommand(o =>
-            {
-                this.Source = new StockTakingVM();
-            }, o => true);
-            
             #endregion
 
             BackCommand = new RelayCommand(o =>
@@ -282,95 +212,24 @@ namespace UmanyiSMS.ViewModels
         }
 
         #region Inventory Mgmt
-        public ICommand DisplayVATAnalysisCommand
+        public ICommand DisplayItemsCommand
         {
             get;
             private set;
         }
 
-        public ICommand DisplayNewVATRateCommand
+        public ICommand DisplayBooksCommand
         {
             get;
             private set;
         }
 
-        public ICommand DisplayStockTakeResultsCommand
+        public ICommand DisplaySuppliersCommand
         {
             get;
             private set;
         }
 
-        public ICommand DisplayNewStockTakingCommand
-        {
-            get;
-            private set;
-        }
-            
-        public ICommand DisplaySupplierPaymentsHistoryCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand DisplaySupplierListCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand DisplayModifySupplierCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand DisplayNewSupplierPaymentCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand DisplayNewSupplierCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand DisplayItemReceiptHistoryCommand
-        {
-            get;
-            private set;
-        }
-        
-        public ICommand DisplayReceiveItemsCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand DisplayNewItemCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand DisplayItemListCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand DisplayNewItemCategoryCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand DisplayModifyItemCommand
-        {
-            get;
-            private set;
-        }
         #endregion
 
         
@@ -384,19 +243,13 @@ namespace UmanyiSMS.ViewModels
         {
             get;
             private set;
-        }        
+        }
 
-        public ICommand DisplayReceiveBooksCommand
+        public ICommand DisplayAccountsCommand
         {
             get;
             private set;
-        }
-
-        public ICommand DisplayBooksReceiptHistoryCommand
-        {
-            get;
-            private set;
-        }
+        }   
 
         public ICommand DisplayAcademicReportCommand
         {
@@ -444,18 +297,7 @@ namespace UmanyiSMS.ViewModels
             get;
             private set;
         }
-
-        public ICommand DisplayItemIssueHistoryCommand
-        {
-            get;
-            private set;
-        }
-        
-        public ICommand DisplayIssueItemsCommand
-        {
-            get;
-            private set;
-        }
+                
         public ICommand DisplayDisciplineDetailCommand
         {
             get;

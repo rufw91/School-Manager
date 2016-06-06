@@ -23,7 +23,7 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             IsBusy = true;
-            Title = "Item List";
+            Title = "ITEMS LIST";
             IsReadOnly = true;
             Task<ObservableCollection<ItemListModel>> pTemp = DataAccess.GetAllItemsWithCurrentQuantityAsync();
             Task<ObservableCollection<ItemListModel>> cTemp = DataAccess.GetAllItemsWithCurrentQuantityAsync();

@@ -15,7 +15,6 @@ namespace UmanyiSMS.ViewModels
         {
             TryAddChild(typeof(SyncCloudVM));
             TryAddChild(typeof(QuickBooksSyncVM));
-            TryAddChild(typeof(AccountsVM));
         }
     }
 }

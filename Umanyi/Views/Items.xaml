@@ -4,36 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:UmanyiSMS.Views"
-            mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="900"
+            Tag="Items"
+             Style="{StaticResource TopWindow}"
 	Background="White">
-
-    <Grid >
-        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Items" VerticalAlignment="Top"/>
-        <TextBlock Style="{DynamicResource ContentTextSemiBold}" HorizontalAlignment="Left" Margin="40,60,0,0" VerticalAlignment="Top">
-            Manage Inventory items from this portal.
-        </TextBlock>
-        <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,120,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DataContext.DisplayIssueItemsCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Issue Items</Hyperlink>
-        </TextBlock>
-        <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,150,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DataContext.DisplayReceiveItemsCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Receive Items</Hyperlink>
-        </TextBlock>
-        <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,180,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DataContext.DisplayNewItemCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">New Item</Hyperlink>
-        </TextBlock>
-        <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,210,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DataContext.DisplayModifyItemCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Modify Item</Hyperlink>
-        </TextBlock>
-        <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,240,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DataContext.DisplayItemListCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Item List</Hyperlink>
-        </TextBlock>
-        <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,270,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DataContext.DisplayItemReceiptHistoryCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Item Receipt History</Hyperlink>
-        </TextBlock>
-        <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,300,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DataContext.DisplayItemIssueHistoryCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Item Issue History</Hyperlink>
-        </TextBlock>
-
-    </Grid>
 </UserControl>

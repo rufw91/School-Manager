@@ -22,7 +22,7 @@ namespace UmanyiSMS.ViewModels
         protected override void InitVars()
         {
             IsBusy = true;
-            Title = "Item Receipt History";
+            Title = "PURCHASE HISTORY";
             From = DateTime.Now.Date.AddDays(-5);
             To = DateTime.Now.Date;
             Items = new ObservableCollection<PurchaseModel>();
