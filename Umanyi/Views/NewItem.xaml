@@ -6,75 +6,47 @@
              d:DesignHeight="722" d:DesignWidth="1024"
              mc:Ignorable="d"
 	 Background="White">
-    <UserControl.Resources>
-        <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
-    </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <!-- Back button and page title -->
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Border Grid.ColumnSpan="2" Background="{DynamicResource TitleBackgroundBrush}"/>
-            <Button x:Name="backButton" Margin="39,40,21,0" 
-                        Style="{StaticResource BackButtonX}"
-                        VerticalAlignment="Top"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="New Item" Style="{StaticResource HeaderTextStyle}" Grid.Column="1" HorizontalAlignment="Left"
-                        IsHitTestVisible="false" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
 
-        </Grid>
-
-        <Grid Grid.Row="1">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130*"/>
-                <ColumnDefinition Width="120*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Item Details" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top"
-                       Style="{DynamicResource SmallTitle}"/>
-            <TextBlock  HorizontalAlignment="Left" Margin="30,80,0,0" Text="Item ID" VerticalAlignment="Top" />
-            <TextBox  Margin="110,80,55,0" VerticalAlignment="Top" MaxLength="18"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130*"/>
+            <ColumnDefinition Width="120*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="New Item" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top"
+                       Style="{DynamicResource Title}"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="30,80,0,0" Text="Item ID" VerticalAlignment="Top" />
+        <TextBox  Margin="110,80,55,0" VerticalAlignment="Top" MaxLength="18"
                       Text="{Binding NewItem.ItemID, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="23"/>
 
-            <TextBlock  HorizontalAlignment="Left" Margin="30,130,0,0" Text="Description" VerticalAlignment="Top" />
-            <TextBox  Margin="110,130,55,0" VerticalAlignment="Top" MaxLength="49"
+        <TextBlock  HorizontalAlignment="Left" Margin="30,130,0,0" Text="Description" VerticalAlignment="Top" />
+        <TextBox  Margin="110,130,55,0" VerticalAlignment="Top" MaxLength="49"
                   Text="{Binding NewItem.Description, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="23"/>
 
-            <TextBlock  HorizontalAlignment="Left" Margin="30,180,0,0" Text="Category" VerticalAlignment="Top" />
-            <ComboBox  Margin="110,180,55,0" VerticalAlignment="Top" 
+        <TextBlock  HorizontalAlignment="Left" Margin="30,180,0,0" Text="Category" VerticalAlignment="Top" />
+        <ComboBox  Margin="110,180,55,0" VerticalAlignment="Top" 
                     	DisplayMemberPath="Description" SelectedValuePath="ItemCategoryID" 
                     	SelectedValue="{Binding NewItem.ItemCategoryID, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     	ItemsSource="{Binding AllItemCategories}"/>
-            <CheckBox Name="cbtaxable" Content="Is Taxable" HorizontalAlignment="Left" Margin="53,268,0,0" VerticalAlignment="Top"
+        <CheckBox Name="cbtaxable" Content="Is Taxable" HorizontalAlignment="Left" Margin="53,268,0,0" VerticalAlignment="Top"
                   IsChecked="{Binding IsTaxable}"/>
 
-            <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0"  Text="VAT" VerticalAlignment="Top" Grid.Column="1"/>
-            <ComboBox Margin="135,80,40,0" VerticalAlignment="Top" Grid.Column="1"
+        <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0"  Text="VAT" VerticalAlignment="Top" Grid.Column="1"/>
+        <ComboBox Margin="135,80,40,0" VerticalAlignment="Top" Grid.Column="1"
                   DisplayMemberPath="Description" SelectedValuePath="VatID" 
                   SelectedValue="{Binding NewItem.VatID, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding AllVats}"
                   IsEnabled="{Binding IsChecked, ElementName=cbtaxable}"/>
 
-            <TextBlock HorizontalAlignment="Left" Margin="30,130,0,0" Text="Price" VerticalAlignment="Top" Width="79" TextWrapping="WrapWithOverflow" Grid.Column="1" />
-            <TextBox  Margin="135,130,40,0" VerticalAlignment="Top" Height="23" Grid.Column="1" MaxLength="15"
+        <TextBlock HorizontalAlignment="Left" Margin="30,130,0,0" Text="Price" VerticalAlignment="Top" Width="79" TextWrapping="WrapWithOverflow" Grid.Column="1" />
+        <TextBox  Margin="135,130,40,0" VerticalAlignment="Top" Height="23" Grid.Column="1" MaxLength="15"
                   Text="{Binding NewItem.Price, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock  HorizontalAlignment="Left" Margin="30,180,0,0" Text="Start Quantity" VerticalAlignment="Top" Grid.Column="1" />
-            <TextBox Margin="135,180,40,0"  VerticalAlignment="Top"  Grid.Column="1" MaxLength="15"
+        <TextBlock  HorizontalAlignment="Left" Margin="30,180,0,0" Text="Start Quantity" VerticalAlignment="Top" Grid.Column="1" />
+        <TextBox Margin="135,180,40,0"  VerticalAlignment="Top"  Grid.Column="1" MaxLength="15"
                       Text="{Binding NewItem.StartQuantity, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Save" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="90"
+        <Button Content="Save" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="90"
                 Command="{Binding SaveCommand}"/>
 
-
-        </Grid>
 
     </Grid>
 </UserControl>

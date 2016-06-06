@@ -22,7 +22,7 @@ namespace UmanyiSMS.ViewModels
         protected override void InitVars()
         {
             IsBusy = true;
-            Title = "Suppliers Payments History";
+            Title = "SUPPLIER PAYMENTS HISTORY";
             From = DateTime.Now.Date.AddDays(-5);
             To = DateTime.Now.Date;
             Items = new ObservableCollection<SupplierPaymentModel>();

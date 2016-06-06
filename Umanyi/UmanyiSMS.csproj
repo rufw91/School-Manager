@@ -172,7 +172,6 @@
     <Compile Include="ViewModels\AccountsGeneralLedgerVM.cs" />
     <Compile Include="ViewModels\AccountsIncomeStatementVM.cs" />
     <Compile Include="ViewModels\AccountsJournalVM.cs" />
-    <Compile Include="ViewModels\AccountsMainVM.cs" />
     <Compile Include="ViewModels\AccountsStatementOfCFVM.cs" />
     <Compile Include="ViewModels\AccountsTransactionsVM.cs" />
     <Compile Include="ViewModels\AccountsTrialBalanceVM.cs" />
@@ -331,9 +330,6 @@
     </Compile>
     <Compile Include="Views\AccountsIncomeStatement.xaml.cs">
       <DependentUpon>AccountsIncomeStatement.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AccountsMain.xaml.cs">
-      <DependentUpon>AccountsMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AccountsStatementOfCF.xaml.cs">
       <DependentUpon>AccountsStatementOfCF.xaml</DependentUpon>
@@ -849,10 +845,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AccountsIncomeStatement.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AccountsMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

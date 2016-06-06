@@ -19,7 +19,7 @@ namespace UmanyiSMS.ViewModels
         protected override void InitVars()
         {
             IsBusy = true;
-            Title = "Modify Supplier";            
+            Title = "MODIFY SUPPLIER";            
             NewSupplier = new ModifySupplierModel();
             IsBusy = false;
         }

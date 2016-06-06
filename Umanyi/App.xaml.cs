@@ -114,7 +114,7 @@ namespace UmanyiSMS
             catch(Exception e) { Log.E(e.ToString(),this); }
         }
 
-        private async void Application_Startup(object sender, StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
             SplashScreen splashScreen = new SplashScreen("/Resources/Starehe0078C8.png");
             splashScreen.Show(true);

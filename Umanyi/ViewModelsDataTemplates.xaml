@@ -54,9 +54,6 @@
     <DataTemplate DataType="{x:Type viewModels:AccountsVM}" >
         <views:Accounts/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AccountsMainVM}" >
-        <views:AccountsMain/>
-    </DataTemplate>
     <!--Child View Models-->
 
     <DataTemplate DataType="{x:Type viewModels:PayslipsHistoryVM}" >

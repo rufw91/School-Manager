@@ -8,53 +8,14 @@ using System.Windows.Input;
 
 namespace UmanyiSMS.ViewModels
 {
-    public class AccountsVM : ViewModelBase
+    public class AccountsVM : ParentViewModel
     {
         public AccountsVM()
         {
-            InitVars();
-            CreateCommands(); 
+            TryAddChild(typeof(AccountsIncomeStatementVM));
+            TryAddChild(typeof(AccountsBalanceSheetVM));
+            TryAddChild(typeof(AccountsStatementOfCFVM));
+            TryAddChild(typeof(ChartOfAccountsVM));
         }
-        public ICommand StartCommand
-        { get; private set; }
-
-        public ICommand OpenTaskWindowCommand
-        { get; private set; }
-                
-        public override void Reset()
-        {
-        }
-
-        protected override void CreateCommands()
-        {
-            OpenTaskWindowCommand = new RelayCommand(o =>
-            {
-                if (OpenTaskWindowAction != null)
-                {
-                    OpenTaskWindowAction.Invoke(o as ViewModelBase);
-                }
-            }, o => CanStart());
-            StartCommand = new RelayCommand(o =>
-            {
-                IsBusy = true;
-                OpenTaskWindowCommand.Execute(new AccountsMainVM());
-                IsBusy = false;
-            }, o => CanStart());
-
-        }
-
-        private bool CanStart()
-        {
-            return !IsBusy&&OpenTaskWindowAction != null;
-        }
-
-        protected override void InitVars()
-        {
-            Title = "ACCOUNTS";
-        }
-        
-        public Action<ViewModelBase> OpenTaskWindowAction
-        { get; internal set; }
-
     }
 }

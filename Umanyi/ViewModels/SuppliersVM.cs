@@ -9,24 +9,15 @@ using System.Threading.Tasks;
 namespace UmanyiSMS.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
-    public class SuppliersVM:ViewModelBase
+    public class SuppliersVM : ParentViewModel
     {
         public SuppliersVM()
         {
-            InitVars();
-            CreateCommands();
-        }
-        protected override void InitVars()
-        {
-            Title = "Suppliers";
-        }
-
-        protected override void CreateCommands()
-        {
-        }
-
-        public override void Reset()
-        {
+            Title = "SUPPLIERS";
+            TryAddChild(typeof(NewSupplierVM));
+            TryAddChild(typeof(PaymentToSupplierVM));
+            TryAddChild(typeof(PaymentToSupplierHistoryVM));
+            TryAddChild(typeof(ModifySupplierVM));
         }
     }
 }

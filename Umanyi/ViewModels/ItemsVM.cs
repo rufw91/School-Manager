@@ -5,25 +5,16 @@ using System.Security.Permissions;
 namespace UmanyiSMS.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
-    public class ItemsVM:ViewModelBase
+    public class ItemsVM : ParentViewModel
     {
         public ItemsVM()
         {
-            InitVars();
-            CreateCommands();
-        }
-        protected override void InitVars()
-        {
-            Title = "Items";
-        }
-
-        protected override void CreateCommands()
-        {
-           
-        }
-
-        public override void Reset()
-        {
+            Title = "ITEMS";
+            TryAddChild(typeof(ReceiveItemsVM));
+            TryAddChild(typeof(NewItemVM));
+            TryAddChild(typeof(ItemListVM));
+            TryAddChild(typeof(ItemReceiptHistoryVM));
+            TryAddChild(typeof(ModifyItemVM));
         }
     }
 }
