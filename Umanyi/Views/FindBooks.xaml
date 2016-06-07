@@ -4,7 +4,7 @@
         xmlns:core="clr-namespace:Helper.Controls;assembly=Helper"
         xmlns:helper="clr-namespace:Helper;assembly=UmanyiSMS.Helper"
         xmlns:converters="clr-namespace:Helper.Converters;assembly=UmanyiSMS.Helper"
-        Title="Find Items" Height="600" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow">
+        Title="Find Items" Height="600" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow">
 
     <Grid>
         <Grid>
@@ -22,7 +22,10 @@
                     <DataGridTextColumn Binding="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Title" 
                                             IsReadOnly="True" Width="250*"
                                             />
-                    <DataGridTextColumn Binding="{Binding Path=Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Price" IsReadOnly="True" Width="150*" />
+                    <DataGridTextColumn Binding="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Publisher" 
+                                            IsReadOnly="True" Width="150*"
+                                            />
+                    <DataGridTextColumn Binding="{Binding Path=Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Price" IsReadOnly="True" Width="80*" />
                 </DataGrid.Columns>
             </DataGrid>
 

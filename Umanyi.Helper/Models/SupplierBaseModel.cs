@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 namespace Helper.Models
 {
     public class SupplierBaseModel: ModelBase
@@ -41,6 +42,39 @@ namespace Helper.Models
                 }
             }
         }
+
+        public override bool CheckErrors()
+        {
+            base.ClearAllErrors();
+            if (this.SupplierID == 0)
+            {
+                base.SetErrors("SupplierID", new List<string>
+                {
+                    "Supplier does not exist."
+                });
+                this.NameOfSupplier = "";
+            }
+            else
+            {
+                SupplierBaseModel supplier = DataAccess.GetSupplier(this.SupplierID);
+                if (supplier.SupplierID == 0)
+                {
+                    base.SetErrors("SupplierID", new List<string>
+                    {
+                        "Supplier does not exist."
+                    });
+                    this.NameOfSupplier = "";
+                }
+                else
+                {
+                    base.ClearErrors("SupplierID");
+                    this.NameOfSupplier = supplier.NameOfSupplier;
+                }
+            }
+            base.NotifyPropertyChanged("HasErrors");
+            return base.HasErrors;
+        }
+
         public override void Reset()
         {
             SupplierID = 0;

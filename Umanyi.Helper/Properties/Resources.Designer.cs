@@ -116,10 +116,10 @@ namespace Helper.Properties {
         ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///        &lt;Border Margin=&quot;10,10,10,30&quot; BorderBrush=&quot;Gray&quot; BorderThickness=&quot;1&quot;&gt;
-        ///            &lt;Grid&gt;
+        ///            &lt;Grid Margin=&quot;0,1,0,-1&quot;&gt;
         ///
-        ///                &lt;Border HorizontalAlignment=&quot;Left&quot; Height=&quot;944&quot; Margin=&quot;295,127,0,0&quot; Background=&quot;WhiteSmoke&quot; VerticalAlignment=&quot;Top&quot; Width=&quot;467&quot;&gt;
-        ///                    &lt;B [rest of string was truncated]&quot;;.
+        ///                &lt;Border HorizontalAlignment=&quot;Left&quot; Height=&quot;944&quot; Margin=&quot;395,127,0,0&quot; Background=&quot;WhiteSmoke&quot; VerticalAlignment=&quot;Top&quot; Width=&quot;367&quot;&gt;
+        ///     [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string AccountsSTOfCashFlows {
             get {
@@ -218,10 +218,10 @@ namespace Helper.Properties {
         ///   Looks up a localized string similar to &lt;FixedPage xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
         ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
         ///           Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
-        ///    
+        ///
         ///    &lt;Grid Width=&quot;793.76&quot; Height=&quot;1122.56&quot;&gt;
         ///        &lt;TextBlock HorizontalAlignment=&quot;Center&quot; Margin=&quot;0,30,0,0&quot; Text=&quot;{Binding Info.FullName, Source={x:Static Application.Current}}&quot; VerticalAlignment=&quot;Top&quot; FontFamily=&quot;Segoe UI Light&quot; FontSize=&quot;26&quot;/&gt;
-        ///        &lt;StackPanel Orientation=&quot;Horizontal&quot; Margin=&quot;0,70, [rest of string was truncated]&quot;;.
+        ///        &lt;StackPanel Orientation=&quot;Horizontal&quot; Margin=&quot;0,70,0,0&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PaymentVoucher {
             get {
@@ -304,6 +304,15 @@ namespace Helper.Properties {
         internal static string Statement {
             get {
                 return ResourceManager.GetString("Statement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SupplierStatement {
+            get {
+                return ResourceManager.GetString("SupplierStatement", resourceCulture);
             }
         }
         

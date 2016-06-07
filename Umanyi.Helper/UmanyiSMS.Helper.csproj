@@ -116,6 +116,7 @@
     <Compile Include="Helpers\DocumentHelper.Receipt.cs" />
     <Compile Include="Helpers\DocumentHelper.Report.cs" />
     <Compile Include="Helpers\DocumentHelper.Statement.cs" />
+    <Compile Include="Helpers\DocumentHelper.SupplierStatement.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript2.cs" />
     <Compile Include="Helpers\DocumentHelper.Voucher.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="Models\SupplierBaseModel.cs" />
     <Compile Include="Models\SupplierModel.cs" />
     <Compile Include="Models\SupplierPaymentModel.cs" />
+    <Compile Include="Models\SupplierStatementModel.cs" />
     <Compile Include="Models\Sync\SyncExamResultEntryModel.cs" />
     <Compile Include="Models\Sync\SyncTransactionModel.cs" />
     <Compile Include="Models\Sync\SyncTranscriptEntryModel.cs" />
@@ -307,6 +309,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\AccountsSTOfCashFlows.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\SupplierStatement.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>

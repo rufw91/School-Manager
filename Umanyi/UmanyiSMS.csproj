@@ -312,6 +312,7 @@
     <Compile Include="ViewModels\SubjectSelectionVM.cs" />
     <Compile Include="ViewModels\SupplierListVM.cs" />
     <Compile Include="ViewModels\SupplierReportsVM.cs" />
+    <Compile Include="ViewModels\SupplierStatementVM.cs" />
     <Compile Include="ViewModels\SuppliersVM.cs" />
     <Compile Include="ViewModels\SyncCloudVM.cs" />
     <Compile Include="ViewModels\UnreturnedBooksVM.cs" />
@@ -729,6 +730,9 @@
     </Compile>
     <Compile Include="Views\Suppliers.xaml.cs">
       <DependentUpon>Suppliers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SupplierStatement.xaml.cs">
+      <DependentUpon>SupplierStatement.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SyncCloud.xaml.cs">
       <DependentUpon>SyncCloud.xaml</DependentUpon>
@@ -1353,6 +1357,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Suppliers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SupplierStatement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
