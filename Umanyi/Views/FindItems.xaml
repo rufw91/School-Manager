@@ -18,7 +18,7 @@
                            KeyUp="dtGrid_KeyUp">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Path=ItemID, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged}" Header="Item ID" Width="150*" />
+                            UpdateSourceTrigger=PropertyChanged}" Header="Item ID" Width="150*" IsReadOnly="True" />
                     <DataGridTextColumn Binding="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Description" 
                                             IsReadOnly="True" Width="250*"
                                             />

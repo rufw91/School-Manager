@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:UmanyiSMS.Views"
             mc:Ignorable="d" 
-             Tag="BOOKS"
+             Tag="BOOKS Purchase"
              Style="{StaticResource TopWindow}"
 	Background="White">
 </UserControl>

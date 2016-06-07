@@ -2108,7 +2108,7 @@ namespace Helper
                 return result;
             });
         }
-
+        
         private static Task<decimal> GetBalanceBroughtForwardAsync(int studentID, DateTime endTime)
         {
             return Task.Run<decimal>(delegate
@@ -2131,11 +2131,44 @@ namespace Helper
             });
         }
 
+        private static Task<decimal> GetSupplierBalanceBroughtForwardAsync(int supplierID, DateTime endTime)
+        {
+            return Task.Run<decimal>(delegate
+            {
+                string commandText = string.Concat(new object[]
+                {
+                    "DECLARE  @pur decimal=(SELECT SUM(ISNULL(TotalAmt,0)) FROM  [Sales].[ItemReceiptHeader] WHERE SupplierID =",
+                    supplierID,
+                    ");\r\nDECLARE  @pay decimal=(SELECT SUM(ISNULL(AmountPaid,0)) FROM  [Sales].[SupplierPayment] WHERE SupplierID =",
+                    supplierID,
+                    " AND DatePaid <CONVERT(datetime,'",
+                    endTime.ToString("g"),
+                    "'));\r\nDECLARE  @pur2 decimal=(SELECT SUM(ISNULL(TotalAmt,0)) FROM  [Sales].[BookReceiptHeader] WHERE SupplierID=",
+                    supplierID,
+                    ")\r\nselect (ISNULL(@pur,0)+ISNULL(@pur2,0))-ISNULL(@pay,0)"
+                });
+                decimal result;
+                decimal.TryParse(DataAccessHelper.ExecuteScalar(commandText), out result);
+                return result;
+            });
+        }
+
         private static Task<decimal> GetCurrentBalanceAsync(int studentID)
         {
             return Task.Run<decimal>(delegate
             {
                 string commandText = "SELECT dbo.GetCurrentBalance(" + studentID + ")";
+                decimal result;
+                decimal.TryParse(DataAccessHelper.ExecuteScalar(commandText), out result);
+                return result;
+            });
+        }
+
+        private static Task<decimal> GetCurrentSupplierBalanceAsync(int supplierID)
+        {
+            return Task.Run<decimal>(delegate
+            {
+                string commandText = "SELECT dbo.GetCurrentSupplierBalance(" + supplierID + ")";
                 decimal result;
                 decimal.TryParse(DataAccessHelper.ExecuteScalar(commandText), out result);
                 return result;
@@ -2161,11 +2194,11 @@ namespace Helper
                         text = string.Concat(new string[]
                         {
                             text2,
-                            " AND CONVERT(DATE, OrderDate) BETWEEN '",
+                            " AND OrderDate BETWEEN CONVERT(datetime,'",
                             startTime.Value.ToString("dd-MM-yyyy"),
-                            " 00:00:00.000' AND '",
+                            " 00:00:00.000') AND CONVERT(datetime,'",
                             endTime.Value.ToString("dd-MM-yyyy"),
-                            " 23:59:59.998'"
+                            " 23:59:59.998')"
                         });
                     }
                     string text3 = "SELECT FeesPaymentID, DatePaid, AmountPaid FROM [Institution].[FeesPayment]  WHERE [StudentID] ='" + studentID + "'";
@@ -2175,11 +2208,11 @@ namespace Helper
                         text3 = string.Concat(new string[]
                         {
                             text2,
-                            " AND CONVERT(DATE, DatePaid) BETWEEN '",
+                            " AND DatePaid BETWEEN CONVERT(datetime,'",
                             startTime.Value.ToString("dd-MM-yyyy"),
-                            " 00:00:00.000' AND '",
+                            " 00:00:00.000') AND CONVERT(datetime,'",
                             endTime.Value.ToString("dd-MM-yyyy"),
-                            " 23:59:59.998'"
+                            " 23:59:59.998')"
                         });
                     }
                     DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(text);
@@ -2215,6 +2248,101 @@ namespace Helper
                     feesStatementModel.To = endTime.Value;
                     feesStatementModel.TotalDue = DataAccess.GetCurrentBalanceAsync(studentID).Result;
                     result = feesStatementModel;
+                }
+                return result;
+            });
+        }
+
+        public static Task<SupplierStatementModel> GetSupplierStatementAsync(int supplierID, DateTime? startTime, DateTime? endTime)
+        {
+            return Task.Run<SupplierStatementModel>(delegate
+            {
+                SupplierStatementModel result;
+                if (supplierID <= 0)
+                {
+                    result = new SupplierStatementModel();
+                }
+                else
+                {
+                    SupplierStatementModel suppStatementModel = new SupplierStatementModel();
+                    string text = "SELECT BookReceiptID,DateReceived,ISNULL(TotalAmt,0) FROM [Sales].[BookReceiptHeader] WHERE [SupplierID] =" + supplierID;
+                    if (startTime.HasValue && endTime.HasValue)
+                    {
+                        string text2 = text;
+                        text = string.Concat(new string[]
+                        {
+                            text2,
+                            " AND DateReceived BETWEEN CONVERT(datetime,'",
+                            startTime.Value.ToString("dd-MM-yyyy"),
+                            " 00:00:00.000') AND CONVERT(datetime,'",
+                            endTime.Value.ToString("dd-MM-yyyy"),
+                            " 23:59:59.998')"
+                        });
+                    }
+                    string text3 = "SELECT ItemReceiptID, OrderDate, TotalAmt FROM [Sales].[ItemReceiptHeader]  WHERE [SupplierID] =" + supplierID;
+                    if (startTime.HasValue && endTime.HasValue)
+                    {
+                        string text2 = text3;
+                        text3 = string.Concat(new string[]
+                        {
+                            text2,
+                            " AND OrderDate BETWEEN CONVERT(datetime,'",
+                            startTime.Value.ToString("dd-MM-yyyy"),
+                            " 00:00:00.000') AND CONVERT(datetime,'",
+                            endTime.Value.ToString("dd-MM-yyyy"),
+                            " 23:59:59.998')"
+                        });
+                    }
+
+                    string text4 = "SELECT SupplierPaymentID,DatePaid,AmountPaid FROM [Sales].[Supplierpayment] WHERE SupplierID="+supplierID;
+                    if (startTime.HasValue && endTime.HasValue)
+                    {
+                        text4 += " AND DatePaid BETWEEN CONVERT(datetime,'" + startTime.Value.ToString("dd-MM-yyyy") +
+                            " 00:00:00.000') AND CONVERT(datetime,'" + endTime.Value.ToString("dd-MM-yyyy") + " 23:59:59.998')";
+                    }
+
+                    DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(text);
+                    DataTable dataTable2 = DataAccessHelper.ExecuteNonQueryWithResultTable(text3);
+                    DataTable dataTable3 = DataAccessHelper.ExecuteNonQueryWithResultTable(text4);
+                    ObservableCollection<TransactionModel> observableCollection = new ObservableCollection<TransactionModel>();
+                    foreach (DataRow dataRow in dataTable.Rows)
+                    {
+                        observableCollection.Add(new TransactionModel(TransactionTypes.Credit, "BK-"+dataRow[0].ToString(), DateTime.Parse(dataRow[1].ToString()), decimal.Parse(dataRow[2].ToString())));
+                        suppStatementModel.TotalSales += decimal.Parse(dataRow[2].ToString());
+                        suppStatementModel.TotalDue += decimal.Parse(dataRow[2].ToString());
+                    }
+                    foreach (DataRow dataRow in dataTable2.Rows)
+                    {
+                        DateTime transactionDateTime;
+                        DateTime.TryParse(dataRow[1].ToString(), out transactionDateTime);
+                        decimal num;
+                        decimal.TryParse(dataRow[2].ToString(), out num);
+                        observableCollection.Add(new TransactionModel(TransactionTypes.Credit, "INV-"+dataRow[0].ToString(), transactionDateTime, num));
+                        suppStatementModel.TotalPayments += num;
+                        suppStatementModel.TotalDue -= num;
+                    }
+
+                    foreach (DataRow dataRow in dataTable3.Rows)
+                    {
+                        observableCollection.Add(new TransactionModel(TransactionTypes.Debit, "PMT-"+dataRow[0].ToString(), DateTime.Parse(dataRow[1].ToString()), decimal.Parse(dataRow[2].ToString())));
+                        suppStatementModel.TotalSales += decimal.Parse(dataRow[2].ToString());
+                        suppStatementModel.TotalDue += decimal.Parse(dataRow[2].ToString());
+                    }
+
+                    IEnumerable<TransactionModel> enumerable = from fruit in observableCollection
+                                                               orderby fruit.TransactionDateTime
+                                                               select fruit;
+                    suppStatementModel.BalanceBroughtForward = DataAccess.GetSupplierBalanceBroughtForwardAsync(supplierID, startTime.Value).Result;
+                    suppStatementModel.Transactions.Add(new TransactionModel(TransactionTypes.Credit, "0", DateTime.Now, suppStatementModel.BalanceBroughtForward));
+                    foreach (TransactionModel current in enumerable)
+                    {
+                        suppStatementModel.Transactions.Add(current);
+                    }
+                    suppStatementModel.SupplierID = supplierID;
+                    suppStatementModel.From = startTime.Value;
+                    suppStatementModel.To = endTime.Value;
+                    suppStatementModel.TotalDue = DataAccess.GetCurrentSupplierBalanceAsync(supplierID).Result;
+                    result = suppStatementModel;
                 }
                 return result;
             });
@@ -6235,8 +6363,9 @@ namespace Helper
             return Task.Run<ObservableCollection<StudentTranscriptModel2>>(delegate
             {
                 progressReporter.Report(new OperationProgress(1, "Initializing"));
-                progressReporter.Report(new OperationProgress(3, "Obtaning Exam Data"));
                 ObservableCollection<StudentTranscriptModel2> observableCollection = new ObservableCollection<StudentTranscriptModel2>();
+                progressReporter.Report(new OperationProgress(3, "Obtaining Exam Data"));
+                
                 int num = 0;
                 int num2 = 0;
                 int num3 = 0;

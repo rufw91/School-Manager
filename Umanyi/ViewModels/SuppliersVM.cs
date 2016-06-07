@@ -17,6 +17,7 @@ namespace UmanyiSMS.ViewModels
             TryAddChild(typeof(NewSupplierVM));
             TryAddChild(typeof(PaymentToSupplierVM));
             TryAddChild(typeof(PaymentToSupplierHistoryVM));
+            TryAddChild(typeof(SupplierStatementVM));
             TryAddChild(typeof(ModifySupplierVM));
         }
     }

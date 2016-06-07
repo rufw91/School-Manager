@@ -26,7 +26,7 @@ namespace Helper
             Statement, Transcript, Transcript3, LeavingCert, FeesStructure, FeesPayment, FeesPayment2,
             Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult,
             ClassTranscripts, ClassTranscripts2, UnreturnedBooks, UnreturnedBooks2, Report, Payslip, AccountsGeneralLedger, AccountsIncomeStatement,
-            AccountsBalanceSheet, AccountsSTofCashFlow
+            AccountsBalanceSheet, AccountsSTofCashFlow, SupplierStatement
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -92,6 +92,7 @@ namespace Helper
                 case DocType.AccountsIncomeStatement: GenerateAccountsIncomeStatement(); break;
                 case DocType.AccountsBalanceSheet: GenerateAccountsBalanceSheet(); break;
                 case DocType.AccountsSTofCashFlow: GenerateAccountsSTofCashFlows(); break;
+                case DocType.SupplierStatement: GenerateSupplierStatement(); break;
                 default: throw new ArgumentException();
             }
         }
@@ -125,7 +126,8 @@ namespace Helper
                 case DocType.AccountsGeneralLedger: resString = Helper.Properties.Resources.AccountsGeneralLedger; break;
                 case DocType.AccountsIncomeStatement: resString = Helper.Properties.Resources.AccountsIncomeStatement; break;
                 case DocType.AccountsBalanceSheet: resString = Helper.Properties.Resources.AccountsBalanceSheet; break;
-                case DocType.AccountsSTofCashFlow: resString = Helper.Properties.Resources.AccountsSTOfCashFlows; break;    
+                case DocType.AccountsSTofCashFlow: resString = Helper.Properties.Resources.AccountsSTOfCashFlows; break;
+                case DocType.SupplierStatement: resString = Helper.Properties.Resources.SupplierStatement; break;    
                 default: throw new ArgumentException();
             }
             StringReader stringReader = new StringReader(resString);
@@ -142,6 +144,8 @@ namespace Helper
                 return DocType.FeesStructure;
             if (workObject is FeesStatementModel)
                 return DocType.Statement;
+            if (workObject is SupplierStatementModel)
+                return DocType.SupplierStatement;            
             if (workObject is StudentTranscriptModel2)
                 return DocType.Transcript3;
             if (workObject is StudentTranscriptModel)
@@ -231,6 +235,8 @@ namespace Helper
                 totalNoOfItems = (workObject as SaleModel).SaleItems.Count;
             if (workObject is FeesStatementModel)
                 totalNoOfItems = (workObject as FeesStatementModel).Transactions.Count;
+            if (workObject is SupplierStatementModel)
+                totalNoOfItems = (workObject as SupplierStatementModel).Transactions.Count;
             if (workObject is ClassBalancesListModel)
                 totalNoOfItems = (workObject as ClassBalancesListModel).Entries.Count;
             if (workObject is ClassStudentListModel)

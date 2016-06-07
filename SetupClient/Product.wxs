@@ -39,7 +39,6 @@
 
     <Feature Id="ProductFeature" Title="Umanyi" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
-      <ComponentGroupRef Id="CommonComponents" />
       <ComponentGroupRef Id="ShortcutComponents" />
     </Feature>
 
@@ -104,67 +103,19 @@
       </Component>
       <!--Confused-->
       <Component Id="cmp17" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Confused\Helper.dll" />
+        <File Source="$(var.UmanyiSMS.TargetDir)Helper.dll" />
       </Component>
       <!--Confused-->
       <Component Id="cmp18" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Confused\OpenXmlPackaging.dll" />
+        <File Source="$(var.UmanyiSMS.TargetDir)OpenXmlPackaging.dll" />
       </Component>      
       <!--Confused-->
       <Component Id="cmp19" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Confused\UmanyiSMS.exe" />
+        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe" />
       </Component>
       <!--Confused-->
       <Component Id="cmp20" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Confused\UmanyiSMS.Helper.dll" />
-      </Component>
-    </ComponentGroup>
-  </Fragment>
-
-  <Fragment>
-    <ComponentGroup Id="CommonComponents" Directory="INSTALLFOLDER">
-      <Component Id="cmpc2" Guid="*">
-        <File Source="E:\Dev\School MS Common\gxps-9.15-win32.exe" />
-      </Component>
-      <Component Id="cmpc1" Guid="*">
-        <File Source="E:\Dev\School MS Common\eaep.pdf" />
-      </Component>
-      
-      <Component Id="cmpc3" Guid="*">
-        <File Source="E:\Dev\School MS Common\jkf.pdf" />
-      </Component>
-      <Component Id="cmpc4" Guid="*">
-        <File Source="E:\Dev\School MS Common\klb.pdf" />
-      </Component>
-      <Component Id="cmpc5" Guid="*">
-        <File Source="E:\Dev\School MS Common\longhorn.pdf" />
-      </Component>
-      <Component Id="cmpc6" Guid="*">
-        <File Source="E:\Dev\School MS Common\PAYEGuide2009.pdf" />
-      </Component>
-      <Component Id="cmpc7" Guid="*">
-        <File Source="E:\Dev\School MS Common\Tut1.pdf" />
-      </Component>
-      <Component Id="cmpc8" Guid="*">
-        <File Source="E:\Dev\School MS Common\Tut2.pdf" />
-      </Component>
-      <Component Id="cmpc9" Guid="*">
-        <File Source="E:\Dev\School MS Common\Tut3.pdf" />
-      </Component>
-      <Component Id="cmpc10" Guid="*">
-        <File Source="E:\Dev\School MS Common\tutorial1.pdf" />
-      </Component>
-      <Component Id="cmpc11" Guid="*">
-        <File Source="E:\Dev\School MS Common\tutorial2.pdf" />
-      </Component>
-      <Component Id="cmpc12" Guid="*">
-        <File Source="E:\Dev\School MS Common\tutorial3.pdf" />
-      </Component>
-      <Component Id="cmpc13" Guid="*">
-        <File Source="E:\Dev\School MS Common\Video1.mp4" />
-      </Component>
-      <Component Id="cmpc14" Guid="*">
-        <File Source="E:\Dev\School MS Common\Video2.mp4" />
+        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.Helper.dll" />
       </Component>
     </ComponentGroup>
   </Fragment>
