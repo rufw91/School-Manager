@@ -140,6 +140,8 @@ namespace Helper.Models
             Address = "";
             entries.Clear();
             Total = 0;
+            DatePaid = DateTime.Now;
+            Category = "";
         }
 
         public string Category { get; set; }

@@ -6,5 +6,8 @@ namespace Helper.Presentation
     {
         ApplicationModel AppInfo
         { get; }
+
+        ExamSettingsModel ExamSettings
+        { get; }
     }
 }

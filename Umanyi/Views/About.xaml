@@ -83,7 +83,7 @@
         <TextBlock Name="txtVersion" HorizontalAlignment="Left" Margin="30,164,0,0" Text="Version 6.6.5.2015" VerticalAlignment="Top" />
 
         <TextBlock HorizontalAlignment="Left" Margin="30,185,0,0" VerticalAlignment="Top" >
-            © 2015 Raphael Muindi. All Rights Reserved.
+            © 2016 Raphael Muindi. All Rights Reserved.
         </TextBlock>
 
         <TextBlock HorizontalAlignment="Left" Margin="126,47,0,0" Text="Umanyi" Style="{DynamicResource Heading0}" 

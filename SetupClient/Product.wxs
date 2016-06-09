@@ -18,7 +18,7 @@
   <?define ProductCode = "E87C0D4B-1902-4730-B169-8F776E2EFFC2" ?>
   <?endif ?>
 
-  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.7.577.5669" Manufacturer="Umanyi Digital Technologies Ltd"
+  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.8.802.6050" Manufacturer="Umanyi Digital Technologies Ltd"
            UpgradeCode="$(var.ProductCode)">
 
     <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
@@ -116,6 +116,9 @@
       <!--Confused-->
       <Component Id="cmp20" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.Helper.dll" />
+      </Component>
+      <Component Id="cmp201" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe.config" />
       </Component>
     </ComponentGroup>
   </Fragment>

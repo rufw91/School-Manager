@@ -7,4 +7,5 @@
         <ResourceDictionary Source="/Helper;component/Converters/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <local:ItemListToItemFindListConverter x:Key="ItemListToItemFindListConverter"/>
+    <local:Best7SubjectConverter x:Key="Best7SubjectConverter"/>
 </ResourceDictionary>

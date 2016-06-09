@@ -25,7 +25,6 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "ISSUE BOOK";
             SelectedStudent = new StudentSelectModel();
-            NotifyPropertyChanged("CollViewSource");
             selectedStudent.PropertyChanged += (o, e) =>
                 {
                     if (e.PropertyName == "StudentID")

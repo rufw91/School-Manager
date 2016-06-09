@@ -30,8 +30,8 @@ namespace Helper
         {
             try
             {
-                if (!Directory.Exists(Constants.DataDirectoryPath))
-                    Directory.CreateDirectory(Constants.DataDirectoryPath);
+                if (!Directory.Exists(Constants.LogDirectoryPath))
+                    Directory.CreateDirectory(Constants.LogDirectoryPath);
                 if (!Directory.Exists(Constants.BackupDirectoryPath))
                     Directory.CreateDirectory(Constants.BackupDirectoryPath);
                 return true;
@@ -117,20 +117,7 @@ namespace Helper
             return newpath;
         }
 
-        public static string GetNewGZBackupPath()
-        {
-            string newpath = Constants.BackupDirectoryPath +
-                DateTime.Now.ToString("dd MMM yyyy") + "-" +
-                (new Random().Next(1000) *
-                new Random().Next(2000)).ToString() + ".gz";
-            while (File.Exists(newpath))
-            {
-                newpath = Constants.BackupDirectoryPath + (new Random().Next(1000) *
-                   new Random().Next(2000)).ToString() + ".gz";
-            }
-            return newpath;
-        }
-
+      
         public static bool DeleteFile(string path)
         {
             bool succ = false;
@@ -143,18 +130,7 @@ namespace Helper
             return succ;
         }
 
-        public static bool CheckDirectories()
-        {
-            try
-            {
-                if (!Directory.Exists(Constants.DataDirectoryPath))
-                    Directory.CreateDirectory(Constants.DataDirectoryPath);
-                if (!Directory.Exists(Constants.BackupDirectoryPath))
-                    Directory.CreateDirectory(Constants.BackupDirectoryPath);
-                return true;
-            }
-            catch { return false; }
-        }
+        
         
         public static byte[] BrowseImageAsByteArray()
         {
