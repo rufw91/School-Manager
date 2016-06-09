@@ -174,9 +174,21 @@ namespace Helper
             return ExecuteScalar(commandText, true);
         }
 
+        public static string ExecuteScalar(string commandText,ObservableCollection<SqlParameter> paramColl)
+        {
+            return ExecuteScalar(commandText, paramColl, true);
+        }
+
         public static string ExecuteScalar(string commandText, bool hasHeader)
         {
             object res = ExecuteObjectScalar(commandText, hasHeader);
+            if (res != null)
+                return res.ToString();
+            else return "";
+        }
+        public static string ExecuteScalar(string commandText, ObservableCollection<SqlParameter> paramColl,bool hasHeader)
+        {
+            object res = ExecuteObjectScalar(commandText,paramColl, hasHeader);
             if (res != null)
                 return res.ToString();
             else return "";
@@ -192,6 +204,30 @@ namespace Helper
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand sqlcmd = new SqlCommand(commandText, DBConnection);
+                    tx = sqlcmd.ExecuteScalar();
+                    sqlcmd.Dispose();
+                }
+                return tx;
+            }
+            catch (Exception e)
+            {
+                Log.E(e.ToString(), typeof(DataAccessHelper));
+                throw;
+            }
+        }
+
+        public static object ExecuteObjectScalar(string commandText, ObservableCollection<SqlParameter> paramColl, bool hasHeader)
+        {
+            try
+            {
+                object tx;
+                if (hasHeader)
+                    commandText = "USE " + Helper.Properties.Settings.Default.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                using (SqlConnection DBConnection = CreateConnection())
+                {
+                    SqlCommand sqlcmd = new SqlCommand(commandText, DBConnection);
+                    foreach (SqlParameter param in paramColl)
+                    { sqlcmd.Parameters.Add(param); }
                     tx = sqlcmd.ExecuteScalar();
                     sqlcmd.Dispose();
                 }

@@ -93,7 +93,7 @@
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Amount Paid:"/>
             <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AmountPaid}"/>
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Date Paid:"/>
-            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding DatePaid, StringFormat={}{0:dd MM yyyy}}"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding DatePaid, StringFormat={}{0:dd MMM yyyy}}"/>
         </Grid>
     </DataTemplate>
 

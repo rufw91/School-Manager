@@ -24,6 +24,7 @@ namespace UmanyiSMS
         private const string Unique = "UmanyiSMS";
         private static ApplicationModel info;
         private IImmutableList<string> log;
+        private static ExamSettingsModel examSettings;
 
         [STAThread]
         public static void Main()
@@ -68,6 +69,11 @@ namespace UmanyiSMS
             }
         }
 
+        public static ExamSettingsModel AppExamSettings
+        {
+            get { return examSettings; }
+        }
+
         public IImmutableList<string> LogEntries
         {
             get { return log; }
@@ -76,6 +82,11 @@ namespace UmanyiSMS
         public ApplicationModel AppInfo
         {
             get { return App.info; }
+        }
+
+        public ExamSettingsModel ExamSettings
+        {
+            get { return App.AppExamSettings; }
         }
 
         public static void Restart()
@@ -99,7 +110,8 @@ namespace UmanyiSMS
         {
             try
             {
-
+                FileHelper.CheckFiles();
+                examSettings = new ExamSettingsModel();
                 Info = new ApplicationModel(Helper.Properties.Settings.Default.Info);
                 if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.DBName))
                     Helper.Properties.Settings.Default.DBName = "UmanyiSMS";

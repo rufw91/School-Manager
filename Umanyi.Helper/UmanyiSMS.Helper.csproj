@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\HomePageButton.cs" />
+    <Compile Include="Converters\Best7SubjectConverter.cs" />
     <Compile Include="Converters\ImageConverters.cs" />
     <Compile Include="Converters\ItemListToItemFindListConverter.cs" />
     <Compile Include="Credits.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Helpers\DocumentHelper.Voucher.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BalanceSheetModel.cs" />
+    <Compile Include="Models\BasicPair.cs" />
     <Compile Include="Models\ClassBalancesListModel.cs" />
     <Compile Include="Models\ClassesSetupEntryModel.cs" />
     <Compile Include="Models\ClassesSetupModel.cs" />
@@ -151,6 +153,7 @@
     <Compile Include="Models\DisciplineModel.cs" />
     <Compile Include="Models\ExamRegistrationStudentModel.cs" />
     <Compile Include="Models\ExamResultStudentSubjectEntryModel.cs" />
+    <Compile Include="Models\ExamSettingsModel.cs" />
     <Compile Include="Models\ExamSubjectEntryModel.cs" />
     <Compile Include="Models\ExamWeightModel.cs" />
     <Compile Include="Models\FeePaymentReceipt2Model.cs" />

@@ -13,9 +13,11 @@
         <DataGrid Name="datagrid" Margin="20,80,20,20" AutoGenerateColumns="False" IsReadOnly="True" CanUserDeleteRows="False" CanUserReorderColumns="False"
                   CanUserResizeColumns="True" ItemsSource="{Binding AllPaymentVouchers}">
             <DataGrid.Columns>
-            <DataGridTextColumn Header="Name of Payee" Binding="{Binding NameOfPayee}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Name of Payee" Binding="{Binding NameOfPayee}" Width="2*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Amount Paid" Binding="{Binding Total}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="3*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Date Paid" Binding="{Binding DatePaid, StringFormat={}{0:dd MMM yyyy}}" Width="*" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
         <Controls:DropDownButton Content="Export" HorizontalAlignment="Right" Margin="0,50,20,0" VerticalAlignment="Top" DataContext="{Binding ElementName=datagrid}">

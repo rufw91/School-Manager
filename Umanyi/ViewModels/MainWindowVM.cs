@@ -42,11 +42,12 @@ namespace UmanyiSMS.ViewModels
         public ObservableCollection<ViewModelBase> BackJournal
         { get { return backJournal; } }
 
-        protected override void InitVars()
+        protected async override void InitVars()
         {
             navigatingBack = false;
             backJournal = new ObservableCollection<ViewModelBase>();
             Source = new HomePageVM();
+            App.AppExamSettings.CopyFrom(await DataAccess.GetExamSettingsAsync());
         }
 
         protected override void CreateCommands()
