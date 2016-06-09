@@ -112,6 +112,7 @@ namespace UmanyiSMS
             {
                 FileHelper.CheckFiles();
                 examSettings = new ExamSettingsModel();
+                
                 Info = new ApplicationModel(Helper.Properties.Settings.Default.Info);
                 if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.DBName))
                     Helper.Properties.Settings.Default.DBName = "UmanyiSMS";
@@ -136,13 +137,12 @@ namespace UmanyiSMS
             Log.Init(ref log);
             Log.I("Init Vars", this);
 
-            Helper.Properties.Settings.Default.Info = GetDefaultInfo();
-            Helper.Properties.Settings.Default.Save();
-
-
+           
             if (Helper.Properties.Settings.Default.Info == null)
             {
-                GenericIdentity MyIdentity = new GenericIdentity("DefaultSetupUser");
+                Helper.Properties.Settings.Default.Info = GetDefaultInfo();
+                Helper.Properties.Settings.Default.Save();
+                /*GenericIdentity MyIdentity = new GenericIdentity("DefaultSetupUser");
                 GenericPrincipal MyPrincipal =
                     new GenericPrincipal(MyIdentity, new string[] { "Deputy" });
                 AppDomain.CurrentDomain.SetThreadPrincipal(MyPrincipal);
@@ -179,6 +179,7 @@ namespace UmanyiSMS
 
                 Restart();
                 return;
+                 * */
             }
 
             InitGlobalVar();
