@@ -22,7 +22,7 @@ namespace UmanyiSMS.ViewModels
 
         protected async override void InitVars()
         {
-            Title = "NEW ITEM";
+            Title = "NEW ITEM / SERVICE";
             IsBusy = true;
             NewItem = new ItemModel();
             IsTaxable = true;

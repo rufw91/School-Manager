@@ -83,8 +83,7 @@
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
-      <HintPath>..\..\..\..\System.Collections.Immutable.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\Common\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -103,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\HomePageButton.cs" />
+    <Compile Include="Converters\AccountToAccountIDConverter.cs" />
     <Compile Include="Converters\Best7SubjectConverter.cs" />
     <Compile Include="Converters\ImageConverters.cs" />
     <Compile Include="Converters\ItemListToItemFindListConverter.cs" />
@@ -124,6 +124,7 @@
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BalanceSheetModel.cs" />
     <Compile Include="Models\BasicPair.cs" />
+    <Compile Include="Models\BudgetModel.cs" />
     <Compile Include="Models\ClassBalancesListModel.cs" />
     <Compile Include="Models\ClassesSetupEntryModel.cs" />
     <Compile Include="Models\ClassesSetupModel.cs" />

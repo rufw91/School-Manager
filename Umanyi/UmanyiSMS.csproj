@@ -123,10 +123,9 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\log4net.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\Common\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack">
       <HintPath>..\..\..\..\Microsoft.WindowsAPICodePack.dll</HintPath>
@@ -192,6 +191,7 @@
     <Compile Include="ViewModels\BookReceiptHistoryVM.cs" />
     <Compile Include="ViewModels\BookReturnVM.cs" />
     <Compile Include="ViewModels\BooksVM.cs" />
+    <Compile Include="ViewModels\PrepareBudgetVM.cs" />
     <Compile Include="ViewModels\ChangeDbVM.cs" />
     <Compile Include="ViewModels\ChangeSAPasswordVM.cs" />
     <Compile Include="ViewModels\ChartOfAccountsVM.cs" />
@@ -202,6 +202,7 @@
     <Compile Include="ViewModels\CombinedAggregateResultsVM.cs" />
     <Compile Include="ViewModels\CombinedClassListVM.cs" />
     <Compile Include="ViewModels\CombinedMarkListsVM.cs" />
+    <Compile Include="ViewModels\CurrentExpenditureVM.cs" />
     <Compile Include="ViewModels\CustomModulesVM.cs" />
     <Compile Include="ViewModels\DisciplineDetailsVM.cs" />
     <Compile Include="ViewModels\DisciplineTrackerHistoryVM.cs" />
@@ -281,6 +282,7 @@
     <Compile Include="ViewModels\ReceiveBooksVM.cs" />
     <Compile Include="ViewModels\ReceiveItemsVM.cs" />
     <Compile Include="ViewModels\RecentGalleryItemsVM.cs" />
+    <Compile Include="ViewModels\RemoveAccountVM.cs" />
     <Compile Include="ViewModels\RemoveBillVM.cs" />
     <Compile Include="ViewModels\RemoveExamVM.cs" />
     <Compile Include="ViewModels\RemovePayment.cs" />
@@ -406,6 +408,9 @@
     </Compile>
     <Compile Include="Views\ReceiveBooks.xaml.cs">
       <DependentUpon>ReceiveBooks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RemoveAccount.xaml.cs">
+      <DependentUpon>RemoveAccount.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RemoveExam.xaml.cs">
       <DependentUpon>RemoveExam.xaml</DependentUpon>
@@ -945,6 +950,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ReceiveBooks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RemoveAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

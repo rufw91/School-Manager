@@ -7,34 +7,28 @@
            Background="White"
              mc:Ignorable="d" d:DesignHeight="722" d:DesignWidth="1024">
     <Grid >
-
         <TextBlock Text="Chart of Accounts" Style="{StaticResource Title}" HorizontalAlignment="Left"  Margin="10,10,0,0"
                        VerticalAlignment="Top"/>
-        <TreeView HorizontalAlignment="Left" Margin="50,80,0,0" VerticalAlignment="Top" IsHitTestVisible="False" Focusable="False">
-            <TreeViewItem Header="Assets" IsExpanded="True">
-                <TreeViewItem Header="Cash" IsExpanded="True"/>
-                <TreeViewItem Header="Accounts Receivable"/>
-                <TreeViewItem Header="Other"/>
-            </TreeViewItem>
-            <TreeViewItem Header="Liabilities" IsExpanded="True">
-                    <TreeViewItem Header="Accounts Payable"/>
-                    <TreeViewItem Header="Other"/>
-                </TreeViewItem>
-            <TreeViewItem Header="Equity"/>
-            <TreeViewItem Header="Revenue" IsExpanded="True">
-                <TreeViewItem Header="Fees Paid"/>
-                <TreeViewItem Header="Donations"/>
-                <TreeViewItem Header="Other"/>
-            </TreeViewItem>
-            <TreeViewItem Header="Expenses" IsExpanded="True">
-                <TreeViewItem Header="Food" IsExpanded="True"/>
-                <TreeViewItem Header="Payroll" IsExpanded="True"/>
-                <TreeViewItem Header="Office Supplies" IsExpanded="True"/>
-                    <TreeViewItem Header="Postage and Printing"/>
-                    <TreeViewItem Header="Equipment Maintenance"/>
-                <TreeViewItem Header="Other"/>
-
-            </TreeViewItem>
+        <TreeView HorizontalAlignment="Left" Margin="50,80,0,0" VerticalAlignment="Top" 
+                  
+                  ItemsSource="{Binding ChartOfAccounts}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding}">
+                    <TextBlock Text="{Binding Name, Converter={StaticResource ToUpperConverter}}"/>
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding}">
+                            <TextBlock Text="{Binding Name, Converter={StaticResource ToUpperConverter}}"/>
+                        </HierarchicalDataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.Resources>
+                <Style
+           TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="IsExpanded" Value="True"/>
+                </Style>
+            </TreeView.Resources>
         </TreeView>
+               
     </Grid>
 </UserControl>

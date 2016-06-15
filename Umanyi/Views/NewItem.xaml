@@ -12,7 +12,7 @@
             <ColumnDefinition Width="130*"/>
             <ColumnDefinition Width="120*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="New Item" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top"
+        <TextBlock Text="New Item / Service" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top"
                        Style="{DynamicResource Title}"/>
         <TextBlock  HorizontalAlignment="Left" Margin="30,80,0,0" Text="Item ID" VerticalAlignment="Top" />
         <TextBox  Margin="110,80,55,0" VerticalAlignment="Top" MaxLength="18"

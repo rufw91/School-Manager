@@ -62,7 +62,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\Common\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -107,6 +107,7 @@
     </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -143,6 +144,7 @@
     <Compile Include="Models\TimeTableModel.cs" />
     <Compile Include="Models\TimeTableSettingsModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Presentation\BindableSelectedItemBehavior.cs" />
     <Compile Include="Presentation\ComparisonCollection.cs" />
     <Compile Include="Presentation\IMainWindow.cs" />
     <Compile Include="Presentation\NotifyPropertyChanged.cs" />
