@@ -1,33 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class AccountModel : ModelBase
+    public class AccountModel : ObservableCollection<AccountModel>, INotifyPropertyChanged
     {
-        private decimal amount;
         private string name;
 
         public AccountModel()
         {
+            AccountID = 0;
             Name = "";
-            Amount = 0m;
-            SubAccounts = new ObservableCollection<AccountModel>();
         }
 
-        public decimal Amount {
-            get { return this.amount; }
+        public AccountModel(int accountID,string name )
+        {
+            AccountID = accountID;
+            Name = name;
+        }
+
+        public int AccountID
+        {
+            get { return this.accountID; }
 
             set
             {
-                if (value != this.amount)
+                if (value != this.accountID)
                 {
-                    this.amount = value;
-                    NotifyPropertyChanged("Amount");
+                    this.accountID = value;
+                    NotifyPropertyChanged("AccountID");
                 }
             }
         }
@@ -46,12 +52,26 @@ namespace Helper.Models
             }
         }
 
-        public ObservableCollection<AccountModel> SubAccounts
-        { get; private set; }
-
-        public override void Reset()
+        public void Reset()
         {
-            
+            Name = "";
+            AccountID = 0;
+            this.Clear();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private int accountID;
+
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        public override string ToString()
+        {
+            return name;
         }
     }
 }

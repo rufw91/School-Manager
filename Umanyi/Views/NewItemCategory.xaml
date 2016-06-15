@@ -10,35 +10,17 @@
         <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <!-- Back button and page title -->
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Border Grid.ColumnSpan="2" Background="{DynamicResource TitleBackgroundBrush}"/>
-            <Button x:Name="backButton" Margin="39,40,21,0" 
-                        Style="{StaticResource BackButtonX}"
-                        VerticalAlignment="Top"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="New Item Category" Style="{StaticResource HeaderTextStyle}" Grid.Column="1" HorizontalAlignment="Left"
-                        IsHitTestVisible="false" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
-
-        </Grid>
-
-        <Grid Grid.Row="1">
-            <TextBlock Margin="30,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Text="Item Category" Style="{DynamicResource SmallTitle}"/>
+            <TextBlock Margin="30,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Text="New Account" Style="{DynamicResource Title}"/>
             <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Description" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Margin="110,80,0,0" Text="{Binding NewCategory.Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="300" MaxLength="49"/>
-            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Content="Save" Width="90"
-                Command="{Binding SaveCommand}"/>
-        </Grid>
+            <TextBox HorizontalAlignment="Left" Margin="120,80,0,0" Text="{Binding NewCategory.Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="300" MaxLength="49"/>
 
+        <TextBlock HorizontalAlignment="Left" Margin="30,130,0,0" Text="Sub-account of:" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="120,130,0,0" Style="{StaticResource TreeviewCombobox}"
+                  ItemsSource="{Binding ChartOfAccounts}" Tag="{Binding NewCategory.ParentCategoryID, Mode=OneWayToSource, Converter={StaticResource AccountToAccountIDConverter}}" VerticalAlignment="Top" Width="300" >
+            
+        </ComboBox>
+        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Content="Save" Width="90"
+                Command="{Binding SaveCommand}"/>
+       
     </Grid>
 </UserControl>

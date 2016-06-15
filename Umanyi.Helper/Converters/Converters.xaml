@@ -8,4 +8,5 @@
     </ResourceDictionary.MergedDictionaries>
     <local:ItemListToItemFindListConverter x:Key="ItemListToItemFindListConverter"/>
     <local:Best7SubjectConverter x:Key="Best7SubjectConverter"/>
+    <local:AccountToAccountIDConverter x:Key="AccountToAccountIDConverter"/>
 </ResourceDictionary>

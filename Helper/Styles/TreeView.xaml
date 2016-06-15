@@ -94,6 +94,8 @@
                 Value="4,2"/>
         <Setter Property="Foreground"
                 Value="{DynamicResource ItemText}"/>
+        <Setter Property="IsExpanded"
+                Value="False"/>
         <Setter Property="FocusVisualStyle"
                 Value="{StaticResource TreeViewItemFocusVisual}"/>
         <Setter Property="Template">

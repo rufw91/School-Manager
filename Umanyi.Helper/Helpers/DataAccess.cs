@@ -1673,8 +1673,12 @@ namespace Helper
         {
             return Task.Run<bool>(delegate
             {
-                string commandText = "INSERT INTO [Sales].[ItemCategory] (Description) VALUES('" + itemCategory.Description + "')";
-                return DataAccessHelper.ExecuteNonQuery(commandText);
+                string commandText = "INSERT INTO [Sales].[ItemCategory] (Description,ParentCategoryID) VALUES(@desc,@parCatID)";
+                ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                paramColl.Add(new SqlParameter("@desc",itemCategory.Description));
+                paramColl.Add(new SqlParameter("@parCatID",itemCategory.ParentCategoryID));
+                bool succ= DataAccessHelper.ExecuteNonQueryWithParameters(commandText,paramColl);
+                return succ;
             });
         }
 
@@ -2014,14 +2018,15 @@ namespace Helper
             return Task.Run<ObservableCollection<ItemCategoryModel>>(delegate
             {
                 ObservableCollection<ItemCategoryModel> observableCollection = new ObservableCollection<ItemCategoryModel>();
-                string commandText = "SELECT ItemCategoryID,Description FROM [Sales].[ItemCategory]";
+                string commandText = "SELECT ItemCategoryID,Description,ISNULL(ParentCategoryID,0) FROM [Sales].[ItemCategory]";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new ItemCategoryModel
                     {
                         ItemCategoryID = int.Parse(dataRow[0].ToString()),
-                        Description = dataRow[1].ToString()
+                        Description = dataRow[1].ToString(),
+                        ParentCategoryID = int.Parse(dataRow[2].ToString())
                     });
                 }
                 return observableCollection;
@@ -8471,5 +8476,49 @@ namespace Helper
             return bal;
         }
 
+
+        public static Task<ObservableCollection<AccountModel>> GetChartOfAccountsAsync()
+        {
+            return Task.Run<ObservableCollection<AccountModel>>(() =>
+            {
+                ObservableCollection<AccountModel> temp =new ObservableCollection<AccountModel>();
+
+                var t = GetAllItemCategoriesAsync().Result;
+                var main = t.Where(o=>o.ParentCategoryID==0);
+                var children = t.Where(o => o.ParentCategoryID > 0);
+
+                foreach(var y in main)
+                {
+                    temp.Add(new AccountModel(y.ItemCategoryID, y.Description));
+                }
+
+                foreach (var y in children)
+                {
+                    temp.First(o=>o.AccountID==y.ParentCategoryID).Add(new AccountModel(y.ItemCategoryID, y.Description));
+                }
+
+                return temp;
+            });
+        }
+
+        public static Task<bool> RemoveAccountAsync(int accountID)
+        {
+            return Task.Run<bool>(delegate
+            {
+                bool result = false;
+                try
+                {
+                    string text = "IF EXISTS(SELECT * FROM [Sales].[Item] WHERE ItemCategoryID = @catID)\r\nRAISERROR('ACCOUNT IN USE',18,1);";
+                    text = text + "\r\nDELETE FROM [Sales].[ItemCategory] WHERE ItemCategoryID = @catID";
+                    ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                    paramColl.Add(new SqlParameter("@catID", accountID));
+                    result = DataAccessHelper.ExecuteNonQueryWithParameters(text, paramColl);
+                }
+                catch
+                {
+                }
+                return result;
+            });
+        }
     }
 }

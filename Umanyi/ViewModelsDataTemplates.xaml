@@ -56,6 +56,9 @@
     </DataTemplate>
     <!--Child View Models-->
 
+    <DataTemplate DataType="{x:Type viewModels:RemoveAccountVM}" >
+        <views:RemoveAccount/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:PayslipsHistoryVM}" >
         <views:PayslipsHistory/>
     </DataTemplate>

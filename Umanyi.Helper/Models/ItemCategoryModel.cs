@@ -8,17 +8,20 @@ namespace Helper.Models
     public class ItemCategoryModel : ModelBase
     {
         int _itemCategoryID;
+        int parentCategoryID;
         string description;
     
         public ItemCategoryModel()
         {
             ItemCategoryID = 0;
             Description = "";
+            ParentCategoryID = 0;
         }
-        public ItemCategoryModel(int itemCategoryID, string descrption)
+        public ItemCategoryModel(int itemCategoryID, string descrption, int parentCategoryID)
         {
             ItemCategoryID = itemCategoryID;
             Description = descrption;
+            ParentCategoryID = parentCategoryID;
         }
 
 
@@ -35,6 +38,21 @@ namespace Helper.Models
                 }
             }
         }
+
+        public int ParentCategoryID
+        {
+            get { return this.parentCategoryID; }
+
+            set
+            {
+                if (value != this.parentCategoryID)
+                {
+                    this.parentCategoryID = value;
+                    NotifyPropertyChanged("ParentCategoryID");
+                }
+            }
+        }
+
         public string Description
         {
             get { return this.description; }
@@ -53,6 +71,7 @@ namespace Helper.Models
         {
             ItemCategoryID = 0;
             Description = "";
+            ParentCategoryID = 0;
         }
        
     }

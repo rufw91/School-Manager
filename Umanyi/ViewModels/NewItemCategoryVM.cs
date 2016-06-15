@@ -1,5 +1,6 @@
 ﻿using Helper;
 using Helper.Models;
+using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
@@ -10,18 +11,21 @@ namespace UmanyiSMS.ViewModels
     public class NewItemCategoryVM : ViewModelBase
     {
         ItemCategoryModel category;
+        private ObservableCollection<AccountModel> chartOfAccounts;
         public NewItemCategoryVM()
         {
             InitVars();
             CreateCommands();
         }
 
-        protected override void InitVars()
+        protected async override void InitVars()
         {
-            Title = "New Item Category";
+            Title = "NEW ACCOUNT";
             IsBusy = true;
             NewCategory = new ItemCategoryModel();
             IsBusy = false;
+            chartOfAccounts = await DataAccess.GetChartOfAccountsAsync();
+            NotifyPropertyChanged("ChartOfAccounts");
         }
 
         protected override void CreateCommands()
@@ -46,7 +50,7 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanSave()
         {
-            return !string.IsNullOrWhiteSpace(category.Description);
+            return !string.IsNullOrWhiteSpace(category.Description) && category.ParentCategoryID > 0; 
         }
 
         public ICommand SaveCommand
@@ -64,6 +68,9 @@ namespace UmanyiSMS.ViewModels
                 }
             }
         }
+
+        public ObservableCollection<AccountModel> ChartOfAccounts
+        { get { return chartOfAccounts; } }
 
         public override void Reset()
         {
