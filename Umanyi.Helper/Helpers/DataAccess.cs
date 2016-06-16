@@ -8520,5 +8520,50 @@ namespace Helper
                 return result;
             });
         }
+
+        public static Task<BudgetModel> GetCurrentBudgetAsync()
+        {
+            return Task.Run<BudgetModel>(delegate
+            {
+                BudgetModel result = new BudgetModel();
+                var t = GetAllItemCategoriesAsync().Result;
+                var exp = t.First(o => o.Description.ToUpperInvariant() == "EXPENSES").ItemCategoryID;
+                var accs = t.Where(o => o.ParentCategoryID == exp);
+                var y = new ObservableCollection<BudgetAccountModel>();
+                foreach (var u in accs)
+                    y.Add(new BudgetAccountModel(u));
+                result.Accounts = new ObservableCollection<BudgetAccountModel>(y);
+                result.Entries = GetAccountItemsAsync(exp).Result;
+                return result;
+            });
+        }
+
+        private static Task<ObservableCollection<BudgetEntryModel>> GetAccountItemsAsync(int accountID)
+        {
+            return Task.Run<ObservableCollection<BudgetEntryModel>>(delegate
+            {
+                ObservableCollection<BudgetEntryModel> temp = new ObservableCollection<BudgetEntryModel>();
+                try
+                {
+                    string text = "SELECT ItemID,Description FROM [Sales].[Item] WHERE ItemCategoryID "+
+                        "IN(SELECT ItemCategoryID FROM [Sales].[ItemCategory] WHERE ParentCategoryID = @catID) OR ItemCategoryID=@catID";
+                    ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                    paramColl.Add(new SqlParameter("@catID", accountID));
+                    var result = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(text, paramColl);
+                    BudgetEntryModel temp2;
+                    foreach(DataRow dtr in result.Rows)
+                    {
+                        temp2 = new BudgetEntryModel();
+                        temp2.AccountID = accountID;
+                        temp2.Description = dtr[1].ToString();
+                        temp.Add(temp2);
+                    }
+                }
+                catch
+                {
+                }
+                return temp;
+            });
+        }
     }
 }

@@ -121,9 +121,12 @@
     <Compile Include="Helpers\DocumentHelper.Transcript.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript2.cs" />
     <Compile Include="Helpers\DocumentHelper.Voucher.cs" />
+    <Compile Include="Models\AccountBaseModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BalanceSheetModel.cs" />
     <Compile Include="Models\BasicPair.cs" />
+    <Compile Include="Models\BudgetAccountModel.cs" />
+    <Compile Include="Models\BudgetEntryModel.cs" />
     <Compile Include="Models\BudgetModel.cs" />
     <Compile Include="Models\ClassBalancesListModel.cs" />
     <Compile Include="Models\ClassesSetupEntryModel.cs" />

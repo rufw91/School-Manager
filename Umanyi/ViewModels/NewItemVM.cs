@@ -3,6 +3,7 @@ using Helper.Models;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows;
+using System.Linq;
 using System.Windows.Input;
 
 namespace UmanyiSMS.ViewModels
@@ -26,7 +27,10 @@ namespace UmanyiSMS.ViewModels
             IsBusy = true;
             NewItem = new ItemModel();
             IsTaxable = true;
-            AllItemCategories = await DataAccess.GetAllItemCategoriesAsync();
+            var t = await DataAccess.GetAllItemCategoriesAsync();
+            var exp = t.First(o => o.Description.ToUpperInvariant() == "EXPENSES").ItemCategoryID;
+            var accs = t.Where(o => o.ParentCategoryID == exp);
+            AllItemCategories = new ObservableCollection<ItemCategoryModel>(accs);
             AllVats = await DataAccess.GetAllVatsAsync();
             IsBusy = false;
         }
@@ -124,7 +128,10 @@ namespace UmanyiSMS.ViewModels
         {
             NewItem.Reset();
             IsTaxable = true;
-            AllItemCategories = await DataAccess.GetAllItemCategoriesAsync();
+            var t =DataAccess.GetAllItemCategoriesAsync().Result;
+            var exp = t.First(o => o.Description.ToUpperInvariant() == "EXPENSES").ItemCategoryID;
+            var accs = t.Where(o => o.ParentCategoryID == exp);
+            AllItemCategories = new ObservableCollection<ItemCategoryModel>(accs);
             AllVats = await DataAccess.GetAllVatsAsync();
         }
     }

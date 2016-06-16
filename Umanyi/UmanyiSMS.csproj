@@ -403,6 +403,9 @@
     <Compile Include="Views\PayslipsHistory.xaml.cs">
       <DependentUpon>PayslipsHistory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PrepareBudget.xaml.cs">
+      <DependentUpon>PrepareBudget.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\QuickBooksSync.xaml.cs">
       <DependentUpon>QuickBooksSync.xaml</DependentUpon>
     </Compile>
@@ -942,6 +945,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PayslipsHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PrepareBudget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

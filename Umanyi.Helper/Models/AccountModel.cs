@@ -11,6 +11,7 @@ namespace Helper.Models
     public class AccountModel : ObservableCollection<AccountModel>, INotifyPropertyChanged
     {
         private string name;
+        private int accountID;
 
         public AccountModel()
         {
@@ -60,7 +61,7 @@ namespace Helper.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private int accountID;
+        
 
         protected void NotifyPropertyChanged(string propertyName)
         {
@@ -68,10 +69,6 @@ namespace Helper.Models
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
-        }
-        public override string ToString()
-        {
-            return name;
         }
     }
 }
