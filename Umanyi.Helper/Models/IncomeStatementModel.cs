@@ -9,8 +9,8 @@ namespace Helper.Models
 {
     public class IncomeStatementModel : ModelBase
     {
-        private List<TransactionModel> revenueEntries;
-        private List<TransactionModel> expenseEntries;
+        private AccountModel revenueEntries;
+        private AccountModel expenseEntries;
         private List<TransactionModel> gainEntries;
         private List<TransactionModel> lossEntries;
         private DateTime endTime;
@@ -20,19 +20,19 @@ namespace Helper.Models
         {
             startTime = new DateTime(DateTime.Now.Year, 1, 1);
             endTime = new DateTime(DateTime.Now.Year, 12, 31);
-            revenueEntries = new List<TransactionModel>();
-            expenseEntries = new List<TransactionModel>();
+            revenueEntries = new AccountModel();
+            expenseEntries = new AccountModel();
             gainEntries = new List<TransactionModel>();
             lossEntries = new List<TransactionModel>();
         }
 
-        public List<TransactionModel> RevenueEntries
+        public AccountModel RevenueEntries
         {
             get { return revenueEntries; }
             set { revenueEntries = value; }
         }
 
-        public List<TransactionModel> ExpenseEntries
+        public AccountModel ExpenseEntries
         {
             get { return expenseEntries; }
             set { expenseEntries = value; }
@@ -73,14 +73,14 @@ namespace Helper.Models
         {
             decimal j = 0;
             foreach (var t in expenseEntries)
-                j += t.TransactionAmt;
+                j += t.Balance;
             return j;
         }
         private decimal GetTotalRevenue()
         {
             decimal j = 0;
             foreach (var t in revenueEntries)
-                j += t.TransactionAmt;
+                j += t.Balance;
             return j;
         }
 

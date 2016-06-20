@@ -17,12 +17,14 @@ namespace Helper.Models
         {
             AccountID = 0;
             Name = "";
+            Balance = 0;
         }
 
         public AccountModel(int accountID,string name )
         {
             AccountID = accountID;
             Name = name;
+            Balance = 0;
         }
 
         public int AccountID
@@ -61,6 +63,7 @@ namespace Helper.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        private decimal balance;
         
 
         protected void NotifyPropertyChanged(string propertyName)
@@ -74,6 +77,20 @@ namespace Helper.Models
         public override string ToString()
         {
             return name;
+        }
+
+        public decimal Balance
+        {
+            get { return this.balance; }
+
+            set
+            {
+                if (value != this.balance)
+                {
+                    this.balance = value;
+                    NotifyPropertyChanged("Balance");
+                }
+            }
         }
     }
 }

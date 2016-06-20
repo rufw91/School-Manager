@@ -25,8 +25,8 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "CURRENT EXPENDITURE";
-            CurrentBudget = await DataAccess.GetCurrentBudgetAsync();
             entries = new CollectionViewSource();
+            CurrentBudget = await DataAccess.GetCurrentBudgetAsync();            
             entries.Source = currentBudget.Entries;
             entries.GroupDescriptions.Add(new PropertyGroupDescription("AccountID"));
             NotifyPropertyChanged("Entries");
