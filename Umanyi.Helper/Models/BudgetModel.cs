@@ -12,9 +12,12 @@ namespace Helper.Models
         private ObservableCollection<BudgetAccountModel> accounts;
         private ObservableCollection<BudgetEntryModel> entries;
         private decimal totalBudget;
+        private DateTime startDate;
         public BudgetModel()
         {
             accounts = new ObservableCollection<BudgetAccountModel>();
+            entries = new ObservableCollection<BudgetEntryModel>();
+            StartDate = new DateTime(DateTime.Now.Year, 1, 1);
             PropertyChanged += (o, e) =>
                 {
                     if (e.PropertyName=="TotalBudget")
@@ -81,6 +84,20 @@ namespace Helper.Models
         public override void Reset()
         {
             
+        }
+
+        public DateTime StartDate
+        {
+            get { return startDate; }
+
+            set
+            {
+                if (value != startDate)
+                {
+                    startDate = value;
+                    NotifyPropertyChanged("StartDate");
+                }
+            }
         }
     }
 }

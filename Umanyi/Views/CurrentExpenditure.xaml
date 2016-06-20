@@ -13,9 +13,21 @@
             <Hyperlink Command="{Binding RefreshCommand}">Refresh</Hyperlink>
         </TextBlock>
 
-        <DataGrid Margin="10,60,10,10" BorderThickness="1" AutoGenerateColumns="False">
+        <DataGrid Margin="10,70,10,10" BorderThickness="1" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False"
+                  DataContext="{Binding Entries}"
+                  ItemsSource="{Binding}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Item" Binding="{Binding Description}" Width="170*"/>
+                <DataGridTextColumn Binding="{Binding Path=Description, Mode=OneWay}" Header="Description" Width="170*"
+                                        />
+                <DataGridTextColumn Binding="{Binding Path=ActualQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Quantity" Width="75*"
+                                        />
+                <DataGridTextColumn Binding="{Binding Path=ActualPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Price" Width="75*"
+                                        />
+                <DataGridTextColumn Binding="{Binding Path=Expenditure, Mode=OneWay}" Header="Total" Width="100*"
+                                        />
+                <DataGridTextColumn Binding="{Binding Path=Balance, Mode=OneWay}" Header="Balance" Width="100*"
+                                        />
+
             </DataGrid.Columns>
             <DataGrid.GroupStyle>
                 <GroupStyle>

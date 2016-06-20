@@ -9,18 +9,7 @@
                     <Border Margin="0,10,0,10" Width="1" BorderThickness="1" BorderBrush="Silver" HorizontalAlignment="Center"/>
                 </Border>
                 <Border BorderBrush="Gray" Margin="10,126,10,50" Height="1" VerticalAlignment="Top" BorderThickness="1" />
-                <TextBlock HorizontalAlignment="Left" Margin="42,185,0,0" TextWrapping="Wrap" Text="FEES PAID" FontFamily="Arial" FontSize="14"  VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,210,0,0" TextWrapping="Wrap" Text="DONATIONS" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,235,0,0" TextWrapping="Wrap" Text="OTHER" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,315,0,0" TextWrapping="Wrap" Text="FOOD" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,340,0,0" TextWrapping="Wrap" Text="PAYROLL EXPENSES" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,365,0,0" TextWrapping="Wrap" Text="OFFICE SUPPLIES" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,390,0,0" TextWrapping="Wrap" Text="POSTAGE &amp; PRINTING" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,415,0,0" TextWrapping="Wrap" Text="EQUIPMENT MAINTENANCE" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="42,440,0,0" TextWrapping="Wrap" Text="OTHER" FontFamily="Arial" FontSize="14" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="86,543,0,0" TextWrapping="Wrap" Text="_" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="409,543,0,0" TextWrapping="Wrap" Text="_" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="650,543,0,0" TextWrapping="Wrap" Text="_" VerticalAlignment="Top"/>
+
             </Grid>
         </Border>
         <TextBlock HorizontalAlignment="Center" Margin="0,20,0,0" 
@@ -44,12 +33,5 @@
               Source="{Binding Info.Logo, Source={x:Static Application.Current}}" />
         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,10" Text="{Binding Info.Motto, Source={x:Static Application.Current}}" VerticalAlignment="Bottom" FontStyle="Italic"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,84,0,0" Text="INCOME STATEMENT" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="20" TextDecorations="Underline"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,160,0,0" TextWrapping="Wrap" Text="REVENUES" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,290,0,0" TextWrapping="Wrap" Text="EXPENSES" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,490,0,0" TextWrapping="Wrap" Text="OPERATING INCOME" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,530,0,0" TextWrapping="Wrap" Text="OTHER GAINS &amp; LOSSES" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,590,0,0" TextWrapping="Wrap" Text="INCOME BEFORE INCOME TAXES" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,640,0,0" TextWrapping="Wrap" Text="INCOME TAX EXPENSE" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,690,0,0" TextWrapping="Wrap" Text="NET INCOME" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Top"/>
     </Grid>
 </FixedPage>

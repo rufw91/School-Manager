@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -22,8 +23,9 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "PREPARE BUDGET";
-            NewBudget = await DataAccess.GetCurrentBudgetAsync();
             entries = new CollectionViewSource();
+            NewBudget = await DataAccess.GetCurrentBudgetAsync();
+            
             entries.Source = newBudget.Entries;
             entries.GroupDescriptions.Add(new PropertyGroupDescription("AccountID"));
             NotifyPropertyChanged("Entries");
@@ -40,6 +42,22 @@ namespace UmanyiSMS.ViewModels
                 }
                 IsBusy = false;
             },o=> CanAdd());
+
+            SaveCommand = new RelayCommand(async o =>
+            {
+                IsBusy = true;
+                bool succ = await DataAccess.SaveNewBudgetAsync(newBudget);
+                if (succ)
+                    Reset();
+                MessageBox.Show(succ ? "Successfully saved details." : "Could not save details.", succ ? "Success" : "Error", MessageBoxButton.OK,
+                    succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
+                IsBusy = true;
+            }, o =>CanSave());
+        }
+
+        private bool CanSave()
+        {
+            return !IsBusy;
         }
 
         private bool CanAdd()
@@ -72,6 +90,9 @@ namespace UmanyiSMS.ViewModels
         }
 
         public ICommand AddItemsCommand
+        { get; private set; }
+
+        public ICommand SaveCommand
         { get; private set; }
 
         public override void Reset()

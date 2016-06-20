@@ -259,12 +259,14 @@ namespace Helper
                 totalNoOfItems = (workObject as AllUnreturnedBooksModel).Count;
             if (workObject is GeneralLedgerModel)
                 totalNoOfItems = (workObject as GeneralLedgerModel).Entries.Count;
-            if (workObject is IncomeStatementModel)
-                return 1;
+            
             if (workObject is BalanceSheetModel)
                 return 1;
             if (workObject is STCashFlowsModel)
                 return 1;
+            if (docType== DocType.AccountsIncomeStatement)            
+                return CalculatePagesAccountsIncomeStatement(workObject as IncomeStatementModel);
+            
             return (totalNoOfItems % itemsPerPage) != 0 ?
                 (totalNoOfItems / itemsPerPage) + 1 : (totalNoOfItems / itemsPerPage);
         }

@@ -10,13 +10,13 @@ namespace Helper.Models
     {
         private DateTime endTime;
         private DateTime startTime;
-        private List<TransactionModel> operatingActivitiesEntries;
+        private List<AccountModel> operatingActivitiesEntries;
         private decimal startBalance;
         private decimal totRev;
         private decimal totExp;
         public STCashFlowsModel()
         {
-            operatingActivitiesEntries = new List<TransactionModel>();
+            operatingActivitiesEntries = new List<AccountModel>();
         }
 
         public STCashFlowsModel(IncomeStatementModel incomeStatementModel)
@@ -26,18 +26,14 @@ namespace Helper.Models
 
         private void CopyFromIS(IncomeStatementModel incomeStatementModel)
         {
-            operatingActivitiesEntries = new List<TransactionModel>();
-            operatingActivitiesEntries.Add(incomeStatementModel.RevenueEntries[0]);
-            operatingActivitiesEntries.Add(incomeStatementModel.RevenueEntries[1]);
+            operatingActivitiesEntries = new List<AccountModel>();
+            foreach (var r in incomeStatementModel.RevenueEntries)
+            operatingActivitiesEntries.Add(r);
 
             totRev = incomeStatementModel.TotalRevenue;
 
-            operatingActivitiesEntries.Add(incomeStatementModel.ExpenseEntries[0]);
-            operatingActivitiesEntries.Add(incomeStatementModel.ExpenseEntries[4]);
-            operatingActivitiesEntries.Add(incomeStatementModel.ExpenseEntries[2]);
-            operatingActivitiesEntries.Add(incomeStatementModel.ExpenseEntries[3]);
-            operatingActivitiesEntries.Add(incomeStatementModel.ExpenseEntries[1]);
-            operatingActivitiesEntries.Add(incomeStatementModel.ExpenseEntries[5]);
+            foreach (var r in incomeStatementModel.ExpenseEntries)
+                operatingActivitiesEntries.Add(r);
 
             totExp = incomeStatementModel.TotalExpense;
             this.StartTime = incomeStatementModel.StartTime;
@@ -48,7 +44,7 @@ namespace Helper.Models
 
         public DateTime EndTime { get { return endTime; } set { endTime = value; } }
 
-        public List<TransactionModel> OperatingActivitiesEntries
+        public List<AccountModel> OperatingActivitiesEntries
         {
             get { return operatingActivitiesEntries; }
         }
