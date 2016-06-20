@@ -19,17 +19,21 @@ namespace Helper.Models
                 {
                     if (e.PropertyName=="TotalBudget")
                     {
-                        foreach (var h in accounts)
-                            h.BudgetAmount = h.BudgetPc * totalBudget / 100; 
+                        RefreshValues();
                     }
                 };
 
             accounts.CollectionChanged += (o, e) =>
                 {
-                    foreach (var h in accounts)
-                        h.BudgetAmount = h.BudgetPc * totalBudget / 100; 
+                    RefreshValues();
                 };
 
+        }
+
+        public void RefreshValues()
+        {
+            foreach (var h in accounts)
+                h.BudgetAmount = h.BudgetPc * totalBudget / 100; 
         }
 
         public ObservableCollection<BudgetAccountModel> Accounts

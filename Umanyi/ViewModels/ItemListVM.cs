@@ -1,9 +1,13 @@
 ﻿using Helper;
 using Helper.Models;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace UmanyiSMS.ViewModels
@@ -11,7 +15,7 @@ namespace UmanyiSMS.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ItemListVM: ViewModelBase
     {
-        ObservableCollection<ItemListModel> currentItems;
+        CollectionViewSource currentItems;
         ObservableCollection<ItemListModel> originalItems;
         bool isReadOnly;
         public ItemListVM()
@@ -30,7 +34,10 @@ namespace UmanyiSMS.ViewModels
 
             await Task.WhenAll(new Task[] { pTemp, cTemp });
             originalItems = pTemp.Result;
-            CurrentItems = cTemp.Result;
+            currentItems = new CollectionViewSource();
+            currentItems.Source = cTemp.Result;
+            currentItems.GroupDescriptions.Add(new PropertyGroupDescription("ItemCategoryID"));
+            NotifyPropertyChanged("CurrentItems");
             IsBusy = false;
         }
 
@@ -80,18 +87,9 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public ObservableCollection<ItemListModel> CurrentItems
+        public CollectionViewSource CurrentItems
         {
             get { return this.currentItems; }
-
-            set
-            {
-                if (value != this.currentItems)
-                {
-                    this.currentItems = value;
-                    NotifyPropertyChanged("CurrentItems");
-                }
-            }
         }
 
         private bool AreEqual(ItemModel p1, ItemModel p2)
@@ -132,10 +130,10 @@ namespace UmanyiSMS.ViewModels
             ObservableCollection<int> temp = new ObservableCollection<int>();
             for (int i = 0; i < originalItems.Count; i++)
             {
-                if (!AreEqual(originalItems[i], CurrentItems[i]))
+               /* if (!AreEqual(originalItems[i], CurrentItems[i]))
                 {
                     temp.Add(i);
-                }
+                }*/
             }
 
             return temp;
@@ -149,7 +147,12 @@ namespace UmanyiSMS.ViewModels
 
             await Task.WhenAll(new Task[] { pTemp, cTemp });
             originalItems = pTemp.Result;
-            CurrentItems = cTemp.Result;
+            currentItems.Source = cTemp.Result;
+            currentItems.GroupDescriptions.Add(new PropertyGroupDescription("ItemCategoryID"));
+            NotifyPropertyChanged("CurrentItems");
         }
+
+        public CollectionViewSource cvs { get; set; }
     }
+
 }

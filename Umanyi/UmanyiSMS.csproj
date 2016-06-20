@@ -364,6 +364,9 @@
     <Compile Include="Views\CombinedMarkLists.xaml.cs">
       <DependentUpon>CombinedMarkLists.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CurrentExpenditure.xaml.cs">
+      <DependentUpon>CurrentExpenditure.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomModules.xaml.cs">
       <DependentUpon>CustomModules.xaml</DependentUpon>
     </Compile>
@@ -893,6 +896,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CombinedMarkLists.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CurrentExpenditure.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1583,7 +1590,6 @@
     <None Include="Properties\app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="UmanyiSMS_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\students_bg.jpg" />

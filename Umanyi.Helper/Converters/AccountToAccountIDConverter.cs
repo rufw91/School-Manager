@@ -12,7 +12,14 @@ namespace Helper.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return Binding.DoNothing;
+            if (value == null)
+                return null;
+            int accID = int.Parse(value.ToString());
+            var name= DataAccess.GetAccountAsync(accID).Result;
+            string param = parameter as string;
+            if (param.Equals("nameOnly"))
+                return name.Name;
+            return name;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

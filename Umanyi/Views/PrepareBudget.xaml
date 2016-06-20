@@ -33,8 +33,11 @@
             </TabItem>
             <TabItem Header="Items">
                 <Grid>
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-20,10,0" >
+                        <Hyperlink Command="{Binding AddItemsCommand}">Add Items</Hyperlink>
+                    </TextBlock>
                     <DataGrid BorderThickness="1" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False"
-                              ItemsSource="{Binding NewBudget.Entries}">
+                              ItemsSource="{Binding Entries.View}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Path=Description, Mode=OneWay}" Header="Description" Width="170*"
                                         />
@@ -46,6 +49,15 @@
                                         />
 
                         </DataGrid.Columns>
+                        <DataGrid.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Margin="10,0,0,0" FontWeight="Bold" FontSize="14" Text="{Binding Name, Converter={StaticResource AccountToAccountIDConverter}, ConverterParameter=nameOnly, IsAsync=True}"/>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </DataGrid.GroupStyle>
                     </DataGrid>
                 </Grid>
             </TabItem>

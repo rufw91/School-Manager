@@ -22,6 +22,12 @@ namespace Helper.Models
 
         }
 
+        public BudgetEntryModel(ItemFindModel item)
+        {
+            this.AccountID = item.ItemCategoryID;
+            this.Description = item.Description;
+        }
+
         public int AccountID
         {
             get { return accountID; }

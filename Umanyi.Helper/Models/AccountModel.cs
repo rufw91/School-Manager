@@ -70,5 +70,10 @@ namespace Helper.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }
