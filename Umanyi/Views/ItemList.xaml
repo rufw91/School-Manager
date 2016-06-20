@@ -17,23 +17,26 @@
                     <Hyperlink Command="{Binding RefreshCommand}">Refresh</Hyperlink>
         </TextBlock>
 
-
-        <DataGrid Name="datagrid" AutoGenerateColumns="False" Margin="10,60,10,50"
-                      CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" ItemsSource="{Binding CurrentItems}">
+        <DataGrid Name="datagrid" AutoGenerateColumns="False" Margin="10,60,10,10" ItemsSource="{Binding CurrentItems.View}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=ItemID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Item ID" Width="150*"
-                                        IsReadOnly="{Binding IsChecked,ElementName=dc}"/>
-                <DataGridTextColumn Binding="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Description" Width="170*"
-                                        IsReadOnly="{Binding IsChecked,ElementName=dc}"/>
-                <DataGridTextColumn Binding="{Binding Path=CurrentQuantity, Mode=OneWay}" Header="Current Quantity" Width="100*"
-                                        IsReadOnly="True"/>
-                <DataGridTextColumn  Binding="{Binding Path=Cost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Buying Price" Width="100*"
-                                        IsReadOnly="{Binding IsChecked,ElementName=dc}"/>
-                <DataGridTextColumn Binding="{Binding Path=Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Selling Price" Width="100*"
-                                        IsReadOnly="{Binding IsChecked,ElementName=dc}"/>
+                <DataGridTextColumn Binding="{Binding Path=ItemID}" Header="Item ID" Width="150*"/>
+                <DataGridTextColumn Binding="{Binding Path=Description}" Header="Description" Width="170*"/>
+                <DataGridTextColumn Binding="{Binding Path=CurrentQuantity}" Header="Current Quantity" Width="100*"/>
+                <DataGridTextColumn  Binding="{Binding Path=Cost}" Header="Buying Price" Width="100*"/>
+                <DataGridTextColumn Binding="{Binding Path=Price}" Header="Selling Price" Width="100*"/>
 
             </DataGrid.Columns>
+            <DataGrid.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="10,0,0,0" FontWeight="Bold" FontSize="14" Text="{Binding Name, Converter={StaticResource AccountToAccountIDConverter}, ConverterParameter=nameOnly, IsAsync=True}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
         </DataGrid>
+        
         <Controls:DropDownButton Grid.Column="2" Content="Export" HorizontalAlignment="Right" Margin="0,35,190,0" 
                                  VerticalAlignment="Top" DataContext="{Binding ElementName=datagrid}">
             <Controls:DropDownButton.DropDownContent>

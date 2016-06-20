@@ -8545,7 +8545,7 @@ namespace Helper
                 ObservableCollection<BudgetEntryModel> temp = new ObservableCollection<BudgetEntryModel>();
                 try
                 {
-                    string text = "SELECT ItemID,Description FROM [Sales].[Item] WHERE ItemCategoryID "+
+                    string text = "SELECT ItemCategoryID,Description FROM [Sales].[Item] WHERE ItemCategoryID " +
                         "IN(SELECT ItemCategoryID FROM [Sales].[ItemCategory] WHERE ParentCategoryID = @catID) OR ItemCategoryID=@catID";
                     ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
                     paramColl.Add(new SqlParameter("@catID", accountID));
@@ -8554,7 +8554,7 @@ namespace Helper
                     foreach(DataRow dtr in result.Rows)
                     {
                         temp2 = new BudgetEntryModel();
-                        temp2.AccountID = accountID;
+                        temp2.AccountID = int.Parse(dtr[0].ToString());
                         temp2.Description = dtr[1].ToString();
                         temp.Add(temp2);
                     }
@@ -8564,6 +8564,26 @@ namespace Helper
                 }
                 return temp;
             });
+        }
+
+        internal static Task<AccountModel> GetAccountAsync(int accountID)
+        {
+            return Task.Run<AccountModel>(() =>
+               {
+                   string text = "SELECT ItemCategoryID,Description FROM [Sales].[ItemCategory] WHERE ItemCategoryID = @catID";
+                   ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                   paramColl.Add(new SqlParameter("@catID", accountID));
+                   var result = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(text, paramColl);
+
+                   if (result.Rows.Count == 0)
+                       return null;
+                   AccountModel temp2 = new AccountModel();
+                   temp2.AccountID = int.Parse(result.Rows[0][0].ToString());
+                   temp2.Name = result.Rows[0][1].ToString();
+                   return temp2;
+
+               });
+
         }
     }
 }
