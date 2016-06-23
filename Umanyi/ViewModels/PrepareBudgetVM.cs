@@ -23,8 +23,9 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "PREPARE BUDGET";
+            newBudget = new BudgetModel();
             entries = new CollectionViewSource();
-            NewBudget = await DataAccess.GetCurrentBudgetAsync();
+            NewBudget = await DataAccess.GetBudgetAsync(DateTime.Now);
             
             entries.Source = newBudget.Entries;
             entries.GroupDescriptions.Add(new PropertyGroupDescription("AccountID"));
@@ -43,9 +44,22 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = false;
             },o=> CanAdd());
 
+            AddAccountCommand = new RelayCommand(o =>
+            {
+                IsBusy = true;
+                if (FindAccountsAction != null)
+                {
+                    FindAccountsAction.Invoke();
+                    NotifyPropertyChanged("Entries");
+                }
+                IsBusy = false;
+            }, o => true);
+
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
+                newBudget.StartDate = newBudget.StartDate.Date;
+                newBudget.EndDate = new DateTime(newBudget.EndDate.Year, newBudget.EndDate.Month, newBudget.EndDate.Day, 23, 59, 59, 998);
                 bool succ = await DataAccess.SaveNewBudgetAsync(newBudget);
                 if (succ)
                     Reset();
@@ -57,7 +71,9 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanSave()
         {
-            return !IsBusy;
+            return !IsBusy && newBudget.StartDate < newBudget.EndDate && newBudget.Accounts.Count > 0
+                && !newBudget.Accounts.Any(o => o.BudgetAmount == 0) && newBudget.Entries.Count > 0
+                && !newBudget.Entries.Any(o => o.BudgetedAmount == 0);
         }
 
         private bool CanAdd()
@@ -75,6 +91,9 @@ namespace UmanyiSMS.ViewModels
         public Action FindItemsAction
         { get; internal set; }
 
+        public Action FindAccountsAction
+        { get; internal set; }        
+
         public BudgetModel NewBudget
         {
             get { return this.newBudget; }
@@ -91,7 +110,9 @@ namespace UmanyiSMS.ViewModels
 
         public ICommand AddItemsCommand
         { get; private set; }
-
+        public ICommand AddAccountCommand
+        { get; private set; }
+        
         public ICommand SaveCommand
         { get; private set; }
 

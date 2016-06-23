@@ -117,6 +117,7 @@
     <Compile Include="Helpers\DocumentHelper.Receipt.cs" />
     <Compile Include="Helpers\DocumentHelper.Report.cs" />
     <Compile Include="Helpers\DocumentHelper.Statement.cs" />
+    <Compile Include="Helpers\DocumentHelper.SupplierPayment.cs" />
     <Compile Include="Helpers\DocumentHelper.SupplierStatement.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript2.cs" />
@@ -323,6 +324,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="Resources\PaymentVoucher2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\Transcript4.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -26,7 +26,7 @@ namespace Helper
             Statement, Transcript, Transcript3, LeavingCert, FeesStructure, FeesPayment, FeesPayment2,
             Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult,
             ClassTranscripts, ClassTranscripts2, UnreturnedBooks, UnreturnedBooks2, Report, Payslip, AccountsGeneralLedger, AccountsIncomeStatement,
-            AccountsBalanceSheet, AccountsSTofCashFlow, SupplierStatement
+            AccountsBalanceSheet, AccountsSTofCashFlow, SupplierStatement,SupplierPayment
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -93,6 +93,7 @@ namespace Helper
                 case DocType.AccountsBalanceSheet: GenerateAccountsBalanceSheet(); break;
                 case DocType.AccountsSTofCashFlow: GenerateAccountsSTofCashFlows(); break;
                 case DocType.SupplierStatement: GenerateSupplierStatement(); break;
+                case DocType.SupplierPayment: GenerateVoucher2(); break;
                 default: throw new ArgumentException();
             }
         }
@@ -127,7 +128,8 @@ namespace Helper
                 case DocType.AccountsIncomeStatement: resString = Helper.Properties.Resources.AccountsIncomeStatement; break;
                 case DocType.AccountsBalanceSheet: resString = Helper.Properties.Resources.AccountsBalanceSheet; break;
                 case DocType.AccountsSTofCashFlow: resString = Helper.Properties.Resources.AccountsSTOfCashFlows; break;
-                case DocType.SupplierStatement: resString = Helper.Properties.Resources.SupplierStatement; break;    
+                case DocType.SupplierStatement: resString = Helper.Properties.Resources.SupplierStatement; break;
+                case DocType.SupplierPayment: resString = Helper.Properties.Resources.PaymentVoucher2; break;  
                 default: throw new ArgumentException();
             }
             StringReader stringReader = new StringReader(resString);
@@ -138,6 +140,12 @@ namespace Helper
 
         private static DocType GetDocType(object workObject)
         {
+            if (workObject is FeePaymentReceipt2Model)
+                return DocType.FeesPayment2;
+            if (workObject is FeePaymentReceiptModel)
+                return DocType.FeesPayment;
+            if (workObject is SupplierPaymentModel)
+                return DocType.SupplierPayment;
             if (workObject is LeavingCertificateModel)
                 return DocType.LeavingCert;
             if (workObject is FullFeesStructureModel)
@@ -152,10 +160,7 @@ namespace Helper
                 return DocType.Transcript2;
             if (workObject is StudentExamResultModel)
                 return DocType.Transcript;
-            if (workObject is FeePaymentReceipt2Model)
-                return DocType.FeesPayment2;
-            if (workObject is FeePaymentReceiptModel)
-                return DocType.FeesPayment;
+            
             if (workObject is ClassBalancesListModel)
                 return DocType.Balances;
             if (workObject is ClassStudentListModel)
@@ -211,6 +216,8 @@ namespace Helper
         private static int GetNoOfPages(object workObject)
         {
             int totalNoOfItems = 0;
+            if (docType == DocType.SupplierPayment)
+                return 1;
             if (docType == DocType.LeavingCert)
                 return 1;
             if (docType == DocType.FeesPayment)

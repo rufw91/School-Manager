@@ -77,8 +77,8 @@ namespace Helper
             IncomeStatementModel si = myWorkObject as IncomeStatementModel;
 
             AddAISRevenueAccounts(si.RevenueEntries,si.StartTime,si.EndTime);
-            AddAISExpenseAccounts(si);            
-            
+            AddAISExpenseAccounts(si);
+            AddAISOtherItems(si);
         }
 
         private static int CalculatePagesAccountsIncomeStatement(IncomeStatementModel si)
@@ -157,9 +157,11 @@ namespace Helper
                 ((si.ExpenseEntries.Count - prevPageEnt) / 35) + 1 : ((si.ExpenseEntries.Count - prevPageEnt) / 35);
 
             int lastYPos = 0;
+            int lastPage = 0;
             for (int pageNo = 0; pageNo < expPages; pageNo++)
             {
-                AddAISPeriod(si.StartTime, si.EndTime, revPages + pageNo);
+                lastPage = revPages + pageNo;
+                AddAISPeriod(si.StartTime, si.EndTime, lastPage);
 
                 if (expStartIndex >= si.ExpenseEntries.Count)
                     return;
@@ -169,11 +171,15 @@ namespace Helper
                 for (int i = expStartIndex; i < expEndIndex; i++)
                 {
                     lastYPos = 195 + ((i - prevPageEnt - 35 * pageNo) * 25);
-                    AddAISExpenseAccount(si.ExpenseEntries[i].Name, si.ExpenseEntries[i].Balance, lastYPos, revPages + pageNo);
+                    AddAISExpenseAccount(si.ExpenseEntries[i].Name, si.ExpenseEntries[i].Balance, lastYPos, lastPage);
                 }
                 expStartIndex = expEndIndex;
                 expEndIndex = expStartIndex + 35;
             }
+            decimal d = 0;
+            foreach (var y in si.ExpenseEntries)
+                d += y.Balance;
+            AddAISTotals(d, lastYPos, lastPage);
         }
 
         private static void AddAISSubtitle(string text,double yPos,int pageNo)
@@ -208,6 +214,10 @@ namespace Helper
                      lastRevPage = pageNo;
                  }
              }
+            decimal d=0;
+            foreach(var y in accounts)
+                d+=y.Balance;
+            AddAISTotals(d, lastRevYpos, lastRevPage);
          }
 
 
@@ -223,19 +233,66 @@ namespace Helper
             AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 350, yPos, pageNo);
         }
 
-        private static void AddAISTotalRevenue(decimal amount, int pageNo)
+        private static void AddAISTotals(decimal amount, double ypos, int pageNo)
         {
-            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 590, 260, pageNo);
+            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 590, ypos+25, pageNo);
         }
 
-        private static void AddAISTotalExpenses(decimal amount, int pageNo)
-        {
-            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 590, 470, pageNo);
-        }
 
-        private static void AddAISNetIncome(decimal amount, int pageNo)
+        private static void AddAISOtherItems(IncomeStatementModel si)
         {
-            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 590, 690, pageNo);
+            int pages = 0;
+            int ypos=0;
+            int revPages = (si.RevenueEntries.Count % 35) != 0 ?
+                (si.RevenueEntries.Count / 35) + 1 : (si.RevenueEntries.Count / 35);
+
+            int lastRevYpos = 195 + (si.RevenueEntries.Count - (revPages - 1) * 35) * 25;
+            int prevPageEnt = 0;
+            if (lastRevYpos < 1000)
+            {
+                prevPageEnt = ((1070 - (int)lastRevYpos) / 25);
+            }
+
+            int expPages = ((si.ExpenseEntries.Count - prevPageEnt) % 35) != 0 ?
+                ((si.ExpenseEntries.Count - prevPageEnt) / 35) + 1 : ((si.ExpenseEntries.Count - prevPageEnt) / 35);
+            if (prevPageEnt >= si.ExpenseEntries.Count)
+                expPages = 0;
+
+            if (expPages < 0)
+                expPages = 0;
+            int lastExpYpos = 0;
+            if (expPages == 0)
+                lastExpYpos = lastRevYpos + si.ExpenseEntries.Count * 25;
+            else
+                lastExpYpos = 195 + (si.ExpenseEntries.Count - prevPageEnt - (expPages - 1) * 35) * 25;
+            pages = revPages + expPages;
+            ypos = lastExpYpos+120;
+            if (lastExpYpos > 800)
+            {
+                pages++;
+                ypos=195;
+            }
+            decimal rev=0;
+            decimal exp=0;
+            foreach(var t in si.RevenueEntries)
+            rev+=t.Balance;
+
+            foreach(var t in si.ExpenseEntries)
+           exp+=t.Balance;
+
+
+
+            AddAISSubtitle("OPERATING INCOME", ypos, pages - 1);
+            AddAISTotals(rev - exp, ypos-25, pages - 1);
+            AddAISSubtitle("OTHER GAINS AND LOSSES", ypos+60, pages - 1);
+            AddAISSubtitle("         -", ypos + 100, pages - 1);
+            AddAISSubtitle("INCOME BEFORE TAXES", ypos + 140, pages - 1);
+            AddAISTotals(rev - exp, ypos+115, pages - 1);
+            AddAISSubtitle("INCOME TAX EXPENSES", ypos + 180, pages - 1);
+            AddAISTotals(0, ypos + 155, pages - 1);
+            AddAISSubtitle("NET INCOME", ypos + 240, pages - 1);
+            AddAISTotals(rev - exp, ypos + 215, pages - 1);
+
         }
 
         

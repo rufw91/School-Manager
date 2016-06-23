@@ -13,7 +13,7 @@
         <TextBlock  HorizontalAlignment="Left" Margin="30,80,0,0" VerticalAlignment="Top" Text="Supplier"/>
         <ComboBox HorizontalAlignment="Left" Margin="110,80,0,0" VerticalAlignment="Top" Width="300"
             DisplayMemberPath="NameOfSupplier" SelectedValuePath="SupplierID" 
-                  SelectedValue="{Binding NewPayment.SupplierID, Mode=TwoWay}"                    
+                  SelectedItem="{Binding SelectedSupplier, Mode=TwoWay}"                    
                   ItemsSource="{Binding AllSuppliers}" />
 
         <TextBlock  HorizontalAlignment="Left" Margin="30,130,0,0" VerticalAlignment="Top" Text="Date Paid"/>
@@ -29,7 +29,9 @@
         <TextBox  HorizontalAlignment="Left" Margin="110,230,0,0" VerticalAlignment="Top" Width="400" Height="150"
                   VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="1000"
                   Text="{Binding NewPayment.Notes, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
-        <Button Height="23" Content="_Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="94"  
+        <Button Height="23" Content="Save &amp; _Print" HorizontalAlignment="Right" Margin="0,0,120,10" VerticalAlignment="Bottom" Width="125"  
+                Command="{Binding SaveAndPrintCommand}"/>
+        <Button Height="23" Content="_Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"  
                 Command="{Binding SaveCommand}"/>
     </Grid>
 </UserControl>

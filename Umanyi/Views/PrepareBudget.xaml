@@ -4,18 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             xmlns:Controls="clr-namespace:Helper.Controls;assembly=Helper"
+             xmlns:commands="clr-namespace:UmanyiSMS.Presentation"
              d:DesignHeight="700" d:DesignWidth="984"
              Background="White">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Prepare Budget" 
                    VerticalAlignment="Top"/>
-        
-        
+
+
         <Button Content="Save" HorizontalAlignment="Right" Command="{Binding SaveCommand}" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"/>
         <TabControl Margin="10,60,10,50">
             <TabItem Header="Accounts">
                 <Grid>
-                    <DataGrid Margin="300,40,10,0" AutoGenerateColumns="False" BorderThickness="1" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" ItemsSource="{Binding NewBudget.Accounts}">
+                    <DataGrid Name="dataGrid" Margin="300,40,10,0" AutoGenerateColumns="False" BorderThickness="1" CanUserDeleteRows="True" CanUserAddRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" ItemsSource="{Binding NewBudget.Accounts}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Path=Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Header="Account" Width="100*"
                                         IsReadOnly="True"/>
@@ -27,8 +29,32 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <TextBlock HorizontalAlignment="Left" Margin="10,40,0,0" Text="Total Budget" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
-                    <TextBox HorizontalAlignment="Left" Height="23" Margin="10,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="275"
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="10,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="275"
                              Text="{Binding NewBudget.TotalBudget,UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}}"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,110,0,0" Text="Period" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,150,0,0" Text="Start" VerticalAlignment="Top"/>
+                    <DatePicker HorizontalAlignment="Left" Margin="10,170,0,0" VerticalAlignment="Top" Width="275"
+                                SelectedDate="{Binding NewBudget.StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,220,0,0" Text="End" VerticalAlignment="Top"/>
+                    <DatePicker HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" Width="275"
+                                SelectedDate="{Binding NewBudget.EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Controls:DropDownButton Content="Export" HorizontalAlignment="Right" Margin="0,15,100,0" VerticalAlignment="Top" DataContext="{Binding ElementName=dataGrid}">
+                        <Controls:DropDownButton.DropDownContent>
+                            <Menu>
+                                <Menu.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" IsItemsHost="True"/>
+                                    </ItemsPanelTemplate>
+                                </Menu.ItemsPanel>
+                                <MenuItem Header="Export to PDF" Command="{Binding Source={x:Static commands:CommonCommands.ExportToPDFCommand}}" CommandParameter="{Binding}"/>
+                                <MenuItem Header="Export to Excel" Command="{Binding Source={x:Static commands:CommonCommands.ExportToExcelCommand}}" CommandParameter="{Binding}"/>
+                            </Menu>
+                        </Controls:DropDownButton.DropDownContent>
+                    </Controls:DropDownButton>
+                    <TextBlock HorizontalAlignment="Right" Margin="0,20,10,0" VerticalAlignment="Top">
+                        <Hyperlink Command="{Binding AddAccountCommand}">Add Account</Hyperlink>
+                    </TextBlock>
+
                 </Grid>
             </TabItem>
             <TabItem Header="Items">
@@ -36,17 +62,17 @@
                     <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-20,10,0" >
                         <Hyperlink Command="{Binding AddItemsCommand}">Add Items</Hyperlink>
                     </TextBlock>
-                    <DataGrid BorderThickness="1" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False"
+                    <DataGrid BorderThickness="1" AutoGenerateColumns="False" CanUserDeleteRows="True" CanUserAddRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False"
                               ItemsSource="{Binding Entries.View}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Path=Description, Mode=OneWay}" Header="Description" Width="170*"
+                            <DataGridTextColumn Binding="{Binding Path=Description, Mode=OneWay}" MinWidth="170" Header="Description" Width="170*"
                                         />
                             <DataGridTextColumn Binding="{Binding Path=BudgetedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Qty" Width="75*"
-                                        />
+                                        MinWidth="170"/>
                             <DataGridTextColumn Binding="{Binding Path=BudgetedPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Price" Width="75*"
-                                        />
+                                        MinWidth="170"/>
                             <DataGridTextColumn Binding="{Binding Path=BudgetedAmount, Mode=OneWay}" Header="Amt" Width="100*"
-                                        />
+                                        MinWidth="170"/>
 
                         </DataGrid.Columns>
                         <DataGrid.GroupStyle>

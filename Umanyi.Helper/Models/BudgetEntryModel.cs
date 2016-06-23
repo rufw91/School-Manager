@@ -17,15 +17,27 @@ namespace Helper.Models
         private decimal budgetedQuantity;
         private decimal actualPrice;
         private decimal actualQuantity;
+        private long itemID;
         public BudgetEntryModel()
         {
-
+            PropertyChanged += (o, e) =>
+            {
+                if ((e.PropertyName == "BudgetedQuantity") || (e.PropertyName == "BudgetedPrice"))
+                    BudgetedAmount = BudgetedPrice * BudgetedQuantity;
+            };
         }
 
+        
         public BudgetEntryModel(ItemFindModel item)
         {
+            this.ItemID = item.ItemID;
             this.AccountID = item.ItemCategoryID;
             this.Description = item.Description;
+            PropertyChanged += (o, e) =>
+            {
+                if ((e.PropertyName == "BudgetedQuantity") || (e.PropertyName == "BudgetedPrice"))
+                    BudgetedAmount = BudgetedPrice * BudgetedQuantity;
+            };
         }
 
         public int AccountID
@@ -93,7 +105,7 @@ namespace Helper.Models
                 if (value != budgetedPrice)
                 {
                     budgetedPrice = value;
-                    NotifyPropertyChanged("Price");
+                    NotifyPropertyChanged("BudgetedPrice");
                 }
             }
         }
@@ -158,5 +170,18 @@ namespace Helper.Models
         {
             
         }
+
+        public long ItemID
+        {
+            get { return itemID; }
+
+            set
+            {
+                if (value != itemID)
+                {
+                    itemID = value;
+                    NotifyPropertyChanged("ItemID");
+                }
+            } }
     }
 }

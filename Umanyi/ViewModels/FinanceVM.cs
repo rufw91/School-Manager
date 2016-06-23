@@ -19,20 +19,10 @@ namespace UmanyiSMS.ViewModels
             TryAddChild(typeof(ReprintReceiptVM));
             TryAddChild(typeof(BalancesListVM),false);
             TryAddChild(typeof(RemovePaymentVM));
-            TryAddChild(typeof(RemoveBillVM));
-            TryAddChild(typeof(NewPaymentVoucherVM));
-            TryAddChild(typeof(PaymentVoucherHistoryVM));
+            TryAddChild(typeof(RemoveBillVM));            
             TryAddChild(typeof(FeesPaymentHistoryVM),false);
             TryAddChild(typeof(PaymentsByVoteHeadVM),false);
         }
 
-        internal void ToggleDonationsVisible(bool isVisible)
-        {
-            if (isVisible)
-            {
-               // TryAddChild(typeof(NewDonorVM), false);25.5.2016
-                //TryAddChild(typeof(PaymentsByVoteHeadVM), false);
-            }
-        }
     }
 }

@@ -40,6 +40,22 @@ namespace Helper.Models
             };
         }
 
+        public BudgetAccountModel(int accountID,string name,decimal amount,decimal budgetPC)
+        {
+            this.AccountID = accountID;
+            this.Name = name;
+            BudgetAmount = amount;
+            BudgetPc = budgetPC;
+            PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == "BudgetPc")
+                    if (budgetPc > 100 || budgetPc < 0)
+                    {
+                        BudgetPc = 0;
+                    }
+            };
+        }
+
         public decimal BudgetAmount
         {
             get { return this.budgetAmount; }

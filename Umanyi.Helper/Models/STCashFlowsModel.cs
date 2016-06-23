@@ -28,12 +28,18 @@ namespace Helper.Models
         {
             operatingActivitiesEntries = new List<AccountModel>();
             foreach (var r in incomeStatementModel.RevenueEntries)
-            operatingActivitiesEntries.Add(r);
+            {
+                r.Name = "CASH COLLECTED FROM " + r.Name;
+                operatingActivitiesEntries.Add(r);
+            }
 
             totRev = incomeStatementModel.TotalRevenue;
 
             foreach (var r in incomeStatementModel.ExpenseEntries)
+            {
+                r.Name = "CASH PAID FOR " + r.Name;
                 operatingActivitiesEntries.Add(r);
+            }
 
             totExp = incomeStatementModel.TotalExpense;
             this.StartTime = incomeStatementModel.StartTime;

@@ -151,6 +151,9 @@
   <data name="PaymentVoucher" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PaymentVoucher.xaml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="PaymentVoucher2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PaymentVoucher2.xaml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="Payslip" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Payslip.xaml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>

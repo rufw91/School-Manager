@@ -12,7 +12,7 @@ namespace Helper.Models
         public SupplierPaymentModel()
         {
             SupplierPaymentID = 0;
-            Amount = 0;
+            AmountPaid = 0;
             DatePaid = DateTime.Now;
             Notes = "";
         }
@@ -21,7 +21,7 @@ namespace Helper.Models
             :base(supplierId,nameOfSupplier)
         {
             this.SupplierPaymentID = supplierPaymentID;
-            this.Amount = amount;
+            this.AmountPaid = amount;
             this.DatePaid = datePaid;
             this.Notes = notes;
         }
@@ -40,7 +40,7 @@ namespace Helper.Models
             }
         }
         
-        public decimal Amount
+        public decimal AmountPaid
         {
             get { return this.iAmount; }
 
@@ -49,7 +49,7 @@ namespace Helper.Models
                 if (value != this.iAmount)
                 {
                     this.iAmount = value;
-                    NotifyPropertyChanged("Amount");
+                    NotifyPropertyChanged("AmountPaid");
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace Helper.Models
         {
             base.Reset();
             SupplierPaymentID = 0;
-            Amount = 0;
+            AmountPaid = 0;
             DatePaid = DateTime.Now;
             Notes = "";
         }

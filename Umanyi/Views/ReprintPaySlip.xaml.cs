@@ -10,6 +10,7 @@ namespace UmanyiSMS.Views
         public ReprintPaySlip()
         {
             InitializeComponent();
+            viewer.FitToWidth();
             this.DataContextChanged += (o, e) =>
             {
                 if (DataContext != null)
