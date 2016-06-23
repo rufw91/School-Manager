@@ -77,10 +77,28 @@
                             Background="{TemplateBinding Background}"
                             Padding="{TemplateBinding Padding}"
                             SnapsToDevicePixels="true">
-                        <ScrollViewer x:Name="PART_ContentHost" RenderOptions.ClearTypeHint="Enabled"
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost" RenderOptions.ClearTypeHint="Enabled"
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            <TextBlock x:Name="Message"
+                                       Text="{TemplateBinding Tag}"
+                                       FontStyle="Italic"
+                                       Visibility="Collapsed"
+                                       Foreground="{DynamicResource Accent2}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       IsHitTestVisible="False"
+                                       Opacity="0.6"
+                                       Margin="12,2,6,2" />
+                        </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}"
+                                     Value="">
+                            <Setter TargetName="Message"
+                                    Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
                         </Trigger>

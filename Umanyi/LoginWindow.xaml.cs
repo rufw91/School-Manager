@@ -28,6 +28,13 @@ namespace UmanyiSMS
                 if (shutDownApp)
                     Application.Current.Shutdown();
             };
+            txtPwd.PasswordChanged += (o, e) =>
+                {
+                    if (string.IsNullOrWhiteSpace(txtPwd.Password))
+                        txtPwd.Tag = "Password";
+                    else
+                        txtPwd.Tag = "";
+                };
             FocusManager.SetFocusedElement(this, txtUId);
         }
         public Login(LoginType type)
@@ -43,6 +50,13 @@ namespace UmanyiSMS
                         Application.Current.Shutdown();
                 };
             }
+            txtPwd.PasswordChanged += (o, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txtPwd.Password))
+                    txtPwd.Tag = "Password";
+                else
+                    txtPwd.Tag = "";
+            };
         }
         public Login(LoginType type, ref Action actionToExecute)
         {
@@ -58,7 +72,13 @@ namespace UmanyiSMS
                         Application.Current.Shutdown();
                 };
             }
-            
+            txtPwd.PasswordChanged += (o, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txtPwd.Password))
+                    txtPwd.Tag = "Password";
+                else
+                    txtPwd.Tag = "";
+            };
         }
 
         
