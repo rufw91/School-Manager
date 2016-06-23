@@ -1,8 +1,10 @@
 ﻿using Helper;
 using Helper.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace UmanyiSMS.ViewModels
@@ -12,6 +14,8 @@ namespace UmanyiSMS.ViewModels
     {
        SupplierPaymentModel newPayment;
         ObservableCollection<SupplierBaseModel> allSuppliers;
+        private FixedDocument fd;
+        private SupplierBaseModel selectedSupplier;
         public PaymentToSupplierVM()
         {
             InitVars();
@@ -36,22 +40,60 @@ namespace UmanyiSMS.ViewModels
                 bool succ = await DataAccess.SaveNewSupplierPaymentAsync(newPayment);
                 if (succ)
                 {
-                    MessageBox.Show("Successfully saved.");
+                    MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     Reset();
                 }
                 else
-                {
-                    MessageBox.Show("Could not save details please ensure you have filled all entries correctly.");
-                    return;
-                }
+                    MessageBox.Show("Could not save details.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 IsBusy = false;
-            }, o => !IsBusy&&CanSave());
+            }, o =>CanSave());
+
+
+            SaveAndPrintCommand = new RelayCommand(async o =>
+            {
+                IsBusy = true;
+                bool succ = await DataAccess.SaveNewSupplierPaymentAsync(newPayment);
+                if (succ)
+                {
+                    MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    newPayment.SupplierPaymentID = await DataAccess.GetLastSupplierPaymentIDAsync(newPayment.SupplierID, newPayment.DatePaid);
+
+                    Document = DocumentHelper.GenerateDocument(newPayment);
+                    if (ShowPrintDialogAction != null)
+                        ShowPrintDialogAction.Invoke(Document);
+                    Reset();
+                }
+                else
+                    MessageBox.Show("Could not save details.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                IsBusy = false;
+            },
+               o => CanSave());
+        }
+
+        public FixedDocument Document
+        {
+            get { return this.fd; }
+
+            set
+            {
+                if (value != this.fd)
+                {
+                    this.fd = value;
+                    NotifyPropertyChanged("Document");
+                }
+            }
         }
 
         private bool CanSave()
         {
-            return newPayment.SupplierID > 0 &&
-                    newPayment.Amount > 0 && newPayment.DatePaid != null;
+            return !IsBusy&&newPayment.SupplierID > 0 &&
+                    newPayment.AmountPaid > 0 && newPayment.DatePaid != null;
+        }
+
+        public Action<FixedDocument> ShowPrintDialogAction
+        {
+            get;
+            set;
         }
 
         public ICommand SaveCommand
@@ -59,6 +101,31 @@ namespace UmanyiSMS.ViewModels
             get;
             private set;
         }
+
+        public ICommand SaveAndPrintCommand
+        {
+            get;
+            private set;
+        }
+
+        public SupplierBaseModel SelectedSupplier
+        {
+            get { return this.selectedSupplier; }
+
+            set
+            {
+                if (value != this.selectedSupplier)
+                {
+                    this.selectedSupplier = value;
+                    if (selectedSupplier!=null)
+                    {
+                        newPayment.SupplierID = selectedSupplier.SupplierID;
+                        newPayment.NameOfSupplier = selectedSupplier.NameOfSupplier;
+                    }
+                    NotifyPropertyChanged("SelectedSupplier");
+                }
+            }
+        } 
 
         public SupplierPaymentModel NewPayment
         {

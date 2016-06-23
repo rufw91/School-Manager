@@ -13,11 +13,15 @@ namespace Helper.Models
         private ObservableCollection<BudgetEntryModel> entries;
         private decimal totalBudget;
         private DateTime startDate;
+        private DateTime endDate;
+        private int budgetID;
         public BudgetModel()
         {
+            BudgetID = 0;
             accounts = new ObservableCollection<BudgetAccountModel>();
             entries = new ObservableCollection<BudgetEntryModel>();
             StartDate = new DateTime(DateTime.Now.Year, 1, 1);
+            EndDate = new DateTime(DateTime.Now.Year, 12, 31);
             PropertyChanged += (o, e) =>
                 {
                     if (e.PropertyName=="TotalBudget")
@@ -36,7 +40,17 @@ namespace Helper.Models
         public void RefreshValues()
         {
             foreach (var h in accounts)
-                h.BudgetAmount = h.BudgetPc * totalBudget / 100; 
+            {
+                h.BudgetAmount = h.BudgetPc * totalBudget / 100;                
+            
+            }
+            var orphans=entries.Where(o => !accounts.Any(a => a.AccountID == o.AccountID));
+            if (orphans!=null)
+            {
+                foreach (var y in orphans)
+                    entries.Remove(y);
+            }
+
         }
 
         public ObservableCollection<BudgetAccountModel> Accounts
@@ -96,6 +110,34 @@ namespace Helper.Models
                 {
                     startDate = value;
                     NotifyPropertyChanged("StartDate");
+                }
+            }
+        }
+
+        public DateTime EndDate
+        {
+            get { return endDate; }
+
+            set
+            {
+                if (value != endDate)
+                {
+                    endDate = value;
+                    NotifyPropertyChanged("EndDate");
+                }
+            }
+        }
+
+        public int BudgetID
+        {
+            get { return budgetID; }
+
+            set
+            {
+                if (value != budgetID)
+                {
+                    budgetID = value;
+                    NotifyPropertyChanged("BudgetID");
                 }
             }
         }

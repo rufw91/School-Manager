@@ -5,37 +5,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              d:DesignHeight="722" d:DesignWidth="1024"
              mc:Ignorable="d"
+             xmlns:Controls="clr-namespace:Helper.Controls;assembly=Helper"
+             xmlns:commands="clr-namespace:UmanyiSMS.Presentation" 
 	 Background="White">
-    <UserControl.Resources>
-        <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
-    </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <!-- Back button and page title -->
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Border Grid.ColumnSpan="2" Background="{DynamicResource TitleBackgroundBrush}"/>
-            <Button x:Name="backButton" Margin="39,40,21,0" 
-                        Style="{StaticResource BackButtonX}"
-                        VerticalAlignment="Top"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="Suppliers List" Style="{StaticResource HeaderTextStyle}" Grid.Column="1" HorizontalAlignment="Left"
-                        IsHitTestVisible="false" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
-
-        </Grid>
-
-        <Grid Grid.Row="1">
-        <TextBlock Text="List of all Suppliers" Style="{StaticResource SmallTitle}" HorizontalAlignment="Left"  Margin="10,10,0,0"
+        <TextBlock Text="List of all Suppliers" Style="{StaticResource Title}" HorizontalAlignment="Left"  Margin="10,10,0,0"
                        VerticalAlignment="Top"/>
-        <DataGrid AutoGenerateColumns="False" Margin="10,65,10,10" 
+        <Controls:DropDownButton Content="Export" Margin="0,40,70,0" VerticalAlignment="Top" DataContext="{Binding ElementName=lbx}" HorizontalAlignment="Right" Width="55">
+            <Controls:DropDownButton.DropDownContent>
+                <Menu>
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
+                    <MenuItem Header="Export to PDF" Command="{Binding Source={x:Static commands:CommonCommands.ExportToPDFCommand}}" CommandParameter="{Binding}"/>
+                    <MenuItem Header="Export to Excel" Command="{Binding Source={x:Static commands:CommonCommands.ExportToExcelCommand}}" CommandParameter="{Binding}"/>
+                </Menu>
+            </Controls:DropDownButton.DropDownContent>
+        </Controls:DropDownButton>
+        <DataGrid Name="lbx" AutoGenerateColumns="False" Margin="10,65,10,10" BorderThickness="1"
                   IsReadOnly="True" ItemsSource="{Binding AllSuppliers}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=SupplierID, Mode=OneWay}" Header="Supplier ID" Width="120"/>
@@ -52,6 +41,5 @@
         <TextBlock  HorizontalAlignment="Right" Margin="0,46,12,0" Name="textBlock1" VerticalAlignment="Top" >
                     <Hyperlink Command="{Binding RefreshCommand}">Refresh</Hyperlink>
         </TextBlock>
-    </Grid>
     </Grid>
 </UserControl>

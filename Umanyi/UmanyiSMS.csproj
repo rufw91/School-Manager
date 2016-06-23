@@ -296,6 +296,7 @@
     <Compile Include="ViewModels\Reports\LibraryReportVM.cs" />
     <Compile Include="ViewModels\Reports\StaffReportVM.cs" />
     <Compile Include="ViewModels\Reports\StudentsReportVM.cs" />
+    <Compile Include="ViewModels\ReprintPaymentVoucherVM.cs" />
     <Compile Include="ViewModels\ReprintPaySlipVM.cs" />
     <Compile Include="ViewModels\ReprintReceiptVM.cs" />
     <Compile Include="ViewModels\SetFeesStructureVM.cs" />
@@ -339,6 +340,9 @@
     </Compile>
     <Compile Include="Views\AccountsStatementOfCF.xaml.cs">
       <DependentUpon>AccountsStatementOfCF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountsTrialBalance.xaml.cs">
+      <DependentUpon>AccountsTrialBalance.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AllUnreturnedBooks.xaml.cs">
       <DependentUpon>AllUnreturnedBooks.xaml</DependentUpon>
@@ -384,6 +388,9 @@
     </Compile>
     <Compile Include="Views\FindBooks.xaml.cs">
       <DependentUpon>FindBooks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FindObject.xaml.cs">
+      <DependentUpon>FindObject.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\InstitutionSubjectsSetup.xaml.cs">
       <DependentUpon>InstitutionSubjectsSetup.xaml</DependentUpon>
@@ -679,6 +686,9 @@
     <Compile Include="Views\ReportsHome.xaml.cs">
       <DependentUpon>ReportsHome.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReprintPaymentVoucher.xaml.cs">
+      <DependentUpon>ReprintPaymentVoucher.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ReprintPaySlip.xaml.cs">
       <DependentUpon>ReprintPaySlip.xaml</DependentUpon>
     </Compile>
@@ -867,6 +877,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AccountsTrialBalance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AllUnreturnedBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -924,6 +938,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FindBooks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FindObject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1315,6 +1333,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ReprintPaymentVoucher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ReprintPaySlip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1636,25 +1658,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\PAYEGuide.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="AcroPDFLib">
-      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="AxAcroPDFLib">
-      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\excel_data.png" />

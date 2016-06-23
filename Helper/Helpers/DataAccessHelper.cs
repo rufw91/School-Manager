@@ -439,67 +439,19 @@ namespace Helper
             return Task.Run<bool>(() =>
             {
                 string deleteStr =
-                     "DELETE FROM [Institution].[Book]\r\n" +
-                      "DELETE FROM [Institution].[BookIssueDetail]\r\n" +
-                       "DELETE FROM [Institution].[BookIssueHeader]\r\n" +
-                        "DELETE FROM [Institution].[BookReturnDetail]\r\n" +
-                         "DELETE FROM [Institution].[BookReturnHeader]\r\n" +
-                    "DELETE FROM [Institution].[Class]\r\n" +
-                    "DELETE FROM [Institution].[ClassGroupDetail]\r\n" +
-                    "DELETE FROM [Institution].[ClassGroupHeader]\r\n" +
-                    "DELETE FROM [Institution].[ClassSetupDetail]\r\n" +
-                    "DELETE FROM [Institution].[ClassSetupHeader]\r\n" +
-                    "DELETE FROM [Institution].[CurrentClass]\r\n" +
-                    "DELETE FROM [Institution].[Discipline]\r\n" +
-                    "DELETE FROM [Institution].[Dormitory]\r\n" +
-                    "DELETE FROM [Institution].[EmployeePayment]\r\n" +
-                    "DELETE FROM [Institution].[Event]\r\n" +
-                    "DELETE FROM [Institution].[ExamClassDetail]\r\n" +
-                    "DELETE FROM [Institution].[ExamDetail]\r\n" +
-                    "DELETE FROM [Institution].[ExamHeader]\r\n" +
-                    "DELETE FROM [Institution].[ExamResultDetail]\r\n" +
-                    "DELETE FROM [Institution].[ExamResultHeader]\r\n" +
-                    "DELETE FROM [Institution].[FeesPayment]\r\n" +
-                    "DELETE FROM [Institution].[FeesStructureDetail]\r\n" +
-                    "DELETE FROM [Institution].[FeesStructureHeader]\r\n" +
-                    "DELETE FROM [Institution].[Gallery]\r\n" +
-                    "DELETE FROM [Institution].[LeavingCertificate]\r\n" +
-                    "DELETE FROM [Institution].[PayoutDetail]\r\n" +
-                    "DELETE FROM [Institution].[PayoutHeader]\r\n" +
-                    "DELETE FROM [Institution].[QBSync]\r\n" +
-                    "DELETE FROM [Institution].[Staff]\r\n" +
-                    "DELETE FROM [Institution].[Student]\r\n" +
-                    "DELETE FROM [Institution].[StudentClearance]\r\n" +
-                    "DELETE FROM [Institution].[StudentSubjectSelectionDetail]\r\n" +
-                    "DELETE FROM [Institution].[StudentSubjectSelectionHeader]\r\n" +
-                    "DELETE FROM [Institution].[StudentTranscriptHeader]\r\n" +
-                    "DELETE FROM [Institution].[StudentTransfer]\r\n" +
-                    "DELETE FROM [Institution].[Subject]\r\n" +
-                    "DELETE FROM [Institution].[SubjectSetupDetail]\r\n" +
-                    "DELETE FROM [Institution].[SubjectSetupHeader]\r\n" +
-                    "DELETE FROM [Institution].[TimeTableDetail]\r\n" +
-                    "DELETE FROM [Institution].[TimeTableHeader]\r\n" +
-                    "DELETE FROM [Institution].[TimeTableSettings]\r\n" +
-                    "DELETE FROM [Sales].[Item]\r\n" +
-                    "DELETE FROM [Sales].[ItemCategory]\r\n" +
-                    "DELETE FROM [Sales].[ItemIssueDetail]\r\n" +
-                    "DELETE FROM [Sales].[ItemIssueHeader]\r\n" +
-                    "DELETE FROM [Sales].[ItemReceiptDetail]\r\n" +
-                    "DELETE FROM [Sales].[ItemReceiptHeader]\r\n" +
-                    "DELETE FROM [Sales].[SaleDetail]\r\n" +
-                    "DELETE FROM [Sales].[SaleHeader]\r\n" +                    
-                    "DELETE FROM [Sales].[StockTakingDetail]\r\n" +
-                    "DELETE FROM [Sales].[StockTakingHeader]\r\n" +
-                    "DELETE FROM [Sales].[Supplier]\r\n" +
-                    "DELETE FROM [Sales].[SupplierDetail]\r\n" +
-                    "DELETE FROM [Sales].[SupplierDetail]\r\n" +
-                    "DELETE FROM [Sales].[SupplierPayment]\r\n" +
-                    "DELETE FROM [Sales].[Vat]\r\n" +
-                    "DELETE FROM [Users].[User]\r\n" +
-                    "DELETE FROM [Users].[UserDetail]\r\n" +
-                    "DELETE FROM [Users].[UserRole]\r\n" +
-                    "exec dbo.ResetUniqueIDs";
-                return ExecuteNonQuery(deleteStr);
+                     "EXEC sp_MSForEachTable 'DISABLE TRIGGER ALL ON ?'";
+                bool succ = ExecuteNonQuery(deleteStr);
+                deleteStr = "EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'";
+                succ = succ && ExecuteNonQuery(deleteStr);
+                deleteStr = "EXEC sp_MSForEachTable 'DELETE FROM ?'";
+                succ = succ && ExecuteNonQuery(deleteStr);
+                deleteStr = "EXEC sp_MSForEachTable 'ALTER TABLE ? CHECK CONSTRAINT ALL'";
+                succ = succ && ExecuteNonQuery(deleteStr);
+                deleteStr = "EXEC sp_MSForEachTable 'ENABLE TRIGGER ALL ON ?'";
+                succ = succ && ExecuteNonQuery(deleteStr);
+                deleteStr = "EXEC dbo.PrepareDb";
+                succ = succ && ExecuteNonQuery(deleteStr);
+                return succ;
             });
         }
 
@@ -753,5 +705,6 @@ namespace Helper
                 }
             });
         }
+
     }
 }

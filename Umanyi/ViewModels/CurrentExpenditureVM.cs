@@ -26,7 +26,7 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "CURRENT EXPENDITURE";
             entries = new CollectionViewSource();
-            CurrentBudget = await DataAccess.GetCurrentBudgetAsync();            
+            CurrentBudget = await DataAccess.GetBudgetAsync(DateTime.Now,true);            
             entries.Source = currentBudget.Entries;
             entries.GroupDescriptions.Add(new PropertyGroupDescription("AccountID"));
             NotifyPropertyChanged("Entries");
@@ -37,7 +37,7 @@ namespace UmanyiSMS.ViewModels
             RefreshCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                CurrentBudget = await DataAccess.GetCurrentBudgetAsync();
+                CurrentBudget = await DataAccess.GetBudgetAsync(DateTime.Now, true);
                 entries = new CollectionViewSource();
                 entries.Source = currentBudget.Entries;
                 entries.GroupDescriptions.Add(new PropertyGroupDescription("AccountID"));

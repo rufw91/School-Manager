@@ -13,13 +13,14 @@ using System.Windows.Input;
 namespace UmanyiSMS.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
-    public class ReprintPaySlipVM:ViewModelBase
+    public class ReprintPaymentVoucherVM:ViewModelBase
     {
-        private StaffSelectModel selectedStaff;
-        private ObservableCollection<PayslipModel> recentPayments;
+    
+        private SupplierBaseModel selectedSupplier;
+        private ObservableCollection<SupplierPaymentModel> recentPayments;
         private FixedDocument fd;
-        private PayslipModel selectedPayment;
-        public ReprintPaySlipVM()
+        private SupplierPaymentModel selectedPayment;
+        public ReprintPaymentVoucherVM()
         {
             InitVars();
             CreateCommands();
@@ -27,14 +28,14 @@ namespace UmanyiSMS.ViewModels
 
         protected override void InitVars()
         {
-            Title = "REPRINT PAYSLIP";
-            RecentPayments = new ObservableCollection<PayslipModel>();
-            SelectedStaff = new StaffSelectModel();
-            selectedStaff.PropertyChanged += async (o, e) =>
+            Title = "REPRINT PAYMENT VOUCHER";
+            RecentPayments = new ObservableCollection<SupplierPaymentModel>();
+            SelectedSupplier = new SupplierBaseModel();
+            selectedSupplier.PropertyChanged += async (o, e) =>
             {
-                if ((e.PropertyName == "StaffID") && (selectedStaff.StaffID > 0))
+                if ((e.PropertyName == "SupplierID") && (selectedSupplier.SupplierID > 0))
                 {
-                    selectedStaff.CheckErrors();
+                    selectedSupplier.CheckErrors();
                     await RefreshRecentPayments();
                 }
 
@@ -45,14 +46,12 @@ namespace UmanyiSMS.ViewModels
         {
             FullPreviewCommand = new RelayCommand(o =>
             {
-                selectedPayment.RefreshTotal();
                 var doc = DocumentHelper.GenerateDocument(selectedPayment);
                 if (ShowPrintDialogAction != null)
                     ShowPrintDialogAction.Invoke(doc);
             }, o => CanGenerate() && Document != null);
             GenerateCommand = new RelayCommand(o =>
             {
-                selectedPayment.RefreshTotal();
                 Document = DocumentHelper.GenerateDocument(selectedPayment);
             },
                o => CanGenerate());
@@ -66,10 +65,10 @@ namespace UmanyiSMS.ViewModels
         private async Task RefreshRecentPayments()
         {
             recentPayments.Clear();
-            RecentPayments = await DataAccess.GetRecentPayslipsAsync(selectedStaff);
+            RecentPayments = await DataAccess.GetRecentSupplierPaymentsAsync(selectedSupplier);
         }
 
-        public PayslipModel SelectedPayment
+        public SupplierPaymentModel SelectedPayment
         {
             get { return selectedPayment; }
             set
@@ -83,21 +82,21 @@ namespace UmanyiSMS.ViewModels
         }
 
 
-        public StaffSelectModel SelectedStaff
+        public SupplierBaseModel SelectedSupplier
         {
-            get { return selectedStaff; }
+            get { return selectedSupplier; }
 
             set
             {
-                if (value != selectedStaff)
+                if (value != selectedSupplier)
                 {
-                    selectedStaff = value;
-                    NotifyPropertyChanged("SelectedStaff");
+                    selectedSupplier = value;
+                    NotifyPropertyChanged("SelectedSupplier");
                 }
             }
         }
 
-        public ObservableCollection<PayslipModel> RecentPayments
+        public ObservableCollection<SupplierPaymentModel> RecentPayments
         {
             get { return recentPayments; }
 

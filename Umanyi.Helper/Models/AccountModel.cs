@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public class AccountModel : ObservableCollection<AccountModel>, INotifyPropertyChanged
+    public sealed class AccountModel : ObservableCollection<AccountModel>
     {
         private string name;
         private int accountID;
+        private decimal balance;
 
         public AccountModel()
         {
@@ -36,7 +37,7 @@ namespace Helper.Models
                 if (value != this.accountID)
                 {
                     this.accountID = value;
-                    NotifyPropertyChanged("AccountID");
+                    OnPropertyChanged(new PropertyChangedEventArgs("AccountID"));
                 }
             }
         }
@@ -50,7 +51,7 @@ namespace Helper.Models
                 if (value != this.name)
                 {
                     this.name = value;
-                    NotifyPropertyChanged("Name");
+                    OnPropertyChanged(new PropertyChangedEventArgs("Name"));
                 }
             }
         }
@@ -62,23 +63,6 @@ namespace Helper.Models
             this.Clear();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private decimal balance;
-        
-
-        protected void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        public override string ToString()
-        {
-            return name;
-        }
-
         public decimal Balance
         {
             get { return this.balance; }
@@ -88,9 +72,24 @@ namespace Helper.Models
                 if (value != this.balance)
                 {
                     this.balance = value;
-                    NotifyPropertyChanged("Balance");
+                    OnPropertyChanged(new PropertyChangedEventArgs("Balance"));
                 }
             }
         }
+
+        public void CopyFrom(AccountModel source)
+        {
+            this.AccountID = source.AccountID;
+            this.Name = source.Name;
+            this.Balance = source.Balance;
+
+        }
+
+        public override string ToString()
+        {
+            return name;
+        }
+
+       
     }
 }

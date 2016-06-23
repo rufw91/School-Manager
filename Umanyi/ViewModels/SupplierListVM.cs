@@ -20,7 +20,7 @@ namespace UmanyiSMS.ViewModels
         protected override async void InitVars()
         {
             IsBusy = true;
-            Title = "Supplier List";
+            Title = "SUPPLIERS LIST";
             AllSuppliers = await DataAccess.GetAllSuppliersFullAsync();
             IsBusy = false;
         }

@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="clr-namespace:Helper.Controls;assembly=Helper"
+             xmlns:commands="clr-namespace:UmanyiSMS.Presentation" 
              mc:Ignorable="d" 
             d:DesignHeight="700" d:DesignWidth="984"
              Background="White">
@@ -13,21 +15,29 @@
             <Hyperlink Command="{Binding RefreshCommand}">Refresh</Hyperlink>
         </TextBlock>
 
-        <DataGrid Margin="10,70,10,10" BorderThickness="1" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False"
-                  DataContext="{Binding Entries}"
-                  ItemsSource="{Binding}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Description, Mode=OneWay}" Header="Description" Width="170*"
-                                        />
-                <DataGridTextColumn Binding="{Binding Path=ActualQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Quantity" Width="75*"
-                                        />
-                <DataGridTextColumn Binding="{Binding Path=ActualPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Price" Width="75*"
-                                        />
-                <DataGridTextColumn Binding="{Binding Path=Expenditure, Mode=OneWay}" Header="Total" Width="100*"
-                                        />
-                <DataGridTextColumn Binding="{Binding Path=Balance, Mode=OneWay}" Header="Balance" Width="100*"
-                                        />
-
+        <Controls:DropDownButton Content="Export" HorizontalAlignment="Right" Margin="0,38,75,0" VerticalAlignment="Top" DataContext="{Binding ElementName=lbx}">
+            <Controls:DropDownButton.DropDownContent>
+                <Menu>
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
+                    <MenuItem Header="Export to PDF" Command="{Binding Source={x:Static commands:CommonCommands.ExportToPDFCommand}}" CommandParameter="{Binding}"/>
+                    <MenuItem Header="Export to Excel" Command="{Binding Source={x:Static commands:CommonCommands.ExportToExcelCommand}}" CommandParameter="{Binding}"/>
+                </Menu>
+            </Controls:DropDownButton.DropDownContent>
+        </Controls:DropDownButton>
+        <DataGrid Name="lbx" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" HorizontalAlignment="Stretch" Margin="10,65,10,10" ItemsSource="{Binding Entries.View}">
+                <DataGrid.Columns>
+                <DataGridTextColumn Header="Description" Width="170*" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Budgeted Qty" Width="170*" Binding="{Binding BudgetedQuantity}"/>
+                <DataGridTextColumn Header="Actual Qty" Width="170*" Binding="{Binding ActualQuantity}"/>
+                <DataGridTextColumn Header="Budgeted Price" Width="170*" Binding="{Binding BudgetedPrice, StringFormat={}{0:N2}}"/>
+                <DataGridTextColumn Header="Actual Price" Width="170*" Binding="{Binding ActualPrice, StringFormat={}{0:N2}}"/>
+                <DataGridTextColumn Header="Budgeted Amt" Width="170*" Binding="{Binding BudgetedAmount, StringFormat={}{0:N2}}"/>
+                <DataGridTextColumn Header="Expenditure" Width="170*" Binding="{Binding Expenditure, StringFormat={}{0:N2}}"/>
+                <DataGridTextColumn Header="Balance" Width="170*" Binding="{Binding Balance, StringFormat={}{0:N2}}"/>
             </DataGrid.Columns>
             <DataGrid.GroupStyle>
                 <GroupStyle>

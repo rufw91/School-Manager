@@ -40,9 +40,6 @@
             <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,125,0,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding DataContext.DisplaySuppliersCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Suppliers</Hyperlink> (New Supplier, New Payment to Supplier, Supplier Statement)
             </TextBlock>
-            <TextBlock Style="{DynamicResource ContentText}" HorizontalAlignment="Left" Margin="60,160,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DataContext.DisplayBooksCommand, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">Books</Hyperlink> (New books purchase, Books purchase history)
-            </TextBlock>
 
         </Grid>
     </Grid>

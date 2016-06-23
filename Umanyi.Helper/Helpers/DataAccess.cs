@@ -1568,7 +1568,7 @@ namespace Helper
                     ",'",
                     newPayment.DatePaid.ToString("g"),
                     "',",
-                    newPayment.Amount,
+                    newPayment.AmountPaid,
                     ",'",
                     newPayment.Notes,
                     "')"
@@ -8043,6 +8043,31 @@ namespace Helper
             });
         }
 
+        public static Task<ObservableCollection<SupplierPaymentModel>> GetRecentSupplierPaymentsAsync(SupplierBaseModel selectedSupplier)
+        {
+            return Task.Run<ObservableCollection<SupplierPaymentModel>>(delegate
+            {
+                ObservableCollection<SupplierPaymentModel> observableCollection = new ObservableCollection<SupplierPaymentModel>();
+                string commandText = "SELECT TOP 20 SupplierPaymentID,AmountPaid, DatePaid,Notes FROM [Sales].[SupplierPayment] " +
+                    "WHERE SupplierID =@suppID ORDER BY [DatePaid] desc";
+                var paramColl = new ObservableCollection<SqlParameter>();
+                paramColl.Add(new SqlParameter("@suppID", selectedSupplier.SupplierID));
+                DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(commandText,paramColl);
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    SupplierPaymentModel pmt = new SupplierPaymentModel();
+                    pmt.SupplierPaymentID = int.Parse(dataRow[0].ToString());
+                    pmt.AmountPaid = decimal.Parse(dataRow[1].ToString());
+                    pmt.SupplierID = selectedSupplier.SupplierID;
+                    pmt.NameOfSupplier = selectedSupplier.NameOfSupplier;
+                    pmt.DatePaid = DateTime.Parse(dataRow[2].ToString());
+                    pmt.Notes = dataRow[3].ToString();
+                    observableCollection.Add(pmt);
+                }
+                return observableCollection;
+            });
+        }
+
         private static ObservableCollection<FeesStructureEntryModel> GetPayslipEntries(int paySlipID)
         {
             ObservableCollection<FeesStructureEntryModel> observableCollection = new ObservableCollection<FeesStructureEntryModel>();
@@ -8275,7 +8300,6 @@ namespace Helper
             paramColl.Add(new SqlParameter("@end", end));
             DataTable dt = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(selectstr, paramColl);
 
-            for (int i = 0; i < 40; i++)
                 foreach (DataRow dtr in dt.Rows)
                     temp.Add(new AccountModel() { AccountID = int.Parse(dtr[0].ToString()), Name = dtr[1].ToString(), Balance = decimal.Parse(dtr[2].ToString()) });
 
@@ -8404,7 +8428,107 @@ namespace Helper
             });
         }
 
-        public static Task<BudgetModel> GetCurrentBudgetAsync()
+        private static BudgetModel GetBudget(DateTime date,bool addExpenditure)
+        {
+            BudgetModel result = new BudgetModel();
+            string selectStr = "SELECT BudgetID,StartDate, EndDate, TotalBudget FROM [Institution].[BudgetHeader] WHERE StartDate<CONVERT(datetime,@bugDate)  AND EndDate>CONVERT(datetime,@bugDate)";
+            var pm = new ObservableCollection<SqlParameter>() { new SqlParameter("@bugDate", date) };
+            var res = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(selectStr, pm);
+            if (res.Rows.Count == 0)
+            {
+                result = GetDefaultBudgetAsync().Result;
+                return result;
+            }
+            result.BudgetID = int.Parse(res.Rows[0][0].ToString());
+            result.StartDate = DateTime.Parse(res.Rows[0][1].ToString());
+            result.EndDate = DateTime.Parse(res.Rows[0][2].ToString());
+            result.TotalBudget = decimal.Parse(res.Rows[0][3].ToString());
+            result.Accounts = GetBudgetAccountsAsync(result.BudgetID, result.TotalBudget).Result;
+            result.Entries = GetBudgetEntriesAsync(result.BudgetID, addExpenditure, result.StartDate, result.EndDate).Result;
+            return result;
+        }
+
+        public static Task<BudgetModel> GetBudgetAsync(DateTime date)
+        {
+            return Task.Run<BudgetModel>(delegate
+            {
+                return GetBudget(date, false);
+            });
+        }
+
+        public static Task<BudgetModel> GetBudgetAsync(DateTime date,bool addExpenditure)
+        {
+            return Task.Run<BudgetModel>(delegate
+            {
+                return GetBudget(date, addExpenditure);
+            });
+        }
+
+        private static Task<ObservableCollection<BudgetAccountModel>> GetBudgetAccountsAsync(int budgetID,decimal totalBudget)
+        {
+            return Task.Run<ObservableCollection<BudgetAccountModel>>(delegate
+            {
+                ObservableCollection<BudgetAccountModel> temp = new ObservableCollection<BudgetAccountModel>();
+                string selectStr = "SELECT bad.AccountID,ic.Description,bad.BudgetAmount FROM [Institution].[BudgetAccountDetail] bad LEFT OUTER JOIN  "+
+                    "[Sales].[ItemCategory] ic ON (bad.AccountID=ic.ItemCategoryID) WHERE bad.BudgetID=@bugID";
+                var pm = new ObservableCollection<SqlParameter>() { new SqlParameter("@bugID", budgetID) };
+                var res = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(selectStr, pm);
+                foreach (DataRow dtr in res.Rows)
+                    temp.Add(new BudgetAccountModel(int.Parse(dtr[0].ToString()),dtr[1].ToString(),decimal.Parse(dtr[2].ToString()),(decimal.Parse(dtr[2].ToString())/totalBudget)*100));
+                return temp;
+            });
+        }
+        private static Task<ObservableCollection<BudgetEntryModel>> GetBudgetEntriesAsync(int budgetID,bool addExpenditure, DateTime startDate, DateTime endDate)
+        {
+            return Task.Run<ObservableCollection<BudgetEntryModel>>(delegate
+            {
+                ObservableCollection<BudgetEntryModel> temp = new ObservableCollection<BudgetEntryModel>();
+
+
+                string selectStr =addExpenditure?"SELECT bed.ItemID, bad.AccountID,bed.Description,bed.Quantity,bed.Price,bed.Amount, "+
+                    "ISNULL(SUM(ISNULL(ird.Quantity,0)),0), ISNULL(AVG(ISNULL(ird.UnitCost,0)),0), ISNULL(SUM(ISNULL(ird.LineTotal,0)),0), ISNULL((bed.Amount-ISNULL(SUM(ISNULL(ird.LineTotal,0)),0)),0) FROM [Institution].[BudgetEntryDetail] bed " +
+                    "LEFT OUTER JOIN [Institution].[BudgetAccountDetail] bad ON (bed.BudgetAccountDetailID=bad.BudgetAccountDetailID) "+
+                    "LEFT OUTER JOIN [Institution].[BudgetHeader] bh ON (bad.BudgetID=bh.BudgetID AND bh.BudgetID=@bugID) " +
+                    "LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON (bed.ItemID=ird.ItemID) " +
+                    "LEFT OUTER JOIN [Sales].[ItemReceiptHeader] irh ON (ird.ItemReceiptID=irh.ItemReceiptID AND irh.OrderDate BETWEEN CONVERT(datetime,@startd) AND CONVERT(datetime,@endd))\r\n" +
+                    "GROUP BY bed.ItemID, bad.AccountID,bed.Description,bed.Quantity,bed.Price,bed.Amount"
+                    :
+                    "SELECT bed.ItemID, bad.AccountID,bed.Description,bed.Quantity,bed.Price,bed.Amount FROM [Institution].[BudgetEntryDetail] bed "+
+                    "LEFT OUTER JOIN [Institution].[BudgetAccountDetail] bad ON (bed.BudgetAccountDetailID=bad.BudgetAccountDetailID) WHERE bad.[AccountID] " +
+                    "IN (SELECT AccountID FROM [Institution].[BudgetAccountDetail] WHERE BudgetID=@bugID)";
+
+                var pm =addExpenditure? new ObservableCollection<SqlParameter>(){
+                new SqlParameter("@bugID", budgetID),
+               new SqlParameter("@startd", startDate.Date),
+                new SqlParameter("@endd", new DateTime(endDate.Year,endDate.Month,endDate.Day,23,59,59,998))}
+            :
+ 
+                 new ObservableCollection<SqlParameter>() { new SqlParameter("@bugID", budgetID) };
+                var res = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(selectStr, pm);
+                BudgetEntryModel pik;
+                foreach (DataRow dtr in res.Rows)
+                {
+                    pik = new BudgetEntryModel();
+                    pik.ItemID = int.Parse(dtr[0].ToString());
+                    pik.AccountID = int.Parse(dtr[1].ToString());
+                    pik.Description = dtr[2].ToString();
+                    pik.BudgetedQuantity = decimal.Parse(dtr[3].ToString());
+                    pik.BudgetedPrice = decimal.Parse(dtr[4].ToString());
+                    pik.BudgetedAmount = decimal.Parse(dtr[5].ToString());
+                    if (addExpenditure)
+                    {
+                        pik.ActualQuantity = decimal.Parse(dtr[6].ToString());
+                        pik.ActualPrice = decimal.Parse(dtr[7].ToString());
+                        pik.Expenditure = decimal.Parse(dtr[8].ToString());
+                        pik.Balance = decimal.Parse(dtr[9].ToString());
+                    }
+                    temp.Add(pik);
+                }
+                return temp;
+            });
+        }
+
+        public static Task<BudgetModel> GetDefaultBudgetAsync()
         {
             return Task.Run<BudgetModel>(delegate
             {
@@ -8428,7 +8552,7 @@ namespace Helper
                 ObservableCollection<BudgetEntryModel> temp = new ObservableCollection<BudgetEntryModel>();
                 try
                 {
-                    string text = "SELECT ItemCategoryID,Description FROM [Sales].[Item] WHERE ItemCategoryID " +
+                    string text = "SELECT ItemID,ItemCategoryID,Description FROM [Sales].[Item] WHERE ItemCategoryID " +
                         "IN(SELECT ItemCategoryID FROM [Sales].[ItemCategory] WHERE ParentCategoryID = @catID) OR ItemCategoryID=@catID";
                     ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
                     paramColl.Add(new SqlParameter("@catID", accountID));
@@ -8437,8 +8561,9 @@ namespace Helper
                     foreach (DataRow dtr in result.Rows)
                     {
                         temp2 = new BudgetEntryModel();
-                        temp2.AccountID = int.Parse(dtr[0].ToString());
-                        temp2.Description = dtr[1].ToString();
+                        temp2.ItemID = long.Parse(dtr[0].ToString());
+                        temp2.AccountID = int.Parse(dtr[1].ToString());
+                        temp2.Description = dtr[2].ToString();
                         temp.Add(temp2);
                     }
                 }
@@ -8474,35 +8599,54 @@ namespace Helper
             return Task.Run<bool>(delegate
             {
                 ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
-                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; DECLARE @id2 int;SET @id = dbo.GetNewID('Institution.BudgetHeader')\r\n" +
-                    "INSERT INTO [Institution].[BudgetHeader] (BudgetID,StartDate,TotalBudget) VALUES(@id,@start,@totb)";
                 int count1 = 0;
                 int count2 = 0;
                 string pmn = "@accid" + count1;
                 string pmnac = "@amt" + count1;
-                
+
                 string pmn2 = "@desc" + count2;
                 string pmn3 = "@qty" + count2;
                 string pmn4 = "@pr" + count2;
+                string pmn5 = "@itm" + count2;
+                string text;
+                if (newBudget.BudgetID > 0)
+                {
+                    text = "BEGIN TRANSACTION\r\nDECLARE @id2 int;\r\n" +
+                       "UPDATE [Institution].[BudgetHeader] SET StartDate=@start,EndDate=@end,TotalBudget=@totb WHERE BudgetID=@id\r\n" +
+                       "DELETE FROM [Institution].[BudgetEntryDetail] WHERE BudgetAccountDetailID IN " +
+                       "(SELECT BudgetAccountDetailID FROM [Institution].[BudgetAccountDetail] WHERE BudgetID=@id)\r\n" +
+                    "DELETE FROM [Institution].[BudgetAccountDetail] WHERE BudgetID=@id\r\n";
+                    paramColl.Add(new SqlParameter("@id", newBudget.BudgetID));
+                }
+                else
+                    text = "BEGIN TRANSACTION\r\nDECLARE @id int; DECLARE @id2 int;SET @id = dbo.GetNewID('Institution.BudgetHeader')\r\n" +
+                       "INSERT INTO [Institution].[BudgetHeader] (BudgetID,StartDate,EndDate,TotalBudget) VALUES(@id,@start,@end,@totb)";
+
                 paramColl.Add(new SqlParameter("@totb", newBudget.TotalBudget));
                 paramColl.Add(new SqlParameter("@start", newBudget.StartDate));
+                paramColl.Add(new SqlParameter("@end", newBudget.EndDate));
                 foreach (var current in newBudget.Accounts)
                 {
                     text += "SET @id2 = dbo.GetNewID('Institution.BudgetAccountDetail')\r\n" +
-                        "\r\nINSERT INTO [Institution].[BudgetAccountDetail] (BudgetAccountDetailID,BudgetID,BudgetAmount,AccountID) VALUES(@id2,@id," + pmn + ","+pmnac+")";
+                        "\r\nINSERT INTO [Institution].[BudgetAccountDetail] (BudgetAccountDetailID,BudgetID,AccountID,BudgetAmount) VALUES(@id2,@id," + pmn + "," + pmnac + ")";
                     paramColl.Add(new SqlParameter(pmn, current.AccountID));
                     paramColl.Add(new SqlParameter(pmnac, current.BudgetAmount));
-                    foreach (var t in newBudget.Entries)
+                    if (newBudget.Entries.Any(o => o.AccountID == current.AccountID))
                     {
-                        text += "\r\nINSERT INTO [Institution].[BudgetEntryDetail] (BudgetAccountDetailID,Description,Quantity,Price) " +
-                            "VALUES(@id2," + pmn2 + ","+pmn3+","+pmn4+")";
-                        paramColl.Add(new SqlParameter(pmn2, t.Description));
-                        paramColl.Add(new SqlParameter(pmn3, t.BudgetedQuantity));
-                        paramColl.Add(new SqlParameter(pmn4, t.BudgetedPrice));
-                        count2++;
-                         pmn2 = "@desc" + count2;
-                         pmn3 = "@qty" + count2;
-                         pmn4 = "@pr" + count2;
+                        foreach (var t in newBudget.Entries.Where(k=>k.AccountID==current.AccountID))
+                        {
+                            text += "\r\nINSERT INTO [Institution].[BudgetEntryDetail] (BudgetAccountDetailID,ItemID,Description,Quantity,Price) " +
+                                "VALUES(@id2,"+pmn5+"," + pmn2 + "," + pmn3 + "," + pmn4 + ")";
+                            paramColl.Add(new SqlParameter(pmn5, t.ItemID));
+                            paramColl.Add(new SqlParameter(pmn2, t.Description));
+                            paramColl.Add(new SqlParameter(pmn3, t.BudgetedQuantity));
+                            paramColl.Add(new SqlParameter(pmn4, t.BudgetedPrice));
+                            count2++;
+                            pmn2 = "@desc" + count2;
+                            pmn3 = "@qty" + count2;
+                            pmn4 = "@pr" + count2;
+                            pmn5 = "@itm" + count2;
+                        }
                     }
                     count1++;
                     pmn = "@accid" + count1;
@@ -8512,6 +8656,31 @@ namespace Helper
                 text += "\r\nCOMMIT";
                 bool succ=DataAccessHelper.ExecuteNonQueryWithParameters(text,paramColl);
                 return succ;
+            });
+        }
+
+        public static Task<int> GetLastSupplierPaymentIDAsync(int supplierID, DateTime datePaid)
+        {
+            return Task.Run<int>(delegate
+            {
+                string commandText = string.Concat(new object[]
+                {
+                    "SELECT SupplierPaymentID FROM [Sales].[SupplierPayment] WHERE SupplierID=@suppID AND CONVERT(date,DatePaid)=CONVERT(date,@dtp)"
+                });
+                int result;
+                ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                paramColl.Add(new SqlParameter("@suppID", supplierID));
+                paramColl.Add(new SqlParameter("@dtp", datePaid));
+                int.TryParse(DataAccessHelper.ExecuteScalar(commandText, paramColl), out result);
+                return result;
+            });
+        }
+
+        public static Task<TrialBalanceModel> GetTrialBalance(DateTime startDate, DateTime endDate)
+        {
+            return Task.Run<TrialBalanceModel>(delegate
+            {
+                return new TrialBalanceModel();
             });
         }
     }
