@@ -269,8 +269,8 @@ namespace Helper
             
             if (workObject is BalanceSheetModel)
                 return 1;
-            if (workObject is STCashFlowsModel)
-                return 1;
+            if (docType== DocType.AccountsSTofCashFlow)
+                return CalculatePagesAccountsSTOC(workObject as STCashFlowsModel);
             if (docType== DocType.AccountsIncomeStatement)            
                 return CalculatePagesAccountsIncomeStatement(workObject as IncomeStatementModel);
             

@@ -27,7 +27,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="60,425,0,0" VerticalAlignment="Top" Text="Restore Database from Backup"
                        Style="{DynamicResource ContentTextSemiBold}"/>
         <Button Content="Restore" Margin="80,470,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" BorderBrush="Red"
-                Command="{Binding RestoreDbCommand}">
+                Command="{Binding RestoreDbCommand}" IsEnabled="False">
             <Button.Resources>
                 <SolidColorBrush x:Key="Accent" Color="Red"/>
             </Button.Resources>
@@ -36,7 +36,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="350,125,0,0" Text="Change Current Database" VerticalAlignment="Top"
                        Style="{DynamicResource ContentTextSemiBold}"/>
         <Button Content="Change" HorizontalAlignment="Left" Margin="350,170,0,0" VerticalAlignment="Top" Width="150" BorderBrush="Red"
-                    Command="{Binding ChangeDbCommand}">
+                    Command="{Binding ChangeDbCommand}" IsEnabled="False">
             <Button.Resources>
                 <SolidColorBrush x:Key="Accent" Color="Red"/>
             </Button.Resources>
@@ -45,7 +45,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="350,225,0,0" Text="Clear all data in the database" VerticalAlignment="Top"
                        Style="{DynamicResource ContentTextSemiBold}"/>
         <Button Content="Clear" HorizontalAlignment="Left" Margin="350,270,0,0" VerticalAlignment="Top" Width="150" BorderBrush="Red"
-                    Command="{Binding ClearDbCommand}">
+                    Command="{Binding ClearDbCommand}" IsEnabled="False">
             <Button.Resources>
                 <SolidColorBrush x:Key="Accent" Color="Red"/>
             </Button.Resources>
@@ -54,7 +54,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="350,325,0,0" Text="Delete the database" VerticalAlignment="Top"
                        Style="{DynamicResource ContentTextSemiBold}"/>
         <Button Content="Delete" HorizontalAlignment="Left" Margin="350,370,0,0" VerticalAlignment="Top" Width="150" BorderBrush="Red"
-                    Command="{Binding DeleteDbCommand}">
+                    Command="{Binding DeleteDbCommand}" IsEnabled="False">
             <Button.Resources>
                 <SolidColorBrush x:Key="Accent" Color="Red"/>
             </Button.Resources>

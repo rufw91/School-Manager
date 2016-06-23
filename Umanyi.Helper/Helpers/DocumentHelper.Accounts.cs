@@ -73,9 +73,7 @@ namespace Helper
         #region Income Statement
         private static void GenerateAccountsIncomeStatement()
         {
-
             IncomeStatementModel si = myWorkObject as IncomeStatementModel;
-
             AddAISRevenueAccounts(si.RevenueEntries,si.StartTime,si.EndTime);
             AddAISExpenseAccounts(si);
             AddAISOtherItems(si);
@@ -306,33 +304,96 @@ namespace Helper
         #endregion
 
         #region Statement of Cashflows Statement
+        private static int CalculatePagesAccountsSTOC( STCashFlowsModel si)
+        {
+            int pages = 0;
+            int revPages = (si.OperatingActivitiesEntries.Count % 35) != 0 ?
+                (si.OperatingActivitiesEntries.Count / 35) + 1 : (si.OperatingActivitiesEntries.Count / 35);
+
+            int lastRevYpos = 195 + (si.OperatingActivitiesEntries.Count - (revPages - 1) * 35) * 25;
+            pages += revPages;
+            if (lastRevYpos < 800)            
+                return pages;
+            return pages + 1;
+        }
         private static void GenerateAccountsSTofCashFlows()
         {
             STCashFlowsModel si = myWorkObject as STCashFlowsModel;
+            AddASTOCActivityEntries(si);
+            AddASTOCOtherItems(si);
+        }
 
-            int pageNo;
-            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+        private static void AddASTOCActivityEntries(STCashFlowsModel stoc)
+        {
+            int revPages = (stoc.OperatingActivitiesEntries.Count % 35) != 0 ?
+                (stoc.OperatingActivitiesEntries.Count / 35) + 1 : (stoc.OperatingActivitiesEntries.Count / 35);
+
+
+            double lastRevYpos = 0;
+            int lastRevPage = 0;
+            AddAISSubtitle("CASH FROM OPERATING ACTIVITIES", 160, 0);
+            for (int pageNo = 0; pageNo < revPages; pageNo++)
             {
-                AddAISPeriod(si.StartTime, si.EndTime, pageNo);
-                for (int i = 0; i < si.OperatingActivitiesEntries.Count; i++)
+                AddAISPeriod(stoc.StartTime, stoc.EndTime, pageNo);
+                int startIndex = pageNo * 35;
+                int endIndex = startIndex + 35 - 1;
+                if (startIndex >= stoc.OperatingActivitiesEntries.Count)
+                    return;
+                if (endIndex >= stoc.OperatingActivitiesEntries.Count)
+                    endIndex = stoc.OperatingActivitiesEntries.Count - 1;
+
+                for (int i = startIndex; i <= endIndex; i++)
                 {
-                    AddASTCActivityEntry(si.OperatingActivitiesEntries[i].Balance, 185 + (i * 25), pageNo);
+                    lastRevYpos = 195 + ((i - 35 * pageNo) * 25);
+
+                    AddAISRevenueAccount(stoc.OperatingActivitiesEntries[i].Name, stoc.OperatingActivitiesEntries[i].Balance, lastRevYpos, pageNo);
+
+                    lastRevPage = pageNo;
                 }
-                AddASTCActivityTotal(si.OperatingActivitiesTotal, 400d, pageNo);
-
-                AddASTCActivityTotal(si.StartBalance, 700d, pageNo);
-                AddASTCActivityTotal(si.EndBalance, 740d, pageNo);
             }
+            decimal d = 0;
+            foreach (var y in stoc.OperatingActivitiesEntries)
+                d += y.Balance;
+            AddASTOCSubtitle("TOTAL INCOME FROM OPERATING ACTIVITIES", lastRevYpos + 40, lastRevPage);
+            AddASTOCTotals(d, lastRevYpos+40, lastRevPage);
         }
 
-        private static void AddASTCActivityEntry(decimal amount, double yPos, int pageNo)
+        private static void AddASTOCSubtitle(string text, double yPos, int pageNo)
         {
-            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 450, yPos, pageNo); 
+            AddText(text, "Arial", 14, true, 0, Colors.Black, 20, yPos, pageNo);
         }
-
-        private static void AddASTCActivityTotal(decimal amount, double yPos, int pageNo)
-        {
+        private static void AddASTOCTotals(decimal amount, double yPos, int pageNo)
+        {            
             AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 635, yPos, pageNo); 
+        }
+
+        private static void AddASTOCOtherItems(STCashFlowsModel si)
+        {
+            int pages = 0;
+            int ypos = 0;
+            int revPages = (si.OperatingActivitiesEntries.Count % 35) != 0 ?
+                (si.OperatingActivitiesEntries.Count / 35) + 1 : (si.OperatingActivitiesEntries.Count / 35);
+
+            int lastRevYpos = 195 + (si.OperatingActivitiesEntries.Count - (revPages - 1) * 35) * 25;
+            
+           
+
+            pages = revPages;
+            ypos = lastRevYpos + 120;
+            if (lastRevYpos > 800)
+            {
+                pages++;
+                ypos = 195;
+            }
+
+            AddASTOCSubtitle("CASH FROM INVESTING ACTIVIYIES", ypos, pages - 1);
+            AddASTOCSubtitle("         -", ypos + 35, pages - 1);
+            AddASTOCSubtitle("CASH FROM FINANCING ACTIVIYIES", ypos + 85, pages - 1);
+            AddASTOCSubtitle("         -", ypos + 110, pages - 1);
+            AddASTOCSubtitle("STARTING CASH BALANCE", ypos + 170, pages - 1);
+            AddASTOCTotals(si.StartBalance, ypos + 170, pages - 1);
+            AddASTOCSubtitle("CURRENT CASH BALANCE", ypos + 210, pages - 1);
+            AddASTOCTotals(si.EndBalance, ypos + 210, pages - 1);
         }
         #endregion
 
