@@ -32,6 +32,7 @@ namespace UmanyiSMS.ViewModels
             Title = "MODIFY STUDENT";
             BoardingValue = Boardingtype.Boarder;
             NewStudent = new ModifyStudentModel();
+            newStudent.CheckErrors();
             newStudent.PropertyChanged += (o, e) =>
                 {
                     if (e.PropertyName == "StudentID")

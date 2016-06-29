@@ -24,7 +24,7 @@ namespace UmanyiSMS.ViewModels
             CreateCommands();
         }
 
-        protected async override void InitVars()
+        protected override void InitVars()
         {
             IsBusy = true;
             Title = "ITEMS LIST";
@@ -32,7 +32,7 @@ namespace UmanyiSMS.ViewModels
             Task<ObservableCollection<ItemListModel>> pTemp = DataAccess.GetAllItemsWithCurrentQuantityAsync();
             Task<ObservableCollection<ItemListModel>> cTemp = DataAccess.GetAllItemsWithCurrentQuantityAsync();
 
-            await Task.WhenAll(new Task[] { pTemp, cTemp });
+            Task.WaitAll(new Task[] { pTemp, cTemp });
             originalItems = pTemp.Result;
             currentItems = new CollectionViewSource();
             currentItems.Source = cTemp.Result;
@@ -139,13 +139,13 @@ namespace UmanyiSMS.ViewModels
             return temp;
         }
 
-        public async override void Reset()
+        public override void Reset()
         {
             IsReadOnly = true;
             Task<ObservableCollection<ItemListModel>> pTemp = DataAccess.GetAllItemsWithCurrentQuantityAsync();
             Task<ObservableCollection<ItemListModel>> cTemp = DataAccess.GetAllItemsWithCurrentQuantityAsync();
 
-            await Task.WhenAll(new Task[] { pTemp, cTemp });
+            Task.WaitAll(new Task[] { pTemp, cTemp });
             originalItems = pTemp.Result;
             currentItems.Source = cTemp.Result;
             currentItems.GroupDescriptions.Add(new PropertyGroupDescription("ItemCategoryID"));

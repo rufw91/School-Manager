@@ -8,13 +8,14 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.VisualBasic.FileIO;
+using Helper.Security;
 namespace Helper
 {
     public static class DataAccessHelper
     {
         public static Task<DataTable> ExecuteQueryWithResultAsyc(string query)
         {
-            return Task.Run<DataTable>(() =>
+            return Task.Factory.StartNew<DataTable>(() =>
             {
                 SqlConnection conn = DataAccessHelper.CreateConnection();
                 try
@@ -45,7 +46,7 @@ namespace Helper
         
         public static Task<DataTable> ExecuteQueryAsync(string query)
         {
-            return Task.Run<DataTable>(() =>
+            return Task.Factory.StartNew<DataTable>(() =>
             {
                 SqlConnection conn = DataAccessHelper.CreateConnection();
                 try
@@ -82,11 +83,21 @@ namespace Helper
         {
             try
             {                
+                 
+            #if NET4  
+                using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.GetConnectionString(newCredentials)))
+                {
+                    conn.Open();
+                }
+            #else
                 using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.ConnectionString))
                 {
                     conn.Credential = newCredentials;
                     conn.Open();
                 }
+            #endif
+            
+                
                 return true;
             }
             catch (Exception e)
@@ -153,9 +164,15 @@ namespace Helper
             SqlConnection conn;
             try
             {
+#if NET4
+                conn = new SqlConnection(ConnectionStringHelper.GetConnectionString(cred, connectionString));
+#else
                 conn = new SqlConnection(connectionString);
                 if (cred != null)
                     conn.Credential = cred;
+#endif
+
+
                 conn.Open();
                 if (conn.State == ConnectionState.Connecting)
                     while (conn.State != ConnectionState.Open)
@@ -361,6 +378,7 @@ namespace Helper
 
                     result = GetResultTable(ref reader);
                     reader.Close();
+                    DBConnection.Close();
                     cmd.Dispose();
                 }
             }
@@ -389,6 +407,7 @@ namespace Helper
                 {
                     SqlCommand dta = new SqlCommand(commandText, DBConnection);
                     dta.ExecuteNonQuery();
+                    DBConnection.Close();
                     dta.Dispose();
                 }
                 succ = true;
@@ -404,7 +423,7 @@ namespace Helper
 
         public static Task<bool> TestDb()
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 return DataAccessHelper.ExecuteNonQuery("");
             });
@@ -412,11 +431,21 @@ namespace Helper
 
         public static Task<bool> TestDb(string connectionStr)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 bool succ = false;
                 try
                 {
+#if NET4  
+                    using (SqlConnection DBConnection = new SqlConnection(ConnectionStringHelper.GetConnectionString(Credentials, connectionStr)))
+                    {
+                        DBConnection.Open();
+                        SqlCommand dta = new SqlCommand("USE " + Helper.Properties.Settings.Default.DBName + "", DBConnection);
+                        dta.ExecuteNonQuery();
+                        DBConnection.Close();
+                        dta.Dispose();
+                    }
+#else
                     using (SqlConnection DBConnection = new SqlConnection(connectionStr, Credentials))
                     {
                         DBConnection.Open();
@@ -424,6 +453,7 @@ namespace Helper
                         dta.ExecuteNonQuery();
                         dta.Dispose();
                     }
+#endif
                     succ = true;
                 }
                 catch (Exception e)
@@ -436,7 +466,7 @@ namespace Helper
 
         public static Task<bool> ClearDb()
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 string deleteStr =
                      "EXEC sp_MSForEachTable 'DISABLE TRIGGER ALL ON ?'";
@@ -457,7 +487,7 @@ namespace Helper
 
         public static Task<bool> DeleteDb()
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 try
                 {
@@ -503,6 +533,7 @@ namespace Helper
                     {
                         SqlCommand dta = new SqlCommand(deleteStr, DBConnection);
                         dta.ExecuteNonQuery();
+                        DBConnection.Close();
                         dta.Dispose();
                     }
                     return true;
@@ -513,7 +544,7 @@ namespace Helper
 
         public static Task<bool> CreateBackupAsync(string pathToFile)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 SqlConnection conn = DataAccessHelper.CreateMasterConnection();
                 try
@@ -548,7 +579,7 @@ namespace Helper
 
         public static Task<bool> RestoreDb(string fileName)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 if (string.IsNullOrWhiteSpace(fileName))
                     return false;
@@ -611,7 +642,7 @@ namespace Helper
         internal static Task<bool> TestBackupFile(string fileName)
         {
             string error;
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 try
                 {
@@ -642,7 +673,7 @@ namespace Helper
 
         public static Task<bool> CleanDb()
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 try
                 {
@@ -687,7 +718,8 @@ namespace Helper
 
         internal async static Task SetOffline()
         {
-            await Task.Run(() =>
+            await  
+             Task.Factory.StartNew(() =>
             {
                 try
                 {

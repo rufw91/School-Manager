@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.AllUnreturnedBooks"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+           mc:Ignorable="d" Background="White"
+             d:DesignHeight="800" d:DesignWidth="900">
+    <Grid>
+        <TextBlock Margin="10,10,0,0" Text="All Unreturned Books" VerticalAlignment="Top" HorizontalAlignment="Left"
+                 Style="{DynamicResource Title}"/>
+        <Border BorderThickness="2" BorderBrush="Silver" Margin="10,60,10,50">
+            <DocumentViewer Margin="0" Document="{Binding Document}"/>
+        </Border>
+        <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="120"                
+                Command="{Binding GenerateCommand}"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,39,10,0"  VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FullPreviewCommand}">Full Preview</Hyperlink>
+        </TextBlock>
+
+    </Grid>
+</UserControl>

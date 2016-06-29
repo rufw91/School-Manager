@@ -10,3 +10,77 @@
     CONSTRAINT [PK_ProjectHeader] PRIMARY KEY CLUSTERED ([ProjectID] ASC)
 );
 
+
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[ProjectHeader] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[ProjectHeader] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[ProjectHeader] TO [Accounts]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[ProjectHeader] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[ProjectHeader] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[ProjectHeader] TO [Accounts]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[ProjectHeader] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[ProjectHeader] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[ProjectHeader] TO [Accounts]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[ProjectHeader] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[ProjectHeader] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[ProjectHeader] TO [Accounts]
+    AS [dbo];
+

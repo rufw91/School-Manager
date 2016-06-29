@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.RemoveExam"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+            d:DesignHeight="700" d:DesignWidth="984"
+             Background="White">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Remove Exam" 
+                   VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,100,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="95,100,0,0" VerticalAlignment="Top" Width="200"
+                  ItemsSource="{Binding AllClasses}"
+                  SelectedValuePath="ClassID" DisplayMemberPath="NameOfClass"
+                  SelectedValue="{Binding SelectedClassID}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="40,150,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="95,150,0,0" VerticalAlignment="Top" Width="200"
+                  ItemsSource="{Binding AllExams}"
+                  SelectedValuePath="ExamID" DisplayMemberPath="NameOfExam"
+                  SelectedValue="{Binding SelectedExamID}"/>
+        <Button Content="Remove" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
+                BorderBrush="Red" Command="{Binding RemoveCommand}">
+            <Button.Resources>
+                <SolidColorBrush x:Key="Accent">Red</SolidColorBrush>
+            </Button.Resources>
+        </Button>
+    </Grid>
+</UserControl>

@@ -225,7 +225,7 @@ namespace UmanyiSMS.ViewModels
         {
             RepairInProgress = true;
             ShowErrors = false;
-            await Task.Run(() =>
+            await Task.Factory.StartNew(() =>
                 {
                     StartUp st = start;
 

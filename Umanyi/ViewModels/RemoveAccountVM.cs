@@ -1,5 +1,6 @@
 ﻿using Helper;
 using Helper.Models;
+using Helper.Presentation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +17,7 @@ namespace UmanyiSMS.ViewModels
     public class RemoveAccountVM : ViewModelBase
     {
         AccountModel selectedAccount;
-        private ObservableCollection<AccountModel> chartOfAccounts;
+        private ObservableCollection<IAccount> chartOfAccounts;
         public RemoveAccountVM()
         {
             InitVars();
@@ -46,7 +47,7 @@ namespace UmanyiSMS.ViewModels
             }, o => CanDelete());
         }
 
-        public ObservableCollection<AccountModel> ChartOfAccounts
+        public ObservableCollection<IAccount> ChartOfAccounts
         { get { return chartOfAccounts; } }
 
         private bool CanDelete()

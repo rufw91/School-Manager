@@ -1,4 +1,5 @@
 ﻿using Helper.Models;
+using Helper.Presentation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -184,7 +185,7 @@ namespace Helper
         {
             AddText(text, "Segoe UI", 14, true, 0, Colors.Black, 30, yPos, pageNo);
         }
-        private static void AddAISRevenueAccounts(IList<AccountModel>accounts,DateTime startTime, DateTime endTime)    
+        private static void AddAISRevenueAccounts(IList<IAccount>accounts,DateTime startTime, DateTime endTime)    
          {
              int revPages = (accounts.Count % 35) != 0 ?
                 (accounts.Count / 35) + 1 : (accounts.Count / 35);
@@ -420,11 +421,11 @@ namespace Helper
             AddText(startTime.ToString("dd MMM yyyy")+" to "+endTime.ToString("dd MMM yyyy"), "Arial", 14, true, 0, Colors.Black, 450, 0, pageNo);
         }
 
-        private static void AddATBAccount(TransactionModel transaction, double yPos, int pageNo)
+        private static void AddATBAccount(IAccount transaction, double yPos, int pageNo)
         {
-            AddText(transaction.TransactionID, "Arial", 14, true, 0, Colors.Black, 635, yPos, pageNo);
+           /* AddText(transaction.TransactionID, "Arial", 14, true, 0, Colors.Black, 635, yPos, pageNo);
             if (transaction.TransactionType== TransactionTypes.Credit)
-            AddText(transaction.TransactionID, "Arial", 14, true, 0, Colors.Black, 635, yPos, pageNo);
+            AddText(transaction.TransactionID, "Arial", 14, true, 0, Colors.Black, 635, yPos, pageNo);*/
         }
 
         private static void AddATBCreditTotals(decimal total, int pageNo)

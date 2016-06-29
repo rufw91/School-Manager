@@ -127,7 +127,7 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 PathToFile = FileHelper.BrowseExcelFileAsString();
                 if (!string.IsNullOrWhiteSpace(pathToFile))
-                    await Task.Run(() =>
+                    await Task.Factory.StartNew(() =>
                     {
                        // Dimension = SpreadsheetDocument.GetDimension(pathToFile);
                     });
@@ -148,7 +148,7 @@ namespace UmanyiSMS.ViewModels
 
         private Task Import()
         {
-            return Task.Run(async () =>
+            return Task.Factory.StartNew(async () =>
             {
                 ProgressText = "Initializing...";
                 //Check Classes
@@ -342,7 +342,7 @@ namespace UmanyiSMS.ViewModels
 
         private Task<DataTable> GetData()
         {
-            return Task.Run<DataTable>(() =>
+            return Task.Factory.StartNew<DataTable>(() =>
             {
                 DataTable dt = new DataTable();
                 try
@@ -360,7 +360,7 @@ namespace UmanyiSMS.ViewModels
 
         private Task<DataTable> CleanData(DataTable rawData)
         {
-            return Task.Run<DataTable>(() =>
+            return Task.Factory.StartNew<DataTable>(() =>
             {
                 DataTable dt = rawData;
                 foreach (DataRow dtr in dt.Rows)
@@ -727,10 +727,10 @@ namespace UmanyiSMS.ViewModels
                 Errors.Add(i, new List<string>() { error });
         }
 
-        private async void TestAll()
+        private void TestAll()
         {
             Errors.Clear();
-            await Task.WhenAll<bool>(
+             Task.WaitAll(
                 TestColumnAsync(studentIDColumn, "Student ID", typeof(int), false, false, OnProgressChanged, "TestProgressStudentID"),
                 TestColumnAsync(firstNameColumn, "First Name", typeof(string), false, false,OnProgressChanged, "TestProgressFirstName"),
                 TestColumnAsync(middleNameColumn, "Middle Name", typeof(string), false, false,OnProgressChanged, "TestProgressMiddleName"),
@@ -778,7 +778,7 @@ namespace UmanyiSMS.ViewModels
                 TestProgressAddress = 100;
                 return false;
             }
-            return await Task.Run<bool>(() => TestColumn(columnName, friendlyName, dataType, allowEmptyStrings, allowZeroAndNegativeValues, 
+            return await Task.Factory.StartNew<bool>(() => TestColumn(columnName, friendlyName, dataType, allowEmptyStrings, allowZeroAndNegativeValues, 
                 progressChangedCallBack, nameOfProperty));
         }
 

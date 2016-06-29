@@ -1,5 +1,6 @@
 ﻿using Helper;
 using Helper.Models;
+using Helper.Security;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -43,7 +44,7 @@ namespace UmanyiSMS.ViewModels
 
         private Task<int> GetNewID()
         {
-            return Task.Run<int>(() =>
+            return Task.Factory.StartNew<int>(() =>
             {
                 string selectStr = "declare @newid int;  set @newid =dbo.GetNewID('Institution.Staff');  select @newid;";
 

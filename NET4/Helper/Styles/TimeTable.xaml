@@ -1,0 +1,62 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Helper.Controls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Helper;component/Converters/Converters.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style TargetType="controls:TimeTable">
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="BorderBrush"
+                Value="Silver" />
+        <Setter Property="BorderThickness"
+                Value="2" />
+        <Setter Property="MinHeight"
+                Value="50" />
+        <Setter Property="MinWidth"
+                Value="50" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:TimeTable">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <Grid x:Name="PART_PrintVisual" Margin="{TemplateBinding Padding}" IsHitTestVisible="{TemplateBinding IsReadOnly, Converter={StaticResource NegateConverter}}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <controls:TimeTableColumnHeadersPresenter x:Name="PART_ColumnHeaderPresenter" Grid.Column="1"/>
+                                <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                                    <controls:TimeTableGroupedRowsPresenter Grid.ColumnSpan="2" Width="{TemplateBinding Width}" x:Name="PART_MondayRowsPresenter" Day="MONDAY"/>
+                                    <controls:TimeTableGroupedRowsPresenter Grid.ColumnSpan="2" Width="{TemplateBinding Width}" x:Name="PART_TuesdayRowsPresenter" Day="TUESDAY"/>
+                                    <controls:TimeTableGroupedRowsPresenter Grid.ColumnSpan="2" Width="{TemplateBinding Width}" x:Name="PART_WednesdayRowsPresenter" Day="WEDNESDAY"/>
+                                    <controls:TimeTableGroupedRowsPresenter Grid.ColumnSpan="2" Width="{TemplateBinding Width}" x:Name="PART_ThursdayRowsPresenter" Day="THURSDAY"/>
+                                    <controls:TimeTableGroupedRowsPresenter Grid.ColumnSpan="2" Width="{TemplateBinding Width}" x:Name="PART_FridayRowsPresenter" Day="FRIDAY"/>
+                                    <controls:TimeTableGroupedRowsPresenter Grid.ColumnSpan="2" Width="{TemplateBinding Width}" x:Name="PART_SaturdayRowsPresenter" Day="SATURDAY"/>
+                                    <controls:TimeTableGroupedRowsPresenter Grid.ColumnSpan="2" Width="{TemplateBinding Width}" x:Name="PART_SundayRowsPresenter" Day="SUNDAY"/>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="ItemContainerStyle" Value="{StaticResource {x:Type ListBoxItem}}"/>
+
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

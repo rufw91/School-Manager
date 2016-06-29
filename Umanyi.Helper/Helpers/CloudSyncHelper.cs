@@ -87,7 +87,13 @@ namespace Helper
 
         protected Task SyncPrepareSync(IProgress<SyncOperationProgress> progressReporter, params CloudSyncHelper.SyncOptions[] options)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 progressReporter.Report(new SyncOperationProgress
                 {
@@ -372,7 +378,13 @@ namespace Helper
 
         private async Task SyncData(IProgress<SyncOperationProgress> progressReporter)
         {
-            await Task.Run(delegate
+            await
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 progressReporter.Report(new SyncOperationProgress
                 {

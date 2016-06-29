@@ -174,7 +174,7 @@ namespace UmanyiSMS.ViewModels
 
         private Task<DataTable> ConvertClassResults(List<ExamResultStudentModel> temp)
         {
-            return Task.Run<DataTable>(async () =>
+            return Task.Factory.StartNew<DataTable>(() =>
                 {
                     if (temp == null)
                         return new DataTable();
@@ -183,9 +183,9 @@ namespace UmanyiSMS.ViewModels
                     DataTable dt = new DataTable();
                     ObservableCollection<SubjectModel> g;
                     if (isInClassMode)
-                        g = await DataAccess.GetSubjectsRegistredToClassAsync(selectedClass.ClassID);
+                        g = DataAccess.GetSubjectsRegistredToClassAsync(selectedClass.ClassID).Result;
                     else
-                        g = await DataAccess.GetSubjectsRegistredToClassAsync(selectedCombinedClass.Entries[0].ClassID);
+                        g = DataAccess.GetSubjectsRegistredToClassAsync(selectedCombinedClass.Entries[0].ClassID).Result;
 
                     dt.Columns.Add(new DataColumn("Student ID"));
                     dt.Columns.Add(new DataColumn("Name"));

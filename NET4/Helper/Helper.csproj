@@ -1,0 +1,559 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D2E23AB5-1AFD-44D5-9D5C-2D55503C7D8F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Helper</RootNamespace>
+    <AssemblyName>Helper</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET4</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Common\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.Smo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SmoExtended, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.SmoExtended.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop, Version=1.0.168.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Windows.Shell, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Windows.Shell.3.0.1.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="ReadOnlyCollectionsInterfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ReadOnlyCollectionInterfaces.1.0.0\lib\NET40-client\ReadOnlyCollectionsInterfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable.Net40, Version=1.0.27.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Collections.Immutable.Net40.1.0.30.17\lib\net40\System.Collections.Immutable.Net40.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO, Version=2.6.8.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.1.8\lib\net40\System.IO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime, Version=2.6.8.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.1.8\lib\net40\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Threading.Tasks, Version=2.6.8.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.1.8\lib\net40\System.Threading.Tasks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Helper\Controls\CustomWindow.cs">
+      <Link>Controls\CustomWindow.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Controls\LinkSplitButton.cs">
+      <Link>Controls\LinkSplitButton.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Controls\ProgressRing.cs">
+      <Link>Controls\ProgressRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Controls\ProgressText.cs">
+      <Link>Controls\ProgressText.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Controls\SyncIcon.cs">
+      <Link>Controls\SyncIcon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Controls\TimePicker.cs">
+      <Link>Controls\TimePicker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Controls\TimeTable.cs">
+      <Link>Controls\TimeTable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Controls\TimeTableColumnHeadersPresenter.cs">
+      <Link>Controls\TimeTableColumnHeadersPresenter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Controls\TimeTableGroupedRowsPresenter.cs">
+      <Link>Controls\TimeTableGroupedRowsPresenter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Controls\ToggleSwitch.cs">
+      <Link>Controls\ToggleSwitch.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Controls\VirtualizingWrapPanel.cs">
+      <Link>Controls\VirtualizingWrapPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\BackgroundToForeground.cs">
+      <Link>Converters\BackgroundToForeground.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\BooleansToVisibilityConverter.cs">
+      <Link>Converters\BooleansToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\BooleanToVisibilityConverter.cs">
+      <Link>Converters\BooleanToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\ByteToStringConverter.cs">
+      <Link>Converters\ByteToStringConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\ColorToBrushConverter.cs">
+      <Link>Converters\ColorToBrushConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\DataGridToDataTable.cs">
+      <Link>Converters\DataGridToDataTable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\InverseVisibilityConverter.cs">
+      <Link>Converters\InverseVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\NegateConverter.cs">
+      <Link>Converters\NegateConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\NullOrEmptyStringToVisibilityConverter.cs">
+      <Link>Converters\NullOrEmptyStringToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\NullOrNotImageToVisibilityConverter.cs">
+      <Link>Converters\NullOrNotImageToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\StreamToImageSourceConverter.cs">
+      <Link>Converters\StreamToImageSourceConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\TitleConverter.cs">
+      <Link>Converters\TitleConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\ToLowerConverter.cs">
+      <Link>Converters\ToLowerConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\ToUpperConverter.cs">
+      <Link>Converters\ToUpperConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\UriToImageSourceConverter.cs">
+      <Link>Converters\UriToImageSourceConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Converters\ValidationErrorConverter.cs">
+      <Link>Converters\ValidationErrorConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\ActivationHelper.cs">
+      <Link>Helpers\ActivationHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\ConnectionStringHelper.cs">
+      <Link>Helpers\ConnectionStringHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\DataAccessHelper.cs">
+      <Link>Helpers\DataAccessHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\FileHelper.cs">
+      <Link>Helpers\FileHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\Log.cs">
+      <Link>Helpers\Log.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\LoginHelper.cs">
+      <Link>Helpers\LoginHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\RegistryHelper.cs">
+      <Link>Helpers\RegistryHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\SystemInfo.cs">
+      <Link>Helpers\SystemInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\UsersHelper.cs">
+      <Link>Helpers\UsersHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\WebHelper.cs">
+      <Link>Helpers\WebHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Helpers\XPSHelper.cs">
+      <Link>Helpers\XPSHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\ApplicationModel.cs">
+      <Link>Models\ApplicationModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\ApplicationPersistModel.cs">
+      <Link>Models\ApplicationPersistModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\ClassLessons.cs">
+      <Link>Models\ClassLessons.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\ColumnModel.cs">
+      <Link>Models\ColumnModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\ComparisonModel.cs">
+      <Link>Models\ComparisonModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\Lesson.cs">
+      <Link>Models\Lesson.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\SchoolModel.cs">
+      <Link>Models\SchoolModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\TimetableColumnHeaderModel.cs">
+      <Link>Models\TimetableColumnHeaderModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\TimeTableModel.cs">
+      <Link>Models\TimeTableModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\TimeTableSettingsModel.cs">
+      <Link>Models\TimeTableSettingsModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Models\UserModel.cs">
+      <Link>Models\UserModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\ABEdge.cs">
+      <Link>Native\ABEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\ABMsg.cs">
+      <Link>Native\ABMsg.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\APPBARDATA.cs">
+      <Link>Native\APPBARDATA.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\Constants.cs">
+      <Link>Native\Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\CREATESTRUCT.cs">
+      <Link>Native\CREATESTRUCT.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\MARGINS.cs">
+      <Link>Native\MARGINS.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\MINMAXINFO.cs">
+      <Link>Native\MINMAXINFO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\MONITORINFO.cs">
+      <Link>Native\MONITORINFO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\POINT.cs">
+      <Link>Native\POINT.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\RECT.cs">
+      <Link>Native\RECT.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\UnsafeNativeMethods.cs">
+      <Link>Native\UnsafeNativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Native\WINDOWPLACEMENT.cs">
+      <Link>Native\WINDOWPLACEMENT.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\BindableSelectedItemBehavior.cs">
+      <Link>Presentation\BindableSelectedItemBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\ComparisonCollection.cs">
+      <Link>Presentation\ComparisonCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\EmailValidator.cs">
+      <Link>Presentation\EmailValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\IMainWindow.cs">
+      <Link>Presentation\IMainWindow.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\NotifyPropertyChanged.cs">
+      <Link>Presentation\NotifyPropertyChanged.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\ObservableCollectionObject.cs">
+      <Link>Presentation\ObservableCollectionObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\ObservableImmutableDictionary.cs">
+      <Link>Presentation\ObservableImmutableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\ObservableImmutableList.cs">
+      <Link>Presentation\ObservableImmutableList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\RelayCommand.cs">
+      <Link>Presentation\RelayCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\SingleInstance.cs">
+      <Link>Presentation\SingleInstance.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\ViewModelBase.cs">
+      <Link>Presentation\ViewModelBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Presentation\VisualTreeHelper.cs">
+      <Link>Presentation\VisualTreeHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Helper\Security\Security.cs">
+      <Link>Security\Security.cs</Link>
+    </Compile>
+    <Compile Include="Constants.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Models\ModelBase.cs" />
+    <Compile Include="Presentation\Progress.cs" />
+    <Compile Include="Security\SqlCredential.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OpenXmlPackaging\OpenXmlPackaging.csproj">
+      <Project>{dad3387a-470a-4484-9427-a8c8faec6c0f}</Project>
+      <Name>OpenXmlPackaging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Converters\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Calendar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\CheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ContextMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\CustomWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\DataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\DatePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\GridSplitter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\GroupBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Hyperlink.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Label.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\MenuItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\PasswordBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ProgressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ProgressRing.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\RadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ResultsDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ScrollBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Slider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\SyncIcon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TimePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TimeTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TimeTableColumnHeadersPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TimeTableGroupedRowsPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ToggleSwitch.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ToolTip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TopWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Theme.Common.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Theme.Dark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Theme.Light.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\clear.png" />
+    <Content Include="Resources\search.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

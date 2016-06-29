@@ -34,7 +34,5 @@ GRANT EXECUTE
 
 
 GO
-GRANT EXECUTE
-    ON OBJECT::[dbo].[GetCurrentBalance] TO [Teacher]
-    AS [dbo];
+
 

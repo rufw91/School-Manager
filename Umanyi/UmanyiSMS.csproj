@@ -125,11 +125,11 @@
   <ItemGroup>
     <Reference Include="AxInterop.AcroPDFLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>obj\x86\Release\AxInterop.AcroPDFLib.dll</HintPath>
+      <HintPath>..\..\..\..\Common\AxInterop.AcroPDFLib.dll</HintPath>
     </Reference>
     <Reference Include="Interop.AcroPDFLib">
-      <HintPath>obj\x86\Release\Interop.AcroPDFLib.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\Common\Interop.AcroPDFLib.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

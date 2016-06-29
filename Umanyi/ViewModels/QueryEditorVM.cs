@@ -38,7 +38,7 @@ namespace UmanyiSMS.ViewModels
 
         private Task<bool> HasReturn(string query)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
                 {
                     bool temp = true;
                     int c1 = -1, c2 = -1, c3 = -1;

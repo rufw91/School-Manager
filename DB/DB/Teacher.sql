@@ -2,6 +2,8 @@
     AUTHORIZATION [dbo];
 
 
+
+
 GO
 GRANT ALTER
     ON ROLE::[Teacher] TO [Principal]
@@ -13,3 +15,5 @@ GRANT CONTROL
     ON ROLE::[Teacher] TO [Principal]
     WITH GRANT OPTION;
 
+
+GO

@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.EventDetails"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             d:DesignHeight="722" d:DesignWidth="1024"
+             mc:Ignorable="d"
+	 Background="White">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UmanyiSMS.Helper;component/Converters/Converters.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- Back button and page title -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.ColumnSpan="2" Background="{DynamicResource TitleBackgroundBrush}"/>
+            <Button x:Name="backButton" Margin="39,40,21,0" 
+                        Style="{StaticResource BackButtonX}"
+                        VerticalAlignment="Top"
+                        AutomationProperties.Name="Back"
+                        AutomationProperties.AutomationId="BackButton"
+                        AutomationProperties.ItemType="Navigation Button"/>
+            <TextBlock x:Name="pageTitle" Text="Event Details" Style="{StaticResource HeaderTextStyle}" Grid.Column="1" HorizontalAlignment="Left"
+                        IsHitTestVisible="false" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+
+        </Grid>
+        <Grid Grid.Row="1" DataContext="{Binding NewEvent}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <TextBlock HorizontalAlignment="Left" Margin="40,50,0,0" Grid.Row="1" VerticalAlignment="Top"
+                    Text="Name" Style="{DynamicResource ContentTextSemiBold}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="40,90,0,0" Grid.Row="1" VerticalAlignment="Top"
+                    Text="Starts" Style="{DynamicResource ContentTextSemiBold}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="40,130,0,0" Grid.Row="1" VerticalAlignment="Top"
+                    Text="At" Style="{DynamicResource ContentTextSemiBold}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="40,170,0,0" Grid.Row="1" VerticalAlignment="Top"
+                    Text="Ends" Style="{DynamicResource ContentTextSemiBold}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="40,210,0,0" Grid.Row="1" VerticalAlignment="Top"
+                    Text="At" Style="{DynamicResource ContentTextSemiBold}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="40,250,0,0" Grid.Row="1" VerticalAlignment="Top"
+                    Text="Location" Style="{DynamicResource ContentTextSemiBold}"/>
+            <TextBox HorizontalAlignment="Left" Margin="172,49,0,0" VerticalAlignment="Top"
+                   Text="{Binding Name}"
+                 BorderThickness="0" Width="300" IsReadOnly="True"/>
+            <TextBox HorizontalAlignment="Left" Margin="172,89,0,0" Grid.Row="1" VerticalAlignment="Top"
+                   Text="{Binding StartDate, StringFormat={}{0:dd MMM yyyy}}"
+                 BorderThickness="0" Width="300" IsReadOnly="True"/>
+            <TextBox HorizontalAlignment="Left" Margin="172,129,0,0" Grid.Row="1" VerticalAlignment="Top"
+                   Text="{Binding StartTime}"
+                 BorderThickness="0" Width="250" IsReadOnly="True"/>
+            <TextBox HorizontalAlignment="Left" Margin="172,169,0,0"  VerticalAlignment="Top"
+                   Text="{Binding EndDate, StringFormat={}{0:dd MMM yyyy}}"
+                 BorderThickness="0" Width="300" IsReadOnly="True"/>
+            <TextBox HorizontalAlignment="Left" Margin="172,209,0,0" Grid.Row="1" VerticalAlignment="Top"
+                   Text="{Binding EndTime}"
+                 BorderThickness="0" Width="250" IsReadOnly="True"/>
+            <TextBox HorizontalAlignment="Left" Margin="172,249,0,0" VerticalAlignment="Top"
+                   Text="{Binding Location}"
+                 BorderThickness="0" Width="300" IsReadOnly="True"/>
+
+            <TextBox Grid.Column="1" Height="50" Margin="20,67,49,0" VerticalAlignment="Top" FontSize="28" FontFamily="Segoe UI Light"
+                 BorderBrush="Transparent" BorderThickness="0" 
+                 Style="{DynamicResource AddSubjectTextBox}" IsReadOnly="True"
+                 Text="{Binding Subject, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Border Grid.Column="1" BorderThickness="1" BorderBrush="Silver" VerticalAlignment="Top" Margin="20,120,49,0"/>
+            <TextBox Grid.Column="1" Margin="20,125,49,72" BorderBrush="Transparent" BorderThickness="0" IsReadOnly="True"
+                 Style="{DynamicResource AddTextTextBox}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                 Text="{Binding Message, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+    </Grid>
+</UserControl>

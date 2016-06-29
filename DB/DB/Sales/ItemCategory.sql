@@ -1,10 +1,13 @@
 ﻿CREATE TABLE [Sales].[ItemCategory] (
-    [ItemCategoryID] INT              CONSTRAINT [DF_ItemCategory_ItemCategoryID] DEFAULT ([dbo].[Link_GetNewID]('Sales.ItemCategory')) NOT NULL,
-    [Description]    VARCHAR (50)     NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_ProductCategory_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_ProductCategory_rowguid] DEFAULT (newid()) NOT NULL,
+    [ItemCategoryID]   INT              CONSTRAINT [DF_ItemCategory_ItemCategoryID] DEFAULT ([dbo].[Link_GetNewID]('Sales.ItemCategory')) NOT NULL,
+    [Description]      VARCHAR (50)     NOT NULL,
+    [ParentCategoryID] INT              NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_ProductCategory_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_ProductCategory_rowguid] DEFAULT (newid()) NOT NULL,
     CONSTRAINT [PK_ProductCategory] PRIMARY KEY CLUSTERED ([ItemCategoryID] ASC)
 );
+
+
 
 
 GO

@@ -1,4 +1,5 @@
 ﻿using Helper.Models;
+using Helper.Security;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using System;
@@ -17,7 +18,7 @@ namespace Helper
     {
         public static Task<bool> CreateNewUserAsync(SqlCredential cred, UserRole role, string name, byte[] photo)
         {
-            return Task.Run<bool>(async () =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 SqlConnection conn = DataAccessHelper.CreateConnection();
                 try
@@ -39,7 +40,7 @@ namespace Helper
                         List<UserRole> roles = GetChildRoles(role);
                         foreach (UserRole r in roles)
                             u.AddToRole(r.ToString());
-                        succ = await SaveUserInfo(cred, role, name, photo);
+                        succ = SaveUserInfo(cred, role, name, photo).Result;
 
                         if ((role == UserRole.Principal) || (role == UserRole.SystemAdmin))
                         {
@@ -98,7 +99,7 @@ namespace Helper
 
         private static Task<bool> SaveUserInfo(SqlCredential cred, UserRole role, string name, byte[] photo)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 string insertStr = "BEGIN TRANSACTION\r\n" +
                     " INSERT INTO [Users].[User] (UserID,Name,SPhoto) " +
@@ -119,7 +120,7 @@ namespace Helper
 
         private static Task<bool> RemoveUserInfo(string userID)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 string insertStr = "BEGIN TRANSACTION\r\nDELETE FROM [Users].[UserDetail] WHERE UserID='" + userID + "'\r\n";
 
@@ -131,7 +132,7 @@ namespace Helper
 
         private static Task<bool> UpdateUserInfo(SqlCredential cred, UserRole role)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 string insertStr = "BEGIN TRANSACTION\r\nDELETE FROM [Users].[UserDetail] WHERE UserID='" + cred.UserId + "'\r\n";
 
@@ -151,7 +152,7 @@ namespace Helper
 
         public static Task<bool> UserExists(string p)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 SqlConnection conn = DataAccessHelper.CreateConnection();
                 try
@@ -235,7 +236,7 @@ namespace Helper
 
         public static Task<bool> UpdateUserAsync(SqlCredential credential, UserRole userRole)
         {
-            return Task.Run<bool>(async () =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 SqlConnection conn = DataAccessHelper.CreateConnection();
                 try
@@ -269,7 +270,7 @@ namespace Helper
                             u.AddToRole(userRole.ToString());
                             u.Alter();
 
-                            succ = await UpdateUserInfo(credential, userRole);
+                            succ = UpdateUserInfo(credential, userRole).Result;
                         }
                     }
                     return succ;
@@ -280,7 +281,7 @@ namespace Helper
 
         public static Task<bool> RemoveUserAsync(string userID)
         {
-            return Task.Run<bool>(async () =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 SqlConnection conn = DataAccessHelper.CreateConnection();
                 try
@@ -298,7 +299,7 @@ namespace Helper
 
                         u.Drop();
 
-                        succ = await RemoveUserInfo(userID);
+                        succ = RemoveUserInfo(userID).Result;
                     }
                     return succ;
                 }

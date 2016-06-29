@@ -37,9 +37,9 @@ namespace Helper.Helpers
             return null;
         }
 
-        public static async Task<JObject> SendPostRequest(string address, List<KeyValuePair<string, string>> list)
+        public static Task<JObject> SendPostRequest(string address, List<KeyValuePair<string, string>> list)
         {
-            return await Task.Run<JObject>(() =>
+            return Task.Factory.StartNew<JObject>(() =>
             {
                 try
                 {

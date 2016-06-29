@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.LogWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UmanyiSMS.Views"
+               mc:Ignorable="d" Background="White"
+     d:DesignHeight="500" d:DesignWidth="700">
+
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Application Log" Style="{DynamicResource Title}" VerticalAlignment="Top"/>
+        <ListBox Margin="10,70,10,50" ItemsSource="{Binding Entries}" BorderBrush="LightGray" BorderThickness="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border >
+                        <TextBox Text="{Binding Mode=OneWay}" Background="Transparent" BorderThickness="0"/>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Content="_Close" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Command="{Binding CloseCommand}"/>
+
+    </Grid>
+</UserControl>

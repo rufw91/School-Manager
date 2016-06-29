@@ -56,7 +56,7 @@ namespace UmanyiSMS.ViewModels
                     process = Process.Start(gim.Path);
                     IsBusy = true;
                     CanPlay = false;
-                    await Task.Run(() => Thread.Sleep(new TimeSpan(0, 0, 5)));
+                    await Task.Factory.StartNew(() => Thread.Sleep(new TimeSpan(0, 0, 5)));
                     IsBusy = false;
                 }
                 catch { }
@@ -117,7 +117,7 @@ namespace UmanyiSMS.ViewModels
 
         private Task<GalleryItemModel> GetGalleryItemFromPath(string path)
         {
-            return Task.Run<GalleryItemModel>(() =>
+            return Task.Factory.StartNew<GalleryItemModel>(() =>
             {
                 var v = new FileInfo(path);
                 GalleryItemModel gim = new GalleryItemModel();

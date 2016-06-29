@@ -10,3 +10,20 @@
     
  RETURN @total;
  END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetBookPurchaseTotal] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetBookPurchaseTotal] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetBookPurchaseTotal] TO [Accounts]
+    AS [dbo];
+

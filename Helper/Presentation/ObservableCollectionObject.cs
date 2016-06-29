@@ -44,9 +44,12 @@ namespace UmanyiSMS
 
 		// note : find time to put all these methods into a helper class instead of in a base class
 
-		// returns a valid dispatcher if this is a UI thread (can be more than one UI thread so different dispatchers are possible); null if not a UI thread
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected Dispatcher GetDispatcher()
+        // returns a valid dispatcher if this is a UI thread (can be more than one UI thread so different dispatchers are possible); null if not a UI thread
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+
+        protected Dispatcher GetDispatcher()
 			{
 			return Dispatcher.FromThread(Thread.CurrentThread);
 			}
@@ -100,8 +103,11 @@ namespace UmanyiSMS
 				);
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public void DoEvents()
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+
+        public void DoEvents()
 			{
 			var dispatcher = GetDispatcher();
 			if (dispatcher == null)
@@ -114,15 +120,21 @@ namespace UmanyiSMS
 			Dispatcher.PushFrame(frame);
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static object ExitFrame(object frame)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+
+        private static object ExitFrame(object frame)
 			{
 			((DispatcherFrame)frame).Continue = false;
 			return null;
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected bool TryLock()
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+
+        protected bool TryLock()
 			{
 			switch (LockType)
 				{
@@ -135,8 +147,11 @@ namespace UmanyiSMS
 			return false;
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected void Lock()
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+
+        protected void Lock()
 			{
 			switch (LockType)
 				{
@@ -149,8 +164,11 @@ namespace UmanyiSMS
 				}
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected void Unlock()
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+
+        protected void Unlock()
 			{
 			switch (LockType)
 				{

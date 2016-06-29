@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helper.Presentation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,13 @@ namespace Helper.Models
     {
         private DateTime endTime;
         private DateTime startTime;
-        private List<AccountModel> operatingActivitiesEntries;
+        private List<IAccount> operatingActivitiesEntries;
         private decimal startBalance;
         private decimal totRev;
         private decimal totExp;
         public STCashFlowsModel()
         {
-            operatingActivitiesEntries = new List<AccountModel>();
+            operatingActivitiesEntries = new List<IAccount>();
         }
 
         public STCashFlowsModel(IncomeStatementModel incomeStatementModel)
@@ -26,7 +27,7 @@ namespace Helper.Models
 
         private void CopyFromIS(IncomeStatementModel incomeStatementModel)
         {
-            operatingActivitiesEntries = new List<AccountModel>();
+            operatingActivitiesEntries = new List<IAccount>();
             foreach (var r in incomeStatementModel.RevenueEntries)
             {
                 r.Name = "CASH COLLECTED FROM " + r.Name;
@@ -50,7 +51,7 @@ namespace Helper.Models
 
         public DateTime EndTime { get { return endTime; } set { endTime = value; } }
 
-        public List<AccountModel> OperatingActivitiesEntries
+        public List<IAccount> OperatingActivitiesEntries
         {
             get { return operatingActivitiesEntries; }
         }

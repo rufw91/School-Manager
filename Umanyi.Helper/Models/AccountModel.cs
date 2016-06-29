@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helper.Presentation;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Helper.Models
 {
-    public sealed class AccountModel : ObservableCollection<AccountModel>
+    public sealed class AccountModel : ObservableCollection<IAccount>, IAccount
     {
         private string name;
         private int accountID;
         private decimal balance;
+        private Helper.AccountType accountType;
 
         public AccountModel()
         {
@@ -56,11 +58,18 @@ namespace Helper.Models
             }
         }
 
-        public void Reset()
+        public AccountType AccountType
         {
-            Name = "";
-            AccountID = 0;
-            this.Clear();
+            get { return this.accountType; }
+
+            set
+            {
+                if (value != this.accountType)
+                {
+                    this.accountType = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("AccountType"));
+                }
+            }
         }
 
         public decimal Balance
@@ -77,12 +86,29 @@ namespace Helper.Models
             }
         }
 
-        public void CopyFrom(AccountModel source)
+        public void Reset()
+        {
+            Name = "";
+            AccountID = 0;
+            this.Clear();
+        }
+
+        public IAccount this[string accountName]
+        {
+            get
+            {
+                if (!this.Any(o => o.Name.ToUpper().Equals(accountName.ToUpper())))
+                    throw new IndexOutOfRangeException(string.Format("The account {0} cannot be found.", accountName));
+                return this.First(o => o.Name.ToUpper().Equals(accountName.ToUpper()));
+            }
+        }
+
+        public void CopyFrom(IAccount source)
         {
             this.AccountID = source.AccountID;
             this.Name = source.Name;
             this.Balance = source.Balance;
-
+            this.AccountType = source.AccountType;
         }
 
         public override string ToString()

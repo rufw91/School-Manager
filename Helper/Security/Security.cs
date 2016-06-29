@@ -35,7 +35,7 @@ namespace Helper.Security
 
         public static Task<bool> CompareHashAsync(byte[] object1, byte[] object2)
         {
-            return Task.Run<bool>(()=>CompareHash(object1,object2));
+            return Task.Factory.StartNew<bool>(()=>CompareHash(object1,object2));
         }
 
         private static bool ArraysAreEqual(byte[] a1, byte[] a2)

@@ -2,6 +2,8 @@
     AUTHORIZATION [dbo];
 
 
+
+
 GO
 GRANT ALTER
     ON ROLE::[Accounts] TO [Principal]
@@ -13,3 +15,5 @@ GRANT CONTROL
     ON ROLE::[Accounts] TO [Principal]
     WITH GRANT OPTION;
 
+
+GO

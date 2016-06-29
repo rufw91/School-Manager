@@ -1,0 +1,60 @@
+<FixedPage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           Width="793.76" Height="1122.56">
+
+    <Grid Width="793.76" Height="1122.56">
+        <TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" Text="{Binding Info.FullName, Source={x:Static Application.Current}}" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="26"/>
+        <StackPanel Orientation="Horizontal" Margin="0,70,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                    DataContext="{Binding Source={x:Static Application.Current}}">
+            <TextBlock HorizontalAlignment="Center" 
+                   Text="{Binding Info.Address, StringFormat='P.O. BOX {0} '}"
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+            <TextBlock HorizontalAlignment="Center"
+                   Text="{Binding Info.PostalCode, StringFormat='- {0}'}"
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+            <TextBlock HorizontalAlignment="Center"
+                   Text="{Binding Info.City, StringFormat=' {0}, '}"
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+            <TextBlock HorizontalAlignment="Center" 
+                   Text="{Binding Info.PhoneNo, StringFormat='TEL {0}'}"
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+        </StackPanel>
+        <TextBlock HorizontalAlignment="Center" Margin="0,92,0,0" 
+                   Text="{Binding Info.Email, Source={x:Static Application.Current}, StringFormat='EMAIL: {0}'}" 
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+        <Image HorizontalAlignment="Left" Height="127" Margin="10,15,0,0" VerticalAlignment="Top" Width="140"
+               Source="{Binding Info.Logo, Source={x:Static Application.Current}}" />
+
+
+        <TextBlock HorizontalAlignment="Center" Margin="0,115,0,0" Text="PAYMENT VOUCHER" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="20"/>
+        <Border  Margin="10,150,10,50" Height="1" VerticalAlignment="Top" BorderThickness="1" />
+        <TextBlock HorizontalAlignment="Left" Margin="544,182,0,0" Text="VOUCHER NO:" VerticalAlignment="Top" FontFamily="Arial" FontSize="14"/>
+        <Border BorderBrush="Black" BorderThickness="1" Height="1" Margin="650,195,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="124"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,220,0,0" Text="PAYEE:" VerticalAlignment="Top" FontFamily="Arial" FontSize="14"/>
+        <Border Background="Black" Height="2" Margin="20,300,20,0" VerticalAlignment="Top"/>
+        <Border Background="Black" Height="500" Width="2" Margin="20,300,20,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Border Background="Black" Height="2" Margin="20,800,20,0" VerticalAlignment="Top"/>
+        <Border Background="Black" Height="500" Width="2" Margin="20,300,20,0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+        <Border Background="Black" Height="2" Margin="20,340,20,0" VerticalAlignment="Top"/>
+        <Border Background="Black" Height="500" Width="2" Margin="60,300,20,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Border Background="Black" Height="500" Width="2" Margin="550,300,20,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,919,0,0" Text="Payment Authorized by:" FontSize="14" VerticalAlignment="Top" FontFamily="Arial"/>
+        <TextBlock HorizontalAlignment="Left" Margin="530,919,0,0" Text="Date:" FontSize="14" VerticalAlignment="Top" FontFamily="Arial"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,944,0,0" Text="Signature:" FontSize="14" VerticalAlignment="Top" FontFamily="Arial"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,969,0,0" Text="Witnessed by:" FontSize="14" VerticalAlignment="Top" FontFamily="Arial"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,994,0,0" Text="Signature:" FontSize="14" VerticalAlignment="Top" FontFamily="Arial"/>
+        <Border Background="Black" Height="2" Margin="570,934,29.76,0" VerticalAlignment="Top"/>
+        <Border Background="Black" Height="2" Margin="170,934,269.76,0" VerticalAlignment="Top"/>
+        <Border Background="Black" Height="2" Margin="100,957,329.76,0" VerticalAlignment="Top"/>
+        <Border Background="Black" Height="2" Margin="115,982,329.76,0" VerticalAlignment="Top"/>
+        <Border Background="Black" Height="2" Margin="95,1006,329.76,0" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="586,968,0,0" Text="SCHOOL STAMP" FontSize="14" VerticalAlignment="Top" FontFamily="Arial"/>
+        <TextBlock HorizontalAlignment="Left" Margin="240,310,0,0" Text="Description" FontFamily="Arial" FontSize="16" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="620,310,0,0" Text="Total Amt" FontFamily="Arial" FontSize="16" VerticalAlignment="Top"/>
+
+        <TextBlock HorizontalAlignment="Center" Margin="10,0,10,10" Text="{Binding Info.Motto, Source={x:Static Application.Current}}" VerticalAlignment="Bottom" FontStyle="Italic"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,840,0,0" TextWrapping="Wrap" FontFamily="Arial" Text="Amount in Words" FontSize="14" VerticalAlignment="Top"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="1" Margin="100,236,0,0" VerticalAlignment="Top" Width="664"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="1" Margin="30,270,0,0" VerticalAlignment="Top" Width="734"/>
+    </Grid>
+</FixedPage>

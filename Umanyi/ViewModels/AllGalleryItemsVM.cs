@@ -57,68 +57,71 @@ namespace UmanyiSMS.ViewModels
             IsBusy = false; 
         }
 
-        private async Task GetAllGalleryItems()
+        private Task GetAllGalleryItems()
         {
-            string selectStr = "SELECT GalleryID, Name, DATALENGTH(Data) FROM [Institution].[Gallery]";
-            DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
-            List<GalleryItemModel> existingFiles = new List<GalleryItemModel>();
-            string notInList = "";
-            GalleryItemModel gim;
-            bool exists;
-            long size;
-            foreach (DataRow dtr in dt.Rows)
-            {
-                gim = new GalleryItemModel();
-                gim.GalleryID = int.Parse(dtr[0].ToString());
-                gim.Name = dtr[1].ToString();
-                gim.Path = Path.GetTempPath() + gim.Name;
-                size = long.Parse(dtr[2].ToString());
-                exists = File.Exists(gim.Path) && (new FileInfo(gim.Path).Length == size);
-                if (exists)
+            return Task.Factory.StartNew(() =>
                 {
-                    existingFiles.Add(gim);
-                    if (string.IsNullOrWhiteSpace(notInList))
-                        notInList = " WHERE GalleryID NOT IN(" + gim.GalleryID;
-                    else
-                        notInList += "," + gim.GalleryID;
-                }
-            }
-            notInList = (string.IsNullOrWhiteSpace(notInList)) ? notInList : notInList + ")";
-            Task t1 = Task.Run(() =>
-            {
-                selectStr = "SELECT TOP 50 GalleryID, Data, Name FROM [Institution].[Gallery]" + notInList;
-                dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
-
-                foreach (DataRow dtr in dt.Rows)
-                {
-                    gim = new GalleryItemModel();
-                    gim.GalleryID = int.Parse(dtr[0].ToString());
-                    gim.Data = (byte[])dtr[1];
-                    gim.Name = dtr[2].ToString();
-                    gim.Path = Path.GetTempPath() + gim.Name;
-                    gim.Size = gim.Data.Length;
-                    UpdateEntry(gim, TFC);
-                    gim.Data = null;
-                    entries.Add(gim);
-                }
-            });
-
-            Task t2 = Task.Run(() =>
-                {
-                    foreach(GalleryItemModel item in existingFiles)
+                    string selectStr = "SELECT GalleryID, Name, DATALENGTH(Data) FROM [Institution].[Gallery]";
+                    DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                    List<GalleryItemModel> existingFiles = new List<GalleryItemModel>();
+                    string notInList = "";
+                    GalleryItemModel gim;
+                    bool exists;
+                    long size;
+                    foreach (DataRow dtr in dt.Rows)
                     {
-                        item.Data = File.ReadAllBytes(item.Path);
-                        try
+                        gim = new GalleryItemModel();
+                        gim.GalleryID = int.Parse(dtr[0].ToString());
+                        gim.Name = dtr[1].ToString();
+                        gim.Path = Path.GetTempPath() + gim.Name;
+                        size = long.Parse(dtr[2].ToString());
+                        exists = File.Exists(gim.Path) && (new FileInfo(gim.Path).Length == size);
+                        if (exists)
                         {
-                            item.Thumbnail = ImageConverters.BitmapSourceToByteArray(ShellFile.FromFilePath(item.Path).Thumbnail.ExtraLargeBitmapSource);
+                            existingFiles.Add(gim);
+                            if (string.IsNullOrWhiteSpace(notInList))
+                                notInList = " WHERE GalleryID NOT IN(" + gim.GalleryID;
+                            else
+                                notInList += "," + gim.GalleryID;
                         }
-                        catch { }
-                        item.Size = item.Data.Length;
-                        item.Data = null;
-                        entries.Add(item);
                     }
+                    notInList = (string.IsNullOrWhiteSpace(notInList)) ? notInList : notInList + ")";
+                    Task t1 = Task.Factory.StartNew(() =>
+                    {
+                        selectStr = "SELECT TOP 50 GalleryID, Data, Name FROM [Institution].[Gallery]" + notInList;
+                        dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+
+                        foreach (DataRow dtr in dt.Rows)
+                        {
+                            gim = new GalleryItemModel();
+                            gim.GalleryID = int.Parse(dtr[0].ToString());
+                            gim.Data = (byte[])dtr[1];
+                            gim.Name = dtr[2].ToString();
+                            gim.Path = Path.GetTempPath() + gim.Name;
+                            gim.Size = gim.Data.Length;
+                            UpdateEntry(gim, TFC);
+                            gim.Data = null;
+                            entries.Add(gim);
+                        }
+                    });
+
+                    Task t2 = Task.Factory.StartNew(() =>
+                        {
+                            foreach (GalleryItemModel item in existingFiles)
+                            {
+                                item.Data = File.ReadAllBytes(item.Path);
+                                try
+                                {
+                                    item.Thumbnail = ImageConverters.BitmapSourceToByteArray(ShellFile.FromFilePath(item.Path).Thumbnail.ExtraLargeBitmapSource);
+                                }
+                                catch { }
+                                item.Size = item.Data.Length;
+                                item.Data = null;
+                                entries.Add(item);
+                            }
+                        });
+                    Task.WaitAll(t1, t2);
                 });
-            await Task.WhenAll(t1, t2);
         }
 
         private void UpdateEntry(GalleryItemModel item, TempFileCollection tfc)
@@ -164,7 +167,7 @@ namespace UmanyiSMS.ViewModels
                     process = Process.Start(gim.Path);
                     IsBusy = true;
                     CanPlay = false;
-                    await Task.Run(() => Thread.Sleep(new TimeSpan(0, 0, 5))); 
+                    await Task.Factory.StartNew(() => Thread.Sleep(new TimeSpan(0, 0, 5))); 
                     IsBusy = false;
                 }
                 catch { }

@@ -1,4 +1,9 @@
 ﻿using Helper.Presentation;
+#if NET4
+    using Microsoft.Windows.Shell;
+#endif
+
+
 using System;
 using System.Windows;
 using System.Windows.Input;

@@ -44,22 +44,28 @@ namespace UmanyiSMS
 
 		#region General
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool TryOperation(Func<ImmutableList<T>, ImmutableList<T>> operation)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public bool TryOperation(Func<ImmutableList<T>, ImmutableList<T>> operation)
 			{
 			return TryOperation(operation, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool DoOperation(Func<ImmutableList<T>, ImmutableList<T>> operation)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public bool DoOperation(Func<ImmutableList<T>, ImmutableList<T>> operation)
 			{
 			return DoOperation(operation, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 			}
 
 		#region Helpers
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private bool TryOperation(Func<ImmutableList<T>, ImmutableList<T>> operation, NotifyCollectionChangedEventArgs args)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private bool TryOperation(Func<ImmutableList<T>, ImmutableList<T>> operation, NotifyCollectionChangedEventArgs args)
 			{
 			try
 				{
@@ -89,8 +95,10 @@ namespace UmanyiSMS
 			return false;
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private bool TryOperation(Func<ImmutableList<T>, KeyValuePair<ImmutableList<T>, NotifyCollectionChangedEventArgs>> operation)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private bool TryOperation(Func<ImmutableList<T>, KeyValuePair<ImmutableList<T>, NotifyCollectionChangedEventArgs>> operation)
 			{
 			try
 				{
@@ -122,8 +130,10 @@ namespace UmanyiSMS
 			return false;
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private bool DoOperation(Func<ImmutableList<T>, ImmutableList<T>> operation, NotifyCollectionChangedEventArgs args)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private bool DoOperation(Func<ImmutableList<T>, ImmutableList<T>> operation, NotifyCollectionChangedEventArgs args)
 			{
 			bool result;
 
@@ -152,8 +162,10 @@ namespace UmanyiSMS
 			return result;
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private bool DoOperation(Func<ImmutableList<T>, KeyValuePair<ImmutableList<T>, NotifyCollectionChangedEventArgs>> operation)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private bool DoOperation(Func<ImmutableList<T>, KeyValuePair<ImmutableList<T>, NotifyCollectionChangedEventArgs>> operation)
 			{
 			bool result;
 

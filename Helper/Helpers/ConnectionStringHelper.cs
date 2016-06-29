@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Windows;
 using Helper.Security;
 using System.Security;
+using System.Net;
 
 
 namespace Helper
@@ -27,7 +28,7 @@ namespace Helper
 
         public static string ConnectionString
         {
-            get {  return connStr; }
+            get { return connStr; }
         }
 
         public static string MasterConnectionString
@@ -46,8 +47,19 @@ namespace Helper
 
         public static string CreateTestConnSTr(string serverName)
         {
-            return "Data Source=" +serverName +
+            return "Data Source=" + serverName +
                 ";Connection Timeout=30;Encrypt=True;TrustServerCertificate=True;";
         }
+#if NET4
+        public static string GetConnectionString(SqlCredential newCredentials)
+        {
+            return connStr + "User Id=" + newCredentials.UserId + ";Password=" + new NetworkCredential(newCredentials.UserId, newCredentials.Password).Password;
+        }
+        internal static string GetConnectionString(SqlCredential newCredentials,string connStr)
+        {
+            return connStr + " User Id=" + newCredentials.UserId + ";Password=" + new NetworkCredential(newCredentials.UserId, newCredentials.Password).Password;
+        }
+    
+#endif
     }
 }

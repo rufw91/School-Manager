@@ -60,11 +60,12 @@
     <AutoUpdateStatistics>True</AutoUpdateStatistics>
     <TornPageDetection>False</TornPageDetection>
     <DatabaseAccess>MULTI_USER</DatabaseAccess>
-    <Recovery>SIMPLE</Recovery>
+    <Recovery>FULL</Recovery>
     <EnableFullTextSearch>True</EnableFullTextSearch>
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
     <CreateProjectFromDatabaseCompleted>True</CreateProjectFromDatabaseCompleted>
     <GenerateCreateScript>True</GenerateCreateScript>
+    <GenerateSqlClrDdl>True</GenerateSqlClrDdl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -497,6 +498,26 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="dbo\InsertDefaultValues.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Institution\Settings.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Institution\BudgetHeader.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Institution\BudgetEntryDetail.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Institution\BudgetAccountDetail.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\GetExpenseAccountBalance.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>

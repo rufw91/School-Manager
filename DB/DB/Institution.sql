@@ -4,6 +4,8 @@
 
 
 
+
+
 GO
 GRANT CONTROL
     ON SCHEMA::[Institution] TO [SystemAdmin];

@@ -18,7 +18,7 @@
   <?define ProductCode = "E87C0D4B-1902-4730-B169-8F776E2EFFC2" ?>
   <?endif ?>
 
-  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.8.802.6400" Manufacturer="Umanyi Digital Technologies Ltd"
+  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.8.802.6500" Manufacturer="Umanyi Digital Technologies Ltd"
            UpgradeCode="$(var.ProductCode)">
 
     <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
@@ -69,8 +69,7 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="$(var.PlatformProgramFilesFolder)">
         <Directory Id="ALFolder" Name="Umanyi">
-          <Directory Id="INSTALLFOLDER" Name="Umanyi School MS">
-          
+          <Directory Id="INSTALLFOLDER" Name="Umanyi School MS">          
           </Directory>
         </Directory>
       </Directory>
@@ -83,49 +82,48 @@
       <Component Id="cmp1" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)AxInterop.AcroPDFLib.dll" />
       </Component>
-      <Component Id="cmp5" Guid="*">
+      <Component Id="cmp2" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Interop.AcroPDFLib.dll" />
       </Component>
-      <Component Id="cmp6" Guid="*">
+      <Component Id="cmp3" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)System.Collections.Immutable.dll" />
       </Component>
-      <Component Id="cmp13" Guid="*">
+      <Component Id="cmp4" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)log4net.dll" />
       </Component>
-      <Component Id="cmp14" Guid="*">
+      <Component Id="cmp5" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.WindowsAPICodePack.dll" />
       </Component>
-      <Component Id="cmp15" Guid="*">
+      <Component Id="cmp6" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll" />
       </Component>
-      <Component Id="cmp16" Guid="*">
+      <Component Id="cmp7" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Newtonsoft.Json.dll" />
       </Component>
-      <!--Confused-->
-      <Component Id="cmp17" Guid="*">
+      <Component Id="cmp8" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Helper.dll" />
       </Component>
-      <!--Confused-->
-      <Component Id="cmp18" Guid="*">
+      <Component Id="cmp9" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)OpenXmlPackaging.dll" />
-      </Component>      
-      <!--Confused-->
-      <Component Id="cmp19" Guid="*">
+      </Component>  
+      <Component Id="cmp10" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe" />
       </Component>
-      <!--Confused-->
-      <Component Id="cmp20" Guid="*">
+      <Component Id="cmp11" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.Helper.dll" />
       </Component>
-      <Component Id="cmp201" Guid="*">
+      <Component Id="cmp12" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe.config" />
+      </Component>
+      <Component Id="cmp13" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)System.Windows.Interactivity.dll" />
       </Component>
     </ComponentGroup>
   </Fragment>
 
   <Fragment>
     <ComponentGroup Id="ShortcutComponents" Directory="DesktopFolder">
-      <Component Id="cmp21" Guid="*">
+      <Component Id="cmp30" Guid="*">
         <Shortcut Id="desktopShortcut" Name="Umanyi School MS"
         Description="Umanyi School Management System"
         Target="[INSTALLFOLDER]UmanyiSMS.exe" />

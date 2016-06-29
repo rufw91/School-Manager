@@ -20,7 +20,7 @@ namespace Helper
     {
         public static Task<ObservableCollection<FeePaymentModel>> GetFeesPaymentsAsync(int? studentID, DateTime? startTime, DateTime? endTime, string paymentMethod)
         {
-            return Task.Run<ObservableCollection<FeePaymentModel>>(() => DataAccess.GetFeesPayments(studentID, startTime, endTime, paymentMethod));
+            return Task.Factory.StartNew<ObservableCollection<FeePaymentModel>>(() => DataAccess.GetFeesPayments(studentID, startTime, endTime, paymentMethod));
         }
 
         private static ObservableCollection<SaleModel> GetSales(bool includeAllDetails, int? studentID, DateTime? startTime, DateTime? endTime)
@@ -114,7 +114,7 @@ namespace Helper
 
         public static Task<bool> CheckIfRegisteredForExam(int studentID, int examID)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 string commandText = "IF EXISTS (SELECT * FROM [Institution].[ExamStudentDetail] WHERE StudentID="
                 + studentID + " AND ExamID=" + examID + ") SELECT '1' ELSE SELECT '0'";
@@ -128,7 +128,7 @@ namespace Helper
 
         public static Task<GeneralLedgerModel> GetGeneralLedgerAsync(GeneralLedgerAccounts accType, DateTime from, DateTime to)
         {
-            return Task.Run<GeneralLedgerModel>(() =>
+            return Task.Factory.StartNew<GeneralLedgerModel>(() =>
             {
                 GeneralLedgerModel temp = new GeneralLedgerModel();
                 string selectStr;
@@ -221,7 +221,7 @@ namespace Helper
 
         public static Task<bool> SaveNewExamRegistrationAsync(ExamRegistrationStudentModel student)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 string text =
                     "BEGIN TRANSACTION\r\n" +
@@ -327,7 +327,7 @@ namespace Helper
 
         public static Task<bool> SaveNewCombinedClassExamRegistrationAsync(CombinedClassModel selectedCombinedClass, int selectedExamID)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 string classes = "0,";
                 foreach (var v in selectedCombinedClass.Entries)
@@ -351,7 +351,7 @@ namespace Helper
 
         public static Task<bool> SaveNewClassExamRegistrationAsync(int selectedClassID, int selectedExamID)
         {
-            return Task.Run<bool>(() =>
+            return Task.Factory.StartNew<bool>(() =>
             {
                 string selecteStr = "SELECT StudentID FROM [Institution].[Student] WHERE ClassID =" + selectedClassID;
 
@@ -371,7 +371,7 @@ namespace Helper
 
         public static Task<ObservableImmutableList<ExamModel>> GetRegisteredExams(int studentID)
         {
-            return Task.Run<ObservableImmutableList<ExamModel>>(delegate
+            return Task.Factory.StartNew<ObservableImmutableList<ExamModel>>(delegate
             {
                 ObservableImmutableList<ExamModel> observableCollection = new ObservableImmutableList<ExamModel>();
                 string commandText =
@@ -395,7 +395,7 @@ namespace Helper
 
         public static Task<ObservableCollection<ExamResultStudentSubjectEntryModel>> GetStudentSubjectsResults(int classID, int examID, int subjectID, decimal outOf)
         {
-            return Task.Run<ObservableCollection<ExamResultStudentSubjectEntryModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<ExamResultStudentSubjectEntryModel>>(delegate
             {
                 ObservableCollection<ExamResultStudentSubjectEntryModel> observableCollection = new ObservableCollection<ExamResultStudentSubjectEntryModel>();
                 string commandText = string.Concat(new object[]
@@ -429,7 +429,7 @@ namespace Helper
 
         public static Task<ObservableCollection<FeesStructureModel>> GetFullFeesStructure(DateTime currentDate)
         {
-            return Task.Run<ObservableCollection<FeesStructureModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<FeesStructureModel>>(delegate
             {
                 ObservableCollection<FeesStructureModel> observableCollection = new ObservableCollection<FeesStructureModel>();
                 ObservableCollection<CombinedClassModel> result = DataAccess.GetAllCombinedClassesAsync().Result;
@@ -468,7 +468,7 @@ namespace Helper
 
         public static Task<ObservableCollection<FeePaymentModel>> GetRecentPaymentsAsync(StudentBaseModel student)
         {
-            return Task.Run<ObservableCollection<FeePaymentModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<FeePaymentModel>>(delegate
             {
                 ObservableCollection<FeePaymentModel> observableCollection = new ObservableCollection<FeePaymentModel>();
                 string commandText = "SELECT TOP 20 FeesPaymentID,AmountPaid, DatePaid, PaymentMethod FROM [Institution].[FeesPayment] WHERE StudentID =" + student.StudentID + " ORDER BY [DatePaid] desc";
@@ -491,7 +491,7 @@ namespace Helper
 
         public static Task<FeePaymentReceiptModel> GetReceiptAsync(FeePaymentModel currentPayment, ObservableImmutableList<FeesStructureEntryModel> currentFeesStructure)
         {
-            return Task.Run<FeePaymentReceiptModel>(delegate
+            return Task.Factory.StartNew<FeePaymentReceiptModel>(delegate
             {
                 FeePaymentReceiptModel feePaymentReceiptModel = new FeePaymentReceiptModel();
                 feePaymentReceiptModel.FeePaymentID = currentPayment.FeePaymentID;
@@ -528,7 +528,7 @@ namespace Helper
 
         public static Task<bool> SaveNewEmployeePaymentAsync(EmployeePaymentModel payment)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = string.Concat(new object[]
                 {
@@ -549,7 +549,7 @@ namespace Helper
 
         public static Task<bool> SaveNewTimeTable(TimeTableModel timeTable)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\ndeclare @id int; ";
                 ObservableCollection<ClassModel> result = DataAccess.GetAllClassesAsync().Result;
@@ -608,7 +608,7 @@ namespace Helper
 
         public static Task<bool> SaveNewGalleryItemsAsync(ObservableCollection<GalleryItemModel> galleryItems)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 bool result = true;
                 try
@@ -649,7 +649,7 @@ namespace Helper
 
         public static Task<byte[]> GetGallerItemDataFromPathAsync(string path)
         {
-            return Task.Run<byte[]>(delegate
+            return Task.Factory.StartNew<byte[]>(delegate
             {
                 byte[] result = null;
                 try
@@ -672,7 +672,7 @@ namespace Helper
             {
                 array[i] = DataAccess.GetClassTimetableAsync(observableCollection2[i].ClassID, day);
             }
-            await Task.WhenAll(array);
+            Task.WaitAll(array);
             foreach (ClassModel current in observableCollection2)
             {
                 observableCollection.Add(new TimetableClassModel
@@ -696,7 +696,7 @@ namespace Helper
 
         public static Task<ClassLessons> GetClassTimetableAsync(int classID, int day)
         {
-            return Task.Run<ClassLessons>(delegate
+            return Task.Factory.StartNew<ClassLessons>(delegate
             {
                 ClassLessons classLessons = new ClassLessons();
                 string commandText = string.Concat(new object[]
@@ -720,7 +720,7 @@ namespace Helper
 
         public static Task<bool> UpdateStudentAsync(StudentModel student)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -774,7 +774,7 @@ namespace Helper
 
         public static Task<bool> UpdateStaffAsync(StaffModel staff)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -1074,22 +1074,22 @@ namespace Helper
 
         public static Task<DataTable> GetItemIssuesAsync(bool includeAllDetails, DateTime? startTime, DateTime? endTime)
         {
-            return Task.Run<DataTable>(() => DataAccess.GetItemIssues(includeAllDetails, startTime, endTime));
+            return Task.Factory.StartNew<DataTable>(() => DataAccess.GetItemIssues(includeAllDetails, startTime, endTime));
         }
 
         public static Task<ObservableCollection<PurchaseModel>> GetItemReceiptsAsync(bool includeAllDetails, int? supplierID, DateTime? startTime, DateTime? endTime)
         {
-            return Task.Run<ObservableCollection<PurchaseModel>>(() => DataAccess.GetItemReceipts(includeAllDetails, supplierID, startTime, endTime));
+            return Task.Factory.StartNew<ObservableCollection<PurchaseModel>>(() => DataAccess.GetItemReceipts(includeAllDetails, supplierID, startTime, endTime));
         }
 
         public static Task<ObservableCollection<BooksPurchaseModel>> GetBookReceiptsAsync(bool includeAllDetails, int? supplierID, DateTime? startTime, DateTime? endTime)
         {
-            return Task.Run<ObservableCollection<BooksPurchaseModel>>(() => DataAccess.GetBookReceipts(includeAllDetails, supplierID, startTime, endTime));
+            return Task.Factory.StartNew<ObservableCollection<BooksPurchaseModel>>(() => DataAccess.GetBookReceipts(includeAllDetails, supplierID, startTime, endTime));
         }
 
         public static Task<ObservableCollection<EmployeePaymentModel>> GetEmployeePaymentsAsync(int? employeeId, DateTime? from, DateTime? to)
         {
-            return Task.Run<ObservableCollection<EmployeePaymentModel>>(() => DataAccess.GetEmployeePayments(employeeId, from, to));
+            return Task.Factory.StartNew<ObservableCollection<EmployeePaymentModel>>(() => DataAccess.GetEmployeePayments(employeeId, from, to));
         }
 
         private static ObservableCollection<EmployeePaymentModel> GetEmployeePayments(int? employeeId, DateTime? from, DateTime? to)
@@ -1169,7 +1169,7 @@ namespace Helper
 
         public static Task<ObservableCollection<PayslipModel>> GetEmployeePayslipsAsync(int? employeeId, DateTime? from, DateTime? to)
         {
-            return Task.Run<ObservableCollection<PayslipModel>>(() => DataAccess.GetEmployeePayslips(employeeId, from, to));
+            return Task.Factory.StartNew<ObservableCollection<PayslipModel>>(() => DataAccess.GetEmployeePayslips(employeeId, from, to));
         }
 
         private static ObservableCollection<PayslipModel> GetEmployeePayslips(int? employeeId, DateTime? from, DateTime? to)
@@ -1250,7 +1250,7 @@ namespace Helper
 
         public static Task<ObservableCollection<TransactionModel>> GetAccountsTransactionHistoryAsync(TransactionTypes type, DateTime? from, DateTime? to)
         {
-            return Task.Run<ObservableCollection<TransactionModel>>(() => DataAccess.GetAccountsTransactionHistory(type, from, to));
+            return Task.Factory.StartNew<ObservableCollection<TransactionModel>>(() => DataAccess.GetAccountsTransactionHistory(type, from, to));
         }
 
         private static ObservableCollection<TransactionModel> GetAccountsTransactionHistory(TransactionTypes type, DateTime? from, DateTime? to)
@@ -1330,7 +1330,7 @@ namespace Helper
 
         public static Task<ObservableCollection<FeesPaymentHistoryModel>> GetFeesPaymentsHistoryAsync(DateTime? from, DateTime? to)
         {
-            return Task.Run<ObservableCollection<FeesPaymentHistoryModel>>(() => DataAccess.GetFeesPaymentsHistory(from, to));
+            return Task.Factory.StartNew<ObservableCollection<FeesPaymentHistoryModel>>(() => DataAccess.GetFeesPaymentsHistory(from, to));
         }
 
         private static ObservableCollection<FeesPaymentHistoryModel> GetFeesPaymentsHistory(DateTime? from, DateTime? to)
@@ -1385,7 +1385,7 @@ namespace Helper
 
         public static Task<ObservableCollection<PayslipModel>> GetPayslipsAsync(int? employeeId, DateTime? from, DateTime? to)
         {
-            return Task.Run<ObservableCollection<PayslipModel>>(() => DataAccess.GetPayslips(employeeId, from, to));
+            return Task.Factory.StartNew<ObservableCollection<PayslipModel>>(() => DataAccess.GetPayslips(employeeId, from, to));
         }
 
         private static ObservableCollection<PayslipModel> GetPayslips(int? employeeId, DateTime? from, DateTime? to)
@@ -1465,7 +1465,7 @@ namespace Helper
 
         public static Task<ObservableCollection<SupplierPaymentModel>> GetSupplierPaymentsAsync(int? supplierId, DateTime? from, DateTime? to)
         {
-            return Task.Run<ObservableCollection<SupplierPaymentModel>>(() => DataAccess.GetSupplierPayments(supplierId, from, to));
+            return Task.Factory.StartNew<ObservableCollection<SupplierPaymentModel>>(() => DataAccess.GetSupplierPayments(supplierId, from, to));
         }
 
         private static ObservableCollection<SupplierPaymentModel> GetSupplierPayments(int? supplierId, DateTime? from, DateTime? to)
@@ -1537,7 +1537,7 @@ namespace Helper
 
         public static Task<StockTakingResultsModel> GetStockTakingResults(int stockTakingID)
         {
-            return Task.Run<StockTakingResultsModel>(delegate
+            return Task.Factory.StartNew<StockTakingResultsModel>(delegate
             {
                 StockTakingResultsModel stockTakingResultsModel = new StockTakingResultsModel();
                 string commandText = "SELECT std.ItemID,i.Description,std.AvailableQuantity,std.Expected,std.VarianceQty,CASE (dbo.GetCurrentQuantity([std].[ItemID])) \r\nWHEN 0 THEN 0\r\nELSE \r\nstd.VariancePc/dbo.GetCurrentQuantity([std].[ItemID]) END FROM [Sales].[StockTakingDetail] std LEFT OUTER JOIN [Sales].[Item] i ON( std.ItemID = i.ItemID) WHERE std.StockTakingID = " + stockTakingID;
@@ -1559,7 +1559,7 @@ namespace Helper
 
         public static Task<bool> SaveNewSupplierPaymentAsync(SupplierPaymentModel newPayment)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -1579,7 +1579,7 @@ namespace Helper
 
         public static Task<bool> RemoveSupplierAsync(int supplierID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = "DELETE FROM [Sales].[Supplier] WHERE SupplierID=" + supplierID + ";";
                 return DataAccessHelper.ExecuteNonQuery(commandText);
@@ -1588,7 +1588,7 @@ namespace Helper
 
         public static Task<bool> UpdateSupplierAsync(SupplierModel newSupplier)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -1617,7 +1617,7 @@ namespace Helper
 
         public static Task<SupplierModel> GetSupplierAsync(int supplierID)
         {
-            return Task.Run<SupplierModel>(() => DataAccess.GetSupplier(supplierID));
+            return Task.Factory.StartNew<SupplierModel>(() => DataAccess.GetSupplier(supplierID));
         }
 
         public static SupplierModel GetSupplier(int supplierID)
@@ -1643,7 +1643,7 @@ namespace Helper
 
         public static Task<bool> SaveNewItemAsync(ItemModel item)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -1671,7 +1671,7 @@ namespace Helper
 
         public static Task<bool> SaveNewItemCategoryAsync(ItemCategoryModel itemCategory)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = "INSERT INTO [Sales].[ItemCategory] (Description,ParentCategoryID) VALUES(@desc,@parCatID)";
                 ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
@@ -1684,7 +1684,7 @@ namespace Helper
 
         public static Task<bool> SaveNewVATRateAsync(VATRateModel rate)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -1700,7 +1700,7 @@ namespace Helper
 
         public static Task<bool> SaveNewSupplierAsync(SupplierModel newSupplier)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText;
                 if (newSupplier.SupplierID <= 0)
@@ -1757,7 +1757,7 @@ namespace Helper
 
         public static Task<bool> SaveNewDonorAsync(DonorModel newDonor)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new string[]
                 {
@@ -1773,7 +1773,7 @@ namespace Helper
 
         public static Task<bool> SaveNewStockTakingAsync(StockTakingModel newStockTaking)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Sales.StockTakingHeader')\r\nINSERT INTO [Sales].[StockTakingHeader] (StockTakingID,DateTaken) VALUES(@id,'" + newStockTaking.DateTaken.Value.ToString("g") + "')";
                 foreach (ItemStockTakingModel current in newStockTaking.Items)
@@ -1797,7 +1797,7 @@ namespace Helper
 
         public static Task<ObservableCollection<StockTakingBaseModel>> GetAllStockTakings()
         {
-            return Task.Run<ObservableCollection<StockTakingBaseModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<StockTakingBaseModel>>(delegate
             {
                 ObservableCollection<StockTakingBaseModel> observableCollection = new ObservableCollection<StockTakingBaseModel>();
                 string commandText = "SELECT StockTakingID,DateTaken FROM [Sales].[StockTakingHeader]";
@@ -1816,7 +1816,7 @@ namespace Helper
 
         public static Task<ObservableCollection<SupplierModel>> GetAllSuppliersFullAsync()
         {
-            return Task.Run<ObservableCollection<SupplierModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<SupplierModel>>(delegate
             {
                 ObservableCollection<SupplierModel> observableCollection = new ObservableCollection<SupplierModel>();
                 string commandText = "SELECT SupplierID,NameOfSupplier,PhoneNo,AltPhoneNo,Email,Address,PostalCode,City,PINNo FROM [Sales].[Supplier]";
@@ -1842,12 +1842,12 @@ namespace Helper
 
         public static Task<ItemModel> GetItemAsync(long itemID)
         {
-            return Task.Run<ItemModel>(() => DataAccess.GetItem(itemID));
+            return Task.Factory.StartNew<ItemModel>(() => DataAccess.GetItem(itemID));
         }
 
         public static Task<ObservableCollection<ItemListModel>> GetAllItemsWithCurrentQuantityAsync()
         {
-            return Task.Run<ObservableCollection<ItemListModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<ItemListModel>>(delegate
             {
                 ObservableCollection<ItemListModel> observableCollection = new ObservableCollection<ItemListModel>();
                 string commandText = "SELECT ItemID,Description,DateAdded,ItemCategoryID,Price,Cost,StartQuantity,VatID,dbo.GetCurrentQuantity(ItemID) FROM [Sales].[Item]";
@@ -1873,7 +1873,7 @@ namespace Helper
 
         public static Task<ObservableCollection<VATAnalysisModel>> GetVatAnalysisAsync(DateTime from, DateTime to)
         {
-            return Task.Run<ObservableCollection<VATAnalysisModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<VATAnalysisModel>>(delegate
             {
                 ObservableCollection<VATAnalysisModel> observableCollection = new ObservableCollection<VATAnalysisModel>();
                 string commandText = string.Concat(new string[]
@@ -1910,7 +1910,7 @@ namespace Helper
 
         public static Task<bool> UpdateItemAsync(ItemModel item)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -1937,7 +1937,7 @@ namespace Helper
 
         public static Task<bool> SaveNewPurchaseAsync(PurchaseModel currentPurchase)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = string.Concat(new object[]
                 {
@@ -1976,7 +1976,7 @@ namespace Helper
 
         public static Task<bool> SaveNewBooksPurchaseAsync(BooksPurchaseModel currentPurchase)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = string.Concat(new object[]
                 {
@@ -2015,7 +2015,7 @@ namespace Helper
 
         public static Task<ObservableCollection<ItemCategoryModel>> GetAllItemCategoriesAsync()
         {
-            return Task.Run<ObservableCollection<ItemCategoryModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<ItemCategoryModel>>(delegate
             {
                 ObservableCollection<ItemCategoryModel> observableCollection = new ObservableCollection<ItemCategoryModel>();
                 string commandText = "SELECT ItemCategoryID,Description,ISNULL(ParentCategoryID,0) FROM [Sales].[ItemCategory]";
@@ -2035,7 +2035,7 @@ namespace Helper
 
         public static Task<ObservableCollection<SupplierBaseModel>> GetAllSuppliersAsync()
         {
-            return Task.Run<ObservableCollection<SupplierBaseModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<SupplierBaseModel>>(delegate
             {
                 ObservableCollection<SupplierBaseModel> observableCollection = new ObservableCollection<SupplierBaseModel>();
                 string commandText = "SELECT SupplierID,NameOfSupplier FROM [Sales].[Supplier]";
@@ -2054,7 +2054,7 @@ namespace Helper
 
         public static Task<ObservableCollection<VATRateModel>> GetAllVatsAsync()
         {
-            return Task.Run<ObservableCollection<VATRateModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<VATRateModel>>(delegate
             {
                 ObservableCollection<VATRateModel> observableCollection = new ObservableCollection<VATRateModel>();
                 string commandText = "SELECT VatID,Description,Rate FROM [Sales].[Vat]";
@@ -2094,7 +2094,7 @@ namespace Helper
 
         private static Task<decimal> GetCurrentBalanceAsync(int studentID, DateTime date)
         {
-            return Task.Run<decimal>(delegate
+            return Task.Factory.StartNew<decimal>(delegate
             {
                 string commandText = "DECLARE  @sal decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,TotalAmt),0)) FROM  [Sales].[SaleHeader] WHERE CustomerID =@studentID AND OrderDate <CONVERT(datetime,@dt));\r\n" +
                 "DECLARE  @pur decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,AmountPaid),0)) FROM  [Institution].[FeesPayment] WHERE StudentID =@studentID  AND DatePaid <CONVERT(datetime,@dt));\r\n" +
@@ -2111,7 +2111,7 @@ namespace Helper
 
         private static Task<decimal> GetCurrentSupplierBalanceAsync(int supplierID, DateTime date)
         {
-            return Task.Run<decimal>(delegate
+            return Task.Factory.StartNew<decimal>(delegate
             {
                 string commandText = "DECLARE  @pur1 decimal=(SELECT SUM(ISNULL(TotalAmt,0)) FROM  [Sales].[ItemReceiptHeader] WHERE SupplierID =@supplierID AND OrderDate <CONVERT(datetime,@dt));\r\n" +
                          "DECLARE  @pur2 decimal=(SELECT SUM(ISNULL(TotalAmt,0)) FROM  [Sales].[BookReceiptHeader] WHERE SupplierID =@supplierID AND DateReceived <CONVERT(datetime,@dt));\r\n" +
@@ -2128,7 +2128,7 @@ namespace Helper
 
         public static Task<FeesStatementModel> GetFeesStatementAsync(int studentID, DateTime? startTime, DateTime? endTime)
         {
-            return Task.Run<FeesStatementModel>(delegate
+            return Task.Factory.StartNew<FeesStatementModel>(delegate
             {
                 FeesStatementModel result;
                 if (studentID <= 0)
@@ -2208,7 +2208,7 @@ namespace Helper
 
         public static Task<SupplierStatementModel> GetSupplierStatementAsync(int supplierID, DateTime? startTime, DateTime? endTime)
         {
-            return Task.Run<SupplierStatementModel>(delegate
+            return Task.Factory.StartNew<SupplierStatementModel>(delegate
             {
                 SupplierStatementModel result;
                 if (supplierID <= 0)
@@ -2303,12 +2303,12 @@ namespace Helper
 
         public static Task<StudentModel> GetStudentAsync(int studentID)
         {
-            return Task.Run<StudentModel>(() => DataAccess.GetStudent(studentID));
+            return Task.Factory.StartNew<StudentModel>(() => DataAccess.GetStudent(studentID));
         }
 
         public static Task<StaffModel> GetStaffAsync(int staffID)
         {
-            return Task.Run<StaffModel>(() => DataAccess.GetStaff(staffID));
+            return Task.Factory.StartNew<StaffModel>(() => DataAccess.GetStaff(staffID));
         }
 
         public static StudentModel GetStudent(int studentID)
@@ -2394,7 +2394,7 @@ namespace Helper
 
         public static Task<ObservableCollection<DormModel>> GetAllDormsAsync()
         {
-            return Task.Run<ObservableCollection<DormModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<DormModel>>(delegate
             {
                 string commandText = "SELECT DormitoryID,NameOfDormitory FROM [Institution].[Dormitory]";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
@@ -2409,7 +2409,7 @@ namespace Helper
 
         public static Task<ObservableCollection<DormitoryMemberModel>> GetDormitoryMembers(int dormitoryID)
         {
-            return Task.Run<ObservableCollection<DormitoryMemberModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<DormitoryMemberModel>>(delegate
             {
                 ObservableCollection<DormitoryMemberModel> observableCollection = new ObservableCollection<DormitoryMemberModel>();
                 string commandText = "SELECT StudentID,FirstName +' '+LastName+' '+MiddleName,BedNo FROM [Institution].[Student] WHERE DormitoryID=" + dormitoryID;
@@ -2471,7 +2471,7 @@ namespace Helper
 
         public static Task<bool> RemovePaymentAsync(int paymentID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 bool result = false;
                 try
@@ -2488,7 +2488,7 @@ namespace Helper
 
         public static Task<bool> RemoveSaleAsync(int saleID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 bool result = false;
                 try
@@ -2524,7 +2524,7 @@ namespace Helper
 
         public static Task<bool> SaveNewStudentAsync(StudentModel student)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 bool flag = student.StudentID == 0;
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('Institution.Student')INSERT INTO [Institution].[Student] (StudentID,FirstName,LastName,MiddleName,Gender,DateOfBirth,DateOfAdmission,NameOfGuardian,GuardianPhoneNo,Email,Address,City,PostalCode,IsBoarder";
@@ -2576,7 +2576,7 @@ namespace Helper
 
         public static Task<ObservableCollection<StaffModel>> GetAllStaffAsync()
         {
-            return Task.Run<ObservableCollection<StaffModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<StaffModel>>(delegate
             {
                 string commandText = "SELECT TOP 1000000 StaffID,Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto FROM [Institution].[Staff]";
                 ObservableCollection<StaffModel> observableCollection = new ObservableCollection<StaffModel>();
@@ -2606,7 +2606,7 @@ namespace Helper
 
         public static Task<ObservableCollection<StudentModel>> GetAllStudentsAsync()
         {
-            return Task.Run<ObservableCollection<StudentModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<StudentModel>>(delegate
             {
                 string commandText = "SELECT TOP 1000000 StudentID,FirstName,LastName,MiddleName,ClassID,DateOfBirth,DateOfAdmission,NameOfGuardian,GuardianPhoneNo,Email,Address,City,PostalCode,DormitoryID,BedNo,PreviousInstitution,KCPEScore,SPhoto FROM [Institution].[Student]";
                 ObservableCollection<StudentModel> observableCollection = new ObservableCollection<StudentModel>();
@@ -2644,7 +2644,7 @@ namespace Helper
 
         public static Task<ObservableCollection<StudentListModel>> GetAllStudentsListAsync()
         {
-            return Task.Run<ObservableCollection<StudentListModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<StudentListModel>>(delegate
             {
                 string commandText = "SELECT TOP 1000000 s.StudentID,s.FirstName,s.LastName,s.MiddleName,s.ClassID, c.NameOfClass,s.DateOfBirth," +
                 "s.DateOfAdmission,s.NameOfGuardian,s.GuardianPhoneNo,s.Address,s.City,s.PostalCode,s.BedNo,s.PreviousInstitution,s.KCPEScore, s.DormitoryID, " +
@@ -2690,7 +2690,7 @@ namespace Helper
 
         public static Task<bool> SaveNewStaffAsync(StaffModel newStaff)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 bool flag = newStaff.StaffID == 0;
                 string commandText = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('Institution.Staff'); INSERT INTO [Institution].[Staff] (StaffID,Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto,Designation) VALUES(" + (flag ? "@id" : "@staffID") + ",@name,@nationalID,@doa,@phoneNo,@email,@address,@city,@postalCode,@photo,@designation)\r\nCOMMIT";
@@ -2713,7 +2713,7 @@ namespace Helper
 
         public static Task<bool> SaveNewFeesPaymentAsync(FeePaymentModel newPayment)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 if (newPayment.DatePaid.Date.Equals(DateTime.Now.Date))
                     newPayment.DatePaid = DateTime.Now;
@@ -2730,7 +2730,7 @@ namespace Helper
 
         public static Task<bool> SaveNewDonation(DonationModel donation, string type)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = "INSERT INTO [Institution].[Donation] (DonorID,AmountDonated,DateDonated,DonateTo,[Type]) VALUES(@donorID,@amount,@dod,@dnt,@typ)";
                 return DataAccessHelper.ExecuteNonQueryWithParameters(commandText, new ObservableCollection<SqlParameter>
@@ -2746,7 +2746,7 @@ namespace Helper
 
         public static Task<bool> SaveNewFeesPaymentAsync(FeePaymentModel newPayment, SaleModel newSale)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 if (newPayment.DatePaid.Date.Equals(DateTime.Now.Date))
                     newPayment.DatePaid = DateTime.Now;
@@ -2786,7 +2786,7 @@ namespace Helper
 
         public static Task<bool> SaveNewStudentBill(SaleModel newSale)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = string.Concat(new object[]
                 {
@@ -2822,7 +2822,7 @@ namespace Helper
 
         public static Task<bool> SaveNewClassBill(SaleModel newSale)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 int term = DataAccess.GetTerm();
                 DateTime? dateTime = null;
@@ -2899,7 +2899,7 @@ namespace Helper
 
         public static Task<bool> UpdateStudentBill(SaleModel newSale)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\nDELETE FROM [Sales].[SaleDetail] WHERE SaleID=" + newSale.SaleID;
                 foreach (FeesStructureEntryModel current in newSale.SaleItems)
@@ -2942,7 +2942,7 @@ namespace Helper
 
         public static Task<bool> SaveNewFeesStructureAsync(FeesStructureModel currrentStruct)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = string.Concat(new object[]
                 {
@@ -2972,7 +2972,7 @@ namespace Helper
 
         public static Task<FeesStructureModel> GetFeesStructureAsync(int currentClassID, DateTime currentDate)
         {
-            return Task.Run<FeesStructureModel>(delegate
+            return Task.Factory.StartNew<FeesStructureModel>(delegate
             {
                 FeesStructureModel feesStructureModel = new FeesStructureModel();
                 string text = currentDate.Date.ToString("g");
@@ -3002,7 +3002,7 @@ namespace Helper
 
         public static Task<ObservableCollection<SubjectModel>> GetSubjectsRegistredToClassAsync(int selectedClassID)
         {
-            return Task.Run<ObservableCollection<SubjectModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<SubjectModel>>(delegate
             {
                 ObservableCollection<SubjectModel> observableCollection = new ObservableCollection<SubjectModel>();
                 string commandText = "SELECT ssd.SubjectID,s.NameOfSubject,ssd.Tutor, s.MaximumScore,s.Code,s.IsOptional FROM [Institution].[SubjectSetupDetail] ssd LEFT OUTER JOIN [Institution].[Subject] s ON (ssd.SubjectID = s.SubjectID) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh ON (ssd.SubjectSetupID = ssh.SubjectSetupID) WHERE IsACtive=1 AND ssh.ClassID=" + selectedClassID + " ORDER BY s.Code";
@@ -3027,7 +3027,7 @@ namespace Helper
 
         public static Task<ObservableCollection<SubjectModel>> GetSubjectsRegistredToCombinedClassAsync(CombinedClassModel combinedClass)
         {
-            return Task.Run<ObservableCollection<SubjectModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<SubjectModel>>(delegate
             {
                 ObservableCollection<SubjectModel> observableCollection = new ObservableCollection<SubjectModel>();
                 string text = "0,";
@@ -3057,7 +3057,7 @@ namespace Helper
 
         public static Task<ObservableCollection<ClassModel>> GetCurrentRegistredClassesAsync()
         {
-            return Task.Run<ObservableCollection<ClassModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<ClassModel>>(delegate
             {
                 ObservableCollection<ClassModel> observableCollection = new ObservableCollection<ClassModel>();
                 string commandText = "DECLARE @id int\r\n SET @id=(SELECT ClassSetupID FROM [Institution].[ClassSetupHeader] WHERE IsActive=1)\r\nIF @id>0\r\nBEGIN\r\nSELECT csd.ClassID,c.NameOfClass FROM [Institution].[ClassSetupDetail] csd LEFT OUTER JOIN [Institution].[Class] c on (csd.ClassID = c.ClassID) WHERE csd.ClassSetupID =@id\r\nEND";
@@ -3076,7 +3076,7 @@ namespace Helper
 
         public static Task<ObservableCollection<CombinedClassModel>> GetCurrentRegistredCombinedClassesAsync()
         {
-            return Task.Run<ObservableCollection<CombinedClassModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<CombinedClassModel>>(delegate
             {
                 ObservableCollection<CombinedClassModel> observableCollection = new ObservableCollection<CombinedClassModel>();
                 ObservableCollection<ClassModel> observableCollection2 = new ObservableCollection<ClassModel>();
@@ -3116,7 +3116,7 @@ namespace Helper
 
         public static Task<decimal> GetAllSalesAsync(int studentID)
         {
-            return Task.Run<decimal>(delegate
+            return Task.Factory.StartNew<decimal>(delegate
             {
                 string commandText = "SELECT SUM(CONVERT(DECIMAL,TotalAmt)) FROM Sales.SaleHeader WHERE CustomerID = " + studentID;
                 return decimal.Parse(DataAccessHelper.ExecuteScalar(commandText));
@@ -3125,7 +3125,7 @@ namespace Helper
 
         public static Task<decimal> GetAllFeesPaidAsync(int studentID)
         {
-            return Task.Run<decimal>(delegate
+            return Task.Factory.StartNew<decimal>(delegate
             {
                 string commandText = "SELECT SUM(CONVERT(DECIMAL,AmountPaid)) FROM [Institution].[FeesPayment] WHERE StudentID =" + studentID;
                 return decimal.Parse(DataAccessHelper.ExecuteScalar(commandText));
@@ -3134,7 +3134,7 @@ namespace Helper
 
         public static Task<ObservableCollection<FeePaymentReceiptModel>> GetRecentPaymentsReceiptAsync(int studentID)
         {
-            return Task.Run<ObservableCollection<FeePaymentReceiptModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<FeePaymentReceiptModel>>(delegate
             {
                 ObservableCollection<FeePaymentReceiptModel> observableCollection = new ObservableCollection<FeePaymentReceiptModel>();
                 string commandText = "SELECT TOP 20 FeesPaymentID, AmountPaid, DatePaid FROM [Institution].[FeesPayment] WHERE StudentID =" + studentID + " ORDER BY [DatePaid] desc";
@@ -3155,7 +3155,7 @@ namespace Helper
 
         public static Task<ExamSettingsModel> GetExamSettingsAsync()
         {
-            return Task.Run<ExamSettingsModel>(delegate
+            return Task.Factory.StartNew<ExamSettingsModel>(delegate
             {
                 ExamSettingsModel settings = new ExamSettingsModel();
                 string text = "SELECT [Key],Value,Value2 FROM [Institution].[Settings] WHERE [Type]='ExamSettings'";
@@ -3195,7 +3195,7 @@ namespace Helper
 
         public static Task<bool> SaveNewExamSettingsAsync(ExamSettingsModel settings)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\n DELETE FROM [Institution].[Settings] WHERE [Type]='ExamSettings'";
                 for (int i = 0; i < settings.GradeRanges.Count; i++)
@@ -3216,7 +3216,7 @@ namespace Helper
 
         public static Task<bool> SaveNewExamAsync(ExamModel newExam)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = string.Concat(new object[]
                 {
@@ -3271,7 +3271,7 @@ namespace Helper
 
         public static Task<bool> SaveNewClassSetupAsync(ClassesSetupModel classSetup)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\ndeclare @id int; declare @id2 int; SET @id = [dbo].GetNewID('Institution.ClassSetupHeader') INSERT INTO [Institution].[ClassSetupHeader] (ClassSetupID,StartDate) VALUES (@id,'" + classSetup.StartDate.ToString("g") + "')\r\n";
                 foreach (ClassesSetupEntryModel current in classSetup.Entries)
@@ -3298,7 +3298,7 @@ namespace Helper
 
         public static Task<int> GetClassIDFromStudentID(int selectedStudentID)
         {
-            return Task.Run<int>(delegate
+            return Task.Factory.StartNew<int>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -3315,7 +3315,7 @@ namespace Helper
 
         public static Task<ObservableCollection<ExamModel>> GetExamsByClass(int classID)
         {
-            return Task.Run<ObservableCollection<ExamModel>>(async delegate
+            return Task.Factory.StartNew<ObservableCollection<ExamModel>>( delegate
             {
                 ObservableCollection<ExamModel> observableCollection = new ObservableCollection<ExamModel>();
                 string commandText = string.Concat(new object[]
@@ -3336,20 +3336,8 @@ namespace Helper
                     examModel.ExamID = int.Parse(dataRow[0].ToString());
                     examModel.NameOfExam = dataRow[1].ToString();
                     examModel.OutOf = decimal.Parse(dataRow[3].ToString());
-                    list.Add(DataAccess.GetExamEntries(examModel.ExamID, examModel.OutOf));
+                    examModel.Entries=DataAccess.GetExamEntries(examModel.ExamID, examModel.OutOf).Result;
                     observableCollection.Add(examModel);
-                }
-                KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>>[] source = await Task.WhenAll<KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>>>(list);
-                using (IEnumerator<ExamModel> var_16 = observableCollection.GetEnumerator())
-                {
-                    while (var_16.MoveNext())
-                    {
-                        ExamModel ems = var_16.Current;
-                        ParallelQuery<KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>>> source2 = from entry in source.AsParallel<KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>>>()
-                                                                                                                where entry.Key == ems.ExamID
-                                                                                                                select entry;
-                        ems.Entries = source2.First<KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>>>().Value;
-                    }
                 }
                 return observableCollection;
             });
@@ -3371,7 +3359,7 @@ namespace Helper
                 examModel.NameOfExam = dataTable.Rows[0][0].ToString();
                 examModel.Classes = await DataAccess.GetExamClasses(examID);
                 examModel.OutOf = decimal.Parse(dataTable.Rows[0][1].ToString());
-                examModel.Entries = (await DataAccess.GetExamEntries(examID, examModel.OutOf)).Value;
+                examModel.Entries = await DataAccess.GetExamEntries(examID, examModel.OutOf);
                 result = examModel;
             }
             return result;
@@ -3379,7 +3367,7 @@ namespace Helper
 
         private static Task<ObservableCollection<ClassModel>> GetExamClasses(int examID)
         {
-            return Task.Run<ObservableCollection<ClassModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<ClassModel>>(delegate
             {
                 string commandText = "SELECT ecd.ClassID, c.NameOfClass FROM [Institution].[ExamClassDetail] ecd LEFT OUTER JOIN [Institution].[Class] c ON (ecd.ClassID = c.ClassID) WHERE ecd.ExamID =" + examID;
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
@@ -3396,9 +3384,9 @@ namespace Helper
             });
         }
 
-        private static Task<KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>>> GetExamEntries(int examID, decimal outOf)
+        private static Task<ObservableCollection<ExamSubjectEntryModel>> GetExamEntries(int examID, decimal outOf)
         {
-            return Task.Run<KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<ExamSubjectEntryModel>>(delegate
             {
                 string commandText = "SELECT ed.SubjectID, s.NameOfSubject, ed.ExamDateTime FROM [Institution].[ExamDetail] ed LEFT OUTER JOIN [Institution].[Subject] s ON (ed.SubjectID = s.SubjectID) WHERE ed.ExamID =" + examID + " ORDER BY s.[Code]";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
@@ -3412,15 +3400,14 @@ namespace Helper
                         ExamDateTime = DateTime.Parse(dataRow[2].ToString()),
                         MaximumScore = outOf
                     });
-                }
-                KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>> result = new KeyValuePair<int, ObservableCollection<ExamSubjectEntryModel>>(examID, observableCollection);
-                return result;
+                }                
+                return observableCollection;
             });
         }
 
         public static Task<bool> SaveNewExamResultAsync(ExamResultStudentModel newResult)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id int; \r\n ";
                 text += "SET @id = dbo.GetNewID('Institution.ExamResultHeader')\r\n";
@@ -3499,7 +3486,7 @@ namespace Helper
 
         public static Task<bool> SaveNewExamResultAsync(ObservableCollection<ExamResultStudentModel> newResult)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id int; \r\n ";
                 foreach (ExamResultStudentModel current in newResult)
@@ -3589,7 +3576,7 @@ namespace Helper
                 examID,
                 " ORDER BY s.[Code]"
             });
-            return Task.Run<ExamResultStudentModel>(delegate
+            return Task.Factory.StartNew<ExamResultStudentModel>(delegate
             {
                 ExamResultStudentModel examResultStudentModel = new ExamResultStudentModel();
                 examResultStudentModel.StudentID = studentID;
@@ -3614,7 +3601,7 @@ namespace Helper
 
         public static Task<ExamResultClassModel> GetClassExamResultAsync(int classID, int examID, decimal outOf)
         {
-            return Task.Run<ExamResultClassModel>(delegate
+            return Task.Factory.StartNew<ExamResultClassModel>(delegate
             {
                 ExamResultClassModel examResultClassModel = new ExamResultClassModel();
                 ObservableCollection<SubjectModel> result = DataAccess.GetSubjectsRegistredToClassAsync(classID).Result;
@@ -3671,7 +3658,7 @@ namespace Helper
 
         public static Task<ClassStudentsExamResultModel> GetClassExamResultForTranscriptAsync(int classID, int examID, decimal outOf)
         {
-            return Task.Run<ClassStudentsExamResultModel>(delegate
+            return Task.Factory.StartNew<ClassStudentsExamResultModel>(delegate
             {
                 ClassStudentsExamResultModel classStudentsExamResultModel = new ClassStudentsExamResultModel();
                 ObservableCollection<SubjectModel> result = DataAccess.GetSubjectsRegistredToClassAsync(classID).Result;
@@ -3742,7 +3729,7 @@ namespace Helper
 
         public static Task<ClassModel> GetClassAsync(int classID)
         {
-            return Task.Run<ClassModel>(() => DataAccess.GetClass(classID));
+            return Task.Factory.StartNew<ClassModel>(() => DataAccess.GetClass(classID));
         }
 
         public static ClassModel GetClass(int classID)
@@ -3766,7 +3753,7 @@ namespace Helper
 
         public static Task<bool> SaveNewEventAsync(EventModel em)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new string[]
                 {
@@ -3790,7 +3777,7 @@ namespace Helper
 
         public static Task<ObservableCollection<EventModel>> GetUpcomingEvents()
         {
-            return Task.Run<ObservableCollection<EventModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<EventModel>>(delegate
             {
                 string commandText = "SELECT Name, StartDateTime, EndDateTime, Location, Subject, Message FROM [Institution].[Event] WHERE StartDateTime >=CONVERT(datetime, '" + DateTime.Now.ToString("g") + "')";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
@@ -3813,7 +3800,7 @@ namespace Helper
 
         public static Task<ObservableCollection<EventModel>> GetAllEvents()
         {
-            return Task.Run<ObservableCollection<EventModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<EventModel>>(delegate
             {
                 string commandText = "SELECT Name, StartDateTime, EndDateTime, Location, Subject, Message FROM [Institution].[Event] ORDER BY StartDateTime desc";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
@@ -3836,7 +3823,7 @@ namespace Helper
 
         public static Task<bool> SaveNewStudentTransfersAsync(ObservableCollection<StudentTransferModel> students)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\n";
                 foreach (StudentTransferModel current in students)
@@ -3859,7 +3846,7 @@ namespace Helper
 
         public static Task<bool> SaveNewStudentClearancesAsync(ObservableCollection<StudentClearanceModel> students)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\n";
                 foreach (StudentClearanceModel current in students)
@@ -3882,7 +3869,7 @@ namespace Helper
 
         public static Task<bool> SaveNewClassClearance(int classID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 //string selectStr="SELECT StudentID FROM [Institution].[Student] WHERE ClassID="
                 string text = "BEGIN TRANSACTION\r\n";
@@ -3892,7 +3879,7 @@ namespace Helper
 
         public static Task<bool> SetStudentActiveAsync(StudentBaseModel student)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\n";
                 object obj = text;
@@ -3918,7 +3905,7 @@ namespace Helper
 
         public static Task<bool> SetNewStudentsClassAsync(ObservableCollection<StudentBaseModel> students, int classID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\n";
                 foreach (StudentBaseModel current in students)
@@ -3941,7 +3928,7 @@ namespace Helper
 
         public static Task<bool> SaveNewLeavingCertificateAsync(LeavingCertificateModel leavingCertificate)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -3973,7 +3960,7 @@ namespace Helper
 
         public static Task<bool> SaveNewDormitory(DormModel newDormitory)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = "BEGIN TRANSACTION\r\nINSERT INTO [Institution].[Dormitory] (NameOfDormitory) VALUES ('" + newDormitory.NameOfDormitory + "')\r\nCOMMIT";
                 return DataAccessHelper.ExecuteNonQuery(commandText);
@@ -4173,7 +4160,7 @@ namespace Helper
 
         public static Task<bool> HasInvoicedThisTerm(int studentID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 int term = DataAccess.GetTerm();
                 DateTime? dateTime = null;
@@ -4345,14 +4332,14 @@ namespace Helper
 
         public static Task<ClassBalancesListModel> GetBalancesList(ClassModel selectedClass)
         {
-            return Task.Run<ClassBalancesListModel>(async delegate
+            return Task.Factory.StartNew<ClassBalancesListModel>(delegate
             {
                 ClassBalancesListModel classBalancesListModel = new ClassBalancesListModel();
                 classBalancesListModel.ClassID = selectedClass.ClassID;
                 classBalancesListModel.NameOfClass = selectedClass.NameOfClass;
                 classBalancesListModel.Date = DateTime.Now;
                 classBalancesListModel.Total = 0m;
-                classBalancesListModel.Entries = await DataAccess.GetClassBalancesListAsync(selectedClass.ClassID);
+                classBalancesListModel.Entries = DataAccess.GetClassBalancesListAsync(selectedClass.ClassID).Result;
                 foreach (StudentFeesDefaultModel current in classBalancesListModel.Entries)
                 {
                     classBalancesListModel.Total += current.Balance;
@@ -4367,7 +4354,7 @@ namespace Helper
 
         private static Task<ObservableCollection<StudentFeesDefaultModel>> GetClassBalancesListAsync(int classID)
         {
-            return Task.Run<ObservableCollection<StudentFeesDefaultModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<StudentFeesDefaultModel>>(delegate
             {
                 ObservableCollection<StudentFeesDefaultModel> observableCollection = new ObservableCollection<StudentFeesDefaultModel>();
                 string commandText = "SELECT StudentID, FirstName+' '+LastName+' '+MiddleName, GuardianPhoneNo,dbo.GetCurrentBalance(StudentID) FROM [Institution].[Student]  WHERE ClassID=" + classID + " AND IsActive = 1";
@@ -4388,7 +4375,7 @@ namespace Helper
 
         public static Task<ObservableCollection<StudentBaseModel>> GetClassStudents(int classID)
         {
-            return Task.Run<ObservableCollection<StudentBaseModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<StudentBaseModel>>(delegate
             {
                 ObservableCollection<StudentBaseModel> observableCollection = new ObservableCollection<StudentBaseModel>();
                 string commandText = "SELECT StudentID, FirstName+' '+MiddleName+' '+LastName FROM [Institution].[Student] WHERE ClassID =" + classID + " AND StudentID NOT IN (SELECT StudentID FROM [Institution].[StudentClearance]) AND StudentID NOT IN (SELECT StudentID FROM [Institution].[StudentTransfer])";
@@ -4413,7 +4400,7 @@ namespace Helper
 
         public static Task<SaleModel> GetSaleAsync(int feesPaymentID)
         {
-            return Task.Run<SaleModel>(delegate
+            return Task.Factory.StartNew<SaleModel>(delegate
             {
                 SaleModel saleModel = new SaleModel();
                 string commandText = "SELECT SaleID,CustomerID,EmployeeID,OrderDate,TotalAmt FROM [Sales].[SaleHeader] WHERE PaymentID=" + feesPaymentID;
@@ -4450,7 +4437,7 @@ namespace Helper
 
         public static Task<SaleModel> GetThisTermInvoice(int studentID)
         {
-            return Task.Run<SaleModel>(delegate
+            return Task.Factory.StartNew<SaleModel>(delegate
             {
                 SaleModel saleModel = new SaleModel();
                 int term = DataAccess.GetTerm();
@@ -4507,7 +4494,7 @@ namespace Helper
 
         public static Task<SaleModel> GetTermInvoice(int studentID, DateTime date)
         {
-            return Task.Run<SaleModel>(delegate
+            return Task.Factory.StartNew<SaleModel>(delegate
             {
                 SaleModel saleModel = new SaleModel();
                 DateTime termStart = DataAccess.GetTermStart(date);
@@ -4548,7 +4535,7 @@ namespace Helper
 
         public static Task<ClassStudentListModel> GetClassStudentListAsync(ClassModel selectedClass)
         {
-            return Task.Run<ClassStudentListModel>(delegate
+            return Task.Factory.StartNew<ClassStudentListModel>(delegate
             {
                 ClassStudentListModel classStudentListModel = new ClassStudentListModel();
                 classStudentListModel.ClassID = selectedClass.ClassID;
@@ -4575,7 +4562,7 @@ namespace Helper
 
         public static Task<ClassStudentListModel> GetCombinedClassStudentListAsync(CombinedClassModel currentClass)
         {
-            return Task.Run<ClassStudentListModel>(delegate
+            return Task.Factory.StartNew<ClassStudentListModel>(delegate
             {
                 ClassStudentListModel classStudentListModel = new ClassStudentListModel();
                 string text = "0,";
@@ -4704,7 +4691,7 @@ namespace Helper
 
         public static Task<bool> SaveNewStudentTranscript(StudentTranscriptModel transcript, IEnumerable<ExamWeightModel> exams)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 bool flag = false;
                 bool result;
@@ -5162,9 +5149,9 @@ namespace Helper
 
         public static Task<StudentTranscriptModel2> GetStudentTranscript2(int studentID, IEnumerable<ExamWeightModel> exams, IEnumerable<ClassModel> classes, int transcriptID)
         {
-            return Task.Run(async () =>
+            return Task.Factory.StartNew(() =>
             {
-                var c = await GetClassIDFromStudentID(studentID);
+                var c = GetClassIDFromStudentID(studentID).Result;
                 int pyT3E1 = 0, pyT3E2 = 0, pyT3E3 = 0, t1E1 = 0, t1E2 = 0, t1E3 = 0, t2E1 = 0, t2E2 = 0, t2E3 = 0, t3E1 = 0, t3E2 = 0, t3E3 = 0;
                 decimal pyT3E1W = 0, pyT3E2W = 0, pyT3E3W = 0, t1E1W = 0, t1E2W = 0, t1E3W = 0, t2E1W = 0, t2E2W = 0, t2E3W = 0, t3E1W = 0, t3E2W = 0, t3E3W = 0;
                 int currentTerm = GetTerm();
@@ -5557,7 +5544,7 @@ namespace Helper
 
         public static Task<bool> SaveNewBookAsync(BookModel book)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -5582,7 +5569,7 @@ namespace Helper
 
         public static Task<int> GetLastPaymentIDAsync(int studentID, DateTime datePaid)
         {
-            return Task.Run<int>(delegate
+            return Task.Factory.StartNew<int>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -5600,7 +5587,7 @@ namespace Helper
 
         public static Task<bool> SaveNewPaymentVoucher(PaymentVoucherModel newVoucher)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 ObservableCollection<SqlParameter> observableCollection = new ObservableCollection<SqlParameter>();
                 string text = "BEGIN TRANSACTION\r\ndeclare @id int; SET @id = [dbo].GetNewID('Institution.PayoutHeader')\r\nINSERT INTO [Institution].[PayoutHeader] (PayoutID,Payee,Description,Address,TotalPaid,Category,DatePaid) VALUES (@id,@p1,@p2,@p3,@p4,@p5,@p6)\r\n";
@@ -5636,7 +5623,7 @@ namespace Helper
 
         public static Task<ObservableCollection<PaymentVoucherModel>> GetAllPaymentVouchersAsync()
         {
-            return Task.Run<ObservableCollection<PaymentVoucherModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<PaymentVoucherModel>>(delegate
             {
                 ObservableCollection<PaymentVoucherModel> observableCollection = new ObservableCollection<PaymentVoucherModel>();
                 string commandText = "SELECT PayoutID,Payee,Address,TotalPaid,Description,Category,ISNULL(DatePaid,ModifiedDate) FROM [Institution].[PayoutHeader]";
@@ -5660,7 +5647,7 @@ namespace Helper
 
         public static Task<ObservableCollection<PaymentVoucherModel>> GetPaymentVouchersAsync(bool includeDetails, DateTime? from, DateTime? to)
         {
-            return Task.Run<ObservableCollection<PaymentVoucherModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<PaymentVoucherModel>>(delegate
             {
                 ObservableCollection<PaymentVoucherModel> observableCollection = new ObservableCollection<PaymentVoucherModel>();
                 string commandText = "SELECT PayoutID,Payee,Address,TotalPaid,ISNULL(DatePaid,[ModifiedDate]) FROM [Institution].[PayoutHeader]";
@@ -5832,7 +5819,7 @@ namespace Helper
 
         public static Task<AggregateResultModel> GetAggregateResultAsync(ClassModel selectedClass, ExamModel selectedExam)
         {
-            return Task.Run<AggregateResultModel>(delegate
+            return Task.Factory.StartNew<AggregateResultModel>(delegate
             {
                 AggregateResultModel aggregateResultModel = new AggregateResultModel();
                 aggregateResultModel.NameOfClass = selectedClass.NameOfClass;
@@ -5855,7 +5842,7 @@ namespace Helper
 
         public static Task<AggregateResultModel> GetAggregateResultAsync(CombinedClassModel selectedCombinedClass, ExamModel selectedExam)
         {
-            return Task.Run(delegate
+            return Task.Factory.StartNew(delegate
             {
                 AggregateResultModel aggregateResultModel = new AggregateResultModel();
                 aggregateResultModel.NameOfClass = selectedCombinedClass.Description;
@@ -5871,7 +5858,7 @@ namespace Helper
 
         public static Task<AggregateResultModel> GetCombinedAggregateResultAsync(ClassModel selectedClass, ObservableCollection<ExamWeightModel> exams)
         {
-            return Task.Run<AggregateResultModel>(delegate
+            return Task.Factory.StartNew<AggregateResultModel>(delegate
             {
                 AggregateResultModel aggregateResultModel = new AggregateResultModel();
                 aggregateResultModel.NameOfClass = selectedClass.NameOfClass;
@@ -5900,7 +5887,7 @@ namespace Helper
 
         public static Task<AggregateResultModel> GetCombinedAggregateResultAsync(CombinedClassModel selectedCombinedClass, ObservableCollection<ExamWeightModel> exams)
         {
-            return Task.Run<AggregateResultModel>(delegate
+            return Task.Factory.StartNew<AggregateResultModel>(delegate
             {
                 AggregateResultModel aggregateResultModel = new AggregateResultModel();
                 aggregateResultModel.NameOfClass = selectedCombinedClass.Description;
@@ -5927,7 +5914,7 @@ namespace Helper
 
         public static Task<ObservableCollection<BookModel>> GetAllBooksAsync()
         {
-            return Task.Run<ObservableCollection<BookModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<BookModel>>(delegate
             {
                 ObservableCollection<BookModel> observableCollection = new ObservableCollection<BookModel>();
                 string commandText = "SELECT ISBN, Name,Author,Publisher,SPhoto,BookID,Price FROM [Institution].[Book]";
@@ -5951,7 +5938,7 @@ namespace Helper
 
         public static Task<ObservableCollection<DonorListModel>> GetAllDonorsAsync()
         {
-            return Task.Run<ObservableCollection<DonorListModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<DonorListModel>>(delegate
             {
                 ObservableCollection<DonorListModel> observableCollection = new ObservableCollection<DonorListModel>();
                 string commandText = "SELECT d.DonorID, d.NameOfDonor,d.PhoneNo, ISNULL(SUM(CONVERT(decimal(18,0),dn.AmountDonated)),0) FROM [Institution].[Donor] d LEFT OUTER JOIN [Institution].[Donation] dn ON(d.DonorID=dn.DonorID) GROUP BY d.DonorID,d.NameOfDonor,d.PhoneNo";
@@ -5972,7 +5959,7 @@ namespace Helper
 
         public static Task<bool> SaveNewBookIssueAsync(BookIssueModel bim)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = string.Concat(new object[]
                 {
@@ -6000,7 +5987,7 @@ namespace Helper
 
         public static Task<ObservableCollection<BookModel>> GetUnreturnedBooksAsync(int studenID)
         {
-            return Task.Run<ObservableCollection<BookModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<BookModel>>(delegate
             {
                 ObservableCollection<BookModel> observableCollection = new ObservableCollection<BookModel>();
                 string commandText = string.Concat(new object[]
@@ -6031,7 +6018,7 @@ namespace Helper
 
         public static Task<ObservableCollection<UnreturnedBookModel>> GetUnreturnedBooksAsync()
         {
-            return Task.Run<ObservableCollection<UnreturnedBookModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<UnreturnedBookModel>>(delegate
             {
                 ObservableCollection<UnreturnedBookModel> observableCollection = new ObservableCollection<UnreturnedBookModel>();
                 string commandText = "SELECT x.BookID,b.ISBN,b.Name,b.Author,b.Publisher,b.SPhoto,b.Price,dbo.GetUnreturnedCopies(x.BookID) FROM ((SELECT bid.BookID FROM [Institution].[BookIssueDetail] bid INNER JOIN [Institution].[BookIssueHeader] bih ON(bid.BookIssueID=bih.BookIssueID) WHERE NOT EXISTS(SELECT brd.BookID FROM [Institution].[BookReturnDetail] brd INNER JOIN [Institution].[BookReturnHeader] brh ON(brd.BookReturnID=brh.BookReturnID) WHERE brh.DateReturned>bih.DateIssued AND brd.BookID=bid.BookID)) x LEFT OUTER JOIN [Institution].[Book] b ON (x.BookID=b.BookID))";
@@ -6056,7 +6043,7 @@ namespace Helper
 
         public static Task<bool> SaveNewBookReturnAsync(BookReturnModel bim)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = string.Concat(new object[]
                 {
@@ -6111,7 +6098,7 @@ namespace Helper
 
         public static Task<bool> UpdateBookAsync(BookSelectModel book)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -6137,7 +6124,7 @@ namespace Helper
 
         public static Task<bool> AssignNewStudentNewClass(int studentID, int newClassID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -6154,7 +6141,7 @@ namespace Helper
 
         public static Task<bool> AssignStudentNewClass(int studentID, int newClassID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -6171,7 +6158,7 @@ namespace Helper
 
         public static Task<bool> AssignClassNewClass(int classID, int newClassID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string selectString = "SELECT DISTINCT s.StudentID FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cc ON (s.StudentID=cc.StudentID)" +
                 " WHERE s.ClassID =" + classID;
@@ -6209,7 +6196,7 @@ namespace Helper
 
         public static Task<LeavingCertificateModel> GetStudentLeavingCert(StudentBaseModel student)
         {
-            return Task.Run<LeavingCertificateModel>(delegate
+            return Task.Factory.StartNew<LeavingCertificateModel>(delegate
             {
                 LeavingCertificateModel leavingCertificateModel = new LeavingCertificateModel();
                 try
@@ -6239,7 +6226,7 @@ namespace Helper
 
         public static Task<ObservableCollection<StudentTranscriptModel>> GetClassTranscriptsAsync(int classID, IEnumerable<ExamWeightModel> exams, IEnumerable<ClassModel> classes)
         {
-            return Task.Run<ObservableCollection<StudentTranscriptModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<StudentTranscriptModel>>(delegate
             {
                 ObservableCollection<StudentTranscriptModel> observableCollection = new ObservableCollection<StudentTranscriptModel>();
                 int num = 0;
@@ -6410,7 +6397,7 @@ namespace Helper
 
         public static Task<ObservableCollection<StudentTranscriptModel2>> GetClassTranscripts2Async(int classID, IEnumerable<ExamWeightModel> exams, IEnumerable<ClassModel> classes, IProgress<OperationProgress> progressReporter)
         {
-            return Task.Run<ObservableCollection<StudentTranscriptModel2>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<StudentTranscriptModel2>>(delegate
             {
                 progressReporter.Report(new OperationProgress(1, "Initializing"));
                 ObservableCollection<StudentTranscriptModel2> observableCollection = new ObservableCollection<StudentTranscriptModel2>();
@@ -7086,7 +7073,7 @@ namespace Helper
 
         public static Task<bool> SaveNewDiscipline(DisciplineModel discipline)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -7108,7 +7095,7 @@ namespace Helper
 
         public static Task<ObservableCollection<DisciplineModel>> GetStudentDiscipline(StudentBaseModel student, DateTime? start, DateTime? end)
         {
-            return Task.Run<ObservableCollection<DisciplineModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<DisciplineModel>>(delegate
             {
                 ObservableCollection<DisciplineModel> observableCollection = new ObservableCollection<DisciplineModel>();
                 try
@@ -7169,7 +7156,7 @@ namespace Helper
 
         public static Task<bool> SaveNewCombinedExamAsync(ExamModel newExam, CombinedClassModel selectedCombinedClass)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Institution.ExamHeader')\r\n";
                 foreach (ClassModel current in selectedCombinedClass.Entries)
@@ -7207,7 +7194,7 @@ namespace Helper
 
         public static Task<bool> SaveNewItemIssueAsync(IssueModel newIssue)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = string.Concat(new string[]
                 {
@@ -7240,7 +7227,7 @@ namespace Helper
 
         public static Task<ObservableCollection<VoteHeadModel>> GetVoteHeadsSummaryByClass(int classID)
         {
-            return Task.Run<ObservableCollection<VoteHeadModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<VoteHeadModel>>(delegate
             {
                 DateTime termStart = DataAccess.GetTermStart();
                 DateTime termEnd = DataAccess.GetTermEnd();
@@ -7278,7 +7265,7 @@ namespace Helper
 
         public static Task<bool> RemoveExam(int examID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\n";
                 object obj = text;
@@ -7436,7 +7423,7 @@ namespace Helper
 
         public static Task<ObservableCollection<StudentSubjectSelectionModel>> GetClassStudentSubjectSelection(int classID)
         {
-            return Task.Run<ObservableCollection<StudentSubjectSelectionModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<StudentSubjectSelectionModel>>(delegate
             {
                 ObservableCollection<StudentSubjectSelectionModel> observableCollection = new ObservableCollection<StudentSubjectSelectionModel>();
                 ObservableCollection<SubjectModel> result = DataAccess.GetSubjectsRegistredToClassAsync(classID).Result;
@@ -7475,7 +7462,7 @@ namespace Helper
 
         public static Task<StudentSubjectSelectionModel> GetStudentSubjectSelection(int studentID)
         {
-            return Task.Run<StudentSubjectSelectionModel>(delegate
+            return Task.Factory.StartNew<StudentSubjectSelectionModel>(delegate
             {
                 StudentSubjectSelectionModel studentSubjectSelectionModel = new StudentSubjectSelectionModel();
                 string commandText = "SELECT sub.NameOfSubject,sssd.SubjectID FROM [Institution].[StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [Institution].[StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID = sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) WHERE sssh.IsActive=1 AND sssh.StudentID=" + studentID + " ORDER BY sub.[Code]";
@@ -7493,7 +7480,7 @@ namespace Helper
 
         public static Task<bool> SaveNewSubjectSelection(ObservableCollection<StudentSubjectSelectionModel> subjectSelections)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 bool flag = true;
                 foreach (StudentSubjectSelectionModel current in subjectSelections)
@@ -7560,7 +7547,7 @@ namespace Helper
 
         public static Task<bool> SaveNewSubjectSelection(StudentSubjectSelectionModel subjectSelection)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id int; \r\n ";
                 string text2 = "0,";
@@ -7621,7 +7608,7 @@ namespace Helper
 
         public static Task<TimeTableSettingsModel> GetCurrentTimeTableSettings()
         {
-            return Task.Run<TimeTableSettingsModel>(delegate
+            return Task.Factory.StartNew<TimeTableSettingsModel>(delegate
             {
                 TimeTableSettingsModel timeTableSettingsModel = new TimeTableSettingsModel();
                 string commandText = "SELECT TimeTableSettingsID,NoOfLessons,LessonDuration,LessonsStartTime,BreakIndices,BreakDuration FROM [Institution].[TimeTableSettings] WHERE IsActive=1";
@@ -7671,7 +7658,7 @@ namespace Helper
 
         public static Task<TimeTableModel> GetCurrentTimeTableFull()
         {
-            return Task.Run<TimeTableModel>(delegate
+            return Task.Factory.StartNew<TimeTableModel>(delegate
             {
                 TimeTableModel timeTableModel = new TimeTableModel();
                 ObservableCollection<ClassModel> result = DataAccess.GetAllClassesAsync().Result;
@@ -7826,7 +7813,7 @@ namespace Helper
 
         public static Task<bool> SaveNewSubjectSetupAsync(int classID, ObservableCollection<SubjectModel> subjects)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\ndeclare @id int; declare @id2 int;\r\n";
                 object obj = text;
@@ -7867,7 +7854,7 @@ namespace Helper
 
         public static Task<ObservableCollection<LeavingCertificateModel>> GetClassLeavingCerts(ObservableCollection<ClassModel> classes)
         {
-            return Task.Run<ObservableCollection<LeavingCertificateModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<LeavingCertificateModel>>(delegate
             {
                 ObservableCollection<LeavingCertificateModel> observableCollection = new ObservableCollection<LeavingCertificateModel>();
                 string text = "0,";
@@ -7900,7 +7887,7 @@ namespace Helper
 
         public static Task<bool> SaveNewInstitutionSubjectSetup(ObservableCollection<SubjectModel> selectedSubjects)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\n";
                 string text2 = "'0',";
@@ -7938,7 +7925,7 @@ namespace Helper
 
         public static Task<ObservableCollection<SubjectModel>> GetSubjectsRegistredToInstitutionAsync()
         {
-            return Task.Run<ObservableCollection<SubjectModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<SubjectModel>>(delegate
             {
                 ObservableCollection<SubjectModel> observableCollection = new ObservableCollection<SubjectModel>();
                 string commandText = "SELECT SubjectID,NameOfSubject,Code,IsOptional FROM [Institution].[Subject] ORDER BY Code";
@@ -7961,7 +7948,7 @@ namespace Helper
 
         public static Task<int> GetPaymentVoucherIDAsync(PaymentVoucherModel voucher)
         {
-            return Task.Run<int>(delegate
+            return Task.Factory.StartNew<int>(delegate
             {
                 string commandText = "SELECT TOP 1 PayoutID FROM [Institution].[PayoutHeader] WHERE Payee=@payee AND Description=@description AND Category=@cat AND DatePaid=CONVERT(DATETIME,@datepaid)";
                 DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(commandText, new ObservableCollection<SqlParameter>
@@ -7986,7 +7973,7 @@ namespace Helper
 
         public static Task<bool> SaveNewPayslip(PayslipModel newSlip)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('Institution.PayslipHeader')INSERT INTO [Institution].[PayslipHeader] (PayslipID,StaffID,AmountPaid,DatePaid,Designation,PaymentPeriod) VALUES(@id,@staffID,@amountPaid,@datePaid,@designation,@paymtperiod)\r\n";
                 ObservableCollection<SqlParameter> observableCollection = new ObservableCollection<SqlParameter>();
@@ -8021,7 +8008,7 @@ namespace Helper
 
         public static Task<ObservableCollection<PayslipModel>> GetRecentPayslipsAsync(StaffSelectModel selectedStaff)
         {
-            return Task.Run<ObservableCollection<PayslipModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<PayslipModel>>(delegate
             {
                 ObservableCollection<PayslipModel> observableCollection = new ObservableCollection<PayslipModel>();
                 string commandText = "SELECT TOP 20 PayslipID,AmountPaid, DatePaid,Designation,PaymentPeriod FROM [Institution].[PayslipHeader] WHERE StaffID =" + selectedStaff.StaffID + " ORDER BY [DatePaid] desc";
@@ -8045,7 +8032,7 @@ namespace Helper
 
         public static Task<ObservableCollection<SupplierPaymentModel>> GetRecentSupplierPaymentsAsync(SupplierBaseModel selectedSupplier)
         {
-            return Task.Run<ObservableCollection<SupplierPaymentModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<SupplierPaymentModel>>(delegate
             {
                 ObservableCollection<SupplierPaymentModel> observableCollection = new ObservableCollection<SupplierPaymentModel>();
                 string commandText = "SELECT TOP 20 SupplierPaymentID,AmountPaid, DatePaid,Notes FROM [Sales].[SupplierPayment] " +
@@ -8096,7 +8083,7 @@ namespace Helper
 
         public static Task<bool> SaveNewProject(ProjectModel newProject)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('Institution.ProjectHeader')INSERT INTO [Institution].[ProjectHeader] ([ProjectID],[NameOfProject],[StartDateTime],[EndDateTime],[Budget],[Description]) VALUES(@id,@nameOfProject,@starts,@ends,@budget,@description1)\r\n";
                 ObservableCollection<SqlParameter> observableCollection = new ObservableCollection<SqlParameter>();
@@ -8139,12 +8126,12 @@ namespace Helper
 
         public static Task<ObservableCollection<ProjectBaseModel>> GetAllProjectsDisplay()
         {
-            return Task.Run<ObservableCollection<ProjectBaseModel>>(() => DataAccess.GetProjectsDisplay(new DateTime(2015, 1, 1), DateTime.Now.AddDays(1.0)));
+            return Task.Factory.StartNew<ObservableCollection<ProjectBaseModel>>(() => DataAccess.GetProjectsDisplay(new DateTime(2015, 1, 1), DateTime.Now.AddDays(1.0)));
         }
 
         public static Task<ObservableCollection<ProjectListModel>> GetAllProjects()
         {
-            return Task.Run<ObservableCollection<ProjectListModel>>(() => DataAccess.GetProjects(new DateTime(2015, 1, 1), DateTime.Now.AddDays(1.0)));
+            return Task.Factory.StartNew<ObservableCollection<ProjectListModel>>(() => DataAccess.GetProjects(new DateTime(2015, 1, 1), DateTime.Now.AddDays(1.0)));
         }
 
         private static ObservableCollection<ProjectListModel> GetProjects(DateTime startDate, DateTime endDate)
@@ -8213,7 +8200,7 @@ namespace Helper
 
         public static Task<ObservableCollection<ProjectTaskModel>> GetProjectTasksAsync(int projectID)
         {
-            return Task.Run<ObservableCollection<ProjectTaskModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<ProjectTaskModel>>(delegate
             {
                 ObservableCollection<ProjectTaskModel> observableCollection = new ObservableCollection<ProjectTaskModel>();
                 string commandText = "SELECT ProjectDetailID,[Name],[Allocation],StartDate,EndDate FROM [Institution].[ProjectDetail] WHERE ProjectID=" + projectID;
@@ -8238,7 +8225,7 @@ namespace Helper
 
         public static Task<bool> SaveNewProjectTimeLineAsync(int projectID, ObservableCollection<ProjectTaskModel> allTasks)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "DELETE FROM [Institution].[ProjectDetail] WHERE ProjectID=" + projectID;
                 bool flag = DataAccessHelper.ExecuteNonQuery(text);
@@ -8272,7 +8259,7 @@ namespace Helper
 
         public static Task<IncomeStatementModel> GetIncomeStatement(DateTime from, DateTime to)
         {
-            return Task.Run<IncomeStatementModel>(() =>
+            return Task.Factory.StartNew<IncomeStatementModel>(() =>
             {
                 IncomeStatementModel temp = new IncomeStatementModel();
                 temp.StartTime = from;
@@ -8302,7 +8289,16 @@ namespace Helper
 
                 foreach (DataRow dtr in dt.Rows)
                     temp.Add(new AccountModel() { AccountID = int.Parse(dtr[0].ToString()), Name = dtr[1].ToString(), Balance = decimal.Parse(dtr[2].ToString()) });
+                selectstr = "SELECT ic.ItemCategoryID, ic.[Description],ISNULL(SUM(ph.AmountPaid),0) FROM [Sales].[ItemCategory] ic " +
+                    "LEFT OUTER JOIN [Institution].[PayslipHeader] ph ON(ic.Description='PAYROLL EXPENSES' AND ph.DatePaid BETWEEN @start AND @end)"+
+                    " GROUP BY ic.ItemCategoryID, ic.[Description]";
+                paramColl = new ObservableCollection<SqlParameter>();
+                paramColl.Add(new SqlParameter("@start", start));
+                paramColl.Add(new SqlParameter("@end", end));
+                dt = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(selectstr, paramColl);
 
+                foreach (DataRow dtr in dt.Rows)
+                temp.Add(new AccountModel() { AccountID = int.Parse(dtr[0].ToString()), Name = dtr[1].ToString(), Balance = decimal.Parse(dtr[2].ToString()) });
             return temp;
         }
 
@@ -8359,7 +8355,7 @@ namespace Helper
         {
             if (startTime >= endTime)
                 throw new ArgumentException("EndDate should be greater than StartDate.");
-            return Task.Run<STCashFlowsModel>(() =>
+            return Task.Factory.StartNew<STCashFlowsModel>(() =>
                 {
                     STCashFlowsModel st = new STCashFlowsModel(GetIncomeStatement(startTime, endTime).Result);
                     st.StartBalance = GetSTCStartBalance(startTime);
@@ -8384,11 +8380,11 @@ namespace Helper
         }
 
 
-        public static Task<ObservableCollection<AccountModel>> GetChartOfAccountsAsync()
+        public static Task<AccountModel> GetChartOfAccountsAsync()
         {
-            return Task.Run<ObservableCollection<AccountModel>>(() =>
+            return Task.Factory.StartNew<AccountModel>(() =>
             {
-                ObservableCollection<AccountModel> temp = new ObservableCollection<AccountModel>();
+                AccountModel temp = new AccountModel();
 
                 var t = GetAllItemCategoriesAsync().Result;
                 var main = t.Where(o => o.ParentCategoryID == 0);
@@ -8401,7 +8397,7 @@ namespace Helper
 
                 foreach (var y in children)
                 {
-                    temp.First(o => o.AccountID == y.ParentCategoryID).Add(new AccountModel(y.ItemCategoryID, y.Description));
+                    ((AccountModel)temp.First(o => o.AccountID == y.ParentCategoryID)).Add(new AccountModel(y.ItemCategoryID, y.Description));
                 }
 
                 return temp;
@@ -8410,7 +8406,7 @@ namespace Helper
 
         public static Task<bool> RemoveAccountAsync(int accountID)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 bool result = false;
                 try
@@ -8450,7 +8446,7 @@ namespace Helper
 
         public static Task<BudgetModel> GetBudgetAsync(DateTime date)
         {
-            return Task.Run<BudgetModel>(delegate
+            return Task.Factory.StartNew<BudgetModel>(delegate
             {
                 return GetBudget(date, false);
             });
@@ -8458,7 +8454,7 @@ namespace Helper
 
         public static Task<BudgetModel> GetBudgetAsync(DateTime date,bool addExpenditure)
         {
-            return Task.Run<BudgetModel>(delegate
+            return Task.Factory.StartNew<BudgetModel>(delegate
             {
                 return GetBudget(date, addExpenditure);
             });
@@ -8466,7 +8462,7 @@ namespace Helper
 
         private static Task<ObservableCollection<BudgetAccountModel>> GetBudgetAccountsAsync(int budgetID,decimal totalBudget)
         {
-            return Task.Run<ObservableCollection<BudgetAccountModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<BudgetAccountModel>>(delegate
             {
                 ObservableCollection<BudgetAccountModel> temp = new ObservableCollection<BudgetAccountModel>();
                 string selectStr = "SELECT bad.AccountID,ic.Description,bad.BudgetAmount FROM [Institution].[BudgetAccountDetail] bad LEFT OUTER JOIN  "+
@@ -8480,7 +8476,7 @@ namespace Helper
         }
         private static Task<ObservableCollection<BudgetEntryModel>> GetBudgetEntriesAsync(int budgetID,bool addExpenditure, DateTime startDate, DateTime endDate)
         {
-            return Task.Run<ObservableCollection<BudgetEntryModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<BudgetEntryModel>>(delegate
             {
                 ObservableCollection<BudgetEntryModel> temp = new ObservableCollection<BudgetEntryModel>();
 
@@ -8530,7 +8526,7 @@ namespace Helper
 
         public static Task<BudgetModel> GetDefaultBudgetAsync()
         {
-            return Task.Run<BudgetModel>(delegate
+            return Task.Factory.StartNew<BudgetModel>(delegate
             {
                 BudgetModel result = new BudgetModel();
                 var t = GetAllItemCategoriesAsync().Result;
@@ -8547,7 +8543,7 @@ namespace Helper
 
         private static Task<ObservableCollection<BudgetEntryModel>> GetAccountItemsAsync(int accountID)
         {
-            return Task.Run<ObservableCollection<BudgetEntryModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<BudgetEntryModel>>(delegate
             {
                 ObservableCollection<BudgetEntryModel> temp = new ObservableCollection<BudgetEntryModel>();
                 try
@@ -8576,7 +8572,7 @@ namespace Helper
 
         internal static Task<AccountModel> GetAccountAsync(int accountID)
         {
-            return Task.Run<AccountModel>(() =>
+            return Task.Factory.StartNew<AccountModel>(() =>
                {
                    string text = "SELECT ItemCategoryID,Description FROM [Sales].[ItemCategory] WHERE ItemCategoryID = @catID";
                    ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
@@ -8596,7 +8592,7 @@ namespace Helper
 
         public static Task<bool> SaveNewBudgetAsync(BudgetModel newBudget)
         {
-            return Task.Run<bool>(delegate
+            return Task.Factory.StartNew<bool>(delegate
             {
                 ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
                 int count1 = 0;
@@ -8661,7 +8657,7 @@ namespace Helper
 
         public static Task<int> GetLastSupplierPaymentIDAsync(int supplierID, DateTime datePaid)
         {
-            return Task.Run<int>(delegate
+            return Task.Factory.StartNew<int>(delegate
             {
                 string commandText = string.Concat(new object[]
                 {
@@ -8678,9 +8674,55 @@ namespace Helper
 
         public static Task<TrialBalanceModel> GetTrialBalance(DateTime startDate, DateTime endDate)
         {
-            return Task.Run<TrialBalanceModel>(delegate
+            return Task.Factory.StartNew<TrialBalanceModel>(delegate
             {
-                return new TrialBalanceModel();
+                TrialBalanceModel temp = new TrialBalanceModel();
+
+                var accounts = GetChartOfAccountsAsync().Result;
+
+                string selectStr = "SELECT ISNULL(SUM(AmountPaid),0) FROM [Institution].[FeesPayment] WHERE DatePaid BETWEEN @startd AND @endd AND PaymentMethod IN('M-PESA','CASH')";
+                var pc1 = new ObservableCollection<SqlParameter>();
+                pc1.Add(new SqlParameter("@startd", startDate.Date));
+                pc1.Add(new SqlParameter("@endd", new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59, 998)));
+                accounts["ASSETS"]["CASH"].Balance = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr, pc1));
+
+                selectStr = "DECLARE @fee1 decimal(18,0) = (SELECT ISNULL(SUM(AmountPaid),0) FROM [Institution].[FeesPayment] WHERE DatePaid BETWEEN @startd AND @endd AND PaymentMethod NOT IN('M-PESA','CASH'));\r\n"+
+                    "DECLARE @don1 decimal(18,0) = (SELECT ISNULL(SUM(AmountDonated),0) FROM [Institution].[Donation] WHERE DateDonated BETWEEN @startd AND @endd);\r\n"+
+                    "SELECT @fee1+@don1";
+                pc1 = new ObservableCollection<SqlParameter>();
+                pc1.Add(new SqlParameter("@startd", startDate.Date));
+                pc1.Add(new SqlParameter("@endd", new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59, 998)));
+                accounts["ASSETS"]["ACCOUNTS RECEIVABLE"].Balance = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr, pc1));
+                foreach(var y in accounts["EXPENSES"])
+                {
+                    selectStr = "SELECT dbo.GetExpenseAccountBalance(@id,@startd,@endd)";
+                    pc1 = new ObservableCollection<SqlParameter>();
+                    pc1.Add(new SqlParameter("@startd", startDate.Date));
+                    pc1.Add(new SqlParameter("@endd", new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59, 998)));
+                    pc1.Add(new SqlParameter("@id", y.AccountID));
+                    var x = DataAccessHelper.ExecuteScalar(selectStr, pc1);
+                    y.Balance = decimal.Parse(x);
+                }
+
+                
+                foreach (var y in accounts)
+                {
+                    foreach(var z in y)
+                    {
+                        switch(y.Name)
+                        {
+                            case "ASSETS": z.AccountType = AccountType.Asset; break;
+                            case "LIABILITIES": z.AccountType = AccountType.Liability; break;
+                            case "CAPITAL": z.AccountType = AccountType.Equity; break;
+                            case "REVENUE": z.AccountType = AccountType.Revenue; break;
+                            case "EXPENSE": z.AccountType = AccountType.Expense; break;
+                                default: break;
+                                
+                        }
+                        temp.Accounts.Add(z);
+                    }
+                }
+                return temp;
             });
         }
     }
