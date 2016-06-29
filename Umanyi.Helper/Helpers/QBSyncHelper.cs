@@ -322,7 +322,7 @@ namespace Helper
 
         private QBSessionManager CreateNewSession()
         {
-            QBSessionManager qBSessionManager = null;// (QBSessionManager)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("22E885D7-FB0B-49E3-B905-CCA6BD526B52")));
+            QBSessionManager qBSessionManager =(QBSessionManager)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("22E885D7-FB0B-49E3-B905-CCA6BD526B52")));
             qBSessionManager.OpenConnection("", "Umanyi SMS");
             qBSessionManager.BeginSession("", ENOpenMode.omDontCare);
             string value = "{E74068B5-0D6D-454d-B0FD-BDDF95CE6778}";
