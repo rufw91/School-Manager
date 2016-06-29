@@ -15,6 +15,9 @@ namespace Helper
         Projects
     }
 
+    public enum AccountType
+    { Asset, Liability, Equity, Expense, Revenue }
+
     public enum GeneralLedgerAccounts
     {
         Cash,

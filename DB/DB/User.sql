@@ -1,5 +1,7 @@
-﻿CREATE ROLE [User]
+CREATE ROLE [User]
     AUTHORIZATION [dbo];
+
+
 
 
 
@@ -17,4 +19,3 @@ GRANT CONTROL
 
 
 GO
-

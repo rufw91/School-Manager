@@ -2,11 +2,13 @@
     [FeesStructureDetailID] INT              CONSTRAINT [DF_FeesStructureDetail_FeesStructureDetailID] DEFAULT ([dbo].[Link_GetNewID]('Institution.FeesStructureDetail')) NOT NULL,
     [FeesStructureID]       INT              NULL,
     [Name]                  VARCHAR (50)     NULL,
-    [Amount]                VARCHAR (50)     NULL,
+    [Amount]                DECIMAL (18)     NULL,
     [ModifiedDate]          DATETIME         CONSTRAINT [DF_FeesStructureDetail_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
     [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_FeesStructureDetail_rowguid] DEFAULT (newid()) NOT NULL,
     CONSTRAINT [PK_FeesStructureDetail] PRIMARY KEY CLUSTERED ([FeesStructureDetailID] ASC)
 );
+
+
 
 
 GO

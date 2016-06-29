@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Helper.Converters;assembly=Helper" 
+                    xmlns:local="clr-namespace:Helper.Converters" >
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Helper;component/Converters/Converters.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <local:ItemListToItemFindListConverter x:Key="ItemListToItemFindListConverter"/>
+    <local:Best7SubjectConverter x:Key="Best7SubjectConverter"/>
+    <local:AccountToAccountIDConverter x:Key="AccountToAccountIDConverter"/>
+</ResourceDictionary>

@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.CombinedClassList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="clr-namespace:Helper.Controls;assembly=Helper" 
+             xmlns:commands="clr-namespace:UmanyiSMS.Presentation" 
+             mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="984"
+             Background="White">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Combined Class List" 
+			VerticalAlignment="Top"/>
+        <DocumentViewer Name="docViewer" Margin="10,100,10,50" Document="{Binding Document}"/>
+
+
+        <TextBlock HorizontalAlignment="Left" Margin="290,65,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="335,60,0,0" VerticalAlignment="Top" Width="180"
+			ItemsSource="{Binding AllClasses}"
+			DisplayMemberPath="Description"
+			SelectedItem="{Binding SelectedClass}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="20,70,0,0" Text="Preview" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+        <Controls:DropDownButton Content="Export" HorizontalAlignment="Right" Margin="0,70,10,0" VerticalAlignment="Top" DataContext="{Binding Document, ElementName=docViewer}">
+            <Controls:DropDownButton.DropDownContent>
+                <Menu>
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
+                    <MenuItem Header="Export to PDF" Command="{Binding Source={x:Static commands:CommonCommands.ExportToPDFCommand}}" CommandParameter="{Binding}"/>
+                    <MenuItem Header="Export to Excel" IsEnabled="False"/>
+                </Menu>
+            </Controls:DropDownButton.DropDownContent>
+        </Controls:DropDownButton>
+        <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="120"                
+			Command="{Binding GenerateCommand}"/>
+        <Border Grid.RowSpan="2" Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+        </Border>
+    </Grid>
+</UserControl>

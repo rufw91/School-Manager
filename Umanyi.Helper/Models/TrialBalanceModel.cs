@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helper.Presentation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,10 @@ namespace Helper.Models
 {
     public class TrialBalanceModel:ModelBase
     {
-        private List<TransactionModel> accounts;
+        private List<IAccount> accounts;
         public TrialBalanceModel()
         {
-            accounts = new List<TransactionModel>();
+            accounts = new List<IAccount>();
             StartTime = new DateTime(DateTime.Now.Year, 1, 1);
             EndTime = new DateTime(DateTime.Now.Year, 12, 31);
             DebitTotals = 0;
@@ -22,7 +23,7 @@ namespace Helper.Models
 
         public DateTime StartTime { get; set; }
 
-        public List<TransactionModel>Accounts { get { return accounts; } }
+        public List<IAccount> Accounts { get { return accounts; } }
 
         public override void Reset()
         {

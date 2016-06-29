@@ -250,8 +250,11 @@ namespace Helper.Models
                 {
                     this.culture = value;
                     NotifyPropertyChanged("Culture");
+#if NET45        
+
                     CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(culture);
                     CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(culture);
+#endif
                 }
             }
         }

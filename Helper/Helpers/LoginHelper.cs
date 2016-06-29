@@ -1,4 +1,5 @@
-﻿using Microsoft.SqlServer.Management.Common;
+﻿using Helper.Security;
+using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using System;
 using System.Collections.Generic;
@@ -37,8 +38,9 @@ namespace Helper
         }
 
         private static Task<string[]> GetUserRolesAsync(string userId)
-        {            
-            return Task.Run<string[]>(() =>
+        {
+            return Task.Factory.StartNew<string[]>(() =>
+
             {
                 if (userId.ToUpper() == "SA")
                     return GetAllRoles();

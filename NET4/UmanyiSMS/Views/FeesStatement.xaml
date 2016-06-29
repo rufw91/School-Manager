@@ -1,0 +1,38 @@
+﻿<UserControl  x:Class="UmanyiSMS.Views.FeesStatement"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="900"
+	Background="White">
+
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Fees Statement" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,80,0,0" TextWrapping="Wrap" Style="{DynamicResource Title0}" Text="Student" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="114,126,0,0" VerticalAlignment="Top" Width="200"
+                 Text="{Binding Statement.StudentID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, 
+            ValidatesOnDataErrors=True}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="70,170,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="114,170,0,0" VerticalAlignment="Top" Width="200"
+                 Text="{Binding Statement.NameOfStudent}" IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"/>
+        <TextBlock HorizontalAlignment="Left" Margin="53,126,0,0" TextWrapping="Wrap" Text="Student ID" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,217,0,0" TextWrapping="Wrap" Style="{DynamicResource Title0}" Text="Period" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="56,262,0,0" TextWrapping="Wrap" Text="Start Date" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="114,262,0,0" VerticalAlignment="Top" Width="200"                    
+                    SelectedDateFormat="Long" SelectedDate="{Binding Statement.From,Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="61,307,0,0" TextWrapping="Wrap" Text="End Date" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="114,307,0,0" VerticalAlignment="Top" Width="200"                    
+                    SelectedDateFormat="Long" SelectedDate="{Binding Statement.To,Mode=TwoWay, 
+                    UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="350,80,0,0" Style="{DynamicResource Title0}" Text="Preview" VerticalAlignment="Top"/>
+        <DocumentViewer Margin="350,109,10,50" Document="{Binding Document}" Name="viewer"/>
+        <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
+                Command="{Binding GenerateStatementCommand}"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,90,10,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FullPreviewCommand}" CommandParameter="{Binding Document, ElementName=viewer}">Full Preview</Hyperlink>
+        </TextBlock>
+
+    </Grid>
+</UserControl>

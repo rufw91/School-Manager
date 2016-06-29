@@ -264,7 +264,13 @@ namespace Helper
 
         private Task SyncSupplierPayments(IProgress<SyncOperationProgress> progressReporter)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
             });
         }
@@ -316,7 +322,7 @@ namespace Helper
 
         private QBSessionManager CreateNewSession()
         {
-            QBSessionManager qBSessionManager = (QBSessionManager)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("22E885D7-FB0B-49E3-B905-CCA6BD526B52")));
+            QBSessionManager qBSessionManager = null;// (QBSessionManager)Activator.CreateInstance(Marshal.GetTypeFromCLSID(new Guid("22E885D7-FB0B-49E3-B905-CCA6BD526B52")));
             qBSessionManager.OpenConnection("", "Umanyi SMS");
             qBSessionManager.BeginSession("", ENOpenMode.omDontCare);
             string value = "{E74068B5-0D6D-454d-B0FD-BDDF95CE6778}";
@@ -810,7 +816,13 @@ namespace Helper
 
         private Task CheckAllProjects(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<ProjectModel> allUnSyncedProjects = this.GetAllUnSyncedProjects();
                 this.AddNewProjects(allUnSyncedProjects, sessionManager);
@@ -819,7 +831,13 @@ namespace Helper
 
         private Task CheckAllDonations(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<DonationModel> allUnSyncedDonations = this.GetAllUnSyncedDonations();
                 this.AddNewDonations(allUnSyncedDonations, sessionManager);
@@ -828,7 +846,13 @@ namespace Helper
 
         private Task CheckAllPledges(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<DonationModel> allUnSyncedPledges = this.GetAllUnSyncedPledges();
                 this.AddNewPledges(allUnSyncedPledges, sessionManager);
@@ -837,7 +861,13 @@ namespace Helper
 
         private Task CheckDonors(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<DonorModel> allUnSyncedDonors = this.GetAllUnSyncedDonors();
                 this.AddNewDonors(allUnSyncedDonors, sessionManager);
@@ -846,7 +876,13 @@ namespace Helper
 
         private Task CheckAllCustomers(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<QBSyncHelper.StudentQBModel> allUnSyncedCustomers = this.GetAllUnSyncedCustomers();
                 this.AddNewCustomers(allUnSyncedCustomers, sessionManager);
@@ -855,7 +891,13 @@ namespace Helper
 
         private Task CheckAllVendors(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<QBSyncHelper.SupplierQBModel> allUnSyncedSuppliers = this.GetAllUnSyncedSuppliers();
                 this.AddNewSuppliers(allUnSyncedSuppliers, sessionManager);
@@ -864,7 +906,13 @@ namespace Helper
 
         private Task CheckAllNIItems(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<ItemBaseModel> allUnSyncedNIItems = this.GetAllUnSyncedNIItems();
                 this.AddNewNIItems(allUnSyncedNIItems, sessionManager);
@@ -873,7 +921,13 @@ namespace Helper
 
         private Task CheckAllFeesItems(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 string item = "FEES FOR TERM 1 " + DateTime.Now.Year;
                 string item2 = "FEES FOR TERM 2 " + DateTime.Now.Year;
@@ -890,7 +944,13 @@ namespace Helper
 
         private Task CheckAllPayrollItems(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 this.AddNewPayrollItem(sessionManager, "EMPLOYEE PAYMENT");
             });
@@ -898,7 +958,13 @@ namespace Helper
 
         private Task CheckPayroll(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<PayslipModel> allUnSyncedPayroll = this.GetAllUnSyncedPayroll();
                 this.AddNewPayrolls(allUnSyncedPayroll, sessionManager);
@@ -907,7 +973,13 @@ namespace Helper
 
         private Task CheckAllPurchases(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<QBSyncHelper.PurchaseQBModel> allUnSyncedPurchases = this.GetAllUnSyncedPurchases();
                 this.AddNewPurchases(allUnSyncedPurchases, sessionManager);
@@ -916,7 +988,13 @@ namespace Helper
 
         private Task CheckAllFeesPayments(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<QBSyncHelper.FeesPaymentQBModel> allUnSyncedFeesPayments = this.GetAllUnSyncedFeesPayments();
                 this.AddNewFeesPayments(allUnSyncedFeesPayments, sessionManager);
@@ -925,7 +1003,13 @@ namespace Helper
 
         private Task CheckAllStudentBills(QBSessionManager sessionManager)
         {
-            return Task.Run(delegate
+            return
+#if NET4
+ Task.Factory.StartNew
+#else
+                Task.Run
+#endif
+(delegate
             {
                 List<QBSyncHelper.SaleQBModel> allUnSyncedStudentBills = this.GetAllUnSyncedStudentBills();
                 this.AddNewStudentBills(allUnSyncedStudentBills, sessionManager);

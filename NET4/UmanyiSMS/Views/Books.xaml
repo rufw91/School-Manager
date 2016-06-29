@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.Books"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:UmanyiSMS.Views"
+            mc:Ignorable="d" 
+             Tag="BOOKS Purchase"
+             Style="{StaticResource TopWindow}"
+	Background="White">
+</UserControl>

@@ -7,3 +7,77 @@
     CONSTRAINT [PK_Donor] PRIMARY KEY CLUSTERED ([DonorID] ASC)
 );
 
+
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[Donor] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[Donor] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[Donor] TO [Accounts]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[Donor] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[Donor] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[Donor] TO [Accounts]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[Donor] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[Donor] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[Donor] TO [Accounts]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[Donor] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[Donor] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[Donor] TO [Accounts]
+    AS [dbo];
+

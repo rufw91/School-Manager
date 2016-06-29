@@ -1,0 +1,788 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B411237E-6128-43D2-873C-FF4076E9AF44}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Helper</RootNamespace>
+    <AssemblyName>UmanyiSMS.Helper</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET4</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Interop.QBFC13, Version=13.0.0.23, Culture=neutral, PublicKeyToken=31d8aec643e18259">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC\Interop.QBFC13\13.0.0.23__31d8aec643e18259\Interop.QBFC13.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop, Version=1.0.168.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="ReadOnlyCollectionsInterfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ReadOnlyCollectionInterfaces.1.0.0\lib\NET40-client\ReadOnlyCollectionsInterfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable.Net40, Version=1.0.27.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Collections.Immutable.Net40.1.0.30.17\lib\net40\System.Collections.Immutable.Net40.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO, Version=2.6.8.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.1.8\lib\net40\System.IO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime, Version=2.6.8.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.1.8\lib\net40\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks, Version=2.6.8.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.1.8\lib\net40\System.Threading.Tasks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Umanyi.Helper\Controls\HomePageButton.cs">
+      <Link>Controls\HomePageButton.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Converters\AccountToAccountIDConverter.cs">
+      <Link>Converters\AccountToAccountIDConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Converters\Best7SubjectConverter.cs">
+      <Link>Converters\Best7SubjectConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Converters\ImageConverters.cs">
+      <Link>Converters\ImageConverters.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Converters\ItemListToItemFindListConverter.cs">
+      <Link>Converters\ItemListToItemFindListConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Credits.cs">
+      <Link>Credits.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Enums.cs">
+      <Link>Enums.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\CloudSyncHelper.cs">
+      <Link>Helpers\CloudSyncHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DataAccess.cs">
+      <Link>Helpers\DataAccess.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.Accounts.cs">
+      <Link>Helpers\DocumentHelper.Accounts.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.AggregateResult.cs">
+      <Link>Helpers\DocumentHelper.AggregateResult.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.AllUnreturnedBooks.cs">
+      <Link>Helpers\DocumentHelper.AllUnreturnedBooks.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.ClassBalances.cs">
+      <Link>Helpers\DocumentHelper.ClassBalances.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.ClassExamResults.cs">
+      <Link>Helpers\DocumentHelper.ClassExamResults.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.ClassLeavingCertificates.cs">
+      <Link>Helpers\DocumentHelper.ClassLeavingCertificates.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.ClassList.cs">
+      <Link>Helpers\DocumentHelper.ClassList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.ClassMarkList.cs">
+      <Link>Helpers\DocumentHelper.ClassMarkList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.ClassTranscripts.cs">
+      <Link>Helpers\DocumentHelper.ClassTranscripts.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.ClassTranscripts2.cs">
+      <Link>Helpers\DocumentHelper.ClassTranscripts2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.cs">
+      <Link>Helpers\DocumentHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.FullFeesStructure.cs">
+      <Link>Helpers\DocumentHelper.FullFeesStructure.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.LeavingCertificate.cs">
+      <Link>Helpers\DocumentHelper.LeavingCertificate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.Payslip.cs">
+      <Link>Helpers\DocumentHelper.Payslip.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.Receipt.cs">
+      <Link>Helpers\DocumentHelper.Receipt.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.Receipt2.cs">
+      <Link>Helpers\DocumentHelper.Receipt2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.Report.cs">
+      <Link>Helpers\DocumentHelper.Report.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.Statement.cs">
+      <Link>Helpers\DocumentHelper.Statement.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.SupplierPayment.cs">
+      <Link>Helpers\DocumentHelper.SupplierPayment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.SupplierStatement.cs">
+      <Link>Helpers\DocumentHelper.SupplierStatement.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.Transcript.cs">
+      <Link>Helpers\DocumentHelper.Transcript.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.Transcript2.cs">
+      <Link>Helpers\DocumentHelper.Transcript2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.Transcript3.cs">
+      <Link>Helpers\DocumentHelper.Transcript3.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.UnretunedBooks.cs">
+      <Link>Helpers\DocumentHelper.UnretunedBooks.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\DocumentHelper.Voucher.cs">
+      <Link>Helpers\DocumentHelper.Voucher.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\PrintHelper.cs">
+      <Link>Helpers\PrintHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\QBSyncHelper.cs">
+      <Link>Helpers\QBSyncHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Helpers\SyncHelper.cs">
+      <Link>Helpers\SyncHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\AcademicReportModel.cs">
+      <Link>Models\AcademicReportModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\AccountBaseModel.cs">
+      <Link>Models\AccountBaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\AccountModel.cs">
+      <Link>Models\AccountModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\AggregateResultEntryModel.cs">
+      <Link>Models\AggregateResultEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\AggregateResultModel.cs">
+      <Link>Models\AggregateResultModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\AllUnreturnedBooksModel.cs">
+      <Link>Models\AllUnreturnedBooksModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BalanceSheetModel.cs">
+      <Link>Models\BalanceSheetModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BasicPair.cs">
+      <Link>Models\BasicPair.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BookIssueModel.cs">
+      <Link>Models\BookIssueModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BookModel.cs">
+      <Link>Models\BookModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BookReceiptModel.cs">
+      <Link>Models\BookReceiptModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BookReturnModel.cs">
+      <Link>Models\BookReturnModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BookSelectModel.cs">
+      <Link>Models\BookSelectModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BooksPurchaseModel.cs">
+      <Link>Models\BooksPurchaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BudgetAccountModel.cs">
+      <Link>Models\BudgetAccountModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BudgetEntryModel.cs">
+      <Link>Models\BudgetEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\BudgetModel.cs">
+      <Link>Models\BudgetModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ClassBalancesListModel.cs">
+      <Link>Models\ClassBalancesListModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ClassesSetupEntryModel.cs">
+      <Link>Models\ClassesSetupEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ClassesSetupModel.cs">
+      <Link>Models\ClassesSetupModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ClassExamResultModel.cs">
+      <Link>Models\ClassExamResultModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ClassLeavingCertificatesModel.cs">
+      <Link>Models\ClassLeavingCertificatesModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ClassModel.cs">
+      <Link>Models\ClassModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ClassStudentListModel.cs">
+      <Link>Models\ClassStudentListModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ClassStudentsExamResultModel.cs">
+      <Link>Models\ClassStudentsExamResultModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ClassTranscriptsModel.cs">
+      <Link>Models\ClassTranscriptsModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ClassTranscriptsModel2.cs">
+      <Link>Models\ClassTranscriptsModel2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\CombinedClassModel.cs">
+      <Link>Models\CombinedClassModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\DisciplineModel.cs">
+      <Link>Models\DisciplineModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\DonationModel.cs">
+      <Link>Models\DonationModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\DonorListModel.cs">
+      <Link>Models\DonorListModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\DonorModel.cs">
+      <Link>Models\DonorModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\DormitoryMemberModel.cs">
+      <Link>Models\DormitoryMemberModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\DormModel.cs">
+      <Link>Models\DormModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\EmployeePaymentModel.cs">
+      <Link>Models\EmployeePaymentModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\EventModel.cs">
+      <Link>Models\EventModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamModel.cs">
+      <Link>Models\ExamModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamRegistrationStudentModel.cs">
+      <Link>Models\ExamRegistrationStudentModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamResultBaseModel.cs">
+      <Link>Models\ExamResultBaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamResultClassDisplayModel.cs">
+      <Link>Models\ExamResultClassDisplayModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamResultClassModel.cs">
+      <Link>Models\ExamResultClassModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamResultStudentDisplayModel.cs">
+      <Link>Models\ExamResultStudentDisplayModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamResultStudentModel.cs">
+      <Link>Models\ExamResultStudentModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamResultStudentSubjectEntryModel.cs">
+      <Link>Models\ExamResultStudentSubjectEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamResultSubjectModel.cs">
+      <Link>Models\ExamResultSubjectModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamSettingsModel.cs">
+      <Link>Models\ExamSettingsModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamSubjectEntryModel.cs">
+      <Link>Models\ExamSubjectEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ExamWeightModel.cs">
+      <Link>Models\ExamWeightModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\FeePaymentModel.cs">
+      <Link>Models\FeePaymentModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\FeePaymentReceipt2Model.cs">
+      <Link>Models\FeePaymentReceipt2Model.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\FeesPaymentDisplayModel.cs">
+      <Link>Models\FeesPaymentDisplayModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\FeesPaymentHistoryModel.cs">
+      <Link>Models\FeesPaymentHistoryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\FeesPaymentReceiptModel.cs">
+      <Link>Models\FeesPaymentReceiptModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\FeesStatementModel.cs">
+      <Link>Models\FeesStatementModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\FeesStructureEntryModel.cs">
+      <Link>Models\FeesStructureEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\FeesStructureModel.cs">
+      <Link>Models\FeesStructureModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\FullFeesStructureModel.cs">
+      <Link>Models\FullFeesStructureModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\GalleryItemModel.cs">
+      <Link>Models\GalleryItemModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\GeneralLedgerModel.cs">
+      <Link>Models\GeneralLedgerModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\IncomeStatementModel.cs">
+      <Link>Models\IncomeStatementModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\IssueModel.cs">
+      <Link>Models\IssueModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemBaseModel.cs">
+      <Link>Models\ItemBaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemCategoryModel.cs">
+      <Link>Models\ItemCategoryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemFindModel.cs">
+      <Link>Models\ItemFindModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemIssueEntryModel.cs">
+      <Link>Models\ItemIssueEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemIssueModel.cs">
+      <Link>Models\ItemIssueModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemListModel.cs">
+      <Link>Models\ItemListModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemModel.cs">
+      <Link>Models\ItemModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemPurchaseModel.cs">
+      <Link>Models\ItemPurchaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemSaleModel.cs">
+      <Link>Models\ItemSaleModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemStockTakingModel.cs">
+      <Link>Models\ItemStockTakingModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ItemStockTakingResultsModel.cs">
+      <Link>Models\ItemStockTakingResultsModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\LeavingCertificateModel.cs">
+      <Link>Models\LeavingCertificateModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ModifyItemModel.cs">
+      <Link>Models\ModifyItemModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ModifyStaffModel.cs">
+      <Link>Models\ModifyStaffModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ModifyStudentModel.cs">
+      <Link>Models\ModifyStudentModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ModifySupplierModel.cs">
+      <Link>Models\ModifySupplierModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\PaymentVoucherEntryModel.cs">
+      <Link>Models\PaymentVoucherEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\PaymentVoucherModel.cs">
+      <Link>Models\PaymentVoucherModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\PayslipModel.cs">
+      <Link>Models\PayslipModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ProjectBaseModel.cs">
+      <Link>Models\ProjectBaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ProjectDetailModel.cs">
+      <Link>Models\ProjectDetailModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ProjectListModel.cs">
+      <Link>Models\ProjectListModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ProjectModel.cs">
+      <Link>Models\ProjectModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ProjectTaskModel.cs">
+      <Link>Models\ProjectTaskModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\PurchaseModel.cs">
+      <Link>Models\PurchaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\ReportModel.cs">
+      <Link>Models\ReportModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\SaleModel.cs">
+      <Link>Models\SaleModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StaffBaseModel.cs">
+      <Link>Models\StaffBaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StaffModel.cs">
+      <Link>Models\StaffModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StaffSelectModel.cs">
+      <Link>Models\StaffSelectModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StartUp.cs">
+      <Link>Models\StartUp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\STCashFlowsModel.cs">
+      <Link>Models\STCashFlowsModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StockTakingBaseModel.cs">
+      <Link>Models\StockTakingBaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StockTakingModel.cs">
+      <Link>Models\StockTakingModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StockTakingResultsModel.cs">
+      <Link>Models\StockTakingResultsModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentBaseModel.cs">
+      <Link>Models\StudentBaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentClearancerModel.cs">
+      <Link>Models\StudentClearancerModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentExamResultEntryModel.cs">
+      <Link>Models\StudentExamResultEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentExamResultModel.cs">
+      <Link>Models\StudentExamResultModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentFeesDefaultModel.cs">
+      <Link>Models\StudentFeesDefaultModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentListModel.cs">
+      <Link>Models\StudentListModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentModel.cs">
+      <Link>Models\StudentModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentSelectModel.cs">
+      <Link>Models\StudentSelectModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentSubjectSelectionEntryModel.cs">
+      <Link>Models\StudentSubjectSelectionEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentSubjectSelectionModel.cs">
+      <Link>Models\StudentSubjectSelectionModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentTranscriptModel.cs">
+      <Link>Models\StudentTranscriptModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentTranscriptModel2.cs">
+      <Link>Models\StudentTranscriptModel2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentTranscriptSubjectModel.cs">
+      <Link>Models\StudentTranscriptSubjectModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\StudentTransferModel.cs">
+      <Link>Models\StudentTransferModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\SubjectBaseModel.cs">
+      <Link>Models\SubjectBaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\SubjectModel.cs">
+      <Link>Models\SubjectModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\SupplierBaseModel.cs">
+      <Link>Models\SupplierBaseModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\SupplierModel.cs">
+      <Link>Models\SupplierModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\SupplierPaymentModel.cs">
+      <Link>Models\SupplierPaymentModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\SupplierStatementModel.cs">
+      <Link>Models\SupplierStatementModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\Sync\SyncExamResultEntryModel.cs">
+      <Link>Models\Sync\SyncExamResultEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\Sync\SyncExamResultModel.cs">
+      <Link>Models\Sync\SyncExamResultModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\Sync\SyncStatementModel.cs">
+      <Link>Models\Sync\SyncStatementModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\Sync\SyncStudentModel.cs">
+      <Link>Models\Sync\SyncStudentModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\Sync\SyncTransactionModel.cs">
+      <Link>Models\Sync\SyncTransactionModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\Sync\SyncTranscriptEntryModel.cs">
+      <Link>Models\Sync\SyncTranscriptEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\Sync\SyncTranscriptModel.cs">
+      <Link>Models\Sync\SyncTranscriptModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\TimetableClassEntryModel.cs">
+      <Link>Models\TimetableClassEntryModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\TimetableClassModel.cs">
+      <Link>Models\TimetableClassModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\TransactionModel.cs">
+      <Link>Models\TransactionModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\TranscriptItem.cs">
+      <Link>Models\TranscriptItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\TrialBalanceModel.cs">
+      <Link>Models\TrialBalanceModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\UnreturnedBookModel.cs">
+      <Link>Models\UnreturnedBookModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\UnreturnedBooksModel.cs">
+      <Link>Models\UnreturnedBooksModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\VATAnalysisModel.cs">
+      <Link>Models\VATAnalysisModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\VatModel.cs">
+      <Link>Models\VatModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Models\VoteHeadModel.cs">
+      <Link>Models\VoteHeadModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Presentation\IAccount.cs">
+      <Link>Presentation\IAccount.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Presentation\IAccountBase.cs">
+      <Link>Presentation\IAccountBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Presentation\IApp.cs">
+      <Link>Presentation\IApp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Presentation\OperationProgress.cs">
+      <Link>Presentation\OperationProgress.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Presentation\ParentViewModel.cs">
+      <Link>Presentation\ParentViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Umanyi.Helper\Presentation\SyncOperationProgress.cs">
+      <Link>Presentation\SyncOperationProgress.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{d2e23ab5-1afd-44d5-9d5c-2d55503c7d8f}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <Page Include="Converters\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\AccountsBalanceSheet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\AccountsGeneralLedger.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\AccountsIncomeStatement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\AccountsSTOfCashFlows.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\AccountsTrialBalance.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\AggregateResult.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Balances.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\ClassList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\ClassMarkList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <None Include="Resources\FullFeesStructure.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <Page Include="Resources\LeavingCert.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\PaymentVoucher.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\PaymentVoucher2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Payslip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <None Include="Resources\Receipt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <Page Include="Resources\Receipt2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <None Include="Resources\Report.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <Page Include="Resources\Statement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <None Include="Resources\SupplierStatement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <Page Include="Resources\Transcript.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Transcript2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <None Include="Resources\Transcript3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <Page Include="Resources\Transcript4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UnreturnedBooks.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UnreturnedBooks2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\logo.png" />
+    <Content Include="Resources\noImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

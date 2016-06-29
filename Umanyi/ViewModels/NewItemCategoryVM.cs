@@ -1,5 +1,6 @@
 ﻿using Helper;
 using Helper.Models;
+using Helper.Presentation;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows;
@@ -11,7 +12,7 @@ namespace UmanyiSMS.ViewModels
     public class NewItemCategoryVM : ViewModelBase
     {
         ItemCategoryModel category;
-        private ObservableCollection<AccountModel> chartOfAccounts;
+        private ObservableCollection<IAccount> chartOfAccounts;
         public NewItemCategoryVM()
         {
             InitVars();
@@ -69,7 +70,7 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public ObservableCollection<AccountModel> ChartOfAccounts
+        public ObservableCollection<IAccount> ChartOfAccounts
         { get { return chartOfAccounts; } }
 
         public override void Reset()

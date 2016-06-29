@@ -43,22 +43,28 @@ namespace UmanyiSMS
 
 		#region General
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        #if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        #endif
 		public bool TryOperation(Func<ImmutableDictionary<T,V>, ImmutableDictionary<T,V>> operation)
 			{
 			return TryOperation(operation, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool DoOperation(Func<ImmutableDictionary<T,V>, ImmutableDictionary<T,V>> operation)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        public bool DoOperation(Func<ImmutableDictionary<T,V>, ImmutableDictionary<T,V>> operation)
 			{
 			return DoOperation(operation, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 			}
 
 		#region Helpers
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private bool TryOperation(Func<ImmutableDictionary<T,V>, ImmutableDictionary<T,V>> operation, NotifyCollectionChangedEventArgs args)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private bool TryOperation(Func<ImmutableDictionary<T,V>, ImmutableDictionary<T,V>> operation, NotifyCollectionChangedEventArgs args)
 			{
 			try
 				{
@@ -88,8 +94,10 @@ namespace UmanyiSMS
 			return false;
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private bool TryOperation(Func<ImmutableDictionary<T,V>, KeyValuePair<ImmutableDictionary<T,V>, NotifyCollectionChangedEventArgs>> operation)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private bool TryOperation(Func<ImmutableDictionary<T,V>, KeyValuePair<ImmutableDictionary<T,V>, NotifyCollectionChangedEventArgs>> operation)
 			{
 			try
 				{
@@ -121,8 +129,10 @@ namespace UmanyiSMS
 			return false;
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private bool DoOperation(Func<ImmutableDictionary<T,V>, ImmutableDictionary<T,V>> operation, NotifyCollectionChangedEventArgs args)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private bool DoOperation(Func<ImmutableDictionary<T,V>, ImmutableDictionary<T,V>> operation, NotifyCollectionChangedEventArgs args)
 			{
 			bool result;
 
@@ -151,8 +161,10 @@ namespace UmanyiSMS
 			return result;
 			}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private bool DoOperation(Func<ImmutableDictionary<T,V>, KeyValuePair<ImmutableDictionary<T,V>, NotifyCollectionChangedEventArgs>> operation)
+#if NET45
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private bool DoOperation(Func<ImmutableDictionary<T,V>, KeyValuePair<ImmutableDictionary<T,V>, NotifyCollectionChangedEventArgs>> operation)
 			{
 			bool result;
 

@@ -21,14 +21,14 @@ namespace UmanyiSMS.ViewModels
             CreateCommands();
         }
 
-        protected async override void InitVars()
+        protected override void InitVars()
         {
             IsBusy = true;
             IsReadOnly = true;
             Task<ObservableCollection<ItemCategoryModel>> pTemp = DataAccess.GetAllItemCategoriesAsync();
             Task<ObservableCollection<ItemCategoryModel>> cTemp = DataAccess.GetAllItemCategoriesAsync();
 
-            await Task.WhenAll(new Task[] { pTemp, cTemp });
+             Task.WaitAll(new Task[] { pTemp, cTemp });
             originalItems = pTemp.Result;
             CurrentItems = cTemp.Result;
             IsBusy = false;
@@ -139,13 +139,13 @@ namespace UmanyiSMS.ViewModels
             return temp;
         }
 
-        public async override void Reset()
+        public override void Reset()
         {
             IsReadOnly = true;
             Task<ObservableCollection<ItemCategoryModel>> pTemp = DataAccess.GetAllItemCategoriesAsync();
             Task<ObservableCollection<ItemCategoryModel>> cTemp = DataAccess.GetAllItemCategoriesAsync();
 
-            await Task.WhenAll(new Task[] { pTemp, cTemp });
+            Task.WaitAll(new Task[] { pTemp, cTemp });
             originalItems = pTemp.Result;
             CurrentItems = cTemp.Result;
         }

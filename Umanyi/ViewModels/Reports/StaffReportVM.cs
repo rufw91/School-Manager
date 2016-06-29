@@ -66,7 +66,7 @@ namespace UmanyiSMS.ViewModels
 
         private Task<DataTable> GetEntries()
         {
-            return Task.Run<DataTable>(() =>
+            return Task.Factory.StartNew<DataTable>(() =>
             {
                 string selectStr = "SELECT ";
                 var t = columns.Where(ox => ox.IsSelected == true);

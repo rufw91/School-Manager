@@ -1,10 +1,13 @@
 ﻿CREATE TABLE [Institution].[QBSync] (
-    [QBSyncID]      INT              NOT NULL,
-    [Type]          VARCHAR (50)     NOT NULL,
-    [TransactionID] INT              NOT NULL,
-    [ModifiedDate]  DATETIME         CONSTRAINT [DF_QBSync_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
-    [rowguid]       UNIQUEIDENTIFIER CONSTRAINT [DF_QBSync_rowguid] DEFAULT (newid()) NOT NULL
+    [QBSyncID]     INT              CONSTRAINT [DF_QBSync_QBSyncID] DEFAULT ([dbo].[Link_GetNewID]('Institution.QBSync')) NOT NULL,
+    [SyncType]     VARCHAR (50)     NOT NULL,
+    [RefNo]        VARCHAR (50)     NOT NULL,
+    [ModifiedDate] DATETIME         CONSTRAINT [DF_QBSync_ModifiedDate] DEFAULT (sysdatetime()) NOT NULL,
+    [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_QBSync_rowguid] DEFAULT (newid()) NOT NULL,
+    CONSTRAINT [PK_QBSync] PRIMARY KEY CLUSTERED ([QBSyncID] ASC)
 );
+
+
 
 
 GO

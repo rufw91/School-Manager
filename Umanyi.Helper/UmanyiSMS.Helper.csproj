@@ -251,6 +251,8 @@
     <Compile Include="Models\VATAnalysisModel.cs" />
     <Compile Include="Models\VatModel.cs" />
     <Compile Include="Models\VoteHeadModel.cs" />
+    <Compile Include="Presentation\IAccount.cs" />
+    <Compile Include="Presentation\IAccountBase.cs" />
     <Compile Include="Presentation\IApp.cs" />
     <Compile Include="Presentation\OperationProgress.cs" />
     <Compile Include="Presentation\ParentViewModel.cs" />
@@ -321,6 +323,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\SupplierStatement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\AccountsTrialBalance.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>

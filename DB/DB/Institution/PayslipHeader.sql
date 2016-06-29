@@ -11,6 +11,8 @@
 );
 
 
+
+
 GO
 CREATE TRIGGER [Institution].[TR_PayslipHeader_UpdateID]
  ON Institution.PayslipHeader AFTER INSERT 
@@ -30,3 +32,56 @@ BEGIN
     END
    END
 END
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[PayslipHeader] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[Institution].[PayslipHeader] TO [Accounts]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[PayslipHeader] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[PayslipHeader] TO [Deputy]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[Institution].[PayslipHeader] TO [Accounts]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[PayslipHeader] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[Institution].[PayslipHeader] TO [Accounts]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[PayslipHeader] TO [Principal]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[Institution].[PayslipHeader] TO [Accounts]
+    AS [dbo];
+

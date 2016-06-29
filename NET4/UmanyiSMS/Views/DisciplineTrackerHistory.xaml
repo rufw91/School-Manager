@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.DisciplineTrackerHistory"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="clr-namespace:Helper.Controls;assembly=Helper" 
+             xmlns:commands="clr-namespace:UmanyiSMS.Presentation"
+             xmlns:views ="clr-namespace:UmanyiSMS.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900"
+             Background="White">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Discipline Tracker History" VerticalAlignment="Top"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="30,80,0,0" Text="Student ID" VerticalAlignment="Top" />
+        <TextBox HorizontalAlignment="Left" Margin="100,80,0,0" Name="txtStudentId" VerticalAlignment="Top" Width="200" 
+                         Text="{Binding SelectedStudent.StudentID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged
+            , ValidatesOnDataErrors=True}"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="30,125,0,0" Text="Name" VerticalAlignment="Top" />
+        <TextBox HorizontalAlignment="Left" Margin="100,125,0,0" VerticalAlignment="Top" Width="200" 
+                         Text="{Binding SelectedStudent.NameOfStudent}" Background="WhiteSmoke" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
+        <GroupBox Header="Period" HorizontalAlignment="Left" Margin="30,190,0,0" VerticalAlignment="Top" Style="{x:Null}" Width="270" Height="204">
+            <Grid>
+                <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Start" VerticalAlignment="Top"/>
+                <DatePicker Margin="20,40,20,0" VerticalAlignment="Top" SelectedDateFormat="Long"
+                            SelectedDate="{Binding Start, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock HorizontalAlignment="Left" Margin="20,90,0,0" Text="End" VerticalAlignment="Top"/>
+                <DatePicker Margin="20,110,20,0" VerticalAlignment="Top" SelectedDateFormat="Long"
+                            SelectedDate="{Binding End, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+        </GroupBox>
+        
+        <DataGrid Name="dataGrid"  Margin="350,105,20,20" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False"
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" ItemsSource="{Binding Entries}"
+                  Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Issue, Mode=OneWay}" Header="Issue" Width="100*"/>
+                <DataGridTextColumn Binding="{Binding Path=DateAdded, Mode=OneWay,StringFormat='dd-MMM-yyyy hh:mm:ss'}" Header="Date Added" Width="50*"/>
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <Setter Property="Tag" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}" Tag="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                <MenuItem Header="View Details" Command="{Binding DisplayDisciplineDetailCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                <MenuItem Header="Modify Details" IsEnabled="False"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+        <Controls:DropDownButton Content="Export" HorizontalAlignment="Right" Margin="0,60,10,0" VerticalAlignment="Top" DataContext="{Binding ElementName=dataGrid}">
+            <Controls:DropDownButton.DropDownContent>
+                <Menu>
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
+                    <MenuItem Header="Export to PDF" Command="{Binding Source={x:Static commands:CommonCommands.ExportToPDFCommand}}" CommandParameter="{Binding}"/>
+                    <MenuItem Header="Export to Excel" Command="{Binding Source={x:Static commands:CommonCommands.ExportToExcelCommand}}" CommandParameter="{Binding}"/>
+                </Menu>
+            </Controls:DropDownButton.DropDownContent>
+        </Controls:DropDownButton>
+
+        <Button Content="Refresh" HorizontalAlignment="Left" Margin="123,399,0,0" VerticalAlignment="Top" Width="100"
+                Command="{Binding RefreshCommand}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="305,80,0,0" Text="(Zero for all students)" VerticalAlignment="Top"/>
+
+
+    </Grid>
+</UserControl>

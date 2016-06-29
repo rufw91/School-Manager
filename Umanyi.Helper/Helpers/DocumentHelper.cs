@@ -26,7 +26,8 @@ namespace Helper
             Statement, Transcript, Transcript3, LeavingCert, FeesStructure, FeesPayment, FeesPayment2,
             Balances, ClassList, ClassExamResults, ClassLeavingCertificates, Transcript2, Voucher, ClassMarkList, AggregateResult,
             ClassTranscripts, ClassTranscripts2, UnreturnedBooks, UnreturnedBooks2, Report, Payslip, AccountsGeneralLedger, AccountsIncomeStatement,
-            AccountsBalanceSheet, AccountsSTofCashFlow, SupplierStatement,SupplierPayment
+            AccountsBalanceSheet, AccountsSTofCashFlow, SupplierStatement, SupplierPayment,
+            AccountsTrialBalance
         }
 
         public static FixedDocument GenerateDocument(object workObject)
@@ -92,6 +93,7 @@ namespace Helper
                 case DocType.AccountsIncomeStatement: GenerateAccountsIncomeStatement(); break;
                 case DocType.AccountsBalanceSheet: GenerateAccountsBalanceSheet(); break;
                 case DocType.AccountsSTofCashFlow: GenerateAccountsSTofCashFlows(); break;
+                case DocType.AccountsTrialBalance: GenerateTrialBalance(); break;
                 case DocType.SupplierStatement: GenerateSupplierStatement(); break;
                 case DocType.SupplierPayment: GenerateVoucher2(); break;
                 default: throw new ArgumentException();
@@ -127,6 +129,7 @@ namespace Helper
                 case DocType.AccountsGeneralLedger: resString = Helper.Properties.Resources.AccountsGeneralLedger; break;
                 case DocType.AccountsIncomeStatement: resString = Helper.Properties.Resources.AccountsIncomeStatement; break;
                 case DocType.AccountsBalanceSheet: resString = Helper.Properties.Resources.AccountsBalanceSheet; break;
+                case DocType.AccountsTrialBalance: resString = Helper.Properties.Resources.AccountsTrialBalance; break;
                 case DocType.AccountsSTofCashFlow: resString = Helper.Properties.Resources.AccountsSTOfCashFlows; break;
                 case DocType.SupplierStatement: resString = Helper.Properties.Resources.SupplierStatement; break;
                 case DocType.SupplierPayment: resString = Helper.Properties.Resources.PaymentVoucher2; break;  
@@ -195,6 +198,8 @@ namespace Helper
                 return DocType.AccountsBalanceSheet;
             if (workObject is STCashFlowsModel)
                 return DocType.AccountsSTofCashFlow;
+            if (workObject is TrialBalanceModel)
+                return DocType.AccountsTrialBalance;
             throw new ArgumentException();
         }
 
@@ -266,8 +271,9 @@ namespace Helper
                 totalNoOfItems = (workObject as AllUnreturnedBooksModel).Count;
             if (workObject is GeneralLedgerModel)
                 totalNoOfItems = (workObject as GeneralLedgerModel).Entries.Count;
-            
-            if (workObject is BalanceSheetModel)
+            if (docType == DocType.AccountsTrialBalance)
+                return 1;
+            if (docType == DocType.AccountsBalanceSheet)
                 return 1;
             if (docType== DocType.AccountsSTofCashFlow)
                 return CalculatePagesAccountsSTOC(workObject as STCashFlowsModel);

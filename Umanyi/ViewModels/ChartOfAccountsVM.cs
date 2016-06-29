@@ -1,5 +1,6 @@
 ﻿using Helper;
 using Helper.Models;
+using Helper.Presentation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ namespace UmanyiSMS.ViewModels
 {
     public class ChartOfAccountsVM : ViewModelBase
     {
-        private ObservableCollection<AccountModel> chartOfAccounts;
+        private ObservableCollection<IAccount> chartOfAccounts;
         public ChartOfAccountsVM()
         {
             InitVars();
@@ -35,7 +36,7 @@ namespace UmanyiSMS.ViewModels
             NotifyPropertyChanged("ChartOfAccounts");
         }
 
-        public ObservableCollection<AccountModel> ChartOfAccounts
+        public ObservableCollection<IAccount> ChartOfAccounts
         { get { return chartOfAccounts; } }
     }
 }

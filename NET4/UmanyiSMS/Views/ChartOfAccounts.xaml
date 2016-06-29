@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.ChartOfAccounts"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UmanyiSMS.Views"
+           Background="White"
+             mc:Ignorable="d" d:DesignHeight="722" d:DesignWidth="1024">
+    <Grid >
+        <TextBlock Text="Chart of Accounts" Style="{StaticResource Title}" HorizontalAlignment="Left"  Margin="10,10,0,0"
+                       VerticalAlignment="Top"/>
+        <TreeView HorizontalAlignment="Left" Margin="50,80,0,0" VerticalAlignment="Top" 
+                  
+                  ItemsSource="{Binding ChartOfAccounts}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding}">
+                    <TextBlock Text="{Binding Name, Converter={StaticResource ToUpperConverter}}"/>
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding}">
+                            <TextBlock Text="{Binding Name, Converter={StaticResource ToUpperConverter}}"/>
+                        </HierarchicalDataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.Resources>
+                <Style
+           TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="IsExpanded" Value="True"/>
+                </Style>
+            </TreeView.Resources>
+        </TreeView>
+               
+    </Grid>
+</UserControl>
