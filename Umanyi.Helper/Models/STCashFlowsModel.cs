@@ -65,12 +65,7 @@ namespace Helper.Models
 
         public decimal EndBalance
         {
-            get { return GetEndBalance(); }
-        }
-
-        private decimal GetEndBalance()
-        {
-            return startBalance + OperatingActivitiesTotal;
+            get { return startBalance + OperatingActivitiesTotal; }
         }
 
         public override void Reset()

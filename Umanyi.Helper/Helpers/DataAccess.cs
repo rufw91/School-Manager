@@ -8272,34 +8272,23 @@ namespace Helper
             });
         }
 
-        private static AccountModel GetISExpenses(DateTime startTime, DateTime endTime)
+        private static AccountModel GetISExpenses(DateTime startDate, DateTime endDate)
         {
-            AccountModel temp = new AccountModel();
-            string selectstr = "SELECT ic.ItemCategoryID, ic.[Description],SUM(ird.LineTotal) FROM [Sales].[ItemCategory] ic LEFT OUTER JOIN [Sales].[Item] i ON " +
-                "(i.ItemCategoryID = ic.ItemCategoryID) LEFT OUTER JOIN [Sales].[ItemReceiptDetail] ird ON (ird.ItemID = i.ItemID) " +
-                "LEFT OUTER JOIN [Sales].[ItemReceiptHeader] irh ON (irh.ItemReceiptID=ird.ItemReceiptID) WHERE " +
-                "ic.[ParentCategoryID] =(SELECT ItemCategoryID FROM [Sales].[ItemCategory] WHERE [Description]='EXPENSES') AND irh.OrderDate BETWEEN " +
-                "CONVERT(datetime,@start) AND CONVERT(datetime,@end) GROUP BY ic.ItemCategoryID, ic.[Description]";
-            DateTime start = startTime.Date;
-            DateTime end = new DateTime(endTime.Year, endTime.Month, endTime.Day, 23, 59, 59, 998);
-            ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
-            paramColl.Add(new SqlParameter("@start", start));
-            paramColl.Add(new SqlParameter("@end", end));
-            DataTable dt = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(selectstr, paramColl);
+            var accounts = GetChartOfAccountsAsync().Result;
+            string selectStr = "";
+            foreach (var y in accounts["EXPENSES"])
+            {
+                selectStr = "SELECT dbo.GetExpenseAccountBalance(@id,@startd,@endd)";
+                var pc1 = new ObservableCollection<SqlParameter>();
+                pc1.Add(new SqlParameter("@startd", startDate.Date));
+                pc1.Add(new SqlParameter("@endd", new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59, 998)));
+                pc1.Add(new SqlParameter("@id", y.AccountID));
+                var x = DataAccessHelper.ExecuteScalar(selectStr, pc1);
+                y.Balance = decimal.Parse(x);
+            }
 
-                foreach (DataRow dtr in dt.Rows)
-                    temp.Add(new AccountModel() { AccountID = int.Parse(dtr[0].ToString()), Name = dtr[1].ToString(), Balance = decimal.Parse(dtr[2].ToString()) });
-                selectstr = "SELECT ic.ItemCategoryID, ic.[Description],ISNULL(SUM(ph.AmountPaid),0) FROM [Sales].[ItemCategory] ic " +
-                    "LEFT OUTER JOIN [Institution].[PayslipHeader] ph ON(ic.Description='PAYROLL EXPENSES' AND ph.DatePaid BETWEEN @start AND @end)"+
-                    " GROUP BY ic.ItemCategoryID, ic.[Description]";
-                paramColl = new ObservableCollection<SqlParameter>();
-                paramColl.Add(new SqlParameter("@start", start));
-                paramColl.Add(new SqlParameter("@end", end));
-                dt = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(selectstr, paramColl);
 
-                foreach (DataRow dtr in dt.Rows)
-                temp.Add(new AccountModel() { AccountID = int.Parse(dtr[0].ToString()), Name = dtr[1].ToString(), Balance = decimal.Parse(dtr[2].ToString()) });
-            return temp;
+            return (AccountModel)accounts["EXPENSES"];
         }
 
         private static AccountModel GetISRevenues(DateTime startTime, DateTime endTime)
@@ -8358,27 +8347,9 @@ namespace Helper
             return Task.Factory.StartNew<STCashFlowsModel>(() =>
                 {
                     STCashFlowsModel st = new STCashFlowsModel(GetIncomeStatement(startTime, endTime).Result);
-                    st.StartBalance = GetSTCStartBalance(startTime);
                     return st;
                 });
         }
-
-        private static decimal GetSTCStartBalance(DateTime startTime)
-        {
-            string selectstr = "DECLARE @exp decimal(18,0) = (SELECT ISNULL(SUM(TotalAmt),0) FROM [Sales].[ItemReceiptHeader] WHERE OrderDate < CONVERT(datetime,@dt))+" +
-             "(SELECT ISNULL(SUM(CONVERT(decimal,TotalPaid)),0) FROM [Institution].[PayoutHeader] WHERE ISNULL(DatePaid,ModifiedDate) < CONVERT(datetime,@dt))+" +
-            "(SELECT ISNULL(SUM(AmountPaid),0) FROM [Institution].[PayslipHeader] WHERE DatePaid < CONVERT(datetime,@dt))\r\n" +
-
-            "DECLARE @rev decimal(18,0)=(SELECT ISNULL(SUM(CONVERT(decimal,AmountPaid)),0) FROM [Institution].[FeesPayment] WHERE DatePaid < CONVERT(datetime,@dt))+" +
-            "(SELECT ISNULL(SUM(AmountDonated),0) FROM [Institution].[Donation] WHERE DateDonated < CONVERT(datetime,@dt))\r\n" +
-            "SELECT @exp-@rev";
-            ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
-            paramColl.Add(new SqlParameter("@dt", startTime));
-            var res = DataAccessHelper.ExecuteScalar(selectstr, paramColl);
-            decimal bal = decimal.Parse(res);
-            return bal;
-        }
-
 
         public static Task<AccountModel> GetChartOfAccountsAsync()
         {
@@ -8685,6 +8656,19 @@ namespace Helper
                 pc1.Add(new SqlParameter("@startd", startDate.Date));
                 pc1.Add(new SqlParameter("@endd", new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59, 998)));
                 accounts["ASSETS"]["CASH"].Balance = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr, pc1));
+
+
+                selectStr = "SELECT ISNULL(SUM(AmountPaid),0) FROM [Institution].[FeesPayment] WHERE DatePaid BETWEEN @startd AND @endd";
+                pc1 = new ObservableCollection<SqlParameter>();
+                pc1.Add(new SqlParameter("@startd", startDate.Date));
+                pc1.Add(new SqlParameter("@endd", new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59, 998)));
+                accounts["REVENUE"]["FEES PAID"].Balance = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr, pc1));
+
+                selectStr = "SELECT ISNULL(SUM(AmountDonated),0) FROM [Institution].[Donation] WHERE DateDonated BETWEEN @startd AND @endd";
+                pc1 = new ObservableCollection<SqlParameter>();
+                pc1.Add(new SqlParameter("@startd", startDate.Date));
+                pc1.Add(new SqlParameter("@endd", new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59, 998)));
+                accounts["REVENUE"]["DONATIONS"].Balance = decimal.Parse(DataAccessHelper.ExecuteScalar(selectStr, pc1));
 
                 selectStr = "DECLARE @fee1 decimal(18,0) = (SELECT ISNULL(SUM(AmountPaid),0) FROM [Institution].[FeesPayment] WHERE DatePaid BETWEEN @startd AND @endd AND PaymentMethod NOT IN('M-PESA','CASH'));\r\n"+
                     "DECLARE @don1 decimal(18,0) = (SELECT ISNULL(SUM(AmountDonated),0) FROM [Institution].[Donation] WHERE DateDonated BETWEEN @startd AND @endd);\r\n"+

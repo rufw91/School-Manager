@@ -93,6 +93,7 @@ namespace Helper
                 using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.ConnectionString))
                 {
                     conn.Credential = newCredentials;
+                    
                     conn.Open();
                 }
             #endif
