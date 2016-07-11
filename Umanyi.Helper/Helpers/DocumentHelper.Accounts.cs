@@ -347,18 +347,22 @@ namespace Helper
                 {
                     lastRevYpos = 195 + ((i - 35 * pageNo) * 25);
 
-                    AddAISRevenueAccount(stoc.OperatingActivitiesEntries[i].Name, stoc.OperatingActivitiesEntries[i].Balance, lastRevYpos, pageNo);
+                    AddASTOCEntry(stoc.OperatingActivitiesEntries[i].Name, stoc.OperatingActivitiesEntries[i].Balance, lastRevYpos, pageNo);
 
                     lastRevPage = pageNo;
                 }
             }
-            decimal d = 0;
-            foreach (var y in stoc.OperatingActivitiesEntries)
-                d += y.Balance;
+
             AddASTOCSubtitle("TOTAL INCOME FROM OPERATING ACTIVITIES", lastRevYpos + 40, lastRevPage);
-            AddASTOCTotals(d, lastRevYpos+40, lastRevPage);
+            AddASTOCTotals(stoc.OperatingActivitiesTotal, lastRevYpos+40, lastRevPage);
         }
 
+        private static void AddASTOCEntry(string name, decimal amount, double yPos, int pageNo)
+        {
+            AddText(name, "Arial", 14, false, 0, Colors.Black, 52, yPos, pageNo);
+            AddText(amount.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 450, yPos, pageNo);
+        }
+        
         private static void AddASTOCSubtitle(string text, double yPos, int pageNo)
         {
             AddText(text, "Arial", 14, true, 0, Colors.Black, 20, yPos, pageNo);
@@ -412,30 +416,33 @@ namespace Helper
                     AddATBAccount(si.Accounts[i], 185 + (i * 25), pageNo);
                 }
                 AddATBCreditTotals(si.CreditTotals,  pageNo);
-                AddATBDebitTotals(si.CreditTotals, pageNo);
+                AddATBDebitTotals(si.DebitTotals, pageNo);
             }
         }
 
         private static void AddATBPeriod(DateTime startTime, DateTime endTime, int pageNo)
         {
-            AddText(startTime.ToString("dd MMM yyyy")+" to "+endTime.ToString("dd MMM yyyy"), "Arial", 14, true, 0, Colors.Black, 450, 0, pageNo);
+            AddText(startTime.ToString("dd MMM yyyy")+" to "+endTime.ToString("dd MMM yyyy"), "Arial", 14, true, 0, Colors.Black, -1, 110, pageNo);
         }
 
         private static void AddATBAccount(IAccount transaction, double yPos, int pageNo)
         {
-           /* AddText(transaction.TransactionID, "Arial", 14, true, 0, Colors.Black, 635, yPos, pageNo);
-            if (transaction.TransactionType== TransactionTypes.Credit)
-            AddText(transaction.TransactionID, "Arial", 14, true, 0, Colors.Black, 635, yPos, pageNo);*/
-        }
+            AddText(transaction.Name, "Arial", 14, true, 0, Colors.Black, 50, yPos, pageNo);
+            if ((transaction.AccountType == AccountType.Expense) || (transaction.AccountType == AccountType.Asset))
+                AddText(transaction.Balance.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 360, yPos, pageNo);
 
+            else
+                AddText(transaction.Balance.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 600, yPos, pageNo);
+        }    
+       
         private static void AddATBCreditTotals(decimal total, int pageNo)
         {
-            AddText(total.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 635, 0, pageNo);
+           // AddText(total.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 635, 0, pageNo);
         }
 
         private static void AddATBDebitTotals(decimal total, int pageNo)
         {
-            AddText(total.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 635, 0, pageNo);
+         //   AddText(total.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 635, 0, pageNo);
         }
 
         #endregion

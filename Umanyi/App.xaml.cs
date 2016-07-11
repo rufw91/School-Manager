@@ -123,6 +123,7 @@ namespace UmanyiSMS
                 {
                     Helper.Properties.Settings.Default.Save();
                 };
+
             }
             catch (Exception e) { Log.E(e.ToString(), this); }
         }
