@@ -87,7 +87,7 @@ namespace UmanyiSMS.ViewModels
         private bool CanSave()
         {
             return !IsBusy&&newPayment.SupplierID > 0 &&
-                    newPayment.AmountPaid > 0 && newPayment.DatePaid != null;
+                    newPayment.AmountPaid > 0 && newPayment.DatePaid != null &&!string.IsNullOrWhiteSpace(newPayment.Notes);
         }
 
         public Action<FixedDocument> ShowPrintDialogAction
