@@ -19,12 +19,10 @@
                 <Grid>
                     <DataGrid Name="dataGrid" Margin="300,40,10,0" AutoGenerateColumns="False" BorderThickness="1" CanUserDeleteRows="True" CanUserAddRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" ItemsSource="{Binding NewBudget.Accounts}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Path=Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Header="Account" Width="100*"
+                            <DataGridTextColumn Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Header="Account" Width="100*"
                                         IsReadOnly="True"/>
-                            <DataGridTextColumn Binding="{Binding Path=BudgetPc, Mode=TwoWay}" Header="Percentage" Width="75*"
+                            <DataGridTextColumn Binding="{Binding Path=BudgetAmount, UpdateSourceTrigger=PropertyChanged}" Header="Amount" Width="70*"
                                         />
-                            <DataGridTextColumn Binding="{Binding Path=BudgetAmount, Mode=OneWay, StringFormat={}{0:N0}, UpdateSourceTrigger=PropertyChanged}" Header="Amt" Width="70*"
-                                        IsReadOnly="True"/>
 
                         </DataGrid.Columns>
                     </DataGrid>

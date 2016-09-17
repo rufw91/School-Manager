@@ -118,6 +118,9 @@
       <Component Id="cmp13" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)System.Windows.Interactivity.dll" />
       </Component>
+      <Component Id="cmp14" Guid="*">
+        <File Source="C:\Dev\Common\gxps-9.15-win32.exe" />
+      </Component>
     </ComponentGroup>
   </Fragment>
 

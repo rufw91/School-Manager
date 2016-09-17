@@ -290,46 +290,46 @@
     <Compile Include="Helpers\DocumentHelper.AllUnreturnedBooks.cs" />
     <Compile Include="Helpers\DocumentHelper.Accounts.cs" />
     <None Include="packages.config" />
-    <None Include="Resources\Receipt.xaml">
+    <Page Include="Resources\Receipt.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\Report.xaml">
+    </Page>
+    <Page Include="Resources\Report.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\Transcript3.xaml">
+    </Page>
+    <Page Include="Resources\Transcript3.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\FullFeesStructure.xaml">
+    </Page>
+    <Page Include="Resources\FullFeesStructure.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\AccountsGeneralLedger.xaml">
+    </Page>
+    <Page Include="Resources\AccountsGeneralLedger.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\AccountsIncomeStatement.xaml">
+    </Page>
+    <Page Include="Resources\AccountsIncomeStatement.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\AccountsBalanceSheet.xaml">
+    </Page>
+    <Page Include="Resources\AccountsBalanceSheet.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\AccountsSTOfCashFlows.xaml">
+    </Page>
+    <Page Include="Resources\AccountsSTOfCashFlows.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\SupplierStatement.xaml">
+    </Page>
+    <Page Include="Resources\SupplierStatement.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\AccountsTrialBalance.xaml">
+    </Page>
+    <Page Include="Resources\AccountsTrialBalance.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </None>
+    </Page>
     <Page Include="Resources\PaymentVoucher2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -415,8 +415,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\logo.png" />
-    <Content Include="Resources\noImage.png" />
+    <Resource Include="Resources\logo.png" />
+    <Resource Include="Resources\noImage.png" />
     <Page Include="Resources\Payslip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

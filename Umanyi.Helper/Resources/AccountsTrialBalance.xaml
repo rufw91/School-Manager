@@ -33,7 +33,6 @@
               Source="{Binding Info.Logo, Source={x:Static Application.Current}}" />
         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,10" Text="{Binding Info.Motto, Source={x:Static Application.Current}}" VerticalAlignment="Bottom" FontStyle="Italic"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,84,0,0" Text="TRIAL BALANCE" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="20" TextDecorations="Underline"/>
-        <TextBlock HorizontalAlignment="Center" Margin="45,178,612.76,0" Text="TRIAL BALANCE" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="20" TextDecorations="Underline"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,140,0,0" TextWrapping="Wrap" Text="ACCOUNT" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="360,140,0,0" TextWrapping="Wrap" Text="DEBIT BALANCE" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="600,140,0,0" TextWrapping="Wrap" Text="CREDIT BALANCE" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
