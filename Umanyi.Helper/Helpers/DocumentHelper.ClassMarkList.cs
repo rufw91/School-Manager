@@ -17,6 +17,10 @@ namespace Helper
         {
             AddText(nameOfClass, "Arial", 14, true, 0, Colors.Black, 70, 70, pageNo);
         }
+        private static void AddCMLExam(string nameOfExam, int pageNo)
+        {
+            AddText(nameOfExam, "Arial", 14, true, 0, Colors.Black, 350, 75, pageNo);
+        }
         private static void AddCMLSubjects(DataTable entries, int pageNo)
         {
             double xPos = 255;
@@ -69,6 +73,7 @@ namespace Helper
             int pageNo;
             for (pageNo = 0; pageNo < noOfPages; pageNo++)
             {
+                AddCMLExam(si.NameOfExam, pageNo);
                 AddCMLClass(si.NameOfClass, pageNo);
                 AddCMLSubjects(si.Entries, pageNo);
                 AddCMLStudents(si.Entries, pageNo);

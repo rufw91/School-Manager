@@ -73,7 +73,15 @@ namespace UmanyiSMS.ViewModels
         {
             return !IsBusy && newBudget.StartDate < newBudget.EndDate && newBudget.Accounts.Count > 0
                 && !newBudget.Accounts.Any(o => o.BudgetAmount == 0) && newBudget.Entries.Count > 0
-                && !newBudget.Entries.Any(o => o.BudgetedAmount == 0);
+                && !newBudget.Entries.Any(o => o.BudgetedAmount == 0)&&TotalOfAccs().Equals(newBudget.TotalBudget);
+        }
+
+        private decimal TotalOfAccs()
+        {
+            decimal tot = 0;
+            foreach (var x in newBudget.Accounts)
+                tot += x.BudgetAmount;
+            return tot;
         }
 
         private bool CanAdd()

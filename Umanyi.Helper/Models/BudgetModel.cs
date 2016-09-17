@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Helper.Models
 {
@@ -24,11 +25,19 @@ namespace Helper.Models
             EndDate = new DateTime(DateTime.Now.Year, 12, 31);
             PropertyChanged += (o, e) =>
                 {
-                    if (e.PropertyName=="TotalBudget")
+                    if (e.PropertyName == "TotalBudget")
                     {
                         RefreshValues();
                     }
                 };
+
+            Timer t = new Timer(100);
+            t.Elapsed += (o, e) =>
+            {
+                TotalBudget = CalculateTotals();
+            };
+
+            t.Start();
 
             accounts.CollectionChanged += (o, e) =>
                 {
@@ -37,13 +46,16 @@ namespace Helper.Models
 
         }
 
+        private decimal CalculateTotals()
+        {
+            decimal temp = 0;
+            foreach (var t in accounts)
+                temp += t.BudgetAmount;
+            return temp;
+        }
+
         public void RefreshValues()
         {
-            foreach (var h in accounts)
-            {
-                h.BudgetAmount = h.BudgetPc * totalBudget / 100;                
-            
-            }
             var orphans=entries.Where(o => !accounts.Any(a => a.AccountID == o.AccountID));
             if (orphans!=null)
             {

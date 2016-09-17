@@ -15,8 +15,11 @@
             <TextBox HorizontalAlignment="Left" Margin="120,80,0,0" Text="{Binding NewCategory.Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="300" MaxLength="49"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,130,0,0" Text="Sub-account of:" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="120,130,0,0" Style="{StaticResource TreeviewCombobox}"
-                  ItemsSource="{Binding ChartOfAccounts}" Tag="{Binding NewCategory.ParentCategoryID, Mode=OneWayToSource, Converter={StaticResource AccountToAccountIDConverter}}" VerticalAlignment="Top" Width="300" >
+        <ComboBox HorizontalAlignment="Left" Margin="120,130,0,0" 
+                  Style="{StaticResource TreeviewCombobox}"
+                  ItemsSource="{Binding ChartOfAccounts}" 
+                  Tag="{Binding NewCategory.ParentCategoryID, Mode=OneWayToSource, Converter={StaticResource AccountToAccountIDConverter}}" 
+                  VerticalAlignment="Top" Width="300" >
             
         </ComboBox>
         <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Content="Save" Width="90"

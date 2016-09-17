@@ -3604,6 +3604,8 @@ namespace Helper
             return Task.Factory.StartNew<ExamResultClassModel>(delegate
             {
                 ExamResultClassModel examResultClassModel = new ExamResultClassModel();
+                examResultClassModel.ClassID = classID;
+                examResultClassModel.NameOfClass = GetClass(classID).NameOfClass;
                 ObservableCollection<SubjectModel> result = DataAccess.GetSubjectsRegistredToClassAsync(classID).Result;
                 string text = "SELECT StudentID, NameOfStudent,";
                 object obj;
@@ -3648,12 +3650,46 @@ namespace Helper
                             examResultSubjectEntryModel.Score = decimal.Parse(dataRow[i].ToString());
                             examResultSubjectEntryModel.OutOf = outOf;
                             examResultStudentModel.Entries.Add(examResultSubjectEntryModel);
+                            RemoveLowestOptional(examResultStudentModel.Entries, examResultClassModel.NameOfClass);
                         }
                     }
                     examResultClassModel.Entries.Add(examResultStudentModel);
                 }
                 return examResultClassModel;
             });
+        }
+
+        private static void RemoveLowestOptional(ObservableCollection<ExamResultSubjectEntryModel> subjects,string className)
+        {
+            bool getBest7 = false;
+            switch (((IApp)Application.Current).ExamSettings.Best7Subjects)
+            {
+                case 0: getBest7 = className.ToLowerInvariant().Contains("form 4"); break;
+                case 1: getBest7 = className.ToLowerInvariant().Contains("form 4") || className.ToLowerInvariant().Contains("form 3"); break;
+                case 2: getBest7 = true; break;
+                case 3: getBest7 = false; break;
+            }
+
+            List<int> optionals = new List<int>
+            {
+                311,
+                312,
+                443,
+                565
+            };
+            var opts = (from a in subjects
+                        where optionals.Contains(a.Code)
+                        select a);
+
+            if (opts.Count() > 0 && getBest7)
+            {
+                decimal min = opts.Min((ExamResultSubjectEntryModel o) => o.Score);
+                var item = subjects.First((ExamResultSubjectEntryModel a) => optionals.Contains(a.Code) && a.Score == min);
+                if (subjects.Count < 11 && subjects.Count > 7)
+                {
+                    subjects.Remove(item);
+                }
+            }
         }
 
         public static Task<ClassStudentsExamResultModel> GetClassExamResultForTranscriptAsync(int classID, int examID, decimal outOf)
@@ -3779,8 +3815,10 @@ namespace Helper
         {
             return Task.Factory.StartNew<ObservableCollection<EventModel>>(delegate
             {
-                string commandText = "SELECT Name, StartDateTime, EndDateTime, Location, Subject, Message FROM [Institution].[Event] WHERE StartDateTime >=CONVERT(datetime, '" + DateTime.Now.ToString("g") + "')";
-                DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+                string commandText = "SELECT Name, StartDateTime, EndDateTime, Location, Subject, Message FROM [Institution].[Event] WHERE StartDateTime >=CONVERT(datetime, @datet)";
+                var paramColl = new ObservableCollection<SqlParameter>() { new SqlParameter("@datet", DateTime.Now) };
+                DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(commandText,paramColl);
+                
                 ObservableCollection<EventModel> observableCollection = new ObservableCollection<EventModel>();
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -4003,6 +4041,7 @@ namespace Helper
             {
                 ClassID = classResult.ClassID,
                 NameOfClass = classResult.NameOfClass,
+                NameOfExam=classResult.NameOfExam,
                 Entries = classResult.ResultTable
             };
         }
@@ -7297,6 +7336,8 @@ namespace Helper
         public static async Task<ExamResultClassModel> GetClassCombinedExamResultAsync(int classID, ObservableCollection<ExamWeightModel> exams)
         {
             ExamResultClassModel examResultClassModel = new ExamResultClassModel();
+            examResultClassModel.ClassID = classID;
+            examResultClassModel.NameOfClass = GetClass(classID).NameOfClass;
             ObservableCollection<SubjectModel> observableCollection = await DataAccess.GetSubjectsRegistredToClassAsync(classID);
             string text = "SELECT StudentID, NameOfStudent,";
             foreach (SubjectModel current in observableCollection)
@@ -7351,6 +7392,7 @@ namespace Helper
                         examResultSubjectEntryModel.Score = decimal.Parse(dataRow[i].ToString());
                         examResultSubjectEntryModel.MaximumScore = 100m;
                         examResultStudentModel.Entries.Add(examResultSubjectEntryModel);
+                        RemoveLowestOptional(examResultStudentModel.Entries, examResultClassModel.NameOfClass);
                     }
                 }
                 examResultClassModel.Entries.Add(examResultStudentModel);
@@ -7361,6 +7403,8 @@ namespace Helper
         public static async Task<ExamResultClassModel> GetCombinedClassCombinedExamResultAsync(ObservableCollection<ClassModel> classes, ObservableCollection<ExamWeightModel> exams)
         {
             ExamResultClassModel examResultClassModel = new ExamResultClassModel();
+
+            examResultClassModel.NameOfClass = classes.First().NameOfClass;
             ObservableCollection<SubjectModel> observableCollection = await DataAccess.GetSubjectsRegistredToClassAsync(classes[0].ClassID);
             string text = "SELECT StudentID, NameOfStudent,";
             string text2 = "0,";
@@ -7414,6 +7458,7 @@ namespace Helper
                         examResultSubjectEntryModel.Code = observableCollection[i - 2].Code;
                         examResultSubjectEntryModel.Score = decimal.Parse(dataRow[i].ToString());
                         examResultStudentModel.Entries.Add(examResultSubjectEntryModel);
+                        RemoveLowestOptional(examResultStudentModel.Entries, examResultClassModel.NameOfClass);
                     }
                 }
                 examResultClassModel.Entries.Add(examResultStudentModel);
@@ -8410,7 +8455,7 @@ namespace Helper
             result.StartDate = DateTime.Parse(res.Rows[0][1].ToString());
             result.EndDate = DateTime.Parse(res.Rows[0][2].ToString());
             result.TotalBudget = decimal.Parse(res.Rows[0][3].ToString());
-            result.Accounts = GetBudgetAccountsAsync(result.BudgetID, result.TotalBudget).Result;
+            result.Accounts = GetBudgetAccountsAsync(result.BudgetID).Result;
             result.Entries = GetBudgetEntriesAsync(result.BudgetID, addExpenditure, result.StartDate, result.EndDate).Result;
             return result;
         }
@@ -8431,7 +8476,7 @@ namespace Helper
             });
         }
 
-        private static Task<ObservableCollection<BudgetAccountModel>> GetBudgetAccountsAsync(int budgetID,decimal totalBudget)
+        private static Task<ObservableCollection<BudgetAccountModel>> GetBudgetAccountsAsync(int budgetID)
         {
             return Task.Factory.StartNew<ObservableCollection<BudgetAccountModel>>(delegate
             {
@@ -8441,7 +8486,7 @@ namespace Helper
                 var pm = new ObservableCollection<SqlParameter>() { new SqlParameter("@bugID", budgetID) };
                 var res = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(selectStr, pm);
                 foreach (DataRow dtr in res.Rows)
-                    temp.Add(new BudgetAccountModel(int.Parse(dtr[0].ToString()),dtr[1].ToString(),decimal.Parse(dtr[2].ToString()),(decimal.Parse(dtr[2].ToString())/totalBudget)*100));
+                    temp.Add(new BudgetAccountModel(int.Parse(dtr[0].ToString()),dtr[1].ToString(),decimal.Parse(dtr[2].ToString())));
                 return temp;
             });
         }

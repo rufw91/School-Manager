@@ -42,13 +42,14 @@ namespace Helper
                     Log.E(pdfPath,null);
                     try
                     {
-                        Process.Start("gxps-9.15-win32.exe", "-sDEVICE=pdfwrite -sOutputFile=" +
+                        string path = new FileInfo(Application.ResourceAssembly.Location).DirectoryName + "\\gxps-9.15-win32.exe";
+                        Process.Start(path, "-sDEVICE=pdfwrite -sOutputFile=" +
                   pdfPath +
                   " -dNOPAUSE " +
                   file).WaitForExit();
                         return pdfPath;
                     }
-                    catch { }
+                    catch (Exception e) { Log.E(e.ToString(), null); }
                 }
 
             }
@@ -68,17 +69,18 @@ namespace Helper
                     string pdfPath = Path.GetTempFileName() + ".pdf";
                     try
                     {
-                        Process.Start("gxps-9.15-win32.exe", "-sDEVICE=pdfwrite -sOutputFile=" +
+                        string path = new FileInfo(Application.ResourceAssembly.Location).DirectoryName+"\\gxps-9.15-win32.exe";
+                        Process.Start(path, "-sDEVICE=pdfwrite -sOutputFile=" +
                   pdfPath +
                   " -dNOPAUSE " +
                   file).WaitForExit();
                         return pdfPath;
                     }
-                    catch { }
+                    catch (Exception e) { Log.E(e.ToString(), null); }
                 }
 
             }
-            catch { }
+            catch (Exception e) { Log.E(e.ToString(), null); }
             return "";
         }
 

@@ -6,6 +6,7 @@ namespace Helper.Models
     public class ClassExamResultModel : ClassModel
     {
         private DataTable entries;
+        private string nameOfExam;
 
         public DataTable Entries
         {
@@ -23,14 +24,32 @@ namespace Helper.Models
             }
         }
 
+        public string NameOfExam
+        {
+            get
+            {
+                return this.nameOfExam;
+            }
+            set
+            {
+                if (value != this.nameOfExam)
+                {
+                    this.nameOfExam = value;
+                    base.NotifyPropertyChanged("NameOfExam");
+                }
+            }
+        }
+
         public ClassExamResultModel()
         {
             this.Entries = new DataTable();
+            NameOfExam = "";
         }
 
         public override void Reset()
         {
             this.entries.Clear();
+            NameOfExam = "";
         }
     }
 }

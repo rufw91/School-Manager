@@ -80,84 +80,84 @@
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="cmp1" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)AxInterop.AcroPDFLib.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)AxInterop.AcroPDFLib.dll" />
       </Component>
       <Component Id="cmp2" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Interop.AcroPDFLib.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)Interop.AcroPDFLib.dll" />
       </Component>
       <Component Id="cmp3" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Collections.Immutable.dll" />
+        <File Source="C:\Dev\Common\gxps-9.15-win32.exe" />
       </Component>
       <Component Id="cmp4" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)log4net.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)log4net.dll" />
       </Component>
       <Component Id="cmp5" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.Threading.Tasks.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)Microsoft.Threading.Tasks.dll" />
       </Component>
       <Component Id="cmp6" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.Threading.Tasks.Extensions.Desktop.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)Microsoft.Threading.Tasks.Extensions.Desktop.dll" />
       </Component>
       <Component Id="cmp7" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.Threading.Tasks.Extensions.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)Microsoft.Threading.Tasks.Extensions.dll" />
       </Component>
       <Component Id="cmp8" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.Windows.Shell.dll" />
-      </Component>
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)Microsoft.Windows.Shell.dll" />
+      </Component>      
       <Component Id="cmp9" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.WindowsAPICodePack.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)Microsoft.WindowsAPICodePack.dll" />
       </Component>
       <Component Id="cmp10" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.WindowsAPICodePack.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll" />
       </Component>
       <Component Id="cmp11" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)Newtonsoft.Json.dll" />
       </Component>
       <Component Id="cmp12" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Newtonsoft.Json.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)OpenXmlPackaging.dll" />
       </Component>
       <Component Id="cmp13" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)ReadOnlyCollectionsInterfaces.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)ReadOnlyCollectionsInterfaces.dll" />
       </Component>
       <Component Id="cmp14" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Collections.Immutable.Net40.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)System.Collections.Immutable.Net40.dll" />
       </Component>
       <Component Id="cmp15" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.IO.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)System.IO.dll" />
       </Component>
       <Component Id="cmp16" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Net.Http.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)System.Net.Http.dll" />
       </Component>
       <Component Id="cmp17" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Net.Http.Extensions.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)System.Net.Http.Extensions.dll" />
       </Component>
       <Component Id="cmp18" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Net.Http.Primitives.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)System.Net.Http.Primitives.dll" />
       </Component>
       <Component Id="cmp19" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Net.Http.WebRequest.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)System.Net.Http.WebRequest.dll" />
       </Component>
       <Component Id="cmp20" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Runtime.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)System.Runtime.dll" />
       </Component>
       <Component Id="cmp21" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Threading.Tasks.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)System.Threading.Tasks.dll" />
       </Component>
       <Component Id="cmp22" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Windows.Interactivity.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)System.Windows.Interactivity.dll" />
       </Component>
       
       
       <Component Id="cmp23" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Helper.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)Helper.dll" />
       </Component>      
       <Component Id="cmp24" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)UmanyiSMS.exe" />
       </Component>
       <Component Id="cmp25" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.Helper.dll" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)UmanyiSMS.Helper.dll" />
       </Component>
       <Component Id="cmp26" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe.config" />
+        <File Source="$(var.UmanyiSMS _NET4\UmanyiSMS_.TargetDir)UmanyiSMS.exe.config" />
       </Component>
     </ComponentGroup>
   </Fragment>
