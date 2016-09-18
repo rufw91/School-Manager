@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.VisualBasic.FileIO;
 using Helper.Security;
+using System.Collections.Generic;
 namespace Helper
 {
     public static class DataAccessHelper
@@ -329,7 +330,7 @@ namespace Helper
             return dt;
         }
 
-        public static bool ExecuteNonQueryWithParameters(string commandText, ObservableCollection<SqlParameter> paramColl)
+        public static bool ExecuteNonQueryWithParameters(string commandText, IEnumerable<SqlParameter> paramColl)
         {
             bool result = false;
 

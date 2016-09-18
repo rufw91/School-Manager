@@ -15,8 +15,13 @@
                   SelectedValuePath="ClassID" DisplayMemberPath="NameOfClass"
                   SelectedValue="{Binding SelectedClassID}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="40,150,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,150,0,0" Text="Term" VerticalAlignment="Top"/>
         <ComboBox HorizontalAlignment="Left" Margin="95,150,0,0" VerticalAlignment="Top" Width="200"
+                  ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description"
+                  SelectedItem="{Binding SelectedTerm}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="40,200,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="95,200,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllExams}"
                   SelectedValuePath="ExamID" DisplayMemberPath="NameOfExam"
                   SelectedValue="{Binding SelectedExamID}"/>

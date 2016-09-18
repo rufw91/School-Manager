@@ -14,14 +14,21 @@
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Class Report Forms" VerticalAlignment="Top"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="33,80,0,0" Text="Class" VerticalAlignment="Top"/>
-        <ComboBox Margin="33,100,100,0" VerticalAlignment="Top"
+        <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox Margin="107,80,40,0" VerticalAlignment="Top"
                   ItemsSource="{Binding AllClasses}"
                   SelectedValue="{Binding SelectedClassID, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="NameOfClass" SelectedValuePath="ClassID"
                   />
-        <TextBlock HorizontalAlignment="Left" Margin="30,150,0,0" Text="Class Teacher" VerticalAlignment="Top"/>
-        <TextBox Margin="30,170,100,0" VerticalAlignment="Top"
+        <TextBlock HorizontalAlignment="Left" Margin="30,130,0,0" Text="Term" VerticalAlignment="Top"/>
+        <ComboBox Margin="107,130,40,0" VerticalAlignment="Top" 
+                  ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description"
+                  SelectedItem="{Binding SelectedTerm}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,180,0,0" Text="Class Teacher" VerticalAlignment="Top"/>
+        <TextBox Margin="107,180,40,0" VerticalAlignment="Top"
                   Text="{Binding ClassTeacher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        
+        
         <TextBlock HorizontalAlignment="Left" Margin="30,218,0,0" Text="Exams" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
         <DataGrid Margin="30,249,40,0" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="{Binding ResultsIsReadOnly}" 
                   ItemsSource="{Binding Exams}" CanUserDeleteRows="True" CanUserAddRows="False" Height="182" VerticalAlignment="Top">
@@ -76,7 +83,7 @@
 
         <Border Grid.ColumnSpan="2" Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Hidden}">
             <Grid>
-            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+                <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,340,0,0" Text="{Binding OverallProgress, StringFormat={}{0} %}" Style="{DynamicResource Emphasis1}"/>
                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,370,0,0" Text="{Binding ProgressText}" Style="{DynamicResource Emphasis2}"/>
             </Grid>

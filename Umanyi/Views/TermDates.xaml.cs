@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UmanyiSMS
+namespace UmanyiSMS.Views
 {
     /// <summary>
-    /// Interaction logic for WaitPage.xaml
+    /// Interaction logic for TermDates.xaml
     /// </summary>
-    public partial class WaitPage : Page
+    public partial class TermDates : UserControl
     {
-        public WaitPage()
+        public TermDates()
         {
             InitializeComponent();
         }

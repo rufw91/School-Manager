@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.TermDates"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="900"
+	Background="White">
+
+    <Grid >
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Term Dates" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Style="{DynamicResource ContentTextSemiBold}" Text="Term 1" VerticalAlignment="Top" 
+                   Margin="50,85,0,0"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="65,120,0,0" Text="Starts" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="100,120,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
+                 SelectedDate="{Binding TermDates[1][0], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="65,170,0,0" Text="Ends" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="100,170,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
+                 SelectedDate="{Binding TermDates[1][1], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Style="{DynamicResource ContentTextSemiBold}" Text="Term 2" VerticalAlignment="Top" 
+                   Margin="48,230,0,0"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="65,265,0,0" Text="Starts" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="100,265,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
+                 SelectedDate="{Binding TermDates[2][0], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="65,315,0,0" Text="Ends" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="100,315,0,0" VerticalAlignment="Top" Width="200"
+                     SelectedDateFormat="Long"              
+                 SelectedDate="{Binding TermDates[2][1], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Style="{DynamicResource ContentTextSemiBold}" Text="Term 3" VerticalAlignment="Top" 
+                   Margin="48,375,0,0"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="65,410,0,0" Text="Starts" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="100,410,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
+                 SelectedDate="{Binding TermDates[3][0], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="65,460,0,0" Text="Ends" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="100,460,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
+                 SelectedDate="{Binding TermDates[3][1], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Button Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"/>
+        <TextBlock HorizontalAlignment="Left" Margin="446,101,0,0" Style="{DynamicResource SmallTitle}" Text="Important:" VerticalAlignment="Top"/>
+        <TextBlock Margin="446,130,33,250" TextWrapping="Wrap">
+            The following are guidelines to help quickly set up term date:<LineBreak/>
+            1. <Bold><Underline>Term dates cannot overlap.</Underline></Bold> e.g if Term 1 ends on 31-Apr-2016 Term 2 cannot start on 31-Apr-2016 or earlier it must start after 31-Apr-2016.<LineBreak/>
+            2. <Bold><Underline> Consecutive term dates must be continous and have no interval.</Underline></Bold> e.g if Term 1 ends on 31-Apr-2016 Term 2 <Bold>MUST</Bold> start on 1-May-2016.<LineBreak/>
+            3. <Bold><Underline> Holidays should be included as part of the preceding term.</Underline></Bold><LineBreak/>
+        </TextBlock>
+    </Grid>
+</UserControl>

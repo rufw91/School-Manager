@@ -29,7 +29,7 @@ namespace UmanyiSMS.ViewModels
 
         protected override void InitVars()
         {
-            Title = "ENTER EXAM RESULTS";
+            Title = "ENTER RESULTS PER STUDENT";
             StudentSubjectSelection = new ObservableCollection<StudentSubjectSelectionEntryModel>();
             NewResult = new ExamResultStudentModel();
             tempResult = new ExamResultStudentModel();

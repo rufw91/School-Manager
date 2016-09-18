@@ -418,7 +418,7 @@
                                         BorderThickness="1"
                                         Margin="0">
                                     <Grid>
-                                        <TreeView x:Name="tree" VerticalAlignment="Top" ItemTemplate="{TemplateBinding ItemTemplate}" ItemsSource="{TemplateBinding ItemsSource}">
+                                        <TreeView x:Name="tree" VerticalAlignment="Top" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}" ItemTemplate="{TemplateBinding ItemTemplate}" ItemsSource="{TemplateBinding ItemsSource}">
                                             <e:Interaction.Behaviors>
                                                 <behaviours:BindableSelectedItemBehavior SelectedItem="{Binding Tag, Mode=OneWayToSource, RelativeSource={RelativeSource TemplatedParent}}"/>
                                             </e:Interaction.Behaviors>

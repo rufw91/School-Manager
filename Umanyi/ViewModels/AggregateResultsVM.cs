@@ -29,7 +29,7 @@ namespace UmanyiSMS.ViewModels
 
         protected async override void InitVars()
         {
-            Title = "SUBJECT PERFOMANCE";            
+            Title = "EXAM SUBJECT PERFOMANCE";            
             AllExams = new ObservableCollection<ExamModel>();
             IsInClassMode = true;
             AllClasses = await DataAccess.GetAllClassesAsync();

@@ -8754,5 +8754,75 @@ namespace Helper
                 return temp;
             });
         }
+
+        public static Task<Dictionary<int,DateTime?[]>> GetTermDatesAsync(int schoolYear)
+        {
+            return Task.Factory.StartNew<Dictionary<int,DateTime?[]>>(delegate
+            {
+                Dictionary<int,DateTime?[]> temp = new Dictionary<int,DateTime?[]>();
+                
+                string selectStr = "SELECT Value,Value2,Value3 FROM [Institution].[Settings] WHERE [Type] ='TermDates' AND [Key]=@syear";
+                var pc1 = new ObservableCollection<SqlParameter>();
+                pc1.Add(new SqlParameter("@syear", schoolYear.ToString()));
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithParametersWithResultTable(selectStr, pc1);
+                foreach(DataRow dtr in dt.Rows)
+                {
+                    DateTime?[] dys = new DateTime?[2];
+                    dys[0] = DateTime.Parse(dtr[1].ToString());
+                    dys[1] = DateTime.Parse(dtr[2].ToString());
+                    temp.Add(int.Parse(dtr[0].ToString()),dys);
+                }
+                if (temp.Count == 0)
+                {
+                    for (int i = 1; i < 4; i++)
+                        temp.Add(i, new DateTime?[2]);
+                }
+                return temp;
+            });
+        }
+
+        public static Task<bool> SaveTermDatesAsync(Dictionary<int,DateTime?[]>termDates,int schoolYear)
+        {
+            return Task.Factory.StartNew<bool>(delegate
+            {
+                List<SqlParameter> paramColl = new List<SqlParameter>();
+
+                string insertStr = "BEGIN TRANSACTION\r\n";
+                int index=0;
+                foreach(var t in termDates)
+                {
+                    insertStr += "IF EXISTS(SELECT * FROM [Institution].[Settings] WHERE [Type] ='TermDates' AND [Key]=@syear AND Value=@tid"+index+")\r\n" +
+                         "UPDATE [Institution].[Settings] SET Value2=@td1" + index + ",Value3=@td2" + index + " WHERE [Type] ='TermDates' AND [Key]=@syear AND Value=@tid" + index + "\r\n" +
+                       "ELSE\r\nINSERT INTO [Institution].[Settings] ([Type],[Key],Value,Value2,Value3) VALUES('TermDates',@syear,@tid"+index+",@td1"+index+",@td2"+index+")";
+                    paramColl.Add(new SqlParameter("@tid" + index, t.Key.ToString()));
+                    paramColl.Add(new SqlParameter("@td1"+index, t.Value[0].Value.ToString("dd-MM-yyyy hh:mm:ss")));
+                    paramColl.Add(new SqlParameter("@td2" + index, t.Value[1].Value.ToString("dd-MM-yyyy hh:mm:ss")));
+                    index++;
+                }
+                 
+                paramColl.Add(new SqlParameter("@syear", schoolYear.ToString()));
+
+                insertStr += "\r\nCOMMIT";
+                bool succ = DataAccessHelper.ExecuteNonQueryWithParameters(insertStr, paramColl);
+                return succ;
+            });
+        }
+
+        public static Task<ObservableCollection<TermModel>> GetAllTermsAsync()
+        {
+            return Task.Factory.StartNew<ObservableCollection<TermModel>>(delegate
+            {
+                ObservableCollection<TermModel> temp = new ObservableCollection<TermModel>();
+                string selectStr = "SELECT [Key],Value FROM [Institution].[Settings] WHERE [Type] ='TermSettings'";
+                DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                var t=GetTermDatesAsync(DateTime.Now.Year).Result;
+                foreach (DataRow dtr in dt.Rows)
+                {
+                    int id=int.Parse(dtr[0].ToString());
+                    temp.Add(new TermModel() {TermID=id, Description = dtr[1].ToString(),StartDate=t[id][0].Value,EndDate=t[id][1].Value });
+                }
+                return temp;
+            });
+        }
     }
 }

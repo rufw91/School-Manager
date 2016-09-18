@@ -30,7 +30,7 @@ namespace UmanyiSMS.ViewModels
         }
         protected async override void InitVars()
         {
-            Title = "COMBINED SUBJECT PERFOMANCE";
+            Title = "WEIGHTED SUBJECT PERFOMANCE";
             exams = new ObservableCollection<ExamWeightModel>();
             IsInClassMode = true;
             
