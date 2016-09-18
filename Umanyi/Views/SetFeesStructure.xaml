@@ -17,37 +17,44 @@
     </UserControl.Resources>
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Set Fees Structure" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,120,0,0" Style="{DynamicResource Title0}" Text="New Entry" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,153,0,0" Style="{DynamicResource Title0}" Text="New Entry" VerticalAlignment="Top"/>
+        
         <TextBlock HorizontalAlignment="Left" Margin="88,72,0,0" TextWrapping="Wrap" Text="Class" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Height="23" Margin="120,72,0,0" Text="TextBox" VerticalAlignment="Top" Width="150"
+        <ComboBox HorizontalAlignment="Left" Margin="120,72,0,0" Text="TextBox" VerticalAlignment="Top" Width="150"
                   ItemsSource="{Binding AllCombinedClasses}" DisplayMemberPath="Description" 
                   SelectedItem="{Binding SelectedCombinedClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   IsEnabled="{Binding SaveForAllClasses, Converter={StaticResource NegateConverter}}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="88,112,0,0" TextWrapping="Wrap" Text="Term" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="120,112,0,0" VerticalAlignment="Top" Width="150"
+                  ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description" 
+                  SelectedItem="{Binding SelectedTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
         <CheckBox Content="Set for all Classes" HorizontalAlignment="Left" Margin="285,76,0,0" VerticalAlignment="Top"
                   IsChecked="{Binding SaveForAllClasses, Mode=TwoWay}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="39,163,0,0" TextWrapping="Wrap" Text="Name of Entry" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,163,0,0" VerticalAlignment="Top" Width="200"
+        <TextBlock HorizontalAlignment="Left" Margin="39,196,0,0" TextWrapping="Wrap" Text="Name of Entry" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,196,0,0" VerticalAlignment="Top" Width="200"
                  DataContext="{Binding NewEntry}"
                  Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="42,208,0,0" TextWrapping="Wrap" Text="Amount (KES)" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,208,0,0" VerticalAlignment="Top" Width="150"
+        <TextBlock HorizontalAlignment="Left" Margin="42,241,0,0" TextWrapping="Wrap" Text="Amount (KES)" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,241,0,0" VerticalAlignment="Top" Width="150"
                  DataContext="{Binding NewEntry}"
                  Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button Content="Add Entry" HorizontalAlignment="Left" Margin="215,248,0,0" VerticalAlignment="Top" Width="105"
+        <Button Content="Add Entry" HorizontalAlignment="Left" Margin="215,281,0,0" VerticalAlignment="Top" Width="105"
                 Command="{Binding AddEntryCommand}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,315,0,0" Style="{DynamicResource Title0}" Text="Current Entry" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="39,362,0,0" TextWrapping="Wrap" Text="Name of Entry" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,362,0,0" VerticalAlignment="Top" Width="200"
+        <TextBlock HorizontalAlignment="Left" Margin="30,348,0,0" Style="{DynamicResource Title0}" Text="Current Entry" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="39,395,0,0" TextWrapping="Wrap" Text="Name of Entry" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,395,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding SelectedItem.Name, ElementName=lbxEntries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="42,407,0,0" TextWrapping="Wrap" Text="Amount (KES)" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,407,0,0" VerticalAlignment="Top" Width="150"
+        <TextBlock HorizontalAlignment="Left" Margin="42,440,0,0" TextWrapping="Wrap" Text="Amount (KES)" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,440,0,0" VerticalAlignment="Top" Width="150"
                  Text="{Binding SelectedItem.Amount, ElementName=lbxEntries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="350,100,0,0" Style="{DynamicResource Title0}" Text="Preview" VerticalAlignment="Top"/>
-        <ListBox Name="lbxEntries" Margin="350,130,30,50" ItemsSource="{Binding CurrentStructure.Entries}"
+        <TextBlock HorizontalAlignment="Left" Margin="350,121,0,0" Style="{DynamicResource Title0}" Text="Preview" VerticalAlignment="Top"/>
+        <ListBox Name="lbxEntries" Margin="350,150,30,50" ItemsSource="{Binding CurrentStructure.Entries}"
                  ItemTemplate="{StaticResource FeesStructureEntryModel}"/>
         <Button Content="_Save" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="26" VerticalAlignment="Bottom"
                 Command="{Binding SaveCommand}"/>
-        
+
 
 
 

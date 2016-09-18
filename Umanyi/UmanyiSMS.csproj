@@ -329,6 +329,7 @@
     <Compile Include="ViewModels\SupplierStatementVM.cs" />
     <Compile Include="ViewModels\SuppliersVM.cs" />
     <Compile Include="ViewModels\SyncCloudVM.cs" />
+    <Compile Include="ViewModels\TermDatesVM.cs" />
     <Compile Include="ViewModels\UnreturnedBooksVM.cs" />
     <Compile Include="ViewModels\UpcomingEventsVM.cs" />
     <Compile Include="ViewModels\VATAnalysisVM.cs" />
@@ -769,6 +770,9 @@
     <Compile Include="Views\SyncCloud.xaml.cs">
       <DependentUpon>SyncCloud.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TermDates.xaml.cs">
+      <DependentUpon>TermDates.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Test.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -837,9 +841,6 @@
     </Compile>
     <Compile Include="Views\ViewFullFeesStructure.xaml.cs">
       <DependentUpon>ViewFullFeesStructure.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WaitPage.xaml.cs">
-      <DependentUpon>WaitPage.xaml</DependentUpon>
     </Compile>
     <Page Include="DropDown.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -1421,6 +1422,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\TermDates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UnreturnedBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1470,10 +1475,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ViewFullFeesStructure.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WaitPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

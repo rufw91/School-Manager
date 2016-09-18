@@ -9,30 +9,36 @@
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Enter Results by Subject" 
                    VerticalAlignment="Top"/>
-        <TextBlock  HorizontalAlignment="Left" Margin="40,90,0,0" Text="Class" VerticalAlignment="Top" />
+        <TextBlock  HorizontalAlignment="Left" Margin="31,90,0,0" Text="Class" VerticalAlignment="Top" />
         <ComboBox HorizontalAlignment="Left" Margin="80,90,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllClasses}"
         	DisplayMemberPath="NameOfClass" 
                   SelectedValuePath="ClassID"
         	SelectedValue="{Binding SelectedClassID, Mode=TwoWay}" />
 
-        <TextBlock  HorizontalAlignment="Left" Margin="39,140,0,0" Text="Exam" VerticalAlignment="Top" />
-        <ComboBox HorizontalAlignment="Left" Margin="80,140,0,0" VerticalAlignment="Top" Width="200"         	
+        <TextBlock  HorizontalAlignment="Left" Margin="31,135,0,0" Text="Term" VerticalAlignment="Top" />
+        <ComboBox HorizontalAlignment="Left" Margin="80,135,0,0" VerticalAlignment="Top" Width="200"         	
+            ItemsSource="{Binding AllTerms}"
+        	DisplayMemberPath="Description" 
+                  SelectedItem="{Binding SelectedTerm, Mode=TwoWay}"/>
+
+        <TextBlock  HorizontalAlignment="Left" Margin="31,180,0,0" Text="Exam" VerticalAlignment="Top" />
+        <ComboBox HorizontalAlignment="Left" Margin="80,180,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllExams}"
         	DisplayMemberPath="NameOfExam" 
                   SelectedValuePath="ExamID"
                   SelectedItem="{Binding SelectedExam,Mode=OneWayToSource}"
         	SelectedValue="{Binding SelectedExamID, Mode=TwoWay}"/>
 
-        <TextBlock  HorizontalAlignment="Left" Margin="28,190,0,0" Text="Subject" VerticalAlignment="Top" />
-        <ComboBox HorizontalAlignment="Left" Margin="80,190,0,0" VerticalAlignment="Top" Width="200"         	
+        <TextBlock  HorizontalAlignment="Left" Margin="31,225,0,0" Text="Subject" VerticalAlignment="Top" />
+        <ComboBox HorizontalAlignment="Left" Margin="80,225,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllSubjects}"
         	DisplayMemberPath="NameOfSubject" 
                   SelectedValuePath="SubjectID"
         	SelectedValue="{Binding SelectedSubjectID, Mode=TwoWay}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="31,240,0,0" Text="Out Of" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="80,240,0,0" VerticalAlignment="Top" Width="150"
+        <TextBlock HorizontalAlignment="Left" Margin="31,270,0,0" Text="Out Of" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="80,270,0,0" VerticalAlignment="Top" Width="150"
                  Text="{Binding SelectedExam.OutOf, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                  IsEnabled="False"/>
         <DataGrid Name="dtGrid" AutoGenerateColumns="False" Margin="340,80,10,50" IsReadOnly="False"                   

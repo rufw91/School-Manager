@@ -17,9 +17,11 @@ namespace UmanyiSMS.ViewModels
     {
         FeePaymentModel currentPayment;
         ObservableCollection<FeePaymentModel> recentPayments;
+        ObservableCollection<TermModel> allTerms;
         private FeesStructureModel currentFeesStructure;
         private FixedDocument fd;
         private decimal feesStructureTotal;
+        private ObservableCollection<string> pm;
         public NewFeesPaymentVM()
         {
             InitVars();
@@ -137,18 +139,40 @@ namespace UmanyiSMS.ViewModels
                o => CanSavePayment());
         }
 
-        public List<string> PaymentMethods
+        public ObservableCollection<string> PaymentMethods
         {
-            get;
-            set;
+            get { return this.pm; }
+
+            private set
+            {
+                if (value != this.pm)
+                {
+                    this.pm = value;
+                    NotifyPropertyChanged("PaymentMethods");
+                }
+            }
         }
 
-        protected override void InitVars()
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
+
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+
+        protected async override void InitVars()
         {
             Title = "NEW FEES PAYMENT";
             CurrentPayment = new FeePaymentModel();
             RecentPayments = new ObservableCollection<FeePaymentModel>();
-            this.PaymentMethods = new List<string>
+            this.PaymentMethods = new ObservableCollection<string>
             {
                 "M-PESA",
                 "CASH",
@@ -158,7 +182,7 @@ namespace UmanyiSMS.ViewModels
                 "OTHER"
             };
             base.NotifyPropertyChanged("PaymentMethods");
-
+            AllTerms =await  DataAccess.GetAllTermsAsync();
             currentPayment.PropertyChanged += async (o, e) =>
             {
                 if (e.PropertyName != "StudentID")

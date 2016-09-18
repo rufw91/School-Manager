@@ -7,26 +7,39 @@
              d:DesignHeight="700" d:DesignWidth="860">
 
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Combined Subject Perfomance" VerticalAlignment="Top"/>
-        <RadioButton x:Name="rb1" Content="One Class" HorizontalAlignment="Left" Margin="40,80,0,0" VerticalAlignment="Top"
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Weighted Subject Perfomance" VerticalAlignment="Top"/>
+        <RadioButton x:Name="rb1" Content="One Class" HorizontalAlignment="Left" Margin="40,70,0,0" VerticalAlignment="Top"
                      IsChecked="{Binding IsInClassMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      GroupName="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="55,125,0,0" Text="Class" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="150,120,0,0" VerticalAlignment="Top" Width="200"
+        <TextBlock HorizontalAlignment="Left" Margin="55,110,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="150,105,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllClasses}" DisplayMemberPath="NameOfClass"
                   SelectedItem="{Binding SelectedClass}"
                   IsEnabled="{Binding IsInClassMode}"/>
-        <RadioButton x:Name="rb2" Content="Combined Class" HorizontalAlignment="Left" Margin="40,170,0,0" VerticalAlignment="Top"
+
+        <TextBlock HorizontalAlignment="Left" Margin="55,155,0,0" Text="Term" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="150,150,0,0" VerticalAlignment="Top" Width="200"
+                  ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description"
+                  SelectedItem="{Binding SelectedTerm}"
+                  IsEnabled="{Binding IsInClassMode}"/>
+
+        <RadioButton x:Name="rb2" Content="Combined Class" HorizontalAlignment="Left" Margin="40,195,0,0" VerticalAlignment="Top"
                      IsChecked="{Binding IsInCombinedMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      GroupName="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="55,210,0,0" Text="Combined Class" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="150,210,0,0" VerticalAlignment="Top" Width="200"
+        <TextBlock HorizontalAlignment="Left" Margin="55,230,0,0" Text="Combined Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="150,230,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllCombinedClasses}" DisplayMemberPath="Description"
                   SelectedItem="{Binding SelectedCombinedClass}"
                   IsEnabled="{Binding IsInCombinedMode}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="30,244,0,0" Text="Exams" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
-        <DataGrid Margin="30,274,20,0" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="{Binding ResultsIsReadOnly}" 
+        <TextBlock HorizontalAlignment="Left" Margin="55,275,0,0" Text="Term" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="150,275,0,0" VerticalAlignment="Top" Width="200"
+                  ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description"
+                  SelectedItem="{Binding SelectedTerm}"
+                  IsEnabled="{Binding IsInCombinedMode}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="30,315,0,0" Text="Exams" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
+        <DataGrid Margin="30,345,20,0" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="{Binding ResultsIsReadOnly}" 
                   ItemsSource="{Binding Exams}" CanUserDeleteRows="True" CanUserAddRows="False" Height="182" VerticalAlignment="Top">
             <DataGrid.Columns>
 
@@ -36,7 +49,7 @@
 
             </DataGrid.Columns>
         </DataGrid>
-        <TextBlock HorizontalAlignment="Right" Margin="0,254,20,0" VerticalAlignment="Top">
+        <TextBlock HorizontalAlignment="Right" Margin="0,325,20,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding ResetCommand}">Reset</Hyperlink>
         </TextBlock>
         <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"

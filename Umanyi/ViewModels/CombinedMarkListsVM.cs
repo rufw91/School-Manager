@@ -33,7 +33,7 @@ namespace UmanyiSMS.ViewModels
         }
         protected async override void InitVars()
         {
-            Title = "COMBINED MARK LIST(S)";
+            Title = "WEIGHTED MARK LIST(S)";
             classResult = new ExamResultClassDisplayModel();
             exams = new ObservableCollection<ExamWeightModel>();
             IsInClassMode = true;

@@ -2,6 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     >
 
+    <Style x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}">
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+    </Style>
+    
     <Style x:Key="Heading0" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontFamily" Value="Calibri" />
         <Setter Property="FontSize" Value="45" />
@@ -156,10 +160,6 @@
         <Setter Property="FontFamily" Value="{DynamicResource FixedFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource FixedFontSize}"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
-    </Style>
-    
-    <Style x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="NoWrap"/>
     </Style>
     
     <Style x:Key="ModernWindowTitle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">

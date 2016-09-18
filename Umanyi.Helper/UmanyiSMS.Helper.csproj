@@ -241,6 +241,7 @@
     <Compile Include="Models\Sync\SyncStatementModel.cs" />
     <Compile Include="Models\Sync\SyncStudentModel.cs" />
     <Compile Include="Models\Sync\SyncTranscriptModel.cs" />
+    <Compile Include="Models\TermModel.cs" />
     <Compile Include="Models\TimetableClassEntryModel.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\TimetableClassModel.cs" />

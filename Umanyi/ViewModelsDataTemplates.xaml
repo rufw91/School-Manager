@@ -6,6 +6,9 @@
     <DataTemplate DataType="{x:Type viewModels:FeesPaymentHistoryVM}" >
         <views:FeesPaymentHistory/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:TermDatesVM}" >
+        <views:TermDates/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:HomePageVM}" >
         <views:HomePage/>
     </DataTemplate>

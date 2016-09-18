@@ -16,12 +16,13 @@
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="View Fees Structure" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="88,80,0,0" TextWrapping="Wrap" Text="Class" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="120,80,0,0" Text="TextBox" VerticalAlignment="Top" Width="150"
+        <ComboBox HorizontalAlignment="Left" Margin="120,80,0,0" Text="TextBox" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllCombinedClasses}" DisplayMemberPath="Description"
                   SelectedItem="{Binding SelectedCombinedClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="89,135,0,0" Text="Time" VerticalAlignment="Top"/>
-        <DatePicker HorizontalAlignment="Left" Margin="120,135,0,0" VerticalAlignment="Top" Width="200"
-                    SelectedDate="{Binding CurrentDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="89,130,0,0" Text="Term" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="120,130,0,0" VerticalAlignment="Top" Width="200"
+                  ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description"
+                    SelectedItem="{Binding SelectedTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock HorizontalAlignment="Left" Margin="350,80,0,0" Style="{DynamicResource Title0}" Text="Preview" VerticalAlignment="Top"/>
         <ListBox Margin="350,109,30,50" ItemsSource="{Binding CurrentStructure.Entries}"
                  ItemTemplate="{StaticResource FeesStructureEntryModel}"/>
