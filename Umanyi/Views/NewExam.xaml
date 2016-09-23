@@ -26,10 +26,9 @@
                   SelectedItem="{Binding Path=SelectedCombinedClass, Mode=TwoWay}"
                   VerticalAlignment="Top" Width="250"/>
 
-        <TextBlock Text="Term" HorizontalAlignment="Left" Margin="58,290,0,0" VerticalAlignment="Top" />
-        <ComboBox DisplayMemberPath="Description" HorizontalAlignment="Left" Margin="126,290,0,0" 
-                  ItemsSource="{Binding AllTerms}"
-                  SelectedItem="{Binding Path=SelectedTerm, Mode=TwoWay}"
+        <TextBlock Text="Eaxm date" HorizontalAlignment="Left" Margin="58,290,0,0" VerticalAlignment="Top" />
+        <DatePicker HorizontalAlignment="Left" Margin="126,290,0,0" 
+                  SelectedDate="{Binding Path=NewExam.ExamDateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   VerticalAlignment="Top" Width="250"/>
 
         <TextBlock  HorizontalAlignment="Left" Margin="258,118,0,0" Text="MAX (20 chararacters)" VerticalAlignment="Top" />

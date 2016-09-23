@@ -23,6 +23,8 @@ namespace UmanyiSMS.ViewModels
         private CombinedClassModel selectedCombinedClass;
         private ObservableCollection<ExamWeightModel> exams;
         private bool resultsIsReadOnly;
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
         public CombinedAggregateResultsVM()
         {
             InitVars();
@@ -36,16 +38,16 @@ namespace UmanyiSMS.ViewModels
             
             AllClasses = await DataAccess.GetAllClassesAsync();
             AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
-            
+            AllTerms = await DataAccess.GetAllTermsAsync();
             PropertyChanged += async (o, e) =>
             {
                 if (isInClassMode)
-                    if ((e.PropertyName == "SelectedClass") && (selectedClass != null) && (selectedClass.ClassID > 0))
+                    if ((e.PropertyName == "SelectedClass" || e.PropertyName == "SelectedTerm") && (selectedClass != null) && (selectedClass.ClassID > 0) && selectedTerm != null)
                     {
                         exams.Clear();
                         ResultsIsReadOnly = false;
 
-                        var t = await DataAccess.GetExamsByClass(selectedClass.ClassID);
+                        var t = await DataAccess.GetExamsByClass(selectedClass.ClassID,selectedTerm);
                         int count = 1;
 
                         foreach (var ex in t)
@@ -65,14 +67,14 @@ namespace UmanyiSMS.ViewModels
                     }
                 
                 if (isInCombinedMode)
-                
-                    if ((e.PropertyName == "SelectedCombinedClass") && (selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0))
+
+                    if ((e.PropertyName == "SelectedCombinedClass" || e.PropertyName == "SelectedTerm") && (selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0) && selectedTerm != null)
                     {
                         ResultsIsReadOnly = false;
                         if ((selectedCombinedClass == null) || (selectedCombinedClass.Entries.Count == 0))
                             return;
 
-                        var t = await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID);
+                        var t = await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID,selectedTerm);
                         int count = 1;
                         foreach (var ex in t)
                         {
@@ -139,6 +141,34 @@ namespace UmanyiSMS.ViewModels
         {
             get;
             set;
+        }
+
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
+
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return this.selectedTerm; }
+
+            set
+            {
+                if (value != this.selectedTerm)
+                {
+                    this.selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
         }
 
         public bool ResultsIsReadOnly

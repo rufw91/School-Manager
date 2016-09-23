@@ -2,6 +2,7 @@
 using Helper.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
@@ -17,34 +18,46 @@ namespace UmanyiSMS.ViewModels
         StudentSelectModel selectedStudent;
         private SaleModel currentBill;
         private decimal billTotal;
+        private TermModel selectedTerm;
+        ObservableCollection<TermModel> allTerms;
         public RemoveBillVM()
         {
             InitVars();
             CreateCommands();
         }
-        protected override void InitVars()
+        protected async override void InitVars()
         {
             Title = "REMOVE BILL";
             currentBill = new SaleModel();
             selectedStudent = new StudentSelectModel();
-            selectedStudent.PropertyChanged += async (o, e) =>
-            {
-                if (e.PropertyName == "StudentID")
-                {
-                    currentBill.SaleItems.Clear();
-                    SaleModel s = await DataAccess.GetThisTermInvoice(selectedStudent.StudentID);
-                    foreach (var f in s.SaleItems)
-                        currentBill.SaleItems.Add(f);
-                    currentBill.SaleID = s.SaleID;
-                }
-            };
+            selectedStudent.PropertyChanged += OnPropertyChanged;
+            PropertyChanged += OnPropertyChanged;
+            AllTerms = await DataAccess.GetAllTermsAsync();
             currentBill.SaleItems.CollectionChanged += (o, e) =>
             {
                 BillTotal = 0;
                 foreach (var v in currentBill.SaleItems)
                     BillTotal += v.Amount;
             };
+            
         }
+
+        private async void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "StudentID" || e.PropertyName == "SelectedTerm")
+            {
+                currentBill.SaleItems.Clear();
+                if (selectedTerm != null)
+                {
+                    SaleModel s = await DataAccess.GetTermInvoice(selectedStudent.StudentID, selectedTerm);
+                    foreach (var f in s.SaleItems)
+                        currentBill.SaleItems.Add(f);
+                    currentBill.SaleID = s.SaleID;
+                }
+            }
+        }
+
+
 
         protected override void CreateCommands()
         {
@@ -69,6 +82,20 @@ namespace UmanyiSMS.ViewModels
             return !selectedStudent.HasErrors &&
             (currentBill != null) && (currentBill.SaleID > 0);
         }
+
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
+
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
         public decimal BillTotal
         {
             get { return billTotal; }
@@ -79,6 +106,18 @@ namespace UmanyiSMS.ViewModels
                 {
                     billTotal = value;
                     NotifyPropertyChanged("BillTotal");
+                }
+            }
+        }
+        public TermModel SelectedTerm
+        {
+            get { return selectedTerm; }
+            set
+            {
+                if (value != selectedTerm)
+                {
+                    selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
                 }
             }
         }

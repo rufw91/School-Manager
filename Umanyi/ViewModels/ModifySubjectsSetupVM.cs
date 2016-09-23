@@ -24,7 +24,7 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             IsBusy = true;
-            Title = "MODIFY CLASS SUBJECTS SETUP";
+            Title = "CLASS SUBJECTS SETUP";
             selectedSubjects = new ObservableCollection<SubjectModel>();
             AllClasses = await DataAccess.GetAllClassesAsync();
 

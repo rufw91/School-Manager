@@ -95,7 +95,7 @@ namespace UmanyiSMS.ViewModels
 
                 }
 
-                return DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                return DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
             });
         }
 

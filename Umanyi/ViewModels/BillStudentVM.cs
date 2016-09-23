@@ -24,10 +24,26 @@ namespace UmanyiSMS.ViewModels
         private FeesStructureModel currentFeesStructure;
         private FeesStructureEntryModel selectedEntry;
         private decimal billTotal;
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
         public BillStudentVM()
         {
             InitVars();
             CreateCommands();
+        }
+
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
+
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
         }
 
         protected async override void InitVars()
@@ -44,13 +60,17 @@ namespace UmanyiSMS.ViewModels
             IsInStudentMode = true;
             selectedCombinedClass = new CombinedClassModel();
             selectedStudent = new StudentSelectModel();
+            AllTerms = await DataAccess.GetAllTermsAsync();
             AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
             selectedStudent.PropertyChanged += async (o, e) =>
                 {
-                    if (e.PropertyName == "StudentID")
+                    if (e.PropertyName == "StudentID" )
                     {
+                       
                         currentFeesStructure.Entries.Clear();
-                        SaleModel s = await DataAccess.GetThisTermInvoice(selectedStudent.StudentID);
+                        if (selectedTerm == null)
+                            return;
+                        SaleModel s = await DataAccess.GetTermInvoice(selectedStudent.StudentID,selectedTerm);
                         foreach (var f in s.SaleItems)
                             currentFeesStructure.Entries.Add(f);
                     }
@@ -58,6 +78,15 @@ namespace UmanyiSMS.ViewModels
 
             PropertyChanged += async (o, e) =>
                 {
+                    if ((e.PropertyName == "SelectedTerm")&&selectedStudent.StudentID>0)
+                    {
+                        currentFeesStructure.Entries.Clear();
+                        if (selectedTerm == null)
+                            return;
+                        SaleModel s = await DataAccess.GetTermInvoice(selectedStudent.StudentID, selectedTerm);
+                        foreach (var f in s.SaleItems)
+                            currentFeesStructure.Entries.Add(f);
+                    }
                     if ((e.PropertyName == "SelectedClass") && (isInClassMode) && (selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0))
                     {
                         currentFeesStructure.Entries.Clear();
@@ -76,9 +105,9 @@ namespace UmanyiSMS.ViewModels
             {
                 FeesStructureModel fs;
                 if (isInStudentMode)
-                    fs = await DataAccess.GetFeesStructureAsync(await DataAccess.GetClassIDFromStudentID(selectedStudent.StudentID), DateTime.Now);
+                    fs = await DataAccess.GetFeesStructureAsync(await DataAccess.GetClassIDFromStudentID(selectedStudent.StudentID), selectedTerm.StartDate.AddDays(1));
                 else
-                    fs = fs = await DataAccess.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, DateTime.Now);
+                    fs = fs = await DataAccess.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.StartDate.AddDays(1));
                 currentFeesStructure.Entries.Clear();
                 foreach (var f in fs.Entries)
                 {
@@ -104,7 +133,7 @@ namespace UmanyiSMS.ViewModels
                 if (isInStudentMode)
                 {
                     bool succ = true;
-                    if (!await DataAccess.HasInvoicedThisTerm(selectedStudent.StudentID))
+                    if (!await DataAccess.HasInvoicedOnTerm(selectedStudent.StudentID, selectedTerm))
                     {
                         SaleModel sm = new SaleModel();
                         sm.CustomerID = selectedStudent.StudentID;
@@ -122,7 +151,7 @@ namespace UmanyiSMS.ViewModels
                     else
                     {
                         bool succ2 = true;
-                        SaleModel s = await DataAccess.GetThisTermInvoice(selectedStudent.StudentID);
+                        SaleModel s = await DataAccess.GetTermInvoice(selectedStudent.StudentID,selectedTerm);
                         s.SaleItems = currentFeesStructure.Entries;
                         succ2 = await DataAccess.UpdateStudentBill(s);
                         MessageBox.Show(succ2 ? "Successfully saved details" : "Could not save details.", succ2 ? "Success" : "Error",
@@ -143,7 +172,7 @@ namespace UmanyiSMS.ViewModels
                         sm.EmployeeID = 0;
                         sm.SaleItems = currentFeesStructure.Entries;
                         sm.RefreshTotal();                        
-                        succ = succ&&await DataAccess.SaveNewClassBill(sm);
+                        succ = succ&&await DataAccess.SaveNewClassBill(sm,selectedTerm);
                     }
                     MessageBox.Show(succ ? "Successfully saved details" : "Could not save details.", succ ? "Success" : "Error",
                             MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
@@ -156,8 +185,8 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanGetFeesStructure()
         {
-            return isInStudentMode ? selectedStudent != null && !selectedStudent.HasErrors
-                : selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0;
+            return isInStudentMode ? selectedStudent != null && !selectedStudent.HasErrors && selectedTerm != null
+                : selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0&&selectedTerm!=null;
         }
 
 
@@ -219,6 +248,19 @@ namespace UmanyiSMS.ViewModels
                 {
                     selectedEntry = value;
                     NotifyPropertyChanged("SelectedEntry");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return selectedTerm; }
+            set
+            {
+                if (value != selectedTerm)
+                {
+                    selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
                 }
             }
         }

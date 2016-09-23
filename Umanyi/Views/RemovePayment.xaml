@@ -14,8 +14,7 @@
 
         <TextBlock HorizontalAlignment="Left" Margin="30,120,0,0" Text="Student ID" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="92,120,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding SelectedStudent.StudentID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=100,
-            ValidatesOnNotifyDataErrors=True}"/>
+                 Text="{Binding SelectedStudent.StudentID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,165,0,0" Text="Name" VerticalAlignment="Top"/>
 
         <TextBox HorizontalAlignment="Left" Margin="92,165,0,0" VerticalAlignment="Top" Width="200"

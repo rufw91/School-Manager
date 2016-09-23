@@ -28,6 +28,8 @@ namespace UmanyiSMS.ViewModels
         private bool isRemovingInvalid;
         private bool removeInvalid;
         public ObservableImmutableList<ExamResultStudentSubjectEntryModel> tempResults;
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
         public EnterExamResultsBySubjectVM()
         {
             InitVars();
@@ -42,6 +44,7 @@ namespace UmanyiSMS.ViewModels
             AllClasses = await DataAccess.GetAllClassesAsync();
             SelectedExamID = 0;
             AllExams = new ObservableImmutableList<ExamModel>();
+            AllTerms = await DataAccess.GetAllTermsAsync();
             allSubjectResults.CollectionChanged += (o, e) =>
             {
                 if (isRemovingInvalid)
@@ -59,13 +62,13 @@ namespace UmanyiSMS.ViewModels
             };
             PropertyChanged += async (o, e) =>
                 {
-                    if (e.PropertyName == "SelectedClassID")
+                    if (e.PropertyName == "SelectedClassID" || e.PropertyName == "SelectedTerm")
                     {
                         allExams.Clear();
                         SelectedExamID = 0;
-                        if (SelectedClassID != 0)
+                        if (SelectedClassID != 0&&selectedTerm!=null)
                         {              
-                            AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedClassID));
+                            AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedClassID,selectedTerm));
                         }
                         return;
                     }
@@ -173,7 +176,7 @@ namespace UmanyiSMS.ViewModels
                                 "IF NOT EXISTS (SELECT * FROM [Institution].[ExamResultDetail] WHERE ExamResultID="+i.ExamResultID+")\r\n"+
                                 "DELETE FROM [Institution].[ExamResultHeader] WHERE ExamResultID=" + i.ExamResultID;                            
                         
-                        bool succ = DataAccessHelper.ExecuteNonQuery(remStr);
+                        bool succ = DataAccessHelper.Helper.ExecuteNonQuery(remStr);
                     }
 
                 }
@@ -184,6 +187,35 @@ namespace UmanyiSMS.ViewModels
         private bool CanSave()
         {
             return selectedClassID > 0 && selectedExamID > 0 && selectedSubjectID > 0 && allSubjectResults.Count > 0;
+        }
+
+
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
+
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return this.selectedTerm; }
+
+            set
+            {
+                if (value != this.selectedTerm)
+                {
+                    this.selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
         }
 
         public ObservableImmutableList<ExamResultStudentSubjectEntryModel> AllSubjectResults

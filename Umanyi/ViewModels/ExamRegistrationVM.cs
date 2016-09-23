@@ -279,19 +279,19 @@ namespace UmanyiSMS.ViewModels
                 if (selectedStudentRegistration.StudentID == 0)
                     return;
                 int classID = await DataAccess.GetClassIDFromStudentID(selectedStudentRegistration.StudentID);
-                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(classID));
+                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(classID,null));
                 return;
             }
             if (isInClassMode)
             {
                 if (SelectedClassID == 0)
                     return;
-                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedClassID));
+                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedClassID,null));
                 return;
             }
             if (isInCombinedMode)
             {
-                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID));
+                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID,null));
                 return;
             }
         }

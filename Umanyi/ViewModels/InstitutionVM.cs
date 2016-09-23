@@ -12,11 +12,11 @@ namespace UmanyiSMS.ViewModels
             Title = "SCHOOL";
             TryAddChild(typeof(InstitutionInfoVM));
             TryAddChild(typeof(InstitutionSetupVM));
-            TryAddChild(typeof(TermDatesVM));
-            TryAddChild(typeof(InstitutionSubjectsSetupVM));
+            TryAddChild(typeof(AcademicYearSetupVM));
             TryAddChild(typeof(ClassesSetupVM));
-            TryAddChild(typeof(ExamSetupVM));
-            TryAddChild(typeof(ModifySubjectsSetupVM));            
+            TryAddChild(typeof(InstitutionSubjectsSetupVM));
+            TryAddChild(typeof(ModifySubjectsSetupVM));
+            TryAddChild(typeof(ExamSetupVM));                        
             TryAddChild(typeof(NewDormitoryVM));
             TryAddChild(typeof(DormitoryMembersVM));
         }

@@ -14,30 +14,26 @@ namespace UmanyiSMS.ViewModels
     public class ViewFeesStructureVM: ViewModelBase
     {
         CombinedClassModel selectedCombinedClass;
-        DateTime currentDate;
         ObservableCollection<CombinedClassModel> allCombinedClasses;
         FeesStructureModel currentStruct;
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
         public ViewFeesStructureVM()
         {
             InitVars();
             CreateCommands();
         }
-        public ObservableCollection<CombinedClassModel> AllCombinedClasses
-        {
-            get { return allCombinedClasses; }
-        }
 
         protected async override void InitVars()
         {
-
             Title = "VIEW FEES STRUCTURE";
-            CurrentDate = DateTime.Now;
             currentStruct = new FeesStructureModel();
             allCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            AllTerms = await DataAccess.GetAllTermsAsync();
             NotifyPropertyChanged("AllCombinedClasses");
             PropertyChanged += async (o, e) =>
                 {
-                    if ((e.PropertyName == "CurrentDate" || e.PropertyName == "SelectedCombinedClass") && selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0)
+                    if ((e.PropertyName == "SelectedTerm" || e.PropertyName == "SelectedCombinedClass") &&selectedTerm!=null&& selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0)
                        CurrentStructure.Entries =  (await RefreshEntries()).Entries;
                 };
 
@@ -46,6 +42,38 @@ namespace UmanyiSMS.ViewModels
         protected override void CreateCommands()
         {
             
+        }
+
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
+
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return this.selectedTerm; }
+
+            set
+            {
+                if (value != this.selectedTerm)
+                {
+                    this.selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
+        }
+        public ObservableCollection<CombinedClassModel> AllCombinedClasses
+        {
+            get { return allCombinedClasses; }
         }
 
         public CombinedClassModel SelectedCombinedClass
@@ -61,19 +89,6 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public DateTime CurrentDate
-        {
-            get { return currentDate; }
-            set
-            {
-                if (currentDate != value)
-                {
-                    currentDate = value;
-                    NotifyPropertyChanged("CurrentDate");
-                }                
-            }
-        }
-
         public FeesStructureModel CurrentStructure
         {
             get { return currentStruct; }
@@ -81,7 +96,7 @@ namespace UmanyiSMS.ViewModels
 
         private async Task<FeesStructureModel> RefreshEntries()
         {
-            return await DataAccess.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, currentDate);
+            return await DataAccess.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.StartDate);
         }
 
         public override void Reset()

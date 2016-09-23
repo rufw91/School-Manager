@@ -45,6 +45,15 @@
                   ItemsSource="{Binding AllClasses}" DisplayMemberPath="NameOfClass"
                   SelectedValuePath="ClassID"
                   SelectedValue="{Binding NewClassID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="450,210,0,0" Text="Period" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="460,260,0,0" Text="Starts" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="520,260,0,0" VerticalAlignment="Top" Width="200"
+                  SelectedDate="{Binding StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="460,310,0,0" Text="Ends" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="520,310,0,0" VerticalAlignment="Top" Width="200"
+                  SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding SaveCommand}"/>
 

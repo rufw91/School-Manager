@@ -14,38 +14,34 @@ namespace UmanyiSMS.ViewModels
     public class EnterExamResultsVM : ViewModelBase
     {
         ExamResultStudentModel newResult;
-        ExamResultStudentModel tempResult;
-        ExamResultSubjectEntryModel newSubjectResult;
         
         ObservableCollection<ExamModel> allExams;
-        ObservableCollection<ExamResultSubjectEntryModel> allSubjects;
         private ExamModel selectedExam;
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
         public EnterExamResultsVM()
         {
             InitVars();
             CreateCommands();
-
         }
 
-        protected override void InitVars()
+        protected async override void InitVars()
         {
             Title = "ENTER RESULTS PER STUDENT";
             StudentSubjectSelection = new ObservableCollection<StudentSubjectSelectionEntryModel>();
             NewResult = new ExamResultStudentModel();
-            tempResult = new ExamResultStudentModel();
-            SelectedSubject = new ExamResultSubjectEntryModel();
             AllExams = new ObservableCollection<ExamModel>();
-            AllSubjects = new ObservableCollection<ExamResultSubjectEntryModel>();
+            AllTerms = await DataAccess.GetAllTermsAsync();
             newResult.PropertyChanged += async (o, e) =>
             {
                 if (e.PropertyName == "StudentID")
                 {
                     AllExams.Clear();
                     newResult.CheckErrors();
-                    if ((newResult.StudentID != 0)&&(!newResult.HasErrors))
+                    if ((newResult.StudentID != 0)&&(!newResult.HasErrors)&&selectedTerm!=null)
                     {
                         var s = await DataAccess.GetClassIDFromStudentID(newResult.StudentID);
-                        AllExams = await DataAccess.GetExamsByClass(s);
+                        AllExams = await DataAccess.GetExamsByClass(s,selectedTerm);
                         StudentSubjectSelection = (await DataAccess.GetStudentSubjectSelection(newResult.StudentID)).Entries;
                     }
                 }
@@ -56,6 +52,17 @@ namespace UmanyiSMS.ViewModels
 
             PropertyChanged += async(o, e) =>
                 {
+                    if (e.PropertyName == "SelectedTerm")
+                    {
+                        AllExams.Clear();
+                        newResult.CheckErrors();
+                        if ((newResult.StudentID != 0) && (!newResult.HasErrors) && selectedTerm != null)
+                        {
+                            var s = await DataAccess.GetClassIDFromStudentID(newResult.StudentID);
+                            AllExams = await DataAccess.GetExamsByClass(s, selectedTerm);
+                            StudentSubjectSelection = (await DataAccess.GetStudentSubjectSelection(newResult.StudentID)).Entries;
+                        }
+                    }
                     if (e.PropertyName == "SelectedExam")
                     {
                         if (selectedExam != null)
@@ -67,7 +74,6 @@ namespace UmanyiSMS.ViewModels
                         else
                         {
                             newResult.ExamID = 0;
-                            AllSubjects.Clear();
                         }
                     }
                 };
@@ -75,23 +81,15 @@ namespace UmanyiSMS.ViewModels
 
         protected override void CreateCommands()
         {
-            AddSubjectResultCommand = new RelayCommand(o =>
+            AddAllSubjectsCommand = new RelayCommand(async o =>
             {
-                newResult.Entries.Add(newSubjectResult);
-                SelectedSubject = new ExamResultSubjectEntryModel();
-                SelectedSubject = null;
+                await RefreshSubjectEntries();
             },
-            o =>
-            {
-                return newSubjectResult != null && newSubjectResult.SubjectID > 0 &&
-                    !newSubjectResult.HasErrors && !SubjectExists(newSubjectResult.SubjectID) && 
-                    StudentTakesSubject(newSubjectResult.SubjectID);
-            });
+            o => CanReset());
 
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                CheckForChanges();
                 bool succ = await DataAccess.SaveNewExamResultAsync(newResult);
                 MessageBox.Show(succ ? "Successfully saved details" : "Could not save details.", succ ? "Success" : "Error",
                             MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
@@ -100,44 +98,38 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = false;
             }, o => !IsBusy && CanSave());
         }
-
-        private void CheckForChanges()
+        public ObservableCollection<TermModel> AllTerms
         {
-            bool removeInvalid=false;
-            if (tempResult.Entries.Any(o => !newResult.Entries.Any(a => a.SubjectID == o.SubjectID)))
+            get { return this.allTerms; }
+
+            private set
             {
-                var t = tempResult.Entries.Where(o => !newResult.Entries.Any(a => a.SubjectID == o.SubjectID));
-                if (t != null && t.Count() > 0)
+                if (value != this.allTerms)
                 {
-                    int count = 0;
-                    string msg = "The following results were removed:\r\n";
-                    foreach (var i in t)
-                    {
-                        if (count > 20)
-                        {
-                            msg += ".....";
-                            break;
-                        }
-                        msg += " -  Subject: [" + i.NameOfSubject + "] Score: [" + i.Score + "]\r\n";
-                        count++;
-
-                    }
-                    msg += "Do you want to DELETE these subject(s) results for selected student?";
-                    removeInvalid = (MessageBox.Show(msg, "Info", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes);
-                    if (removeInvalid)
-                    {
-                        string remStr = "";
-                        foreach (var i in t)
-                            remStr += "DELETE FROM [Institution].[ExamResultDetail] WHERE SubjectID=" + i.SubjectID + " AND ExamResultID=" + i.ExamResultID + "\r\n" +
-                                "IF NOT EXISTS (SELECT * FROM [Institution].[ExamResultDetail] WHERE ExamResultID=" + i.ExamResultID + ")\r\n" +
-                                "DELETE FROM [Institution].[ExamResultHeader] WHERE ExamResultID=" + i.ExamResultID;
-
-                        bool succ = DataAccessHelper.ExecuteNonQuery(remStr);
-                    }
-
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
                 }
-                else return;
             }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return this.selectedTerm; }
+
+            set
+            {
+                if (value != this.selectedTerm)
+                {
+                    this.selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
+        }
+        
+        private bool CanReset()
+        {
+            newResult.CheckErrors();
+            return !IsBusy&&!newResult.HasErrors && selectedExam != null;
         }
 
         private bool CanSave()
@@ -179,26 +171,12 @@ namespace UmanyiSMS.ViewModels
 
         private async Task RefreshSubjectEntries()
         {
-            AllSubjects.Clear();
-            var temp = (await DataAccess.GetExamAsync(newResult.ExamID)).Entries.Where(o => StudentSubjectSelection.Any(a => a.SubjectID == o.SubjectID));
-            foreach (SubjectModel sm in temp)
-                if (StudentTakesSubject(sm.SubjectID))
-                    AllSubjects.Add(new ExamResultSubjectEntryModel(sm) { OutOf = selectedExam.OutOf });
             newResult.Entries = (await DataAccess.GetStudentExamResultAync(newResult.StudentID, newResult.ExamID, selectedExam.OutOf)).Entries;
-            tempResult.Entries = (await DataAccess.GetStudentExamResultAync(newResult.StudentID, newResult.ExamID, selectedExam.OutOf)).Entries;
-        }
-
-        public ExamResultSubjectEntryModel SelectedSubject
-        {
-            get { return newSubjectResult; }
-
-            set
+            if (newResult.Entries.Count!=StudentSubjectSelection.Count)
             {
-                if (value != newSubjectResult)
-                {
-                    newSubjectResult = value;
-                    NotifyPropertyChanged("SelectedSubject");
-                }
+                foreach(var t in StudentSubjectSelection)
+                    if(!newResult.Entries.Any(o=>o.SubjectID==t.SubjectID))
+                        newResult.Entries.Add(new ExamResultSubjectEntryModel(t) { OutOf = selectedExam.OutOf});
             }
         }
 
@@ -212,20 +190,6 @@ namespace UmanyiSMS.ViewModels
                 {
                     this.allExams = value;
                     NotifyPropertyChanged("AllExams");
-                }
-            }
-        }
-
-        public ObservableCollection<ExamResultSubjectEntryModel> AllSubjects
-        {
-            get { return this.allSubjects; }
-
-            private set
-            {
-                if (value != this.allSubjects)
-                {
-                    this.allSubjects = value;
-                    NotifyPropertyChanged("AllSubjects");
                 }
             }
         }
@@ -250,7 +214,7 @@ namespace UmanyiSMS.ViewModels
             set;
         }
 
-        public ICommand AddSubjectResultCommand
+        public ICommand AddAllSubjectsCommand
         {
             get;
             private set;
@@ -265,8 +229,6 @@ namespace UmanyiSMS.ViewModels
         public override void Reset()
         {
             newResult.Reset();
-            if (newSubjectResult != null)
-                newSubjectResult.Reset();
             SelectedExam = null;
             
         }

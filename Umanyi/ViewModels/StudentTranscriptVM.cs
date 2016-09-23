@@ -21,17 +21,20 @@ namespace UmanyiSMS.ViewModels
         FixedDocument fd;
         ObservableCollection<ExamWeightModel> exams;
         bool resultsIsReadOnly;
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
         public StudentTranscriptVM()
         {
             InitVars();
             CreateCommands();
         }
-        protected override void InitVars()
+        protected async override void InitVars()
         {
             Title = "REPORT FORM";
             Transcript = new StudentTranscriptModel2();
             exams = new ObservableCollection<ExamWeightModel>();
             ResultsIsReadOnly = false;
+            AllTerms = await DataAccess.GetAllTermsAsync();
             transcript.PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName == "StudentID")
@@ -40,10 +43,10 @@ namespace UmanyiSMS.ViewModels
                         transcript.Clean();
                         ResultsIsReadOnly = false;
                         transcript.CheckErrors();
-                        if (!transcript.HasErrors)
+                        if (!transcript.HasErrors&& selectedTerm!=null)
                         {
                             ResultsIsReadOnly = false;
-                            var t = await DataAccess.GetExamsByClass(await DataAccess.GetClassIDFromStudentID(transcript.StudentID));
+                            var t = await DataAccess.GetExamsByClass(await DataAccess.GetClassIDFromStudentID(transcript.StudentID),selectedTerm);
                             int count = 1;
                             foreach (var ex in t)
                             {
@@ -61,6 +64,37 @@ namespace UmanyiSMS.ViewModels
                         }
                     }
                 };
+            PropertyChanged += async(o, e) =>
+                {
+                    if ( e.PropertyName == "SelectedTerm")
+                    {
+                        exams.Clear();
+                        transcript.Clean();
+                        ResultsIsReadOnly = false;
+                        transcript.CheckErrors();
+                        if (!transcript.HasErrors && selectedTerm != null)
+                        {
+                            ResultsIsReadOnly = false;
+                            var t = await DataAccess.GetExamsByClass(await DataAccess.GetClassIDFromStudentID(transcript.StudentID), selectedTerm);
+                            int count = 1;
+                            foreach (var ex in t)
+                            {
+                                exams.Add(new ExamWeightModel()
+                                {
+                                    ExamID = ex.ExamID,
+                                    NameOfExam = ex.NameOfExam,
+                                    OutOf = ex.OutOf,
+                                    Weight = count <= 3 ? ex.OutOf : 0,
+                                    ShowInTranscript = count > 3 ? false : true,
+                                    Index = count
+                                });
+                                count++;
+                            }
+                        }
+                    }
+                };
+
+
         }
 
         protected override void CreateCommands()
@@ -113,7 +147,7 @@ namespace UmanyiSMS.ViewModels
                 var dx = ft.Where(o2 => o2.Entries.Any(o1 => o1.ClassID == c));
                     classes = dx.ElementAt(0).Entries;
                 
-                Transcript.CopyFrom(await DataAccess.GetStudentTranscript2(transcript.StudentID,exams,classes));               
+                Transcript.CopyFrom(await DataAccess.GetStudentTranscript2(transcript.StudentID,exams,classes,selectedTerm));               
                 ResultsIsReadOnly = true;
                 IsBusy = false;
             }, o =>CanRefresh());
@@ -143,7 +177,35 @@ namespace UmanyiSMS.ViewModels
                 count++;
             }
 
-            return !transcript.HasErrors && transcript.Entries.Count > 0 && tot == 100 && count <= 3;
+            return selectedTerm != null&& !transcript.HasErrors && transcript.Entries.Count > 0 && tot == 100 && count <= 3;
+        }
+
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
+
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return this.selectedTerm; }
+
+            set
+            {
+                if (value != this.selectedTerm)
+                {
+                    this.selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
         }
 
         public FixedDocument Document

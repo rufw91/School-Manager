@@ -17,10 +17,10 @@ namespace Helper
             try
             {
                 bool test=
-                DataAccessHelper.TestCredential(cred);
+                DataAccessHelper.Helper.TestCredential(cred);
                 if (test)
                 {
-                    DataAccessHelper.SetCredential(cred);
+                    DataAccessHelper.Helper.SetCredential(cred);
                     string[] roles = await GetUserRolesAsync(cred.UserId);
                     
                     if ((roles.Length == 1) && (roles[0] == UserRole.None.ToString()))
@@ -47,7 +47,7 @@ namespace Helper
 
                 else
                 {
-                    SqlConnection conn = DataAccessHelper.CreateConnection();
+                    SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
 
                     string[] temp = new string[1];
                     temp[0] = "None";

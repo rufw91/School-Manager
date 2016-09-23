@@ -7,7 +7,7 @@
              d:DesignHeight="600" d:DesignWidth="900"
              Background="White">
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Modify Class Subjects Setup" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Class Subjects Setup" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="40,67,0,0" Style="{DynamicResource ContentTextSemiBold}" TextWrapping="Wrap" Text="Select the examinable subjects for a one class stream." VerticalAlignment="Top" Width="286"/>
         <TextBlock HorizontalAlignment="Left" Margin="89,140,0,0" TextWrapping="Wrap" Text="Class" VerticalAlignment="Top"/>
         <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" ItemsSource="{Binding AllClasses}"

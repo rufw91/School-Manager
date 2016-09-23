@@ -51,7 +51,7 @@
                   ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description"
                  SelectedItem="{Binding SelectedTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
             ValidatesOnDataErrors=True,ValidatesOnNotifyDataErrors=True}"
-                 IsEnabled="{Binding IsInStudentMode}"/>
+                 IsEnabled="{Binding IsInClassMode}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,395,0,0" Style="{DynamicResource Title0}" Text="Other Fees Items" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="39,445,0,0" TextWrapping="Wrap" Text="Name of Entry" VerticalAlignment="Top"/>

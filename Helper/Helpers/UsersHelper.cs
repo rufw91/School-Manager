@@ -20,7 +20,7 @@ namespace Helper
         {
             return Task.Factory.StartNew<bool>(() =>
             {
-                SqlConnection conn = DataAccessHelper.CreateConnection();
+                SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
                 try
                 {
                     bool succ;
@@ -112,7 +112,7 @@ namespace Helper
                             "VALUES('" + cred.UserId + "'," + i + ")";
                 }
                 insertStr += "\r\nCOMMIT";
-                DataAccessHelper.ExecuteNonQueryWithParameters(insertStr, 
+                DataAccessHelper.Helper.ExecuteNonQuery(insertStr, 
                     new ObservableCollection<SqlParameter>() { new SqlParameter("@sPhoto", photo) });
                 return true;
             });
@@ -125,7 +125,7 @@ namespace Helper
                 string insertStr = "BEGIN TRANSACTION\r\nDELETE FROM [Users].[UserDetail] WHERE UserID='" + userID + "'\r\n";
 
                 insertStr += "DELETE FROM [Users].[User] WHERE UserID='" + userID + "'\r\nCOMMIT";
-                DataAccessHelper.ExecuteNonQuery(insertStr);
+                DataAccessHelper.Helper.ExecuteNonQuery(insertStr);
                 return true;
             });
         }
@@ -145,7 +145,7 @@ namespace Helper
                 }
 
                 insertStr += "\r\nCOMMIT";
-                DataAccessHelper.ExecuteNonQuery(insertStr);
+                DataAccessHelper.Helper.ExecuteNonQuery(insertStr);
                 return true;
             });
         }
@@ -154,7 +154,7 @@ namespace Helper
         {
             return Task.Factory.StartNew<bool>(() =>
             {
-                SqlConnection conn = DataAccessHelper.CreateConnection();
+                SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
                 try
                 {
                     using (conn)
@@ -211,7 +211,7 @@ namespace Helper
         {
             UserModel temp = new UserModel();
             string selectStr = "SELECT UserID,Name,SPhoto FROM [Users].[User] WHERE UserID=" + userID;
-            DataTable dt=DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+            DataTable dt=DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
             if (dt.Rows.Count>0)
             {
                 temp.UserID = dt.Rows[0][0].ToString();
@@ -224,7 +224,7 @@ namespace Helper
         public static UserRole GetUserRole(int userID)
         {
             string selectStr = "SELECT UserRoleID FROM [Users].[UserDetail] WHERE UserID='" + userID + "'";
-            ObservableCollection<string> coll = DataAccessHelper.CopyFromDBtoObservableCollection(selectStr);
+            List<string> coll = DataAccessHelper.Helper.CopyFirstColumnToList(selectStr);
             List<UserRole> roles = new List<UserRole>();
             foreach (string s in coll)
                 roles.Add((UserRole)int.Parse(s));
@@ -238,7 +238,7 @@ namespace Helper
         {
             return Task.Factory.StartNew<bool>(() =>
             {
-                SqlConnection conn = DataAccessHelper.CreateConnection();
+                SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
                 try
                 {
                     bool succ;
@@ -283,7 +283,7 @@ namespace Helper
         {
             return Task.Factory.StartNew<bool>(() =>
             {
-                SqlConnection conn = DataAccessHelper.CreateConnection();
+                SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
                 try
                 {
                     bool succ;

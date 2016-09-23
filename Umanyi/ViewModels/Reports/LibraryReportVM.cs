@@ -105,7 +105,7 @@ namespace UmanyiSMS.ViewModels
                         case 5: selectStr += " dbo.GetUnreturnedCopies(BookID)<=" + noOfCopies; break;
                     }
                 }
-                return DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                return DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
             });
         }
 

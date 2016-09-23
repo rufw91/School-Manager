@@ -27,11 +27,11 @@ namespace UmanyiSMS.ViewModels
             ExecuteCommand = new RelayCommand(async o => 
             {
                 IsBusy = true;
-                bool hasReturn=await HasReturn(query);
-                //if (hasReturn)
-                //    Result = await DataAccessHelper.ExecuteQueryWithResultAsync(query);
-                //else
-                    Result = await DataAccessHelper.ExecuteQueryAsync(query);
+                /*bool hasReturn=await HasReturn(query);
+                if (hasReturn)
+                   Result = await DataAccessHelper.Helper.ExecuteQueryWithResultAsync(query);
+                else
+                    Result = await DataAccessHelper.Helper.ExecuteQueryAsync(query);*/
                 IsBusy = false; 
             }, o => true);
         }

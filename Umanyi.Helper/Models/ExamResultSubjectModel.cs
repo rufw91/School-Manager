@@ -146,6 +146,39 @@ namespace Helper.Models
             };
         }
 
+        public ExamResultSubjectEntryModel(SubjectBaseModel sm)
+        {
+            base.NameOfSubject = sm.NameOfSubject;
+            base.SubjectID = sm.SubjectID;
+            this.OutOf = 100;
+            base.PropertyChanged += delegate(object o, PropertyChangedEventArgs e)
+            {
+                if (e.PropertyName == "Score" || e.PropertyName == "NameOfSubject" || e.PropertyName == "OutOf")
+                {
+                    base.ClearErrors("Score");
+                    if (this.score > this.outOf)
+                    {
+                        base.SetErrors("Score", new List<string>
+                        {
+                            string.Concat(new object[]
+                            {
+                                "Value [",
+                                this.score,
+                                "] should be a non-negative number less than or equal to [",
+                                this.outOf,
+                                "]"
+                            })
+                        });
+                    }
+                    base.NotifyPropertyChanged("HasErrors");
+                    if (!base.HasErrors)
+                    {
+                        this.Remarks = this.GetRemark(this.score);
+                    }
+                }
+            };
+        }
+
         private string GetRemark(decimal score)
         {
             int num = DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(score, this.outOf, 100m)));

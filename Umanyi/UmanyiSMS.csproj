@@ -329,7 +329,7 @@
     <Compile Include="ViewModels\SupplierStatementVM.cs" />
     <Compile Include="ViewModels\SuppliersVM.cs" />
     <Compile Include="ViewModels\SyncCloudVM.cs" />
-    <Compile Include="ViewModels\TermDatesVM.cs" />
+    <Compile Include="ViewModels\AcademicYearSetupVM.cs" />
     <Compile Include="ViewModels\UnreturnedBooksVM.cs" />
     <Compile Include="ViewModels\UpcomingEventsVM.cs" />
     <Compile Include="ViewModels\VATAnalysisVM.cs" />
@@ -770,8 +770,8 @@
     <Compile Include="Views\SyncCloud.xaml.cs">
       <DependentUpon>SyncCloud.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TermDates.xaml.cs">
-      <DependentUpon>TermDates.xaml</DependentUpon>
+    <Compile Include="Views\AcademicYearSetup.xaml.cs">
+      <DependentUpon>AcademicYearSetup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Test.cs">
       <SubType>UserControl</SubType>
@@ -1422,7 +1422,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TermDates.xaml">
+    <Page Include="Views\AcademicYearSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

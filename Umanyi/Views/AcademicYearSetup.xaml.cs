@@ -18,9 +18,9 @@ namespace UmanyiSMS.Views
     /// <summary>
     /// Interaction logic for TermDates.xaml
     /// </summary>
-    public partial class TermDates : UserControl
+    public partial class AcademicYearSetup : UserControl
     {
-        public TermDates()
+        public AcademicYearSetup()
         {
             InitializeComponent();
         }

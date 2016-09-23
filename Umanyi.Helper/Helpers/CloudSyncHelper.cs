@@ -101,7 +101,7 @@ namespace Helper
                     CurrentItem = 1,
                     Percentage = 0m
                 });
-                IEnumerable<string> enumerable = DataAccessHelper.CopyFromDBtoObservableCollection("SELECT StudentID FROM [Institution].[Student] WHERE IsActive=1");
+                IEnumerable<string> enumerable = DataAccessHelper.Helper.CopyFirstColumnToList("SELECT StudentID FROM [Institution].[Student] WHERE IsActive=1");
                 decimal d = enumerable.Count<string>();
                 decimal num = 0m;
                 foreach (string current in enumerable)
@@ -180,7 +180,7 @@ namespace Helper
             }
             if (options.Contains(CloudSyncHelper.SyncOptions.Exams))
             {
-                IOrderedEnumerable<ExamModel> orderedEnumerable = from o in DataAccess.GetExamsByClass(student.ClassID).Result
+                IOrderedEnumerable<ExamModel> orderedEnumerable = from o in new List<ExamModel>()
                                                                   orderby o.ExamDateTime descending
                                                                   select o;
                 List<SyncExamResultModel> list = new List<SyncExamResultModel>();
@@ -242,7 +242,7 @@ namespace Helper
                 text,
                 "))"
             });
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             List<CloudSyncHelper.TranscriptInfo> list = new List<CloudSyncHelper.TranscriptInfo>();
             List<ExamWeightModel> list2 = new List<ExamWeightModel>();
             foreach (DataRow dataRow in dataTable.Rows)
@@ -297,7 +297,7 @@ namespace Helper
             SyncTranscriptModel result3;
             if (list2.Count > 0)
             {
-                StudentTranscriptModel2 result2 = DataAccess.GetStudentTranscript2(studentID, list2, classes).Result;
+                StudentTranscriptModel2 result2 = null;//DataAccess.GetStudentTranscript2(studentID, list2, classes).Result;
                 if (result2.StudentTranscriptID == 0)
                 {
                     result3 = null;

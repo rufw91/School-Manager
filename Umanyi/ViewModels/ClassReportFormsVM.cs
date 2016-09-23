@@ -23,7 +23,9 @@ namespace UmanyiSMS.ViewModels
         private DateTime openingDay;
         private DateTime closingDay;
         private string classTeacherComments;
-        private string principalComments;
+        private string principalComments; 
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
         public ClassReportFormsVM()
         {
             InitVars();
@@ -56,7 +58,7 @@ namespace UmanyiSMS.ViewModels
                  var dx =ft.Where(o2=>o2.Entries.Any(o1=>o1.ClassID==selectedClassID));
                     classes = dx.ElementAt(0).Entries;
 
-                ClassTranscripts = await DataAccess.GetClassTranscripts2Async(selectedClassID,exams,classes,new Progress<OperationProgress>(DisplayProgress));
+                ClassTranscripts = await DataAccess.GetClassTranscripts2Async(selectedClassID,exams,classes,new Progress<OperationProgress>(DisplayProgress),selectedTerm);
                 
                 ResultsIsReadOnly = true;
                 IsBusy = false;
@@ -79,6 +81,7 @@ namespace UmanyiSMS.ViewModels
             SelectedClassID = 0;
             OpeningDay = DateTime.Now;
             ClosingDay = DateTime.Now;
+            AllTerms = await DataAccess.GetAllTermsAsync();
             PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName == "ClassTeacher")
@@ -110,15 +113,15 @@ namespace UmanyiSMS.ViewModels
                                 ed.ClosingDay = closingDay;
                             }
                     }
-                    if (e.PropertyName == "SelectedClassID")
+                    if (e.PropertyName == "SelectedClassID" || e.PropertyName == "SelectedTerm")
                     {
                         exams.Clear();
                         classTranscripts.Clear();
                         ResultsIsReadOnly = false;
-                        if (selectedClassID == 0)
+                        if (selectedClassID == 0 || selectedTerm==null)
                             return;
                         
-                        var t = await DataAccess.GetExamsByClass(selectedClassID);
+                        var t = await DataAccess.GetExamsByClass(selectedClassID,selectedTerm);
                         int count = 1;
                         foreach (var ex in t)
                         {
@@ -149,7 +152,33 @@ namespace UmanyiSMS.ViewModels
             }
             return  tot == 100 && count <= 3 && count > 0;
         }
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
 
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return this.selectedTerm; }
+
+            set
+            {
+                if (value != this.selectedTerm)
+                {
+                    this.selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
+        }
         public bool ResultsIsReadOnly
         {
             get { return this.resultsIsReadOnly; }

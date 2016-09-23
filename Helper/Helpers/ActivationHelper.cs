@@ -47,9 +47,9 @@ namespace Helper.Helpers
         public async static Task<bool> LicenseExists()
         {
             if (RegistryHelper.GetKeyValue(null, "adata") == null)
-            { await DataAccessHelper.SetOffline(); return false; }
+            { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
             if (RegistryHelper.GetKeyValue(null, "ah") == null)
-            { await DataAccessHelper.SetOffline(); return false; }
+            { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
             return true;
         }
 
@@ -57,18 +57,18 @@ namespace Helper.Helpers
         {    
                 CheckLicense();
                 if (RegistryHelper.GetKeyValue(null, "adata") == null)
-                { await DataAccessHelper.SetOffline(); return false; }
+                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
                 if (RegistryHelper.GetKeyValue(null, "ah") == null)
-                {  await DataAccessHelper.SetOffline(); return false;}
+                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
                 string s = RegistryHelper.GetKeyValue(null, "adata").ToString();
                 if (s.Length < 29)
-                { await DataAccessHelper.SetOffline();   return false;}
+                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
                 if (Security.DataProtection.GetSha1Hash(s) != RegistryHelper.GetKeyValue(null, "ah").ToString())
-                { await DataAccessHelper.SetOffline();  return false;}
+                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
                 if (s[0] == 'X')
-                { await DataAccessHelper.SetOffline();  return false;}
+                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
                 if ((s.Length > 29) && (int.Parse(s.Substring(29)) > 30))
-                { await DataAccessHelper.SetOffline();  return false;}
+                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
                 return true;             
         }
 

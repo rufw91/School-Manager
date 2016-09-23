@@ -22,6 +22,8 @@ namespace UmanyiSMS.ViewModels
         private ObservableCollection<ClassModel> allClasses;
         private int newClassID;
         private ClassModel currentClass;
+        private DateTime startDate;
+        private DateTime endDate;
         public AssignNewClassVM()
         {
             InitVars();
@@ -43,6 +45,8 @@ namespace UmanyiSMS.ViewModels
             NewClassID = 0;
             IsInStudentMode = true;
             AllClasses = await DataAccess.GetAllClassesAsync();
+            StartDate = new DateTime(DateTime.Now.Year, 1, 1);
+            EndDate = new DateTime(DateTime.Now.Year, 12, 31);
         }
 
         protected override void CreateCommands()
@@ -51,9 +55,9 @@ namespace UmanyiSMS.ViewModels
              {
                  bool succ = false;
                  if (isInStudentMode)
-                 succ = await DataAccess.AssignStudentNewClass(selectedStudent.StudentID, newClassID);
+                 succ = await DataAccess.AssignStudentNewClass(selectedStudent.StudentID, newClassID,startDate,endDate);
                  else
-                     succ = await DataAccess.AssignClassNewClass(selectedClassID, newClassID);
+                     succ = await DataAccess.AssignClassNewClass(selectedClassID, newClassID,startDate,endDate);
                  MessageBox.Show(succ ? "Successfully saved details" : "Could not save details", succ ? "Success" : "Error", MessageBoxButton.OK,
                      succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                  if (succ)
@@ -78,6 +82,34 @@ namespace UmanyiSMS.ViewModels
                     isInStudentMode = value;
                     NotifyPropertyChanged("IsInStudentMode"); 
                     selectedStudent.Reset();
+                }
+            }
+        }
+
+        public DateTime StartDate
+        {
+            get { return startDate; }
+
+            set
+            {
+                if (value != startDate)
+                {
+                    startDate = value;
+                    NotifyPropertyChanged("StartDate");
+                }
+            }
+        }
+
+        public DateTime EndDate
+        {
+            get { return endDate; }
+
+            set
+            {
+                if (value != endDate)
+                {
+                    endDate = value;
+                    NotifyPropertyChanged("EndDate");
                 }
             }
         }

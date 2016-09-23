@@ -2,6 +2,7 @@
 using Helper.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
@@ -14,31 +15,32 @@ namespace UmanyiSMS.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "User")]
     public class ViewFullFeesStructureVM:ViewModelBase
     {
-        private DateTime currentDate;
         private FixedDocument document;
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
 
         public ViewFullFeesStructureVM()
         {
             InitVars();
             CreateCommands();
         }
-        protected override void InitVars()
+        protected async override void InitVars()
         {
             Title = "VIEW FULL FEES STRUCTURE";
-            CurrentDate = DateTime.Now;
+            AllTerms = await DataAccess.GetAllTermsAsync();
         }
 
         protected override void CreateCommands()
         {
             GenerateCommand = new RelayCommand(async o =>
              {
-                 var f =await DataAccess.GetFullFeesStructure(DateTime.Now);
+                 var f =await DataAccess.GetFullFeesStructure(selectedTerm.StartDate.AddDays(1));
                  Document = DocumentHelper.GenerateDocument(new FullFeesStructureModel( f ));
              },o => true);
 
             FullPreviewCommand = new RelayCommand(async o =>
             {
-                var f = await DataAccess.GetFullFeesStructure(DateTime.Now);
+                var f = await DataAccess.GetFullFeesStructure(selectedTerm.StartDate.AddDays(1));
                 var xdc = DocumentHelper.GenerateDocument(new FullFeesStructureModel( f ));
                 if (ShowFullPreviewAction != null)
                     ShowFullPreviewAction.Invoke(xdc);
@@ -60,15 +62,28 @@ namespace UmanyiSMS.ViewModels
             private set;
         }
 
-        public DateTime CurrentDate
+        public ObservableCollection<TermModel> AllTerms
         {
-            get { return currentDate; }
+            get { return allTerms; }
+            private set
+            {
+                if (allTerms != value)
+                {
+                    allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return selectedTerm; }
             set
             {
-                if (currentDate != value)
+                if (selectedTerm != value)
                 {
-                    currentDate = value;
-                    NotifyPropertyChanged("CurrentDate");
+                    selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
                 }
             }
         }
