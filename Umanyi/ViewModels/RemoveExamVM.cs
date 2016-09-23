@@ -17,6 +17,8 @@ namespace UmanyiSMS.ViewModels
     {
         private int selectedClassID;
         private int selectedExamID;
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
         public RemoveExamVM()
         {
             InitVars();
@@ -54,16 +56,17 @@ namespace UmanyiSMS.ViewModels
             Title = "REMOVE EXAM";
             AllExams = new ObservableImmutableList<ExamModel>();
             AllClasses = await DataAccess.GetAllClassesAsync();
+            AllTerms = await DataAccess.GetAllTermsAsync();
             NotifyPropertyChanged("AllClasses");
             PropertyChanged += async (o, e) =>
                 {
-                    if (e.PropertyName == "SelectedClassID")
+                    if (e.PropertyName == "SelectedClassID" || e.PropertyName == "SelectedTerm")
                     {
                         AllExams.Clear();
                         SelectedExamID = 0;
-                        if (SelectedClassID != 0)
+                        if (SelectedClassID != 0&&selectedTerm!=null)
                         {
-                            AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedClassID));
+                            AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedClassID,selectedTerm));
                             NotifyPropertyChanged("AllExams");
                         }
                         return;
@@ -104,7 +107,33 @@ namespace UmanyiSMS.ViewModels
             SelectedClassID = 0;
             SelectedExamID = 0;
         }
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
 
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return this.selectedTerm; }
+
+            set
+            {
+                if (value != this.selectedTerm)
+                {
+                    this.selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
+        }
         public ObservableCollection<ClassModel> AllClasses { get; private set; }
 
         public ObservableImmutableList<ExamModel> AllExams { get; set; }

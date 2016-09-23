@@ -23,7 +23,7 @@
         	
         	DisplayMemberPath="Description"
         	ItemsSource="{Binding AllTerms}"
-        	SelectedItem="{Binding SelectedExam, Mode=TwoWay}"/>
+        	SelectedItem="{Binding SelectedTerm, Mode=TwoWay}"/>
 
         <TextBlock  HorizontalAlignment="Left" Margin="87,215,0,0" Text="Exam" VerticalAlignment="Top" />
         <ComboBox HorizontalAlignment="Left" Margin="120,215,0,0" VerticalAlignment="Top" Width="200" 
@@ -32,29 +32,9 @@
         	ItemsSource="{Binding AllExams}"
         	SelectedItem="{Binding SelectedExam, Mode=TwoWay}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="40,250,0,0" Style="{DynamicResource Title0}" Text="Subject Scores" VerticalAlignment="Top"/>
-
-        <TextBlock  HorizontalAlignment="Left" Margin="76,295,0,0" Text="Subject" VerticalAlignment="Top" />
-        <ComboBox HorizontalAlignment="Left" Margin="120,295,0,0" VerticalAlignment="Top" Width="200"         	
-            ItemsSource="{Binding AllSubjects}"
-        	DisplayMemberPath="NameOfSubject" 
-        	SelectedItem="{Binding SelectedSubject, Mode=TwoWay}"/>
-        <TextBlock  HorizontalAlignment="Left" Margin="86,340,0,0" Text="Score" VerticalAlignment="Top" />
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,340,0,0" VerticalAlignment="Top" Width="150" 
-                 DataContext="{Binding SelectedSubject}"
-                 Text="{Binding Score, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <TextBlock  HorizontalAlignment="Left" Margin="86,380,0,0" Text="Tutor" VerticalAlignment="Top" />
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="120,380,0,0" VerticalAlignment="Top" Width="150"
-                 DataContext="{Binding SelectedSubject}" MaxLength="4"
-                 Text="{Binding Tutor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <TextBlock  HorizontalAlignment="Left" Margin="70,420,0,0" x:Name="textBlock4" Text="Remarks" VerticalAlignment="Top" />
-        <TextBox HorizontalAlignment="Left" Margin="120,420,0,0" MaxLength="20"
-        	Width="200" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Height="80" VerticalAlignment="Top" 
-                 DataContext="{Binding SelectedSubject}"
-                 Text="{Binding Remarks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <Button Content="Add" HorizontalAlignment="Left" Margin="245,510,0,0" VerticalAlignment="Top" Width="75"
-        	Command="{Binding AddSubjectResultCommand}"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,88,10,0"  VerticalAlignment="Top">
+            <Hyperlink Command="{Binding AddAllSubjectsCommand}">Add all students subjects</Hyperlink>
+        </TextBlock>
 
         <TextBlock  HorizontalAlignment="Left" Margin="350,80,0,0" Style="{DynamicResource Title0}" Text="Preview" VerticalAlignment="Top" />
         <DataGrid AutoGenerateColumns="False" Margin="350,109,10,50" IsReadOnly="False"                   
@@ -66,12 +46,14 @@
 Binding="{Binding NameOfSubject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Score" Width="100*"
 Binding="{Binding Score, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
+                <DataGridTextColumn Header="Tutor" Width="100*"
+Binding="{Binding Tutor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Remarks" Width="100*"
 Binding="{Binding Remarks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="_Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" 
                 Command="{Binding SaveCommand}"/>
+        
     </Grid>
 </UserControl>

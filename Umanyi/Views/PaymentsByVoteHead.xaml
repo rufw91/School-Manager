@@ -16,6 +16,13 @@
                   DisplayMemberPath="NameOfClass"
                   SelectedValuePath="ClassID"
                   SelectedValue="{Binding SelectedClassID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="30,150,0,0" Text="Term" VerticalAlignment="Top"/>
+
+        <ComboBox HorizontalAlignment="Left" Margin="70,150,0,0" VerticalAlignment="Top" Width="200"
+                      ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description"
+                 SelectedItem="{Binding SelectedTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
         <DataGrid Name="datagrid" Margin="320,100,20,20" AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False"
                   ItemsSource="{Binding AllVoteHeads}">
             <DataGrid.Columns>
@@ -37,7 +44,7 @@
                 </Menu>
             </Controls:DropDownButton.DropDownContent>
         </Controls:DropDownButton>
-        <Button Content="Refresh" HorizontalAlignment="Left" Margin="70,165,0,0" VerticalAlignment="Top" Width="142"
+        <Button Content="Refresh" HorizontalAlignment="Left" Margin="70,200,0,0" VerticalAlignment="Top" Width="142"
                 Command="{Binding RefreshCommand}"/>
     </Grid>
 </UserControl>

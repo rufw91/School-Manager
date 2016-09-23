@@ -48,7 +48,7 @@ namespace UmanyiSMS.ViewModels
             {
                 string selectStr = "declare @newid int;  set @newid =dbo.GetNewID('Institution.Staff');  select @newid;";
 
-                string finalStr = DataAccessHelper.ExecuteScalar(selectStr);
+                string finalStr = DataAccessHelper.Helper.ExecuteScalar(selectStr);
                 int res;
                 int.TryParse(finalStr, out res);
                 return res;

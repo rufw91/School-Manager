@@ -117,7 +117,7 @@ namespace UmanyiSMS.Views
                                    " FROM [Sales].[Item]";
                 try
                 {
-                    using (SqlConnection DBConnection = DataAccessHelper.CreateConnection())
+                    using (SqlConnection DBConnection = DataAccessHelper.Helper.CreateConnection())
                     {
                         SqlCommand cmd = new SqlCommand();
                         cmd.CommandText = "USE UmanyiSMS\r\nSET DATEFORMAT DMY\r\n" + selectStr;

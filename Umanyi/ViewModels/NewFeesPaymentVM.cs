@@ -18,10 +18,10 @@ namespace UmanyiSMS.ViewModels
         FeePaymentModel currentPayment;
         ObservableCollection<FeePaymentModel> recentPayments;
         ObservableCollection<TermModel> allTerms;
-        private FeesStructureModel currentFeesStructure;
         private FixedDocument fd;
         private decimal feesStructureTotal;
         private ObservableCollection<string> pm;
+        private TermModel selectedTerm;
         public NewFeesPaymentVM()
         {
             InitVars();
@@ -29,36 +29,23 @@ namespace UmanyiSMS.ViewModels
         }
         protected override void CreateCommands()
         {
-            RemoveItemCommand = new RelayCommand(o => 
-            {
-                currentFeesStructure.Entries.RemoveAt((int)o);
-            }, o => 
-                {
-                    if (o!=null)
-                    return ((int)o) > -1;
-                    return false;
-                });
             PreviewCommand  = new RelayCommand(async o=>
             {
                 IsBusy = true;
                 SaleModel sm = new SaleModel();
 
-                if (!await DataAccess.HasInvoicedThisTerm(currentPayment.StudentID))
+                if (!await DataAccess.HasInvoicedOnTerm(currentPayment.StudentID,selectedTerm))
                 {
-                    sm = new SaleModel();
-                    sm.CustomerID = currentPayment.StudentID;
-                    sm.DateAdded = currentPayment.DatePaid;
-                    sm.EmployeeID = 0;
-                    sm.SaleItems = currentFeesStructure.Entries;
-                    sm.RefreshTotal();
+                    MessageBox.Show("This student has not been billed for the current term. Please bill the student before receiving payment.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    IsBusy = false;
+                    return;
                 }
                 else
                 {
-                    sm = await DataAccess.GetThisTermInvoice(currentPayment.StudentID);
+                    sm = await DataAccess.GetTermInvoice(currentPayment.StudentID,selectedTerm);
                     sm.CustomerID = currentPayment.StudentID;
                     sm.DateAdded = currentPayment.DatePaid;
                     sm.EmployeeID = 0;
-                    sm.SaleItems = currentFeesStructure.Entries;
                     sm.RefreshTotal();
                 }
                 MessageBox.Show("Dont forget to save the transaction!!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -75,16 +62,11 @@ namespace UmanyiSMS.ViewModels
             {
                 IsBusy = true;
                 bool succ=true;
-                if (!await DataAccess.HasInvoicedThisTerm(currentPayment.StudentID))
+                if (!await DataAccess.HasInvoicedOnTerm(currentPayment.StudentID,selectedTerm))
                 {
-                    SaleModel sm = new SaleModel();
-                    sm.CustomerID = currentPayment.StudentID;
-                    sm.DateAdded = currentPayment.DatePaid;
-                    sm.EmployeeID = 0;
-                    sm.SaleItems = currentFeesStructure.Entries;
-                    sm.RefreshTotal();
-                    
-                    succ = await DataAccess.SaveNewFeesPaymentAsync(currentPayment,sm);
+                    MessageBox.Show("This student has not been billed for the current term. Please bill the student before receiving payment.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    IsBusy = false;
+                    return;
                 }
                 else
                 succ = await DataAccess.SaveNewFeesPaymentAsync(currentPayment);
@@ -106,19 +88,15 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 bool succ = true;
                 SaleModel sm;
-                if (!await DataAccess.HasInvoicedThisTerm(currentPayment.StudentID))
+                if (!await DataAccess.HasInvoicedOnTerm(currentPayment.StudentID,selectedTerm))
                 {
-                    sm = new SaleModel();
-                    sm.CustomerID = currentPayment.StudentID;
-                    sm.DateAdded = currentPayment.DatePaid;
-                    sm.EmployeeID = 0;
-                    sm.SaleItems = currentFeesStructure.Entries;
-                    sm.RefreshTotal();
-                    succ = await DataAccess.SaveNewFeesPaymentAsync(currentPayment, sm);
+                    MessageBox.Show("This student has not been billed for the current term. Please bill the student before receiving payment.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    IsBusy = false;
+                    return;
                 }
                 else
                     succ = await DataAccess.SaveNewFeesPaymentAsync(currentPayment);
-                    sm = await DataAccess.GetThisTermInvoice(currentPayment.StudentID);
+                    sm = await DataAccess.GetTermInvoice(currentPayment.StudentID,selectedTerm);
                 
                 if (succ)
                 {
@@ -181,38 +159,30 @@ namespace UmanyiSMS.ViewModels
                 "MONEY ORDER",
                 "OTHER"
             };
-            base.NotifyPropertyChanged("PaymentMethods");
-            AllTerms =await  DataAccess.GetAllTermsAsync();
-            currentPayment.PropertyChanged += async (o, e) =>
-            {
-                if (e.PropertyName != "StudentID")
-                    return;
-                if (currentPayment.StudentID > 0)
-                    currentPayment.CheckErrors();
-                if (!currentPayment.HasErrors)
-                {
-                    bool hasInv = await DataAccess.HasInvoicedThisTerm(currentPayment.StudentID);
-                    if (hasInv)
-                        CurrentFeesStructure = new FeesStructureModel() { Entries = (await DataAccess.GetThisTermInvoice(currentPayment.StudentID)).SaleItems };
-                    else
-                    {
-                        var s = await DataAccess.GetClassIDFromStudentID(currentPayment.StudentID);
-                        CurrentFeesStructure = await DataAccess.GetFeesStructureAsync(s, DateTime.Now);
-                    }
-                    RefreshRecentPayments();
-                    FeesStructureTotal = 0;
-                    foreach (var v in currentFeesStructure.Entries)
-                        FeesStructureTotal += v.Amount;
-                    currentFeesStructure.Entries.CollectionChanged += (o1, e1) =>
-                    {
-                        FeesStructureTotal = 0;
-                        foreach (var v in currentFeesStructure.Entries)
-                            FeesStructureTotal += v.Amount;
-                    };
-                }
 
-            };
+            AllTerms =await  DataAccess.GetAllTermsAsync();
+            currentPayment.PropertyChanged += OnPropertyChanged;
+            this.PropertyChanged += OnPropertyChanged;
         }
+
+        private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "StudentID" && e.PropertyName != "SelectedTerm")
+                return;
+            if (currentPayment.StudentID > 0)
+                currentPayment.CheckErrors();
+            if (!currentPayment.HasErrors && selectedTerm != null)
+            {
+                var s = (await DataAccess.GetTermInvoice(currentPayment.StudentID, selectedTerm)).SaleItems;
+                if (s.Count > 0)
+                    foreach (var v in s)
+                        FeesStructureTotal += v.Amount;
+                else FeesStructureTotal = 0;
+                RefreshRecentPayments();
+            }
+        }
+
+
 
         public override void Reset()
         {
@@ -252,6 +222,20 @@ namespace UmanyiSMS.ViewModels
                 }
             }
         }
+
+        public TermModel SelectedTerm
+        {
+            get { return selectedTerm; }
+
+            set
+            {
+                if (value != selectedTerm)
+                {
+                    selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
+        }
  
         public FixedDocument Document
         {
@@ -263,20 +247,6 @@ namespace UmanyiSMS.ViewModels
                 {
                     this.fd = value;
                     NotifyPropertyChanged("Document");
-                }
-            }
-        }
-
-        public FeesStructureModel CurrentFeesStructure
-        {
-            get { return currentFeesStructure; }
-
-            set
-            {
-                if (value != currentFeesStructure)
-                {
-                    currentFeesStructure = value;
-                    NotifyPropertyChanged("CurrentFeesStructure");
                 }
             }
         }
@@ -296,7 +266,7 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanSavePayment()
         {
-            return !currentPayment.HasErrors &&
+            return !currentPayment.HasErrors && selectedTerm!=null&&
                 (currentPayment.AmountPaid > 0)&&!string.IsNullOrWhiteSpace(currentPayment.PaymentMethod);
         }
 

@@ -94,7 +94,7 @@ namespace UmanyiSMS.ViewModels
                     selectStr += " AND CAST(StartDateTime AS TIME)>='" + startTime.Value.ToString() + "' AND CAST(EndDateTime AS TIME)<='" +
                         endTime.Value.ToString() + "'";
                     
-                return DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                return DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
             });
         }
 

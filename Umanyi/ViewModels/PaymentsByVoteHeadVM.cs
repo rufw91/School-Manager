@@ -17,18 +17,20 @@ namespace UmanyiSMS.ViewModels
         int selectedClassID;
         ObservableCollection<VoteHeadModel> allVoteHeads;
         private ObservableCollection<ClassModel> allClasses;
+        private TermModel selectedTerm;
+private  ObservableCollection<TermModel> allTerms;
         public PaymentsByVoteHeadVM()
         {
             InitVars();
             CreateCommands();
             PropertyChanged += async (o, e) =>
             {
-                if (e.PropertyName == "SelectedClassID")
+                if (e.PropertyName == "SelectedClassID"||e.PropertyName=="SelectedTerm")
                 {
                     allVoteHeads.Clear();
-                    if (SelectedClassID != 0)
+                    if (selectedClassID != 0&&selectedTerm!=null)
                     {
-                        AllVoteHeads = await DataAccess.GetVoteHeadsSummaryByClass(selectedClassID);
+                        AllVoteHeads = await DataAccess.GetVoteHeadsSummaryByClass(selectedClassID,selectedTerm);
                     }
                     return;
                 }
@@ -38,20 +40,21 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "PAYMENTS BY VOTE HEAD";
             allVoteHeads = new ObservableCollection<VoteHeadModel>();
-            AllClasses = await DataAccess.GetAllClassesAsync();            
+            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllTerms = await DataAccess.GetAllTermsAsync();
         }
 
         protected override void CreateCommands()
         {
             RefreshCommand = new RelayCommand(async o =>
             {
-                AllVoteHeads = await DataAccess.GetVoteHeadsSummaryByClass(selectedClassID);
+                AllVoteHeads = await DataAccess.GetVoteHeadsSummaryByClass(selectedClassID,selectedTerm);
             }, o => Canrefresh());
         }
 
         private bool Canrefresh()
         {
-            return SelectedClassID != 0;
+            return selectedClassID != 0&&selectedTerm!=null;
         }
         public int SelectedClassID
         {
@@ -62,6 +65,32 @@ namespace UmanyiSMS.ViewModels
                 {
                     selectedClassID = value;
                     NotifyPropertyChanged("SelectedClassID");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return selectedTerm; }
+            set
+            {
+                if (value != selectedTerm)
+                {
+                    selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
+        }
+
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return allTerms; }
+            private set
+            {
+                if (value != allTerms)
+                {
+                    allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
                 }
             }
         }

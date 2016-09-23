@@ -65,7 +65,7 @@ namespace UmanyiSMS.ViewModels
             await Task.Factory.StartNew(() =>
                 {
                     string selectStr = "SELECT TOP 50 GalleryID, Name, DATALENGTH(Data) FROM [Institution].[Gallery]";
-                    DataTable dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                    DataTable dt = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
                     List<GalleryItemModel> existingFiles = new List<GalleryItemModel>();
                     string notInList = "";
                     GalleryItemModel gim;
@@ -92,7 +92,7 @@ namespace UmanyiSMS.ViewModels
                     Task t1 = Task.Factory.StartNew(() =>
                     {
                         selectStr = "SELECT TOP 50 GalleryID, Data, Name FROM [Institution].[Gallery]" + notInList;
-                        dt = DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                        dt = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
 
                         foreach (DataRow dtr in dt.Rows)
                         {

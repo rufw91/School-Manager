@@ -7,6 +7,7 @@ using System.Windows;
 using Helper.Security;
 using System.Security;
 using System.Net;
+using System.Data.SqlClient;
 
 
 namespace Helper
@@ -50,7 +51,7 @@ namespace Helper
             return "Data Source=" + serverName +
                 ";Connection Timeout=30;Encrypt=True;TrustServerCertificate=True;";
         }
-#if NET4
+
         public static string GetConnectionString(SqlCredential newCredentials)
         {
             return connStr + "User Id=" + newCredentials.UserId + ";Password=" + new NetworkCredential(newCredentials.UserId, newCredentials.Password).Password;
@@ -60,6 +61,5 @@ namespace Helper
             return connStr + " User Id=" + newCredentials.UserId + ";Password=" + new NetworkCredential(newCredentials.UserId, newCredentials.Password).Password;
         }
     
-#endif
     }
 }

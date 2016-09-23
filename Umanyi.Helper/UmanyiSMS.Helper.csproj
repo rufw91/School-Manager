@@ -122,6 +122,7 @@
     <Compile Include="Helpers\DocumentHelper.Transcript.cs" />
     <Compile Include="Helpers\DocumentHelper.Transcript2.cs" />
     <Compile Include="Helpers\DocumentHelper.Voucher.cs" />
+    <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AccountBaseModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BalanceSheetModel.cs" />

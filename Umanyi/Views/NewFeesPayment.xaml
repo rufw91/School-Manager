@@ -9,32 +9,32 @@
         <TextBlock Margin="20,20,0,0" Text="New Fees Payment" VerticalAlignment="Top" HorizontalAlignment="Left"
                  Style="{DynamicResource Title}"/>
         <Grid>
-            <TextBlock HorizontalAlignment="Left" Margin="20,55,0,0" Style="{DynamicResource Title0}" Text="Student" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="20,65,0,0" Style="{DynamicResource Title0}" Text="Student" VerticalAlignment="Top"/>
 
-            <TextBlock HorizontalAlignment="Left" Margin="30,90,0,0" Text="Student ID" VerticalAlignment="Top"/>
-            <TextBox HorizontalAlignment="Left" Height="23" Margin="92,90,0,0" VerticalAlignment="Top" Width="200"
+            <TextBlock HorizontalAlignment="Left" Margin="30,100,0,0" Text="Student ID" VerticalAlignment="Top"/>
+            <TextBox HorizontalAlignment="Left" Height="23" Margin="92,100,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding CurrentPayment.StudentID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Delay=20,
             ValidatesOnNotifyDataErrors=True}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="30,135,0,0" Text="Name" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="30,145,0,0" Text="Name" VerticalAlignment="Top"/>
 
-            <TextBox HorizontalAlignment="Left" Margin="92,135,0,0" VerticalAlignment="Top" Width="200"
+            <TextBox HorizontalAlignment="Left" Margin="92,145,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding CurrentPayment.NameOfStudent, Mode=OneWay}" IsEnabled="False" Background="WhiteSmoke" IsReadOnlyCaretVisible="True"/>
 
-            <TextBlock HorizontalAlignment="Left" Margin="30,180,0,0" Text="Term" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="30,190,0,0" Text="Term" VerticalAlignment="Top"/>
 
-            <ComboBox HorizontalAlignment="Left" Margin="92,180,0,0" VerticalAlignment="Top" Width="200"
+            <ComboBox HorizontalAlignment="Left" Margin="92,190,0,0" VerticalAlignment="Top" Width="200"
                       ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description"
                  SelectedItem="{Binding SelectedTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock HorizontalAlignment="Left" Margin="20,220,0,0" Style="{DynamicResource Title0}" Text="Payment" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="30,255,0,0" TextWrapping="Wrap" Text="Amount (KES)" VerticalAlignment="Top" Height="37" Width="55"/>
-            <TextBox HorizontalAlignment="Left" Margin="92,255,0,0" VerticalAlignment="Top" Width="100"                 
+            <TextBlock HorizontalAlignment="Left" Margin="20,239,0,0" Style="{DynamicResource Title0}" Text="Payment" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="30,285,0,0" TextWrapping="Wrap" Text="Amount (KES)" VerticalAlignment="Top" Height="37" Width="55"/>
+            <TextBox HorizontalAlignment="Left" Margin="92,285,0,0" VerticalAlignment="Top" Width="100"                 
                  Text="{Binding CurrentPayment.AmountPaid, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="30,297,0,0" Text="Payment Method" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="51"/>
-            <ComboBox HorizontalAlignment="Left" Margin="92,300,0,0" VerticalAlignment="Top" Width="200"
+            <TextBlock HorizontalAlignment="Left" Margin="30,327,0,0" Text="Payment Method" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="51"/>
+            <ComboBox HorizontalAlignment="Left" Margin="92,330,0,0" VerticalAlignment="Top" Width="200"
                       ItemsSource="{Binding PaymentMethods}" SelectedValue="{Binding CurrentPayment.PaymentMethod, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="30,343,0,0" Text="Date Paid/Deposited" TextWrapping="Wrap" VerticalAlignment="Top" Height="33" Width="56"/>
-            <DatePicker HorizontalAlignment="Left" Margin="92,345,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
+            <TextBlock HorizontalAlignment="Left" Margin="30,373,0,0" Text="Date Paid/Deposited" TextWrapping="Wrap" VerticalAlignment="Top" Height="33" Width="56"/>
+            <DatePicker HorizontalAlignment="Left" Margin="92,375,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
                  SelectedDate="{Binding CurrentPayment.DatePaid, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <TextBlock HorizontalAlignment="Left" Margin="350,70,0,0" Style="{DynamicResource Title0}" Text="Recent Payments" VerticalAlignment="Top"/>
             <ListBox Margin="350,109,30,50" ItemsSource="{Binding RecentPayments}" 
@@ -44,11 +44,8 @@
                 Command="{Binding SaveCommand}"/>
             <Button Content="Save &amp; Print" HorizontalAlignment="Right" Margin="0,0,95,10" VerticalAlignment="Bottom" Width="120"
                    Command="{Binding SaveAndPrintCommand}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="30,0,0,30" Text="TOTAL BILL FOR TERM:" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
-            <TextBlock HorizontalAlignment="Left" Margin="200,0,0,30" Text="{Binding FeesStructureTotal, StringFormat={}{0:N2}}" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
-
-            <TextBlock HorizontalAlignment="Left" Margin="30,0,0,10" Text="TOTAL PAID FOR TERM:" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
-            <TextBlock HorizontalAlignment="Left" Margin="200,0,0,10" Text="{Binding TotalPaidForTerm, StringFormat={}{0:N2}}" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
+            <TextBlock HorizontalAlignment="Left" Margin="30,0,0,20" Text="TOTAL BILL FOR TERM:" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
+            <TextBlock HorizontalAlignment="Left" Margin="200,0,0,20" Text="{Binding FeesStructureTotal, StringFormat={}{0:N2}}" VerticalAlignment="Bottom" FontWeight="SemiBold" FontSize="16"/>
 
             <TextBlock HorizontalAlignment="Right" Margin="0,51,30,0" VerticalAlignment="Top">
                 <Hyperlink Command="{Binding PreviewCommand}">Preview Receipt</Hyperlink>

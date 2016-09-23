@@ -410,6 +410,7 @@ namespace Helper
             text1.Margin = new Thickness((left == -1) ? 0 : left, top, 0, 0);
             text1.Width = width;
             text1.Height = height;
+            if (image!=null&&image.Length>10)
             text1.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(image);
             Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(text1);

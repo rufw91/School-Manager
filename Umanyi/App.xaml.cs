@@ -110,6 +110,7 @@ namespace UmanyiSMS
         {
             try
             {
+                DataAccessHelper.Helper = new SqlServerHelper(null);
                 FileHelper.CheckFiles();
                 examSettings = new ExamSettingsModel();
                 

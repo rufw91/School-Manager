@@ -16,6 +16,8 @@
         <ResourceDictionary Source="/Helper;component/Styles/DatePicker.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/GridSplitter.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/GroupBox.xaml"/>
+        <ResourceDictionary Source="/Helper;component/Styles/HamburgerMenu.xaml"/>
+        <ResourceDictionary Source="/Helper;component/Styles/HamburgerMenuItem.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/Hyperlink.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/Label.xaml"/>
         <ResourceDictionary Source="/Helper;component/Styles/ListBox.xaml"/>

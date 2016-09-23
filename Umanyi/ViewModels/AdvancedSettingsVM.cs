@@ -27,7 +27,7 @@ namespace UmanyiSMS.ViewModels
             CleanDbCommand = new RelayCommand(async o =>
                 {
                     IsBusy = true;
-                    await DataAccessHelper.CleanDb();
+                    await (DataAccessHelper.Helper as SqlServerHelper).CleanDb();
                     IsBusy = false;
                 }, o => !IsBusy);
             OpenTaskWindowCommand = new RelayCommand(o =>
@@ -40,7 +40,7 @@ namespace UmanyiSMS.ViewModels
             TestDbCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccessHelper.TestDb();
+                bool succ = await (DataAccessHelper.Helper as SqlServerHelper).TestDb();
                 MessageBox.Show(succ ? "Test Succeeded." : "Test Failed.", "Info", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 IsBusy = false;
@@ -68,7 +68,7 @@ namespace UmanyiSMS.ViewModels
                     "Info", MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
                     string filePath = await FileHelper.BrowseBAKFileAsString();
-                    bool succ = await DataAccessHelper.RestoreDb(filePath);
+                    bool succ = await (DataAccessHelper.Helper as SqlServerHelper).RestoreDb(filePath);
                     MessageBox.Show(succ ? "Action Succeeded." : "Action Failed.", "Info", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 }
@@ -80,7 +80,7 @@ namespace UmanyiSMS.ViewModels
                 if (MessageBoxResult.Yes == MessageBox.Show("This action is IRREVERSIBLE. Are you sure you would like to continue.",
                     "Info", MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
-                    bool succ = await DataAccessHelper.ClearDb();
+                    bool succ = await (DataAccessHelper.Helper as SqlServerHelper).ClearDb();
                     MessageBox.Show(succ ? "Action Succeeded." : "Action Failed.", "Info", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 }
@@ -96,7 +96,7 @@ namespace UmanyiSMS.ViewModels
                 else if (MessageBoxResult.Yes == MessageBox.Show("This action is IRREVERSIBLE. Are you sure you would like to continue.",
                     "Info", MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
-                    bool succ = await DataAccessHelper.DeleteDb();
+                    bool succ = await (DataAccessHelper.Helper as SqlServerHelper).DeleteDb();
                     MessageBox.Show(succ ? "Action Succeeded." : "Action Failed.", "Info", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                     App.Restart();

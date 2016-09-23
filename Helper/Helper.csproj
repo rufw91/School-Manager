@@ -122,6 +122,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\HamburgerMenu.cs" />
+    <Compile Include="Controls\HamburgerMenuItem.cs" />
     <Compile Include="Controls\LinkSplitButton.cs" />
     <Compile Include="Controls\ProgressText.cs" />
     <Compile Include="Controls\SyncIcon.cs" />
@@ -137,8 +139,10 @@
     <Compile Include="Converters\TitleConverter.cs" />
     <Compile Include="Converters\ValidationErrorConverter.cs" />
     <Compile Include="Helpers\ActivationHelper.cs" />
+    <Compile Include="Helpers\DataAccessHelper.cs" />
+    <Compile Include="Helpers\DbHelper.cs" />
     <Compile Include="Helpers\Log.cs" />
-    <Compile Include="Helpers\SQLLiteConnHelper.cs" />
+    <Compile Include="Helpers\SQLLiteHelper.cs" />
     <Compile Include="Helpers\WebHelper.cs" />
     <Compile Include="Helpers\XPSHelper.cs" />
     <Compile Include="Models\ApplicationPersistModel.cs" />
@@ -175,8 +179,7 @@
     <Compile Include="Presentation\EmailValidator.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Helpers\ConnectionStringHelper.cs" />
-    <Compile Include="Helpers\DataAccessHelper.cs" />
-    <Compile Include="Helpers\DatabaseCreationHelper.cs" />
+    <Compile Include="Helpers\SqlServerHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\LoginHelper.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
@@ -259,6 +262,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\GroupBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\HamburgerMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\HamburgerMenuItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

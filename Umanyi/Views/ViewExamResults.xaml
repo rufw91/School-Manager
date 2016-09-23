@@ -55,7 +55,7 @@
                   IsEnabled="{Binding IsInClassMode}"/>
         <TextBlock HorizontalAlignment="Left" Margin="58,365,0,0" Text="Term" VerticalAlignment="Top"/>
         <ComboBox HorizontalAlignment="Left" Margin="94,365,0,0" VerticalAlignment="Top" Width="200"
-        	ItemsSource="{Binding AllTerms}" DisplayMemberPath="NameOfExam" 
+        	ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description" 
         	SelectedItem="{Binding SelectedTerm, Mode=TwoWay}"
             IsEnabled="{Binding IsInClassMode}"/>
         <TextBlock HorizontalAlignment="Left" Margin="58,410,0,0" Text="Exam" VerticalAlignment="Top"/>

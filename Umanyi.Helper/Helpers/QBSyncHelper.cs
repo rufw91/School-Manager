@@ -452,7 +452,7 @@ namespace Helper
         private void AddSyncedItem(string refNo, string type)
         {
             string commandText = "INSERT INTO [Institution].[QBSyncDetail] (SyncType,RefNo) VALUES(@typ,@refNo)";
-            DataAccessHelper.ExecuteNonQueryWithParameters(commandText, new ObservableCollection<SqlParameter>
+            DataAccessHelper.Helper.ExecuteNonQuery(commandText, new ObservableCollection<SqlParameter>
             {
                 new SqlParameter("@typ", type),
                 new SqlParameter("@refNo", refNo)
@@ -1020,7 +1020,7 @@ namespace Helper
         {
             List<ProjectModel> list = new List<ProjectModel>();
             string commandText = "SELECT p.ProjectID,p.NameOfProject,p.StartDateTime,p.EndDateTime,p.Budget,p.Description FROM [Institution].[ProjectHeader]p RIGHT OUTER JOIN (SELECT ProjectID FROM [Institution].[ProjectHeader] EXCEPT SELECT CONVERT(int,RefNo) FROM [Institution].[QBSyncDetail] WHERE SyncType='Project')x ON (x.ProjectID = p.ProjectID) ";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 list.Add(new ProjectModel
@@ -1040,7 +1040,7 @@ namespace Helper
         {
             List<DonationModel> list = new List<DonationModel>();
             string commandText = "SELECT s.DonorID,d.NameOfDonor,s.AmountDonated,s.DateDonated,s.DonateTo,s.DonationID FROM [Institution].[Donation]s RIGHT OUTER JOIN (SELECT DonationID FROM [Institution].[Donation] WHERE [Type]=1 EXCEPT SELECT CONVERT(int,RefNo) FROM [Institution].[QBSyncDetail] WHERE SyncType='Donation')x ON (x.DonationID = s.DonationID) LEFT OUTER JOIN [Institution].[Donor] d ON (d.DonorID = s.DonorID)";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 list.Add(new DonationModel
@@ -1060,7 +1060,7 @@ namespace Helper
         {
             List<DonationModel> list = new List<DonationModel>();
             string commandText = "SELECT s.DonorID,d.NameOfDonor,s.AmountDonated,s.DateDonated,s.DonateTo,s.DonationID FROM [Institution].[Donation]s RIGHT OUTER JOIN (SELECT DonationID FROM [Institution].[Donation]  WHERE [Type]=2 EXCEPT SELECT CONVERT(int,RefNo) FROM [Institution].[QBSyncDetail] WHERE SyncType='Pledge')x ON (x.DonationID = s.DonationID) LEFT OUTER JOIN [Institution].[Donor] d ON (d.DonorID = s.DonorID)";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 list.Add(new DonationModel
@@ -1080,7 +1080,7 @@ namespace Helper
         {
             List<DonorModel> list = new List<DonorModel>();
             string commandText = "SELECT x.DonorID,s.NameOfDonor,s.PhoneNo FROM [Institution].[Donor]s RIGHT OUTER JOIN (SELECT DonorID FROM [Institution].[Donor] EXCEPT SELECT CONVERT(int,RefNo) FROM [Institution].[QBSyncDetail] WHERE SyncType='Donor')x ON (x.DonorID = s.DonorID)";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 list.Add(new DonorModel
@@ -1097,7 +1097,7 @@ namespace Helper
         {
             List<QBSyncHelper.StudentQBModel> list = new List<QBSyncHelper.StudentQBModel>();
             string commandText = "SELECT x.StudentID,s.NameOfStudent,s.GuardianPhoneNo FROM [Institution].[Student]s RIGHT OUTER JOIN (SELECT StudentID FROM [Institution].[Student] EXCEPT SELECT CONVERT(int,RefNo) FROM [Institution].[QBSyncDetail] WHERE SyncType='Student')x ON (x.StudentID = s.StudentID)";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 list.Add(new QBSyncHelper.StudentQBModel
@@ -1114,7 +1114,7 @@ namespace Helper
         {
             List<QBSyncHelper.SupplierQBModel> list = new List<QBSyncHelper.SupplierQBModel>();
             string commandText = "SELECT x.SupplierID,s.NameOfSupplier,s.PhoneNo FROM [Sales].[Supplier]s RIGHT OUTER JOIN (SELECT SupplierID FROM [Sales].[Supplier] EXCEPT SELECT CONVERT(int,RefNo) FROM [Institution].[QBSyncDetail] WHERE SyncType='Supplier')x ON (x.SupplierID = s.SupplierID)";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             list.Add(new QBSyncHelper.SupplierQBModel
             {
                 SupplierID = 0,
@@ -1137,7 +1137,7 @@ namespace Helper
         {
             List<ItemBaseModel> list = new List<ItemBaseModel>();
             string commandText = "SELECT x.ItemID,s.Description FROM [Sales].[Item]s RIGHT OUTER JOIN (SELECT ItemID FROM [Sales].[Item] EXCEPT SELECT CONVERT(int,RefNo) FROM [Institution].[QBSyncDetail] WHERE SyncType='NIItem')x ON (x.ItemID = s.ItemID)";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 list.Add(new ItemBaseModel
@@ -1153,7 +1153,7 @@ namespace Helper
         {
             List<QBSyncHelper.PurchaseQBModel> list = new List<QBSyncHelper.PurchaseQBModel>();
             string commandText = "SELECT x.ItemReceiptID,sup.NameOfSupplier,s.TotalAmt,s.RefNo,s.OrderDate FROM [Sales].[ItemReceiptHeader]s RIGHT OUTER JOIN (SELECT ItemReceiptID FROM [Sales].[ItemReceiptHeader] EXCEPT SELECT CONVERT(int,RefNo) FROM [Institution].[QBSyncDetail] WHERE SyncType='Purchase')x ON (x.ItemID = s.ItemID) LEFT OUTER JOIN [Sales].[Supplier] sup ON (sup.SupplierID=s.SupplierID)";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 QBSyncHelper.PurchaseQBModel purchaseQBModel = new QBSyncHelper.PurchaseQBModel();
@@ -1172,7 +1172,7 @@ namespace Helper
         {
             List<QBSyncHelper.FeesPaymentQBModel> list = new List<QBSyncHelper.FeesPaymentQBModel>();
             string commandText = "SELECT x.FeesPaymentID,CONVERT(varchar(50),s.StudentID)+'-'+s.NameOfStudent ,p.DatePaid, p.AmountPaid FROM [Institution].[FeesPayment]p RIGHT OUTER JOIN (SELECT FeesPaymentID FROM [Institution].[FeesPayment] EXCEPT SELECT CONVERT(int,RefNo) FROM [Institution].[QBSyncDetail] WHERE SyncType='FeesPayment')x ON (x.FeesPaymentID = p.FeesPaymentID) LEFT OUTER JOIN [Institution].[Student] s on (s.StudentID = p.StudentID)";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 list.Add(new QBSyncHelper.FeesPaymentQBModel
@@ -1190,7 +1190,7 @@ namespace Helper
         {
             List<PayslipModel> list = new List<PayslipModel>();
             string commandText = "SELECT x.PayslipID,p.Designation+'-'+CONVERT(varchar(50),s.StaffID)+'-'+s.[Name] ,p.DatePaid, p.AmountPaid FROM [Institution].[PayslipHeader]p RIGHT OUTER JOIN (SELECT PayslipID FROM [Institution].[PayslipHeader] EXCEPT SELECT CONVERT(int,RefNo) FROM [Institution].[QBSyncDetail] WHERE SyncType='Payslip')x ON (x.PayslipID = p.PayslipID) LEFT OUTER JOIN [Institution].[Staff] s on (s.StaffID = p.StaffID)";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 list.Add(new PayslipModel
@@ -1208,7 +1208,7 @@ namespace Helper
         {
             List<QBSyncHelper.SaleQBModel> list = new List<QBSyncHelper.SaleQBModel>();
             string commandText = "SELECT x.SaleID,p.CustomerID+'-'+s.NameOfStudent ,p.OrderDate, p.TotalAmt FROM [Sales].[SaleHeader]p RIGHT OUTER JOIN (SELECT SaleID FROM [Sales].[SaleHeader] EXCEPT SELECT RefNo FROM [Institution].[QBSyncDetail] WHERE SyncType='StudentBill')x ON (x.SaleID = p.SaleID) LEFT OUTER JOIN [Institution].[Student] s on (s.StudentID = CONVERT(int,p.CustomerID))";
-            DataTable dataTable = DataAccessHelper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 QBSyncHelper.SaleQBModel saleQBModel = new QBSyncHelper.SaleQBModel();

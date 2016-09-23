@@ -82,7 +82,7 @@ namespace UmanyiSMS.ViewModels
 startDate.Value.Day.ToString() + "/" + startDate.Value.Month.ToString() + "/" + startDate.Value.Year.ToString() + " 00:00:00.000' AND '"
 + endDate.Value.Day.ToString() + "/" + endDate.Value.Month.ToString() + "/" + endDate.Value.Year.ToString() + " 23:59:59.998'";
                 Log.I(startDate.HasValue + ":" + endDate.HasValue, null);
-                return DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                return DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
             });
         }
 

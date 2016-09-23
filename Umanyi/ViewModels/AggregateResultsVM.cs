@@ -20,6 +20,8 @@ namespace UmanyiSMS.ViewModels
         private CombinedClassModel selectedCombinedClass;
         private ObservableCollection<ClassModel> allClasses;
         private ObservableCollection<CombinedClassModel> allCombinedClasses;
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
 
         public AggregateResultsVM()
         {
@@ -33,15 +35,16 @@ namespace UmanyiSMS.ViewModels
             AllExams = new ObservableCollection<ExamModel>();
             IsInClassMode = true;
             AllClasses = await DataAccess.GetAllClassesAsync();
+            AllTerms = await DataAccess.GetAllTermsAsync();
             AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
             PropertyChanged += async (o, e) =>
             {
                 if (isInClassMode)
-                    if ((e.PropertyName == "SelectedClass") && (selectedClass != null) && (selectedClass.ClassID > 0))
-                        AllExams = await DataAccess.GetExamsByClass(selectedClass.ClassID);
+                    if ((e.PropertyName == "SelectedClass" || e.PropertyName == "SelectedTerm") && selectedTerm != null && (selectedClass != null) && (selectedClass.ClassID > 0))
+                        AllExams = await DataAccess.GetExamsByClass(selectedClass.ClassID,selectedTerm);
                 if (isInCombinedMode)
-                    if ((e.PropertyName == "SelectedCombinedClass") && (selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0))
-                        AllExams = await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID);
+                    if ((e.PropertyName == "SelectedCombinedClass" || e.PropertyName == "SelectedTerm") && selectedTerm != null && (selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0))
+                        AllExams = await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID,selectedTerm);
             };
         }
 
@@ -93,6 +96,7 @@ namespace UmanyiSMS.ViewModels
                     selectedExam != null && selectedExam.ExamID > 0 && !IsBusy;
             return false;
         }
+
         public ExamModel SelectedExam
         {
             get { return selectedExam; }
@@ -103,6 +107,32 @@ namespace UmanyiSMS.ViewModels
                 {
                     selectedExam = value;
                     NotifyPropertyChanged("SelectedExam");
+                }
+            }
+        }
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return allTerms; }
+
+            private set
+            {
+                if (value != allTerms)
+                {
+                    allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+        public TermModel SelectedTerm
+        {
+            get { return selectedTerm; }
+
+            set
+            {
+                if (value != selectedTerm)
+                {
+                    selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
                 }
             }
         }

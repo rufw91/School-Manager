@@ -59,7 +59,7 @@ namespace Helper.Models
         private void Clean()
         {
             Name = "";
-            DateOfAdmission = new DateTime(1900, 1, 1);
+            DateOfAdmission = new DateTime(2016, 1, 1);
             NationalID = "";
             PhoneNo = "";
             Email = "";

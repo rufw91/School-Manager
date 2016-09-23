@@ -2,12 +2,23 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            Height="1122.56" Width="793.76">
     <Grid Height="1122.56" Width="793.76" DataContext="{Binding Source={x:Static Application.Current}}">
-        <TextBlock HorizontalAlignment="Center" Margin="210,10,210,0" Text="MBEE HIGH SCHOOL" VerticalAlignment="Top" FontFamily="Cambria" FontSize="28" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Center" Margin="16,48,520,0"  VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="16" FontWeight="Bold" Width="214" 
-                           TextWrapping="Wrap">P.O. BOX 40 - 90105 Kathiani<LineBreak/>TEL: +254 729 897 871</TextBlock>
-        <Image HorizontalAlignment="Center" Margin="244,50,399.76,0" VerticalAlignment="Top" Stretch="Fill" Width="150" Height="100" 
-                       Source="{Binding Info.Logo, Source={x:Static Application.Current}}"/>
-        
+        <TextBlock HorizontalAlignment="Center" Margin="210,10,210,0" Text="{Binding Info.FullName}" VerticalAlignment="Top" FontFamily="Cambria" FontSize="28" FontWeight="Bold"/>
+        <Image HorizontalAlignment="Left" Margin="20,65,0,0" VerticalAlignment="Top" Stretch="Fill" Width="150" Height="100" 
+                       Source="{Binding Info.Logo}"/>
+        <StackPanel Orientation="Vertical" Margin="0,58,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                    >
+            <TextBlock HorizontalAlignment="Center" 
+                   Text="{Binding Info.Address, StringFormat='P.O. BOX {0} '}"
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+
+            <TextBlock HorizontalAlignment="Center"
+                   Text="{Binding Info.City, StringFormat=' {0}, '}"
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+            <TextBlock HorizontalAlignment="Center" 
+                   Text="{Binding Info.PhoneNo, StringFormat='TEL {0}'}"
+                   VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" TextDecorations="Underline"/>
+        </StackPanel>
+
         <TextBlock HorizontalAlignment="Center" Margin="0,185,0,0" TextWrapping="Wrap" Text="FEES STRUCTURE" VerticalAlignment="Top" FontFamily="Times New Roman" FontWeight="Bold" FontSize="16"/>
         <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,230,20,0" VerticalAlignment="Top" />
         <Border BorderBrush="Black" BorderThickness="2" Height="2" Margin="20,280,20,0" VerticalAlignment="Top" />

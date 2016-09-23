@@ -22,7 +22,7 @@ namespace UmanyiSMS.ViewModels
             IsBusy = true;
             SelectedDB= Helper.Properties.Settings.Default.DBName;
             string selectString = "SELECT name FROM sys.databases WHERE name NOT IN (N'master',N'tempdb',N'model',N'msdb')";
-            await Task.Factory.StartNew(() => { AllDatabases = DataAccessHelper.CopyFromDBtoObservableCollection(selectString); });
+            await Task.Factory.StartNew(() => { AllDatabases = new ObservableCollection<string>(DataAccessHelper.Helper.CopyFirstColumnToList(selectString)); });
             IsBusy = false;
         }
 

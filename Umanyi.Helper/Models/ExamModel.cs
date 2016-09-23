@@ -13,7 +13,6 @@ namespace Helper.Models
 
         private decimal outOf;
 
-        private bool isRemovingInvalid;
         private ObservableCollection<ClassModel> classes;
 
         public string NameOfExam

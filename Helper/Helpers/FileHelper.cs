@@ -204,7 +204,7 @@ namespace Helper
 
                 if ((myDialog.ShowDialog() == true) && (myDialog.CheckFileExists))
                 {
-                    if (!await DataAccessHelper.TestBackupFile(myDialog.FileName))
+                    if (!await (DataAccessHelper.Helper as SqlServerHelper).TestBackupFile(myDialog.FileName))
                     {
                         MessageBox.Show("Invalid file.");
                         return null;

@@ -49,7 +49,7 @@ namespace Helper.Models
             FirstName = "";
             MiddleName = "";
             LastName = "";
-            DateOfBirth = new DateTime(1980, 1, 1);
+            DateOfBirth = new DateTime(2000, 1, 1);
             DateOfAdmission = DateTime.Now;
             NameOfGuardian = "";
             GuardianPhoneNo = "";

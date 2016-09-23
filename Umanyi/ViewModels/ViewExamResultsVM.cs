@@ -21,10 +21,13 @@ namespace UmanyiSMS.ViewModels
         bool isInCombinedMode;
         ExamResultStudentDisplayModel studentResult;
         ExamResultClassDisplayModel classResult;
+
         CombinedClassModel selectedCombinedClass;
         ExamModel selectedExam;
-        ObservableImmutableList<ExamModel> allExams;
+        ObservableCollection<ExamModel> allExams;
         bool canExec = false;
+        private TermModel selectedTerm;
+        private ObservableCollection<TermModel> allTerms;
         public ViewExamResultsVM()
         {
             InitVars();
@@ -36,24 +39,14 @@ namespace UmanyiSMS.ViewModels
             Title = "VIEW EXAM RESULTS";
             StudentResult = new ExamResultStudentDisplayModel();
             ClassResult = new ExamResultClassDisplayModel();
-            AllExams = new ObservableImmutableList<ExamModel>();
+            AllExams = new ObservableCollection<ExamModel>();
+            AllTerms = await DataAccess.GetAllTermsAsync();
+
             IsInStudentMode = true;
-            studentResult.PropertyChanged += async (o, e) =>
-            {
-                if (isInStudentMode)
-                    if (e.PropertyName == "StudentID")
-                    {
-                        studentResult.CheckErrors();
-                        RefreshView();
-                        if ((studentResult.StudentID > 0)&&(!studentResult.HasErrors))
-                            await RefreshAllExams();
-                        else AllExams.Clear();
-                    }
-
-            };
-
-            this.PropertyChanged += OnPropertyChanged;
+            studentResult.PropertyChanged += OnPropertyChanged;
+            PropertyChanged += OnPropertyChanged;
             classResult.PropertyChanged += OnPropertyChanged;
+            
             AllClasses = await DataAccess.GetAllClassesAsync();
             NotifyPropertyChanged("AllClasses");
             AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
@@ -150,24 +143,53 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = false;
             }, o => CanDisplayResults());
         }
-        
+
         private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (isInClassMode)
-                if (e.PropertyName == "ClassID")
+            if (isInStudentMode)
+            {
+
+                if ((e.PropertyName == "StudentID" || e.PropertyName == "SelectedTerm" || e.PropertyName == "SelectedExam")
+                    && studentResult.StudentID > 0 )
                 {
-                    await RefreshAllExams();
-                    RefreshView();
+                    studentResult.CheckErrors();
+                    if (!studentResult.HasErrors && selectedTerm != null)
+                    {
+                        if (e.PropertyName != "SelectedExam")
+                        {
+                            int classID = await DataAccess.GetClassIDFromStudentID(studentResult.StudentID);
+                            AllExams = await DataAccess.GetExamsByClass(classID, selectedTerm);                           
+                        }
+                        if (selectedExam != null)
+                            RefreshView();
+                    }
                 }
-            if (e.PropertyName == "SelectedExam")
-                RefreshView();
-
-            if (e.PropertyName == "SelectedCombinedClass")
-                if ((selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0))
-                    await RefreshAllExams();
+            }
+            if (isInClassMode)
+            {
+                if ((e.PropertyName == "ClassID" || e.PropertyName == "SelectedTerm" || e.PropertyName == "SelectedExam")
+                    && classResult.ClassID > 0 )
+                {
+                    if (e.PropertyName != "SelectedExam" && selectedTerm != null)
+                    {
+                        AllExams =await DataAccess.GetExamsByClass(classResult.ClassID, selectedTerm);
+                    }
+                    if (selectedExam != null)
+                        RefreshView();
+                }
+            }
+            if (isInCombinedMode)
+            {
+                if ((e.PropertyName == "SelectedCombinedClass" || e.PropertyName == "SelectedTerm" || e.PropertyName == "SelectedExam")
+                    && selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0 )
+                {
+                    if (e.PropertyName != "SelectedExam" && selectedTerm != null)
+                        AllExams = await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID, selectedTerm);
+                    if (selectedExam != null)
+                        RefreshView();
+                }
+            }
         }
-
-        
 
         private bool CanPrintResult()
         {
@@ -223,7 +245,33 @@ namespace UmanyiSMS.ViewModels
             return dt;
 
         }
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
 
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return this.selectedTerm; }
+
+            set
+            {
+                if (value != this.selectedTerm)
+                {
+                    this.selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
+        }
         private bool CanExecute
         {
             get { return canExec; }
@@ -247,20 +295,20 @@ namespace UmanyiSMS.ViewModels
             if (isInStudentMode)
             {
                 studentResult.CheckErrors();
-                return selectedExam != null && selectedExam.ExamID > 0 &&
+                return selectedTerm!=null&& selectedExam != null && selectedExam.ExamID > 0 &&
                       !studentResult.HasErrors&&!IsBusy;
             }
 
             if (isInClassMode)
-                return selectedExam != null && selectedExam.ExamID > 0 && classResult.ClassID > 0&&!IsBusy;
+                return selectedTerm != null && selectedExam != null && selectedExam.ExamID > 0 && classResult.ClassID > 0 && !IsBusy;
             if (isInCombinedMode)
-                return selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0&&
+                return selectedTerm != null && selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0 &&
                     selectedExam != null && selectedExam.ExamID > 0&&!IsBusy;
 
             return false;
         }
 
-        public ObservableImmutableList<ExamModel> AllExams
+        public ObservableCollection<ExamModel> AllExams
         {
             get { return allExams; }
 
@@ -375,30 +423,6 @@ namespace UmanyiSMS.ViewModels
                     selectedExam = value;
                     NotifyPropertyChanged("SelectedExam");
                 }
-            }
-        }
-
-        private async Task RefreshAllExams()
-        {
-            if (isInStudentMode)
-            {
-                if (studentResult.StudentID == 0)
-                    return;
-                int classID = await DataAccess.GetClassIDFromStudentID(studentResult.StudentID);
-                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(classID));
-                return;
-            }
-            if (isInClassMode)
-            {
-                if (classResult.ClassID == 0)
-                    return;
-                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(classResult.ClassID));
-                return;
-            }
-            if (isInCombinedMode)
-            {
-                AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID));
-                return;
             }
         }
 

@@ -32,7 +32,7 @@ namespace UmanyiSMS.ViewModels
             BackupCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccessHelper.CreateBackupAsync(pathToFile);
+                bool succ = await (DataAccessHelper.Helper as SqlServerHelper).CreateBackupAsync(pathToFile);
                 if (succ)
                     MessageBox.Show("Successfully completed operation.");
                 else

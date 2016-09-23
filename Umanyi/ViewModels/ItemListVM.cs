@@ -118,7 +118,7 @@ namespace UmanyiSMS.ViewModels
             foreach (int index in indexes)
             {
                 updateString = CreateUpdateString(originalItems[index]);
-                t = t && DataAccessHelper.ExecuteNonQuery(updateString);
+                t = t && DataAccessHelper.Helper.ExecuteNonQuery(updateString);
             }
             return null;
         }

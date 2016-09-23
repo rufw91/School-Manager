@@ -16,6 +16,9 @@ namespace UmanyiSMS.ViewModels
         FeesStructureEntryModel newEntry;
         ObservableCollection<CombinedClassModel> allCombinedClasses;
         private bool saveForAllClasses;
+        private ObservableCollection<TermModel> allTerms;
+        private TermModel selectedTerm;
+        private bool saveForAllTerms;
         public SetFeesStructureVM()
         {
             InitVars();
@@ -29,6 +32,35 @@ namespace UmanyiSMS.ViewModels
             newEntry = new FeesStructureEntryModel();
             SaveForAllClasses = false;
             AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            AllTerms = await DataAccess.GetAllTermsAsync();
+        }
+
+        public ObservableCollection<TermModel> AllTerms
+        {
+            get { return this.allTerms; }
+
+            private set
+            {
+                if (value != this.allTerms)
+                {
+                    this.allTerms = value;
+                    NotifyPropertyChanged("AllTerms");
+                }
+            }
+        }
+
+        public TermModel SelectedTerm
+        {
+            get { return this.selectedTerm; }
+
+            set
+            {
+                if (value != this.selectedTerm)
+                {
+                    this.selectedTerm = value;
+                    NotifyPropertyChanged("SelectedTerm");
+                }
+            }
         }
 
         public ObservableCollection<CombinedClassModel> AllCombinedClasses
@@ -56,6 +88,16 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 bool succ = true;
+                if (saveForAllTerms)
+                {
+                    currentStruct.StartDate = allTerms[0].StartDate;
+                    currentStruct.EndDate = allTerms[2].EndDate;
+                }
+                else
+                {
+                    currentStruct.StartDate = selectedTerm.StartDate;
+                    currentStruct.EndDate = selectedTerm.EndDate;
+                }
                 if (saveForAllClasses)
                 {
                     foreach (var s in allCombinedClasses)
@@ -96,7 +138,7 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanSave()
         {
-            return saveForAllClasses ? currentStruct.Entries.Count > 0 : (selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0 &&
+            return  (saveForAllTerms ? true : selectedTerm != null)&&saveForAllClasses ? currentStruct.Entries.Count > 0 : (selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0 &&
                 currentStruct.Entries.Count > 0);
         }
 
@@ -127,6 +169,20 @@ namespace UmanyiSMS.ViewModels
                     saveForAllClasses = value;
                     NotifyPropertyChanged("SaveForAllClasses");
                     SelectedCombinedClass = null;
+                }
+            }
+        }
+
+        public bool SaveForAllTerms
+        {
+            get { return saveForAllTerms; }
+            set
+            {
+                if (saveForAllTerms != value)
+                {
+                    saveForAllTerms = value;
+                    NotifyPropertyChanged("SaveForAllTerms");
+                    SelectedTerm = null;
                 }
             }
         }

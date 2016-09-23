@@ -25,6 +25,7 @@ namespace UmanyiSMS.ViewModels
         private int selectedComparisonValue2;
         private ObservableCollection<ExamModel> allExams;
         decimal outOf = 0;
+        private TermModel selectedTerm;
         public AcademicReportVM()
         {
             InitVars();
@@ -58,7 +59,7 @@ namespace UmanyiSMS.ViewModels
                         else
                         {
                             var s = await DataAccess.GetClassIDFromStudentID(studentID);
-                            AllExams = await DataAccess.GetExamsByClass(s);
+                            AllExams = await DataAccess.GetExamsByClass(s,selectedTerm);
                         }
                     }
                     if (e.PropertyName == "ClassID")
@@ -67,7 +68,7 @@ namespace UmanyiSMS.ViewModels
                         if (classID == 0)
                             AllExams.Clear();
                         else
-                            AllExams = await DataAccess.GetExamsByClass(classID);
+                            AllExams = await DataAccess.GetExamsByClass(classID,selectedTerm);
                     }
 
                     if ((e.PropertyName == "SelectedComparisonValue1")&&(selectedComparisonValue1 ==0))
@@ -163,7 +164,7 @@ namespace UmanyiSMS.ViewModels
                 }
 
                 
-                return DataAccessHelper.ExecuteNonQueryWithResultTable(selectStr);
+                return DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
             });
         }
 
