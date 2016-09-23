@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.AcademicYearSetup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="900"
+	Background="White">
+
+    <Grid >
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Academic Year Setup" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Description" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="100,80,0,0" VerticalAlignment="Top" Width="200"            
+                 Text="{Binding NewYear.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxLength="20" Background="WhiteSmoke" IsEnabled="False"/>
+        <TextBlock HorizontalAlignment="Left" Margin="65,120,0,0" Text="Starts" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="100,120,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
+                 SelectedDate="{Binding NewYear.StartDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="65,165,0,0" Text="Ends" VerticalAlignment="Top"/>
+        <DatePicker HorizontalAlignment="Left" Margin="100,165,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
+                 SelectedDate="{Binding NewYear.EndDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,210,0,0" Text="No. of Terms" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="102,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                 Text="{Binding NewYear.NoOfTerms, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxLength="2"/>
+        <TextBlock HorizontalAlignment="Left" Margin="400,80,0,0" Style="{DynamicResource SmallTitle}" Text="Terms" VerticalAlignment="Top"/>
+        <DataGrid AutoGenerateColumns="False" Margin="400,110,10,50" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False"
+                 ItemsSource="{Binding NewYear.AllTerms}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Term" Binding="{Binding Description}" Width="120*" IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="Starts" Width="250*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Long" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Ends" Width="250*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Long" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,262,0,0" Style="{DynamicResource SmallTitle}" Text="Important:" VerticalAlignment="Top"/>
+        <TextBlock Margin="20,291,0,20" TextWrapping="Wrap" HorizontalAlignment="Left" Width="329">
+            We recommend that you enter the year as the description of the academic year.
+            The following are guidelines to help quickly set up term dates:<LineBreak/>
+            1. <Bold><Underline>Term dates cannot overlap.</Underline></Bold> e.g if Term 1 ends on 31-Apr-2016 Term 2 cannot start on 31-Apr-2016 or earlier it must start after 31-Apr-2016.<LineBreak/>
+            2. <Bold><Underline> Consecutive term dates must be continous and have no interval.</Underline></Bold> e.g if Term 1 ends on 31-Apr-2016 Term 2 <Bold>MUST</Bold> start on 1-May-2016.<LineBreak/>
+            3. <Bold><Underline> Holidays should be included as part of the preceding term.</Underline></Bold><LineBreak/>
+            4. <Bold><Underline> Term dates should lie within the academic year period and cover the entire period.</Underline></Bold> e.g Term 1 should start at the same date as academic year and the last term should end at the last date of the academic year
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Margin="268,32,0,0" FontWeight="Bold" Foreground="Red" Text="Changing these settings may cause your system to function imporerly. Contact your system admin for assistance." VerticalAlignment="Top"/>
+        
+
+    </Grid>
+</UserControl>
