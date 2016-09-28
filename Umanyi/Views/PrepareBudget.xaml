@@ -27,7 +27,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <TextBlock HorizontalAlignment="Left" Margin="10,40,0,0" Text="Total Budget" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
-                    <TextBox HorizontalAlignment="Left" Height="23" Margin="10,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="275"
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="10,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="275" IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"
                              Text="{Binding NewBudget.TotalBudget,UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}}"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,110,0,0" Text="Period" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,150,0,0" Text="Start" VerticalAlignment="Top"/>

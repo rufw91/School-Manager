@@ -98,10 +98,6 @@
       <HintPath>..\..\..\..\Common\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.102.0\lib\net45\System.Data.SQLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net" />
@@ -142,7 +138,6 @@
     <Compile Include="Helpers\DataAccessHelper.cs" />
     <Compile Include="Helpers\DbHelper.cs" />
     <Compile Include="Helpers\Log.cs" />
-    <Compile Include="Helpers\SQLLiteHelper.cs" />
     <Compile Include="Helpers\WebHelper.cs" />
     <Compile Include="Helpers\XPSHelper.cs" />
     <Compile Include="Models\ApplicationPersistModel.cs" />

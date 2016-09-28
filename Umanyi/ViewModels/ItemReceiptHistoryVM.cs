@@ -43,7 +43,7 @@ namespace UmanyiSMS.ViewModels
 
         private async Task RefreshItems()
         {
-            Items = await DataAccess.GetItemReceiptsAsync(false,null,from, to);
+            Items = await DataAccess.GetItemReceiptsAsync(true,null,from, to);
         }
 
         private bool CanRefresh()
