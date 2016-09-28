@@ -33,6 +33,7 @@ namespace Helper.Models
             this.ItemID = item.ItemID;
             this.AccountID = item.ItemCategoryID;
             this.Description = item.Description;
+            BudgetedAmount = item.Price;
             PropertyChanged += (o, e) =>
             {
                 if ((e.PropertyName == "BudgetedQuantity") || (e.PropertyName == "BudgetedPrice"))

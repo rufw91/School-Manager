@@ -1016,7 +1016,7 @@ namespace Helper
         public static ObservableCollection<ItemPurchaseModel> GetItemsReceiptItems(int saleId)
         {
             ObservableCollection<ItemPurchaseModel> observableCollection = new ObservableCollection<ItemPurchaseModel>();
-            string commandText = "SELECT sod.ItemID,p.Description,sod.UnitPrice,sod.Quantity FROM Sales.SaleDetail sod LEFT OUTER JOIN Sales.Item p ON( sod.ItemID = p.ItemID) WHERE sod.SaleID = " + saleId;
+            string commandText = "SELECT sod.ItemID,p.Description,sod.UnitCost,sod.Quantity FROM Sales.ItemReceiptDetail sod LEFT OUTER JOIN Sales.Item p ON( sod.ItemID = p.ItemID) WHERE sod.ItemReceiptID = " + saleId;
             DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {

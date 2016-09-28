@@ -15,7 +15,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Item Receipt History" Style="{StaticResource Title}" HorizontalAlignment="Left"  Margin="10,10,0,0"
+        <TextBlock Text="Purchase History" Style="{StaticResource Title}" HorizontalAlignment="Left"  Margin="10,10,0,0"
                        VerticalAlignment="Top"/>
         <Button Content="_Today" Height="35"  Margin="20,65,20,0" VerticalAlignment="Top" 
                 Command="{Binding TodayCommand}"/>
@@ -31,17 +31,31 @@
                             SelectedDate="{Binding To, Mode=TwoWay}"/>
             </Grid>
         </GroupBox>
-
+        <Button Content="Refresh" Height="35"  Margin="20,0,20,20" VerticalAlignment="Bottom" 
+                Command="{Binding RefreshCommand}"/>
         <DataGrid Name="datagrid" Grid.Column="1" Margin="0,50,10,10"  AutoGenerateColumns="False" ItemsSource="{Binding Items}" IsReadOnly="True">
+           
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=RefNo, Mode=OneWay}" Header="Ref No." Width="150"/>
-                <DataGridTextColumn Binding="{Binding Path=SupplierID, Mode=OneWay}" Header="Supplier Id" Width="150"/>
-                <DataGridTextColumn Binding="{Binding Path=NoOfItems,StringFormat={}{0:N0}, Mode=OneWay}" Header="No. Of Items" Width="120"/>
-                <DataGridTextColumn Binding="{Binding Path=OrderTotal,StringFormat={}{0:N2}, Mode=OneWay}" Header="Total" Width="150"/>
-                <DataGridTextColumn Binding="{Binding Path=OrderDate, Mode=OneWay}" Header="Date / Time" Width="150"/>
-
-                <DataGridTextColumn Binding="{Binding Path=IsCancelled, Mode=OneWay}" Header="IsCancelled" Width="100"/>
+                <DataGridTextColumn Binding="{Binding Path=OrderDate,  StringFormat={}{0:dd MMM yyyy}}" Header="Date of Purchase" Width="150*"/>
+                <DataGridTextColumn Binding="{Binding Path=NoOfItems,StringFormat={}{0:N0}}" Header="No. Of Items" Width="120*"/>
+                <DataGridTextColumn Binding="{Binding Path=OrderTotal,StringFormat={}{0:N2}}" Header="Total" Width="150*"/>
             </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <Grid Height="150">
+                        <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" BorderThickness="0">
+                            
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                                <DataGridTextColumn Header="Price" Binding="{Binding Cost}" Width="*"/>
+                                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
+                                <DataGridTextColumn Header="Total" Binding="{Binding TotalAmt}" Width="*"/>
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+                    </Grid>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
         </DataGrid>
         <Controls:DropDownButton Grid.Column="1" Content="Export" HorizontalAlignment="Right" Margin="0,20,10,0" 
                                  VerticalAlignment="Top" DataContext="{Binding ElementName=datagrid}">
