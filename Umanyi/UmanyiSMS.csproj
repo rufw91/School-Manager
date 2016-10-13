@@ -199,6 +199,7 @@
     <Compile Include="ViewModels\BookReceiptHistoryVM.cs" />
     <Compile Include="ViewModels\BookReturnVM.cs" />
     <Compile Include="ViewModels\BooksVM.cs" />
+    <Compile Include="ViewModels\MarkListsVM.cs" />
     <Compile Include="ViewModels\PrepareBudgetVM.cs" />
     <Compile Include="ViewModels\ChangeDbVM.cs" />
     <Compile Include="ViewModels\ChangeSAPasswordVM.cs" />
@@ -209,7 +210,7 @@
     <Compile Include="ViewModels\ClassReportFormsVM.cs" />
     <Compile Include="ViewModels\CombinedAggregateResultsVM.cs" />
     <Compile Include="ViewModels\CombinedClassListVM.cs" />
-    <Compile Include="ViewModels\CombinedMarkListsVM.cs" />
+    <Compile Include="ViewModels\WeightedMarkListsVM.cs" />
     <Compile Include="ViewModels\CurrentExpenditureVM.cs" />
     <Compile Include="ViewModels\CustomModulesVM.cs" />
     <Compile Include="ViewModels\DisciplineDetailsVM.cs" />
