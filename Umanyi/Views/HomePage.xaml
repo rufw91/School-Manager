@@ -9,38 +9,255 @@
       mc:Ignorable="d" Background="White"
      d:DesignHeight="724" d:DesignWidth="1022">
 
-    <Grid Background="SteelBlue" Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">
+    <Grid Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="85"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Back button and page title -->
         <Grid Grid.Row="0">
-
-
-
+            <Grid.Background>
+                <SolidColorBrush Color="{DynamicResource Accent2Color}"/>
+            </Grid.Background>
+            <Image Width="100" Height="70" HorizontalAlignment="Left" Margin="10,0,0,0" Stretch="UniformToFill" Source="{Binding Info.Logo, Source={x:Static Application.Current}}"/>
             <TextBlock  Text="{Binding Info.Name, Converter={StaticResource ToUpperConverter}, Source={x:Static Application.Current}}" 
-               TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="40" Foreground="LightBlue" FontFamily="Segoe UI Semibold" 
-                        Margin="50,0"/>
-            <TextBlock HorizontalAlignment="Left" Margin="55,0,0,20" FontStyle="Italic" Text="{Binding Info.Motto, Converter={StaticResource ToUpperConverter}, Source={x:Static Application.Current}}"
-                       VerticalAlignment="Bottom" FontFamily="Segoe UI" FontSize="16"/>
+               TextWrapping="NoWrap" VerticalAlignment="Top" FontSize="32" Foreground="Gray" FontFamily="Segoe UI Semibold" 
+                        Margin="100,5,0,0"/>
+            <TextBlock HorizontalAlignment="Left" Margin="100,40,0,0" FontStyle="Italic" Text="{Binding Info.Motto, Converter={StaticResource ToUpperConverter}, Source={x:Static Application.Current}}"
+                       VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="14"/>
 
         </Grid>
 
         <Grid Grid.Row="1">
+            <Menu Height="25" BorderBrush="Silver" BorderThickness="0,0,0,1" VerticalAlignment="Top">
+                <MenuItem Header="File">
+                    <MenuItem Header="Home"/>
+                    <MenuItem Header="Backup"/>
+                    <MenuItem Header="Exit"/>
+                </MenuItem>
+                <MenuItem Header="Edit">
+                    <MenuItem Header="Copy"/>
+                    <MenuItem Header="Cut"/>
+                    <MenuItem Header="Paste"/>
+                    <MenuItem Header="Select All"/>
+                    <MenuItem Header="Find"/>
+                </MenuItem>
+                <MenuItem Header="Students">
+                    <MenuItem Header="New Student"/>
+                    <MenuItem Header="Modify Student Details"/>
+                    <MenuItem Header="Student List"/>
+                    <MenuItem Header="Class List"/>
+                    <MenuItem Header="Subject Selection (Per Student)"/>
+                    <MenuItem Header="Subject Selection (Per Class)"/>
+                    <MenuItem Header="Assign New Class"/>
+                    <MenuItem Header="Clear Student"/>
+                </MenuItem>
+                <MenuItem Header="Staff">
+                    <MenuItem Header="New Staff"/>
+                    <MenuItem Header="Modify Staff Details"/>
+                    <MenuItem Header="Staff List"/>
+                </MenuItem>
+                <MenuItem Header="Fees">
+                    <MenuItem Header="New Fees Payment"/>
+                    <MenuItem Header="Bill Student"/>
+                    <MenuItem Header="View Fees Structure"/>
+                    <MenuItem Header="Set Fees Structure"/>
+                    <MenuItem Header="Reprint Receipt"/>
+                    <MenuItem Header="Remove Payment"/>
+                    <MenuItem Header="Remove Bill"/>
+                    <MenuItem Header="Fees Statement"/>
+                    <MenuItem Header="Balances List"/>
+                    <MenuItem Header="Fees Payment History"/>
+                    <MenuItem Header="Payments by Voteheads"/>
+                </MenuItem>
+                <MenuItem Header="Exams">
+                    <MenuItem Header="Enter Results per Student"/>
+                    <MenuItem Header="Enter Results per Class"/>
+                    <MenuItem Header="View Exam Results"/>
+                    <MenuItem Header="Report Forms"/>
+                    <MenuItem Header="Mark Lists">
+                        <MenuItem Header="Exam Mark List"/>
+                        <MenuItem Header="Weighted Mark List"/>
+                    </MenuItem>
+                    <MenuItem Header="Subject Perfomance"/>
+                    <MenuItem Header="Remove Exam"/>
+                </MenuItem>
+                <MenuItem Header="Purchases">
+                    <MenuItem Header="New Purchase"/>
+                    <MenuItem Header="Purchase History"/>
+                    <MenuItem Header="Items"/>
+                    <MenuItem Header="Suppliers"/>
+                </MenuItem>
+                <MenuItem Header="Library">
+                    <MenuItem Header="Issue Book(s)"/>
+                    <MenuItem Header="Return Book(s)"/>
+                    <MenuItem Header="New Book"/>
+                    <MenuItem Header="Modify Book"/>
 
-            <Image Stretch="UniformToFill" Source="{Binding Info.Logo, Source={x:Static Application.Current}}"/>
-            <Grid Height="20" Margin="0,0,0,0" VerticalAlignment="Bottom">
-                <Grid.Background>
-                    <LinearGradientBrush EndPoint="01,1" StartPoint="0,0">
-                        <GradientStop Color="LightBlue"/>
-                        <GradientStop Color="SteelBlue" Offset="1"/>
+                    <MenuItem Header="Books List"/>
+                    <MenuItem Header="Unreturned Books"/>
+                </MenuItem>
+                <MenuItem Header="Gallery &amp; Events">
+                    <MenuItem Header="New Gallery Item"/>
+                    <MenuItem Header="All Gallery Items"/>
+                    <MenuItem Header="Remove Gallery Item"/>
+                    <Separator/>
+                    <MenuItem Header="New Event"/>
+                    <MenuItem Header="Upcoming Event(s)"/>
+                    <MenuItem Header="All Events"/>
+                    <MenuItem Header="Remove Event"/>
+                </MenuItem>
 
-                    </LinearGradientBrush>
-                </Grid.Background>
+                <MenuItem Header="Payroll">
+                    <MenuItem Header="New Payslip"/>
+                    <MenuItem Header="Reprint Payslip"/>
+                    <MenuItem Header="Payment History"/>
+                    <MenuItem Header="Remove Payment"/>
+                </MenuItem>
+
+                <MenuItem Header="Accounts">
+                    <MenuItem Header="Budget">
+                        <MenuItem Header="Prepare Budget"/>
+                        <MenuItem Header="Current Expenditure"/>
+                    </MenuItem>
+                    <MenuItem Header="Statement of Cashflows"/>
+                    <MenuItem Header="Balance Sheet"/>
+                    <MenuItem Header="Trial Balance"/>
+                    <MenuItem Header="Chart of Accounts"/>
+                    <Separator/>
+                    <MenuItem Header="New Account"/>
+                    <MenuItem Header="Remove Account"/>
+                </MenuItem>
+
+                <MenuItem Header="Settings">
+                    <MenuItem Header="Institution Info"/>
+                    <MenuItem Header="Academic Year Setup"/>
+                    <MenuItem Header="Classes Setup"/>
+                    <MenuItem Header="Subjects Setup"/>
+                    <MenuItem Header="Grades Setup"/>
+                    <MenuItem Header="Advanced"/>
+                </MenuItem>
+
+                <MenuItem Header="Help">
+                    <MenuItem Header="Get Help"/>
+                    <MenuItem Header="About"/>
+                </MenuItem>
+            </Menu>
+            <Grid Margin="0,25">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Shortcuts" VerticalAlignment="Top"
+                   Style="{DynamicResource Title}"/>
+                <TextBlock HorizontalAlignment="Left" Margin="40,80,0,0" Text="Stock" VerticalAlignment="Top" Style="{DynamicResource Emphasis2}" Foreground="Gray"/>
+                <TextBlock HorizontalAlignment="Left" Margin="40,280,0,0" Text="Customers" VerticalAlignment="Top" Style="{DynamicResource Emphasis2}" Foreground="Gray"/>
+                <TextBlock HorizontalAlignment="Left" Margin="40,425,0,0" Text="Suppliers" VerticalAlignment="Top" Style="{DynamicResource Emphasis2}" Foreground="Gray"/>
+                <TextBlock HorizontalAlignment="Left" Margin="0,80,0,0" Text="Employees" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
+                <TextBlock HorizontalAlignment="Left" Margin="0,175,0,0" Text="Reports" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
+                <TextBlock HorizontalAlignment="Left" Margin="0,345,0,0" Text="VAT" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
+
+
+                <TextBlock HorizontalAlignment="Left" Margin="50,115,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayNewItemCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">New Item</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,140,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayNewItemCategoryCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">New Item Category</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,165,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayItemListCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Items List</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,190,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayItemCategoryListCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Item Categories</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,215,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayReceiveItemsCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Receive Items</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,240,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayStockTakingCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Stock Taking</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,315,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayNewCustomerCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">New Customer</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,340,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayCustomerListCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Customer List</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,365,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayCustomerPaymentCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">New Customer Payment</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,390,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayCustomerStatementCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Customer Statement</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,460,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayNewSupplierCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">New Supplier</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,485,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplaySupplierListCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Supplier List</Hyperlink></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="50,510,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayPaymentToSupplierCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">New Payment to Supplier</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayNewEmployeeCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">New Employee</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayEmployeeListCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Employee List</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,210,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayEndOfDayReportCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">End of Day Report</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,235,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayCustomerReportsCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Customers</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,260,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplaySalesReportsCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Sales</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,285,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayStockReportsCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Stock</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayMiscReportsCommand, IsAsync=False, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Others</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,380,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayNewVATRateCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">New VAT Rate</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,405,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayVATAnalysisCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">VAT Analysis</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,430,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayExportVATAnalysisCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Export Report to Excel</Hyperlink></TextBlock>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,455,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding DataContext.DisplayVATGuideCommand, RelativeSource={RelativeSource AncestorType=views:ManagerView}}">Guide to Filing Returns online - (KRA iTax)</Hyperlink></TextBlock>
+                <Grid Grid.Column="2">
+                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,20,20,0" Text="{Binding Info.Name, StringFormat=Welcome to {0} Retail Management System,
+                FallbackValue=Welcome to Marcia Retail Management System, Source={x:Static Application.Current}}" VerticalAlignment="Top"
+                   Style="{DynamicResource Title}"/>
+                    <StackPanel Margin="20,110,10,0" VerticalAlignment="Top">
+                        <TextBlock VerticalAlignment="Top" Style="{DynamicResource Emphasis1}" TextWrapping="WrapWithOverflow">
+                v3.1 is here and has loads of improvements and new features:</TextBlock>
+                        <Grid Height="10"/>
+                        <TextBlock Margin="10,0,0,0" Text="- Now includes a Sales view and Manager view."/>
+                        <Grid Height="10"/>
+                        <TextBlock Margin="10,0,0,0" Text="- Introduced Reports"/>
+                        <Grid Height="10"/>
+                        <TextBlock Margin="10,0,0,0" Text="- Better Security"/>
+                        <Grid Height="10"/>
+                        <TextBlock Margin="10,0,0,0" Text="- Faster export to MS Excel"/>
+                        <Grid Height="10"/>
+                        <TextBlock Margin="10,0,0,0" Text="- Automatic Backup"/>
+                        <Grid Height="10"/>
+                        <TextBlock Margin="10,0,0,0" Text="- More responsive UI"/>
+                        <Grid Height="10"/>
+                        <TextBlock Margin="10,0,0,0" Text="- Fixed Data access errors"/>
+                        <Grid Height="10"/>
+                        <TextBlock Margin="10,0,0,0" Text="- Fixed crash on failed backup"/>
+                        <Grid Height="10"/>
+                        <TextBlock Margin="10,0,0,0" Text="- Allows recreation of database"/>
+                        <Grid Height="10"/>
+                        <TextBlock Margin="0,0,0,0" Text="... And many more." Style="{DynamicResource Emphasis1}"/>
+                    </StackPanel>
+
+
+                </Grid>
             </Grid>
-            <ScrollViewer Margin="15,20,15,20">
+            <Border Height="25" VerticalAlignment="Bottom">
+                <Grid >
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="01,1" StartPoint="0,0">
+                            <GradientStop Color="LightGray"/>
+                            <GradientStop Color="Silver" Offset="1"/>
+
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,4" Height="16" Width="33"><Hyperlink 
+					Command="{Binding DataContext.AboutCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}" Foreground="Gray"><Run Text="About"/></Hyperlink></TextBlock>
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,66,4" Height="16"><Hyperlink 
+							Command="{Binding DataContext.DisplaySettingsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"  Foreground="Gray"><Run Text="Settings"/></Hyperlink></TextBlock>
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,126,4" Height="16">
+                <Hyperlink Command="{Binding DataContext.DisplayInstitutionCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"  Foreground="Gray"><Run Text="Institution"/></Hyperlink></TextBlock>
+                </Grid>
+            </Border>
+            <!--<ScrollViewer Margin="15,20,15,20">
             <Grid x:Name="groupLinks" MinHeight="700">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="250*"/>
@@ -99,13 +316,8 @@
 					Description="Additional, Customized modules ..."
                                          HorizontalAlignment="Stretch" Margin="0,0,0,10" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
             </Grid>
-            </ScrollViewer>
-            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,4" Height="16" Width="33"><Hyperlink Foreground="LightGray" 
-					Command="{Binding DataContext.AboutCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"><Run Text="About"/></Hyperlink></TextBlock>
-            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,66,4" Height="16"><Hyperlink Foreground="LightGray" 
-							Command="{Binding DataContext.DisplaySettingsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"><Run Text="Settings"/></Hyperlink></TextBlock>
-            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,126,4" Height="16">
-                <Hyperlink Command="{Binding DataContext.DisplayInstitutionCommand, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}" Foreground="LightGray"><Run Text="Institution"/></Hyperlink></TextBlock>
+            </ScrollViewer>-->
+
         </Grid>
     </Grid>
 </UserControl>
