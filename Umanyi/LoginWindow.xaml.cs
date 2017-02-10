@@ -98,26 +98,12 @@ namespace UmanyiSMS
                 App.Info.CurrentUser = UsersHelper.CurrentUser;
                 if (_type == LoginType.Login)
                 {
-                   // this.Visibility = System.Windows.Visibility.Collapsed;
-                   /*if (CheckFirstRun())
-                    {
-                        
-                        FirstRun main = new FirstRun();
-                        Application.Current.MainWindow = main;
-                        main.Show();
-                        shutDownApp = false;
-                        this.Close();
-                    }
-                    else
-                    {*/
+                   
                         MainWindow main = new MainWindow();
                         Application.Current.MainWindow = main;
                         main.Show();
                         shutDownApp = false;
-                        //this.Visibility = System.Windows.Visibility.Collapsed;
                         this.Close();
-                   // }
-
                 }
                 else
                 {
@@ -128,12 +114,7 @@ namespace UmanyiSMS
                 }
             }
         }
-
-        private bool CheckFirstRun()
-        {
-            return true;
-        }
-
+        
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
             

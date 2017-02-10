@@ -163,27 +163,7 @@
     <DataTemplate DataType="{x:Type viewModels:NewReportVM}" >
         <views:NewReport/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:StudentsReportVM}" >
-        <views:StudentsReport/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:StaffReportVM}" >
-        <views:StaffReport/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AcademicReportVM}" >
-        <views:AcademicReport/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:FinanceReportVM}" >
-        <views:FinanceReport/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:BoardingReportVM}" >
-        <views:BoardingReport/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:LibraryReportVM}" >
-        <views:LibraryReport/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:EventsReportVM}" >
-        <views:EventsReport/>
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:ItemIssueHistoryVM}" >
         <views:ItemIssueHistory/>
     </DataTemplate>
@@ -274,19 +254,7 @@
     <DataTemplate DataType="{x:Type viewModels:ClassListVM}" >
         <views:ClassList/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ImportWizardPage1VM}" >
-        <views:ImportWizardPage1/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ImportWizardPage2VM}" >
-        <views:ImportWizardPage2/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ImportWizardPage3VM}" >
-        <views:ImportWizardPage3/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ImportWizardPage4VM}" >
-        <views:ImportWizardPage4/>
-    </DataTemplate>
-
+   
     <DataTemplate DataType="{x:Type viewModels:BalancesListVM}" >
         <views:FeesDefaulters/>
     </DataTemplate>

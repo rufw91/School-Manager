@@ -1,6 +1,4 @@
 ﻿using Helper;
-using Helper.Controls;
-using Helper.Helpers;
 using Helper.Models;
 using Helper.Presentation;
 using log4net.Config;
@@ -10,11 +8,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
-using System.Security.Principal;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using UmanyiSMS.ViewModels;
 using UmanyiSMS.Views;
 
 namespace UmanyiSMS
@@ -131,7 +127,7 @@ namespace UmanyiSMS
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            SplashScreen splashScreen = new SplashScreen("/Resources/Starehe0078C8.png");
+            SplashScreen splashScreen = new SplashScreen("/Resources/UmanyiSMSSplash.png");
             splashScreen.Show(true);
 
             info = new ApplicationModel();
@@ -144,54 +140,10 @@ namespace UmanyiSMS
             {
                 Helper.Properties.Settings.Default.Info = GetDefaultInfo();
                 Helper.Properties.Settings.Default.Save();
-                /*GenericIdentity MyIdentity = new GenericIdentity("DefaultSetupUser");
-                GenericPrincipal MyPrincipal =
-                    new GenericPrincipal(MyIdentity, new string[] { "Deputy" });
-                AppDomain.CurrentDomain.SetThreadPrincipal(MyPrincipal);
-                CustomWindow cm = new CustomWindow();
-                cm.Content = new InstitutionSetupVM(true);
-                cm.MinHeight = 610;
-                cm.MinWidth = 810;
-                cm.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                cm.WindowState = WindowState.Maximized;
-                bool canClose = false;
-                bool isExiting = false;
-                cm.DataContextChanged += (o, e1) =>
-                {
-                    InstitutionSetupVM vm = cm.DataContext as InstitutionSetupVM;
-                    if (vm != null)
-                        vm.CloseWindowAction = () =>
-                        {
-                            canClose = true;
-                            cm.Close();
-                        };
-
-                };
-                cm.Closed += (o2, e2) =>
-                {
-                    if (!canClose)
-                        isExiting = true;
-                };
-                cm.ShowDialog();
-                if (isExiting)
-                {
-                    Shutdown();
-                    return;
-                }
-
-                Restart();
-                return;
-                 * */
             }
 
             InitGlobalVar();
-
-
-            /* if (!await ActivationHelper.LicenseExists())
-                 new InvalidLicense().ShowDialog();
-             */
-            // if (await ActivationHelper.IsActivated())
-            //{
+            
             try
             {
                 Login lg = new Login();
@@ -199,18 +151,7 @@ namespace UmanyiSMS
                 lg.ShowDialog();
             }
             catch { }
-            /*}
-            else
-            {
-                try
-                {
-                    Activation a = new Activation();
-                    MainWindow = a;
-                    a.ShowDialog();
-                }
-                catch { }
-            }*/
-
+            
         }
 
         private ApplicationPersistModel GetDefaultInfo()

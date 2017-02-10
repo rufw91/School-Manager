@@ -18,11 +18,6 @@ namespace UmanyiSMS.Views
             InitializeComponent();
                     
             var v = new MainWindowVM();
-            v.AboutAction = () =>
-                {
-                    About a = new About();
-                    a.ShowDialog();
-                };
             DataContext = v;
             this.Closing += (o, e) =>
                 {

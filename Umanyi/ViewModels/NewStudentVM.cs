@@ -55,11 +55,7 @@ namespace UmanyiSMS.ViewModels
             ClearImageCommand = new RelayCommand(o => { newStudent.SPhoto = null; }, o => true);
             BrowseCommand = new RelayCommand(o => { newStudent.SPhoto = FileHelper.BrowseImageAsByteArray(); }, o => true);
             ClearDormCommand = new RelayCommand(o => { newStudent.DormitoryID = 0; }, o => true);
-            ImportFromExcelCommand = new RelayCommand(o=> 
-            {
-                if (ShowImportWindowAction != null)
-                    ShowImportWindowAction.Invoke();
-            });
+           
         }
         
 
@@ -119,12 +115,7 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public Action ShowImportWindowAction
-        {
-            get;
-            set;
-        }
-
+       
         public ICommand SaveCommand
         {
             get;
@@ -135,14 +126,7 @@ namespace UmanyiSMS.ViewModels
             get;
             private set;
         }
-
-        public ICommand ImportFromExcelCommand
-        {
-            get;
-            private set;
-
-        }
-
+        
         public ICommand BrowseCommand
         {
             get;

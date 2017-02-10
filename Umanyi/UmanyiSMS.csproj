@@ -71,7 +71,7 @@
     <StartupObject>UmanyiSMS.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\StareheBlue.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\UmanyiSMS.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
@@ -172,9 +172,6 @@
     <Compile Include="Presentation\CommonCommands.cs" />
     <Compile Include="Presentation\Enums.cs" />
     <Compile Include="Presentation\PDFViewerHost.cs" />
-    <Compile Include="Updates\UpdatesWindow.xaml.cs">
-      <DependentUpon>UpdatesWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
@@ -226,15 +223,10 @@
     <Compile Include="ViewModels\FeesPaymentHistoryVM.cs" />
     <Compile Include="ViewModels\FeesStatementVM.cs" />
     <Compile Include="ViewModels\FinanceVM.cs" />
-    <Compile Include="ViewModels\FirstRun\FirstRunVM.cs" />
+    <Compile Include="ViewModels\FirstRunVM.cs" />
     <Compile Include="ViewModels\GalleryVM.cs" />
     <Compile Include="ViewModels\GeneralSettingsVM.cs" />
     <Compile Include="ViewModels\HomePageVM.cs" />
-    <Compile Include="ViewModels\Import\ImportWizardMainWindowVM.cs" />
-    <Compile Include="ViewModels\Import\ImportWizardPage1VM.cs" />
-    <Compile Include="ViewModels\Import\ImportWizardPage2VM.cs" />
-    <Compile Include="ViewModels\Import\ImportWizardPage3VM.cs" />
-    <Compile Include="ViewModels\Import\ImportWizardPage4VM.cs" />
     <Compile Include="ViewModels\InstitutionInfoVM.cs" />
     <Compile Include="ViewModels\InstitutionSetupVM.cs" />
     <Compile Include="ViewModels\InstitutionSubjectsSetupVM.cs" />
@@ -298,13 +290,6 @@
     <Compile Include="ViewModels\RemoveSupplierVM.cs" />
     <Compile Include="ViewModels\ReportsHomeVM.cs" />
     <Compile Include="ViewModels\ReportsVM.cs" />
-    <Compile Include="ViewModels\Reports\AcademicReportVM.cs" />
-    <Compile Include="ViewModels\Reports\BoardingReportVM.cs" />
-    <Compile Include="ViewModels\Reports\EventsReportVM.cs" />
-    <Compile Include="ViewModels\Reports\FinanceReportVM.cs" />
-    <Compile Include="ViewModels\Reports\LibraryReportVM.cs" />
-    <Compile Include="ViewModels\Reports\StaffReportVM.cs" />
-    <Compile Include="ViewModels\Reports\StudentsReportVM.cs" />
     <Compile Include="ViewModels\ReprintPaymentVoucherVM.cs" />
     <Compile Include="ViewModels\ReprintPaySlipVM.cs" />
     <Compile Include="ViewModels\ReprintReceiptVM.cs" />
@@ -438,9 +423,6 @@
     <Compile Include="Views\RemoveExam.xaml.cs">
       <DependentUpon>RemoveExam.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Reports\AcademicReport.xaml.cs">
-      <DependentUpon>AcademicReport.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Activation.xaml.cs">
       <DependentUpon>Activation.xaml</DependentUpon>
     </Compile>
@@ -452,9 +434,6 @@
     </Compile>
     <Compile Include="Views\BillStudents.xaml.cs">
       <DependentUpon>BillStudents.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Reports\BoardingReport.xaml.cs">
-      <DependentUpon>BoardingReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ClassReportFoms.xaml.cs">
       <DependentUpon>ClassReportFoms.xaml</DependentUpon>
@@ -474,20 +453,11 @@
     <Compile Include="Views\EnterExamResultsBySubject.xaml.cs">
       <DependentUpon>EnterExamResultsBySubject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Reports\EventsReport.xaml.cs">
-      <DependentUpon>EventsReport.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Reports\FinanceReport.xaml.cs">
-      <DependentUpon>FinanceReport.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\IssueItems.xaml.cs">
       <DependentUpon>IssueItems.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ItemIssueHistory.xaml.cs">
       <DependentUpon>ItemIssueHistory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Reports\LibraryReport.xaml.cs">
-      <DependentUpon>LibraryReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LocalTutorials.xaml.cs">
       <DependentUpon>LocalTutorials.xaml</DependentUpon>
@@ -548,24 +518,6 @@
     </Compile>
     <Compile Include="Views\FirstRun\Welcome.xaml.cs">
       <DependentUpon>Welcome.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Import\ImportWizardMainWindow.xaml.cs">
-      <DependentUpon>ImportWizardMainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Import\ImportWizardPage1.xaml.cs">
-      <DependentUpon>ImportWizardPage1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Import\ImportWizardPage2.xaml.cs">
-      <DependentUpon>ImportWizardPage2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Import\ImportWizardPage3.xaml.cs">
-      <DependentUpon>ImportWizardPage3.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Import\ImportWizardPage4.xaml.cs">
-      <DependentUpon>ImportWizardPage4.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Import\ShowErrors.xaml.cs">
-      <DependentUpon>ShowErrors.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\InstitutionInfo.xaml.cs">
       <DependentUpon>InstitutionInfo.xaml</DependentUpon>
@@ -723,9 +675,6 @@
     <Compile Include="Views\StaffDetails.xaml.cs">
       <DependentUpon>StaffDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Reports\StaffReport.xaml.cs">
-      <DependentUpon>StaffReport.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\StockTakeResults.xaml.cs">
       <DependentUpon>StockTakeResults.xaml</DependentUpon>
     </Compile>
@@ -740,9 +689,6 @@
     </Compile>
     <Compile Include="Views\StudentDetails.xaml.cs">
       <DependentUpon>StudentDetails.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Reports\StudentsReport.xaml.cs">
-      <DependentUpon>StudentsReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StudentTranscript.xaml.cs">
       <DependentUpon>StudentTranscript.xaml</DependentUpon>
@@ -852,10 +798,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ModelsDataTemplates.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Updates\UpdatesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1003,10 +945,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Reports\AcademicReport.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Activation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1020,10 +958,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BillStudents.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Reports\BoardingReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1051,23 +985,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Reports\EventsReport.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Reports\FinanceReport.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\IssueItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ItemIssueHistory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Reports\LibraryReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1150,30 +1072,6 @@
     <Page Include="Views\FirstRun\Welcome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Import\ImportWizardMainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Import\ImportWizardPage1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Import\ImportWizardPage2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Import\ImportWizardPage3.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Import\ImportWizardPage4.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Import\ShowErrors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\InstitutionInfo.xaml">
       <SubType>Designer</SubType>
@@ -1359,10 +1257,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Reports\StaffReport.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\StockTakeResults.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1380,10 +1274,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StudentDetails.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Reports\StudentsReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1605,15 +1495,13 @@
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\StareheBlue.ico" />
-    <Resource Include="Resources\StereheRed.ico" />
+    <Resource Include="Resources\UmanyiSMS.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\White0078C8.png" />
-    <Resource Include="Resources\WhiteFF4500.png" />
+    <Resource Include="Resources\UmanyiSMSLogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Resources\Starehe0078C8.png" />
+    <SplashScreen Include="Resources\UmanyiSMSSplash.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -1624,63 +1512,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\students_bg.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\settings_bg.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\gallery_bg.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\events_bg.jpg" />
-    <Resource Include="Resources\finance_bg.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\exam_bg.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\teacher_bg.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\shedule_bg.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\institution_bg.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\noImage.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\profile.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\boarding.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\inventory.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\Updates\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\library_bg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\PAYEGuide.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\excel_data.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\import_student.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\YAZOO_SMILIES COOL.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\reports.png" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
