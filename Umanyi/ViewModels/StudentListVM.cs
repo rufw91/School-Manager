@@ -54,7 +54,7 @@ namespace UmanyiSMS.ViewModels
                             CollViewSource.Source = allStudents;
                         }
                 };
-
+            ShowInactive = true;
         }
 
         private int GetSelectedItemsCount()

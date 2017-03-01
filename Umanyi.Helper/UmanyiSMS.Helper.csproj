@@ -137,7 +137,6 @@
     <Compile Include="Models\DonorListModel.cs" />
     <Compile Include="Models\DonorModel.cs" />
     <Compile Include="Helpers\PrintHelper.cs" />
-    <Compile Include="Helpers\QBSyncHelper.cs" />
     <Compile Include="Helpers\SyncHelper.cs" />
     <Compile Include="Models\AcademicReportModel.cs" />
     <Compile Include="Models\AggregateResultEntryModel.cs" />

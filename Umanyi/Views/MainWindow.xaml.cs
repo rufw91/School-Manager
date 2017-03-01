@@ -12,40 +12,30 @@ namespace UmanyiSMS.Views
 
     public sealed partial class MainWindow : CustomWindow
     {
-        bool canClose = false;
         public MainWindow()
         {
             InitializeComponent();
                     
             var v = new MainWindowVM();
-            DataContext = v;
-            this.Closing += (o, e) =>
+                v.HelpGetHelpAction = () =>
                 {
-                    if (canClose)
-                        e.Cancel = false;
-                    else
-                    {
-                        if (MessageBoxResult.Yes == MessageBox.Show("Are you sure you would like to exit?\r\nAny unsaved data will be lost.", "Warning",
-                           MessageBoxButton.YesNo, MessageBoxImage.Warning))
-                            e.Cancel = false;
-                        else e.Cancel = true;
-                    }
+                    MessageBox.Show("Contact your system administrator for assistance.","Help", MessageBoxButton.OK, MessageBoxImage.Information);
                 };
+
+            v.HelpAboutAction = () =>
+            {
+                About a = new About();
+                a.ShowDialog();
+            };
+            DataContext = v;            
             
         }
 
 
         private void CustomWindow_Closed(object sender, EventArgs e)
         {
-            if (!canClose)
             Application.Current.Shutdown();
-        }
-
-        internal void CloseWithoutPrompt()
-        {
-            canClose = true;
-            Close();
-        }
+        }        
     }
 }
 

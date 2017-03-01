@@ -9,7 +9,7 @@
 	Background="White">
 
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Reprint Payslip" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Print Payslip" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,80,0,0" TextWrapping="Wrap" Style="{DynamicResource Title0}" Text="Staff Member" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="91,126,0,0" VerticalAlignment="Top" Width="170"
                  Text="{Binding SelectedStaff.StaffID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,ValidatesOnNotifyDataErrors=True}"/>

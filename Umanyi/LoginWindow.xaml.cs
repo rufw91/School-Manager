@@ -89,6 +89,12 @@ namespace UmanyiSMS
             p.MakeReadOnly();
             SqlCredential c = new SqlCredential(txtUId.Text, p);
             bool authentic = await LoginHelper.AuthenticateUser(c);
+
+            if (txtUId.Text.ToLowerInvariant()=="sa")
+            {
+                MessageBox.Show("The System Account 'sa' will be disabled in future versions of Umanyi MS, consider creating new user accounts  (by adding staff).", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
             mnGrid.IsEnabled = true;
             if (!authentic)
                 MessageBox.Show("Invalid User ID or Password. \r\nFor help, contact your system admin.", "Warning",

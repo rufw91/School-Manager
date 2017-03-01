@@ -80,15 +80,15 @@
 
     <Grid>
 
-        <TextBlock Name="txtVersion" HorizontalAlignment="Left" Margin="30,164,0,0" Text="Version 6.6.5.2015" VerticalAlignment="Top" />
+        <TextBlock Name="txtVersion" HorizontalAlignment="Left" Margin="30,164,0,0" Text="Version 7.1.1" VerticalAlignment="Top" />
 
         <TextBlock HorizontalAlignment="Left" Margin="30,185,0,0" VerticalAlignment="Top" >
-            © 2016 Raphael Muindi. All Rights Reserved.
+            © 2017 Raphael Muindi. All Rights Reserved.
         </TextBlock>
 
         <TextBlock HorizontalAlignment="Left" Margin="126,47,0,0" Text="Umanyi" Style="{DynamicResource Heading0}" 
                    VerticalAlignment="Top"/>
-        <Image Height="80" Width="80" Margin="30,30,0,0" Source="/UmanyiSMS;component/Resources/White0078C8.png" HorizontalAlignment="Left" 
+        <Image Height="80" Width="80" Margin="30,30,0,0" Source="/UmanyiSMS;component/Resources/UmanyiSMSLogo.png" HorizontalAlignment="Left" 
                VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="264,58,0,0" TextWrapping="Wrap" Text="®" VerticalAlignment="Top" FontSize="16"/>
         <TextBlock HorizontalAlignment="Left" Margin="328,79,0,0" Style="{DynamicResource Emphasis}" Text="ATTRIBUTIONS &amp; CREDITS:" VerticalAlignment="Top"/>
