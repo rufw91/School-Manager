@@ -3556,7 +3556,7 @@ namespace Helper
         {
             string selectStr = string.Concat(new object[]
             {
-                "SELECT sssd.SubjectID, s.NameOfSubject, ISNULL(erd.Score,0), erd.Remarks,ssd.Tutor,s.Code,erh.ExamResultID FROM [Institution].[StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [Institution].[StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [Institution].[ExamResultDetail] erd ON (erh.ExamResultID = erd.ExamResultID AND erd.SubjectID=sssd.SubjectID) LEFT OUTER JOIN [Institution].[Subject] s ON(sssd.SubjectID=s.SubjectID) LEFT OUTER JOIN [Institution].[Student] st ON (sssh.StudentID = st.StudentID)LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (sssh.StudentID=cs.StudentID AND cs.IsActive=1) LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh ON (ssh.ClassID=cs.ClassID) LEFT OUTER JOIN [Institution].[SubjectSetupDetail] ssd ON (ssd.SubjectID=sssd.SubjectID AND ssd.SubjectSetupID=ssh.SubjectSetupID)  WHERE ssh.IsActive=1 AND sssh.IsActive=1 AND erh.IsActive=1 AND sssh.StudentID=",
+                "SELECT sssd.SubjectID, s.NameOfSubject, ISNULL(erd.Score,0), erd.Remarks,ssd.Tutor,s.Code,erh.ExamResultID FROM [Institution].[StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [Institution].[StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [Institution].[ExamResultDetail] erd ON (erh.ExamResultID = erd.ExamResultID AND erd.SubjectID=sssd.SubjectID) LEFT OUTER JOIN [Institution].[Subject] s ON(sssd.SubjectID=s.SubjectID) LEFT OUTER JOIN [Institution].[Student] st ON (sssh.StudentID = st.StudentID)LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh ON (ssh.ClassID=st.ClassID) LEFT OUTER JOIN [Institution].[SubjectSetupDetail] ssd ON (ssd.SubjectID=sssd.SubjectID AND ssd.SubjectSetupID=ssh.SubjectSetupID)  WHERE ssh.IsActive=1 AND sssh.IsActive=1 AND erh.IsActive=1 AND sssh.StudentID=",
                 studentID,
                 " AND erh.ExamID=",
                 examID,
@@ -3615,7 +3615,7 @@ namespace Helper
                 text = string.Concat(new object[]
                 {
                     obj,
-                    " FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass]cs ON (cs.StudentID=s.StudentID AND cs.IsActive=1)WHERE cs.ClassID=",
+                    " FROM [Institution].[Student]s WHERE s.ClassID=",
                     classID,
                     " AND s.IsACtive=1"
                 });
@@ -4239,7 +4239,7 @@ namespace Helper
             return Task.Factory.StartNew<ObservableCollection<StudentFeesDefaultModel>>(delegate
             {
                 ObservableCollection<StudentFeesDefaultModel> observableCollection = new ObservableCollection<StudentFeesDefaultModel>();
-                string commandText = "SELECT s.StudentID, FirstName+' '+LastName+' '+MiddleName, GuardianPhoneNo,dbo.GetCurrentBalance(s.StudentID) FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass]cs ON (cs.StudentID = s.StudentID AND cs.IsActive=1)  WHERE cs.ClassID=" + classID + " AND s.IsActive = 1";
+                string commandText = "SELECT s.StudentID, FirstName+' '+LastName+' '+MiddleName, GuardianPhoneNo,dbo.GetCurrentBalance(s.StudentID) FROM [Institution].[Student]s  WHERE s.ClassID=" + classID + " AND s.IsActive = 1";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -4260,7 +4260,7 @@ namespace Helper
             return Task.Factory.StartNew<ObservableCollection<StudentBaseModel>>(delegate
             {
                 ObservableCollection<StudentBaseModel> observableCollection = new ObservableCollection<StudentBaseModel>();
-                string commandText = "SELECT s.StudentID, FirstName+' '+MiddleName+' '+LastName FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass]cs ON (cs.StudentID = s.StudentID AND cs.IsActive=1) WHERE cs.ClassID =" 
+                string commandText = "SELECT s.StudentID, FirstName+' '+MiddleName+' '+LastName FROM [Institution].[Student]s WHERE s.ClassID =" 
                 + classID + " AND s.StudentID NOT IN (SELECT StudentID FROM [Institution].[StudentClearance]) AND s.StudentID NOT IN (SELECT StudentID FROM [Institution].[StudentTransfer])";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 ObservableCollection<StudentBaseModel> result;
@@ -4373,7 +4373,7 @@ namespace Helper
                 ClassStudentListModel classStudentListModel = new ClassStudentListModel();
                 classStudentListModel.ClassID = selectedClass.ClassID;
                 classStudentListModel.NameOfClass = selectedClass.NameOfClass;
-                string commandText = "SELECT s.StudentID,FirstName,LastName,MiddleName FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.IsActive=1) WHERE cs.ClassID=" + selectedClass.ClassID + " AND s.IsActive=1";
+                string commandText = "SELECT s.StudentID,FirstName,LastName,MiddleName FROM [Institution].[Student] s WHERE s.ClassID=" + selectedClass.ClassID + " AND s.IsActive=1";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -4406,8 +4406,8 @@ namespace Helper
                 text = text.Remove(text.Length - 1);
                 classStudentListModel.ClassID = 0;
                 classStudentListModel.NameOfClass = currentClass.Description;
-                string commandText = "SELECT s.StudentID,FirstName+' '+LastName+' '+MiddleName FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON "+
-                "(s.StudentID = cs.StudentID AND cs.IsActive=1) WHERE cs.ClassID IN (" + text + ") AND s.IsActive=1";
+                string commandText = "SELECT s.StudentID,FirstName+' '+LastName+' '+MiddleName FROM [Institution].[Student]s "+
+                "s.ClassID IN (" + text + ") AND s.IsActive=1";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -7047,7 +7047,7 @@ namespace Helper
             {
                 string commandText = string.Concat(new object[]
                 {
-                    "SELECT sd.Name,ISNULL(SUM(sd.Amount),0) FROM [Sales].[SaleDetail] sd LEFT OUTER JOIN [Sales].[SaleHeader] sh ON (sd.SaleID=sh.SaleID) INNER JOIN [Institution].[Student] s ON (s.StudentID=CONVERT(INT,CustomerID)) LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (cs.StudentID=CONVERT(INT,CustomerID) AND cs.IsActive=1) WHERE cs.CLassID=",
+                    "SELECT sd.Name,ISNULL(SUM(sd.Amount),0) FROM [Sales].[SaleDetail] sd LEFT OUTER JOIN [Sales].[SaleHeader] sh ON (sd.SaleID=sh.SaleID) INNER JOIN [Institution].[Student] s ON (s.StudentID=CONVERT(INT,CustomerID)) WHERE s.CLassID=",
                     classID,
                     " AND s.IsActive=1 AND sh.OrderDate BETWEEN CONVERT(datetime,'",
                     term.StartDate.Day.ToString(),
@@ -7260,7 +7260,7 @@ namespace Helper
                     });
                 }
                 text = text.Remove(text.Length - 1);
-                text = text + " FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass]cs ON (s.StudentID = cs.StudentID AND cs.IsActive=1) WHERE s.IsActive=1 AND cs.ClassID=" + classID;
+                text = text + " FROM [Institution].[Student]s WHERE s.IsActive=1 AND s.ClassID=" + classID;
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {

@@ -94,7 +94,7 @@ namespace UmanyiSMS
                 if (m != null)
                 {
                     m.Visibility = Visibility.Collapsed;
-                    m.CloseWithoutPrompt();
+                    m.Close();
                 }
                 Process.Start(Application.ResourceAssembly.Location);
                 Application.Current.Shutdown();

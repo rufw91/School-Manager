@@ -9,269 +9,109 @@
       mc:Ignorable="d" Background="White"
      d:DesignHeight="724" d:DesignWidth="1022">
 
-    <Grid Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="85"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- Back button and page title -->
-        <Grid Grid.Row="0">
-            <Grid.Background>
-                <SolidColorBrush Color="{DynamicResource Accent2Color}"/>
-            </Grid.Background>
-            <Image Width="100" Height="70" HorizontalAlignment="Left" Margin="10,0,0,0" Stretch="UniformToFill" Source="{Binding Info.Logo, Source={x:Static Application.Current}}"/>
-            <TextBlock  Text="{Binding Info.Name, Converter={StaticResource ToUpperConverter}, Source={x:Static Application.Current}}" 
-               TextWrapping="NoWrap" VerticalAlignment="Top" FontSize="32" Foreground="{DynamicResource Accent}" FontFamily="Segoe UI Semibold" 
-                        Margin="100,10,0,0"/>
-            <TextBlock HorizontalAlignment="Left" Margin="100,45,0,0" FontStyle="Italic" Text="{Binding Info.Motto, Converter={StaticResource ToUpperConverter}, Source={x:Static Application.Current}}"
-                       VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="14"/>
-
-        </Grid>
-
-        <Grid Grid.Row="1">
-            <Menu Height="25" BorderBrush="Silver" BorderThickness="0,0,0,1" VerticalAlignment="Top">
-                <MenuItem Header="File">
-                    <MenuItem Header="Home"/>
-                    <MenuItem Header="Backup" Command="{Binding FileBackupCommand}"/>
-                    <MenuItem Header="Exit"/>
-                </MenuItem>
-                <MenuItem Header="Edit">
-                    <MenuItem Header="Copy"/>
-                    <MenuItem Header="Cut"/>
-                    <MenuItem Header="Paste"/>
-                    <MenuItem Header="Select All"/>
-                    <MenuItem Header="Find"/>
-                </MenuItem>
-                <MenuItem Header="Students">
-                    <MenuItem Header="New Student" Command="{Binding StudentsNewStudentCommand}"/>
-                    <MenuItem Header="Modify Student Details" Command="{Binding StudentsModifyStudentCommand}"/>
-                    <MenuItem Header="Student List" Command="{Binding StudentsStudentListCommand}"/>
-                    <MenuItem Header="Class List" Command="{Binding StudentsClassListCommand}"/>
-                    <MenuItem Header="Subject Selection">
-                        <MenuItem Header="Per Student" Command="{Binding StudentsSSPerStudentCommand}"/>
-                        <MenuItem Header="Per Class" Command="{Binding StudentsSSPerClassCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="Assign New Class" Command="{Binding StudentsAssignNewClassCommand}"/>
-                    <MenuItem Header="Clear Student" Command="{Binding StudentsClearStudentCommand}"/>
-                </MenuItem>
-                <MenuItem Header="Staff">
-                    <MenuItem Header="New Staff" Command="{Binding StaffNewStaffCommand}"/>
-                    <MenuItem Header="Modify Staff Details" Command="{Binding StaffModifyStaffCommand}"/>
-                    <MenuItem Header="Staff List" Command="{Binding StaffStaffListCommand}"/>
-                </MenuItem>
-                <MenuItem Header="Fees">
-                    <MenuItem Header="New Fees Payment" Command="{Binding FeesNewPaymentCommand}"/>
-                    <MenuItem Header="Bill Student" Command="{Binding FeesBillStudentCommand}"/>
-                    <MenuItem Header="Fees Structure">
-                        <MenuItem Header="View" Command="{Binding FeesViewFeesStructureCommand}"/>
-                        <MenuItem Header="Modify" Command="{Binding FeesModifyFeesStructureCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="Reprint Receipt" Command="{Binding FeesReprintReceiptCommand}"/>
-                    <MenuItem Header="Remove Payment" Command="{Binding FeesRemovePaymentCommand}"/>
-                    <MenuItem Header="Remove Bill" Command="{Binding FeesRemoveBillCommand}"/>
-                    <MenuItem Header="Fees Statement" Command="{Binding FeesFeesStatementCommand}"/>
-                    <MenuItem Header="Balances List" Command="{Binding FeesBalancesListCommand}"/>
-                    <MenuItem Header="Fees Payment History">
-                        <MenuItem Header="General" Command="{Binding FeesPaymtHGeneralCommand}"/>
-                        <MenuItem Header="By Voteheads" Command="{Binding FeesPaymtHByVoteHeadCommand}"/>
-                    </MenuItem>
-                </MenuItem>
-                <MenuItem Header="Exams">
-                    <MenuItem Header="Enter Results">
-                        <MenuItem Header="Per Student" Command="{Binding ExamsEnterResultsPSCommand}"/>
-                        <MenuItem Header="Per Class" Command="{Binding ExamsEnterResultsPCCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="View Exam Results" Command="{Binding ExamsViewResultsCommand}"/>
-                    <MenuItem Header="Report Forms">
-                        <MenuItem Header="Per Student" Command="{Binding ExamsReportFormPSCommand}"/>
-                        <MenuItem Header="Per Class" Command="{Binding ExamsReportFormPCCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="Mark Lists">
-                        <MenuItem Header="Exam Mark List" Command="{Binding ExamsMarkListNCommand}"/>
-                        <MenuItem Header="Weighted Mark List" Command="{Binding ExamsMarkListWCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="Subject Perfomance" Command="{Binding ExamsSubjectPerfomanceCommand}"/>
-                    <MenuItem Header="Remove Exam" Command="{Binding ExamsRemoveExamCommand}"/>
-                </MenuItem>
-                <MenuItem Header="Purchases">
-                    <MenuItem Header="New Purchase" Command="{Binding PurchasesNewPurchaseCommand}"/>
-                    <MenuItem Header="Purchase History" Command="{Binding PurchasesPHistoryCommand}"/>
-                    <MenuItem Header="Items">
-                        <MenuItem Header="New Item" Command="{Binding PurchasesNewItemCommand}"/>
-                        <MenuItem Header="Modify Item" Command="{Binding PurchasesModifyItemCommand}"/>
-                        <MenuItem Header="Remove Item" Command="{Binding PurchasesRemoveItemCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="Suppliers">
-                        <MenuItem Header="New Supplier" Command="{Binding PurchasesNewSupplierCommand}"/>
-                        <MenuItem Header="Modify Supplier"  Command="{Binding DisplayModifySupplierCommand}"/>
-                        <MenuItem Header="Supplier List"  Command="{Binding PurchasesSupplierListCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="New Supplier Payment" Command="{Binding PurchasesPaymentToSupplierCommand}"/>
-                        <MenuItem Header="Supplier Statement" Command="{Binding PurchasesReceiveItemsCommand}"/>
-                        <MenuItem Header="Supplier Payment History" Command="{Binding PurchasesReceiveItemsCommand}"/>
-                        <MenuItem Header="Reprint Payment Voucher" Command="{Binding PurchasesReceiveItemsCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="Remove Supplier"  Command="{Binding DisplayRemoveSupplierCommand}"/>
-                    </MenuItem>
-                </MenuItem>
-                <MenuItem Header="Library">
-                    <MenuItem Header="Issue Book(s)" Command="{Binding LibraryIssueBookCommand}"/>
-                    <MenuItem Header="Return Book(s)" Command="{Binding LibraryReturnBookCommand}"/>
-                    <Separator/>
-                    <MenuItem Header="New Book" Command="{Binding LibraryNewBookCommand}"/>
-                    <MenuItem Header="Modify Book" Command="{Binding LibraryModifyBookCommand}"/>
-                    <MenuItem Header="Books List" Command="{Binding LibraryBookListCommand}"/>
-                    <MenuItem Header="Unreturned Books" Command="{Binding LibraryUnreturnedBooksCommand}"/>
-                </MenuItem>
-                <MenuItem Header="Gallery &amp; Events">
-                    <MenuItem Header="New Gallery Item" Command="{Binding GalleryNewItemCommand}"/>
-                    <MenuItem Header="All Gallery Items" Command="{Binding GalleryAllItemsCommand}"/>
-                    <MenuItem Header="Remove Gallery Item" Command="{Binding GalleryRemoveItemCommand}"/>
-                    <Separator/>
-                    <MenuItem Header="New Event" Command="{Binding GalleryNewEventCommand}"/>
-                    <MenuItem Header="Upcoming Event(s)" Command="{Binding GalleryUpcomingEventsCommand}"/>
-                    <MenuItem Header="All Events" Command="{Binding GalleryAllEventsCommand}"/>
-                    <MenuItem Header="Remove Event" Command="{Binding GalleryRemoveEventCommand}"/>
-                </MenuItem>
-                <MenuItem Header="Payroll">
-                    <MenuItem Header="Print Payslip"  Command="{Binding PayrollPrintPayslipCommand}"/>
-                    <MenuItem Header="Payment History" Command="{Binding PayrollPaymentHistoryCommand}"/>
-                    <MenuItem Header="Payroll Options" Command="{Binding PayrollPayrollOptionsCommand}"/>
-                    <MenuItem Header="Remove Payment" Command="{Binding PayrollRemovePaymentCommand}"/>
-                </MenuItem>
-                <MenuItem Header="Accounts">
-                    <MenuItem Header="Budget">
-                        <MenuItem Header="Prepare Budget" Command="{Binding AccountsPrepareBudgetCommand}"/>
-                        <MenuItem Header="Current Expenditure" Command="{Binding AccountsCurrentExpenditureCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="Statement of Cashflows" Command="{Binding AccountsSTOCSCommand}"/>
-                    <MenuItem Header="Balance Sheet" Command="{Binding AccountsBalanceSheetCommand}"/>
-                    <MenuItem Header="Trial Balance" Command="{Binding AccountsTrialBalanceCommand}"/>
-                    <MenuItem Header="Chart of Accounts" Command="{Binding AccountsCOACommand}"/>
-                    <Separator/>
-                    <MenuItem Header="New Account" Command="{Binding AccountsNewAccountCommand}"/>
-                    <MenuItem Header="Remove Account" Command="{Binding AccountsRemoveAccountCommand}"/>
-                </MenuItem>
-                <MenuItem Header="Settings">
-                    <MenuItem Header="Institution Setup" Command="{Binding SettingsInstInfoCommand}"/>
-                    <MenuItem Header="Academic Year Setup" Command="{Binding SettingsACYSCommand}"/>
-                    <MenuItem Header="Classes Setup" Command="{Binding SettingsCSCommand}"/>
-                    <MenuItem Header="Subjects Setup" Command="{Binding SettingsSSCommand}"/>
-                    <MenuItem Header="Grades Setup" Command="{Binding SettingsGSCommand}"/>
-                    <MenuItem Header="Automated Tasks" Command="{Binding SettingsATCommand}"/>
-                    <MenuItem Header="Advanced" Command="{Binding SettingsAdvancedCommand}"/>
-                </MenuItem>
-                <MenuItem Header="Help">
-                    <MenuItem Header="Get Help" Command="{Binding HelpGetHelpCommand}"/>
-                    <MenuItem Header="About" Command="{Binding HelpAboutCommand}"/>
-                </MenuItem>
-            </Menu>
-            <Grid Margin="0,25,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300"/>
-                    <ColumnDefinition Width="250"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Shortcuts" VerticalAlignment="Top"
+    <Grid DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Shortcuts" VerticalAlignment="Top"
                    Style="{DynamicResource Title}"/>
-                <TextBlock HorizontalAlignment="Left" Margin="40,80,0,0" Text="Students" VerticalAlignment="Top" Style="{DynamicResource Emphasis2}" Foreground="Gray"/>
-                <TextBlock HorizontalAlignment="Left" Margin="40,240,0,0" Text="Fees" VerticalAlignment="Top" Style="{DynamicResource Emphasis2}" Foreground="Gray"/>
-                <TextBlock HorizontalAlignment="Left" Margin="40,401,0,0" Text="Exams" VerticalAlignment="Top" Style="{DynamicResource Emphasis2}" Foreground="Gray"/>
-                <TextBlock HorizontalAlignment="Left" Margin="0,80,0,0" Text="Purchases" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
-                <TextBlock HorizontalAlignment="Left" Margin="0,240,0,0" Text="Library" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
-                <TextBlock HorizontalAlignment="Left" Margin="0,344,0,0" Text="Accounts" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,80,0,0" Text="Students" VerticalAlignment="Top" Style="{DynamicResource Emphasis2}" Foreground="Gray"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,240,0,0" Text="Fees" VerticalAlignment="Top" Style="{DynamicResource Emphasis2}" Foreground="Gray"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,401,0,0" Text="Exams" VerticalAlignment="Top" Style="{DynamicResource Emphasis2}" Foreground="Gray"/>
+        <TextBlock HorizontalAlignment="Left" Margin="0,80,0,0" Text="Purchases" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="0,240,0,0" Text="Library" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="0,344,0,0" Text="Accounts" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
 
 
-                <TextBlock HorizontalAlignment="Left" Margin="50,115,0,0" VerticalAlignment="Top">
+        <TextBlock HorizontalAlignment="Left" Margin="50,115,0,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding StudentsNewStudentCommand}">New Student</Hyperlink></TextBlock>
-                <TextBlock HorizontalAlignment="Left" Margin="50,140,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayNewItemCategoryCommand}">Modify Student</Hyperlink></TextBlock>
-                <TextBlock HorizontalAlignment="Left" Margin="50,165,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayItemListCommand}">Students List</Hyperlink></TextBlock>
-                <TextBlock HorizontalAlignment="Left" Margin="50,190,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayItemCategoryListCommand}">Clear Student</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,140,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding StudentsModifyStudentCommand}">Modify Student</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,165,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding StudentsStudentListCommand}">Students List</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,190,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding StudentsClearStudentCommand}">Clear Student</Hyperlink></TextBlock>
 
 
-                <TextBlock HorizontalAlignment="Left" Margin="50,275,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayNewCustomerCommand}">New Fees Payment</Hyperlink></TextBlock>
-                <TextBlock HorizontalAlignment="Left" Margin="50,300,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayCustomerListCommand}">Bill Student</Hyperlink></TextBlock>
-                <TextBlock HorizontalAlignment="Left" Margin="50,325,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayCustomerPaymentCommand}">Fees Statement</Hyperlink></TextBlock>
-                <TextBlock HorizontalAlignment="Left" Margin="50,350,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayCustomerStatementCommand}">Balances List</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,275,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FeesNewPaymentCommand}">New Fees Payment</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,300,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FeesBillStudentCommand}">Bill Student</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,325,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FeesFeesStatementCommand}">Fees Statement</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,350,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding FeesBalancesListCommand}">Balances List</Hyperlink></TextBlock>
 
 
-                <TextBlock HorizontalAlignment="Left" Margin="50,436,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayNewSupplierCommand}">New Exam</Hyperlink></TextBlock>
-                <TextBlock HorizontalAlignment="Left" Margin="50,461,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplaySupplierListCommand}">Enter Exam Results</Hyperlink></TextBlock>
-                <TextBlock HorizontalAlignment="Left" Margin="50,486,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayPaymentToSupplierCommand}">View Exam Results</Hyperlink></TextBlock>
-                <TextBlock HorizontalAlignment="Left" Margin="50,511,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayPaymentToSupplierCommand}">Mark List</Hyperlink></TextBlock>
-                <TextBlock HorizontalAlignment="Left" Margin="50,536,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayPaymentToSupplierCommand}">Report Form</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,436,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding ExamsNewExamCommand}">New Exam</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,461,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding ExamsEnterResultsPCCommand}">Enter Exam Results (Per Class)</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,486,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding ExamsViewResultsCommand}">View Exam Results</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,511,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding ExamsMarkListNCommand}">Mark List</Hyperlink></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="50,536,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding ExamsReportFormPSCommand}">Report Form</Hyperlink></TextBlock>
 
 
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayNewEmployeeCommand}">New Purchase</Hyperlink></TextBlock>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayEmployeeListCommand}">New Supplier</Hyperlink></TextBlock>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayEmployeeListCommand}">Purchase History</Hyperlink></TextBlock>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayEmployeeListCommand}">Supplier Statement</Hyperlink></TextBlock>
-                
-                
-                
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,275,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayEndOfDayReportCommand}">Issue Book</Hyperlink></TextBlock>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayCustomerReportsCommand}">Return Book</Hyperlink></TextBlock>
-                
-                
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,379,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayNewVATRateCommand}">New Account</Hyperlink></TextBlock>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,404,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayVATAnalysisCommand}">Prepare Budget</Hyperlink></TextBlock>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,429,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayExportVATAnalysisCommand}">View Current Expenditure</Hyperlink></TextBlock>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,454,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayVATGuideCommand}">Statement of Cashflows</Hyperlink></TextBlock>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,479,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding DisplayVATGuideCommand}">Chart of Accounts</Hyperlink></TextBlock>
-                <Grid Grid.Column="2">
-                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,20,20,0" Text="{Binding Info.Name, StringFormat=Welcome to {0} School Management System,
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding PurchasesNewPurchaseCommand}">New Purchase</Hyperlink></TextBlock>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding PurchasesNewSupplierCommand}">New Supplier</Hyperlink></TextBlock>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding PurchasesPHistoryCommand}">Purchase History</Hyperlink></TextBlock>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding PurchasesSupplierStatementCommand}">Supplier Statement</Hyperlink></TextBlock>
+
+
+
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,275,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding LibraryIssueBookCommand}">Issue Book</Hyperlink></TextBlock>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding LibraryReturnBookCommand}">Return Book</Hyperlink></TextBlock>
+
+
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,379,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding AccountsNewAccountCommand}">New Account</Hyperlink></TextBlock>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,404,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding AccountsPrepareBudgetCommand}">Prepare Budget</Hyperlink></TextBlock>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,429,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding AccountsCurrentExpenditureCommand}">View Current Expenditure</Hyperlink></TextBlock>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,454,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding AccountsSTOCSCommand}">Statement of Cashflows</Hyperlink></TextBlock>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,479,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding AccountsCOACommand}">Chart of Accounts</Hyperlink></TextBlock>
+        <Grid Grid.Column="2">
+            <TextBlock TextWrapping="WrapWithOverflow" Margin="0,20,20,0" Text="{Binding Info.Name, StringFormat=Welcome to {0} School Management System,
                 FallbackValue=Welcome to Umanyi School Management System, Source={x:Static Application.Current}}" VerticalAlignment="Top"
                    Style="{DynamicResource Title}"/>
-                    <StackPanel Margin="20,110,10,0" VerticalAlignment="Top">
-                        <TextBlock VerticalAlignment="Top" Style="{DynamicResource Emphasis1}" TextWrapping="WrapWithOverflow">
+            <StackPanel Margin="20,110,10,0" VerticalAlignment="Top">
+                <TextBlock VerticalAlignment="Top" Style="{DynamicResource Emphasis1}" TextWrapping="WrapWithOverflow">
                 v7.1 is here and has loads of improvements and new features:</TextBlock>
-                        <Grid Height="10"/>
-                        <TextBlock Margin="10,0,0,0" Text="- Now includes a new Logon Module and role-based views."/>
-                        <Grid Height="10"/>
-                        <TextBlock Margin="10,0,0,0" Text="- Introduced automated tasks including: class promotion, student billing etc."/>
-                        <Grid Height="10"/>
-                        <TextBlock Margin="10,0,0,0" Text="- A new a User Interface for easier use."/>
-                        <Grid Height="10"/>
-                        <TextBlock Margin="10,0,0,0" Text="- Faster export to MS Excel"/>
-                        <Grid Height="10"/>
-                        <TextBlock Margin="10,0,0,0" Text="- Automatic Backup"/>
-                        <Grid Height="10"/>
-                        <TextBlock Margin="10,0,0,0" Text="- Fixed Data access errors"/>
-                        <Grid Height="10"/>
-                        <TextBlock Margin="10,0,0,0" Text="- Fixed crash on failed backup"/>
-                        <Grid Height="10"/>
-                        <TextBlock Margin="10,0,0,0" Text="- Allows recreation of database"/>
-                        <Grid Height="10"/>
-                        <TextBlock Margin="0,0,0,0" Text="... And many more." Style="{DynamicResource Emphasis1}"/>
-                    </StackPanel>
+                <Grid Height="10"/>
+                <TextBlock Margin="10,0,0,0" Text="- Now includes a new Logon Module and role-based views."/>
+                <Grid Height="10"/>
+                <TextBlock Margin="10,0,0,0" Text="- Introduced automated tasks including: class promotion, student billing etc."/>
+                <Grid Height="10"/>
+                <TextBlock Margin="10,0,0,0" Text="- A new a User Interface for easier use."/>
+                <Grid Height="10"/>
+                <TextBlock Margin="10,0,0,0" Text="- Faster export to MS Excel"/>
+                <Grid Height="10"/>
+                <TextBlock Margin="10,0,0,0" Text="- Automatic Backup"/>
+                <Grid Height="10"/>
+                <TextBlock Margin="10,0,0,0" Text="- Fixed Data access errors"/>
+                <Grid Height="10"/>
+                <TextBlock Margin="10,0,0,0" Text="- Fixed crash on failed backup"/>
+                <Grid Height="10"/>
+                <TextBlock Margin="10,0,0,0" Text="- Allows recreation of database"/>
+                <Grid Height="10"/>
+                <TextBlock Margin="0,0,0,0" Text="... And many more." Style="{DynamicResource Emphasis1}"/>
+            </StackPanel>
 
 
-                </Grid>
-            </Grid>
         </Grid>
     </Grid>
 </UserControl>
