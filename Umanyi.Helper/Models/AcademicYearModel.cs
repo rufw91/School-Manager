@@ -9,8 +9,7 @@ namespace Helper.Models
 {
     public class AcademicYearModel: ModelBase
     {
-        private DateTime endDate;
-        private DateTime startDate;
+        private int year;
         private int noOfTerms;
         private string description;
         private ObservableCollection<TermModel> allTerms;
@@ -18,38 +17,24 @@ namespace Helper.Models
         public AcademicYearModel()
         {
             AllTerms = new ObservableCollection<TermModel>();
-            StartDate = new DateTime(DateTime.Now.Year, 1, 1);
-            EndDate = new DateTime(DateTime.Now.Year, 12, 31);
+            Year = DateTime.Now.Year;
             Description = DateTime.Now.Year.ToString();
             NoOfTerms = 0;
         }
 
-        public DateTime StartDate
+        public int Year
         {
-            get { return startDate; }
+            get { return year; }
             set
             {
-                if (value != startDate)
+                if (value != year)
                 {
-                    startDate = value;
-                    NotifyPropertyChanged("StartDate");
+                    year = value;
+                    NotifyPropertyChanged("Year");
                 }
             }
         }
-
-        public DateTime EndDate
-        {
-            get { return endDate; }
-            set
-            {
-                if (value != endDate)
-                {
-                    endDate = value;
-                    NotifyPropertyChanged("EndDate");
-                }
-            }
-        }
-
+        
         public int NoOfTerms
         {
             get { return noOfTerms; }
@@ -93,8 +78,7 @@ namespace Helper.Models
         {
             allTerms.Clear();
             noOfTerms = 0;
-            StartDate = new DateTime(DateTime.Now.Year, 1, 1);
-            EndDate = new DateTime(DateTime.Now.Year, 12, 31);
+            Year = DateTime.Now.Year;
             Description = DateTime.Now.Year.ToString();
         }
 

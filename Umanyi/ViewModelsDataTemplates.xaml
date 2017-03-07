@@ -151,6 +151,9 @@
     <DataTemplate DataType="{x:Type viewModels:SubjectSelectionVM}" >
         <views:SubjectSelection/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:MarkListsVM}" >
+        <views:MarkLists/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:CombinedMarkListsVM}" >
         <views:CombinedMarkLists/>
     </DataTemplate>

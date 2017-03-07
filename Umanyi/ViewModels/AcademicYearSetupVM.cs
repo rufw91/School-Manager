@@ -15,6 +15,7 @@ namespace UmanyiSMS.ViewModels
     public class AcademicYearSetupVM: ViewModelBase
     {
         private AcademicYearModel newYear;
+        private ObservableCollection<int> allYears;
         public AcademicYearSetupVM()
         {
             InitVars();
@@ -23,6 +24,9 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "ACADEMIC YEAR SETUP";
+            allYears = new ObservableCollection<int>();
+            for (int i = 2014; i < 2024; i++)
+                allYears.Add(i);
             NewYear =  await DataAccess.GetAcademicYearAsync(DateTime.Now);
             newYear.PropertyChanged += (o, e) =>
                 {
@@ -70,11 +74,11 @@ namespace UmanyiSMS.ViewModels
                         return false;
                 }
                 else
-                    if (!newYear.AllTerms[i].EndDate.Equals(newYear.EndDate))
+                    if (!newYear.AllTerms[i].EndDate.Equals(newYear.Year))
                         return false;
 
                 if (i == 0)
-                    if (!newYear.AllTerms[i].StartDate.Equals(newYear.StartDate))
+                    if (!newYear.AllTerms[i].StartDate.Equals(newYear.Year))
                         return false;
             }
 
@@ -92,6 +96,11 @@ namespace UmanyiSMS.ViewModels
                     NotifyPropertyChanged("NewYear");
                 }
             }
+        }
+
+        public ObservableCollection<int> AllYears
+        {
+            get { return allYears; }
         }
 
         public ICommand SaveCommand

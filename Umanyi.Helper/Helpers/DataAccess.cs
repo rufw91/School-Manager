@@ -2313,11 +2313,14 @@ namespace Helper
 
         public static StudentModel GetStudent(int studentID)
         {
+            
             StudentModel studentModel = new StudentModel();
-            string commandText = "SELECT FirstName,LastName,MiddleName,cs.ClassID,DateOfBirth,DateOfAdmission,NameOfGuardian,GuardianPhoneNo,Email,Address,City,PostalCode,"+
+            string commandText = "SELECT FirstName,LastName,MiddleName,ISNULL(cs.ClassID,0),DateOfBirth,DateOfAdmission,NameOfGuardian,GuardianPhoneNo,Email,Address,City,PostalCode,"+
                 "PreviousInstitution,KCPEScore,DormitoryID,BedNo,SPhoto,PreviousBalance,Gender,s.IsActive FROM [Institution].[Student] s LEFT OUTER JOIN "+
-                "[Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.IsActive=1) WHERE s.StudentID=" + studentID;
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                "[Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=@acYear) WHERE s.StudentID=" + studentID;
+            var paramColl = new List<SqlParameter>();
+            paramColl.Add(new SqlParameter("@acYear", GetAcademicYearAsync(DateTime.Now).Result.Year));
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText,paramColl);
             if (dataTable.Rows.Count != 0)
             {
                 studentModel.StudentID = studentID;
@@ -2651,7 +2654,7 @@ namespace Helper
                 string commandText = "SELECT TOP 1000000 s.StudentID,s.FirstName,s.LastName,s.MiddleName,cs.ClassID, c.NameOfClass,s.DateOfBirth," +
                 "s.DateOfAdmission,s.NameOfGuardian,s.GuardianPhoneNo,s.Address,s.City,s.PostalCode,s.BedNo,s.PreviousInstitution,s.KCPEScore, s.DormitoryID, " +
                 "s.PreviousBalance,d.NameOfDormitory, s.IsActive,s.IsBoarder,s.Gender, s.SPhoto FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[CurrentClass] cs"+
-                " ON (s.StudentID = cs.StudentID AND cs.IsActive=1)LEFT OUTER JOIN [Institution].[Class] c ON(cs.ClassID=c.ClassID) LEFT OUTER JOIN " +
+                " ON (s.StudentID = cs.StudentID AND cs.[Year]=DATEPART(year,SYSDATETIME()))LEFT OUTER JOIN [Institution].[Class] c ON(cs.ClassID=c.ClassID) LEFT OUTER JOIN " +
                 " [Institution].[Dormitory] d ON (s.DormitoryID=d.DormitoryID)";
                 ObservableCollection<StudentListModel> observableCollection = new ObservableCollection<StudentListModel>();
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
@@ -2665,7 +2668,7 @@ namespace Helper
                             FirstName = dataRow[1].ToString(),
                             LastName = dataRow[2].ToString(),
                             MiddleName = dataRow[3].ToString(),
-                            ClassID = int.Parse(dataRow[4].ToString()),
+                            ClassID = string.IsNullOrWhiteSpace(dataRow[4].ToString())?0:int.Parse(dataRow[4].ToString()),
                             NameOfClass = dataRow[5].ToString(),
                             DateOfBirth = DateTime.Parse(dataRow[6].ToString()),
                             DateOfAdmission = DateTime.Parse(dataRow[7].ToString()),
@@ -3225,7 +3228,7 @@ namespace Helper
                         "INSERT INTO [Institution].[ExamClassDetail] (ExamID,ClassID) VALUES (@id,@cls"+index+")\r\n"
                     });
                     paramColl.Add(new SqlParameter("@cls" + index, current.ClassID));
-                    string selecteStr = "SELECT s.StudentID FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass]cs ON (s.StudentID=cs.StudentID AND cs.IsActive=1) WHERE cs.ClassID =@cls" + index;
+                    string selecteStr = "SELECT s.StudentID FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID =@cls" + index;
                     var pms = new List<SqlParameter>() { new SqlParameter("@cls" + index, current.ClassID) };
                     List<string> list = DataAccessHelper.Helper.CopyFirstColumnToList(selecteStr,pms);
                     foreach (var t in list)
@@ -3291,9 +3294,9 @@ namespace Helper
             {
                 string commandText = string.Concat(new object[]
                 {
-                    "IF EXISTS(SELECT cs.ClassID FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.IsActive=1) WHERE s.StudentID = ",
+                    "IF EXISTS(SELECT cs.ClassID FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE s.StudentID = ",
                     selectedStudentID,
-                    ")\r\nSELECT cs.ClassID FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.IsActive=1) WHERE s.StudentID = ",
+                    ")\r\nSELECT ISNULL(cs.ClassID,0) FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE s.StudentID = ",
                     selectedStudentID,
                     "\r\nELSE SELECT 0"
                 });
@@ -3556,7 +3559,7 @@ namespace Helper
         {
             string selectStr = string.Concat(new object[]
             {
-                "SELECT sssd.SubjectID, s.NameOfSubject, ISNULL(erd.Score,0), erd.Remarks,ssd.Tutor,s.Code,erh.ExamResultID FROM [Institution].[StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [Institution].[StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [Institution].[ExamResultDetail] erd ON (erh.ExamResultID = erd.ExamResultID AND erd.SubjectID=sssd.SubjectID) LEFT OUTER JOIN [Institution].[Subject] s ON(sssd.SubjectID=s.SubjectID) LEFT OUTER JOIN [Institution].[Student] st ON (sssh.StudentID = st.StudentID)LEFT OUTER JOIN [Institution].[SubjectSetupHeader] ssh ON (ssh.ClassID=st.ClassID) LEFT OUTER JOIN [Institution].[SubjectSetupDetail] ssd ON (ssd.SubjectID=sssd.SubjectID AND ssd.SubjectSetupID=ssh.SubjectSetupID)  WHERE ssh.IsActive=1 AND sssh.IsActive=1 AND erh.IsActive=1 AND sssh.StudentID=",
+                "SELECT sssd.SubjectID, s.NameOfSubject, ISNULL(erd.Score,0), erd.Remarks,ssd.Tutor,s.Code,erh.ExamResultID FROM [Institution].[StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [Institution].[StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [Institution].[ExamResultDetail] erd ON (erh.ExamResultID = erd.ExamResultID AND erd.SubjectID=sssd.SubjectID) LEFT OUTER JOIN [Institution].[Subject] s ON(sssd.SubjectID=s.SubjectID) LEFT OUTER JOIN [Institution].[Student] st ON (sssh.StudentID = st.StudentID) LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (st.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) LEFT OUTER JOIN  [Institution].[SubjectSetupHeader] ssh ON (ssh.ClassID=cs.ClassID) LEFT OUTER JOIN [Institution].[SubjectSetupDetail] ssd ON (ssd.SubjectID=sssd.SubjectID AND ssd.SubjectSetupID=ssh.SubjectSetupID)  WHERE ssh.IsActive=1 AND sssh.IsActive=1 AND erh.IsActive=1 AND sssh.StudentID=",
                 studentID,
                 " AND erh.ExamID=",
                 examID,
@@ -3615,7 +3618,7 @@ namespace Helper
                 text = string.Concat(new object[]
                 {
                     obj,
-                    " FROM [Institution].[Student]s WHERE s.ClassID=",
+                    " FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=",
                     classID,
                     " AND s.IsACtive=1"
                 });
@@ -3684,7 +3687,7 @@ namespace Helper
             {
                 ClassStudentsExamResultModel classStudentsExamResultModel = new ClassStudentsExamResultModel();
                 ObservableCollection<SubjectModel> result = DataAccess.GetSubjectsRegistredToClassAsync(classID).Result;
-                string text = "SELECT StudentID, NameOfStudent,";
+                string text = "SELECT s.StudentID, NameOfStudent,";
                 object obj;
                 foreach (SubjectModel current in result)
                 {
@@ -3692,7 +3695,7 @@ namespace Helper
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "dbo.GetWeightedExamSubjectScore(StudentID,",
+                        "dbo.GetWeightedExamSubjectScore(s.StudentID,",
                         examID,
                         ",",
                         current.SubjectID,
@@ -3706,7 +3709,7 @@ namespace Helper
                 text = string.Concat(new object[]
                 {
                     obj,
-                    " FROM [Institution].[Student] WHERE ClassID=",
+                    " FROM [Institution].[Student] s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=",
                     classID,
                     " AND IsACtive=1"
                 });
@@ -4373,8 +4376,11 @@ namespace Helper
                 ClassStudentListModel classStudentListModel = new ClassStudentListModel();
                 classStudentListModel.ClassID = selectedClass.ClassID;
                 classStudentListModel.NameOfClass = selectedClass.NameOfClass;
-                string commandText = "SELECT s.StudentID,FirstName,LastName,MiddleName FROM [Institution].[Student] s WHERE s.ClassID=" + selectedClass.ClassID + " AND s.IsActive=1";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                string commandText = "SELECT s.StudentID,FirstName,LastName,MiddleName FROM [Institution].[Student] s "+
+                "LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=@cid AND s.IsActive=1";
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@cid", selectedClass.ClassID));
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText,paramColl);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     StudentBaseModel studentBaseModel = new StudentBaseModel();
@@ -4407,7 +4413,8 @@ namespace Helper
                 classStudentListModel.ClassID = 0;
                 classStudentListModel.NameOfClass = currentClass.Description;
                 string commandText = "SELECT s.StudentID,FirstName+' '+LastName+' '+MiddleName FROM [Institution].[Student]s "+
-                "s.ClassID IN (" + text + ") AND s.IsActive=1";
+                "LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime()))"+
+                "WHERE cs.ClassID IN (" + text + ") AND s.IsActive=1";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -5930,60 +5937,60 @@ namespace Helper
             {
                 string commandText = string.Concat(new object[]
                 {
-                    "IF NOT EXISTS (SELECT * FROM [Institution].[CurrentClass] WHERE DATEPART(year,StartDateTime)=DATEPART(year,"+(DateTime.Now.Year)+"))\r\n ",
-                    "INSERT INTO [Institution].[CurrentClass] (StudentID,ClassID,IsActive,StartDateTime,EndDateTime) VALUES(",
+                    "IF NOT EXISTS (SELECT * FROM [Institution].[CurrentClass] WHERE [year]="+DateTime.Now.Year+"))\r\n ",
+                    "INSERT INTO [Institution].[CurrentClass] (StudentID,ClassID,[Year]) VALUES(",
                     studentID,
                     ",",
                     newClassID,
-                    ",1,'01-01-",(DateTime.Now.Year)," 00:00:00','31-12-",(DateTime.Now.Year)," 00:00:00')\r\n"
+                    ",",(DateTime.Now.Year),")\r\n"
                 });
                 return DataAccessHelper.Helper.ExecuteNonQuery(commandText);
             });
         }
 
-        public static Task<bool> AssignStudentNewClass(int studentID, int newClassID,DateTime startDate, DateTime endDate)
+        public static Task<bool> AssignStudentNewClass(int studentID, int newClassID,int prevYear, int newYear)
         {
             return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = string.Concat(new object[]
-                {
-                    "IF EXISTS (SELECT * FROM [Institution].[CurrentClass] WHERE StudentID=@sid AND DATEPART(year,StartDateTime)=DATEPART(year,@startD))\r\n ",
-                    "DELETE FROM [Institution].[CurrentClass] WHERE DATEPART(year,StartDateTime)=DATEPART(year,@startD) AND StudentID=@sid\r\n",
-                    "INSERT INTO [Institution].[CurrentClass] (StudentID,ClassID,IsActive,StartDateTime,EndDateTime) VALUES(@sid,@cid,1,@startD,@endD)\r\n"
-                });
+                {                    
+                    "IF NOT EXISTS (SELECT * FROM [Institution].[CurrentClass] WHERE StudentID=@sid AND [Year]=@yer)\r\n",
+                    "INSERT INTO [Institution].[CurrentClass] (StudentID,ClassID,[Year]) VALUES(@sid,@cid,@yer)\r\n",
+                    "ELSE UPDATE [Institution].[CurrentClass] SET ClassID = @cid WHERE StudentID=@sid AND [Year]=@yer"
+            });
                 var paramColl = new List<SqlParameter>();
                 paramColl.Add(new SqlParameter("@sid", studentID));
                 paramColl.Add(new SqlParameter("@cid", newClassID));
-                paramColl.Add(new SqlParameter("@startD", startDate));
-                paramColl.Add(new SqlParameter("@endD", endDate));
+                paramColl.Add(new SqlParameter("@pyer", prevYear));
+                paramColl.Add(new SqlParameter("@yer", newYear));
                 return DataAccessHelper.Helper.ExecuteNonQuery(commandText,paramColl);
             });
         }
 
-        public static Task<bool> AssignClassNewClass(int classID, int newClassID, DateTime startDate, DateTime endDate)
+        public static Task<bool> AssignClassNewClass(int classID, int newClassID,int prevYear, int newYear)
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string commandText = "SELECT DISTINCT s.StudentID FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cc ON (s.StudentID=cc.StudentID)" +
-                " WHERE s.ClassID =@cid";
+                string commandText = "SELECT DISTINCT StudentID FROM [Institution].[CurrentClass] WHERE [Year]=@pyer AND ClassID =@cid";
                 var pc = new List<SqlParameter>();
                 pc.Add(new SqlParameter("@cid", newClassID));
+                pc.Add(new SqlParameter("@pyer", prevYear));
                 List<string> observableCollection = DataAccessHelper.Helper.CopyFirstColumnToList(commandText,pc);
                  commandText = "";
                  var paramColl = new List<SqlParameter>();
 
                  paramColl.Add(new SqlParameter("@cid", newClassID));
-                 paramColl.Add(new SqlParameter("@startD", startDate));
-                 paramColl.Add(new SqlParameter("@endD", endDate));
+                 paramColl.Add(new SqlParameter("@pyer", prevYear));
+                 paramColl.Add(new SqlParameter("@yer", newYear));
                  int index = 0;
                 foreach (string current in observableCollection)
                 {
                     paramColl.Add(new SqlParameter("@sid"+index, current));
                     commandText +=
-                    "IF EXISTS (SELECT * FROM [Institution].[CurrentClass] WHERE DATEPART(year,StartDateTime)=DATEPART(year,@startD) AND StudentID=@sid" + index + ")\r\n " +
-                    "DELETE FROM [Institution].[CurrentClass] WHERE DATEPART(year,StartDateTime)=DATEPART(year,@startD) AND StudentID=@sid" + index +"\r\n"+
-                    "INSERT INTO [Institution].[CurrentClass] (StudentID,ClassID,IsActive,StartDateTime,EndDateTime) VALUES(@sid" +
-                    index + ",@cid,1,@startD,@endD)\r\n";
+                    "IF NOT EXISTS (SELECT * FROM [Institution].[CurrentClass] WHERE [Year]=@yer AND StudentID=@sid" + index + ")\r\n " +                    
+                    "INSERT INTO [Institution].[CurrentClass] (StudentID,ClassID,[Year]) VALUES(@sid" +
+                    index + ",@cid,@yer)\r\n"+
+                    "ELSE UPDATE [Institution].[CurrentClass] SET ClassID = @cid WHERE StudentID=@sid"+index+" AND [Year]=@yer";
                     index++;
                 }
                 
@@ -7260,7 +7267,7 @@ namespace Helper
                     });
                 }
                 text = text.Remove(text.Length - 1);
-                text = text + " FROM [Institution].[Student]s WHERE s.IsActive=1 AND s.ClassID=" + classID;
+                text = text + " FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE s.IsActive=1 AND cs.ClassID=" + classID;
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -8605,8 +8612,8 @@ namespace Helper
 
                 string insertStr = "BEGIN TRANSACTION\r\n";
                 insertStr += "IF EXISTS(SELECT * FROM [Institution].[Settings] WHERE [Type] ='AYSettings' AND [Key]=@syear)\r\n" +
-                         "UPDATE [Institution].[Settings] SET Value=@startd,Value2=@endd WHERE [Type] ='AYSettings' AND [Key]=@syear\r\n" +
-                       "ELSE\r\nINSERT INTO [Institution].[Settings] ([Type],[Key],Value,Value2) VALUES('AYSettings',@syear,@startd,@endd)\r\n";
+                         "UPDATE [Institution].[Settings] SET Value=@yer WHERE [Type] ='AYSettings' AND [Key]=@syear\r\n" +
+                       "ELSE\r\nINSERT INTO [Institution].[Settings] ([Type],[Key],Value) VALUES('AYSettings',@syear,@yer)\r\n";
                 insertStr += "IF EXISTS(SELECT * FROM [Institution].[Settings] WHERE [Type] ='TermSettings' AND [Key]=@syear)\r\n" +
                          "DELETE FROM [Institution].[Settings] WHERE [Type] ='TermSettings' AND [Key]=@syear\r\n";
                 int index=1;
@@ -8622,8 +8629,7 @@ namespace Helper
                 }
                  
                 paramColl.Add(new SqlParameter("@syear", newYear.Description));
-                paramColl.Add(new SqlParameter("@startd", newYear.StartDate.ToString("dd-MM-yyyy hh:mm:ss")));
-                paramColl.Add(new SqlParameter("@endd", newYear.EndDate.ToString("dd-MM-yyyy hh:mm:ss")));
+                paramColl.Add(new SqlParameter("@yer", newYear.Year));
 
                 insertStr += "\r\nCOMMIT";
                 bool succ = DataAccessHelper.Helper.ExecuteNonQuery(insertStr, paramColl);
@@ -8650,8 +8656,7 @@ namespace Helper
                        return GetDetfaultAY();
                    
                    ay.Description = dateTime.Year.ToString();
-                   ay.StartDate = DateTime.Parse(dt.Rows[0][0].ToString());
-                   ay.EndDate = DateTime.Parse(dt.Rows[0][1].ToString());
+                   ay.Year = dateTime.Year;
                    selectStr = "SELECT Value,Value2,Value3,Value4 FROM [Institution].[Settings] WHERE [Type] ='TermSettings' AND [Key]=@syear";
                    var dt2 = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr, new List<SqlParameter>() { new SqlParameter("@syear", year) });
                    foreach(DataRow dtr in dt2.Rows)

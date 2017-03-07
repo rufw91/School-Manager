@@ -20,10 +20,11 @@ namespace UmanyiSMS.ViewModels
         StudentSelectModel selectedStudent;
         int selectedClassID;
         private ObservableCollection<ClassModel> allClasses;
+        private ObservableCollection<int> allYears;
         private int newClassID;
         private ClassModel currentClass;
-        private DateTime startDate;
-        private DateTime endDate;
+        private int currYear;
+        private int prevYear;
         public AssignNewClassVM()
         {
             InitVars();
@@ -32,6 +33,9 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "ASSIGN NEW CLASS";
+            allYears = new ObservableCollection<int>();
+            for (int i = 2014; i < 2024; i++)
+                allYears.Add(i);
             selectedStudent = new StudentSelectModel();
             selectedStudent.PropertyChanged += async (o, e) =>
                 {
@@ -45,8 +49,7 @@ namespace UmanyiSMS.ViewModels
             NewClassID = 0;
             IsInStudentMode = true;
             AllClasses = await DataAccess.GetAllClassesAsync();
-            StartDate = new DateTime(DateTime.Now.Year, 1, 1);
-            EndDate = new DateTime(DateTime.Now.Year, 12, 31);
+            CurrYear = DateTime.Now.Year;
         }
 
         protected override void CreateCommands()
@@ -55,9 +58,9 @@ namespace UmanyiSMS.ViewModels
              {
                  bool succ = false;
                  if (isInStudentMode)
-                 succ = await DataAccess.AssignStudentNewClass(selectedStudent.StudentID, newClassID,startDate,endDate);
+                     succ = await DataAccess.AssignStudentNewClass(selectedStudent.StudentID, newClassID, prevYear, currYear);
                  else
-                     succ = await DataAccess.AssignClassNewClass(selectedClassID, newClassID,startDate,endDate);
+                     succ = await DataAccess.AssignClassNewClass(selectedClassID, newClassID, prevYear, currYear);
                  MessageBox.Show(succ ? "Successfully saved details" : "Could not save details", succ ? "Success" : "Error", MessageBoxButton.OK,
                      succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                  if (succ)
@@ -67,8 +70,8 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanSave()
         {
-            return isInStudentMode ? (selectedStudent != null && selectedStudent.StudentID > 0 && !selectedStudent.HasErrors && newClassID > 0) :
-                (selectedClassID > 0 && newClassID > 0);
+            return isInStudentMode ? (selectedStudent != null && selectedStudent.StudentID > 0 && !selectedStudent.HasErrors && newClassID > 0&&prevYear!=currYear) :
+                (selectedClassID > 0 && newClassID > 0 && prevYear != currYear && prevYear > 0);
         }
 
         public bool IsInStudentMode
@@ -86,30 +89,35 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public DateTime StartDate
+        public ObservableCollection<int> AllYears
         {
-            get { return startDate; }
+            get { return allYears; }
+        }
+
+        public int PrevYear
+        {
+            get { return prevYear; }
 
             set
             {
-                if (value != startDate)
+                if (value != prevYear)
                 {
-                    startDate = value;
-                    NotifyPropertyChanged("StartDate");
+                    prevYear = value;
+                    NotifyPropertyChanged("PrevYear");
                 }
             }
         }
 
-        public DateTime EndDate
+        public int CurrYear
         {
-            get { return endDate; }
+            get { return currYear; }
 
             set
             {
-                if (value != endDate)
+                if (value != currYear)
                 {
-                    endDate = value;
-                    NotifyPropertyChanged("EndDate");
+                    currYear = value;
+                    NotifyPropertyChanged("CurrYear");
                 }
             }
         }
