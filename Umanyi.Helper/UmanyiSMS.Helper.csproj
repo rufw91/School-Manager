@@ -180,6 +180,8 @@
     <Compile Include="Models\ProjectListModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\ProjectTaskModel.cs" />
+    <Compile Include="Models\ReportFormModel.cs" />
+    <Compile Include="Models\ReportFormSubjectModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\StaffBaseModel.cs" />
     <Compile Include="Models\StaffSelectModel.cs" />

@@ -5,8 +5,74 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UmanyiSMS.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="700" d:DesignWidth="984"
+             Background="White">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UmanyiSMS;component/ModelsDataTemplates.xaml" />
+                <ResourceDictionary Source="/Helper;component/Styles/ResultsDataGrid.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
-            
+        <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" Style="{DynamicResource Title}"  Text="Mark Lists" 
+                   VerticalAlignment="Top"/>
+        <RadioButton Content="Class" HorizontalAlignment="Left" Margin="20,90,0,0" VerticalAlignment="Top"
+                     IsChecked="{Binding IsInClassMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     GroupName="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="59,130,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="94,130,0,0" VerticalAlignment="Top" Width="200"
+                  ItemsSource="{Binding AllClasses}" DisplayMemberPath="NameOfClass"
+                  SelectedValuePath="ClassID"
+                  SelectedValue="{Binding ClassResult.ClassID}"
+                  IsEnabled="{Binding IsInClassMode}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="58,175,0,0" Text="Term" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="94,175,0,0" VerticalAlignment="Top" Width="200"
+        	ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description" 
+        	SelectedItem="{Binding SelectedTerm, Mode=TwoWay}"
+            IsEnabled="{Binding IsInClassMode}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="58,220,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="94,220,0,0" VerticalAlignment="Top" Width="200"
+        	ItemsSource="{Binding AllExams}" DisplayMemberPath="NameOfExam" 
+        	SelectedItem="{Binding SelectedExam, Mode=TwoWay}"
+            IsEnabled="{Binding IsInClassMode}"/>
+
+        <RadioButton Content="Combined Classes" HorizontalAlignment="Left" Margin="20,260,0,0" VerticalAlignment="Top"
+                     IsChecked="{Binding IsInCombinedMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     GroupName="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="59,300,0,0" Text="Class" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="94,300,0,0" VerticalAlignment="Top" Width="200"
+                  ItemsSource="{Binding AllCombinedClasses}" DisplayMemberPath="Description"
+                  SelectedItem="{Binding SelectedCombinedClass}"
+                  IsEnabled="{Binding IsInCombinedMode}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="56,350,0,0" Text="Term" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="94,350,0,0" VerticalAlignment="Top" Width="200"
+        	ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description" 
+        	SelectedItem="{Binding SelectedTerm, Mode=TwoWay}"
+            IsEnabled="{Binding IsInCombinedMode}"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="56,395,0,0" Text="Exam" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="94,395,0,0" VerticalAlignment="Top" Width="200"
+        	ItemsSource="{Binding AllExams}" DisplayMemberPath="NameOfExam" 
+        	SelectedItem="{Binding SelectedExam, Mode=TwoWay}"
+            IsEnabled="{Binding IsInCombinedMode}"/>
+
+        <TextBlock HorizontalAlignment="Right" Margin="0,36,10,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding PrintTranscriptCommand}">Print</Hyperlink>
+        </TextBlock>
+
+        <TextBlock HorizontalAlignment="Right" Margin="0,36,50,0" VerticalAlignment="Top" Visibility="{Binding IsInClassMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Hyperlink Command="{Binding PrintAsReportFormCommand}">Print per Student</Hyperlink>
+        </TextBlock>
+
+        <Border Margin="310,60,10,10" BorderBrush="Silver" BorderThickness="2">
+            <Grid>
+                <ContentControl Content="{Binding ClassResult}" ContentTemplate="{StaticResource ClassResultTemplate}"/>
+            </Grid>
+        </Border>
+        <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+        </Border>
     </Grid>
 </UserControl>

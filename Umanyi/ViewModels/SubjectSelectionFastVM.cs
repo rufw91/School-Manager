@@ -19,6 +19,9 @@ namespace UmanyiSMS.ViewModels
         private ObservableCollection<ClassModel> allClasses;
         private int selectedClassID;
         private DataTable entries;
+        private int year;
+        private ObservableCollection<int> allYears;
+
         public SubjectSelectionFastVM()
         {
             InitVars();
@@ -27,12 +30,16 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "SUBJECT SELECTION (FAST)";
-           
-            Entries = new DataTable();
+            allYears = new ObservableCollection<int>();
+            for (int i = 2014; i < 2024; i++)
+                allYears.Add(i);
+            Year = DateTime.Now.Year;
+             Entries = new DataTable();
             
             AllClasses = await DataAccess.GetAllClassesAsync();
             PropertyChanged += async (o, e) =>
                 {
+                   
                     if (e.PropertyName=="SelectedClassID")
                     {
                         if (selectedClassID==0)
@@ -85,7 +92,8 @@ namespace UmanyiSMS.ViewModels
                     {
                         sssm = new StudentSubjectSelectionModel();
                         sssm.StudentID = int.Parse(dtr[0].ToString());
-                        for(int i =2; i<dtr.ItemArray.Length;i++)
+                        sssm.Year = year;
+                        for (int i =2; i<dtr.ItemArray.Length;i++)
                         {
                             if (((bool)dtr.ItemArray[i]) == false)
                                 continue;
@@ -124,6 +132,24 @@ namespace UmanyiSMS.ViewModels
                     NotifyPropertyChanged("AllClasses");
                 }
             }
+        }
+
+        public int Year
+        {
+            get { return year; }
+            set
+            {
+                if (value != this.year)
+                {
+                    this.year = value;
+                    NotifyPropertyChanged("Year");
+                }
+            }
+        }
+
+        public ObservableCollection<int> AllYears
+        {
+            get { return allYears; }
         }
 
         public DataTable Entries

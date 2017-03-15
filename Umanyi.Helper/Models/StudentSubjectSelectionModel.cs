@@ -10,9 +10,12 @@ namespace Helper.Models
     public class StudentSubjectSelectionModel:StudentBaseModel
     {
         private ObservableCollection<StudentSubjectSelectionEntryModel> entries;
+        private int year;
+
         public StudentSubjectSelectionModel()
         {
             Entries = new ObservableCollection<StudentSubjectSelectionEntryModel>();
+            year = DateTime.Now.Year;
         }
 
         public ObservableCollection<StudentSubjectSelectionEntryModel> Entries
@@ -23,6 +26,17 @@ namespace Helper.Models
                 if (entries != value)
                 {
                     entries = value; NotifyPropertyChanged("Entries");
+                }
+            }
+        }
+        public int Year
+        {
+            get { return year; }
+            set
+            {
+                if (year != value)
+                {
+                    year = value; NotifyPropertyChanged("Entries");
                 }
             }
         }

@@ -58,6 +58,7 @@ namespace Helper
             try
             {
                 conn = CreateConnection(ConnectionStringHelper.MasterConnectionString);
+                conn.Credential = Credentials;
             }
             catch (Exception e)
             {
