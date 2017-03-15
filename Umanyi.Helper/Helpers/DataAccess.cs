@@ -395,20 +395,27 @@ namespace Helper
 
         public static Task<ObservableCollection<ExamResultStudentSubjectEntryModel>> GetStudentSubjectsResults(int classID, int examID, int subjectID, decimal outOf)
         {
-            return Task.Factory.StartNew<ObservableCollection<ExamResultStudentSubjectEntryModel>>(delegate
+            return Task.Factory.StartNew(delegate
             {
                 ObservableCollection<ExamResultStudentSubjectEntryModel> observableCollection = new ObservableCollection<ExamResultStudentSubjectEntryModel>();
                 string commandText = string.Concat(new object[]
                 {
-                    "SELECT s.StudentID, s.NameOfStudent, ISNULL(erd.Score,0),ISNULL(erd.Remarks,''),ISNULL(erh.ExamResultID,0), sub.NameOfSubject FROM [Institution].[StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [Institution].[StudentSubjectSelectionHeader] sssh ON (sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Institution].[Student] s ON (sssh.StudentID=s.StudentID) LEFT OUTER JOIN (SELECT * FROM [Institution].[ExamResultHeader] WHERE ExamID=",
-                    examID,
-                    " AND IsActive=1) erh ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [Institution].[ExamresultDetail] erd ON (erh.ExamresultID=erd.ExamResultID AND sssd.SubjectID=erd.SubjectID) LEFT OUTER JOIN [Institution].[Subject] sub ON (sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (sssh.StudentID=cs.StudentID AND cs.IsActive=1) WHERE sssd.SubjectID=",
-                    subjectID,
-                    " AND cs.ClassID=",
-                    classID,
-                    " AND s.IsActive=1"
+                    "SELECT s.StudentID, s.NameOfStudent, ISNULL(erd.Score,0),ISNULL(erd.Remarks,''),ISNULL(erh.ExamResultID,0), sub.NameOfSubject FROM ",
+                    "[Institution].[StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [Institution].[StudentSubjectSelectionHeader] sssh ",
+                    "ON (sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Institution].[Student] s ",
+                    "ON (sssh.StudentID=s.StudentID AND sssh.[Year]=DATEPART(YEAR,SYSDATETIME())) LEFT OUTER JOIN (SELECT * FROM [Institution].[ExamResultHeader] WHERE ExamID=@eid) erh ",
+                    "ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [Institution].[ExamresultDetail] erd ",
+                    "ON (erh.ExamresultID=erd.ExamResultID AND sssd.SubjectID=erd.SubjectID) LEFT OUTER JOIN [Institution].[Subject] sub ",
+                    "ON (sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[CurrentClass] cs ",
+                    "ON (sssh.StudentID=cs.StudentID AND cs.[Year]=DATEPART(YEAR,SYSDATETIME())) WHERE sssd.SubjectID=@sid AND cs.ClassID=@cid AND cs.[Year]=DATEPART(YEAR,SYSDATETIME())",
+                    "AND sssh.[Year]=DATEPART(YEAR,SYSDATETIME()) ORDER BY s.StudentID"
                 });
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@eid",examID));
+                paramColl.Add(new SqlParameter("@cid",classID));
+                paramColl.Add(new SqlParameter("@sid",subjectID));
+
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText,paramColl);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new ExamResultStudentSubjectEntryModel
@@ -2551,8 +2558,8 @@ namespace Helper
                 {
                     text += "@dormID,@bedNo,";
                 }
-                text = text + "@prevInstitution,@kcpeScore,@prevBalance,@photo)\r\nINSERT INTO [Institution].[CurrentClass] (StudentID,ClassID,IsActive,StartDateTime,EndDateTime) " +
-                "VALUES(" + (flag ? "@id" : "@studID") + ",@classID,1,'01-01-" + DateTime.Now.Year + "','31-12-" + DateTime.Now.Year + "')\r\nCOMMIT";
+                text = text + "@prevInstitution,@kcpeScore,@prevBalance,@photo)\r\nINSERT INTO [Institution].[CurrentClass] (StudentID,ClassID,Year) " +
+                "VALUES(" + (flag ? "@id" : "@studID") + ",@classID,@yer)\r\nCOMMIT";
                 return DataAccessHelper.Helper.ExecuteNonQuery(text, new ObservableCollection<SqlParameter>
                 {
                     new SqlParameter("@studID", student.StudentID),
@@ -2574,7 +2581,8 @@ namespace Helper
                     new SqlParameter("@kcpeScore", student.KCPEScore),
                     new SqlParameter("@prevBalance", student.PrevBalance),
                     new SqlParameter("@photo", student.SPhoto),
-                    new SqlParameter("@classID", student.ClassID)
+                    new SqlParameter("@classID", student.ClassID),
+                    new SqlParameter("@yer", DateTime.Now.Year)
                 });
             });
         }
@@ -4956,6 +4964,214 @@ namespace Helper
             return DataAccess.GetStudentTranscript2(studentID, exams, classes, 0,term);
         }
 
+        public static Task<ReportFormModel> GetStudentReportForm(int studentID, IEnumerable<ExamWeightModel> exams)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                int classID = GetClassIDFromStudentID(studentID).Result;
+                var subjects = GetSubjectsRegistredToClassAsync(classID).Result;
+
+                int e1 = exams.Any(o => o.Index == 1) ? exams.First(o => o.Index == 1).ExamID : 0;
+                int e2 = exams.Any(o => o.Index == 2) ? exams.First(o => o.Index == 2).ExamID : 0;
+                int e3 = exams.Any(o => o.Index == 3) ? exams.First(o => o.Index == 3).ExamID : 0;
+
+                decimal e1w = exams.Any(o => o.Index == 1) ? exams.First(o => o.Index == 1).Weight : 0m;
+                decimal e2w = exams.Any(o => o.Index == 2) ? exams.First(o => o.Index == 2).Weight : 0m;
+                decimal e3w = exams.Any(o => o.Index == 3) ? exams.First(o => o.Index == 3).Weight : 0m;
+
+                string selectStr = "SELECT * FROM (" +
+
+
+"SELECT esd.StudentID,s.NameOfStudent, cc.ClassID,sub.NameOfSubject, sssd.SubjectID,sum(ex1.Score) Exam1Score, sum(ex2.Score) Exam2Score, sum(ex3.Score) Exam3Score," +
+"subjectRank.SubjectRank, streamRank.StreamRank,classRank.ClassRank " +
+"FROM[Institution].[ExamStudentDetail] esd " +
+"LEFT OUTER JOIN[Institution].[CurrentClass] cc ON(esd.StudentID = cc.StudentID AND cc.Year = DATEPART(YEAR, SYSDATETIME()))" +
+"LEFT OUTER JOIN[Institution].[Student] s ON(s.StudentID = esd.StudentID)" +
+"LEFT OUTER JOIN[Institution].[StudentSubjectSelectionHeader] sssh ON(sssh.StudentID = esd.StudentID AND sssh.Year = DATEPART(year, SYSDATETIME()))" +
+"LEFT OUTER JOIN[Institution].[StudentSubjectSelectionDetail] sssd ON(sssh.StudentSubjectSelectionID = sssd.StudentSubjectSelectionID)" +
+"LEFT OUTER JOIN[Institution].[Subject] sub ON(sub.SubjectID = sssd.SubjectID)" +
+"LEFT OUTER JOIN" +
+"(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18, 2), Score * (@e1w / eh.OutOf), 2)Score FROM[Institution].[ExamResultHeader] erh " +
+"LEFT OUTER JOIN[Institution].[ExamResultDetail] erd ON(erd.ExamResultID = erh.ExamResultID)" +
+"LEFT OUTER JOIN[Institution].[ExamHeader] eh ON(erh.ExamID = eh.ExamID)" +
+"WHERE erh.ExamID = @e1) ex1 " +
+"ON(ex1.ExamID = esd.ExamID AND ex1.StudentID = esd.StudentID AND ex1.SubjectID = sssd.SubjectID)" +
+"LEFT OUTER JOIN" +
+"(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18, 2), Score * (@e2w / eh.OutOf), 2)Score FROM[Institution].[ExamResultHeader] erh " +
+"LEFT OUTER JOIN[Institution].[ExamResultDetail] erd ON(erd.ExamResultID = erh.ExamResultID)" +
+"LEFT OUTER JOIN[Institution].[ExamHeader] eh ON(erh.ExamID = eh.ExamID)" +
+"WHERE erh.ExamID = @e2) ex2 " +
+"ON(ex2.ExamID = esd.ExamID AND ex2.StudentID = esd.StudentID AND ex2.SubjectID = sssd.SubjectID)" +
+"LEFT OUTER JOIN" +
+"(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18, 2), Score * (@e3w / eh.OutOf), 2)Score FROM[Institution].[ExamResultHeader] erh " +
+"LEFT OUTER JOIN[Institution].[ExamResultDetail] erd ON(erd.ExamResultID = erh.ExamResultID)" +
+"LEFT OUTER JOIN[Institution].[ExamHeader] eh ON(erh.ExamID = eh.ExamID)" +
+"WHERE erh.ExamID = @e3) ex3 " +
+"ON(ex3.ExamID = esd.ExamID AND ex3.StudentID = esd.StudentID AND ex3.SubjectID = sssd.SubjectID)" +
+"LEFT OUTER JOIN" +
+
+/*SUBJECT RANK*/
+"(SELECT StudentID, SubjectID, SubjectRank FROM" +
+"(SELECT StudentID,";
+                foreach (var sub in subjects)
+
+                    selectStr += "DENSE_RANK() OVER(order by ISNULL([" + sub.SubjectID + "], 0)desc)[" + sub.SubjectID + "],";
+                selectStr = selectStr.Remove(selectStr.Length - 1) + " ";
+                selectStr +=
+                "FROM(" +
+                "SELECT esd.StudentID, s.SubjectID, sum(ISNULL(ex1.Score,0))+SUM(ISNULL(ex2.Score,0))+SUM(ISNULL(ex3.Score,0)) Exam1Score FROM " +
+                "[Institution].[ExamStudentDetail] esd " +
+                "LEFT OUTER JOIN" +
+                "(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18,2),Score*(@e1w/eh.OutOf),2)Score FROM[Institution].[ExamResultHeader] erh " +
+                "LEFT OUTER JOIN[Institution].[ExamResultDetail] " +
+                "erd ON(erd.ExamResultID = erh.ExamResultID) LEFT OUTER JOIN[Institution].[ExamHeader] eh ON(erh.ExamID = eh.ExamID)" +
+                "WHERE erh.ExamID=@e1) ex1 ON(ex1.ExamID = esd.ExamID AND ex1.StudentID = esd.StudentID) " +
+                "LEFT OUTER JOIN" +
+                "(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18,2),Score*(@e2w/eh.OutOf),2)Score FROM[Institution].[ExamResultHeader]" +
+                        "erh " +
+                  "LEFT OUTER JOIN[Institution].[ExamResultDetail] " +
+                        "erd ON(erd.ExamResultID = erh.ExamResultID)" +
+                "LEFT OUTER JOIN[Institution].[ExamHeader]" +
+                        "eh ON(erh.ExamID = eh.ExamID)" +
+                "WHERE erh.ExamID=@e2) ex2 " +
+                "ON(ex2.ExamID = esd.ExamID AND ex2.StudentID = esd.StudentID)" +
+                "LEFT OUTER JOIN" +
+                "(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18,2),Score*(@e3w/eh.OutOf),2)Score FROM[Institution].[ExamResultHeader]" +
+                        "erh " +
+                  "LEFT OUTER JOIN[Institution].[ExamResultDetail]" +
+                        "erd ON(erd.ExamResultID = erh.ExamResultID)" +
+                "LEFT OUTER JOIN[Institution].[ExamHeader]" +
+                        "eh ON(erh.ExamID = eh.ExamID)" +
+                "WHERE erh.ExamID=@e3) ex3 " +
+                "ON(ex3.ExamID = esd.ExamID AND ex3.StudentID = esd.StudentID)" +
+                "LEFT OUTER JOIN[Institution].[Subject]" +
+                        "s ON(s.SubjectID = ex1.SubjectID OR s.SubjectID = ex2.SubjectID OR s.SubjectID = ex3.SubjectID)" +
+                "WHERE esd.ExamID = @e1 OR esd.ExamID = @e2 OR esd.ExamID = @e3 " +
+                "GROUP BY esd.StudentID, s.SubjectID" +
+                ") as s " +
+                "PIVOT" +
+                "(" +
+                    "SUM(Exam1Score) " +
+                    "FOR[SubjectID] IN(";
+                foreach (var sub in subjects)
+                    selectStr += "[" + sub.SubjectID + "],";
+                selectStr = selectStr.Remove(selectStr.Length - 1) + "))AS pvt )s2 " +
+
+    "UNPIVOT(SubjectRank FOR [SubjectID] in (";
+                foreach (var sub in subjects)
+                    selectStr += "[" + sub.SubjectID + "],";
+                selectStr = selectStr.Remove(selectStr.Length - 1) +
+    ")) as unpvt" +
+") subjectRank ON(esd.StudentID = subjectRank.StudentID AND sssd.SubjectID = subjectRank.SubjectID)" +
+//</SubjectRank>
+"LEFT OUTER JOIN " +
+//<ClassRank>
+"(SELECT StudentID,DENSE_RANK() OVER(order by";
+                foreach (var sub in subjects)
+                    selectStr += " ISNULL([" + sub.SubjectID + "], 0) +";
+                selectStr = selectStr.Remove(selectStr.Length - 1) +
+    "desc) classRank " +
+    "FROM(" +
+    "SELECT esd.StudentID, s.SubjectID, sum(ISNULL(ex1.Score, 0)) + SUM(ISNULL(ex2.Score, 0)) + SUM(ISNULL(ex3.Score, 0)) Exam1Score FROM " +
+    "[Institution].[CurrentClass] cs " +
+    "LEFT OUTER JOIN[Institution].[ExamStudentDetail] esd " +
+    "ON(cs.StudentID = esd.StudentID AND cs.[Year] = DATEPART(YEAR, SYSDATETIME()))" +
+    "LEFT OUTER JOIN" +
+    "(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18, 2), Score * (@e1w / eh.OutOf), 2)Score FROM[Institution].[ExamResultHeader] erh " +
+    "LEFT OUTER JOIN[Institution].[ExamResultDetail] erd ON(erd.ExamResultID = erh.ExamResultID)" +
+    "LEFT OUTER JOIN[Institution].[ExamHeader] eh ON(erh.ExamID = eh.ExamID)" +
+    "WHERE erh.ExamID = @e1) ex1 " +
+    "ON(ex1.ExamID = esd.ExamID AND ex1.StudentID = esd.StudentID)" +
+    "LEFT OUTER JOIN" +
+    "(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18, 2), Score * (@e2w / eh.OutOf), 2)Score FROM[Institution].[ExamResultHeader] erh " +
+    "LEFT OUTER JOIN[Institution].[ExamResultDetail] erd ON(erd.ExamResultID = erh.ExamResultID)" +
+    "LEFT OUTER JOIN[Institution].[ExamHeader] eh ON(erh.ExamID = eh.ExamID)" +
+    "WHERE erh.ExamID = @e2) ex2 " +
+    "ON(ex2.ExamID = esd.ExamID AND ex2.StudentID = esd.StudentID)" +
+    "LEFT OUTER JOIN" +
+    "(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18, 2), Score * (@e3w / eh.OutOf), 2)Score FROM[Institution].[ExamResultHeader] erh " +
+    "LEFT OUTER JOIN[Institution].[ExamResultDetail] erd ON(erd.ExamResultID = erh.ExamResultID)" +
+    "LEFT OUTER JOIN[Institution].[ExamHeader] eh ON(erh.ExamID = eh.ExamID)" +
+    "WHERE erh.ExamID = @e3) ex3 " +
+    "ON(ex3.ExamID = esd.ExamID AND ex3.StudentID = esd.StudentID)" +
+    "LEFT OUTER JOIN[Institution].[Subject] s ON(s.SubjectID = ex1.SubjectID OR s.SubjectID = ex2.SubjectID OR s.SubjectID = ex3.SubjectID)" +
+    "WHERE cs.ClassID = 1 AND(esd.ExamID = @e1 OR esd.ExamID = @e2 OR esd.ExamID = @e3)" +
+    "GROUP BY esd.StudentID, s.SubjectID" +
+    ") as s " +
+    "PIVOT" +
+    "(" +
+    "   SUM(Exam1Score)" +
+    "    FOR[SubjectID] IN(";
+                foreach (var sub in subjects)
+                    selectStr += "[" + sub.SubjectID + "],";
+                selectStr = selectStr.Remove(selectStr.Length - 1) +
+               "))AS pvt ) classRank ON (classRank.StudentID = s.StudentID)" +
+    //</ClassRank
+    "LEFT OUTER JOIN" +
+    //<StreamRank>
+    "(SELECT StudentID,DENSE_RANK() OVER(order by";
+                foreach (var sub in subjects)
+                    selectStr += " ISNULL([" + sub.SubjectID + "], 0) +";
+                selectStr = selectStr.Remove(selectStr.Length - 1) +
+    "desc) StreamRank FROM(" +
+"SELECT esd.StudentID, s.SubjectID, sum(ISNULL(ex1.Score, 0)) + SUM(ISNULL(ex2.Score, 0)) + SUM(ISNULL(ex3.Score, 0)) Exam1Score FROM[Institution].[ExamStudentDetail] esd " +
+"LEFT OUTER JOIN" +
+"(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18, 2), Score * (@e1w / eh.OutOf), 2)Score FROM[Institution].[ExamResultHeader] erh " +
+"LEFT OUTER JOIN[Institution].[ExamResultDetail] erd ON(erd.ExamResultID = erh.ExamResultID)" +
+"LEFT OUTER JOIN[Institution].[ExamHeader] eh ON(erh.ExamID = eh.ExamID)" +
+"WHERE erh.ExamID = @e1) ex1 " +
+"ON(ex1.ExamID = esd.ExamID AND ex1.StudentID = esd.StudentID)" +
+"LEFT OUTER JOIN" +
+"(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18, 2), Score * (@e2w / eh.OutOf), 2)Score FROM[Institution].[ExamResultHeader] erh " +
+"LEFT OUTER JOIN[Institution].[ExamResultDetail] erd ON(erd.ExamResultID = erh.ExamResultID)" +
+"LEFT OUTER JOIN[Institution].[ExamHeader] eh ON(erh.ExamID = eh.ExamID)" +
+"WHERE erh.ExamID = @e2) ex2 " +
+"ON(ex2.ExamID = esd.ExamID AND ex2.StudentID = esd.StudentID)" +
+"LEFT OUTER JOIN" +
+"(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18, 2), Score * (@e3w / eh.OutOf), 2)Score FROM[Institution].[ExamResultHeader] erh " +
+"LEFT OUTER JOIN[Institution].[ExamResultDetail] erd ON(erd.ExamResultID = erh.ExamResultID)" +
+"LEFT OUTER JOIN[Institution].[ExamHeader] eh ON(erh.ExamID = eh.ExamID)" +
+"WHERE erh.ExamID = @e3) ex3 " +
+"ON(ex3.ExamID = esd.ExamID AND ex3.StudentID = esd.StudentID)" +
+"LEFT OUTER JOIN[Institution].[Subject] s ON(s.SubjectID = ex1.SubjectID OR s.SubjectID = ex2.SubjectID OR s.SubjectID = ex3.SubjectID)" +
+"WHERE esd.ExamID = @e1 OR esd.ExamID = @e2 OR esd.ExamID = @e3 " +
+"GROUP BY esd.StudentID, s.SubjectID" +
+") as s " +
+"PIVOT" +
+"(" +
+"    SUM(Exam1Score)" +
+"    FOR[SubjectID] IN(";
+foreach (var sub in subjects)
+                    selectStr += "[" + sub.SubjectID + "],";
+                selectStr = selectStr.Remove(selectStr.Length - 1) + "))AS pvt )streamRank ON (streamRank.StudentID = esd.StudentID)" +
+//</StreamRank>
+"WHERE cc.ClassID = @cid AND(esd.ExamID = @e1 OR esd.ExamID = @e2 OR esd.ExamID = @e3)" +
+"GROUP BY esd.StudentID, sub.NameOfSubject, sssd.SubjectID, s.NameOfStudent, cc.ClassID, streamRank.StreamRank, classRank.ClassRank,subjectRank.SubjectRank" +
+")stx WHERE stx.StudentID=@sid ORDER BY StudentID,SubjectID";
+
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@sid", studentID));
+                paramColl.Add(new SqlParameter("@e1", e1));
+                paramColl.Add(new SqlParameter("@e2", e2));
+                paramColl.Add(new SqlParameter("@e3", e3));
+                paramColl.Add(new SqlParameter("@e1w", e1w));
+                paramColl.Add(new SqlParameter("@e2w", e2w));
+                paramColl.Add(new SqlParameter("@e3w", e3w));
+                paramColl.Add(new SqlParameter("@cid", classID));
+
+                var dt = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr, paramColl);
+                
+                ReportFormModel rpm = new ReportFormModel();
+                
+                foreach(DataRow dtr in dt.Rows)
+                {
+                    rpm.SubjectEntries.Add(new ReportFormSubjectModel(int.Parse(dtr[4].ToString()),dtr[3].ToString(),dtr[5].ToString(), dtr[6].ToString(), 
+                        dtr[7].ToString(), dtr[8].ToString()));
+                }
+                return rpm;
+            });
+        }
+
         public static Task<StudentTranscriptModel2> GetStudentTranscript2(int studentID, IEnumerable<ExamWeightModel> exams, IEnumerable<ClassModel> classes, int transcriptID, TermModel term)
         {
             return Task.Factory.StartNew(() =>
@@ -7153,7 +7369,7 @@ namespace Helper
             text = string.Concat(new object[]
             {
                 text,
-                " FROM [Institution].[Student]s LEFT OUTER JOIN WHERE cs.ClassID=",
+                " FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=",
                 classID,
                 " AND s.IsACtive=1"
             });
@@ -7188,7 +7404,7 @@ namespace Helper
 
             examResultClassModel.NameOfClass = classes.First().NameOfClass;
             ObservableCollection<SubjectModel> observableCollection = await DataAccess.GetSubjectsRegistredToClassAsync(classes[0].ClassID);
-            string text = "SELECT StudentID, NameOfStudent,";
+            string text = "SELECT s.StudentID, NameOfStudent,";
             string text2 = "0,";
             foreach (ClassModel current in classes)
             {
@@ -7205,7 +7421,7 @@ namespace Helper
                         text = string.Concat(new object[]
                         {
                             text,
-                            "dbo.GetWeightedExamSubjectScore(StudentID,",
+                            "dbo.GetWeightedExamSubjectScore(s.StudentID,",
                             exams[i].ExamID,
                             ",",
                             current2.SubjectID,
@@ -7223,7 +7439,7 @@ namespace Helper
                 text += "),";
             }
             text = text.Remove(text.Length - 1);
-            text = text + " FROM [Institution].[Student] WHERE ClassID IN (" + text2 + ") AND IsACtive=1";
+            text = text + " FROM [Institution].[Student]s LEFT OUTER JOIN [Institution].[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE ClassID IN (" + text2 + ") AND IsACtive=1";
             DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -7325,7 +7541,8 @@ namespace Helper
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "IF NOT EXISTS (SELECT * FROM [Institution].[StudentSubjectSelectionHeader] WHERE IsActive=1 AND StudentID=",
+                        "IF NOT EXISTS (SELECT * FROM [Institution].[StudentSubjectSelectionHeader] WHERE [Year]=",current.Year,
+                        " AND StudentID=",
                         current.StudentID,
                         ")\r\n"
                     });
@@ -7333,9 +7550,9 @@ namespace Helper
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "INSERT INTO [Institution].[StudentSubjectSelectionHeader] (StudentSubjectSelectionID,StudentID,IsActive) VALUES (@id,",
+                        "INSERT INTO [Institution].[StudentSubjectSelectionHeader] (StudentSubjectSelectionID,StudentID,[Year]) VALUES (@id,",
                         current.StudentID,
-                        ",1)\r\n"
+                        ",",current.Year,")\r\n"
                     });
                     obj = text;
                     text = string.Concat(new object[]
@@ -7343,19 +7560,12 @@ namespace Helper
                         obj,
                         "ELSE SET @id=(SELECT StudentSubjectSelectionID FROM [Institution].[StudentSubjectSelectionHeader] WHERE StudentID=",
                         current.StudentID,
-                        " AND IsActive=1)\r\n"
+                        " AND [Year]=",current.Year,")\r\nDELETE FROM [Institution].[StudentSubjectSelectionDetail] WHERE StudentSubjectSelectionID=@id\r\n"
                     });
                     foreach (StudentSubjectSelectionEntryModel current3 in current.Entries)
                     {
                         obj = text;
-                        text = string.Concat(new object[]
-                        {
-                            obj,
-                            "IF NOT EXISTS (SELECT * FROM [Institution].[StudentSubjectSelectionDetail] WHERE StudentSubjectSelectionID=@id AND SubjectID=",
-                            current3.SubjectID,
-                            ")\r\n"
-                        });
-                        obj = text;
+                       
                         text = string.Concat(new object[]
                         {
                             obj,
@@ -7364,7 +7574,6 @@ namespace Helper
                             ")\r\n"
                         });
                     }
-                    text = text + "DELETE FROM [Institution].[StudentSubjectSelectionDetail] WHERE StudentSubjectSelectionID=@id AND SubjectID NOT IN (" + text2 + ")\r\n";
                     text += " COMMIT";
                     flag = (flag && DataAccessHelper.Helper.ExecuteNonQuery(text));
                 }

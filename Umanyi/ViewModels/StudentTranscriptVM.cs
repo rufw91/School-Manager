@@ -3,12 +3,14 @@ using Helper.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 
@@ -140,8 +142,12 @@ namespace UmanyiSMS.ViewModels
             RefreshCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
+                Transcript  = await DataAccess.GetStudentReportForm(transcript.StudentID, exams);
                 var c = await DataAccess.GetClassIDFromStudentID(transcript.StudentID);
 
+                CollectionViewSource cvs = new CollectionViewSource();
+                cvs.Source = null;
+                
                 IEnumerable<ClassModel> classes = new List<ClassModel>();
                 var ft = await DataAccess.GetAllCombinedClassesAsync();
                 var dx = ft.Where(o2 => o2.Entries.Any(o1 => o1.ClassID == c));

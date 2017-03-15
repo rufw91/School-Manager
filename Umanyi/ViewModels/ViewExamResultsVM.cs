@@ -16,13 +16,7 @@ namespace UmanyiSMS.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class ViewExamResultsVM : ViewModelBase
     {
-        bool isInStudentMode;
-        bool isInClassMode;
-        bool isInCombinedMode;
-        ExamResultStudentDisplayModel studentResult;
-        ExamResultClassDisplayModel classResult;
-
-        CombinedClassModel selectedCombinedClass;
+        ExamResultStudentDisplayModel studentResult;        
         ExamModel selectedExam;
         ObservableCollection<ExamModel> allExams;
         bool canExec = false;
@@ -38,59 +32,31 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "VIEW EXAM RESULTS";
             StudentResult = new ExamResultStudentDisplayModel();
-            ClassResult = new ExamResultClassDisplayModel();
             AllExams = new ObservableCollection<ExamModel>();
             AllTerms = await DataAccess.GetAllTermsAsync();
-
-            IsInStudentMode = true;
+            
             studentResult.PropertyChanged += OnPropertyChanged;
             PropertyChanged += OnPropertyChanged;
-            classResult.PropertyChanged += OnPropertyChanged;
             
-            AllClasses = await DataAccess.GetAllClassesAsync();
-            NotifyPropertyChanged("AllClasses");
-            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
-            NotifyPropertyChanged("AllCombinedClasses");
         }
 
         protected override void CreateCommands()
         {
-            PrintAsReportFormCommand = new RelayCommand(async o =>
-            {
-                IsBusy = true;
-                ClassStudentsExamResultModel st = await DataAccess.GetClassExamResultForTranscriptAsync(classResult.ClassID, selectedExam.ExamID, selectedExam.OutOf);
-
-                IsBusy = false;
-                if (ShowClassStudentsTranscriptAction != null)
-                    ShowClassStudentsTranscriptAction.Invoke(st);
-            }, o => isInClassMode && CanPrintResult());
-
             PrintTranscriptCommand = new RelayCommand(o =>
             {
-                if (isInStudentMode)
-                {
                     IsBusy = true;
                     StudentExamResultModel st = DataAccess.GetStudentExamResult(studentResult);
                     IsBusy = false;
                     if (ShowStudentTranscriptAction != null)
                         ShowStudentTranscriptAction.Invoke(st);
-                }
-                else
-                {
-                    IsBusy = true;
-                    ClassExamResultModel st = DataAccess.GetClassExamResult(classResult);
-                    IsBusy = false;
-                    if (ShowClassTranscriptAction != null)
-                        ShowClassTranscriptAction.Invoke(st);
-                }
+                
+               
             }, o => CanPrintResult());
 
             DisplayResultsCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                if (isInStudentMode)
-                {
-                    var temp = new ExamResultStudentDisplayModel(await DataAccess.GetStudentExamResultAync(studentResult.StudentID, selectedExam.ExamID,selectedExam.OutOf));
+                  var temp = new ExamResultStudentDisplayModel(await DataAccess.GetStudentExamResultAync(studentResult.StudentID, selectedExam.ExamID,selectedExam.OutOf));
                     StudentResult.Entries = temp.Entries;
                     StudentResult.ExamID = temp.ExamID;
                     StudentResult.ExamResultID = temp.ExamResultID;
@@ -99,152 +65,37 @@ namespace UmanyiSMS.ViewModels
                     studentResult.NameOfStudent = st.NameOfStudent;
                     studentResult.NameOfClass = (await DataAccess.GetClassAsync(st.ClassID)).NameOfClass;
                     studentResult.NameOfExam = selectedExam.NameOfExam;
-                }
-
-                if (isInClassMode)
-                {                    
-                    var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(classResult.ClassID, selectedExam.ExamID,selectedExam.OutOf));
-                    ClassResult.Entries = temp.Entries;
-                    ClassResult.ExamID = temp.ExamID;
-                    ClassResult.ExamResultID = temp.ExamResultID;
-
-                    ClassModel st = await DataAccess.GetClassAsync(classResult.ClassID);
-                    classResult.NameOfClass = st.NameOfClass;
-                    classResult.NameOfExam = selectedExam.NameOfExam;
-
-                    classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
-                }
-
-                if (isInCombinedMode)
-                {
-                    classResult.Entries.Clear();
-                    ClassModel cs;
-                    for (int i = 0; i < selectedCombinedClass.Entries.Count;i++ )
-                    {
-                        cs = selectedCombinedClass.Entries[i];
-                        var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(cs.ClassID, selectedExam.ExamID,selectedExam.OutOf));
-                        
-                        foreach (var e in temp.Entries)
-                        {
-                            classResult.Entries.Add(e);                            
-                        }
-
-                        if (i == 0)
-                        {
-                            classResult.ExamID = temp.ExamID;
-                            classResult.ExamResultID = temp.ExamResultID;
-                            classResult.NameOfClass = selectedCombinedClass.Description;
-                            classResult.NameOfExam = selectedExam.NameOfExam;
-                            classResult.ClassID = cs.ClassID;
-                        }                        
-                    }
-                    classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());                    
-                }
+               
+                
                 IsBusy = false;
             }, o => CanDisplayResults());
         }
 
         private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (isInStudentMode)
+            if ((e.PropertyName == "StudentID" || e.PropertyName == "SelectedTerm" || e.PropertyName == "SelectedExam")
+                && studentResult.StudentID > 0)
             {
+                studentResult.CheckErrors();
+                if (!studentResult.HasErrors && selectedTerm != null)
+                {
+                    if (e.PropertyName != "SelectedExam")
+                    {
+                        int classID = await DataAccess.GetClassIDFromStudentID(studentResult.StudentID);
+                        AllExams = await DataAccess.GetExamsByClass(classID, selectedTerm);
+                    }
+                    if (selectedExam != null)
+                        RefreshView();
+                }
+            }
 
-                if ((e.PropertyName == "StudentID" || e.PropertyName == "SelectedTerm" || e.PropertyName == "SelectedExam")
-                    && studentResult.StudentID > 0 )
-                {
-                    studentResult.CheckErrors();
-                    if (!studentResult.HasErrors && selectedTerm != null)
-                    {
-                        if (e.PropertyName != "SelectedExam")
-                        {
-                            int classID = await DataAccess.GetClassIDFromStudentID(studentResult.StudentID);
-                            AllExams = await DataAccess.GetExamsByClass(classID, selectedTerm);                           
-                        }
-                        if (selectedExam != null)
-                            RefreshView();
-                    }
-                }
-            }
-            if (isInClassMode)
-            {
-                if ((e.PropertyName == "ClassID" || e.PropertyName == "SelectedTerm" || e.PropertyName == "SelectedExam")
-                    && classResult.ClassID > 0 )
-                {
-                    if (e.PropertyName != "SelectedExam" && selectedTerm != null)
-                    {
-                        AllExams =await DataAccess.GetExamsByClass(classResult.ClassID, selectedTerm);
-                    }
-                    if (selectedExam != null)
-                        RefreshView();
-                }
-            }
-            if (isInCombinedMode)
-            {
-                if ((e.PropertyName == "SelectedCombinedClass" || e.PropertyName == "SelectedTerm" || e.PropertyName == "SelectedExam")
-                    && selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0 )
-                {
-                    if (e.PropertyName != "SelectedExam" && selectedTerm != null)
-                        AllExams = await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID, selectedTerm);
-                    if (selectedExam != null)
-                        RefreshView();
-                }
-            }
         }
 
         private bool CanPrintResult()
         {
-            if (isInStudentMode)
                 return (studentResult != null && studentResult.Entries.Count > 0)&&!IsBusy;
-            else
-                return (classResult != null && classResult.Entries.Count > 0)&&!IsBusy;
         }
-
-        private async Task<DataTable> ConvertClassResults(List<ExamResultStudentModel> temp)
-        {
-            if (temp == null)
-                return new DataTable();
-            if (temp.Count == 0)
-                return new DataTable();
-            DataTable dt = new DataTable();
-            var g = await DataAccess.GetSubjectsRegistredToClassAsync(classResult.ClassID);
-
-            dt.Columns.Add(new DataColumn("Student ID"));
-            dt.Columns.Add(new DataColumn("Name"));
-            int subjectCount = 0;
-            foreach (var d in g)
-            {
-                dt.Columns.Add(new DataColumn(d.NameOfSubject));
-                subjectCount++;
-            }
-            dt.Columns.Add(new DataColumn("Grade"));
-            dt.Columns.Add(new DataColumn("Total"));
-            dt.Columns.Add(new DataColumn("Position"));
-            DataRow dtr;
-            ExamResultSubjectEntryModel f;
-            int pos = 1;
-            ExamResultStudentModel s;
-            for (int x = 0; x < temp.Count; x++)
-            {
-                s = temp[x];
-                dtr = dt.NewRow();
-                dtr[0] = s.StudentID;
-                dtr[1] = s.NameOfStudent;
-                for (int i = 0; i < subjectCount; i++)
-                {
-                    f = s.Entries.FirstOrDefault(o => o.NameOfSubject == g[i].NameOfSubject);
-                    dtr[i + 2] = (f != null) ? f.Score.ToString() : " - ";
-                }
-                dtr[subjectCount + 2] = s.MeanGrade;
-                dtr[subjectCount + 3] = s.Total;
-                dtr[subjectCount + 4] = pos;
-                dt.Rows.Add(dtr);
-                if ((temp.Count > x + 1) && (temp[x + 1].Total == s.Total))
-                    continue;
-                pos++;
-            }
-            return dt;
-
-        }
+        
         public ObservableCollection<TermModel> AllTerms
         {
             get { return this.allTerms; }
@@ -292,20 +143,9 @@ namespace UmanyiSMS.ViewModels
 
         private bool CanDisplayResults()
         {
-            if (isInStudentMode)
-            {
                 studentResult.CheckErrors();
                 return selectedTerm!=null&& selectedExam != null && selectedExam.ExamID > 0 &&
                       !studentResult.HasErrors&&!IsBusy;
-            }
-
-            if (isInClassMode)
-                return selectedTerm != null && selectedExam != null && selectedExam.ExamID > 0 && classResult.ClassID > 0 && !IsBusy;
-            if (isInCombinedMode)
-                return selectedTerm != null && selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0 &&
-                    selectedExam != null && selectedExam.ExamID > 0&&!IsBusy;
-
-            return false;
         }
 
         public ObservableCollection<ExamModel> AllExams
@@ -335,83 +175,7 @@ namespace UmanyiSMS.ViewModels
                 }
             }
         }
-
-        public ExamResultClassDisplayModel ClassResult
-        {
-            get { return classResult; }
-
-            private set
-            {
-                if (value != classResult)
-                {
-                    classResult = value;
-                    NotifyPropertyChanged("ClassResult");
-                }
-            }
-        }
-
-        public CombinedClassModel SelectedCombinedClass
-        {
-            get { return selectedCombinedClass; }
-
-            set
-            {
-                if (value != selectedCombinedClass)
-                {
-                    selectedCombinedClass = value;
-                    NotifyPropertyChanged("SelectedCombinedClass");
-                }
-            }
-        }
-
-        public bool IsInStudentMode
-        {
-            get { return isInStudentMode; }
-
-            set
-            {
-                if (value != isInStudentMode)
-                {
-                    isInStudentMode = value;
-                    NotifyPropertyChanged("IsInStudentMode");
-                    StudentResult.Reset();
-                    allExams.Clear();
-                }
-            }
-        }
-
-        public bool IsInClassMode
-        {
-            get { return isInClassMode; }
-
-            set
-            {
-                if (value != isInClassMode)
-                {
-                    isInClassMode = value;
-                    NotifyPropertyChanged("IsInClassMode");
-                    ClassResult.Reset();
-                    allExams.Clear();
-                }
-            }
-        }
-
-        public bool IsInCombinedMode
-        {
-            get { return isInCombinedMode; }
-
-            set
-            {
-                if (value != isInCombinedMode)
-                {
-                    isInCombinedMode = value;
-                    NotifyPropertyChanged("IsInCombinedMode");
-                    ClassResult.Reset();
-                    allExams.Clear();
-                }
-            }
-        }
-
+        
         public ExamModel SelectedExam
         {
             get { return selectedExam; }
@@ -429,7 +193,6 @@ namespace UmanyiSMS.ViewModels
         public override void Reset()
         {
             studentResult.Reset();
-            classResult.Reset();
         }
 
         public Action<ClassStudentsExamResultModel> ShowClassStudentsTranscriptAction
@@ -446,13 +209,7 @@ namespace UmanyiSMS.ViewModels
             get;
             private set;
         }
-
-        public ICommand PrintAsReportFormCommand
-        {
-            get;
-            private set;
-        }
-
+                
         public ICommand PrintTranscriptCommand
         {
             get;
