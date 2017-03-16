@@ -1,8 +1,6 @@
 ﻿using Helper;
-using Helper.Controls;
-using Helper.Converters;
 using Microsoft.Win32;
-using OpenXmlPackaging;
+
 using UmanyiSMS.ViewModels;
 using System;
 using System.Data;
@@ -11,6 +9,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Lib.Converters;
+using UmanyiSMS.Lib.Controllers;
+using System.Threading.Tasks;
 
 namespace UmanyiSMS.Presentation
 {
@@ -47,7 +50,7 @@ namespace UmanyiSMS.Presentation
                 w.ShowDialog();
             }, o => true);
 
-            ExportToExcelCommand = new RelayCommand(o =>
+            ExportToExcelCommand = new RelayCommand(async o =>
             {
                 if ((o == null) || (o == DependencyProperty.UnsetValue))
                 {
@@ -62,9 +65,9 @@ namespace UmanyiSMS.Presentation
                     return;
                 }
                 if (o.GetType() == typeof(DataGrid))
-                    s = ExportDataGrid((DataGrid)o);
+                    s = await ExportDataGrid((DataGrid)o);
                 if (o.GetType() == typeof(DataTable))
-                    s = ExportTable((DataTable)o);
+                    s = await ExportTable((DataTable)o);
                 if (string.IsNullOrWhiteSpace(s))
                 {
                     MessageBox.Show("Unable to export data.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -84,7 +87,7 @@ namespace UmanyiSMS.Presentation
         public static ICommand ExportToExcelCommand
         { get; private set; }
 
-        public static string ExportTable(DataTable Items)
+        private async static Task<string> ExportTable(DataTable Items)
         {
             if (Items.Rows.Count == 0)
                 return "";
@@ -98,13 +101,10 @@ namespace UmanyiSMS.Presentation
                 string name = saveDialog.FileName;
                 try
                 {
-                    using (var doc = new SpreadsheetDocument(name))
-                    {
-                        Worksheet sheet1 = doc.Worksheets.Add("Worksheet1");
-                        sheet1.ImportDataTable(Items, "A1", true);
-                        sheet1.AutoFitColumns();
+                    if (await ExcelHelper.ExportDataTableToExcelFile(Items, name))
                         return name;
-                    }
+                    else return "";
+                    
                 }
                 catch { }
                 
@@ -112,12 +112,12 @@ namespace UmanyiSMS.Presentation
             return "";
         }
 
-        public static string ExportDataGrid(DataGrid dataGrid)
+        public async static Task<string> ExportDataGrid(DataGrid dataGrid)
         {
             try
             {
                 var d = DataGridToDataTable.Convert(dataGrid);
-                return ExportTable(d);
+                return await ExportTable(d);
             }
             catch { }
             return "";

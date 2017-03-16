@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Helper.Presentation
+namespace UmanyiSMS.Lib.Presentation
 {
     public class SyncOperationProgress
     {

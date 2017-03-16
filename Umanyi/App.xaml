@@ -12,7 +12,6 @@
                 <ResourceDictionary Source="/UmanyiSMS.Helper;component/Themes/Generic.xaml" />
                 <ResourceDictionary Source="ViewModelsDataTemplates.xaml" />
                 <ResourceDictionary Source="ModelsDataTemplates.xaml" />
-                <ResourceDictionary Source="GalleryListBoxItem.xaml" />
                 <ResourceDictionary Source="DropDown.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

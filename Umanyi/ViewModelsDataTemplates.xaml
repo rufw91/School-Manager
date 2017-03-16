@@ -15,69 +15,18 @@
     <DataTemplate DataType="{x:Type viewModels:BackupVM}" >
         <views:Backup/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:StudentsVM}" >
-        <views:Students/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:StaffVM}" >
-        <views:Staff/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:FinanceVM}" >
-        <views:Fees/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:InstitutionVM}" >
-        <views:Institution/>
-    </DataTemplate>
+
     <DataTemplate DataType="{x:Type viewModels:QueryEditorVM}" >
         <views:QueryEditor/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ExamsVM}" >
-        <views:Exams/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:LibraryVM}" >
-        <views:Library/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:GalleryVM}" >
-        <views:Gallery/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:SettingsVM}" >
-        <views:Settings/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ReportsVM}" >
-        <views:Reports/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:PayrollVM}" >
-        <views:Payroll/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:InventoryMgmtVM}" >
-        <views:InventoryMgmt/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:CustomModulesVM}" >
-        <views:CustomModules/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AccountsVM}" >
-        <views:Accounts/>
-    </DataTemplate>
+    
     <!--Child View Models-->
 
 
-    <DataTemplate DataType="{x:Type viewModels:AccountsTrialBalanceVM}" >
-        <views:AccountsTrialBalance/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:ReprintPaymentVoucherVM}" >
         <views:ReprintPaymentVoucher/>
     </DataTemplate> 
-    <DataTemplate DataType="{x:Type viewModels:PrepareBudgetVM}" >
-        <views:PrepareBudget/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:RemoveAccountVM}" >
-        <views:RemoveAccount/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:CurrentExpenditureVM}" >
-        <views:CurrentExpenditure/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:PayslipsHistoryVM}" >
-        <views:PayslipsHistory/>
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:SupplierStatementVM}" >
         <views:SupplierStatement/>
     </DataTemplate>
@@ -88,60 +37,29 @@
     <DataTemplate DataType="{x:Type viewModels:LogWindowVM}" >
         <views:LogWindow/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ChartOfAccountsVM}" >
-        <views:ChartOfAccounts/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AccountsIncomeStatementVM}" >
-        <views:AccountsIncomeStatement/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AccountsBalanceSheetVM}" >
-        <views:AccountsBalanceSheet/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AccountsStatementOfCFVM}" >
-        <views:AccountsStatementOfCF/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ExamRegistrationVM}" >
-        <views:ExamRegistration/>
-    </DataTemplate>
+   
     <DataTemplate DataType="{x:Type viewModels:SyncCloudVM}" >
         <views:SyncCloud/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ReprintPaySlipVM}" >
-        <views:ReprintPaySlip/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:NewPaySlipVM}" >
-        <views:NewPaySlip/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:BookReceiptHistoryVM}" >
-        <views:BookReceiptHistory/>
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:ReceiveBooksVM}" >
         <views:ReceiveBooks/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:BooksVM}" >
-        <views:Books/>
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:AllUnreturnedBooksVM}" >
         <views:AllUnreturnedBooks/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:ViewFullFeesStructureVM}" >
         <views:ViewFullFeesStructure/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:EventDetailsVM}" >
-        <views:EventDetails/>
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:CombinedAggregateResultsVM}" >
         <views:CombinedAggregateResults/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:InstitutionSubjectsSetupVM}" >
         <views:InstitutionSubjectsSetup/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ClassLeavingCertificatesVM}" >
-        <views:ClassLeavingCertificates/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ModifySubjectsSetupVM}" >
-        <views:ModifySubjectsSetup/>
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:ChangeSAPasswordVM}" >
         <views:ChangeSAPassword/>
     </DataTemplate>
@@ -160,24 +78,13 @@
     <DataTemplate DataType="{x:Type viewModels:RemoveExamVM}" >
         <views:RemoveExam/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:QuickBooksSyncVM}" >
-        <views:QuickBooksSync/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:NewReportVM}" >
-        <views:NewReport/>
-    </DataTemplate>
     
-    <DataTemplate DataType="{x:Type viewModels:ItemIssueHistoryVM}" >
-        <views:ItemIssueHistory/>
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:EnterExamResultsBySubjectVM}" >
         <views:EnterExamResultsBySubject/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:PaymentsByVoteHeadVM}" >
         <views:PaymentsByVoteHead/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:IssueItemsVM}" >
-        <views:IssueItems/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:DisciplineDetailsVM}" >
         <views:DiscipineDetails/>
@@ -200,30 +107,20 @@
     <DataTemplate DataType="{x:Type viewModels:StudentClearanceVM}" >
         <views:StudentClearance/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:StudentTransferVM}" >
-        <views:StudentTransfer/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:AssignNewClassVM}" >
         <views:AssignNewClass/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:NetworkOptionsVM}" >
         <views:NetworkOptions/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:PAYEInfoVM}" >
-        <views:PAYEInfo/>
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:PDFViewVM}" >
         <views:PDFView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:AggregateResultsVM}" >
         <views:AggregateResults/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:NewPaymentVoucherVM}" >
-        <views:NewPaymentVoucher/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:PaymentVoucherHistoryVM}" >
-        <views:PaymentVoucherHistory/>
-    </DataTemplate>
+    
     <DataTemplate DataType="{x:Type viewModels:BillStudentVM}" >
         <views:BillStudents/>
     </DataTemplate>
@@ -259,19 +156,9 @@
     </DataTemplate>
    
     <DataTemplate DataType="{x:Type viewModels:BalancesListVM}" >
-        <views:FeesDefaulters/>
+        <views:BalancesList/>
     </DataTemplate>
 
-
-    <DataTemplate DataType="{x:Type viewModels:LocalTutorialsVM}" >
-        <views:LocalTutorials/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ReportsHomeVM}" >
-        <views:ReportsHome/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:OnlineResourcesVM}" >
-        <views:OnlineResources/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:StudentDetailsVM}" >
         <views:StudentDetails/>
     </DataTemplate>
@@ -314,9 +201,6 @@
     <DataTemplate DataType="{x:Type viewModels:InstitutionSetupVM}" >
         <views:InstitutionSetup/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:InstitutionInfoVM}" >
-        <views:InstitutionInfo/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:NewExamVM}" >
         <views:NewExam/>
     </DataTemplate>
@@ -325,24 +209,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:ViewExamResultsVM}" >
         <views:ViewExamResults/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:NewEventVM}" >
-        <views:NewEvent/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:UpcomingEventsVM}" >
-        <views:UpcomingEvents/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AllEventsVM}" >
-        <views:AllEvents/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:NewGalleryItemVM}" >
-        <views:NewGalleryItem/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:RecentGalleryItemsVM}" >
-        <views:RecentItems/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AllGalleryItemsVM}" >
-        <views:AllItems/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:GeneralSettingsVM}" >
         <views:GeneralSettings/>
@@ -354,17 +220,8 @@
         <views:ModifyStudent/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type viewModels:ItemsVM}" >
-        <views:Items/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:StockTakingVM}" >
         <views:StockTaking/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:SuppliersVM}" >
-        <views:Suppliers/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:VATAnalysisVM}" >
-        <views:VATAnalysis/>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type viewModels:NewItemVM}" >
@@ -400,28 +257,7 @@
     <DataTemplate DataType="{x:Type viewModels:NewSupplierVM}" >
         <views:NewSupplier/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:StockTakingsVM}" >
-        <views:StockTakings/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:StockTakeResultsVM}" >
         <views:StockTakeResults/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:NewDormitoryVM}" >
-        <views:NewDormitory/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:DormitoryMembersVM}" >
-        <views:DormitoryMembers/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:NewVATRateVM}" >
-        <views:NewVATRate/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:VATsVM}" >
-        <views:VATs/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:NewEmployeePaymentVM}" >
-        <views:NewEmployeePayment/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:PaymentHistoryVM}" >
-        <views:EmployeePaymentHistory/>
     </DataTemplate>
 </ResourceDictionary>

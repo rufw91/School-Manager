@@ -1,32 +1,13 @@
-﻿
-namespace Helper
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace UmanyiSMS.Lib
 {
-    public enum TransactionTypes
+    public enum TaskState
     {
-        Debit, Credit, All
+        Idle, Running, Complete
     }
-    public enum Boardingtype { Boarder, DayScholar }
-
-    public enum Comparisons { None = 0, IsEqualTo = 1, IsGreaterThan = 2, IsGreaterThanOrEqualTo = 3, IsLessThan = 4, IsLessThanOrEqualTo = 5 }
-
-    public enum DonateTo
-    {
-        Fees,
-        Projects
-    }
-
-    public enum AccountType
-    { Asset, Liability, Equity, Expense, Revenue }
-
-    public enum GeneralLedgerAccounts
-    {
-        Cash,
-        Sales,
-        AccountsPayable,
-        AccountsReceivable,
-        Salaries,
-        OtherExpenses,
-        OtherRevenue
-    }
-    
 }

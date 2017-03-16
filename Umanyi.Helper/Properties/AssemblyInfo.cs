@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UmanyiSMS.Helper")]
+[assembly: AssemblyTitle("UmanyiSMS.Lib")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Umanyi Digital Technologies Ltd")]
-[assembly: AssemblyProduct("UmanyiSMS.Helper")]
-[assembly: AssemblyCopyright("Copyright © 2016 Umanyi Digital Technologies Ltd")]
+[assembly: AssemblyCompany("Umanyi Ltd")]
+[assembly: AssemblyProduct("UmanyiSMS.Lib")]
+[assembly: AssemblyCopyright("Copyright © 2017 Umanyi Ltd")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
