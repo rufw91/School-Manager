@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace Helper.Converters
+namespace UmanyiSMS.Lib.Converters
 {
     public static class ImageConverters
     {

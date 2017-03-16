@@ -1,19 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmanyiSMS", "Umanyi\UmanyiSMS.csproj", "{FF9AFA4A-930E-4422-A879-BC0882F0A303}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmanyiSMS.Helper", "Umanyi.Helper\UmanyiSMS.Helper.csproj", "{C3938395-7C97-4474-866C-6E486819AF93}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csproj", "{B2731322-51A5-4698-9ECA-F43A8D3E8547}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmanyiSMS.Lib", "Umanyi.Helper\UmanyiSMS.Lib.csproj", "{C3938395-7C97-4474-866C-6E486819AF93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenXmlPackaging", "OpenXmlPackaging\OpenXmlPackaging.csproj", "{DAD3387A-470A-4484-9427-A8C8FAEC6C0F}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupClient", "SetupClient\SetupClient.wixproj", "{19B72FCB-A2BF-42ED-A90D-C6AAADFD9F22}"
-EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DB", "DB\DB\DB.sqlproj", "{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckSqlConnection", "CheckSqlConnection\CheckSqlConnection.csproj", "{DACCD073-85B1-4F34-A21A-2811A6E9E0A9}"
 EndProject
@@ -61,22 +57,6 @@ Global
 		{C3938395-7C97-4474-866C-6E486819AF93}.Release|x64.Build.0 = Release|x64
 		{C3938395-7C97-4474-866C-6E486819AF93}.Release|x86.ActiveCfg = Release|x86
 		{C3938395-7C97-4474-866C-6E486819AF93}.Release|x86.Build.0 = Release|x86
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Debug|x64.ActiveCfg = Debug|x64
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Debug|x64.Build.0 = Debug|x64
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Debug|x86.ActiveCfg = Debug|x86
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Debug|x86.Build.0 = Debug|x86
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Release|Mixed Platforms.Build.0 = Release|x86
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Release|x64.ActiveCfg = Release|x64
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Release|x64.Build.0 = Release|x64
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Release|x86.ActiveCfg = Release|x86
-		{B2731322-51A5-4698-9ECA-F43A8D3E8547}.Release|x86.Build.0 = Release|x86
 		{DAD3387A-470A-4484-9427-A8C8FAEC6C0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DAD3387A-470A-4484-9427-A8C8FAEC6C0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAD3387A-470A-4484-9427-A8C8FAEC6C0F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -107,21 +87,6 @@ Global
 		{19B72FCB-A2BF-42ED-A90D-C6AAADFD9F22}.Release|x64.ActiveCfg = Release|x86
 		{19B72FCB-A2BF-42ED-A90D-C6AAADFD9F22}.Release|x86.ActiveCfg = Release|x86
 		{19B72FCB-A2BF-42ED-A90D-C6AAADFD9F22}.Release|x86.Build.0 = Release|x86
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|Mixed Platforms.Deploy.0 = Debug|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|x64.ActiveCfg = Release|Any CPU
-		{8A3E64A2-31B7-4CFA-B1D6-67042CFE63CD}.Release|x86.ActiveCfg = Release|Any CPU
 		{DACCD073-85B1-4F34-A21A-2811A6E9E0A9}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{DACCD073-85B1-4F34-A21A-2811A6E9E0A9}.Debug|Any CPU.Build.0 = Debug|x86
 		{DACCD073-85B1-4F34-A21A-2811A6E9E0A9}.Debug|Mixed Platforms.ActiveCfg = Debug|x86

@@ -150,6 +150,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -170,1295 +171,981 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Presentation\CommonCommands.cs" />
-    <Compile Include="Presentation\Enums.cs" />
-    <Compile Include="Presentation\PDFViewerHost.cs" />
-    <Compile Include="LoginWindow.xaml.cs">
+    <Compile Include="Modules\Exams\Controller\DocumentHelper.cs" />
+    <Compile Include="Modules\Exams\Models\AggregateResultEntryModel.cs" />
+    <Compile Include="Modules\Exams\Models\AggregateResultModel.cs" />
+    <Compile Include="Modules\Exams\Models\ClassExamResultModel.cs" />
+    <Compile Include="Modules\Exams\Models\ClassReportFormModel.cs" />
+    <Compile Include="Modules\Exams\Models\ClassStudentsExamResultModel.cs" />
+    <Compile Include="Modules\Exams\Models\ClassTranscriptsModel.cs" />
+    <Compile Include="Modules\Exams\Models\ClassTranscriptsModel2.cs" />
+    <Compile Include="Modules\Exams\Models\ExamModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamRegistrationStudentModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamResultBaseModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamResultClassDisplayModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamResultClassModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamResultStudentDisplayModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamResultStudentModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamResultStudentSubjectEntryModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamResultSubjectModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamSettingsModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamSubjectEntryModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamWeightModel.cs" />
+    <Compile Include="Modules\Exams\Models\ReportFormModel.cs" />
+    <Compile Include="Modules\Exams\Models\ReportFormSubjectModel.cs" />
+    <Compile Include="Modules\Exams\Models\StudentExamResultEntryModel.cs" />
+    <Compile Include="Modules\Exams\Models\StudentExamResultModel.cs" />
+    <Compile Include="Modules\Exams\Models\StudentSubjectSelectionEntryModel.cs" />
+    <Compile Include="Modules\Exams\Models\StudentSubjectSelectionModel.cs" />
+    <Compile Include="Modules\Exams\Models\StudentTranscriptModel.cs" />
+    <Compile Include="Modules\Exams\Models\StudentTranscriptModel2.cs" />
+    <Compile Include="Modules\Exams\Models\StudentTranscriptSubjectModel.cs" />
+    <Compile Include="Modules\Exams\Models\SyncExamResultEntryModel.cs" />
+    <Compile Include="Modules\Exams\Models\SyncExamResultModel.cs" />
+    <Compile Include="Modules\Exams\Models\SyncTranscriptEntryModel.cs" />
+    <Compile Include="Modules\Exams\Models\SyncTranscriptModel.cs" />
+    <Compile Include="Modules\Fees\Controller\DocumentHelper.FullFeesStructure.cs" />
+    <Compile Include="Modules\Fees\Controller\DocumentHelper.Receipt.cs" />
+    <Compile Include="Modules\Fees\Controller\DocumentHelper.Receipt2.cs" />
+    <Compile Include="Modules\Fees\Controller\DocumentHelper.Statement.cs" />
+    <Compile Include="Modules\Fees\Models\ClassBalancesListModel.cs" />
+    <Compile Include="Modules\Fees\Models\FeePaymentModel.cs" />
+    <Compile Include="Modules\Fees\Models\FeePaymentReceipt2Model.cs" />
+    <Compile Include="Modules\Fees\Models\FeesPaymentDisplayModel.cs" />
+    <Compile Include="Modules\Fees\Models\FeesPaymentHistoryModel.cs" />
+    <Compile Include="Modules\Fees\Models\FeesPaymentReceiptModel.cs" />
+    <Compile Include="Modules\Fees\Models\FeesStatementModel.cs" />
+    <Compile Include="Modules\Fees\Models\FeesStructureEntryModel.cs" />
+    <Compile Include="Modules\Fees\Models\FeesStructureModel.cs" />
+    <Compile Include="Modules\Fees\Models\FullFeesStructureModel.cs" />
+    <Compile Include="Modules\Fees\Models\SaleModel.cs" />
+    <Compile Include="Modules\Fees\Models\StudentFeesDefaultModel.cs" />
+    <Compile Include="Modules\Fees\Models\SyncStatementModel.cs" />
+    <Compile Include="Modules\Fees\Models\SyncTransactionModel.cs" />
+    <Compile Include="Modules\Fees\Models\VoteHeadModel.cs" />
+    <Compile Include="Modules\Institution\Models\AcademicYearModel.cs" />
+    <Compile Include="Modules\Institution\Models\ClassesSetupEntryModel.cs" />
+    <Compile Include="Modules\Institution\Models\ClassesSetupModel.cs" />
+    <Compile Include="Modules\Institution\Models\ClassModel.cs" />
+    <Compile Include="Modules\Institution\Models\CombinedClassModel.cs" />
+    <Compile Include="Modules\Institution\Models\SchoolModel.cs" />
+    <Compile Include="Modules\Institution\Models\SubjectBaseModel.cs" />
+    <Compile Include="Modules\Institution\Models\SubjectModel.cs" />
+    <Compile Include="Modules\Institution\Models\TermModel.cs" />
+    <Compile Include="Modules\Library\Controller\DocumentHelper.AllUnreturnedBooks.cs" />
+    <Compile Include="Modules\Library\Controller\DocumentHelper.UnretunedBooks.cs" />
+    <Compile Include="Modules\Library\Models\AllUnreturnedBooksModel.cs" />
+    <Compile Include="Modules\Library\Models\BookIssueModel.cs" />
+    <Compile Include="Modules\Library\Models\BookModel.cs" />
+    <Compile Include="Modules\Library\Models\BookReturnModel.cs" />
+    <Compile Include="Modules\Library\Models\BookSelectModel.cs" />
+    <Compile Include="Modules\Library\Models\UnreturnedBookModel.cs" />
+    <Compile Include="Modules\Library\Models\UnreturnedBooksModel.cs" />
+    <Compile Include="Modules\Purchases\Controller\DocumentHelper.SupplierPayment.cs" />
+    <Compile Include="Modules\Purchases\Controller\DocumentHelper.SupplierStatement.cs" />
+    <Compile Include="Modules\Purchases\Controller\DocumentHelper.Voucher.cs" />
+    <Compile Include="Modules\Purchases\Models\ItemBaseModel.cs" />
+    <Compile Include="Modules\Purchases\Models\ItemCategoryModel.cs" />
+    <Compile Include="Modules\Purchases\Models\ItemFindModel.cs" />
+    <Compile Include="Modules\Purchases\Models\ItemListModel.cs" />
+    <Compile Include="Modules\Purchases\Models\ItemModel.cs" />
+    <Compile Include="Modules\Purchases\Models\ItemPurchaseModel.cs" />
+    <Compile Include="Modules\Purchases\Models\ItemSaleModel.cs" />
+    <Compile Include="Modules\Purchases\Models\ItemStockTakingModel.cs" />
+    <Compile Include="Modules\Purchases\Models\ItemStockTakingResultsModel.cs" />
+    <Compile Include="Modules\Purchases\Models\ModifyItemModel.cs" />
+    <Compile Include="Modules\Purchases\Models\ModifySupplierModel.cs" />
+    <Compile Include="Modules\Purchases\Models\PurchaseModel.cs" />
+    <Compile Include="Modules\Purchases\Models\StockTakingBaseModel.cs" />
+    <Compile Include="Modules\Purchases\Models\StockTakingModel.cs" />
+    <Compile Include="Modules\Purchases\Models\StockTakingResultsModel.cs" />
+    <Compile Include="Modules\Purchases\Models\SupplierBaseModel.cs" />
+    <Compile Include="Modules\Purchases\Models\SupplierModel.cs" />
+    <Compile Include="Modules\Purchases\Models\SupplierPaymentModel.cs" />
+    <Compile Include="Modules\Purchases\Models\SupplierStatementModel.cs" />
+    <Compile Include="Modules\Purchases\Models\TransactionModel.cs" />
+    <Compile Include="Modules\Staff\Models\ModifyStaffModel.cs" />
+    <Compile Include="Modules\Staff\Models\StaffBaseModel.cs" />
+    <Compile Include="Modules\Staff\Models\StaffModel.cs" />
+    <Compile Include="Modules\Staff\Models\StaffSelectModel.cs" />
+    <Compile Include="Modules\Students\Controller\DocumentHelper.ClassBalances.cs" />
+    <Compile Include="Modules\Students\Controller\DocumentHelper.ClassLeavingCertificates.cs" />
+    <Compile Include="Modules\Students\Controller\DocumentHelper.ClassList.cs" />
+    <Compile Include="Modules\Students\Controller\DocumentHelper.LeavingCertificate.cs" />
+    <Compile Include="Modules\Students\Models\ClassStudentListModel.cs" />
+    <Compile Include="Modules\Students\Models\DisciplineModel.cs" />
+    <Compile Include="Modules\Students\Models\LeavingCertificateModel.cs" />
+    <Compile Include="Modules\Students\Models\ModifyStudentModel.cs" />
+    <Compile Include="Modules\Students\Models\StudentBaseModel.cs" />
+    <Compile Include="Modules\Students\Models\StudentClearancerModel.cs" />
+    <Compile Include="Modules\Students\Models\StudentListModel.cs" />
+    <Compile Include="Modules\Students\Models\StudentModel.cs" />
+    <Compile Include="Modules\Students\Models\StudentSelectModel.cs" />
+    <Compile Include="Modules\Students\Models\SyncStudentModel.cs" />
+    <Compile Include="Modules\System\Enums.cs" />
+    <Compile Include="Controls\PDFViewerHost.cs" />
+    <Compile Include="Modules\System\Models\StartUpModel.cs" />
+    <Compile Include="Modules\System\Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AccountsBalanceSheetVM.cs" />
-    <Compile Include="ViewModels\AccountsGeneralLedgerVM.cs" />
-    <Compile Include="ViewModels\AccountsIncomeStatementVM.cs" />
-    <Compile Include="ViewModels\AccountsJournalVM.cs" />
-    <Compile Include="ViewModels\AccountsStatementOfCFVM.cs" />
-    <Compile Include="ViewModels\AccountsTransactionsVM.cs" />
-    <Compile Include="ViewModels\AccountsTrialBalanceVM.cs" />
-    <Compile Include="ViewModels\AccountsVM.cs" />
-    <Compile Include="ViewModels\AdvancedSettingsVM.cs" />
-    <Compile Include="ViewModels\AggregateResultsVM.cs" />
-    <Compile Include="ViewModels\AllBooksVM.cs" />
-    <Compile Include="ViewModels\AllEventsVM.cs" />
-    <Compile Include="ViewModels\AllGalleryItemsVM.cs" />
-    <Compile Include="ViewModels\AllUnreturnedBooksVM.cs" />
-    <Compile Include="ViewModels\AssignNewClassVM.cs" />
-    <Compile Include="ViewModels\BackupVM.cs" />
-    <Compile Include="ViewModels\BalancesListVM.cs" />
-    <Compile Include="ViewModels\BillStudentVM.cs" />
-    <Compile Include="ViewModels\BookReceiptHistoryVM.cs" />
-    <Compile Include="ViewModels\BookReturnVM.cs" />
-    <Compile Include="ViewModels\BooksVM.cs" />
-    <Compile Include="ViewModels\MarkListsVM.cs" />
-    <Compile Include="ViewModels\PrepareBudgetVM.cs" />
-    <Compile Include="ViewModels\ChangeDbVM.cs" />
-    <Compile Include="ViewModels\ChangeSAPasswordVM.cs" />
-    <Compile Include="ViewModels\ChartOfAccountsVM.cs" />
-    <Compile Include="ViewModels\ClassesSetupVM.cs" />
-    <Compile Include="ViewModels\ClassLeavingCertificatesVM.cs" />
-    <Compile Include="ViewModels\ClassListVM.cs" />
-    <Compile Include="ViewModels\ClassReportFormsVM.cs" />
-    <Compile Include="ViewModels\CombinedAggregateResultsVM.cs" />
-    <Compile Include="ViewModels\CombinedClassListVM.cs" />
-    <Compile Include="ViewModels\WeightedMarkListsVM.cs" />
-    <Compile Include="ViewModels\CurrentExpenditureVM.cs" />
-    <Compile Include="ViewModels\CustomModulesVM.cs" />
-    <Compile Include="ViewModels\DisciplineDetailsVM.cs" />
-    <Compile Include="ViewModels\DisciplineTrackerHistoryVM.cs" />
-    <Compile Include="ViewModels\DisciplineTrackerVM.cs" />
-    <Compile Include="ViewModels\DormitoryMembersVM.cs" />
-    <Compile Include="ViewModels\EnterExamResultsBySubjectVM.cs" />
-    <Compile Include="ViewModels\EnterExamResultsVM.cs" />
-    <Compile Include="ViewModels\EventDetailsVM.cs" />
-    <Compile Include="ViewModels\ExamRegistrationVM.cs" />
-    <Compile Include="ViewModels\ExamSetupVM.cs" />
-    <Compile Include="ViewModels\ExamsVM.cs" />
-    <Compile Include="ViewModels\FeesPaymentHistoryVM.cs" />
-    <Compile Include="ViewModels\FeesStatementVM.cs" />
-    <Compile Include="ViewModels\FinanceVM.cs" />
-    <Compile Include="ViewModels\FirstRunVM.cs" />
-    <Compile Include="ViewModels\GalleryVM.cs" />
-    <Compile Include="ViewModels\GeneralSettingsVM.cs" />
-    <Compile Include="ViewModels\HomePageVM.cs" />
-    <Compile Include="ViewModels\InstitutionInfoVM.cs" />
-    <Compile Include="ViewModels\InstitutionSetupVM.cs" />
-    <Compile Include="ViewModels\InstitutionSubjectsSetupVM.cs" />
-    <Compile Include="ViewModels\InstitutionVM.cs" />
-    <Compile Include="ViewModels\InventoryMgmtVM.cs" />
-    <Compile Include="ViewModels\IssueBookVM.cs" />
-    <Compile Include="ViewModels\IssueItemsVM.cs" />
-    <Compile Include="ViewModels\ItemCategoryListVM.cs" />
-    <Compile Include="ViewModels\ItemIssueHistoryVM.cs" />
-    <Compile Include="ViewModels\ItemListVM.cs" />
-    <Compile Include="ViewModels\ItemReceiptHistoryVM.cs" />
-    <Compile Include="ViewModels\ItemsVM.cs" />
-    <Compile Include="ViewModels\LeavingCertificateVM.cs" />
-    <Compile Include="ViewModels\LibraryVM.cs" />
-    <Compile Include="ViewModels\LocalTutorialsVM.cs" />
-    <Compile Include="ViewModels\LogWindowVM.cs" />
-    <Compile Include="ViewModels\MainWindowVM.cs" />
-    <Compile Include="ViewModels\ModifyBookVM.cs" />
-    <Compile Include="ViewModels\ModifyDormitoryVM.cs" />
-    <Compile Include="ViewModels\ModifyItemVM.cs" />
-    <Compile Include="ViewModels\ModifyStaffVM.cs" />
-    <Compile Include="ViewModels\ModifyStudentVM.cs" />
-    <Compile Include="ViewModels\ModifySubjectsSetupVM.cs" />
-    <Compile Include="ViewModels\ModifySupplierVM.cs" />
-    <Compile Include="ViewModels\NetworkOptionsVM.cs" />
-    <Compile Include="ViewModels\NewBookVM.cs" />
-    <Compile Include="ViewModels\NewDormitoryVM.cs" />
-    <Compile Include="ViewModels\NewEmployeePaymentVM.cs" />
-    <Compile Include="ViewModels\NewEventVM.cs" />
-    <Compile Include="ViewModels\NewExamVM.cs" />
-    <Compile Include="ViewModels\NewFeesPaymentVM.cs" />
-    <Compile Include="ViewModels\NewGalleryItemVM.cs" />
-    <Compile Include="ViewModels\NewItemCategoryVM.cs" />
-    <Compile Include="ViewModels\NewItemVM.cs" />
-    <Compile Include="ViewModels\NewPaymentVoucherVM.cs" />
-    <Compile Include="ViewModels\NewPaySlipVM.cs" />
-    <Compile Include="ViewModels\NewReportVM.cs" />
-    <Compile Include="ViewModels\NewStaffVM.cs" />
-    <Compile Include="ViewModels\NewStudentVM.cs" />
-    <Compile Include="ViewModels\NewSupplierVM.cs" />
-    <Compile Include="ViewModels\NewVATRateVM.cs" />
-    <Compile Include="ViewModels\OnlineResourcesVM.cs" />
-    <Compile Include="ViewModels\PAYEInfoVM.cs" />
-    <Compile Include="ViewModels\PaymentHistoryVM.cs" />
-    <Compile Include="ViewModels\PaymentsByVoteHeadVM.cs" />
-    <Compile Include="ViewModels\PaymentToSupplierHistoryVM.cs" />
-    <Compile Include="ViewModels\PaymentToSupplierVM.cs" />
-    <Compile Include="ViewModels\PaymentVoucherHistoryVM.cs" />
-    <Compile Include="ViewModels\PayrollVM.cs" />
-    <Compile Include="ViewModels\PayslipsHistoryVM.cs" />
-    <Compile Include="ViewModels\PDFViewVM.cs" />
-    <Compile Include="ViewModels\QueryEditorVM.cs" />
-    <Compile Include="ViewModels\QuickBooksVM.cs" />
-    <Compile Include="ViewModels\ReceiveBooksVM.cs" />
-    <Compile Include="ViewModels\ReceiveItemsVM.cs" />
-    <Compile Include="ViewModels\RecentGalleryItemsVM.cs" />
-    <Compile Include="ViewModels\RemoveAccountVM.cs" />
-    <Compile Include="ViewModels\RemoveBillVM.cs" />
-    <Compile Include="ViewModels\RemoveExamVM.cs" />
-    <Compile Include="ViewModels\RemovePayment.cs" />
-    <Compile Include="ViewModels\RemoveSupplierVM.cs" />
-    <Compile Include="ViewModels\ReportsHomeVM.cs" />
-    <Compile Include="ViewModels\ReportsVM.cs" />
-    <Compile Include="ViewModels\ReprintPaymentVoucherVM.cs" />
-    <Compile Include="ViewModels\ReprintPaySlipVM.cs" />
-    <Compile Include="ViewModels\ReprintReceiptVM.cs" />
-    <Compile Include="ViewModels\SetFeesStructureVM.cs" />
-    <Compile Include="ViewModels\SettingsVM.cs" />
-    <Compile Include="ViewModels\StaffDetailsVM.cs" />
-    <Compile Include="ViewModels\StaffListVM.cs" />
-    <Compile Include="ViewModels\StaffVM.cs" />
-    <Compile Include="ViewModels\StartupRepairVM.cs" />
-    <Compile Include="ViewModels\StockTakeResultsVM.cs" />
-    <Compile Include="ViewModels\StockTakingsVM.cs" />
-    <Compile Include="ViewModels\StockTakingVM.cs" />
-    <Compile Include="ViewModels\StudentClearanceVM.cs" />
-    <Compile Include="ViewModels\StudentDetailsVM.cs" />
-    <Compile Include="ViewModels\StudentListVM.cs" />
-    <Compile Include="ViewModels\StudentsVM.cs" />
-    <Compile Include="ViewModels\StudentTranscriptVM.cs" />
-    <Compile Include="ViewModels\StudentTransferVM.cs" />
-    <Compile Include="ViewModels\SubjectSelectionFastVM.cs" />
-    <Compile Include="ViewModels\SubjectSelectionVM.cs" />
-    <Compile Include="ViewModels\SupplierListVM.cs" />
-    <Compile Include="ViewModels\SupplierReportsVM.cs" />
-    <Compile Include="ViewModels\SupplierStatementVM.cs" />
-    <Compile Include="ViewModels\SuppliersVM.cs" />
-    <Compile Include="ViewModels\SyncCloudVM.cs" />
-    <Compile Include="ViewModels\AcademicYearSetupVM.cs" />
-    <Compile Include="ViewModels\UnreturnedBooksVM.cs" />
-    <Compile Include="ViewModels\UpcomingEventsVM.cs" />
-    <Compile Include="ViewModels\VATAnalysisVM.cs" />
-    <Compile Include="ViewModels\VATsVM.cs" />
-    <Compile Include="ViewModels\ViewBooksVM.cs" />
-    <Compile Include="ViewModels\ViewExamResultsVM.cs" />
-    <Compile Include="ViewModels\ViewFeesStructureVM.cs" />
-    <Compile Include="ViewModels\ViewFullFeesStructureVM.cs" />
-    <Compile Include="Views\Accounts.xaml.cs">
-      <DependentUpon>Accounts.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AccountsBalanceSheet.xaml.cs">
-      <DependentUpon>AccountsBalanceSheet.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AccountsIncomeStatement.xaml.cs">
-      <DependentUpon>AccountsIncomeStatement.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AccountsStatementOfCF.xaml.cs">
-      <DependentUpon>AccountsStatementOfCF.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AccountsTrialBalance.xaml.cs">
-      <DependentUpon>AccountsTrialBalance.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AllUnreturnedBooks.xaml.cs">
+    <Compile Include="Modules\System\ViewModels\AdvancedSettingsVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\AggregateResultsVM.cs" />
+    <Compile Include="Modules\Library\ViewModels\AllBooksVM.cs" />
+    <Compile Include="Modules\Library\ViewModels\AllUnreturnedBooksVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\AssignNewClassVM.cs" />
+    <Compile Include="Modules\System\ViewModels\BackupVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\BalancesListVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\BillStudentVM.cs" />
+    <Compile Include="Modules\Library\ViewModels\BookReturnVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\MarkListsVM.cs" />
+    <Compile Include="Modules\System\ViewModels\ChangeDbVM.cs" />
+    <Compile Include="Modules\System\ViewModels\ChangeSAPasswordVM.cs" />
+    <Compile Include="Modules\Institution\ViewModels\ClassesSetupVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\ClassListVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\ClassReportFormsVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\CombinedAggregateResultsVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\CombinedClassListVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\WeightedMarkListsVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\DisciplineDetailsVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\DisciplineTrackerHistoryVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\DisciplineTrackerVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\EnterExamResultsBySubjectVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\EnterExamResultsVM.cs" />
+    <Compile Include="Modules\Institution\ViewModels\ExamSetupVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\FeesPaymentHistoryVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\FeesStatementVM.cs" />
+    <Compile Include="Modules\System\ViewModels\FirstRunVM.cs" />
+    <Compile Include="Modules\System\ViewModels\GeneralSettingsVM.cs" />
+    <Compile Include="Modules\System\ViewModels\HomePageVM.cs" />
+    <Compile Include="Modules\Institution\ViewModels\InstitutionSetupVM.cs" />
+    <Compile Include="Modules\Institution\ViewModels\InstitutionSubjectsSetupVM.cs" />
+    <Compile Include="Modules\Library\ViewModels\IssueBookVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\ItemCategoryListVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\ItemListVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\ItemReceiptHistoryVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\LeavingCertificateVM.cs" />
+    <Compile Include="Modules\System\ViewModels\LogWindowVM.cs" />
+    <Compile Include="Modules\System\ViewModels\MainWindowVM.cs" />
+    <Compile Include="Modules\Library\ViewModels\ModifyBookVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\ModifyItemVM.cs" />
+    <Compile Include="Modules\Staff\ViewModels\ModifyStaffVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\ModifyStudentVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\ModifySupplierVM.cs" />
+    <Compile Include="Modules\System\ViewModels\NetworkOptionsVM.cs" />
+    <Compile Include="Modules\Library\ViewModels\NewBookVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\NewExamVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\NewFeesPaymentVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\NewItemCategoryVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\NewItemVM.cs" />
+    <Compile Include="Modules\Staff\ViewModels\NewStaffVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\NewStudentVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\NewSupplierVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\PaymentsByVoteHeadVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\PaymentToSupplierHistoryVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\PaymentToSupplierVM.cs" />
+    <Compile Include="Modules\System\ViewModels\PDFViewVM.cs" />
+    <Compile Include="Modules\System\ViewModels\QueryEditorVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\ReceiveItemsVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\RemoveBillVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\RemoveExamVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\RemovePayment.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\RemoveSupplierVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\ReprintPaymentVoucherVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\ReprintReceiptVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\SetFeesStructureVM.cs" />
+    <Compile Include="Modules\Staff\ViewModels\StaffDetailsVM.cs" />
+    <Compile Include="Modules\Staff\ViewModels\StaffListVM.cs" />
+    <Compile Include="Modules\System\ViewModels\StartupRepairVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\StockTakeResultsVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\StockTakingsVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\StockTakingVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\StudentClearanceVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\StudentDetailsVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\StudentListVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\StudentTranscriptVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\SubjectSelectionFastVM.cs" />
+    <Compile Include="Modules\Students\ViewModels\SubjectSelectionVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\SupplierListVM.cs" />
+    <Compile Include="Modules\Purchases\ViewModels\SupplierStatementVM.cs" />
+    <Compile Include="Modules\System\ViewModels\SyncCloudVM.cs" />
+    <Compile Include="Modules\Institution\ViewModels\AcademicYearSetupVM.cs" />
+    <Compile Include="Modules\Library\ViewModels\UnreturnedBooksVM.cs" />
+    <Compile Include="Modules\Library\ViewModels\ViewBooksVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\ViewExamResultsVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\ViewFeesStructureVM.cs" />
+    <Compile Include="Modules\Fees\ViewModels\ViewFullFeesStructureVM.cs" />
+    <Compile Include="Modules\Library\Views\AllUnreturnedBooks.xaml.cs">
       <DependentUpon>AllUnreturnedBooks.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookReceiptHistory.xaml.cs">
-      <DependentUpon>BookReceiptHistory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Books.xaml.cs">
-      <DependentUpon>Books.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ChangeSAPassword.xaml.cs">
+    <Compile Include="Modules\System\Views\ChangeSAPassword.xaml.cs">
       <DependentUpon>ChangeSAPassword.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChartOfAccounts.xaml.cs">
-      <DependentUpon>ChartOfAccounts.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ClassLeavingCertificates.xaml.cs">
-      <DependentUpon>ClassLeavingCertificates.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CombinedAggregateResults.xaml.cs">
+    <Compile Include="Modules\Exams\Views\CombinedAggregateResults.xaml.cs">
       <DependentUpon>CombinedAggregateResults.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CombinedMarkLists.xaml.cs">
+    <Compile Include="Modules\Exams\Views\CombinedMarkLists.xaml.cs">
       <DependentUpon>CombinedMarkLists.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CurrentExpenditure.xaml.cs">
-      <DependentUpon>CurrentExpenditure.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CustomModules.xaml.cs">
-      <DependentUpon>CustomModules.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EventDetails.xaml.cs">
-      <DependentUpon>EventDetails.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ExamRegistration.xaml.cs">
-      <DependentUpon>ExamRegistration.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ExamSetup.xaml.cs">
+    <Compile Include="Modules\Institution\Views\ExamSetup.xaml.cs">
       <DependentUpon>ExamSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FeesPaymentHistory.xaml.cs">
+    <Compile Include="Modules\Fees\Views\FeesPaymentHistory.xaml.cs">
       <DependentUpon>FeesPaymentHistory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FindBooks.xaml.cs">
+    <Compile Include="Modules\Library\Views\FindBooks.xaml.cs">
       <DependentUpon>FindBooks.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FindObject.xaml.cs">
-      <DependentUpon>FindObject.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InstitutionSubjectsSetup.xaml.cs">
+    <Compile Include="Modules\Institution\Views\InstitutionSubjectsSetup.xaml.cs">
       <DependentUpon>InstitutionSubjectsSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\InvalidLicense.xaml.cs">
+    <Compile Include="Modules\System\Views\InvalidLicense.xaml.cs">
       <DependentUpon>InvalidLicense.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LogWindow.xaml.cs">
+    <Compile Include="Modules\System\Views\LogWindow.xaml.cs">
       <DependentUpon>LogWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MarkLists.xaml.cs">
+    <Compile Include="Modules\Exams\Views\MarkLists.xaml.cs">
       <DependentUpon>MarkLists.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ModifySubjectsSetup.xaml.cs">
-      <DependentUpon>ModifySubjectsSetup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ModifyTimeTableFull.xaml.cs">
-      <DependentUpon>ModifyTimeTableFull.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NewPaySlip.xaml.cs">
-      <DependentUpon>NewPaySlip.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PayslipsHistory.xaml.cs">
-      <DependentUpon>PayslipsHistory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PrepareBudget.xaml.cs">
-      <DependentUpon>PrepareBudget.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\QuickBooksSync.xaml.cs">
-      <DependentUpon>QuickBooksSync.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ReceiveBooks.xaml.cs">
+    <Compile Include="Modules\Library\Views\ReceiveBooks.xaml.cs">
       <DependentUpon>ReceiveBooks.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RemoveAccount.xaml.cs">
-      <DependentUpon>RemoveAccount.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RemoveExam.xaml.cs">
+    <Compile Include="Modules\Exams\Views\RemoveExam.xaml.cs">
       <DependentUpon>RemoveExam.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Activation.xaml.cs">
+    <Compile Include="Modules\System\Views\Activation.xaml.cs">
       <DependentUpon>Activation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AssignNewClass.xaml.cs">
+    <Compile Include="Modules\Students\Views\AssignNewClass.xaml.cs">
       <DependentUpon>AssignNewClass.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Backup.xaml.cs">
+    <Compile Include="Modules\System\Views\Backup.xaml.cs">
       <DependentUpon>Backup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BillStudents.xaml.cs">
+    <Compile Include="Modules\Fees\Views\BillStudents.xaml.cs">
       <DependentUpon>BillStudents.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClassReportFoms.xaml.cs">
+    <Compile Include="Modules\Exams\Views\ClassReportFoms.xaml.cs">
       <DependentUpon>ClassReportFoms.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CombinedClassList.xaml.cs">
+    <Compile Include="Modules\Students\Views\CombinedClassList.xaml.cs">
       <DependentUpon>CombinedClassList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DiscipineDetails.xaml.cs">
+    <Compile Include="Modules\Students\Views\DiscipineDetails.xaml.cs">
       <DependentUpon>DiscipineDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DisciplineTracker.xaml.cs">
+    <Compile Include="Modules\Students\Views\DisciplineTracker.xaml.cs">
       <DependentUpon>DisciplineTracker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DisciplineTrackerHistory.xaml.cs">
+    <Compile Include="Modules\Students\Views\DisciplineTrackerHistory.xaml.cs">
       <DependentUpon>DisciplineTrackerHistory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EnterExamResultsBySubject.xaml.cs">
+    <Compile Include="Modules\Exams\Views\EnterExamResultsBySubject.xaml.cs">
       <DependentUpon>EnterExamResultsBySubject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\IssueItems.xaml.cs">
-      <DependentUpon>IssueItems.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ItemIssueHistory.xaml.cs">
-      <DependentUpon>ItemIssueHistory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LocalTutorials.xaml.cs">
-      <DependentUpon>LocalTutorials.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NewReport.xaml.cs">
-      <DependentUpon>NewReport.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\OnlineResources.xaml.cs">
-      <DependentUpon>OnlineResources.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PaymentsByVoteHead.xaml.cs">
+    <Compile Include="Modules\Fees\Views\PaymentsByVoteHead.xaml.cs">
       <DependentUpon>PaymentsByVoteHead.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Reports.xaml.cs">
-      <DependentUpon>Reports.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BookReturn.xaml.cs">
+    <Compile Include="Modules\Library\Views\BookReturn.xaml.cs">
       <DependentUpon>BookReturn.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClassList.xaml.cs">
+    <Compile Include="Modules\Students\Views\ClassList.xaml.cs">
       <DependentUpon>ClassList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AggregateResults.xaml.cs">
+    <Compile Include="Modules\Exams\Views\AggregateResults.xaml.cs">
       <DependentUpon>AggregateResults.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DormitoryMembers.xaml.cs">
-      <DependentUpon>DormitoryMembers.xaml</DependentUpon>
+    <Compile Include="Modules\Fees\Views\BalancesList.xaml.cs">
+      <DependentUpon>BalancesList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EmployeePaymentHistory.xaml.cs">
-      <DependentUpon>EmployeePaymentHistory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FeesDefaulters.xaml.cs">
-      <DependentUpon>FeesDefaulters.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FindItems.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\FindItems.xaml.cs">
       <DependentUpon>FindItems.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstRun\Colors.xaml.cs">
+    <Compile Include="Modules\System\Views\FirstRun\Colors.xaml.cs">
       <DependentUpon>Colors.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstRun\Finally.xaml.cs">
+    <Compile Include="Modules\System\Views\FirstRun\Finally.xaml.cs">
       <DependentUpon>Finally.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstRun\ImportData.xaml.cs">
+    <Compile Include="Modules\System\Views\FirstRun\ImportData.xaml.cs">
       <DependentUpon>ImportData.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstRun\ImportData2.xaml.cs">
+    <Compile Include="Modules\System\Views\FirstRun\ImportData2.xaml.cs">
       <DependentUpon>ImportData2.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstRun\InstitutionSetup.xaml.cs">
+    <Compile Include="Modules\System\Views\FirstRun\InstitutionSetup.xaml.cs">
       <DependentUpon>InstitutionSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstRun\FirstRun.xaml.cs">
+    <Compile Include="Modules\System\Views\FirstRun\FirstRun.xaml.cs">
       <DependentUpon>FirstRun.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstRun\Logo.xaml.cs">
+    <Compile Include="Modules\System\Views\FirstRun\Logo.xaml.cs">
       <DependentUpon>Logo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstRun\Welcome.xaml.cs">
+    <Compile Include="Modules\System\Views\FirstRun\Welcome.xaml.cs">
       <DependentUpon>Welcome.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\InstitutionInfo.xaml.cs">
-      <DependentUpon>InstitutionInfo.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InventoryMgmt.xaml.cs">
-      <DependentUpon>InventoryMgmt.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\IssueBook.xaml.cs">
+    <Compile Include="Modules\Library\Views\IssueBook.xaml.cs">
       <DependentUpon>IssueBook.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ItemList.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\ItemList.xaml.cs">
       <DependentUpon>ItemList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Items.xaml.cs">
-      <DependentUpon>Items.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ItemReceiptHistory.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\ItemReceiptHistory.xaml.cs">
       <DependentUpon>ItemReceiptHistory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LeavingCertificate.xaml.cs">
+    <Compile Include="Modules\Students\Views\LeavingCertificate.xaml.cs">
       <DependentUpon>LeavingCertificate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ModifyBook.xaml.cs">
+    <Compile Include="Modules\Library\Views\ModifyBook.xaml.cs">
       <DependentUpon>ModifyBook.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ModifyItem.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\ModifyItem.xaml.cs">
       <DependentUpon>ModifyItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ModifyStaff.xaml.cs">
+    <Compile Include="Modules\Staff\Views\ModifyStaff.xaml.cs">
       <DependentUpon>ModifyStaff.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ModifyStudent.xaml.cs">
+    <Compile Include="Modules\Students\Views\ModifyStudent.xaml.cs">
       <DependentUpon>ModifyStudent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ModifySupplier.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\ModifySupplier.xaml.cs">
       <DependentUpon>ModifySupplier.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NetworkOptions.xaml.cs">
+    <Compile Include="Modules\System\Views\NetworkOptions.xaml.cs">
       <DependentUpon>NetworkOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewBook.xaml.cs">
+    <Compile Include="Modules\Library\Views\NewBook.xaml.cs">
       <DependentUpon>NewBook.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewDormitory.xaml.cs">
-      <DependentUpon>NewDormitory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NewEmployeePayment.xaml.cs">
-      <DependentUpon>NewEmployeePayment.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NewGalleryItem.xaml.cs">
-      <DependentUpon>NewGalleryItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AdvancedSettings.xaml.cs">
+    <Compile Include="Modules\System\Views\AdvancedSettings.xaml.cs">
       <DependentUpon>AdvancedSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AllEvents.xaml.cs">
-      <DependentUpon>AllEvents.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AllItems.xaml.cs">
-      <DependentUpon>AllItems.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ClassesSetup.xaml.cs">
+    <Compile Include="Modules\Institution\Views\ClassesSetup.xaml.cs">
       <DependentUpon>ClassesSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Library.xaml.cs">
-      <DependentUpon>Library.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Exams.xaml.cs">
-      <DependentUpon>Exams.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Fees.xaml.cs">
-      <DependentUpon>Fees.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FeesStatement.xaml.cs">
+    <Compile Include="Modules\Fees\Views\FeesStatement.xaml.cs">
       <DependentUpon>FeesStatement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewItem.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\NewItem.xaml.cs">
       <DependentUpon>NewItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewItemCategory.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\NewItemCategory.xaml.cs">
       <DependentUpon>NewItemCategory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewPaymentVoucher.xaml.cs">
-      <DependentUpon>NewPaymentVoucher.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NewSupplier.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\NewSupplier.xaml.cs">
       <DependentUpon>NewSupplier.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewVATRate.xaml.cs">
-      <DependentUpon>NewVATRate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PAYEInfo.xaml.cs">
-      <DependentUpon>PAYEInfo.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PaymentToSupplier.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\PaymentToSupplier.xaml.cs">
       <DependentUpon>PaymentToSupplier.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PaymentToSupplierHistory.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\PaymentToSupplierHistory.xaml.cs">
       <DependentUpon>PaymentToSupplierHistory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PaymentVoucherHistory.xaml.cs">
-      <DependentUpon>PaymentVoucherHistory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Payroll.xaml.cs">
-      <DependentUpon>Payroll.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PDFView.xaml.cs">
+    <Compile Include="Modules\System\Views\PDFView.xaml.cs">
       <DependentUpon>PDFView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PDFViewer.cs">
+    <Compile Include="Controls\PDFViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\PDFViewer.Designer.cs">
+    <Compile Include="Controls\PDFViewer.Designer.cs">
       <DependentUpon>PDFViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\QueryEditor.xaml.cs">
+    <Compile Include="Modules\System\Views\QueryEditor.xaml.cs">
       <DependentUpon>QueryEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ReceiveItems.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\ReceiveItems.xaml.cs">
       <DependentUpon>ReceiveItems.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RemoveBill.xaml.cs">
+    <Compile Include="Modules\Fees\Views\RemoveBill.xaml.cs">
       <DependentUpon>RemoveBill.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RemovePayment.xaml.cs">
+    <Compile Include="Modules\Fees\Views\RemovePayment.xaml.cs">
       <DependentUpon>RemovePayment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ReportsHome.xaml.cs">
-      <DependentUpon>ReportsHome.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ReprintPaymentVoucher.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\ReprintPaymentVoucher.xaml.cs">
       <DependentUpon>ReprintPaymentVoucher.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ReprintPaySlip.xaml.cs">
-      <DependentUpon>ReprintPaySlip.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ReprintReceipt.xaml.cs">
+    <Compile Include="Modules\Fees\Views\ReprintReceipt.xaml.cs">
       <DependentUpon>ReprintReceipt.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SetFeesStructure.xaml.cs">
+    <Compile Include="Modules\Fees\Views\SetFeesStructure.xaml.cs">
       <DependentUpon>SetFeesStructure.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Gallery.xaml.cs">
-      <DependentUpon>Gallery.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\GeneralSettings.xaml.cs">
+    <Compile Include="Modules\System\Views\GeneralSettings.xaml.cs">
       <DependentUpon>GeneralSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewEvent.xaml.cs">
-      <DependentUpon>NewEvent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NewFeesPayment.xaml.cs">
+    <Compile Include="Modules\Fees\Views\NewFeesPayment.xaml.cs">
       <DependentUpon>NewFeesPayment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StaffDetails.xaml.cs">
+    <Compile Include="Modules\Staff\Views\StaffDetails.xaml.cs">
       <DependentUpon>StaffDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StockTakeResults.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\StockTakeResults.xaml.cs">
       <DependentUpon>StockTakeResults.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StockTaking.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\StockTaking.xaml.cs">
       <DependentUpon>StockTaking.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StockTakings.xaml.cs">
-      <DependentUpon>StockTakings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StudentClearance.xaml.cs">
+    <Compile Include="Modules\Students\Views\StudentClearance.xaml.cs">
       <DependentUpon>StudentClearance.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StudentDetails.xaml.cs">
+    <Compile Include="Modules\Students\Views\StudentDetails.xaml.cs">
       <DependentUpon>StudentDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StudentTranscript.xaml.cs">
+    <Compile Include="Modules\Exams\Views\StudentTranscript.xaml.cs">
       <DependentUpon>StudentTranscript.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StudentTranscript2.xaml.cs">
+    <Compile Include="Modules\Exams\Views\StudentTranscript2.xaml.cs">
       <DependentUpon>StudentTranscript2.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StudentTransfer.xaml.cs">
-      <DependentUpon>StudentTransfer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SubjectSelection.xaml.cs">
+    <Compile Include="Modules\Students\Views\SubjectSelection.xaml.cs">
       <DependentUpon>SubjectSelection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubjectSelectionFast.xaml.cs">
+    <Compile Include="Modules\Students\Views\SubjectSelectionFast.xaml.cs">
       <DependentUpon>SubjectSelectionFast.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SupplierList.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\SupplierList.xaml.cs">
       <DependentUpon>SupplierList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Suppliers.xaml.cs">
-      <DependentUpon>Suppliers.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SupplierStatement.xaml.cs">
+    <Compile Include="Modules\Purchases\Views\SupplierStatement.xaml.cs">
       <DependentUpon>SupplierStatement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SyncCloud.xaml.cs">
+    <Compile Include="Modules\System\Views\SyncCloud.xaml.cs">
       <DependentUpon>SyncCloud.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AcademicYearSetup.xaml.cs">
+    <Compile Include="Modules\Institution\Views\AcademicYearSetup.xaml.cs">
       <DependentUpon>AcademicYearSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Test.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\Test.Designer.cs">
-      <DependentUpon>Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UnreturnedBooks.xaml.cs">
+    <Compile Include="Modules\Library\Views\UnreturnedBooks.xaml.cs">
       <DependentUpon>UnreturnedBooks.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UpcomingEvents.xaml.cs">
-      <DependentUpon>UpcomingEvents.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RecentItems.xaml.cs">
-      <DependentUpon>RecentItems.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Institution.xaml.cs">
-      <DependentUpon>Institution.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InstitutionSetup.xaml.cs">
+    <Compile Include="Modules\Institution\Views\InstitutionSetup.xaml.cs">
       <DependentUpon>InstitutionSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NewExam.xaml.cs">
+    <Compile Include="Modules\Exams\Views\NewExam.xaml.cs">
       <DependentUpon>NewExam.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewStudent.xaml.cs">
+    <Compile Include="Modules\Students\Views\NewStudent.xaml.cs">
       <DependentUpon>NewStudent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Help.xaml.cs">
+    <Compile Include="Modules\System\Views\Help.xaml.cs">
       <DependentUpon>Help.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Staff.xaml.cs">
-      <DependentUpon>Staff.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StaffList.xaml.cs">
+    <Compile Include="Modules\Staff\Views\StaffList.xaml.cs">
       <DependentUpon>StaffList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewStaff.xaml.cs">
+    <Compile Include="Modules\Staff\Views\NewStaff.xaml.cs">
       <DependentUpon>NewStaff.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StartupRepair.xaml.cs">
+    <Compile Include="Modules\System\Views\StartupRepair.xaml.cs">
       <DependentUpon>StartupRepair.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StudentList.xaml.cs">
+    <Compile Include="Modules\Students\Views\StudentList.xaml.cs">
       <DependentUpon>StudentList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Students.xaml.cs">
-      <DependentUpon>Students.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\VATAnalysis.xaml.cs">
-      <DependentUpon>VATAnalysis.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\VATs.xaml.cs">
-      <DependentUpon>VATs.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ViewBooks.xaml.cs">
+    <Compile Include="Modules\Library\Views\ViewBooks.xaml.cs">
       <DependentUpon>ViewBooks.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewExamResults.xaml.cs">
+    <Compile Include="Modules\Exams\Views\ViewExamResults.xaml.cs">
       <DependentUpon>ViewExamResults.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewFeesStructure.xaml.cs">
+    <Compile Include="Modules\Fees\Views\ViewFeesStructure.xaml.cs">
       <DependentUpon>ViewFeesStructure.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewFullFeesStructure.xaml.cs">
+    <Compile Include="Modules\Fees\Views\ViewFullFeesStructure.xaml.cs">
       <DependentUpon>ViewFullFeesStructure.xaml</DependentUpon>
     </Compile>
-    <Page Include="DropDown.xaml">
+    <Page Include="Modules\Exams\Resources\AggregateResult.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GalleryListBoxItem.xaml">
+    <Page Include="Modules\Exams\Resources\ClassMarkList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ModelsDataTemplates.xaml">
+    <Page Include="Modules\Exams\Resources\ReportForm.xaml">
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Exams\Resources\Transcript.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Exams\Resources\Transcript2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Exams\Resources\Transcript3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Exams\Resources\Transcript4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Fees\Resources\Balances.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Fees\Resources\FullFeesStructure.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Fees\Resources\Receipt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Fees\Resources\Receipt2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Fees\Resources\Statement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Library\Resources\UnreturnedBooks.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Library\Resources\UnreturnedBooks2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Purchases\Resources\PaymentVoucher.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Purchases\Resources\PaymentVoucher2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Purchases\Resources\SupplierStatement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Students\Resources\ClassList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Students\Resources\LeavingCert.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewModelsDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\About.xaml">
+    <Page Include="Modules\System\Views\About.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="LoginWindow.xaml">
+    <Page Include="Modules\System\Views\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Accounts.xaml">
+    <Page Include="Modules\Library\Views\AllUnreturnedBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AccountsBalanceSheet.xaml">
+    <Page Include="Modules\System\Views\ChangeSAPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AccountsIncomeStatement.xaml">
+    <Page Include="Modules\Exams\Views\CombinedAggregateResults.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AccountsStatementOfCF.xaml">
+    <Page Include="Modules\Exams\Views\CombinedMarkLists.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AccountsTrialBalance.xaml">
+    <Page Include="Modules\Institution\Views\ExamSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AllUnreturnedBooks.xaml">
+    <Page Include="Modules\Fees\Views\FeesPaymentHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BookReceiptHistory.xaml">
+    <Page Include="Modules\Library\Views\FindBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Books.xaml">
+    <Page Include="Modules\Institution\Views\InstitutionSubjectsSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChangeSAPassword.xaml">
+    <Page Include="Modules\System\Views\InvalidLicense.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChartOfAccounts.xaml">
+    <Page Include="Modules\System\Views\LogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ClassLeavingCertificates.xaml">
+    <Page Include="Modules\Exams\Views\MarkLists.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CombinedAggregateResults.xaml">
+    <Page Include="Modules\Library\Views\ReceiveBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CombinedMarkLists.xaml">
+    <Page Include="Modules\Exams\Views\RemoveExam.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CurrentExpenditure.xaml">
+    <Page Include="Modules\System\Views\Activation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CustomModules.xaml">
+    <Page Include="Modules\Students\Views\AssignNewClass.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EventDetails.xaml">
+    <Page Include="Modules\System\Views\Backup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ExamRegistration.xaml">
+    <Page Include="Modules\Fees\Views\BillStudents.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ExamSetup.xaml">
+    <Page Include="Modules\Exams\Views\ClassReportFoms.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FeesPaymentHistory.xaml">
+    <Page Include="Modules\Students\Views\CombinedClassList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FindBooks.xaml">
+    <Page Include="Modules\Students\Views\DiscipineDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FindObject.xaml">
+    <Page Include="Modules\Students\Views\DisciplineTracker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\InstitutionSubjectsSetup.xaml">
+    <Page Include="Modules\Students\Views\DisciplineTrackerHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\InvalidLicense.xaml">
+    <Page Include="Modules\Exams\Views\EnterExamResultsBySubject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LogWindow.xaml">
+    <Page Include="Modules\Fees\Views\PaymentsByVoteHead.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MarkLists.xaml">
+    <Page Include="Modules\Library\Views\BookReturn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ModifySubjectsSetup.xaml">
+    <Page Include="Modules\Students\Views\ClassList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ModifyTimeTableFull.xaml">
+    <Page Include="Modules\Exams\Views\AggregateResults.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewPaySlip.xaml">
+    <Page Include="Modules\Fees\Views\BalancesList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PayslipsHistory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PrepareBudget.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\QuickBooksSync.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ReceiveBooks.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\RemoveAccount.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\RemoveExam.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Activation.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AssignNewClass.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Backup.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\BillStudents.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ClassReportFoms.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CombinedClassList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DiscipineDetails.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DisciplineTracker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DisciplineTrackerHistory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EnterExamResultsBySubject.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\IssueItems.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ItemIssueHistory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\LocalTutorials.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NewReport.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\OnlineResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PaymentsByVoteHead.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Reports.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\BookReturn.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ClassList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AggregateResults.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DormitoryMembers.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EmployeePaymentHistory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FeesDefaulters.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FindItems.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\FirstRun\Colors.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FirstRun\Finally.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FirstRun\ImportData.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FirstRun\ImportData2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FirstRun\InstitutionSetup.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FirstRun\FirstRun.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FirstRun\Logo.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FirstRun\Welcome.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\InstitutionInfo.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\InventoryMgmt.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\IssueBook.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ItemList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Items.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ItemReceiptHistory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\LeavingCertificate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ModifyBook.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ModifyItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ModifyStaff.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ModifyStudent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ModifySupplier.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NetworkOptions.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NewBook.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NewDormitory.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Modules\Purchases\Views\FindItems.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NewEmployeePayment.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NewGalleryItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AdvancedSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AllEvents.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AllItems.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Library.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Exams.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Fees.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Gallery.xaml">
+    <Page Include="Modules\System\Views\FirstRun\Colors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GeneralSettings.xaml">
+    <Page Include="Modules\System\Views\FirstRun\Finally.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewEvent.xaml">
+    <Page Include="Modules\System\Views\FirstRun\ImportData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewItem.xaml">
+    <Page Include="Modules\System\Views\FirstRun\ImportData2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewItemCategory.xaml">
+    <Page Include="Modules\System\Views\FirstRun\InstitutionSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewPaymentVoucher.xaml">
+    <Page Include="Modules\System\Views\FirstRun\FirstRun.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewSupplier.xaml">
+    <Page Include="Modules\System\Views\FirstRun\Logo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewVATRate.xaml">
+    <Page Include="Modules\System\Views\FirstRun\Welcome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PAYEInfo.xaml">
+    <Page Include="Modules\Library\Views\IssueBook.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PaymentToSupplier.xaml">
+    <Page Include="Modules\Purchases\Views\ItemList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PaymentToSupplierHistory.xaml">
+    <Page Include="Modules\Purchases\Views\ItemReceiptHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PaymentVoucherHistory.xaml">
+    <Page Include="Modules\Students\Views\LeavingCertificate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Payroll.xaml">
+    <Page Include="Modules\Library\Views\ModifyBook.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PDFView.xaml">
+    <Page Include="Modules\Purchases\Views\ModifyItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\QueryEditor.xaml">
+    <Page Include="Modules\Staff\Views\ModifyStaff.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ReceiveItems.xaml">
+    <Page Include="Modules\Students\Views\ModifyStudent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RemoveBill.xaml">
+    <Page Include="Modules\Purchases\Views\ModifySupplier.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RemovePayment.xaml">
+    <Page Include="Modules\System\Views\NetworkOptions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ReportsHome.xaml">
+    <Page Include="Modules\Library\Views\NewBook.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ReprintPaymentVoucher.xaml">
+    <Page Include="Modules\System\Views\AdvancedSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ReprintPaySlip.xaml">
+    <Page Include="Modules\System\Views\GeneralSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ReprintReceipt.xaml">
+    <Page Include="Modules\Purchases\Views\NewItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StaffDetails.xaml">
+    <Page Include="Modules\Purchases\Views\NewItemCategory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StockTakeResults.xaml">
+    <Page Include="Modules\Purchases\Views\NewSupplier.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StockTaking.xaml">
+    <Page Include="Modules\Purchases\Views\PaymentToSupplier.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StockTakings.xaml">
+    <Page Include="Modules\Purchases\Views\PaymentToSupplierHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StudentClearance.xaml">
+    <Page Include="Modules\System\Views\PDFView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StudentDetails.xaml">
+    <Page Include="Modules\System\Views\QueryEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StudentTranscript.xaml">
+    <Page Include="Modules\Purchases\Views\ReceiveItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StudentTranscript2.xaml">
+    <Page Include="Modules\Fees\Views\RemoveBill.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StudentTransfer.xaml">
+    <Page Include="Modules\Fees\Views\RemovePayment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubjectSelection.xaml">
+    <Page Include="Modules\Purchases\Views\ReprintPaymentVoucher.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubjectSelectionFast.xaml">
+    <Page Include="Modules\Fees\Views\ReprintReceipt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SupplierList.xaml">
+    <Page Include="Modules\Staff\Views\StaffDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Suppliers.xaml">
+    <Page Include="Modules\Purchases\Views\StockTakeResults.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SupplierStatement.xaml">
+    <Page Include="Modules\Purchases\Views\StockTaking.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SyncCloud.xaml">
+    <Page Include="Modules\Students\Views\StudentClearance.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AcademicYearSetup.xaml">
+    <Page Include="Modules\Students\Views\StudentDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UnreturnedBooks.xaml">
+    <Page Include="Modules\Exams\Views\StudentTranscript.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UpcomingEvents.xaml">
+    <Page Include="Modules\Exams\Views\StudentTranscript2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RecentItems.xaml">
+    <Page Include="Modules\Students\Views\SubjectSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Institution.xaml">
+    <Page Include="Modules\Students\Views\SubjectSelectionFast.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Staff.xaml">
+    <Page Include="Modules\Purchases\Views\SupplierList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StartupRepair.xaml">
+    <Page Include="Modules\Purchases\Views\SupplierStatement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Students.xaml">
+    <Page Include="Modules\System\Views\SyncCloud.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\VATAnalysis.xaml">
+    <Page Include="Modules\Institution\Views\AcademicYearSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\VATs.xaml">
+    <Page Include="Modules\Library\Views\UnreturnedBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ViewBooks.xaml">
+    <Page Include="Modules\System\Views\StartupRepair.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ViewExamResults.xaml">
+    <Page Include="Modules\Library\Views\ViewBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ViewFeesStructure.xaml">
+    <Page Include="Modules\Exams\Views\ViewExamResults.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ViewFullFeesStructure.xaml">
+    <Page Include="Modules\Fees\Views\ViewFeesStructure.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ClassesSetup.xaml">
+    <Page Include="Modules\Fees\Views\ViewFullFeesStructure.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FeesStatement.xaml">
+    <Page Include="Modules\Institution\Views\ClassesSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SetFeesStructure.xaml">
+    <Page Include="Modules\Fees\Views\FeesStatement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewFeesPayment.xaml">
+    <Page Include="Modules\Fees\Views\SetFeesStructure.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\InstitutionSetup.xaml">
+    <Page Include="Modules\Fees\Views\NewFeesPayment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings.xaml">
+    <Page Include="Modules\Institution\Views\InstitutionSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewExam.xaml">
+    <Page Include="Modules\Exams\Views\NewExam.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewStudent.xaml">
+    <Page Include="Modules\Students\Views\NewStudent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Help.xaml">
+    <Page Include="Modules\System\Views\Help.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EnterExamResults.xaml">
+    <Page Include="Modules\Exams\Views\EnterExamResults.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\HomePage.xaml">
+    <Page Include="Modules\System\Views\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Views\About.xaml.cs">
+    <Compile Include="Modules\System\Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\EnterExamResults.xaml.cs">
+    <Compile Include="Modules\Exams\Views\EnterExamResults.xaml.cs">
       <DependentUpon>EnterExamResults.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HomePage.xaml.cs">
+    <Compile Include="Modules\System\Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\MainWindow.xaml">
+    <Page Include="Modules\System\Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\PrintDialog.xaml">
+    <Page Include="Modules\System\Views\PrintDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\StaffList.xaml">
+    <Page Include="Modules\Staff\Views\StaffList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NewStaff.xaml">
+    <Page Include="Modules\Staff\Views\NewStaff.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\StudentList.xaml">
+    <Page Include="Modules\Students\Views\StudentList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\MainWindow.xaml.cs">
+    <Compile Include="Modules\System\Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PrintDialog.xaml.cs">
+    <Compile Include="Modules\System\Views\PrintDialog.xaml.cs">
       <DependentUpon>PrintDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -1475,12 +1162,8 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <AppDesigner Include="Properties\" />
-    <EmbeddedResource Include="Views\PdfViewer.resx">
+    <EmbeddedResource Include="Controls\PdfViewer.resx">
       <DependentUpon>PDFViewer.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Test.resx">
-      <DependentUpon>Test.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
@@ -1493,9 +1176,9 @@
       <Project>{dad3387a-470a-4484-9427-a8c8faec6c0f}</Project>
       <Name>OpenXmlPackaging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Umanyi.Helper\UmanyiSMS.Helper.csproj">
+    <ProjectReference Include="..\Umanyi.Helper\UmanyiSMS.Lib.csproj">
       <Project>{C3938395-7C97-4474-866C-6E486819AF93}</Project>
-      <Name>UmanyiSMS.Helper</Name>
+      <Name>UmanyiSMS.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -1521,7 +1204,14 @@
   <ItemGroup>
     <Resource Include="Resources\noImage.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Modules\Institution\Controller\" />
+    <Folder Include="Modules\Institution\Resources\" />
+    <Folder Include="Modules\Staff\Controller\" />
+    <Folder Include="Modules\Staff\Resources\" />
+    <Folder Include="Modules\System\Controller\" />
+    <Folder Include="Modules\System\Resources\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
