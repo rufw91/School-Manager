@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using Helper.Models;
+using UmanyiSMS.Lib;
 
 namespace UmanyiSMS.Modules.Fees.Models
 {

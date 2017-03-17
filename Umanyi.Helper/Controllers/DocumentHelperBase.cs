@@ -11,12 +11,17 @@ namespace UmanyiSMS.Lib.Controllers
 {
     public abstract class DocumentHelperBase
     {
-        FixedDocument doc;
+        protected static FixedDocument doc { get; set; }
+        protected static int noOfPages { get; set; }
+        //protected static int itemsPerPage { get; set; }
+        protected static object myWorkObject { get; set; }
+        protected static string ResourceString { get; set; }
+
         public DocumentHelperBase()
         {
             doc = null;
         }
-        protected void AddPagesToDocument(int noOfPages,string pageDefn, FixedDocument doc)
+        protected void AddPagesToDocument(int noOfPages,string pageDefn)
         {
             try
             {

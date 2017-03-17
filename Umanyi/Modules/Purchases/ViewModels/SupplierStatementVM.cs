@@ -1,15 +1,14 @@
-﻿using Helper;
-using Helper.Models;
+﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Models;
+using UmanyiSMS.Modules.Purchases.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class SupplierStatementVM : ViewModelBase
@@ -45,7 +44,7 @@ namespace UmanyiSMS.ViewModels
             GenerateStatementCommand = new RelayCommand(async o =>
             {
                 var s = await
-                     DataAccess.GetSupplierStatementAsync(statement.SupplierID, statement.From, statement.To);
+                     DataController.GetSupplierStatementAsync(statement.SupplierID, statement.From, statement.To);
                 statement.BalanceBroughtForward = s.BalanceBroughtForward;
                 statement.TotalDue = s.TotalDue;
                 statement.TotalPayments = s.TotalPayments;

@@ -1,13 +1,16 @@
-﻿using Helper;
-using Helper.Models;
+﻿
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Models;
+using UmanyiSMS.Modules.Purchases.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class PaymentToSupplierVM: ViewModelBase
@@ -27,7 +30,7 @@ namespace UmanyiSMS.ViewModels
             Title = "NEW SUPPLIER PAYMENT";
             IsBusy = true;
             NewPayment = new SupplierPaymentModel();
-            AllSuppliers = await DataAccess.GetAllSuppliersAsync();
+            AllSuppliers = await DataController.GetAllSuppliersAsync();
             IsBusy = false;
         }
 
@@ -37,7 +40,7 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o => 
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewSupplierPaymentAsync(newPayment);
+                bool succ = await DataController.SaveNewSupplierPaymentAsync(newPayment);
                 if (succ)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -52,11 +55,11 @@ namespace UmanyiSMS.ViewModels
             SaveAndPrintCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewSupplierPaymentAsync(newPayment);
+                bool succ = await DataController.SaveNewSupplierPaymentAsync(newPayment);
                 if (succ)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    newPayment.SupplierPaymentID = await DataAccess.GetLastSupplierPaymentIDAsync(newPayment.SupplierID, newPayment.DatePaid);
+                    newPayment.SupplierPaymentID = await DataController.GetLastSupplierPaymentIDAsync(newPayment.SupplierID, newPayment.DatePaid);
 
                     Document = DocumentHelper.GenerateDocument(newPayment);
                     if (ShowPrintDialogAction != null)
@@ -158,7 +161,7 @@ namespace UmanyiSMS.ViewModels
         public async override void Reset()
         {
             NewPayment.Reset();
-            AllSuppliers = await DataAccess.GetAllSuppliersAsync();
+            AllSuppliers = await DataController.GetAllSuppliersAsync();
         }
     }
 }

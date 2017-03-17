@@ -170,6 +170,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Modules\Exams\Controller\DataController.cs" />
+    <Compile Include="Modules\Fees\Controller\DataController.cs" />
+    <Compile Include="Modules\Institution\Controller\DataController.cs" />
+    <Compile Include="Modules\Library\Controller\DataController.cs" />
+    <Compile Include="Modules\Purchases\Controller\DataController.cs" />
+    <Compile Include="Modules\Staff\Controller\DataController.cs" />
+    <Compile Include="Modules\Students\Controller\DataController.cs" />
+    <Compile Include="Modules\System\Controller\DataController.cs" />
     <Compile Include="Presentation\CommonCommands.cs" />
     <Compile Include="Modules\Exams\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Exams\Models\AggregateResultEntryModel.cs" />
@@ -180,7 +188,6 @@
     <Compile Include="Modules\Exams\Models\ClassTranscriptsModel.cs" />
     <Compile Include="Modules\Exams\Models\ClassTranscriptsModel2.cs" />
     <Compile Include="Modules\Exams\Models\ExamModel.cs" />
-    <Compile Include="Modules\Exams\Models\ExamRegistrationStudentModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultBaseModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultClassDisplayModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultClassModel.cs" />
@@ -188,15 +195,15 @@
     <Compile Include="Modules\Exams\Models\ExamResultStudentModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultStudentSubjectEntryModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultSubjectModel.cs" />
-    <Compile Include="Modules\Exams\Models\ExamSettingsModel.cs" />
+    <Compile Include="Modules\Institution\Models\ExamSettingsModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamSubjectEntryModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamWeightModel.cs" />
     <Compile Include="Modules\Exams\Models\ReportFormModel.cs" />
     <Compile Include="Modules\Exams\Models\ReportFormSubjectModel.cs" />
     <Compile Include="Modules\Exams\Models\StudentExamResultEntryModel.cs" />
     <Compile Include="Modules\Exams\Models\StudentExamResultModel.cs" />
-    <Compile Include="Modules\Exams\Models\StudentSubjectSelectionEntryModel.cs" />
-    <Compile Include="Modules\Exams\Models\StudentSubjectSelectionModel.cs" />
+    <Compile Include="Modules\Students\Models\StudentSubjectSelectionEntryModel.cs" />
+    <Compile Include="Modules\Students\Models\StudentSubjectSelectionModel.cs" />
     <Compile Include="Modules\Exams\Models\StudentTranscriptModel.cs" />
     <Compile Include="Modules\Exams\Models\StudentTranscriptModel2.cs" />
     <Compile Include="Modules\Exams\Models\StudentTranscriptSubjectModel.cs" />
@@ -306,9 +313,6 @@
     <Compile Include="Modules\Exams\ViewModels\CombinedAggregateResultsVM.cs" />
     <Compile Include="Modules\Students\ViewModels\CombinedClassListVM.cs" />
     <Compile Include="Modules\Exams\ViewModels\WeightedMarkListsVM.cs" />
-    <Compile Include="Modules\Students\ViewModels\DisciplineDetailsVM.cs" />
-    <Compile Include="Modules\Students\ViewModels\DisciplineTrackerHistoryVM.cs" />
-    <Compile Include="Modules\Students\ViewModels\DisciplineTrackerVM.cs" />
     <Compile Include="Modules\Exams\ViewModels\EnterExamResultsBySubjectVM.cs" />
     <Compile Include="Modules\Exams\ViewModels\EnterExamResultsVM.cs" />
     <Compile Include="Modules\Institution\ViewModels\ExamSetupVM.cs" />
@@ -357,7 +361,6 @@
     <Compile Include="Modules\Staff\ViewModels\StaffListVM.cs" />
     <Compile Include="Modules\System\ViewModels\StartupRepairVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\StockTakeResultsVM.cs" />
-    <Compile Include="Modules\Purchases\ViewModels\StockTakingsVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\StockTakingVM.cs" />
     <Compile Include="Modules\Students\ViewModels\StudentClearanceVM.cs" />
     <Compile Include="Modules\Students\ViewModels\StudentDetailsVM.cs" />
@@ -1205,11 +1208,8 @@
     <Resource Include="Resources\noImage.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Modules\Institution\Controller\" />
     <Folder Include="Modules\Institution\Resources\" />
-    <Folder Include="Modules\Staff\Controller\" />
     <Folder Include="Modules\Staff\Resources\" />
-    <Folder Include="Modules\System\Controller\" />
     <Folder Include="Modules\System\Resources\" />
   </ItemGroup>
   <ItemGroup>

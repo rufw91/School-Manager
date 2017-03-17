@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using UmanyiSMS.Modules.Purchases.Models;
+using UmanyiSMS.Modules.Students.Models;
 
 namespace UmanyiSMS.Modules.Fees.Models
 {

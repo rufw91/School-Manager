@@ -6,8 +6,13 @@ using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class NewExamVM : ViewModelBase
@@ -26,7 +31,7 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewExamAsync(newExam);
+                bool succ = await DataController.SaveNewExamAsync(newExam);
 
                 MessageBox.Show(succ ? "Successfully saved details." : "Could not save details.", succ ? "Success" : "Error", MessageBoxButton.OK, 
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
@@ -46,7 +51,7 @@ namespace UmanyiSMS.ViewModels
             Title = "NEW EXAM";
             SelectedCombinedClass =null;
             NewExam = new ExamModel();
-            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
             PropertyChanged +=async (o, e) =>
                 {
                     if (e.PropertyName=="SelectedCombinedClass")
@@ -98,7 +103,7 @@ namespace UmanyiSMS.ViewModels
             if (newExam.Classes.Count== 0)
                 return;
             var temp =
-                await DataAccess.GetSubjectsRegistredToCombinedClassAsync(selectedCombinedClass);
+                await DataController.GetSubjectsRegistredToCombinedClassAsync(selectedCombinedClass);
             foreach (SubjectModel sm in temp)
                 newExam.Entries.Add(new ExamSubjectEntryModel(sm));
         }
@@ -132,7 +137,7 @@ namespace UmanyiSMS.ViewModels
         {
             SelectedCombinedClass = null;
             NewExam = new ExamModel();
-            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
         }
     }
 }

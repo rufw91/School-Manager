@@ -1,11 +1,13 @@
-﻿using Helper;
-using System;
+﻿using System;
 using System.Security.Permissions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Controllers;
+using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.System.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "SystemAdmin")]
     public class AdvancedSettingsVM: ViewModelBase

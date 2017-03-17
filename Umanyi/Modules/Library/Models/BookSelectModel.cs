@@ -26,7 +26,7 @@ namespace UmanyiSMS.Modules.Library.Models
                 }
                 else
                 {
-                    BookModel book = DataAccess.GetBook(BookID);
+                    BookModel book = DataController.GetBook(BookID);
                     if (book.BookID == 0)
                     {
                         List<string> errors = new List<string>();

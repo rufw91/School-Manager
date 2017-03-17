@@ -1,31 +1,29 @@
-﻿using Helper;
-using Helper.Models;
-using Helper.Presentation;
-using System.Collections.ObjectModel;
-using System.Security.Permissions;
+﻿using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Controller;
+using UmanyiSMS.Modules.Purchases.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class NewItemCategoryVM : ViewModelBase
     {
         ItemCategoryModel category;
-        private ObservableCollection<IAccount> chartOfAccounts;
         public NewItemCategoryVM()
         {
             InitVars();
             CreateCommands();
         }
 
-        protected async override void InitVars()
+        protected override void InitVars()
         {
             Title = "NEW ACCOUNT";
             IsBusy = true;
             NewCategory = new ItemCategoryModel();
             IsBusy = false;
-            chartOfAccounts = await DataAccess.GetChartOfAccountsAsync();
             NotifyPropertyChanged("ChartOfAccounts");
         }
 
@@ -36,7 +34,7 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 if (!category.HasErrors)
                 {
-                    bool res = await DataAccess.SaveNewItemCategoryAsync(category);
+                    bool res = await DataController.SaveNewItemCategoryAsync(category);
                     if (res)
                     {
                         MessageBox.Show("Successfully Completed Operation.");
@@ -69,10 +67,7 @@ namespace UmanyiSMS.ViewModels
                 }
             }
         }
-
-        public ObservableCollection<IAccount> ChartOfAccounts
-        { get { return chartOfAccounts; } }
-
+        
         public override void Reset()
         {
             NewCategory.Reset();

@@ -1,16 +1,15 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Fees.Controller;
+using UmanyiSMS.Modules.Fees.Models;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Students.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class RemoveBillVM: ViewModelBase
@@ -32,7 +31,7 @@ namespace UmanyiSMS.ViewModels
             selectedStudent = new StudentSelectModel();
             selectedStudent.PropertyChanged += OnPropertyChanged;
             PropertyChanged += OnPropertyChanged;
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
             currentBill.SaleItems.CollectionChanged += (o, e) =>
             {
                 BillTotal = 0;
@@ -49,7 +48,7 @@ namespace UmanyiSMS.ViewModels
                 currentBill.SaleItems.Clear();
                 if (selectedTerm != null)
                 {
-                    SaleModel s = await DataAccess.GetTermInvoice(selectedStudent.StudentID, selectedTerm);
+                    SaleModel s = await DataController.GetTermInvoice(selectedStudent.StudentID, selectedTerm);
                     foreach (var f in s.SaleItems)
                         currentBill.SaleItems.Add(f);
                     currentBill.SaleID = s.SaleID;
@@ -67,7 +66,7 @@ namespace UmanyiSMS.ViewModels
                 if (MessageBoxResult.Yes == MessageBox.Show("Are you sure you would like to delete this Bill: \r\nStudent ID:"
                     + selectedStudent.StudentID + "\r\nAmount:" + currentBill.OrderTotal, "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
-                    bool succ = await DataAccess.RemoveSaleAsync(currentBill.SaleID);
+                    bool succ = await DataController.RemoveSaleAsync(currentBill.SaleID);
                     MessageBox.Show("Succesfully completed operation.");
                     Reset();
                 }

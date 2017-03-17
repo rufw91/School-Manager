@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Students.Controller;
 
 namespace UmanyiSMS.Modules.Students.Models
 {
@@ -365,7 +366,7 @@ namespace UmanyiSMS.Modules.Students.Models
             try
             {
                 base.ClearAllErrors();
-                StudentModel student = DataAccess.GetStudent(base.StudentID);
+                StudentModel student = DataController.GetStudent(base.StudentID);
                 if (student.StudentID > 0)
                 {
                     base.SetErrors("StudentID", new List<string>

@@ -58,7 +58,7 @@ namespace UmanyiSMS.Modules.Purchases.Models
             }
             else
             {
-                SupplierBaseModel supplier = DataAccess.GetSupplier(this.SupplierID);
+                SupplierBaseModel supplier = DataController.GetSupplier(this.SupplierID);
                 if (supplier.SupplierID == 0)
                 {
                     base.SetErrors("SupplierID", new List<string>

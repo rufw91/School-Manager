@@ -1,12 +1,14 @@
-﻿using Helper;
-using Helper.Models;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Data;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Staff.Controller;
+using UmanyiSMS.Modules.Staff.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Staff.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class StaffListVM : ViewModelBase
@@ -34,13 +36,13 @@ namespace UmanyiSMS.ViewModels
             Title = "STAFF LIST";
             collViewSource = new CollectionViewSource();
             SearchText = "";
-            allStaff = await DataAccess.GetAllStaffAsync();
+            allStaff = await DataController.GetAllStaffAsync();
             CollViewSource.Source = allStaff;
 
         }
         public async override void Reset()
         {
-            allStaff = await DataAccess.GetAllStaffAsync();
+            allStaff = await DataController.GetAllStaffAsync();
             CollViewSource.Source = allStaff;
             searchText = "";
         }
@@ -98,7 +100,7 @@ namespace UmanyiSMS.ViewModels
             {
                 e.Accepted = false;
             }
-            else if (DataAccess.SearchAllStaffProperties(src, SearchText))
+            else if (DataController.SearchAllStaffProperties(src, SearchText))
                 e.Accepted = true;
             else e.Accepted = false;
         }

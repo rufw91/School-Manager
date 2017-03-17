@@ -1,10 +1,12 @@
-﻿using Helper;
-using Helper.Models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Controller;
+using UmanyiSMS.Modules.Purchases.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class SupplierListVM : ViewModelBase
@@ -21,7 +23,7 @@ namespace UmanyiSMS.ViewModels
         {
             IsBusy = true;
             Title = "SUPPLIERS LIST";
-            AllSuppliers = await DataAccess.GetAllSuppliersFullAsync();
+            AllSuppliers = await DataController.GetAllSuppliersFullAsync();
             IsBusy = false;
         }
 
@@ -52,7 +54,7 @@ namespace UmanyiSMS.ViewModels
 
         public async override void Reset()
         {
-            AllSuppliers = await DataAccess.GetAllSuppliersFullAsync();
+            AllSuppliers = await DataController.GetAllSuppliersFullAsync();
         }
 
     }

@@ -9,8 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Fees.Controller;
+using UmanyiSMS.Modules.Fees.Models;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "User")]
     public class ViewFullFeesStructureVM:ViewModelBase
@@ -27,20 +32,20 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "VIEW FULL FEES STRUCTURE";
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
         }
 
         protected override void CreateCommands()
         {
             GenerateCommand = new RelayCommand(async o =>
              {
-                 var f =await DataAccess.GetFullFeesStructure(selectedTerm.StartDate.AddDays(1));
+                 var f =await DataController.GetFullFeesStructure(selectedTerm.StartDate.AddDays(1));
                  Document = DocumentHelper.GenerateDocument(new FullFeesStructureModel( f ));
              },o => true);
 
             FullPreviewCommand = new RelayCommand(async o =>
             {
-                var f = await DataAccess.GetFullFeesStructure(selectedTerm.StartDate.AddDays(1));
+                var f = await DataController.GetFullFeesStructure(selectedTerm.StartDate.AddDays(1));
                 var xdc = DocumentHelper.GenerateDocument(new FullFeesStructureModel( f ));
                 if (ShowFullPreviewAction != null)
                     ShowFullPreviewAction.Invoke(xdc);

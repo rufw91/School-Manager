@@ -1,15 +1,14 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Collections.Generic;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Students.Controller;
+using UmanyiSMS.Modules.Students.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Students.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
@@ -41,7 +40,7 @@ namespace UmanyiSMS.ViewModels
             IsBusy = true;
             collViewSource = new CollectionViewSource();
             SearchText = "";
-            allStudents = await DataAccess.GetAllStudentsListAsync();
+            allStudents = await DataController.GetAllStudentsListAsync();
             CollViewSource.Source = allStudents;
             IsBusy = false;
             ShowInactive = false;
@@ -50,7 +49,7 @@ namespace UmanyiSMS.ViewModels
                     if (e.PropertyName=="IsActive")
                         if (IsActive)
                         {
-                            allStudents = await DataAccess.GetAllStudentsListAsync();
+                            allStudents = await DataController.GetAllStudentsListAsync();
                             CollViewSource.Source = allStudents;
                         }
                 };
@@ -84,7 +83,7 @@ namespace UmanyiSMS.ViewModels
         public async override void Reset()
         {
             IsBusy = true;
-            allStudents = await DataAccess.GetAllStudentsListAsync();
+            allStudents = await DataController.GetAllStudentsListAsync();
             CollViewSource.Source = allStudents;
             searchText = "";
             IsBusy = false;
@@ -158,7 +157,7 @@ namespace UmanyiSMS.ViewModels
             }
             else
             {
-                if (DataAccess.SearchAllStudentProperties(src, SearchText))
+                if (DataController.SearchAllStudentProperties(src, SearchText))
                     e.Accepted = (src.IsActive | !showInactive);
                 else e.Accepted = false;
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using UmanyiSMS.Lib;
 
 namespace UmanyiSMS.Modules.Exams.Models
 {

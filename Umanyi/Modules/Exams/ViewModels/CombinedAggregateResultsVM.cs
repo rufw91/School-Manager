@@ -9,8 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class CombinedAggregateResultsVM : ViewModelBase
@@ -36,9 +41,9 @@ namespace UmanyiSMS.ViewModels
             exams = new ObservableCollection<ExamWeightModel>();
             IsInClassMode = true;
             
-            AllClasses = await DataAccess.GetAllClassesAsync();
-            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
+            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
             PropertyChanged += async (o, e) =>
             {
                 if (isInClassMode)
@@ -47,7 +52,7 @@ namespace UmanyiSMS.ViewModels
                         exams.Clear();
                         ResultsIsReadOnly = false;
 
-                        var t = await DataAccess.GetExamsByClass(selectedClass.ClassID,selectedTerm);
+                        var t = await DataController.GetExamsByClass(selectedClass.ClassID,selectedTerm);
                         int count = 1;
 
                         foreach (var ex in t)
@@ -74,7 +79,7 @@ namespace UmanyiSMS.ViewModels
                         if ((selectedCombinedClass == null) || (selectedCombinedClass.Entries.Count == 0))
                             return;
 
-                        var t = await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID,selectedTerm);
+                        var t = await DataController.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID,selectedTerm);
                         int count = 1;
                         foreach (var ex in t)
                         {
@@ -102,7 +107,7 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 if (isInClassMode)
                 {
-                    AggregateResultModel fs = await DataAccess.GetCombinedAggregateResultAsync(selectedClass, exams);
+                    AggregateResultModel fs = await DataController.GetCombinedAggregateResultAsync(selectedClass, exams);
                     var doc = DocumentHelper.GenerateDocument(fs);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(doc);
@@ -110,7 +115,7 @@ namespace UmanyiSMS.ViewModels
 
                 if (isInCombinedMode)
                 {
-                    AggregateResultModel fs = await DataAccess.GetCombinedAggregateResultAsync(selectedCombinedClass, exams);
+                    AggregateResultModel fs = await DataController.GetCombinedAggregateResultAsync(selectedCombinedClass, exams);
                     var doc = DocumentHelper.GenerateDocument(fs);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(doc);

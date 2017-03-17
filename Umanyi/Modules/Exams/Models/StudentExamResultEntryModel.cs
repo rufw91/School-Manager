@@ -1,4 +1,5 @@
 ﻿using System;
+using UmanyiSMS.Modules.Institution.Models;
 
 namespace UmanyiSMS.Modules.Exams.Models
 {
@@ -69,7 +70,7 @@ namespace UmanyiSMS.Modules.Exams.Models
 
         internal string GetRemark(decimal score)
         {
-            int num = DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(score, 100m, 100m)));
+            int num = DataController.CalculatePoints(DataController.CalculateGrade(DataController.ConvertScoreToOutOf(score, 100m, 100m)));
             string result;
             if (base.NameOfSubject.ToUpper().Trim() != "KISWAHILI")
             {

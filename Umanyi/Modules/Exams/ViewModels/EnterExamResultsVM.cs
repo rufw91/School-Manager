@@ -7,8 +7,13 @@ using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class EnterExamResultsVM : ViewModelBase
@@ -31,7 +36,7 @@ namespace UmanyiSMS.ViewModels
             StudentSubjectSelection = new ObservableCollection<StudentSubjectSelectionEntryModel>();
             NewResult = new ExamResultStudentModel();
             AllExams = new ObservableCollection<ExamModel>();
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
             newResult.PropertyChanged += async (o, e) =>
             {
                 if (e.PropertyName == "StudentID")
@@ -40,9 +45,9 @@ namespace UmanyiSMS.ViewModels
                     newResult.CheckErrors();
                     if ((newResult.StudentID != 0)&&(!newResult.HasErrors)&&selectedTerm!=null)
                     {
-                        var s = await DataAccess.GetClassIDFromStudentID(newResult.StudentID);
-                        AllExams = await DataAccess.GetExamsByClass(s,selectedTerm);
-                        StudentSubjectSelection = (await DataAccess.GetStudentSubjectSelection(newResult.StudentID)).Entries;
+                        var s = await DataController.GetClassIDFromStudentID(newResult.StudentID);
+                        AllExams = await DataController.GetExamsByClass(s,selectedTerm);
+                        StudentSubjectSelection = (await DataController.GetStudentSubjectSelection(newResult.StudentID)).Entries;
                     }
                 }
 
@@ -58,9 +63,9 @@ namespace UmanyiSMS.ViewModels
                         newResult.CheckErrors();
                         if ((newResult.StudentID != 0) && (!newResult.HasErrors) && selectedTerm != null)
                         {
-                            var s = await DataAccess.GetClassIDFromStudentID(newResult.StudentID);
-                            AllExams = await DataAccess.GetExamsByClass(s, selectedTerm);
-                            StudentSubjectSelection = (await DataAccess.GetStudentSubjectSelection(newResult.StudentID)).Entries;
+                            var s = await DataController.GetClassIDFromStudentID(newResult.StudentID);
+                            AllExams = await DataController.GetExamsByClass(s, selectedTerm);
+                            StudentSubjectSelection = (await DataController.GetStudentSubjectSelection(newResult.StudentID)).Entries;
                         }
                     }
                     if (e.PropertyName == "SelectedExam")
@@ -90,7 +95,7 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewExamResultAsync(newResult);
+                bool succ = await DataController.SaveNewExamResultAsync(newResult);
                 MessageBox.Show(succ ? "Successfully saved details" : "Could not save details.", succ ? "Success" : "Error",
                             MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
@@ -171,7 +176,7 @@ namespace UmanyiSMS.ViewModels
 
         private async Task RefreshSubjectEntries()
         {
-            newResult.Entries = (await DataAccess.GetStudentExamResultAync(newResult.StudentID, newResult.ExamID, selectedExam.OutOf)).Entries;
+            newResult.Entries = (await DataController.GetStudentExamResultAync(newResult.StudentID, newResult.ExamID, selectedExam.OutOf)).Entries;
             if (newResult.Entries.Count!=StudentSubjectSelection.Count)
             {
                 foreach(var t in StudentSubjectSelection)

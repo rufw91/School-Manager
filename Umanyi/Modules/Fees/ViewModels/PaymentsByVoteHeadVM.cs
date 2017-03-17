@@ -1,15 +1,13 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Fees.Controller;
+using UmanyiSMS.Modules.Fees.Models;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class PaymentsByVoteHeadVM:ViewModelBase
@@ -30,7 +28,7 @@ private  ObservableCollection<TermModel> allTerms;
                     allVoteHeads.Clear();
                     if (selectedClassID != 0&&selectedTerm!=null)
                     {
-                        AllVoteHeads = await DataAccess.GetVoteHeadsSummaryByClass(selectedClassID,selectedTerm);
+                        AllVoteHeads = await DataController.GetVoteHeadsSummaryByClass(selectedClassID,selectedTerm);
                     }
                     return;
                 }
@@ -40,15 +38,15 @@ private  ObservableCollection<TermModel> allTerms;
         {
             Title = "PAYMENTS BY VOTE HEAD";
             allVoteHeads = new ObservableCollection<VoteHeadModel>();
-            AllClasses = await DataAccess.GetAllClassesAsync();
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
         }
 
         protected override void CreateCommands()
         {
             RefreshCommand = new RelayCommand(async o =>
             {
-                AllVoteHeads = await DataAccess.GetVoteHeadsSummaryByClass(selectedClassID,selectedTerm);
+                AllVoteHeads = await DataController.GetVoteHeadsSummaryByClass(selectedClassID,selectedTerm);
             }, o => Canrefresh());
         }
 

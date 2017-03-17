@@ -10,8 +10,13 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class MarkListsVM: ViewModelBase    
@@ -37,12 +42,12 @@ namespace UmanyiSMS.ViewModels
             ClassResult = new ExamResultClassDisplayModel();
             AllExams = new ObservableCollection<ExamModel>();
             IsInClassMode = true;
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
             classResult.PropertyChanged += OnPropertyChanged;
             PropertyChanged += OnPropertyChanged;
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
             NotifyPropertyChanged("AllClasses");
-            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
             NotifyPropertyChanged("AllCombinedClasses");
         }
 
@@ -51,7 +56,7 @@ namespace UmanyiSMS.ViewModels
             PrintAsReportFormCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                ClassStudentsExamResultModel st = await DataAccess.GetClassExamResultForTranscriptAsync(classResult.ClassID, selectedExam.ExamID, selectedExam.OutOf);
+                ClassStudentsExamResultModel st = await DataController.GetClassExamResultForTranscriptAsync(classResult.ClassID, selectedExam.ExamID, selectedExam.OutOf);
 
                 IsBusy = false;
                 if (ShowClassStudentsTranscriptAction != null)
@@ -61,7 +66,7 @@ namespace UmanyiSMS.ViewModels
             PrintTranscriptCommand = new RelayCommand(o =>
             {
                     IsBusy = true;
-                    ClassExamResultModel st = DataAccess.GetClassExamResult(classResult);
+                    ClassExamResultModel st = DataController.GetClassExamResult(classResult);
                     IsBusy = false;
                     if (ShowClassTranscriptAction != null)
                         ShowClassTranscriptAction.Invoke(st);
@@ -75,12 +80,12 @@ namespace UmanyiSMS.ViewModels
 
                 if (isInClassMode)
                 {
-                    var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(classResult.ClassID, selectedExam.ExamID, selectedExam.OutOf));
+                    var temp = new ExamResultClassDisplayModel(await DataController.GetClassExamResultAsync(classResult.ClassID, selectedExam.ExamID, selectedExam.OutOf));
                     ClassResult.Entries = temp.Entries;
                     ClassResult.ExamID = temp.ExamID;
                     ClassResult.ExamResultID = temp.ExamResultID;
 
-                    ClassModel st = await DataAccess.GetClassAsync(classResult.ClassID);
+                    ClassModel st = await DataController.GetClassAsync(classResult.ClassID);
                     classResult.NameOfClass = st.NameOfClass;
                     classResult.NameOfExam = selectedExam.NameOfExam;
 
@@ -94,7 +99,7 @@ namespace UmanyiSMS.ViewModels
                     for (int i = 0; i < selectedCombinedClass.Entries.Count; i++)
                     {
                         cs = selectedCombinedClass.Entries[i];
-                        var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassExamResultAsync(cs.ClassID, selectedExam.ExamID, selectedExam.OutOf));
+                        var temp = new ExamResultClassDisplayModel(await DataController.GetClassExamResultAsync(cs.ClassID, selectedExam.ExamID, selectedExam.OutOf));
 
                         foreach (var e in temp.Entries)
                         {
@@ -125,7 +130,7 @@ namespace UmanyiSMS.ViewModels
                 {
                     if (e.PropertyName != "SelectedExam" && selectedTerm != null)
                     {
-                        AllExams = await DataAccess.GetExamsByClass(classResult.ClassID, selectedTerm);
+                        AllExams = await DataController.GetExamsByClass(classResult.ClassID, selectedTerm);
                     }
                     if (selectedExam != null)
                         RefreshView();
@@ -137,7 +142,7 @@ namespace UmanyiSMS.ViewModels
                     && selectedCombinedClass != null && selectedCombinedClass.Entries.Count > 0)
                 {
                     if (e.PropertyName != "SelectedExam" && selectedTerm != null)
-                        AllExams = await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID, selectedTerm);
+                        AllExams = await DataController.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID, selectedTerm);
                     if (selectedExam != null)
                         RefreshView();
                 }
@@ -156,7 +161,7 @@ namespace UmanyiSMS.ViewModels
             if (temp.Count == 0)
                 return new DataTable();
             DataTable dt = new DataTable();
-            var g = await DataAccess.GetSubjectsRegistredToClassAsync(classResult.ClassID);
+            var g = await DataController.GetSubjectsRegistredToClassAsync(classResult.ClassID);
 
             dt.Columns.Add(new DataColumn("Student ID"));
             dt.Columns.Add(new DataColumn("Name"));

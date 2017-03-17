@@ -1,14 +1,14 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Controllers;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Controller;
+using UmanyiSMS.Modules.Purchases.Models;
 
 namespace UmanyiSMS.ViewModels
 {
@@ -29,8 +29,8 @@ namespace UmanyiSMS.ViewModels
             IsBusy = true;
             Title = "ITEMS LIST";
             IsReadOnly = true;
-            Task<ObservableCollection<ItemListModel>> pTemp = DataAccess.GetAllItemsWithCurrentQuantityAsync();
-            Task<ObservableCollection<ItemListModel>> cTemp = DataAccess.GetAllItemsWithCurrentQuantityAsync();
+            Task<ObservableCollection<ItemListModel>> pTemp = DataController.GetAllItemsWithCurrentQuantityAsync();
+            Task<ObservableCollection<ItemListModel>> cTemp = DataController.GetAllItemsWithCurrentQuantityAsync();
 
             Task.WaitAll(new Task[] { pTemp, cTemp });
             originalItems = pTemp.Result;
@@ -142,8 +142,8 @@ namespace UmanyiSMS.ViewModels
         public override void Reset()
         {
             IsReadOnly = true;
-            Task<ObservableCollection<ItemListModel>> pTemp = DataAccess.GetAllItemsWithCurrentQuantityAsync();
-            Task<ObservableCollection<ItemListModel>> cTemp = DataAccess.GetAllItemsWithCurrentQuantityAsync();
+            Task<ObservableCollection<ItemListModel>> pTemp = DataController.GetAllItemsWithCurrentQuantityAsync();
+            Task<ObservableCollection<ItemListModel>> cTemp = DataController.GetAllItemsWithCurrentQuantityAsync();
 
             Task.WaitAll(new Task[] { pTemp, cTemp });
             originalItems = pTemp.Result;

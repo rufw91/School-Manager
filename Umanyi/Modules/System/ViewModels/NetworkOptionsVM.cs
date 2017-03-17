@@ -1,15 +1,12 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Controllers;
+using UmanyiSMS.Lib.Models;
+using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.System.ViewModels
 {
     public class NetworkOptionsVM:ViewModelBase
     {
@@ -48,9 +45,9 @@ namespace UmanyiSMS.ViewModels
         {
             SaveCommand = new RelayCommand(o =>
             {
-                Helper.Properties.Settings.Default.Info = new ApplicationPersistModel(newSchool);
-                Helper.Properties.Settings.Default.Save();
-                App.Info.CopyFrom(new ApplicationModel(Helper.Properties.Settings.Default.Info));
+                Lib.Properties.Settings.Default.Info = new ApplicationPersistModel(newSchool);
+                Lib.Properties.Settings.Default.Save();
+                App.Info.CopyFrom(new ApplicationModel(Lib.Properties.Settings.Default.Info));
                 MessageBox.Show("Successfully saved settings.\r\nYou need to RESTART the system for these changes to take effect.","Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 App.Restart();
             }, o => !IsBusy && isTested);
@@ -67,7 +64,7 @@ namespace UmanyiSMS.ViewModels
         }
         public override void Reset()
         {
-            newSchool = new ApplicationModel(Helper.Properties.Settings.Default.Info);
+            newSchool = new ApplicationModel(Lib.Properties.Settings.Default.Info);
         }
 
         public Action CloseWindowAction

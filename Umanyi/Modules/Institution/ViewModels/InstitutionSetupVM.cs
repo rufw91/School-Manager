@@ -4,8 +4,12 @@ using System;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Controllers;
+using UmanyiSMS.Lib.Models;
+using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Institution.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class InstitutionSetupVM: ViewModelBase
@@ -21,7 +25,7 @@ namespace UmanyiSMS.ViewModels
         protected override void InitVars()
         {
             Title = "INSTITUTION SETUP";
-            newSchool =new ApplicationModel( Helper.Properties.Settings.Default.Info);
+            newSchool =new ApplicationModel( Lib.Properties.Settings.Default.Info);
         }
 
         public InstitutionSetupVM(bool isInStartup)
@@ -46,10 +50,10 @@ namespace UmanyiSMS.ViewModels
 
             SaveCommand = new RelayCommand(o =>
             {
-                Helper.Properties.Settings.Default.Info = new ApplicationPersistModel(newSchool);
-                Helper.Properties.Settings.Default.Save();
+                Lib.Properties.Settings.Default.Info = new ApplicationPersistModel(newSchool);
+                Lib.Properties.Settings.Default.Save();
 
-                App.Info.CopyFrom(new ApplicationModel(Helper.Properties.Settings.Default.Info));
+                App.Info.CopyFrom(new ApplicationModel(Lib.Properties.Settings.Default.Info));
                 if (MessageBoxResult.Yes == MessageBox.Show("You need to restart the School Management system for the changes to be saved. Do you want to restart now? ",
                     "Warning", MessageBoxButton.YesNo, MessageBoxImage.Information))
                 {
@@ -69,7 +73,7 @@ namespace UmanyiSMS.ViewModels
 
         public override void Reset()
         {
-            newSchool = new ApplicationModel(Helper.Properties.Settings.Default.Info);
+            newSchool = new ApplicationModel(Lib.Properties.Settings.Default.Info);
         }
 
         public Action CloseWindowAction

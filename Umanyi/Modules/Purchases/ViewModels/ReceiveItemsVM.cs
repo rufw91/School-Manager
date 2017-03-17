@@ -1,12 +1,15 @@
-﻿using Helper;
-using Helper.Models;
+﻿
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Models;
+using UmanyiSMS.Modules.Purchases.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role="Accounts")]
     public class ReceiveItemsVM: ViewModelBase
@@ -24,7 +27,7 @@ namespace UmanyiSMS.ViewModels
             Title = "NEW PURCHASE";
             IsBusy = true;
             NewReceipt = new PurchaseModel();
-            AllSuppliers = await DataAccess.GetAllSuppliersAsync();
+            AllSuppliers = await DataController.GetAllSuppliersAsync();
             IsBusy = false;
         }
 
@@ -33,7 +36,7 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewPurchaseAsync(newReceipt);
+                bool succ = await DataController.SaveNewPurchaseAsync(newReceipt);
                 if (succ)
                 {
                     MessageBox.Show("Successfully saved purchase information.");

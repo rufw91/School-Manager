@@ -174,7 +174,7 @@ namespace UmanyiSMS.Modules.Staff.Models
             try
             {
                 ClearAllErrors();
-                var s = DataAccess.GetStaff(StaffID);
+                var s = DataController.GetStaff(StaffID);
                 if (s.StaffID > 0)
                 {
                     List<string> errors = new List<string>();

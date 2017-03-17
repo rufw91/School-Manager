@@ -19,7 +19,7 @@ namespace UmanyiSMS.Modules.Purchases.Models
                 }
                 else
                 {
-                    SupplierModel supplier = DataAccess.GetSupplier(SupplierID);
+                    SupplierModel supplier = DataController.GetSupplier(SupplierID);
                     if (supplier.SupplierID == 0)
                     {
                         List<string> errors = new List<string>();

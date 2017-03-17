@@ -1,16 +1,15 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Students.Models;
+using UmanyiSMS.Modules.Students.Controller;
+using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Students.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class SubjectSelectionVM:ViewModelBase
@@ -41,8 +40,8 @@ namespace UmanyiSMS.ViewModels
                     studentSubjectSelection.NameOfStudent = selectedStudent.NameOfStudent;
                     if (!selectedStudent.HasErrors)
                     {
-                        studentSubjectSelection.Entries = (await DataAccess.GetStudentSubjectSelection(studentSubjectSelection.StudentID)).Entries;
-                        AllSubjects = await DataAccess.GetSubjectsRegistredToClassAsync(await DataAccess.GetClassIDFromStudentID(studentSubjectSelection.StudentID));
+                        studentSubjectSelection.Entries = (await DataController.GetStudentSubjectSelection(studentSubjectSelection.StudentID)).Entries;
+                        AllSubjects = await DataController.GetSubjectsRegistredToClassAsync(await DataController.GetClassIDFromStudentID(studentSubjectSelection.StudentID));
                         NotifyPropertyChanged("AllSubjects");
                     }
 
@@ -66,7 +65,7 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o =>
                 {
                     IsBusy = true;
-                    bool succ = await DataAccess.SaveNewSubjectSelection(studentSubjectSelection);
+                    bool succ = await DataController.SaveNewSubjectSelection(studentSubjectSelection);
                     MessageBox.Show(succ ? "Successfully saved details." : "An error occurred. Could not save details.", succ ? "Success" : "Error",
                         MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                     if (succ)

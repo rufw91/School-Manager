@@ -8,8 +8,12 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Fees.Controller;
+using UmanyiSMS.Modules.Fees.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class FeesPaymentHistoryVM : ViewModelBase
@@ -48,7 +52,7 @@ namespace UmanyiSMS.ViewModels
 
         private async Task RefreshItems()
         {
-            Items = await DataAccess.GetFeesPaymentsHistoryAsync(from, to);
+            Items = await DataController.GetFeesPaymentsHistoryAsync(from, to);
         }
 
         private bool CanRefresh()

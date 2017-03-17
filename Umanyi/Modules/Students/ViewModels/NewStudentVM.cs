@@ -1,21 +1,22 @@
-﻿using Helper;
-using Helper.Models;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Students.Models;
+using UmanyiSMS.Modules.Students.Controller;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Lib.Controllers;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Students.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class NewStudentVM : ViewModelBase
     {
-        
         StudentModel newStudent;
-        ObservableCollection<DormModel> allDorms;
         ObservableCollection<ClassModel> allClasses;
-        private Boardingtype boardingValue;
 
         public NewStudentVM()
             : base()
@@ -29,15 +30,12 @@ namespace UmanyiSMS.ViewModels
             Title = "NEW STUDENT";
 
             newStudent = new StudentModel();
-            BoardingValue = Boardingtype.Boarder;
-            AllDorms = await DataAccess.GetAllDormsAsync();
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
             newStudent.PropertyChanged += (o, e) =>
                 {
                     if ((e.PropertyName=="BedNo")||(e.PropertyName=="StudentID"))
                         newStudent.CheckErrors();
                 };
-            newStudent.IsBoarder = true;
         }
 
         protected override void CreateCommands()
@@ -45,7 +43,7 @@ namespace UmanyiSMS.ViewModels
             
             SaveCommand = new RelayCommand(async o => 
             {
-                bool succ = await DataAccess.SaveNewStudentAsync(newStudent); 
+                bool succ = await DataController.SaveNewStudentAsync(newStudent); 
                 if (succ)
                     Reset();
                 MessageBox.Show(succ ? "Successfully saved details." : "Could not save details.", succ ? "Success" : "Error", MessageBoxButton.OK,
@@ -54,7 +52,6 @@ namespace UmanyiSMS.ViewModels
                 ValidateStudent());
             ClearImageCommand = new RelayCommand(o => { newStudent.SPhoto = null; }, o => true);
             BrowseCommand = new RelayCommand(o => { newStudent.SPhoto = FileHelper.BrowseImageAsByteArray(); }, o => true);
-            ClearDormCommand = new RelayCommand(o => { newStudent.DormitoryID = 0; }, o => true);
            
         }
         
@@ -65,45 +62,14 @@ namespace UmanyiSMS.ViewModels
 
         }
 
-        public Array BoardingValues
-        {
-            get { return Enum.GetValues(typeof(Boardingtype)); }
-        }
-
         public Array GenderValues
         {
             get { return Enum.GetValues(typeof(Gender)); }
         }
-
-        public Boardingtype BoardingValue
-        {
-            get { return boardingValue; }
-            set
-            {
-                if (value != boardingValue)
-                {
-                    boardingValue = value;
-                    newStudent.IsBoarder = boardingValue == Boardingtype.Boarder ? true : false;
-                }
-
-                NotifyPropertyChanged("BoardingValue");
-            }
-        }
-
+        
         public StudentModel NewStudent
         { get { return newStudent; } }
-
-        public ObservableCollection<DormModel> AllDorms
-        {
-            get { return allDorms; }
-            set
-            {
-                if (value != allDorms)
-                    allDorms = value;
-                NotifyPropertyChanged("AllDorms");
-            }
-        }
-
+        
         public ObservableCollection<ClassModel> AllClasses
         {
             get { return allClasses; }

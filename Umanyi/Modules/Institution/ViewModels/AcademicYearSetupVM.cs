@@ -1,8 +1,4 @@
-﻿
-using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Permissions;
@@ -10,8 +6,10 @@ using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Institution.Controller;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Institution.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class AcademicYearSetupVM: ViewModelBase
@@ -29,7 +27,7 @@ namespace UmanyiSMS.ViewModels
             allYears = new ObservableCollection<int>();
             for (int i = 2014; i < 2024; i++)
                 allYears.Add(i);
-            NewYear =  await DataAccess.GetAcademicYearAsync(DateTime.Now);
+            NewYear =  await DataController.GetAcademicYearAsync(DateTime.Now);
             newYear.PropertyChanged += (o, e) =>
                 {
                     if (e.PropertyName=="NoOfTerms")
@@ -49,7 +47,7 @@ namespace UmanyiSMS.ViewModels
         {
             SaveCommand = new RelayCommand(async o =>
              {
-                 bool succ =  await DataAccess.SaveAcademicYearAsync(newYear);
+                 bool succ =  await DataController.SaveAcademicYearAsync(newYear);
                  MessageBox.Show(succ ? "Successfully saved details" : "Could not save details", succ ? "Success" : "Error", MessageBoxButton.OK,
                      succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                  

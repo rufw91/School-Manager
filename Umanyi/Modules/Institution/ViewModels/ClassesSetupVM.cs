@@ -1,19 +1,17 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Institution.Controller;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Institution.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class ClassesSetupVM : ViewModelBase
     {
-        
         ClassesSetupModel classesSetup;
         ClassesSetupEntryModel newClass;
         
@@ -31,7 +29,7 @@ namespace UmanyiSMS.ViewModels
             classesSetup = new ClassesSetupModel();
             newClass = new ClassesSetupEntryModel();
             
-            ObservableCollection<ClassModel> allClasses = await DataAccess.GetAllClassesAsync();
+            ObservableCollection<ClassModel> allClasses = await DataController.GetAllClassesAsync();
             foreach (ClassModel c in allClasses)
                 classesSetup.Entries.Add(new ClassesSetupEntryModel(c));
             IsBusy = false;
@@ -42,7 +40,7 @@ namespace UmanyiSMS.ViewModels
             AddNewClassCommand = new RelayCommand(async o =>
             {
                 classesSetup.Entries.Add(newClass);
-                bool succ = await DataAccess.SaveNewClassSetupAsync(classesSetup);
+                bool succ = await DataController.SaveNewClassSetupAsync(classesSetup);
                 if (succ)
                     await RefreshClassEntries();
                 else
@@ -76,7 +74,7 @@ namespace UmanyiSMS.ViewModels
         private async Task RefreshClassEntries()
         {
             classesSetup.Entries.Clear();
-            ObservableCollection<ClassModel> allClasses = await DataAccess.GetAllClassesAsync();
+            ObservableCollection<ClassModel> allClasses = await DataController.GetAllClassesAsync();
             foreach (ClassModel c in allClasses)
                 classesSetup.Entries.Add(new ClassesSetupEntryModel(c));
         }

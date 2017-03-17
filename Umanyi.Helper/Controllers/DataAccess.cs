@@ -20,7 +20,7 @@ namespace Helper
     {
         public static Task<ObservableCollection<FeePaymentModel>> GetFeesPaymentsAsync(int? studentID, DateTime? startTime, DateTime? endTime, string paymentMethod)
         {
-            return Task.Factory.StartNew<ObservableCollection<FeePaymentModel>>(() => DataAccess.GetFeesPayments(studentID, startTime, endTime, paymentMethod));
+            return Task.Factory.StartNew<ObservableCollection<FeePaymentModel>>(() => DataController.GetFeesPayments(studentID, startTime, endTime, paymentMethod));
         }
 
         private static ObservableCollection<SaleModel> GetSales(bool includeAllDetails, int? studentID, DateTime? startTime, DateTime? endTime)
@@ -103,7 +103,7 @@ namespace Helper
 
                     if (includeAllDetails)
                     {
-                        saleModel.SaleItems = DataAccess.GetSaleItems(saleModel.SaleID);
+                        saleModel.SaleItems = DataController.GetSaleItems(saleModel.SaleID);
                     }
                     observableCollection.Add(saleModel);
                 }
@@ -439,7 +439,7 @@ namespace Helper
             return Task.Factory.StartNew<ObservableCollection<FeesStructureModel>>(delegate
             {
                 ObservableCollection<FeesStructureModel> observableCollection = new ObservableCollection<FeesStructureModel>();
-                ObservableCollection<CombinedClassModel> result = DataAccess.GetAllCombinedClassesAsync().Result;
+                ObservableCollection<CombinedClassModel> result = DataController.GetAllCombinedClassesAsync().Result;
                 ObservableCollection<FeesStructureModel> result2;
                 using (IEnumerator<CombinedClassModel> enumerator = result.GetEnumerator())
                 {
@@ -505,7 +505,7 @@ namespace Helper
                 feePaymentReceiptModel.AmountPaid = currentPayment.AmountPaid;
                 feePaymentReceiptModel.Entries = currentFeesStructure;
                 feePaymentReceiptModel.DatePaid = currentPayment.DatePaid;
-                feePaymentReceiptModel.NameOfClass = DataAccess.GetClassAsync(DataAccess.GetClassIDFromStudentID(currentPayment.StudentID).Result).Result.NameOfClass;
+                feePaymentReceiptModel.NameOfClass = DataController.GetClassAsync(DataController.GetClassIDFromStudentID(currentPayment.StudentID).Result).Result.NameOfClass;
                 feePaymentReceiptModel.StudentID = currentPayment.StudentID;
                 feePaymentReceiptModel.NameOfStudent = currentPayment.NameOfStudent;
                 feePaymentReceiptModel.PaymentMethod = currentPayment.PaymentMethod;
@@ -519,11 +519,11 @@ namespace Helper
                 feesStructureEntryModel2.Amount = feePaymentReceiptModel.AmountPaid;
                 feesStructureEntryModel2.Name = "AMOUNT PAID";
                 FeesStructureEntryModel feesStructureEntryModel3 = new FeesStructureEntryModel();
-                feesStructureEntryModel3.Amount = DataAccess.GetCurrentBalanceAsync(feePaymentReceiptModel.StudentID, currentPayment.DatePaid).Result;
+                feesStructureEntryModel3.Amount = DataController.GetCurrentBalanceAsync(feePaymentReceiptModel.StudentID, currentPayment.DatePaid).Result;
                 feesStructureEntryModel3.Name = "BALANCE B/F";
                 FeesStructureEntryModel feesStructureEntryModel4 = new FeesStructureEntryModel();
 
-                feesStructureEntryModel4.Amount = DataAccess.GetCurrentBalanceAsync(feePaymentReceiptModel.StudentID, feePaymentReceiptModel.DatePaid.AddSeconds(1)).Result;
+                feesStructureEntryModel4.Amount = DataController.GetCurrentBalanceAsync(feePaymentReceiptModel.StudentID, feePaymentReceiptModel.DatePaid.AddSeconds(1)).Result;
                 feesStructureEntryModel4.Name = "TOTAL BALANCE";
                 feePaymentReceiptModel.Entries.Add(feesStructureEntryModel);
                 feePaymentReceiptModel.Entries.Add(feesStructureEntryModel2);
@@ -559,7 +559,7 @@ namespace Helper
             return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\ndeclare @id int; ";
-                ObservableCollection<ClassModel> result = DataAccess.GetAllClassesAsync().Result;
+                ObservableCollection<ClassModel> result = DataController.GetAllClassesAsync().Result;
                 using (IEnumerator<ClassModel> enumerator = result.GetEnumerator())
                 {
                     while (enumerator.MoveNext())
@@ -637,7 +637,7 @@ namespace Helper
                             num,
                             ")\r\n"
                         });
-                        object result2 = DataAccess.GetGallerItemDataFromPathAsync(current.Path).Result;
+                        object result2 = DataController.GetGallerItemDataFromPathAsync(current.Path).Result;
                         observableCollection.Add(new SqlParameter("@item" + num, SqlDbType.Binary)
                         {
                             Value = (result2 == null) ? DBNull.Value : result2
@@ -673,11 +673,11 @@ namespace Helper
         public static async Task<ObservableCollection<TimetableClassModel>> GetCurrentTimeTableAsync(int day)
         {
             ObservableCollection<TimetableClassModel> observableCollection = new ObservableCollection<TimetableClassModel>();
-            ObservableCollection<ClassModel> observableCollection2 = await DataAccess.GetAllClassesAsync();
+            ObservableCollection<ClassModel> observableCollection2 = await DataController.GetAllClassesAsync();
             Task[] array = new Task[observableCollection2.Count];
             for (int i = 0; i < observableCollection2.Count; i++)
             {
-                array[i] = DataAccess.GetClassTimetableAsync(observableCollection2[i].ClassID, day);
+                array[i] = DataController.GetClassTimetableAsync(observableCollection2[i].ClassID, day);
             }
             Task.WaitAll(array);
             foreach (ClassModel current in observableCollection2)
@@ -919,7 +919,7 @@ namespace Helper
                     purchaseModel.RefNo = dataRow[6].ToString();
                     if (includeAllDetails)
                     {
-                        purchaseModel.Items = DataAccess.GetItemsReceiptItems(purchaseModel.PurchaseID);
+                        purchaseModel.Items = DataController.GetItemsReceiptItems(purchaseModel.PurchaseID);
                         purchaseModel.NoOfItems = purchaseModel.Items.Count;
                     }
                     observableCollection.Add(purchaseModel);
@@ -1010,7 +1010,7 @@ namespace Helper
                     booksPurchaseModel.RefNo = dataRow[6].ToString();
                     if (includeAllDetails)
                     {
-                        booksPurchaseModel.Items = DataAccess.GetBooksReceiptItems(booksPurchaseModel.PurchaseID);
+                        booksPurchaseModel.Items = DataController.GetBooksReceiptItems(booksPurchaseModel.PurchaseID);
                         booksPurchaseModel.NoOfItems = booksPurchaseModel.Items.Count;
                     }
                     observableCollection.Add(booksPurchaseModel);
@@ -1081,22 +1081,22 @@ namespace Helper
 
         public static Task<DataTable> GetItemIssuesAsync(bool includeAllDetails, DateTime? startTime, DateTime? endTime)
         {
-            return Task.Factory.StartNew<DataTable>(() => DataAccess.GetItemIssues(includeAllDetails, startTime, endTime));
+            return Task.Factory.StartNew<DataTable>(() => DataController.GetItemIssues(includeAllDetails, startTime, endTime));
         }
 
         public static Task<ObservableCollection<PurchaseModel>> GetItemReceiptsAsync(bool includeAllDetails, int? supplierID, DateTime? startTime, DateTime? endTime)
         {
-            return Task.Factory.StartNew<ObservableCollection<PurchaseModel>>(() => DataAccess.GetItemReceipts(includeAllDetails, supplierID, startTime, endTime));
+            return Task.Factory.StartNew<ObservableCollection<PurchaseModel>>(() => DataController.GetItemReceipts(includeAllDetails, supplierID, startTime, endTime));
         }
 
         public static Task<ObservableCollection<BooksPurchaseModel>> GetBookReceiptsAsync(bool includeAllDetails, int? supplierID, DateTime? startTime, DateTime? endTime)
         {
-            return Task.Factory.StartNew<ObservableCollection<BooksPurchaseModel>>(() => DataAccess.GetBookReceipts(includeAllDetails, supplierID, startTime, endTime));
+            return Task.Factory.StartNew<ObservableCollection<BooksPurchaseModel>>(() => DataController.GetBookReceipts(includeAllDetails, supplierID, startTime, endTime));
         }
 
         public static Task<ObservableCollection<EmployeePaymentModel>> GetEmployeePaymentsAsync(int? employeeId, DateTime? from, DateTime? to)
         {
-            return Task.Factory.StartNew<ObservableCollection<EmployeePaymentModel>>(() => DataAccess.GetEmployeePayments(employeeId, from, to));
+            return Task.Factory.StartNew<ObservableCollection<EmployeePaymentModel>>(() => DataController.GetEmployeePayments(employeeId, from, to));
         }
 
         private static ObservableCollection<EmployeePaymentModel> GetEmployeePayments(int? employeeId, DateTime? from, DateTime? to)
@@ -1176,7 +1176,7 @@ namespace Helper
 
         public static Task<ObservableCollection<PayslipModel>> GetEmployeePayslipsAsync(int? employeeId, DateTime? from, DateTime? to)
         {
-            return Task.Factory.StartNew<ObservableCollection<PayslipModel>>(() => DataAccess.GetEmployeePayslips(employeeId, from, to));
+            return Task.Factory.StartNew<ObservableCollection<PayslipModel>>(() => DataController.GetEmployeePayslips(employeeId, from, to));
         }
 
         private static ObservableCollection<PayslipModel> GetEmployeePayslips(int? employeeId, DateTime? from, DateTime? to)
@@ -1257,7 +1257,7 @@ namespace Helper
 
         public static Task<ObservableCollection<TransactionModel>> GetAccountsTransactionHistoryAsync(TransactionTypes type, DateTime? from, DateTime? to)
         {
-            return Task.Factory.StartNew<ObservableCollection<TransactionModel>>(() => DataAccess.GetAccountsTransactionHistory(type, from, to));
+            return Task.Factory.StartNew<ObservableCollection<TransactionModel>>(() => DataController.GetAccountsTransactionHistory(type, from, to));
         }
 
         private static ObservableCollection<TransactionModel> GetAccountsTransactionHistory(TransactionTypes type, DateTime? from, DateTime? to)
@@ -1337,7 +1337,7 @@ namespace Helper
 
         public static Task<ObservableCollection<FeesPaymentHistoryModel>> GetFeesPaymentsHistoryAsync(DateTime? from, DateTime? to)
         {
-            return Task.Factory.StartNew<ObservableCollection<FeesPaymentHistoryModel>>(() => DataAccess.GetFeesPaymentsHistory(from, to));
+            return Task.Factory.StartNew<ObservableCollection<FeesPaymentHistoryModel>>(() => DataController.GetFeesPaymentsHistory(from, to));
         }
 
         private static ObservableCollection<FeesPaymentHistoryModel> GetFeesPaymentsHistory(DateTime? from, DateTime? to)
@@ -1392,7 +1392,7 @@ namespace Helper
 
         public static Task<ObservableCollection<PayslipModel>> GetPayslipsAsync(int? employeeId, DateTime? from, DateTime? to)
         {
-            return Task.Factory.StartNew<ObservableCollection<PayslipModel>>(() => DataAccess.GetPayslips(employeeId, from, to));
+            return Task.Factory.StartNew<ObservableCollection<PayslipModel>>(() => DataController.GetPayslips(employeeId, from, to));
         }
 
         private static ObservableCollection<PayslipModel> GetPayslips(int? employeeId, DateTime? from, DateTime? to)
@@ -1472,7 +1472,7 @@ namespace Helper
 
         public static Task<ObservableCollection<SupplierPaymentModel>> GetSupplierPaymentsAsync(int? supplierId, DateTime? from, DateTime? to)
         {
-            return Task.Factory.StartNew<ObservableCollection<SupplierPaymentModel>>(() => DataAccess.GetSupplierPayments(supplierId, from, to));
+            return Task.Factory.StartNew<ObservableCollection<SupplierPaymentModel>>(() => DataController.GetSupplierPayments(supplierId, from, to));
         }
 
         private static ObservableCollection<SupplierPaymentModel> GetSupplierPayments(int? supplierId, DateTime? from, DateTime? to)
@@ -1624,7 +1624,7 @@ namespace Helper
 
         public static Task<SupplierModel> GetSupplierAsync(int supplierID)
         {
-            return Task.Factory.StartNew<SupplierModel>(() => DataAccess.GetSupplier(supplierID));
+            return Task.Factory.StartNew<SupplierModel>(() => DataController.GetSupplier(supplierID));
         }
 
         public static SupplierModel GetSupplier(int supplierID)
@@ -1849,7 +1849,7 @@ namespace Helper
 
         public static Task<ItemModel> GetItemAsync(long itemID)
         {
-            return Task.Factory.StartNew<ItemModel>(() => DataAccess.GetItem(itemID));
+            return Task.Factory.StartNew<ItemModel>(() => DataController.GetItem(itemID));
         }
 
         public static Task<ObservableCollection<ItemListModel>> GetAllItemsWithCurrentQuantityAsync()
@@ -2198,7 +2198,7 @@ namespace Helper
                     feesStatementModel.From = new DateTime(startTime.Value.Year, startTime.Value.Month, startTime.Value.Day, 00, 00, 00, 000);
                     feesStatementModel.To = new DateTime(endTime.Value.Year, endTime.Value.Month, endTime.Value.Day, 23, 59, 59, 998);
 
-                    feesStatementModel.BalanceBroughtForward = DataAccess.GetCurrentBalanceAsync(studentID, feesStatementModel.From).Result;
+                    feesStatementModel.BalanceBroughtForward = DataController.GetCurrentBalanceAsync(studentID, feesStatementModel.From).Result;
                     feesStatementModel.Transactions.Add(new TransactionModel(TransactionTypes.Credit, "0", DateTime.Now, feesStatementModel.BalanceBroughtForward));
                     foreach (TransactionModel current in enumerable)
                     {
@@ -2206,7 +2206,7 @@ namespace Helper
                     }
                     feesStatementModel.StudentID = studentID;
 
-                    feesStatementModel.TotalDue = DataAccess.GetCurrentBalanceAsync(studentID, feesStatementModel.To).Result;
+                    feesStatementModel.TotalDue = DataController.GetCurrentBalanceAsync(studentID, feesStatementModel.To).Result;
                     result = feesStatementModel;
                 }
                 return result;
@@ -2292,7 +2292,7 @@ namespace Helper
                     IEnumerable<TransactionModel> enumerable = from fruit in observableCollection
                                                                orderby fruit.TransactionDateTime
                                                                select fruit;
-                    suppStatementModel.BalanceBroughtForward = DataAccess.GetCurrentSupplierBalanceAsync(supplierID, startTime.Value).Result;
+                    suppStatementModel.BalanceBroughtForward = DataController.GetCurrentSupplierBalanceAsync(supplierID, startTime.Value).Result;
                     suppStatementModel.Transactions.Add(new TransactionModel(TransactionTypes.Credit, "0", DateTime.Now, suppStatementModel.BalanceBroughtForward));
                     foreach (TransactionModel current in enumerable)
                     {
@@ -2301,7 +2301,7 @@ namespace Helper
                     suppStatementModel.SupplierID = supplierID;
                     suppStatementModel.From = startTime.Value;
                     suppStatementModel.To = endTime.Value;
-                    suppStatementModel.TotalDue = DataAccess.GetCurrentSupplierBalanceAsync(supplierID, endTime.Value).Result;
+                    suppStatementModel.TotalDue = DataController.GetCurrentSupplierBalanceAsync(supplierID, endTime.Value).Result;
                     result = suppStatementModel;
                 }
                 return result;
@@ -2310,12 +2310,12 @@ namespace Helper
 
         public static Task<StudentModel> GetStudentAsync(int studentID)
         {
-            return Task.Factory.StartNew<StudentModel>(() => DataAccess.GetStudent(studentID));
+            return Task.Factory.StartNew<StudentModel>(() => DataController.GetStudent(studentID));
         }
 
         public static Task<StaffModel> GetStaffAsync(int staffID)
         {
-            return Task.Factory.StartNew<StaffModel>(() => DataAccess.GetStaff(staffID));
+            return Task.Factory.StartNew<StaffModel>(() => DataController.GetStaff(staffID));
         }
 
         public static StudentModel GetStudent(int studentID)
@@ -2526,12 +2526,12 @@ namespace Helper
 
         public static async Task<ObservableCollection<ClassModel>> GetAllClassesAsync()
         {
-            return await DataAccess.GetCurrentRegistredClassesAsync();
+            return await DataController.GetCurrentRegistredClassesAsync();
         }
 
         public static Task<ObservableCollection<CombinedClassModel>> GetAllCombinedClassesAsync()
         {
-            return DataAccess.GetCurrentRegistredCombinedClassesAsync();
+            return DataController.GetCurrentRegistredCombinedClassesAsync();
         }
 
         public static Task<bool> SaveNewStudentAsync(StudentModel student)
@@ -3333,7 +3333,7 @@ namespace Helper
                     examModel.ExamID = int.Parse(dataRow[0].ToString());
                     examModel.NameOfExam = dataRow[1].ToString();
                     examModel.OutOf = decimal.Parse(dataRow[3].ToString());
-                    examModel.Entries=DataAccess.GetExamEntries(examModel.ExamID, examModel.OutOf).Result;
+                    examModel.Entries=DataController.GetExamEntries(examModel.ExamID, examModel.OutOf).Result;
                     observableCollection.Add(examModel);
                 }
                 return observableCollection;
@@ -3354,9 +3354,9 @@ namespace Helper
             {
                 examModel.ExamID = examID;
                 examModel.NameOfExam = dataTable.Rows[0][0].ToString();
-                examModel.Classes = await DataAccess.GetExamClasses(examID);
+                examModel.Classes = await DataController.GetExamClasses(examID);
                 examModel.OutOf = decimal.Parse(dataTable.Rows[0][1].ToString());
-                examModel.Entries = await DataAccess.GetExamEntries(examID, examModel.OutOf);
+                examModel.Entries = await DataController.GetExamEntries(examID, examModel.OutOf);
                 result = examModel;
             }
             return result;
@@ -3603,7 +3603,7 @@ namespace Helper
                 ExamResultClassModel examResultClassModel = new ExamResultClassModel();
                 examResultClassModel.ClassID = classID;
                 examResultClassModel.NameOfClass = GetClass(classID).NameOfClass;
-                ObservableCollection<SubjectModel> result = DataAccess.GetSubjectsRegistredToClassAsync(classID).Result;
+                ObservableCollection<SubjectModel> result = DataController.GetSubjectsRegistredToClassAsync(classID).Result;
                 string text = "SELECT s.StudentID, NameOfStudent,";
                 object obj;
                 foreach (SubjectModel current in result)
@@ -3694,7 +3694,7 @@ namespace Helper
             return Task.Factory.StartNew<ClassStudentsExamResultModel>(delegate
             {
                 ClassStudentsExamResultModel classStudentsExamResultModel = new ClassStudentsExamResultModel();
-                ObservableCollection<SubjectModel> result = DataAccess.GetSubjectsRegistredToClassAsync(classID).Result;
+                ObservableCollection<SubjectModel> result = DataController.GetSubjectsRegistredToClassAsync(classID).Result;
                 string text = "SELECT s.StudentID, NameOfStudent,";
                 object obj;
                 foreach (SubjectModel current in result)
@@ -3762,7 +3762,7 @@ namespace Helper
 
         public static Task<ClassModel> GetClassAsync(int classID)
         {
-            return Task.Factory.StartNew<ClassModel>(() => DataAccess.GetClass(classID));
+            return Task.Factory.StartNew<ClassModel>(() => DataController.GetClass(classID));
         }
 
         public static ClassModel GetClass(int classID)
@@ -4007,7 +4007,7 @@ namespace Helper
             decimal num = 0m;
             int num2 = 0;
             StudentExamResultModel studentExamResultModel = new StudentExamResultModel();
-            studentExamResultModel.ClassPosition = DataAccess.GetClassPosition(studentResult.StudentID, studentResult.ExamID);
+            studentExamResultModel.ClassPosition = DataController.GetClassPosition(studentResult.StudentID, studentResult.ExamID);
             studentExamResultModel.Entries = new ObservableCollection<StudentTranscriptSubjectModel>();
             foreach (ExamResultSubjectEntryModel current in studentResult.Entries)
             {
@@ -4017,7 +4017,7 @@ namespace Helper
             studentExamResultModel.NameOfStudent = studentResult.NameOfStudent;
             studentExamResultModel.StudentID = studentResult.StudentID;
             studentExamResultModel.NameOfExam = studentResult.NameOfExam;
-            studentExamResultModel.OverAllPosition = DataAccess.GetOverallPosition(studentResult.StudentID, studentResult.ExamID);
+            studentExamResultModel.OverAllPosition = DataController.GetOverallPosition(studentResult.StudentID, studentResult.ExamID);
             foreach (ExamResultSubjectEntryModel current in studentResult.Entries)
             {
                 num += current.Score;
@@ -4026,9 +4026,9 @@ namespace Helper
             {
                 num2 += current2.Points;
             }
-            studentExamResultModel.MeanGrade = ((studentExamResultModel.Entries.Count > 0) ? DataAccess.CalculateGradeFromPoints((num2 + (studentExamResultModel.Entries.Count - 1)) / studentExamResultModel.Entries.Count) : "E");
+            studentExamResultModel.MeanGrade = ((studentExamResultModel.Entries.Count > 0) ? DataController.CalculateGradeFromPoints((num2 + (studentExamResultModel.Entries.Count - 1)) / studentExamResultModel.Entries.Count) : "E");
             studentExamResultModel.TotalMarks = num;
-            studentExamResultModel.Points = DataAccess.CalculatePoints(studentExamResultModel.MeanGrade);
+            studentExamResultModel.Points = DataController.CalculatePoints(studentExamResultModel.MeanGrade);
             return studentExamResultModel;
         }
 
@@ -4144,7 +4144,7 @@ namespace Helper
 
         internal static string GetClassPosition(int studentID, int examID)
         {
-            int classIDFromStudent = DataAccess.GetClassIDFromStudent(studentID);
+            int classIDFromStudent = DataController.GetClassIDFromStudent(studentID);
             string commandText = string.Concat(new object[]
             {
                 "SELECT row_no,no_of_students FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no, res.StudentID,(SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID =",
@@ -4171,7 +4171,7 @@ namespace Helper
 
         internal static string GetOverallPosition(int studentID, int examID)
         {
-            char c = DataAccess.GetClass(DataAccess.GetClassIDFromStudent(studentID)).NameOfClass[5];
+            char c = DataController.GetClass(DataController.GetClassIDFromStudent(studentID)).NameOfClass[5];
             string commandText = string.Concat(new object[]
             {
                 "SELECT row_no,studs FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no, res.StudentID, (SELECT COUNT(*) FROM [Institution].[Student] WHERE ClassID IN(SELECT ClassID FROM [Institution].[Class] WHERE NameOfClass LIKE '%",
@@ -4232,7 +4232,7 @@ namespace Helper
                 classBalancesListModel.NameOfClass = selectedClass.NameOfClass;
                 classBalancesListModel.Date = DateTime.Now;
                 classBalancesListModel.Total = 0m;
-                classBalancesListModel.Entries = DataAccess.GetClassBalancesListAsync(selectedClass.ClassID).Result;
+                classBalancesListModel.Entries = DataController.GetClassBalancesListAsync(selectedClass.ClassID).Result;
                 foreach (StudentFeesDefaultModel current in classBalancesListModel.Entries)
                 {
                     classBalancesListModel.Total += current.Balance;
@@ -4307,7 +4307,7 @@ namespace Helper
                     saleModel.EmployeeID = int.Parse(dataRow[2].ToString());
                     saleModel.DateAdded = DateTime.Parse(dataRow[3].ToString());
                     saleModel.OrderTotal = decimal.Parse(dataRow[4].ToString());
-                    saleModel.SaleItems = DataAccess.GetSaleItems(saleModel.SaleID);
+                    saleModel.SaleItems = DataController.GetSaleItems(saleModel.SaleID);
                 }
                 return saleModel;
             });
@@ -4371,7 +4371,7 @@ namespace Helper
                     saleModel.PaymentID = int.Parse(dataRow[2].ToString());
                     saleModel.DateAdded = DateTime.Parse(dataRow[3].ToString());
                     saleModel.OrderTotal = decimal.Parse(dataRow[4].ToString());
-                    saleModel.SaleItems = DataAccess.GetSaleItems(saleModel.SaleID);
+                    saleModel.SaleItems = DataController.GetSaleItems(saleModel.SaleID);
                 }
                 return saleModel;
             });
@@ -4508,8 +4508,8 @@ namespace Helper
                 studentExamResultEntryModel.Tutor = dataRow[4].ToString();
                 studentExamResultEntryModel.SubjectID = int.Parse(dataRow[6].ToString());
                 studentExamResultEntryModel.Remarks = studentExamResultEntryModel.GetRemark(studentExamResultEntryModel.MeanScore);
-                studentExamResultEntryModel.Grade = DataAccess.CalculateGrade(studentExamResultEntryModel.MeanScore);
-                studentExamResultEntryModel.Points = DataAccess.CalculatePoints(studentExamResultEntryModel.Grade);
+                studentExamResultEntryModel.Grade = DataController.CalculateGrade(studentExamResultEntryModel.MeanScore);
+                studentExamResultEntryModel.Points = DataController.CalculatePoints(studentExamResultEntryModel.Grade);
                 observableCollection.Add(studentExamResultEntryModel);
             }
             List<int> optionals = new List<int>
@@ -4659,7 +4659,7 @@ namespace Helper
 
         public static async Task<StudentTranscriptModel> GetStudentTranscript(int studentID, IEnumerable<ExamWeightModel> exams, IEnumerable<ClassModel> classes,TermModel term)
         {
-            int num = await DataAccess.GetClassIDFromStudentID(studentID);
+            int num = await DataController.GetClassIDFromStudentID(studentID);
             int num2 = 0;
             int num3 = 0;
             int num4 = 0;
@@ -4766,10 +4766,10 @@ namespace Helper
                 case 3: getBest7 = false; break;
             }
 
-            studentTranscriptModel.Entries = DataAccess.GetTranscriptEntries(studentID, exams, getBest7,term);
+            studentTranscriptModel.Entries = DataController.GetTranscriptEntries(studentID, exams, getBest7,term);
 
-            studentTranscriptModel.Points = decimal.Ceiling(DataAccess.GetTranscriptAvgPoints(studentTranscriptModel.Entries));
-            studentTranscriptModel.MeanGrade = DataAccess.CalculateGradeFromPoints(studentTranscriptModel.Points);
+            studentTranscriptModel.Points = decimal.Ceiling(DataController.GetTranscriptAvgPoints(studentTranscriptModel.Entries));
+            studentTranscriptModel.MeanGrade = DataController.CalculateGradeFromPoints(studentTranscriptModel.Points);
             decimal d = 0m;
             decimal d2 = 0m;
             decimal d3 = 0m;
@@ -4813,15 +4813,15 @@ namespace Helper
             {
                 if (current3.Cat1Score.HasValue && examWeightModel != null)
                 {
-                    DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(current3.Cat1Score.Value, examWeightModel.OutOf, 100m)));
+                    DataController.CalculatePoints(DataController.CalculateGrade(DataController.ConvertScoreToOutOf(current3.Cat1Score.Value, examWeightModel.OutOf, 100m)));
                 }
-                d += ((current3.Cat1Score.HasValue && examWeightModel != null) ? DataAccess.CalculatePoints(DataAccess.CalculateGrade(decimal.Ceiling(DataAccess.ConvertScoreToOutOf(current3.Cat1Score.Value, examWeightModel.Weight, 100m)))) : 1);
-                d2 += ((current3.Cat2Score.HasValue && examWeightModel2 != null) ? DataAccess.CalculatePoints(DataAccess.CalculateGrade(decimal.Ceiling(DataAccess.ConvertScoreToOutOf(current3.Cat2Score.Value, examWeightModel2.Weight, 100m)))) : 1);
-                d3 += ((current3.ExamScore.HasValue && examWeightModel3 != null) ? DataAccess.CalculatePoints(DataAccess.CalculateGrade(decimal.Ceiling(DataAccess.ConvertScoreToOutOf(current3.ExamScore.Value, examWeightModel3.Weight, 100m)))) : 1);
+                d += ((current3.Cat1Score.HasValue && examWeightModel != null) ? DataController.CalculatePoints(DataController.CalculateGrade(decimal.Ceiling(DataController.ConvertScoreToOutOf(current3.Cat1Score.Value, examWeightModel.Weight, 100m)))) : 1);
+                d2 += ((current3.Cat2Score.HasValue && examWeightModel2 != null) ? DataController.CalculatePoints(DataController.CalculateGrade(decimal.Ceiling(DataController.ConvertScoreToOutOf(current3.Cat2Score.Value, examWeightModel2.Weight, 100m)))) : 1);
+                d3 += ((current3.ExamScore.HasValue && examWeightModel3 != null) ? DataController.CalculatePoints(DataController.CalculateGrade(decimal.Ceiling(DataController.ConvertScoreToOutOf(current3.ExamScore.Value, examWeightModel3.Weight, 100m)))) : 1);
             }
-            studentTranscriptModel.CAT1Grade = (((num2 == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataAccess.CalculateGradeFromPoints((int)decimal.Ceiling(d / studentTranscriptModel.Entries.Count)));
-            studentTranscriptModel.CAT2Grade = (((num3 == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataAccess.CalculateGradeFromPoints((int)decimal.Ceiling(d2 / studentTranscriptModel.Entries.Count)));
-            studentTranscriptModel.ExamGrade = (((num4 == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataAccess.CalculateGradeFromPoints((int)decimal.Ceiling(d3 / studentTranscriptModel.Entries.Count)));
+            studentTranscriptModel.CAT1Grade = (((num2 == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataController.CalculateGradeFromPoints((int)decimal.Ceiling(d / studentTranscriptModel.Entries.Count)));
+            studentTranscriptModel.CAT2Grade = (((num3 == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataController.CalculateGradeFromPoints((int)decimal.Ceiling(d2 / studentTranscriptModel.Entries.Count)));
+            studentTranscriptModel.ExamGrade = (((num4 == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataController.CalculateGradeFromPoints((int)decimal.Ceiling(d3 / studentTranscriptModel.Entries.Count)));
             return studentTranscriptModel;
         }
 
@@ -4961,7 +4961,7 @@ namespace Helper
 
         public static Task<StudentTranscriptModel2> GetStudentTranscript2(int studentID, IEnumerable<ExamWeightModel> exams, IEnumerable<ClassModel> classes,TermModel term)
         {
-            return DataAccess.GetStudentTranscript2(studentID, exams, classes, 0,term);
+            return DataController.GetStudentTranscript2(studentID, exams, classes, 0,term);
         }
 
         public static Task<ReportFormModel> GetStudentReportFormAsync(int studentID, IEnumerable<ExamWeightModel> exams)
@@ -5881,7 +5881,7 @@ foreach (var sub in subjects)
                     paymentVoucherModel.Description = dataRow[4].ToString();
                     paymentVoucherModel.Category = dataRow[5].ToString();
                     paymentVoucherModel.DatePaid = DateTime.Parse(dataRow[6].ToString());
-                    paymentVoucherModel.Entries = DataAccess.GetPaymentVoucherEntries(paymentVoucherModel.PaymentVoucherID);
+                    paymentVoucherModel.Entries = DataController.GetPaymentVoucherEntries(paymentVoucherModel.PaymentVoucherID);
                     observableCollection.Add(paymentVoucherModel);
                 }
                 return observableCollection;
@@ -5909,7 +5909,7 @@ foreach (var sub in subjects)
                     paymentVoucherModel.Total = decimal.Parse(dataRow[3].ToString());
                     paymentVoucherModel.DatePaid = DateTime.Parse(dataRow[4].ToString());
                     if (includeDetails)
-                        paymentVoucherModel.Entries = DataAccess.GetPaymentVoucherEntries(paymentVoucherModel.PaymentVoucherID);
+                        paymentVoucherModel.Entries = DataController.GetPaymentVoucherEntries(paymentVoucherModel.PaymentVoucherID);
                     observableCollection.Add(paymentVoucherModel);
                 }
                 return observableCollection;
@@ -5943,8 +5943,8 @@ foreach (var sub in subjects)
                 AggregateResultEntryModel aggregateResultEntryModel = new AggregateResultEntryModel();
                 aggregateResultEntryModel.NameOfSubject = dataRow[1].ToString();
                 aggregateResultEntryModel.MeanScore = decimal.Parse(dataRow[2].ToString());
-                aggregateResultEntryModel.MeanGrade = DataAccess.CalculateGrade(aggregateResultEntryModel.MeanScore * 100m / selectedExam.OutOf);
-                aggregateResultEntryModel.Points = DataAccess.CalculatePoints(aggregateResultEntryModel.MeanGrade);
+                aggregateResultEntryModel.MeanGrade = DataController.CalculateGrade(aggregateResultEntryModel.MeanScore * 100m / selectedExam.OutOf);
+                aggregateResultEntryModel.Points = DataController.CalculatePoints(aggregateResultEntryModel.MeanGrade);
                 observableCollection.Add(aggregateResultEntryModel);
             }
             return observableCollection;
@@ -5967,8 +5967,8 @@ foreach (var sub in subjects)
                 AggregateResultEntryModel aggregateResultEntryModel = new AggregateResultEntryModel();
                 aggregateResultEntryModel.NameOfSubject = dataRow[1].ToString();
                 aggregateResultEntryModel.MeanScore = decimal.Parse(dataRow[2].ToString());
-                aggregateResultEntryModel.MeanGrade = DataAccess.CalculateGrade(aggregateResultEntryModel.MeanScore * 100m / selectedExam.OutOf);
-                aggregateResultEntryModel.Points = DataAccess.CalculatePoints(aggregateResultEntryModel.MeanGrade);
+                aggregateResultEntryModel.MeanGrade = DataController.CalculateGrade(aggregateResultEntryModel.MeanScore * 100m / selectedExam.OutOf);
+                aggregateResultEntryModel.Points = DataController.CalculatePoints(aggregateResultEntryModel.MeanGrade);
                 observableCollection.Add(aggregateResultEntryModel);
             }
             return observableCollection;
@@ -6036,8 +6036,8 @@ foreach (var sub in subjects)
                     AggregateResultEntryModel aggregateResultEntryModel = new AggregateResultEntryModel();
                     aggregateResultEntryModel.NameOfSubject = dataRow[1].ToString();
                     aggregateResultEntryModel.MeanScore = decimal.Parse(dataRow[2].ToString());
-                    aggregateResultEntryModel.MeanGrade = DataAccess.CalculateGrade(aggregateResultEntryModel.MeanScore * 100m / current.Weight);
-                    aggregateResultEntryModel.Points = DataAccess.CalculatePoints(aggregateResultEntryModel.MeanGrade);
+                    aggregateResultEntryModel.MeanGrade = DataController.CalculateGrade(aggregateResultEntryModel.MeanScore * 100m / current.Weight);
+                    aggregateResultEntryModel.Points = DataController.CalculatePoints(aggregateResultEntryModel.MeanGrade);
 
                     temp.Add(aggregateResultEntryModel);
                 }
@@ -6076,8 +6076,8 @@ foreach (var sub in subjects)
                     " GROUP BY sub.SubjectID,sub.NameOfSubject) x"
                 });
                 aggregateResultModel.MeanScore = decimal.Parse(DataAccessHelper.Helper.ExecuteScalar(commandText));
-                aggregateResultModel.MeanGrade = DataAccess.CalculateGrade(aggregateResultModel.MeanScore * 100m / selectedExam.OutOf);
-                aggregateResultModel.Points = DataAccess.CalculatePoints(aggregateResultModel.MeanGrade);
+                aggregateResultModel.MeanGrade = DataController.CalculateGrade(aggregateResultModel.MeanScore * 100m / selectedExam.OutOf);
+                aggregateResultModel.Points = DataController.CalculatePoints(aggregateResultModel.MeanGrade);
                 aggregateResultModel.Entries = GetAggregateResultEntries(selectedClass, selectedExam);
                 return aggregateResultModel;
             });
@@ -6092,9 +6092,9 @@ foreach (var sub in subjects)
                 aggregateResultModel.NameOfExam = selectedExam.NameOfExam;
                 string commandText = "SELECT ISNULL(AVG(x.[Average]),0) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [Institution].[ExamDetail] ed INNER JOIN [Institution].[StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [Institution].[ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [Institution].[ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [Institution].[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [Institution].[ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Institution].[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Institution].[Student] s ON(erh.StudentID=s.StudentID) WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY sub.SubjectID,sub.NameOfSubject) x";
                 aggregateResultModel.MeanScore = decimal.Parse(DataAccessHelper.Helper.ExecuteScalar(commandText));
-                aggregateResultModel.MeanGrade = DataAccess.CalculateGrade(aggregateResultModel.MeanScore * 100m / selectedExam.OutOf);
-                aggregateResultModel.Points = DataAccess.CalculatePoints(aggregateResultModel.MeanGrade);
-                aggregateResultModel.Entries = DataAccess.GetAggregateResultEntries(selectedCombinedClass.Entries, selectedExam);
+                aggregateResultModel.MeanGrade = DataController.CalculateGrade(aggregateResultModel.MeanScore * 100m / selectedExam.OutOf);
+                aggregateResultModel.Points = DataController.CalculatePoints(aggregateResultModel.MeanGrade);
+                aggregateResultModel.Entries = DataController.GetAggregateResultEntries(selectedCombinedClass.Entries, selectedExam);
                 return aggregateResultModel;
             });
         }
@@ -6121,9 +6121,9 @@ foreach (var sub in subjects)
                     });
                     aggregateResultModel.MeanScore += decimal.Parse(DataAccessHelper.Helper.ExecuteScalar(commandText));
                 }
-                aggregateResultModel.MeanGrade = DataAccess.CalculateGrade(aggregateResultModel.MeanScore);
-                aggregateResultModel.Points = DataAccess.CalculatePoints(aggregateResultModel.MeanGrade);
-                aggregateResultModel.Entries = DataAccess.GetCombinedAggregateResultEntries(selectedClass, exams);
+                aggregateResultModel.MeanGrade = DataController.CalculateGrade(aggregateResultModel.MeanScore);
+                aggregateResultModel.Points = DataController.CalculatePoints(aggregateResultModel.MeanGrade);
+                aggregateResultModel.Entries = DataController.GetCombinedAggregateResultEntries(selectedClass, exams);
                 return aggregateResultModel;
             });
         }
@@ -6148,9 +6148,9 @@ foreach (var sub in subjects)
                     });
                     aggregateResultModel.MeanScore += decimal.Parse(DataAccessHelper.Helper.ExecuteScalar(commandText));
                 }
-                aggregateResultModel.MeanGrade = DataAccess.CalculateGrade(aggregateResultModel.MeanScore);
-                aggregateResultModel.Points = DataAccess.CalculatePoints(aggregateResultModel.MeanGrade);
-                aggregateResultModel.Entries = DataAccess.GetCombinedAggregateResultEntries(selectedCombinedClass.Entries, exams);
+                aggregateResultModel.MeanGrade = DataController.CalculateGrade(aggregateResultModel.MeanScore);
+                aggregateResultModel.Points = DataController.CalculatePoints(aggregateResultModel.MeanGrade);
+                aggregateResultModel.Entries = DataController.GetCombinedAggregateResultEntries(selectedCombinedClass.Entries, exams);
                 return aggregateResultModel;
             });
         }
@@ -6594,9 +6594,9 @@ foreach (var sub in subjects)
                         case 2: getBest7 = true; break;
                         case 3: getBest7 = false; break;
                     }
-                    studentTranscriptModel.Entries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, exams, getBest7, term);
-                    studentTranscriptModel.Points = DataAccess.GetTranscriptAvgPoints(studentTranscriptModel.Entries);
-                    studentTranscriptModel.MeanGrade = DataAccess.CalculateGradeFromPoints(studentTranscriptModel.Points);
+                    studentTranscriptModel.Entries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, exams, getBest7, term);
+                    studentTranscriptModel.Points = DataController.GetTranscriptAvgPoints(studentTranscriptModel.Entries);
+                    studentTranscriptModel.MeanGrade = DataController.CalculateGradeFromPoints(studentTranscriptModel.Points);
                     decimal d = 0m;
                     decimal d2 = 0m;
                     decimal d3 = 0m;
@@ -6638,14 +6638,14 @@ foreach (var sub in subjects)
                     ExamWeightModel examWeightModel3 = arg_8DE_0;
                     foreach (StudentExamResultEntryModel current3 in studentTranscriptModel.Entries)
                     {
-                        decimal arg_940_0 = (current3.Cat1Score.HasValue && examWeightModel != null) ? DataAccess.ConvertScoreToOutOf(current3.Cat1Score.Value, examWeightModel.OutOf, 100m) : 0m;
-                        d += ((current3.Cat1Score.HasValue && examWeightModel != null) ? DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(current3.Cat1Score.Value, examWeightModel.Weight, 100m))) : 0);
-                        d2 += ((current3.Cat2Score.HasValue && examWeightModel2 != null) ? DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(current3.Cat2Score.Value, examWeightModel2.Weight, 100m))) : 0);
-                        d3 += ((current3.ExamScore.HasValue && examWeightModel3 != null) ? DataAccess.CalculatePoints(DataAccess.CalculateGrade(DataAccess.ConvertScoreToOutOf(current3.ExamScore.Value, examWeightModel3.Weight, 100m))) : 0);
+                        decimal arg_940_0 = (current3.Cat1Score.HasValue && examWeightModel != null) ? DataController.ConvertScoreToOutOf(current3.Cat1Score.Value, examWeightModel.OutOf, 100m) : 0m;
+                        d += ((current3.Cat1Score.HasValue && examWeightModel != null) ? DataController.CalculatePoints(DataController.CalculateGrade(DataController.ConvertScoreToOutOf(current3.Cat1Score.Value, examWeightModel.Weight, 100m))) : 0);
+                        d2 += ((current3.Cat2Score.HasValue && examWeightModel2 != null) ? DataController.CalculatePoints(DataController.CalculateGrade(DataController.ConvertScoreToOutOf(current3.Cat2Score.Value, examWeightModel2.Weight, 100m))) : 0);
+                        d3 += ((current3.ExamScore.HasValue && examWeightModel3 != null) ? DataController.CalculatePoints(DataController.CalculateGrade(DataController.ConvertScoreToOutOf(current3.ExamScore.Value, examWeightModel3.Weight, 100m))) : 0);
                     }
-                    studentTranscriptModel.CAT1Grade = (((num == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataAccess.CalculateGradeFromPoints((int)decimal.Ceiling(d / studentTranscriptModel.Entries.Count)));
-                    studentTranscriptModel.CAT2Grade = (((num2 == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataAccess.CalculateGradeFromPoints((int)decimal.Ceiling(d2 / studentTranscriptModel.Entries.Count)));
-                    studentTranscriptModel.ExamGrade = (((num3 == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataAccess.CalculateGradeFromPoints((int)decimal.Ceiling(d3 / studentTranscriptModel.Entries.Count)));
+                    studentTranscriptModel.CAT1Grade = (((num == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataController.CalculateGradeFromPoints((int)decimal.Ceiling(d / studentTranscriptModel.Entries.Count)));
+                    studentTranscriptModel.CAT2Grade = (((num2 == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataController.CalculateGradeFromPoints((int)decimal.Ceiling(d2 / studentTranscriptModel.Entries.Count)));
+                    studentTranscriptModel.ExamGrade = (((num3 == 0 && studentTranscriptModel.Entries.Count > 0) || d == 0m || studentTranscriptModel.Entries.Count == 0) ? "E" : DataController.CalculateGradeFromPoints((int)decimal.Ceiling(d3 / studentTranscriptModel.Entries.Count)));
                     observableCollection.Add(studentTranscriptModel);
                 }
                 return observableCollection;
@@ -6688,28 +6688,28 @@ foreach (var sub in subjects)
                 switch (currentTerm)
                 {
                     case 1:
-                        num4 = DataAccess.GetTermExamID(exams, 1);
-                        num16 = DataAccess.GetTermExamWeight(exams, 1);
-                        num5 = DataAccess.GetTermExamID(exams, 2);
-                        num17 = DataAccess.GetTermExamWeight(exams, 2);
-                        num6 = DataAccess.GetTermExamID(exams, 3);
-                        num18 = DataAccess.GetTermExamWeight(exams, 3);
+                        num4 = DataController.GetTermExamID(exams, 1);
+                        num16 = DataController.GetTermExamWeight(exams, 1);
+                        num5 = DataController.GetTermExamID(exams, 2);
+                        num17 = DataController.GetTermExamWeight(exams, 2);
+                        num6 = DataController.GetTermExamID(exams, 3);
+                        num18 = DataController.GetTermExamWeight(exams, 3);
                         break;
                     case 2:
-                        num7 = DataAccess.GetTermExamID(exams, 1);
-                        num19 = DataAccess.GetTermExamWeight(exams, 1);
-                        num8 = DataAccess.GetTermExamID(exams, 2);
-                        num20 = DataAccess.GetTermExamWeight(exams, 2);
-                        num9 = DataAccess.GetTermExamID(exams, 3);
-                        num21 = DataAccess.GetTermExamWeight(exams, 3);
+                        num7 = DataController.GetTermExamID(exams, 1);
+                        num19 = DataController.GetTermExamWeight(exams, 1);
+                        num8 = DataController.GetTermExamID(exams, 2);
+                        num20 = DataController.GetTermExamWeight(exams, 2);
+                        num9 = DataController.GetTermExamID(exams, 3);
+                        num21 = DataController.GetTermExamWeight(exams, 3);
                         break;
                     case 3:
-                        num10 = DataAccess.GetTermExamID(exams, 1);
-                        num22 = DataAccess.GetTermExamWeight(exams, 1);
-                        num11 = DataAccess.GetTermExamID(exams, 2);
-                        num23 = DataAccess.GetTermExamWeight(exams, 2);
-                        num12 = DataAccess.GetTermExamID(exams, 3);
-                        num24 = DataAccess.GetTermExamWeight(exams, 3);
+                        num10 = DataController.GetTermExamID(exams, 1);
+                        num22 = DataController.GetTermExamWeight(exams, 1);
+                        num11 = DataController.GetTermExamID(exams, 2);
+                        num23 = DataController.GetTermExamWeight(exams, 2);
+                        num12 = DataController.GetTermExamID(exams, 3);
+                        num24 = DataController.GetTermExamWeight(exams, 3);
                         break;
                 }
                 List<int> list = new List<int>(from o in new List<int>(3)
@@ -6721,258 +6721,258 @@ foreach (var sub in subjects)
                 }
                                                where o != currentTerm
                                                select o);
-                List<ExamWeightModel> otherTermClassExams = DataAccess.GetOtherTermClassExams(classID, list);
+                List<ExamWeightModel> otherTermClassExams = DataController.GetOtherTermClassExams(classID, list);
                 foreach (int current in list)
                 {
                     if (current == -1)
                     {
                         int arg_2D1_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == -1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == -1))
                         {
                             arg_2D1_0 = 0;
                         }
                         else
                         {
-                            arg_2D1_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == -1).ExamID;
+                            arg_2D1_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == -1).ExamID;
                         }
                         num = arg_2D1_0;
                         decimal arg_32E_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == -1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == -1))
                         {
                             arg_32E_0 = 0m;
                         }
                         else
                         {
-                            arg_32E_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == -1).Weight;
+                            arg_32E_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == -1).Weight;
                         }
                         num13 = arg_32E_0;
                         int arg_387_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == -1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == -1))
                         {
                             arg_387_0 = 0;
                         }
                         else
                         {
-                            arg_387_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == -1).ExamID;
+                            arg_387_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == -1).ExamID;
                         }
                         num2 = arg_387_0;
                         decimal arg_3E4_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == -1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == -1))
                         {
                             arg_3E4_0 = 0m;
                         }
                         else
                         {
-                            arg_3E4_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == -1).Weight;
+                            arg_3E4_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == -1).Weight;
                         }
                         num14 = arg_3E4_0;
                         int arg_43D_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == -1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == -1))
                         {
                             arg_43D_0 = 0;
                         }
                         else
                         {
-                            arg_43D_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == -1).ExamID;
+                            arg_43D_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == -1).ExamID;
                         }
                         num3 = arg_43D_0;
                         decimal arg_49A_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == -1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == -1))
                         {
                             arg_49A_0 = 0m;
                         }
                         else
                         {
-                            arg_49A_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == -1).Weight;
+                            arg_49A_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == -1).Weight;
                         }
                         num15 = arg_49A_0;
                     }
                     else if (current == 1)
                     {
                         int arg_50B_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 1))
                         {
                             arg_50B_0 = 0;
                         }
                         else
                         {
-                            arg_50B_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 1).ExamID;
+                            arg_50B_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 1).ExamID;
                         }
                         num4 = arg_50B_0;
                         decimal arg_569_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 1))
                         {
                             arg_569_0 = 0m;
                         }
                         else
                         {
-                            arg_569_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 1).Weight;
+                            arg_569_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 1).Weight;
                         }
                         num16 = arg_569_0;
                         int arg_5C2_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 1))
                         {
                             arg_5C2_0 = 0;
                         }
                         else
                         {
-                            arg_5C2_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 1).ExamID;
+                            arg_5C2_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 1).ExamID;
                         }
                         num5 = arg_5C2_0;
                         decimal arg_620_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 1))
                         {
                             arg_620_0 = 0m;
                         }
                         else
                         {
-                            arg_620_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 1).Weight;
+                            arg_620_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 1).Weight;
                         }
                         num17 = arg_620_0;
                         int arg_679_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 1))
                         {
                             arg_679_0 = 0;
                         }
                         else
                         {
-                            arg_679_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 1).ExamID;
+                            arg_679_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 1).ExamID;
                         }
                         num6 = arg_679_0;
                         decimal arg_6D7_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 1))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 1))
                         {
                             arg_6D7_0 = 0m;
                         }
                         else
                         {
-                            arg_6D7_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 1).Weight;
+                            arg_6D7_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 1).Weight;
                         }
                         num18 = arg_6D7_0;
                     }
                     else if (current == 2)
                     {
                         int arg_748_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 2))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 2))
                         {
                             arg_748_0 = 0;
                         }
                         else
                         {
-                            arg_748_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 2).ExamID;
+                            arg_748_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 2).ExamID;
                         }
                         num7 = arg_748_0;
                         decimal arg_7A6_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 2))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 2))
                         {
                             arg_7A6_0 = 0m;
                         }
                         else
                         {
-                            arg_7A6_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 2).Weight;
+                            arg_7A6_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 2).Weight;
                         }
                         num19 = arg_7A6_0;
                         int arg_7FF_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 2))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 2))
                         {
                             arg_7FF_0 = 0;
                         }
                         else
                         {
-                            arg_7FF_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 2).ExamID;
+                            arg_7FF_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 2).ExamID;
                         }
                         num8 = arg_7FF_0;
                         decimal arg_85D_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 2))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 2))
                         {
                             arg_85D_0 = 0m;
                         }
                         else
                         {
-                            arg_85D_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 2).Weight;
+                            arg_85D_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 2).Weight;
                         }
                         num20 = arg_85D_0;
                         int arg_8B6_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 2))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 2))
                         {
                             arg_8B6_0 = 0;
                         }
                         else
                         {
-                            arg_8B6_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 2).ExamID;
+                            arg_8B6_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 2).ExamID;
                         }
                         num9 = arg_8B6_0;
                         decimal arg_914_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 2))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 2))
                         {
                             arg_914_0 = 0m;
                         }
                         else
                         {
-                            arg_914_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 2).Weight;
+                            arg_914_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 2).Weight;
                         }
                         num21 = arg_914_0;
                     }
                     else
                     {
                         int arg_974_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 3))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 3))
                         {
                             arg_974_0 = 0;
                         }
                         else
                         {
-                            arg_974_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 3).ExamID;
+                            arg_974_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 3).ExamID;
                         }
                         num10 = arg_974_0;
                         decimal arg_9D2_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 3))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 3))
                         {
                             arg_9D2_0 = 0m;
                         }
                         else
                         {
-                            arg_9D2_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataAccess.GetTerm(o.ExamDateTime) == 3).Weight;
+                            arg_9D2_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 1 && DataController.GetTerm(o.ExamDateTime) == 3).Weight;
                         }
                         num22 = arg_9D2_0;
                         int arg_A2B_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 3))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 3))
                         {
                             arg_A2B_0 = 0;
                         }
                         else
                         {
-                            arg_A2B_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 3).ExamID;
+                            arg_A2B_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 3).ExamID;
                         }
                         num11 = arg_A2B_0;
                         decimal arg_A89_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 3))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 3))
                         {
                             arg_A89_0 = 0m;
                         }
                         else
                         {
-                            arg_A89_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataAccess.GetTerm(o.ExamDateTime) == 3).Weight;
+                            arg_A89_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 2 && DataController.GetTerm(o.ExamDateTime) == 3).Weight;
                         }
                         num23 = arg_A89_0;
                         int arg_AE2_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 3))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 3))
                         {
                             arg_AE2_0 = 0;
                         }
                         else
                         {
-                            arg_AE2_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 3).ExamID;
+                            arg_AE2_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 3).ExamID;
                         }
                         num12 = arg_AE2_0;
                         decimal arg_B40_0;
-                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 3))
+                        if (!otherTermClassExams.Any((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 3))
                         {
                             arg_B40_0 = 0m;
                         }
                         else
                         {
-                            arg_B40_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataAccess.GetTerm(o.ExamDateTime) == 3).Weight;
+                            arg_B40_0 = otherTermClassExams.First((ExamWeightModel o) => o.Index == 3 && DataController.GetTerm(o.ExamDateTime) == 3).Weight;
                         }
                         num24 = arg_B40_0;
                     }
@@ -7223,39 +7223,39 @@ foreach (var sub in subjects)
                     switch (currentTerm)
                     {
                         case 1:
-                            studentTranscriptModel.Term1Entries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, exams, getBest7, term);
-                            studentTranscriptModel.Term2Entries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
-                                                                                                                                    where DataAccess.GetTerm(o.ExamDateTime) == 2
+                            studentTranscriptModel.Term1Entries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, exams, getBest7, term);
+                            studentTranscriptModel.Term2Entries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
+                                                                                                                                    where DataController.GetTerm(o.ExamDateTime) == 2
                                                                                                                                     select o, getBest7,term);
-                            studentTranscriptModel.Term3Entries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
-                                                                                                                                    where DataAccess.GetTerm(o.ExamDateTime) == 3
+                            studentTranscriptModel.Term3Entries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
+                                                                                                                                    where DataController.GetTerm(o.ExamDateTime) == 3
                                                                                                                                     select o, getBest7,term);
-                            studentTranscriptModel.PrevYearEntries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
-                                                                                                                                       where DataAccess.GetTerm(o.ExamDateTime) == -1
+                            studentTranscriptModel.PrevYearEntries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
+                                                                                                                                       where DataController.GetTerm(o.ExamDateTime) == -1
                                                                                                                                        select o, getBest7, term);
                             break;
                         case 2:
-                            studentTranscriptModel.Term2Entries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, exams, getBest7,term);
-                            studentTranscriptModel.Term1Entries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
-                                                                                                                                    where DataAccess.GetTerm(o.ExamDateTime) == 1
+                            studentTranscriptModel.Term2Entries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, exams, getBest7,term);
+                            studentTranscriptModel.Term1Entries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
+                                                                                                                                    where DataController.GetTerm(o.ExamDateTime) == 1
                                                                                                                                     select o, getBest7, term);
-                            studentTranscriptModel.Term3Entries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
-                                                                                                                                    where DataAccess.GetTerm(o.ExamDateTime) == 3
+                            studentTranscriptModel.Term3Entries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
+                                                                                                                                    where DataController.GetTerm(o.ExamDateTime) == 3
                                                                                                                                     select o, getBest7, term);
-                            studentTranscriptModel.PrevYearEntries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
-                                                                                                                                       where DataAccess.GetTerm(o.ExamDateTime) == -1
+                            studentTranscriptModel.PrevYearEntries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
+                                                                                                                                       where DataController.GetTerm(o.ExamDateTime) == -1
                                                                                                                                        select o, getBest7, term);
                             break;
                         case 3:
-                            studentTranscriptModel.Term3Entries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, exams, getBest7, term);
-                            studentTranscriptModel.Term1Entries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
-                                                                                                                                    where DataAccess.GetTerm(o.ExamDateTime) == 1
+                            studentTranscriptModel.Term3Entries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, exams, getBest7, term);
+                            studentTranscriptModel.Term1Entries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
+                                                                                                                                    where DataController.GetTerm(o.ExamDateTime) == 1
                                                                                                                                     select o, getBest7, term);
-                            studentTranscriptModel.Term2Entries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
-                                                                                                                                    where DataAccess.GetTerm(o.ExamDateTime) == 2
+                            studentTranscriptModel.Term2Entries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
+                                                                                                                                    where DataController.GetTerm(o.ExamDateTime) == 2
                                                                                                                                     select o, getBest7, term);
-                            studentTranscriptModel.PrevYearEntries = DataAccess.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
-                                                                                                                                       where DataAccess.GetTerm(o.ExamDateTime) == -1
+                            studentTranscriptModel.PrevYearEntries = DataController.GetTranscriptEntries(studentTranscriptModel.StudentID, from o in otherTermClassExams
+                                                                                                                                       where DataController.GetTerm(o.ExamDateTime) == -1
                                                                                                                                        select o, getBest7, term);
                             break;
                     }
@@ -7270,22 +7270,22 @@ foreach (var sub in subjects)
                     decimal? num28 = (string.IsNullOrWhiteSpace(dataRow[25].ToString()) && string.IsNullOrWhiteSpace(dataRow[26].ToString()) && string.IsNullOrWhiteSpace(dataRow[27].ToString())) ? null : new decimal?((string.IsNullOrWhiteSpace(dataRow[25].ToString()) ? 0m : decimal.Parse(dataRow[25].ToString())) + (string.IsNullOrWhiteSpace(dataRow[26].ToString()) ? 0m : decimal.Parse(dataRow[26].ToString())) + (string.IsNullOrWhiteSpace(dataRow[27].ToString()) ? 0m : decimal.Parse(dataRow[27].ToString())));
                     studentTranscriptModel.Term3TotalScore = (num28.HasValue ? num28.Value.ToString("N0") : "") + " of " + 100 * studentTranscriptModel.Term3Entries.Count;
                     decimal? num29 = (string.IsNullOrWhiteSpace(dataRow[28].ToString()) && string.IsNullOrWhiteSpace(dataRow[29].ToString()) && string.IsNullOrWhiteSpace(dataRow[30].ToString())) ? null : new decimal?((string.IsNullOrWhiteSpace(dataRow[28].ToString()) ? 0m : decimal.Parse(dataRow[28].ToString())) + (string.IsNullOrWhiteSpace(dataRow[29].ToString()) ? 0m : decimal.Parse(dataRow[29].ToString())) + (string.IsNullOrWhiteSpace(dataRow[30].ToString()) ? 0m : decimal.Parse(dataRow[30].ToString())));
-                    decimal transcriptTotPoints = DataAccess.GetTranscriptTotPoints(studentTranscriptModel.Term1Entries);
-                    decimal transcriptTotPoints2 = DataAccess.GetTranscriptTotPoints(studentTranscriptModel.Term2Entries);
-                    decimal transcriptTotPoints3 = DataAccess.GetTranscriptTotPoints(studentTranscriptModel.Term3Entries);
+                    decimal transcriptTotPoints = DataController.GetTranscriptTotPoints(studentTranscriptModel.Term1Entries);
+                    decimal transcriptTotPoints2 = DataController.GetTranscriptTotPoints(studentTranscriptModel.Term2Entries);
+                    decimal transcriptTotPoints3 = DataController.GetTranscriptTotPoints(studentTranscriptModel.Term3Entries);
                     studentTranscriptModel.Term1TotalPoints = transcriptTotPoints + " of " + studentTranscriptModel.Term1Entries.Count * 12;
                     studentTranscriptModel.Term2TotalPoints = transcriptTotPoints2 + " of " + studentTranscriptModel.Term2Entries.Count * 12;
                     studentTranscriptModel.Term3TotalPoints = transcriptTotPoints3 + " of " + studentTranscriptModel.Term3Entries.Count * 12;
-                    studentTranscriptModel.PrevYearAvgPoints = (num29.HasValue ? DataAccess.GetTranscriptAvgPoints(studentTranscriptModel.PrevYearEntries) : 0m);
-                    studentTranscriptModel.Term1AvgPts = (num26.HasValue ? DataAccess.GetTranscriptAvgPoints(studentTranscriptModel.Term1Entries) : 0m);
-                    studentTranscriptModel.Term2AvgPts = (num27.HasValue ? DataAccess.GetTranscriptAvgPoints(studentTranscriptModel.Term2Entries) : 0m);
-                    studentTranscriptModel.Term3AvgPts = (num28.HasValue ? DataAccess.GetTranscriptAvgPoints(studentTranscriptModel.Term3Entries) : 0m);
+                    studentTranscriptModel.PrevYearAvgPoints = (num29.HasValue ? DataController.GetTranscriptAvgPoints(studentTranscriptModel.PrevYearEntries) : 0m);
+                    studentTranscriptModel.Term1AvgPts = (num26.HasValue ? DataController.GetTranscriptAvgPoints(studentTranscriptModel.Term1Entries) : 0m);
+                    studentTranscriptModel.Term2AvgPts = (num27.HasValue ? DataController.GetTranscriptAvgPoints(studentTranscriptModel.Term2Entries) : 0m);
+                    studentTranscriptModel.Term3AvgPts = (num28.HasValue ? DataController.GetTranscriptAvgPoints(studentTranscriptModel.Term3Entries) : 0m);
                     studentTranscriptModel.Term1PtsChange = studentTranscriptModel.Term1AvgPts - studentTranscriptModel.PrevYearAvgPoints;
                     studentTranscriptModel.Term2PtsChange = studentTranscriptModel.Term2AvgPts - studentTranscriptModel.Term1AvgPts;
                     studentTranscriptModel.Term3PtsChange = studentTranscriptModel.Term3AvgPts - studentTranscriptModel.Term2AvgPts;
-                    studentTranscriptModel.Term1Grade = ((studentTranscriptModel.Term1AvgPts > 0m) ? DataAccess.CalculateGradeFromPoints(studentTranscriptModel.Term1AvgPts) : "E");
-                    studentTranscriptModel.Term2Grade = ((studentTranscriptModel.Term2AvgPts > 0m) ? DataAccess.CalculateGradeFromPoints(studentTranscriptModel.Term2AvgPts) : "E");
-                    studentTranscriptModel.Term3Grade = ((studentTranscriptModel.Term3AvgPts > 0m) ? DataAccess.CalculateGradeFromPoints(studentTranscriptModel.Term3AvgPts) : "E");
+                    studentTranscriptModel.Term1Grade = ((studentTranscriptModel.Term1AvgPts > 0m) ? DataController.CalculateGradeFromPoints(studentTranscriptModel.Term1AvgPts) : "E");
+                    studentTranscriptModel.Term2Grade = ((studentTranscriptModel.Term2AvgPts > 0m) ? DataController.CalculateGradeFromPoints(studentTranscriptModel.Term2AvgPts) : "E");
+                    studentTranscriptModel.Term3Grade = ((studentTranscriptModel.Term3AvgPts > 0m) ? DataController.CalculateGradeFromPoints(studentTranscriptModel.Term3AvgPts) : "E");
                     studentTranscriptModel.Term1MeanScore = ((studentTranscriptModel.Term1Entries.Count > 0 && num26.HasValue) ? (num26.Value / studentTranscriptModel.Term1Entries.Count) : 0m);
                     studentTranscriptModel.Term2MeanScore = ((studentTranscriptModel.Term2Entries.Count > 0 && num27.HasValue) ? (num27.Value / studentTranscriptModel.Term2Entries.Count) : 0m);
                     studentTranscriptModel.Term3MeanScore = ((studentTranscriptModel.Term3Entries.Count > 0 && num28.HasValue) ? (num28.Value / studentTranscriptModel.Term3Entries.Count) : 0m);
@@ -7554,7 +7554,7 @@ foreach (var sub in subjects)
             ExamResultClassModel examResultClassModel = new ExamResultClassModel();
             examResultClassModel.ClassID = classID;
             examResultClassModel.NameOfClass = GetClass(classID).NameOfClass;
-            ObservableCollection<SubjectModel> observableCollection = await DataAccess.GetSubjectsRegistredToClassAsync(classID);
+            ObservableCollection<SubjectModel> observableCollection = await DataController.GetSubjectsRegistredToClassAsync(classID);
             string text = "SELECT s.StudentID, NameOfStudent,";
             foreach (SubjectModel current in observableCollection)
             {
@@ -7621,7 +7621,7 @@ foreach (var sub in subjects)
             ExamResultClassModel examResultClassModel = new ExamResultClassModel();
 
             examResultClassModel.NameOfClass = classes.First().NameOfClass;
-            ObservableCollection<SubjectModel> observableCollection = await DataAccess.GetSubjectsRegistredToClassAsync(classes[0].ClassID);
+            ObservableCollection<SubjectModel> observableCollection = await DataController.GetSubjectsRegistredToClassAsync(classes[0].ClassID);
             string text = "SELECT s.StudentID, NameOfStudent,";
             string text2 = "0,";
             foreach (ClassModel current in classes)
@@ -7687,7 +7687,7 @@ foreach (var sub in subjects)
             return Task.Factory.StartNew<ObservableCollection<StudentSubjectSelectionModel>>(delegate
             {
                 ObservableCollection<StudentSubjectSelectionModel> observableCollection = new ObservableCollection<StudentSubjectSelectionModel>();
-                ObservableCollection<SubjectModel> result = DataAccess.GetSubjectsRegistredToClassAsync(classID).Result;
+                ObservableCollection<SubjectModel> result = DataController.GetSubjectsRegistredToClassAsync(classID).Result;
                 string text = "SELECT s.StudentID, NameOfStudent,";
                 foreach (SubjectModel current in result)
                 {
@@ -7908,7 +7908,7 @@ foreach (var sub in subjects)
             return Task.Factory.StartNew<TimeTableModel>(delegate
             {
                 TimeTableModel timeTableModel = new TimeTableModel();
-                ObservableCollection<ClassModel> result = DataAccess.GetAllClassesAsync().Result;
+                ObservableCollection<ClassModel> result = DataController.GetAllClassesAsync().Result;
                 TimeTableSettingsModel timeTableSettingsModel = new TimeTableSettingsModel();
                 int num = 10;
                 foreach (ClassModel current in result)
@@ -8019,7 +8019,7 @@ foreach (var sub in subjects)
                     }
                     timeTableModel.Add(classLessons);
                 }
-                timeTableModel.Settings = DataAccess.GetCurrentTimeTableSettings().Result;
+                timeTableModel.Settings = DataController.GetCurrentTimeTableSettings().Result;
                 string commandText = "SELECT tth.ClassID,ttd.NameOfSubject,ttd.Tutor,ttd.[Day],ttd.StartTime,ttd.EndTime,ttd.SubjectIndex FROM [Institution].[TimeTableDetail] ttd INNER JOIN [Institution].[TimeTableHeader] tth ON (ttd.TimeTableID= tth.TimeTableID) WHERE tth.IsActive = 1";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 if (dataTable.Rows.Count > 0)
@@ -8270,7 +8270,7 @@ foreach (var sub in subjects)
                     payslipModel.DatePaid = DateTime.Parse(dataRow[2].ToString());
                     payslipModel.Designation = dataRow[3].ToString();
                     payslipModel.PaymentPeriod = dataRow[4].ToString();
-                    payslipModel.Entries = DataAccess.GetPayslipEntries(payslipModel.PayslipID);
+                    payslipModel.Entries = DataController.GetPayslipEntries(payslipModel.PayslipID);
                     observableCollection.Add(payslipModel);
                 }
                 return observableCollection;
@@ -8373,12 +8373,12 @@ foreach (var sub in subjects)
 
         public static Task<ObservableCollection<ProjectBaseModel>> GetAllProjectsDisplay()
         {
-            return Task.Factory.StartNew<ObservableCollection<ProjectBaseModel>>(() => DataAccess.GetProjectsDisplay(new DateTime(2015, 1, 1), DateTime.Now.AddDays(1.0)));
+            return Task.Factory.StartNew<ObservableCollection<ProjectBaseModel>>(() => DataController.GetProjectsDisplay(new DateTime(2015, 1, 1), DateTime.Now.AddDays(1.0)));
         }
 
         public static Task<ObservableCollection<ProjectListModel>> GetAllProjects()
         {
-            return Task.Factory.StartNew<ObservableCollection<ProjectListModel>>(() => DataAccess.GetProjects(new DateTime(2015, 1, 1), DateTime.Now.AddDays(1.0)));
+            return Task.Factory.StartNew<ObservableCollection<ProjectListModel>>(() => DataController.GetProjects(new DateTime(2015, 1, 1), DateTime.Now.AddDays(1.0)));
         }
 
         private static ObservableCollection<ProjectListModel> GetProjects(DateTime startDate, DateTime endDate)

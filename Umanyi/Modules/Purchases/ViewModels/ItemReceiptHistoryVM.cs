@@ -1,14 +1,14 @@
-﻿using Helper;
-using Helper.Models;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Controller;
+using UmanyiSMS.Modules.Purchases.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ItemReceiptHistoryVM: ViewModelBase
@@ -45,7 +45,7 @@ namespace UmanyiSMS.ViewModels
 
         private async Task RefreshItems()
         {
-            Items = await DataAccess.GetItemReceiptsAsync(true,null,from, to);
+            Items = await DataController.GetItemReceiptsAsync(true,null,from, to);
         }
 
         private bool CanRefresh()

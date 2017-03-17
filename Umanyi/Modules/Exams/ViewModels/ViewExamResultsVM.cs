@@ -1,17 +1,16 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.Security.Permissions;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Students.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class ViewExamResultsVM : ViewModelBase
@@ -33,7 +32,7 @@ namespace UmanyiSMS.ViewModels
             Title = "VIEW EXAM RESULTS";
             StudentResult = new ExamResultStudentDisplayModel();
             AllExams = new ObservableCollection<ExamModel>();
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
             
             studentResult.PropertyChanged += OnPropertyChanged;
             PropertyChanged += OnPropertyChanged;
@@ -45,7 +44,7 @@ namespace UmanyiSMS.ViewModels
             PrintTranscriptCommand = new RelayCommand(o =>
             {
                     IsBusy = true;
-                    StudentExamResultModel st = DataAccess.GetStudentExamResult(studentResult);
+                    StudentExamResultModel st = DataController.GetStudentExamResult(studentResult);
                     IsBusy = false;
                     if (ShowStudentTranscriptAction != null)
                         ShowStudentTranscriptAction.Invoke(st);
@@ -56,14 +55,14 @@ namespace UmanyiSMS.ViewModels
             DisplayResultsCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                  var temp = new ExamResultStudentDisplayModel(await DataAccess.GetStudentExamResultAync(studentResult.StudentID, selectedExam.ExamID,selectedExam.OutOf));
+                  var temp = new ExamResultStudentDisplayModel(await DataController.GetStudentExamResultAync(studentResult.StudentID, selectedExam.ExamID,selectedExam.OutOf));
                     StudentResult.Entries = temp.Entries;
                     StudentResult.ExamID = temp.ExamID;
                     StudentResult.ExamResultID = temp.ExamResultID;
 
-                    StudentModel st = await DataAccess.GetStudentAsync(studentResult.StudentID);
+                    StudentModel st = await DataController.GetStudentAsync(studentResult.StudentID);
                     studentResult.NameOfStudent = st.NameOfStudent;
-                    studentResult.NameOfClass = (await DataAccess.GetClassAsync(st.ClassID)).NameOfClass;
+                    studentResult.NameOfClass = (await DataController.GetClassAsync(st.ClassID)).NameOfClass;
                     studentResult.NameOfExam = selectedExam.NameOfExam;
                
                 
@@ -81,8 +80,8 @@ namespace UmanyiSMS.ViewModels
                 {
                     if (e.PropertyName != "SelectedExam")
                     {
-                        int classID = await DataAccess.GetClassIDFromStudentID(studentResult.StudentID);
-                        AllExams = await DataAccess.GetExamsByClass(classID, selectedTerm);
+                        int classID = await DataController.GetClassIDFromStudentID(studentResult.StudentID);
+                        AllExams = await DataController.GetExamsByClass(classID, selectedTerm);
                     }
                     if (selectedExam != null)
                         RefreshView();

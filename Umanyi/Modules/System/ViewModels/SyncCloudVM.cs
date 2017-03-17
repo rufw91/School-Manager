@@ -1,12 +1,7 @@
-﻿using Helper;
-using Helper.Presentation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
 
 namespace UmanyiSMS.ViewModels
 {

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
-using UmanyiSMS.Lib;
+﻿using UmanyiSMS.Lib;
 
 namespace UmanyiSMS.Modules.Institution.Models
 {
-
     public class InstitutionModel : ModelBase
     {
          public InstitutionModel()

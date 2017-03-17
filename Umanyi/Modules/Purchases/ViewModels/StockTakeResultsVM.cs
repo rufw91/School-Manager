@@ -1,8 +1,10 @@
-﻿using Helper;
-using Helper.Models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Controller;
+using UmanyiSMS.Modules.Purchases.Models;
 
 namespace UmanyiSMS.ViewModels
 {
@@ -21,7 +23,7 @@ namespace UmanyiSMS.ViewModels
             IsBusy = true;
             Title = "Stock Taking Results";
             CurrentStocktaking = new StockTakingResultsModel();
-            AllStocktakings = await DataAccess.GetAllStockTakings();
+            AllStocktakings = await DataController.GetAllStockTakings();
             IsBusy = false;
         }
 
@@ -31,7 +33,7 @@ namespace UmanyiSMS.ViewModels
             {
                 IsBusy = true;
                 CurrentStocktaking.Items.Clear();
-                StockTakingResultsModel c = await DataAccess.GetStockTakingResults(currentStocktaking.StockTakingID);
+                StockTakingResultsModel c = await DataController.GetStockTakingResults(currentStocktaking.StockTakingID);
                 CurrentStocktaking.DateTaken = c.DateTaken;
                 foreach (var x in c.Items)
                     CurrentStocktaking.Items.Add(x);

@@ -1,11 +1,13 @@
-﻿using Helper;
-using Helper.Models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Controller;
+using UmanyiSMS.Modules.Purchases.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ModifyItemVM: ViewModelBase
@@ -13,7 +15,6 @@ namespace UmanyiSMS.ViewModels
         ModifyItemModel item;
         bool isTaxable;
         ObservableCollection<ItemCategoryModel> allItemCategories;
-        ObservableCollection<VATRateModel> allVats;
         public ModifyItemVM()
         {
             InitVars();
@@ -26,8 +27,8 @@ namespace UmanyiSMS.ViewModels
             IsBusy = true;
             NewItem = new ModifyItemModel();
             IsTaxable = true;
-            AllItemCategories = await DataAccess.GetAllItemCategoriesAsync();
-            AllVats = await DataAccess.GetAllVatsAsync();
+            AllItemCategories = await DataController.GetAllItemCategoriesAsync();
+            AllVats = await DataController.GetAllVatsAsync();
             IsBusy = false;
             NewItem.PropertyChanged += (o, e) =>
                 {
@@ -42,7 +43,7 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool res = await DataAccess.UpdateItemAsync(item);
+                bool res = await DataController.UpdateItemAsync(item);
                 if (res)
                 {
                     MessageBox.Show("Successfully Updated Item.");
@@ -108,22 +109,7 @@ namespace UmanyiSMS.ViewModels
                 }
             }
         }
-
-        public ObservableCollection<VATRateModel> AllVats
-        {
-            get { return this.allVats; }
-
-            private set
-            {
-                if (value != this.allVats)
-                {
-                    this.allVats = value;
-                    NotifyPropertyChanged("AllVats");
-                }
-            }
-        }
-
-
+        
         public override void Reset()
         {            
             item.Reset();

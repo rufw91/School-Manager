@@ -1,16 +1,19 @@
 ﻿using Helper;
-using Helper.Models;
 using System;
-using System.Linq;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Collections.Generic;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Fees.Controller;
+using UmanyiSMS.Modules.Fees.Models;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class NewFeesPaymentVM : ViewModelBase
@@ -34,7 +37,7 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 SaleModel sm = new SaleModel();
 
-                if (!await DataAccess.HasInvoicedOnTerm(currentPayment.StudentID,selectedTerm))
+                if (!await DataController.HasInvoicedOnTerm(currentPayment.StudentID,selectedTerm))
                 {
                     MessageBox.Show("This student has not been billed for the current term. Please bill the student before receiving payment.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                     IsBusy = false;
@@ -42,15 +45,15 @@ namespace UmanyiSMS.ViewModels
                 }
                 else
                 {
-                    sm = await DataAccess.GetTermInvoice(currentPayment.StudentID,selectedTerm);
+                    sm = await DataController.GetTermInvoice(currentPayment.StudentID,selectedTerm);
                     sm.CustomerID = currentPayment.StudentID;
                     sm.DateAdded = currentPayment.DatePaid;
                     sm.EmployeeID = 0;
                     sm.RefreshTotal();
                 }
                 MessageBox.Show("Dont forget to save the transaction!!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                currentPayment.FeePaymentID = await DataAccess.GetLastPaymentIDAsync(currentPayment.StudentID, currentPayment.DatePaid);
-                FeePaymentReceiptModel fprm = await DataAccess.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(sm.SaleItems));
+                currentPayment.FeePaymentID = await DataController.GetLastPaymentIDAsync(currentPayment.StudentID, currentPayment.DatePaid);
+                FeePaymentReceiptModel fprm = await DataController.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(sm.SaleItems));
                 fprm.Entries.Where(o1 => o1.Name == "TOTAL BALANCE").First().Amount = fprm.Entries.Where(o1 => o1.Name == "TOTAL BALANCE").First().Amount - currentPayment.AmountPaid;
 
                 Document = DocumentHelper.GenerateDocument(fprm);
@@ -62,14 +65,14 @@ namespace UmanyiSMS.ViewModels
             {
                 IsBusy = true;
                 bool succ=true;
-                if (!await DataAccess.HasInvoicedOnTerm(currentPayment.StudentID,selectedTerm))
+                if (!await DataController.HasInvoicedOnTerm(currentPayment.StudentID,selectedTerm))
                 {
                     MessageBox.Show("This student has not been billed for the current term. Please bill the student before receiving payment.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                     IsBusy = false;
                     return;
                 }
                 else
-                succ = await DataAccess.SaveNewFeesPaymentAsync(currentPayment);
+                succ = await DataController.SaveNewFeesPaymentAsync(currentPayment);
                 if (succ)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -88,21 +91,21 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 bool succ = true;
                 SaleModel sm;
-                if (!await DataAccess.HasInvoicedOnTerm(currentPayment.StudentID,selectedTerm))
+                if (!await DataController.HasInvoicedOnTerm(currentPayment.StudentID,selectedTerm))
                 {
                     MessageBox.Show("This student has not been billed for the current term. Please bill the student before receiving payment.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                     IsBusy = false;
                     return;
                 }
                 else
-                    succ = await DataAccess.SaveNewFeesPaymentAsync(currentPayment);
-                    sm = await DataAccess.GetTermInvoice(currentPayment.StudentID,selectedTerm);
+                    succ = await DataController.SaveNewFeesPaymentAsync(currentPayment);
+                    sm = await DataController.GetTermInvoice(currentPayment.StudentID,selectedTerm);
                 
                 if (succ)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    currentPayment.FeePaymentID = await DataAccess.GetLastPaymentIDAsync(currentPayment.StudentID,currentPayment.DatePaid);                    
-                    FeePaymentReceiptModel fprm = await DataAccess.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(sm.SaleItems));
+                    currentPayment.FeePaymentID = await DataController.GetLastPaymentIDAsync(currentPayment.StudentID,currentPayment.DatePaid);                    
+                    FeePaymentReceiptModel fprm = await DataController.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(sm.SaleItems));
                     RefreshRecentPayments();                    
                     
                     Document = DocumentHelper.GenerateDocument(fprm);
@@ -160,7 +163,7 @@ namespace UmanyiSMS.ViewModels
                 "OTHER"
             };
 
-            AllTerms =await  DataAccess.GetAllTermsAsync();
+            AllTerms =await  DataController.GetAllTermsAsync();
             currentPayment.PropertyChanged += OnPropertyChanged;
             this.PropertyChanged += OnPropertyChanged;
         }
@@ -173,7 +176,7 @@ namespace UmanyiSMS.ViewModels
                 currentPayment.CheckErrors();
             if (!currentPayment.HasErrors && selectedTerm != null)
             {
-                var s = (await DataAccess.GetTermInvoice(currentPayment.StudentID, selectedTerm)).SaleItems;
+                var s = (await DataController.GetTermInvoice(currentPayment.StudentID, selectedTerm)).SaleItems;
                 if (s.Count > 0)
                     foreach (var v in s)
                         FeesStructureTotal += v.Amount;
@@ -192,7 +195,7 @@ namespace UmanyiSMS.ViewModels
 
         private async void RefreshRecentPayments()
         {
-            RecentPayments = await DataAccess.GetRecentPaymentsAsync(currentPayment);
+            RecentPayments = await DataController.GetRecentPaymentsAsync(currentPayment);
         }
 
         public FeePaymentModel CurrentPayment

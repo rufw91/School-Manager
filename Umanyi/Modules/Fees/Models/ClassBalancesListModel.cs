@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using UmanyiSMS.Modules.Institution.Models;
 
 namespace UmanyiSMS.Modules.Fees.Models
 {

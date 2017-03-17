@@ -5,8 +5,12 @@ using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Fees.Controller;
+using UmanyiSMS.Modules.Fees.Models;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class SetFeesStructureVM  : ViewModelBase
@@ -31,8 +35,8 @@ namespace UmanyiSMS.ViewModels
             currentStruct = new FeesStructureModel();
             newEntry = new FeesStructureEntryModel();
             SaveForAllClasses = false;
-            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
         }
 
         public ObservableCollection<TermModel> AllTerms
@@ -104,7 +108,7 @@ namespace UmanyiSMS.ViewModels
                         foreach (var c in s.Entries)
                         {
                             currentStruct.ClassID = c.ClassID;
-                            succ = succ&&await DataAccess.SaveNewFeesStructureAsync(currentStruct);
+                            succ = succ&&await DataController.SaveNewFeesStructureAsync(currentStruct);
                         }
                 }
                 else
@@ -113,7 +117,7 @@ namespace UmanyiSMS.ViewModels
                     foreach (var c in selectedCombinedClass.Entries)
                     {
                         currentStruct.ClassID = c.ClassID;
-                        succ = succ && await DataAccess.SaveNewFeesStructureAsync(currentStruct);
+                        succ = succ && await DataController.SaveNewFeesStructureAsync(currentStruct);
                     }
                 }
                 MessageBox.Show(succ ? "Successfully saved details" : "Could not save details.", succ ? "Success" : "Error",
@@ -189,7 +193,7 @@ namespace UmanyiSMS.ViewModels
         
         private async void RefreshEntries()
         {
-            CurrentStructure.Entries = (await DataAccess.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID,DateTime.Now)).Entries;
+            CurrentStructure.Entries = (await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID,DateTime.Now)).Entries;
         }
 
         public FeesStructureEntryModel NewEntry

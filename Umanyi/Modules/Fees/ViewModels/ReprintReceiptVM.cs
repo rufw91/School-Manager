@@ -6,8 +6,13 @@ using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Fees.Controller;
+using UmanyiSMS.Modules.Fees.Models;
+using UmanyiSMS.Modules.Students.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ReprintReceiptVM:ViewModelBase
@@ -43,16 +48,16 @@ namespace UmanyiSMS.ViewModels
         {
             FullPreviewCommand = new RelayCommand(async o=>
             {
-                var fs = await DataAccess.GetTermInvoice(selectedPayment.StudentID, selectedPayment.DatePaid);
-                var temp = await DataAccess.GetReceiptAsync(selectedPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
+                var fs = await DataController.GetTermInvoice(selectedPayment.StudentID, selectedPayment.DatePaid);
+                var temp = await DataController.GetReceiptAsync(selectedPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
                 var doc = DocumentHelper.GenerateDocument(temp);
                 if (ShowPrintDialogAction != null)
                     ShowPrintDialogAction.Invoke(doc);
             }, o => CanGenerate() && Document!=null);
             GenerateCommand = new RelayCommand(async o =>
             {
-                var fs = await DataAccess.GetTermInvoice(selectedPayment.StudentID, selectedPayment.DatePaid);
-                var temp = await DataAccess.GetReceiptAsync(selectedPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
+                var fs = await DataController.GetTermInvoice(selectedPayment.StudentID, selectedPayment.DatePaid);
+                var temp = await DataController.GetReceiptAsync(selectedPayment, new ObservableImmutableList<FeesStructureEntryModel>(fs.SaleItems));
                 Document = DocumentHelper.GenerateDocument(temp);
             },
                o => CanGenerate());
@@ -66,7 +71,7 @@ namespace UmanyiSMS.ViewModels
         private async Task RefreshRecentPayments()
         {
             recentPayments.Clear();
-            RecentPayments = await DataAccess.GetRecentPaymentsAsync(selectedStudent);
+            RecentPayments = await DataController.GetRecentPaymentsAsync(selectedStudent);
             
         }
 

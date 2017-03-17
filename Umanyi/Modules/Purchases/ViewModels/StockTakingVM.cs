@@ -1,11 +1,12 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.Diagnostics;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Controller;
+using UmanyiSMS.Modules.Purchases.Models;
 
 namespace UmanyiSMS.ViewModels
 {
@@ -31,7 +32,7 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewStockTakingAsync(newStockTaking);
+                bool succ = await DataController.SaveNewStockTakingAsync(newStockTaking);
                 if (succ)
                 {
                     MessageBox.Show("Successfully saved information.");

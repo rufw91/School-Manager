@@ -1,11 +1,12 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Security.Permissions;
+﻿using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Models;
+using UmanyiSMS.Modules.Purchases.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class NewSupplierVM: ViewModelBase
@@ -31,7 +32,7 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool sq = await DataAccess.SaveNewSupplierAsync(newSupplier);
+                bool sq = await DataController.SaveNewSupplierAsync(newSupplier);
                 if (sq)
                 {
                     MessageBox.Show("Succesfully saved supplier.", "", MessageBoxButton.OK,

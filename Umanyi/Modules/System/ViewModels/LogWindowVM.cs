@@ -1,8 +1,9 @@
-﻿using Helper;
-using System;
+﻿using System;
 using System.Collections.Immutable;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
 
 namespace UmanyiSMS.ViewModels
 {

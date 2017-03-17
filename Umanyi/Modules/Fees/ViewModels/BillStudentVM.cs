@@ -9,8 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Fees.Controller;
+using UmanyiSMS.Modules.Fees.Models;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Students.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class BillStudentVM: ViewModelBase
@@ -60,8 +66,8 @@ namespace UmanyiSMS.ViewModels
             IsInStudentMode = true;
             selectedCombinedClass = new CombinedClassModel();
             selectedStudent = new StudentSelectModel();
-            AllTerms = await DataAccess.GetAllTermsAsync();
-            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
+            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
             selectedStudent.PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName == "StudentID" )
@@ -70,7 +76,7 @@ namespace UmanyiSMS.ViewModels
                         currentFeesStructure.Entries.Clear();
                         if (selectedTerm == null)
                             return;
-                        SaleModel s = await DataAccess.GetTermInvoice(selectedStudent.StudentID,selectedTerm);
+                        SaleModel s = await DataController.GetTermInvoice(selectedStudent.StudentID,selectedTerm);
                         foreach (var f in s.SaleItems)
                             currentFeesStructure.Entries.Add(f);
                     }
@@ -83,14 +89,14 @@ namespace UmanyiSMS.ViewModels
                         currentFeesStructure.Entries.Clear();
                         if (selectedTerm == null)
                             return;
-                        SaleModel s = await DataAccess.GetTermInvoice(selectedStudent.StudentID, selectedTerm);
+                        SaleModel s = await DataController.GetTermInvoice(selectedStudent.StudentID, selectedTerm);
                         foreach (var f in s.SaleItems)
                             currentFeesStructure.Entries.Add(f);
                     }
                     if ((e.PropertyName == "SelectedClass") && (isInClassMode) && (selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0))
                     {
                         currentFeesStructure.Entries.Clear();
-                        var v = await DataAccess.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, DateTime.Now);
+                        var v = await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, DateTime.Now);
                         foreach (var f in v.Entries)
                         {
                             currentFeesStructure.Entries.Add(f);
@@ -105,9 +111,9 @@ namespace UmanyiSMS.ViewModels
             {
                 FeesStructureModel fs;
                 if (isInStudentMode)
-                    fs = await DataAccess.GetFeesStructureAsync(await DataAccess.GetClassIDFromStudentID(selectedStudent.StudentID), selectedTerm.StartDate.AddDays(1));
+                    fs = await DataController.GetFeesStructureAsync(await DataController.GetClassIDFromStudentID(selectedStudent.StudentID), selectedTerm.StartDate.AddDays(1));
                 else
-                    fs = fs = await DataAccess.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.StartDate.AddDays(1));
+                    fs = fs = await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.StartDate.AddDays(1));
                 currentFeesStructure.Entries.Clear();
                 foreach (var f in fs.Entries)
                 {
@@ -133,7 +139,7 @@ namespace UmanyiSMS.ViewModels
                 if (isInStudentMode)
                 {
                     bool succ = true;
-                    if (!await DataAccess.HasInvoicedOnTerm(selectedStudent.StudentID, selectedTerm))
+                    if (!await DataController.HasInvoicedOnTerm(selectedStudent.StudentID, selectedTerm))
                     {
                         SaleModel sm = new SaleModel();
                         sm.CustomerID = selectedStudent.StudentID;
@@ -142,7 +148,7 @@ namespace UmanyiSMS.ViewModels
                         sm.SaleItems = currentFeesStructure.Entries;
                         sm.RefreshTotal();
 
-                        succ = await DataAccess.SaveNewStudentBill(sm);
+                        succ = await DataController.SaveNewStudentBill(sm);
                         MessageBox.Show(succ?"Successfully saved details":"Could not save details.",succ?"Success":"Error", 
                             MessageBoxButton.OK, succ?MessageBoxImage.Information:MessageBoxImage.Warning);
                         if (succ)
@@ -151,9 +157,9 @@ namespace UmanyiSMS.ViewModels
                     else
                     {
                         bool succ2 = true;
-                        SaleModel s = await DataAccess.GetTermInvoice(selectedStudent.StudentID,selectedTerm);
+                        SaleModel s = await DataController.GetTermInvoice(selectedStudent.StudentID,selectedTerm);
                         s.SaleItems = currentFeesStructure.Entries;
-                        succ2 = await DataAccess.UpdateStudentBill(s);
+                        succ2 = await DataController.UpdateStudentBill(s);
                         MessageBox.Show(succ2 ? "Successfully saved details" : "Could not save details.", succ2 ? "Success" : "Error",
                             MessageBoxButton.OK, succ2 ? MessageBoxImage.Information : MessageBoxImage.Warning);
                         if (succ2)
@@ -172,7 +178,7 @@ namespace UmanyiSMS.ViewModels
                         sm.EmployeeID = 0;
                         sm.SaleItems = currentFeesStructure.Entries;
                         sm.RefreshTotal();                        
-                        succ = succ&&await DataAccess.SaveNewClassBill(sm,selectedTerm);
+                        succ = succ&&await DataController.SaveNewClassBill(sm,selectedTerm);
                     }
                     MessageBox.Show(succ ? "Successfully saved details" : "Could not save details.", succ ? "Success" : "Error",
                             MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);

@@ -1,9 +1,8 @@
-﻿using Helper;
-using Helper.Models;
-using System.Security.Permissions;
-using System.Windows.Input;
+﻿using System.Security.Permissions;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Students.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Students.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class StudentDetailsVM : ViewModelBase
@@ -20,11 +19,6 @@ namespace UmanyiSMS.ViewModels
             InitVars();
             CreateCommands();
             CurrentStudent = sm;
-            if (currentStudent!=null)
-            {
-                BoardingStatus = currentStudent.IsBoarder ? Boardingtype.Boarder : Boardingtype.DayScholar;
-                NotifyPropertyChanged("BoardingStatus");
-            }
         }
         protected override void InitVars()
         {
@@ -35,10 +29,7 @@ namespace UmanyiSMS.ViewModels
         protected override void CreateCommands()
         {
         }
-
-        public Boardingtype BoardingStatus
-        { get; private set; }
-
+        
         public StudentListModel CurrentStudent
         {
             get { return currentStudent; }
@@ -52,11 +43,7 @@ namespace UmanyiSMS.ViewModels
                 }
             }
         }
-
         
-
-        
-
         public override void Reset()
         {
 

@@ -1,16 +1,14 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Institution.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Institution.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class InstitutionSubjectsSetupVM:ViewModelBase
@@ -26,7 +24,7 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "INSTITUTION SUBJECTS SETUP";
             selectedSubjects = new ObservableCollection<SubjectModel>();
-            selectedSubjects = await DataAccess.GetSubjectsRegistredToInstitutionAsync();
+            selectedSubjects = await DataController.GetSubjectsRegistredToInstitutionAsync();
             startCount = selectedSubjects.Count;
                 
             NotifyPropertyChanged("SelectedSubjects");
@@ -51,10 +49,10 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewInstitutionSubjectSetup(selectedSubjects);
+                bool succ = await DataController.SaveNewInstitutionSubjectSetup(selectedSubjects);
                 MessageBox.Show(succ ? "Successfully updated details." : "Could not details at this time", "Information", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
-                selectedSubjects = await DataAccess.GetSubjectsRegistredToInstitutionAsync();
+                selectedSubjects = await DataController.GetSubjectsRegistredToInstitutionAsync();
                 startCount = selectedSubjects.Count;
                 NotifyPropertyChanged("SelectedSubjects");
                 IsBusy = false;

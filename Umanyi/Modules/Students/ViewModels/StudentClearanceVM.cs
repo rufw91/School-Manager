@@ -1,16 +1,15 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Students.Models;
+using UmanyiSMS.Modules.Students.Controller;
+using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Students.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class StudentClearanceVM: ViewModelBase
@@ -38,13 +37,13 @@ namespace UmanyiSMS.ViewModels
                 {
                     selectedStudent.CheckErrors();
                     if ( (!selectedStudent.HasErrors)&&(selectedStudent.StudentID > 0))
-                        SPhoto = (await DataAccess.GetStudentAsync(selectedStudent.StudentID)).SPhoto;
+                        SPhoto = (await DataController.GetStudentAsync(selectedStudent.StudentID)).SPhoto;
                 }
             };
 
             SelectedClassID = 0;
             IsInStudentMode = true;
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
         }
 
         protected override void CreateCommands()
@@ -58,11 +57,11 @@ namespace UmanyiSMS.ViewModels
                 st.StudentID = selectedStudent.StudentID;
                 st.NameOfStudent = selectedStudent.NameOfStudent;
                 st.DateCleared = DateTime.Now;
-                 succ = await DataAccess.SaveNewStudentClearancesAsync(new ObservableCollection<StudentClearanceModel>() { st });
+                 succ = await DataController.SaveNewStudentClearancesAsync(new ObservableCollection<StudentClearanceModel>() { st });
             }
                 else
                 {
-                    succ = await DataAccess.SaveNewClassClearance(selectedClassID);
+                    succ = await DataController.SaveNewClassClearance(selectedClassID);
                 }
                 MessageBox.Show(succ ? "Succesfully saved details." : "Could not save details at this time.", succ ? "Success" : "Warning",
                     MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);

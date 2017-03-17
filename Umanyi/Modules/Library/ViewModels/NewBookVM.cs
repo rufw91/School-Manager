@@ -1,15 +1,13 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Controllers;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Library.Controller;
+using UmanyiSMS.Modules.Library.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Library.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class NewBookVM: ViewModelBase
@@ -31,7 +29,7 @@ namespace UmanyiSMS.ViewModels
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewBookAsync(book);
+                bool succ = await DataController.SaveNewBookAsync(book);
                 if (succ)
                 {
                     MessageBox.Show("Succesfully saved details.", "Success", MessageBoxButton.OK,
