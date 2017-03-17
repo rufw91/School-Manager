@@ -1,14 +1,12 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Security.Permissions;
-using System.Text;
 using System.Threading.Tasks;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Fees.Controller;
+using UmanyiSMS.Modules.Fees.Models;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "User")]
     public class ViewFeesStructureVM: ViewModelBase
@@ -28,8 +26,8 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "VIEW FEES STRUCTURE";
             currentStruct = new FeesStructureModel();
-            allCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            allCombinedClasses = await DataController.GetAllCombinedClassesAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
             NotifyPropertyChanged("AllCombinedClasses");
             PropertyChanged += async (o, e) =>
                 {
@@ -96,7 +94,7 @@ namespace UmanyiSMS.ViewModels
 
         private async Task<FeesStructureModel> RefreshEntries()
         {
-            return await DataAccess.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.StartDate);
+            return await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.StartDate);
         }
 
         public override void Reset()

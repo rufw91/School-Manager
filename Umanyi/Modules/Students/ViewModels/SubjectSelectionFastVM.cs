@@ -1,17 +1,17 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Students.Controller;
+using UmanyiSMS.Modules.Students.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Students.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class SubjectSelectionFastVM:ViewModelBase
@@ -36,7 +36,7 @@ namespace UmanyiSMS.ViewModels
             Year = DateTime.Now.Year;
              Entries = new DataTable();
             
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
             PropertyChanged += async (o, e) =>
                 {
                    
@@ -45,7 +45,7 @@ namespace UmanyiSMS.ViewModels
                         if (selectedClassID==0)
                         return;
                         IsBusy = true;
-                        var f = await DataAccess.GetSubjectsRegistredToClassAsync(selectedClassID);
+                        var f = await DataController.GetSubjectsRegistredToClassAsync(selectedClassID);
                         DataTable rf = new DataTable();
 
                         rf.Columns.Add(new DataColumn("ADM NO", typeof(int)) { ReadOnly = true });
@@ -53,7 +53,7 @@ namespace UmanyiSMS.ViewModels
                         foreach(var t in f)
                             rf.Columns.Add(new DataColumn(t.NameOfSubject, typeof(bool)) { Caption = t.SubjectID.ToString()});
                         
-                        ObservableCollection<StudentSubjectSelectionModel> ffg = await DataAccess.GetClassStudentSubjectSelection(selectedClassID);
+                        ObservableCollection<StudentSubjectSelectionModel> ffg = await DataController.GetClassStudentSubjectSelection(selectedClassID);
                         DataRow dtr;
                         foreach (var t in ffg)
                         {
@@ -109,7 +109,7 @@ namespace UmanyiSMS.ViewModels
                         if (temp[i].Entries.Count == 0)
                             temp.RemoveAt(i);
                     }
-                    bool succ=await DataAccess.SaveNewSubjectSelection(temp);
+                    bool succ=await DataController.SaveNewSubjectSelection(temp);
                     MessageBox.Show(succ ? "Successfully saved details." : "Could not save details.", succ ? "Success" : "Error", MessageBoxButton.OK,
                         succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                     IsBusy = false;

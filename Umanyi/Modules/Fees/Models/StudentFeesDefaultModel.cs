@@ -1,4 +1,5 @@
 ﻿using System;
+using UmanyiSMS.Modules.Students.Models;
 
 namespace UmanyiSMS.Modules.Fees.Models
 {

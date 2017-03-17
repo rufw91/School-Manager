@@ -1,10 +1,12 @@
-﻿using Helper;
-using Helper.Models;
-using System.Security.Permissions;
+﻿using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Controller;
+using UmanyiSMS.Modules.Purchases.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ModifySupplierVM : ViewModelBase
@@ -32,7 +34,7 @@ namespace UmanyiSMS.ViewModels
                 if (MessageBoxResult.Yes == MessageBox.Show("WARNING: This action cannt be reversed. All the supplier details will be lost. ",
                     "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
-                    bool sq = await DataAccess.UpdateSupplierAsync(newSupplier);
+                    bool sq = await DataController.UpdateSupplierAsync(newSupplier);
                     if (sq)
                     {
                         MessageBox.Show("Succesfully Updated Supplier.", "", MessageBoxButton.OK,

@@ -1,16 +1,14 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class RemoveExamVM:ViewModelBase
@@ -55,8 +53,8 @@ namespace UmanyiSMS.ViewModels
         {
             Title = "REMOVE EXAM";
             AllExams = new ObservableImmutableList<ExamModel>();
-            AllClasses = await DataAccess.GetAllClassesAsync();
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
             NotifyPropertyChanged("AllClasses");
             PropertyChanged += async (o, e) =>
                 {
@@ -66,7 +64,7 @@ namespace UmanyiSMS.ViewModels
                         SelectedExamID = 0;
                         if (SelectedClassID != 0&&selectedTerm!=null)
                         {
-                            AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedClassID,selectedTerm));
+                            AllExams = new ObservableImmutableList<ExamModel>(await DataController.GetExamsByClass(selectedClassID,selectedTerm));
                             NotifyPropertyChanged("AllExams");
                         }
                         return;
@@ -82,7 +80,7 @@ namespace UmanyiSMS.ViewModels
                 {
                     if (MessageBoxResult.Yes == MessageBox.Show("Are you ABSOLUTELY sure you would like to delete this exam? This will delete the results for all students who took the exam.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Information))
                     {
-                        bool succ = await DataAccess.RemoveExam(selectedExamID);
+                        bool succ = await DataController.RemoveExam(selectedExamID);
                         MessageBox.Show(succ ? "Successfully completed operation" : "Operation failed!", succ ? "Success" : "Error", MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Error);
                         if (succ)
                             Reset();

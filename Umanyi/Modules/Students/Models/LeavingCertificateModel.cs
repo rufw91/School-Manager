@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UmanyiSMS.Modules.Students.Controller;
 
 namespace UmanyiSMS.Modules.Students.Models
 {
@@ -153,7 +151,7 @@ namespace UmanyiSMS.Modules.Students.Models
                 }
                 else
                 {
-                    StudentModel student = DataAccess.GetStudent(StudentID);
+                    StudentModel student = DataController.GetStudent(StudentID);
                     if (student.StudentID == 0)
                     {
                         List<string> errors = new List<string>();

@@ -9,8 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Library.Models;
+using UmanyiSMS.Modules.Students.Models;
+using UmanyiSMS.Modules.Library.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Library.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
@@ -41,7 +46,7 @@ namespace UmanyiSMS.ViewModels
                     unreturnedBooks.Clear();
                     thisReturn.Clear();
                     if (!selectedStudent.HasErrors)
-                    UnreturnedBooks = await DataAccess.GetUnreturnedBooksAsync(selectedStudent.StudentID);
+                    UnreturnedBooks = await DataController.GetUnreturnedBooksAsync(selectedStudent.StudentID);
                 }
             };
             thisReturn = new ObservableCollection<BookModel>();
@@ -55,7 +60,7 @@ namespace UmanyiSMS.ViewModels
                 brm.StudentID = selectedStudent.StudentID;
                 brm.DateReturned = DateTime.Now;
                 brm.Entries = thisReturn;
-                bool succ = await DataAccess.SaveNewBookReturnAsync(brm);
+                bool succ = await DataController.SaveNewBookReturnAsync(brm);
                 MessageBox.Show(succ ? "Successfully saved details." : "Could not save details", succ ? "Success" : "Error", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)

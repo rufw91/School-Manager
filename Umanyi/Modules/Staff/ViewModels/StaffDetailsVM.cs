@@ -1,9 +1,10 @@
-﻿
-using Helper;
-using Helper.Models;
-using System.Security.Permissions;
+﻿using System.Security.Permissions;
 using System.Windows.Input;
-namespace UmanyiSMS.ViewModels
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Staff.Models;
+
+namespace UmanyiSMS.Modules.Staff.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class StaffDetailsVM : ViewModelBase

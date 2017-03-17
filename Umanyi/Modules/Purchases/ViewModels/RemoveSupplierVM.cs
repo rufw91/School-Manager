@@ -1,10 +1,13 @@
-﻿using Helper;
-using Helper.Models;
+﻿
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Models;
+using UmanyiSMS.Modules.Purchases.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class RemoveSupplierVM : ViewModelBase
@@ -42,7 +45,7 @@ namespace UmanyiSMS.ViewModels
         private async void RefreshSupplier()
         {
             newSupplier.Reset();
-            SupplierModel cs = await DataAccess.GetSupplierAsync(selectedSupplierID);
+            SupplierModel cs = await DataController.GetSupplierAsync(selectedSupplierID);
             NewSupplier.Address = cs.Address;
             NewSupplier.AltPhoneNo = cs.AltPhoneNo;
             NewSupplier.City = cs.City;
@@ -63,7 +66,7 @@ namespace UmanyiSMS.ViewModels
                 if (MessageBoxResult.Yes == MessageBox.Show("WARNING: This action cannt be reversed. All the supplier details will be lost. ",
                     "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
-                    bool sq = await DataAccess.RemoveSupplierAsync(newSupplier.SupplierID);
+                    bool sq = await DataController.RemoveSupplierAsync(newSupplier.SupplierID);
                     if (sq)
                     {
                         MessageBox.Show("Succesfully Removed Supplier.", "", MessageBoxButton.OK,

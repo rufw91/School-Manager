@@ -5,8 +5,11 @@ using System;
 using System.Security.Permissions;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Fees.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class FeesStatementVM : ViewModelBase
@@ -42,7 +45,7 @@ namespace UmanyiSMS.ViewModels
             GenerateStatementCommand = new RelayCommand(async o =>
             {
                 var s = await
-                     DataAccess.GetFeesStatementAsync(statement.StudentID, statement.From, statement.To);
+                     DataController.GetFeesStatementAsync(statement.StudentID, statement.From, statement.To);
                 statement.BalanceBroughtForward = s.BalanceBroughtForward;
                 statement.TotalDue = s.TotalDue;
                 statement.TotalPayments = s.TotalPayments;

@@ -1,13 +1,15 @@
-﻿using Helper;
-using Helper.Models;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Controllers;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Purchases.Controller;
+using UmanyiSMS.Modules.Purchases.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ItemCategoryListVM : ViewModelBase
@@ -25,8 +27,8 @@ namespace UmanyiSMS.ViewModels
         {
             IsBusy = true;
             IsReadOnly = true;
-            Task<ObservableCollection<ItemCategoryModel>> pTemp = DataAccess.GetAllItemCategoriesAsync();
-            Task<ObservableCollection<ItemCategoryModel>> cTemp = DataAccess.GetAllItemCategoriesAsync();
+            Task<ObservableCollection<ItemCategoryModel>> pTemp = DataController.GetAllItemCategoriesAsync();
+            Task<ObservableCollection<ItemCategoryModel>> cTemp = DataController.GetAllItemCategoriesAsync();
 
              Task.WaitAll(new Task[] { pTemp, cTemp });
             originalItems = pTemp.Result;
@@ -142,8 +144,8 @@ namespace UmanyiSMS.ViewModels
         public override void Reset()
         {
             IsReadOnly = true;
-            Task<ObservableCollection<ItemCategoryModel>> pTemp = DataAccess.GetAllItemCategoriesAsync();
-            Task<ObservableCollection<ItemCategoryModel>> cTemp = DataAccess.GetAllItemCategoriesAsync();
+            Task<ObservableCollection<ItemCategoryModel>> pTemp = DataController.GetAllItemCategoriesAsync();
+            Task<ObservableCollection<ItemCategoryModel>> cTemp = DataController.GetAllItemCategoriesAsync();
 
             Task.WaitAll(new Task[] { pTemp, cTemp });
             originalItems = pTemp.Result;

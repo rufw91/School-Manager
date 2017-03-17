@@ -1,13 +1,13 @@
-﻿using Helper.Controls;
+﻿
 using System;
-using System.ComponentModel;
-using System.Windows.Input;
-using Helper;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using System.Security.Permissions;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.System.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.System.ViewModels
 {
     public class StartupRepairVM: ViewModelBase
     {

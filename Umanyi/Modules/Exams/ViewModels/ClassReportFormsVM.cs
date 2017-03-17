@@ -7,9 +7,13 @@ using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Documents;
 using System.Windows.Input;
-using Helper.Presentation;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class ClassReportFormsVM: ViewModelBase
@@ -54,7 +58,7 @@ namespace UmanyiSMS.ViewModels
             {
                 IsBusy = true;
                 
-                ClassReportForms = await DataAccess.GetClassReportFormsAsync(selectedClassID,exams,new Progress<OperationProgress>(DisplayProgress));
+                ClassReportForms = await DataController.GetClassReportFormsAsync(selectedClassID,exams,new Progress<OperationProgress>(DisplayProgress));
                 
                 ResultsIsReadOnly = true;
                 IsBusy = false;
@@ -77,7 +81,7 @@ namespace UmanyiSMS.ViewModels
             SelectedClassID = 0;
             OpeningDay = DateTime.Now;
             ClosingDay = DateTime.Now;
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
             PropertyChanged += async (o, e) =>
                 {
                     /*if (e.PropertyName == "ClassTeacher")
@@ -117,7 +121,7 @@ namespace UmanyiSMS.ViewModels
                         if (selectedClassID == 0 || selectedTerm==null)
                             return;
                         
-                        var t = await DataAccess.GetExamsByClass(selectedClassID,selectedTerm);
+                        var t = await DataController.GetExamsByClass(selectedClassID,selectedTerm);
                         int count = 1;
                         foreach (var ex in t)
                         {
@@ -134,7 +138,7 @@ namespace UmanyiSMS.ViewModels
                         }
                     }
                 };
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
             NotifyPropertyChanged("AllClasses");
         }
         private bool CanRefresh()

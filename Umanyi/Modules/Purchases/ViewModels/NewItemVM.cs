@@ -1,12 +1,14 @@
-﻿using Helper;
-using Helper.Models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Security.Permissions;
 using System.Windows;
-using System.Linq;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Purchases.Models;
+using UmanyiSMS.Modules.Purchases.Controller;
+using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class NewItemVM: ViewModelBase
@@ -14,7 +16,6 @@ namespace UmanyiSMS.ViewModels
         ItemModel item;
         bool isTaxable;
         ObservableCollection<ItemCategoryModel> allItemCategories;
-        ObservableCollection<VATRateModel> allVats;
         public NewItemVM()
         {
             InitVars();
@@ -27,11 +28,10 @@ namespace UmanyiSMS.ViewModels
             IsBusy = true;
             NewItem = new ItemModel();
             IsTaxable = true;
-            var t = await DataAccess.GetAllItemCategoriesAsync();
+            var t = await DataController.GetAllItemCategoriesAsync();
             var exp = t.First(o => o.Description.ToUpperInvariant() == "EXPENSES").ItemCategoryID;
             var accs = t.Where(o => o.ParentCategoryID == exp);
             AllItemCategories = new ObservableCollection<ItemCategoryModel>(accs);
-            AllVats = await DataAccess.GetAllVatsAsync();
             IsBusy = false;
         }
 
@@ -43,7 +43,7 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 if (!item.HasErrors)
                 {
-                    bool res = await DataAccess.SaveNewItemAsync(item);
+                    bool res = await DataController.SaveNewItemAsync(item);
                     if (res)
                     {
                         MessageBox.Show("Successfully saved new Item.");
@@ -110,29 +110,14 @@ namespace UmanyiSMS.ViewModels
             }
         }
 
-        public ObservableCollection<VATRateModel> AllVats
-        {
-            get { return this.allVats; }
-
-            private set
-            {
-                if (value != this.allVats)
-                {
-                    this.allVats = value;
-                    NotifyPropertyChanged("AllVats");
-                }
-            }
-        }
-
         public async override void Reset()
         {
             NewItem.Reset();
             IsTaxable = true;
-            var t =DataAccess.GetAllItemCategoriesAsync().Result;
+            var t =DataController.GetAllItemCategoriesAsync().Result;
             var exp = t.First(o => o.Description.ToUpperInvariant() == "EXPENSES").ItemCategoryID;
             var accs = t.Where(o => o.ParentCategoryID == exp);
             AllItemCategories = new ObservableCollection<ItemCategoryModel>(accs);
-            AllVats = await DataAccess.GetAllVatsAsync();
         }
     }
 }

@@ -1,12 +1,16 @@
 ﻿using Helper;
-using Helper.Models;
-using System.Linq;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Fees.Controller;
+using UmanyiSMS.Modules.Fees.Models;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Fees.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class BalancesListVM : ViewModelBase
@@ -22,7 +26,7 @@ namespace UmanyiSMS.ViewModels
         protected override async void InitVars()
         {
             Title = "BALANCES LIST";
-            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
         }
 
         protected override void CreateCommands()
@@ -34,7 +38,7 @@ namespace UmanyiSMS.ViewModels
 
                 foreach (var c in selectedCombinedClass.Entries)
                 {
-                   var t = await DataAccess.GetBalancesList(c);
+                   var t = await DataController.GetBalancesList(c);
                    foreach (var g in t.Entries)
                        s.Entries.Add(g);
                 }

@@ -5,8 +5,13 @@ using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class AggregateResultsVM: ViewModelBase
@@ -34,17 +39,17 @@ namespace UmanyiSMS.ViewModels
             Title = "EXAM SUBJECT PERFOMANCE";            
             AllExams = new ObservableCollection<ExamModel>();
             IsInClassMode = true;
-            AllClasses = await DataAccess.GetAllClassesAsync();
-            AllTerms = await DataAccess.GetAllTermsAsync();
-            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
+            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
             PropertyChanged += async (o, e) =>
             {
                 if (isInClassMode)
                     if ((e.PropertyName == "SelectedClass" || e.PropertyName == "SelectedTerm") && selectedTerm != null && (selectedClass != null) && (selectedClass.ClassID > 0))
-                        AllExams = await DataAccess.GetExamsByClass(selectedClass.ClassID,selectedTerm);
+                        AllExams = await DataController.GetExamsByClass(selectedClass.ClassID,selectedTerm);
                 if (isInCombinedMode)
                     if ((e.PropertyName == "SelectedCombinedClass" || e.PropertyName == "SelectedTerm") && selectedTerm != null && (selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0))
-                        AllExams = await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID,selectedTerm);
+                        AllExams = await DataController.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID,selectedTerm);
             };
         }
 
@@ -55,14 +60,14 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 if (isInClassMode)
                 {
-                    AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedClass, selectedExam);
+                    AggregateResultModel fs = await DataController.GetAggregateResultAsync(selectedClass, selectedExam);
                     var doc = DocumentHelper.GenerateDocument(fs);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(doc);
                 }
                 if (isInCombinedMode)
                 {
-                    AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedCombinedClass, selectedExam);
+                    AggregateResultModel fs = await DataController.GetAggregateResultAsync(selectedCombinedClass, selectedExam);
                     var doc = DocumentHelper.GenerateDocument(fs);
                     if (ShowPrintDialogAction != null)
                         ShowPrintDialogAction.Invoke(doc);
@@ -75,12 +80,12 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 if (isInClassMode)
                 {
-                    AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedClass, selectedExam);
+                    AggregateResultModel fs = await DataController.GetAggregateResultAsync(selectedClass, selectedExam);
                     Document = DocumentHelper.GenerateDocument(fs);
                 }
                 if (isInCombinedMode)
                 {
-                    AggregateResultModel fs = await DataAccess.GetAggregateResultAsync(selectedCombinedClass, selectedExam);
+                    AggregateResultModel fs = await DataController.GetAggregateResultAsync(selectedCombinedClass, selectedExam);
                     Document = DocumentHelper.GenerateDocument(fs);
                 }
                 IsBusy = false;

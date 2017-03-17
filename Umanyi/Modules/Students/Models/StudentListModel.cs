@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace UmanyiSMS.Modules.Students.Models
+﻿namespace UmanyiSMS.Modules.Students.Models
 {
     public class StudentListModel: StudentModel
     {

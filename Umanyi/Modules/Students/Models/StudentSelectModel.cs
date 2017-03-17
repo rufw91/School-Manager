@@ -1,4 +1,4 @@
-﻿using System;
+﻿using UmanyiSMS.Modules.Students.Controller;
 using System.Collections.Generic;
 
 namespace UmanyiSMS.Modules.Students.Models
@@ -43,7 +43,7 @@ namespace UmanyiSMS.Modules.Students.Models
             }
             else
             {
-                StudentModel student = DataAccess.GetStudent(base.StudentID);
+                StudentModel student = DataController.GetStudent(base.StudentID);
                 if (student.StudentID == 0)
                 {
                     base.SetErrors("StudentID", new List<string>

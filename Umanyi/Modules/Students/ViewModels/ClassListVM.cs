@@ -1,16 +1,15 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
+﻿
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Students.Controller;
+using UmanyiSMS.Modules.Students.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Students.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class ClassListVM:ViewModelBase
@@ -26,7 +25,7 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "CLASS LISTS";
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
         }
 
         protected override void CreateCommands()
@@ -34,7 +33,7 @@ namespace UmanyiSMS.ViewModels
             GenerateCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                ClassStudentListModel s = await DataAccess.GetClassStudentListAsync(selectedClass);
+                ClassStudentListModel s = await DataController.GetClassStudentListAsync(selectedClass);
                 Document = DocumentHelper.GenerateDocument(s);
                 IsBusy = false;
             }, o => selectedClass != null);

@@ -1,12 +1,7 @@
-﻿using Helper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Permissions;
+using UmanyiSMS.Lib;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.System.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "SystemAdmin")]
     public class ChangeSAPasswordVM : ViewModelBase

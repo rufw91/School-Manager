@@ -60,7 +60,7 @@ namespace Helper
             {
                 AddFSDate(DateTime.Now, pageNo);
                 AddFSClassName(si[pageNo].NameOfCombinedClass, pageNo);
-                AddFSTerm(DataAccess.GetTerm(si[pageNo].StartDate), pageNo);
+                AddFSTerm(DataController.GetTerm(si[pageNo].StartDate), pageNo);
                 AddFSEntries(si[pageNo].Entries, pageNo);
                 decimal tot = 0;
                 foreach (var t in si[pageNo].Entries)

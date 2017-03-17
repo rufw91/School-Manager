@@ -1,11 +1,7 @@
-﻿using Helper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
+﻿using System.Security.Permissions;
 using System.Windows.Interop;
 using System.Windows.Media;
+using UmanyiSMS.Lib;
 
 namespace UmanyiSMS.ViewModels
 {
@@ -49,13 +45,13 @@ namespace UmanyiSMS.ViewModels
 
         public bool AutomaticBackup
         {
-            get { return Helper.Properties.Settings.Default.AutomaticBackup; }
+            get { return Lib.Properties.Settings.Default.AutomaticBackup; }
             set
             {
-                if (value != Helper.Properties.Settings.Default.AutomaticBackup)
+                if (value != Lib.Properties.Settings.Default.AutomaticBackup)
                 {
-                    Helper.Properties.Settings.Default.AutomaticBackup = value;
-                    Helper.Properties.Settings.Default.Save();
+                    Lib.Properties.Settings.Default.AutomaticBackup = value;
+                    Lib.Properties.Settings.Default.Save();
                     NotifyPropertyChanged("AutomaticBackup");
                 }
             }

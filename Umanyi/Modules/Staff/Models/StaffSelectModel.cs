@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using UmanyiSMS.Modules.Staff.Controller;
 namespace UmanyiSMS.Modules.Staff.Models
 {
     public class StaffSelectModel : StaffBaseModel
@@ -41,7 +38,7 @@ namespace UmanyiSMS.Modules.Staff.Models
             }
             else
             {
-                StaffModel staff = DataAccess.GetStaff(StaffID);
+                StaffModel staff = DataController.GetStaff(StaffID);
                 if (staff.StaffID == 0)
                 {
                     List<string> errors = new List<string>();

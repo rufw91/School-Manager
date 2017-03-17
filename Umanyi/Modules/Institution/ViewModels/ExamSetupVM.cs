@@ -1,14 +1,11 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Institution.Controller;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Institution.ViewModels
 {
     public class ExamSetupVM:ViewModelBase
     {
@@ -30,7 +27,7 @@ namespace UmanyiSMS.ViewModels
         {
             SaveCommand = new RelayCommand(async o =>
             {
-                bool succ = await DataAccess.SaveNewExamSettingsAsync(settings);
+                bool succ = await DataController.SaveNewExamSettingsAsync(settings);
                 App.AppExamSettings.CopyFrom(settings);
                 MessageBox.Show(succ ? "Successfully saved details" : "Could not save details", succ ? "Success" : "Error", MessageBoxButton.OK,
                      succ ? MessageBoxImage.Information : MessageBoxImage.Warning);

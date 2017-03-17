@@ -1,10 +1,13 @@
-﻿using Helper;
-using Helper.Models;
+﻿
 using System;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Students.Models;
+using UmanyiSMS.Modules.Students.Controller;
+using UmanyiSMS.Lib.Presentation;
 
 namespace UmanyiSMS.ViewModels
 {
@@ -36,7 +39,7 @@ namespace UmanyiSMS.ViewModels
                         selectedStudent.CheckErrors();
                     if (!selectedStudent.HasErrors)
                     {
-                        isCleared = DataAccess.StudentIsCleared(selectedStudent.StudentID);
+                        isCleared = DataController.StudentIsCleared(selectedStudent.StudentID);
                         if (!isCleared)
                             selectedStudent.SetErrors("StudentID", new System.Collections.Generic.List<string>() { "Student has not been cleared." });
                     }
@@ -53,10 +56,10 @@ namespace UmanyiSMS.ViewModels
             }, o => CanSave());
             RefreshCommand = new RelayCommand(async o =>
              {
-                 LeavingCert = await DataAccess.GetStudentLeavingCert(selectedStudent);
+                 LeavingCert = await DataController.GetStudentLeavingCert(selectedStudent);
                  if (leavingCert.StudentID ==0)
                  {
-                     var s = await DataAccess.GetStudentAsync(selectedStudent.StudentID);
+                     var s = await DataController.GetStudentAsync(selectedStudent.StudentID);
                      leavingCert.StudentID = selectedStudent.StudentID;
                      leavingCert.NameOfStudent = selectedStudent.NameOfStudent;
                      leavingCert.DateOfAdmission = s.DateOfAdmission;                     
@@ -67,7 +70,7 @@ namespace UmanyiSMS.ViewModels
 
             SaveCommand = new RelayCommand(async o =>
             {
-                bool succ = await DataAccess.SaveNewLeavingCertificateAsync(leavingCert);
+                bool succ = await DataController.SaveNewLeavingCertificateAsync(leavingCert);
                 MessageBox.Show(succ ? "Successfully saved details" : "Could not save details", succ ? "Success" : "Warning",
                     MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
@@ -75,7 +78,7 @@ namespace UmanyiSMS.ViewModels
             }, o => CanSave());
             SaveAndPrintCommand = new RelayCommand(async o =>
             {
-                bool succ = await DataAccess.SaveNewLeavingCertificateAsync(leavingCert);
+                bool succ = await DataController.SaveNewLeavingCertificateAsync(leavingCert);
                 MessageBox.Show(succ ? "Successfully saved details" : "Could not save details", succ ? "Success" : "Warning",
                     MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (!succ)

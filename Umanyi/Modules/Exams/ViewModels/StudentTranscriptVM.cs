@@ -1,20 +1,16 @@
 ﻿using Helper;
-using Helper.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class StudentTranscriptVM: ViewModelBase
@@ -36,7 +32,7 @@ namespace UmanyiSMS.ViewModels
             reportForm = new ReportFormModel();
             exams = new ObservableCollection<ExamWeightModel>();
             ResultsIsReadOnly = false;
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
             reportForm.PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName == "StudentID")
@@ -48,7 +44,7 @@ namespace UmanyiSMS.ViewModels
                         if (!reportForm.HasErrors&& selectedTerm!=null)
                         {
                             ResultsIsReadOnly = false;
-                            var t = await DataAccess.GetExamsByClass(await DataAccess.GetClassIDFromStudentID(reportForm.StudentID),selectedTerm);
+                            var t = await DataController.GetExamsByClass(await DataController.GetClassIDFromStudentID(reportForm.StudentID),selectedTerm);
                             int count = 1;
                             foreach (var ex in t)
                             {
@@ -77,7 +73,7 @@ namespace UmanyiSMS.ViewModels
                         if (!reportForm.HasErrors && selectedTerm != null)
                         {
                             ResultsIsReadOnly = false;
-                            var t = await DataAccess.GetExamsByClass(await DataAccess.GetClassIDFromStudentID(reportForm.StudentID), selectedTerm);
+                            var t = await DataController.GetExamsByClass(await DataController.GetClassIDFromStudentID(reportForm.StudentID), selectedTerm);
                             int count = 1;
                             foreach (var ex in t)
                             {
@@ -123,7 +119,7 @@ namespace UmanyiSMS.ViewModels
             RefreshCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                reportForm.CopyFrom(await DataAccess.GetStudentReportFormAsync(reportForm.StudentID, exams));
+                reportForm.CopyFrom(await DataController.GetStudentReportFormAsync(reportForm.StudentID, exams));
                 
                 ResultsIsReadOnly = true;
                 IsBusy = false;

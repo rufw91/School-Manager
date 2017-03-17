@@ -1,17 +1,16 @@
 ﻿using Helper;
-using Helper.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Library.Models;
+using UmanyiSMS.Modules.Students.Models;
+using UmanyiSMS.Modules.Library.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Library.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
@@ -38,7 +37,7 @@ namespace UmanyiSMS.ViewModels
                     selectedStudent.CheckErrors();
                     unreturnedBooks.Clear();
                     if (!selectedStudent.HasErrors)
-                        UnreturnedBooks = await DataAccess.GetUnreturnedBooksAsync(selectedStudent.StudentID);
+                        UnreturnedBooks = await DataController.GetUnreturnedBooksAsync(selectedStudent.StudentID);
                 }
             };
         }
@@ -46,7 +45,7 @@ namespace UmanyiSMS.ViewModels
         {
             GenerateCommand = new RelayCommand(async o =>
             {
-                var c = DataAccess.GetClass(await DataAccess.GetClassIDFromStudentID(selectedStudent.StudentID));
+                var c = DataController.GetClass(await DataController.GetClassIDFromStudentID(selectedStudent.StudentID));
                 UnreturnedBooksModel brm = new UnreturnedBooksModel();
                 brm.StudentID = selectedStudent.StudentID;
                 brm.NameOfStudent = selectedStudent.NameOfStudent;
@@ -58,7 +57,7 @@ namespace UmanyiSMS.ViewModels
 
             FullPreviewCommand = new RelayCommand(async o =>
             {
-                var c = DataAccess.GetClass(await DataAccess.GetClassIDFromStudentID(selectedStudent.StudentID));
+                var c = DataController.GetClass(await DataController.GetClassIDFromStudentID(selectedStudent.StudentID));
                 UnreturnedBooksModel brm = new UnreturnedBooksModel();
                 brm.StudentID = selectedStudent.StudentID;
                 brm.NameOfStudent = selectedStudent.NameOfStudent;

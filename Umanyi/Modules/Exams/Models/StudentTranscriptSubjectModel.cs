@@ -51,8 +51,8 @@ namespace UmanyiSMS.Modules.Exams.Models
             this.NameOfSubject = subjectResult.NameOfSubject;
             this.Remarks = subjectResult.Remarks;
             this.Score = Convert.ToInt32(subjectResult.Score);
-            this.Grade = DataAccess.CalculateGrade(this.Score);
-            this.Points = DataAccess.CalculatePoints(this.Grade);
+            this.Grade = DataController.CalculateGrade(this.Score);
+            this.Points = DataController.CalculatePoints(this.Grade);
             this.Tutor = subjectResult.Tutor;
             this.Code = subjectResult.Code.ToString();
         }

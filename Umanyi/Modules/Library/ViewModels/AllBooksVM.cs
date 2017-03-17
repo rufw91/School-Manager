@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
+using UmanyiSMS.Lib;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Library.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "User")]
     public class AllBooksVM: ViewModelBase

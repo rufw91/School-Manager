@@ -1,4 +1,5 @@
 ﻿using System;
+using UmanyiSMS.Lib;
 
 namespace UmanyiSMS.Modules.Fees.Models
 {

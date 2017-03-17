@@ -1,12 +1,9 @@
-﻿using System;
+﻿using sHelper.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Collections.ObjectModel;
-using System.Text;
-using System.Threading.Tasks;
 using UmanyiSMS.Lib;
 
-namespace UmanyiSMS.Modules.Exams.Models
+namespace UmanyiSMS.Modules.Institution.Models
 {
     public class ExamSettingsModel: ModelBase
     {

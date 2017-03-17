@@ -1,16 +1,15 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Institution.Models;
+using UmanyiSMS.Modules.Students.Models;
+using UmanyiSMS.Modules.Students.Controller;
+using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Students.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class AssignNewClassVM: ViewModelBase
@@ -42,13 +41,13 @@ namespace UmanyiSMS.ViewModels
                     if (e.PropertyName=="StudentID")
                         selectedStudent.CheckErrors();
                     if (!selectedStudent.HasErrors)
-                        CurrentClass = await DataAccess.GetClassAsync(await DataAccess.GetClassIDFromStudentID(selectedStudent.StudentID));
+                        CurrentClass = await DataController.GetClassAsync(await DataController.GetClassIDFromStudentID(selectedStudent.StudentID));
                 };
 
             SelectedClassID = 0;
             NewClassID = 0;
             IsInStudentMode = true;
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
             CurrYear = DateTime.Now.Year;
         }
 
@@ -58,9 +57,9 @@ namespace UmanyiSMS.ViewModels
              {
                  bool succ = false;
                  if (isInStudentMode)
-                     succ = await DataAccess.AssignStudentNewClass(selectedStudent.StudentID, newClassID, prevYear, currYear);
+                     succ = await DataController.AssignStudentNewClass(selectedStudent.StudentID, newClassID, prevYear, currYear);
                  else
-                     succ = await DataAccess.AssignClassNewClass(selectedClassID, newClassID, prevYear, currYear);
+                     succ = await DataController.AssignClassNewClass(selectedClassID, newClassID, prevYear, currYear);
                  MessageBox.Show(succ ? "Successfully saved details" : "Could not save details", succ ? "Success" : "Error", MessageBoxButton.OK,
                      succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                  if (succ)

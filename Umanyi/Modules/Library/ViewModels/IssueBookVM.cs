@@ -6,8 +6,13 @@ using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Library.Models;
+using UmanyiSMS.Modules.Students.Models;
+using UmanyiSMS.Modules.Library.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Library.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class IssueBookVM: ViewModelBase
@@ -42,7 +47,7 @@ namespace UmanyiSMS.ViewModels
                 bim.StudentID = selectedStudent.StudentID;
                 bim.DateIssued = DateTime.Now;
                 bim.Entries = thisIssue;
-                bool succ = await DataAccess.SaveNewBookIssueAsync(bim);
+                bool succ = await DataController.SaveNewBookIssueAsync(bim);
                 MessageBox.Show(succ ? "Successfully saved details." : "Could not save details", succ ? "Success" : "Error", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)

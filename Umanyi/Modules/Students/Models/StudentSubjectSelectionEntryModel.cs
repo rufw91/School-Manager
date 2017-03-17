@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.Modules.Exams.Models
+namespace UmanyiSMS.Modules.Students.Models
 {
     public class StudentSubjectSelectionEntryModel:SubjectBaseModel
     {

@@ -22,7 +22,7 @@ namespace UmanyiSMS.Modules.Purchases.Models
                 }
                 else
                 {
-                    ItemModel item = DataAccess.GetItem(ItemID);
+                    ItemModel item = DataController.GetItem(ItemID);
                     if (item.ItemID == 0)
                     {
                         List<string> errors = new List<string>();

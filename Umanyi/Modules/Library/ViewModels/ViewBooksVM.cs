@@ -4,8 +4,12 @@ using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Data;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Library.Models;
+using UmanyiSMS.Modules.Library.Controller;
+using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Library.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "User")]
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
@@ -22,7 +26,7 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Title = "VIEW BOOKS";
-            AllBooks = await DataAccess.GetAllBooksAsync();
+            AllBooks = await DataController.GetAllBooksAsync();
             collViewSource = new CollectionViewSource();
             collViewSource.Source = allBooks;
             NotifyPropertyChanged("CollViewSource");
@@ -32,7 +36,7 @@ namespace UmanyiSMS.ViewModels
         {
             RefreshCommand = new RelayCommand(async o =>
             {
-                AllBooks = await DataAccess.GetAllBooksAsync();
+                AllBooks = await DataController.GetAllBooksAsync();
                 collViewSource = new CollectionViewSource();
                 collViewSource.Source = allBooks;
                 NotifyPropertyChanged("CollViewSource");
@@ -99,7 +103,7 @@ namespace UmanyiSMS.ViewModels
             {
                 e.Accepted = false;
             }
-            else if (DataAccess.SearchAllBookProperties(src, SearchText))
+            else if (DataController.SearchAllBookProperties(src, SearchText))
                 e.Accepted = true;
             else e.Accepted = false;
         }

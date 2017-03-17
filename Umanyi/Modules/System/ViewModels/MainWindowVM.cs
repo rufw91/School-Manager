@@ -1,9 +1,18 @@
-﻿using Helper;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.ViewModels;
+using UmanyiSMS.Modules.Fees.ViewModels;
+using UmanyiSMS.Modules.Institution.ViewModels;
+using UmanyiSMS.Modules.Library.ViewModels;
+using UmanyiSMS.Modules.Purchases.ViewModels;
+using UmanyiSMS.Modules.Staff.ViewModels;
+using UmanyiSMS.Modules.Students.ViewModels;
+using UmanyiSMS.Modules.System.Controller;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.System.ViewModels
 {
     public class MainWindowVM : ViewModelBase    
     {
@@ -31,7 +40,7 @@ namespace UmanyiSMS.ViewModels
         protected async override void InitVars()
         {
             Source = new HomePageVM();
-            App.AppExamSettings.CopyFrom(await DataAccess.GetExamSettingsAsync());
+            App.AppExamSettings.CopyFrom(await DataController.GetExamSettingsAsync());
         }
 
         protected override void CreateCommands()

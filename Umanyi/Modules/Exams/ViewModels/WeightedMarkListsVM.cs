@@ -1,18 +1,20 @@
-﻿using Helper;
-using Helper.Models;
-using System;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
+using System.Linq;
+using System.Security.Permissions;
+using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Data;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Security.Permissions;
-using System.Windows;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Institution.Models;
 using UmanyiSMS.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class CombinedMarkListsVM: ViewModelBase
@@ -39,9 +41,9 @@ namespace UmanyiSMS.ViewModels
             classResult = new ExamResultClassDisplayModel();
             exams = new ObservableCollection<ExamWeightModel>();
             IsInClassMode = true;
-            AllClasses = await DataAccess.GetAllClassesAsync();
-            AllCombinedClasses = await DataAccess.GetAllCombinedClassesAsync();
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
+            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
 
             PropertyChanged += async (o, e) =>
                 {
@@ -55,7 +57,7 @@ namespace UmanyiSMS.ViewModels
                         if ((selectedClass == null) || (selectedClass.ClassID == 0)||selectedTerm==null)
                             return;
 
-                        var t = await DataAccess.GetExamsByClass(selectedClass.ClassID,selectedTerm);
+                        var t = await DataController.GetExamsByClass(selectedClass.ClassID,selectedTerm);
                         int count = 1;
                         foreach (var ex in t)
                         {
@@ -79,7 +81,7 @@ namespace UmanyiSMS.ViewModels
                         if ((selectedCombinedClass == null) || (selectedCombinedClass.Entries.Count == 0)||selectedTerm==null)
                             return;
 
-                        var t = await DataAccess.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID, selectedTerm);
+                        var t = await DataController.GetExamsByClass(selectedCombinedClass.Entries[0].ClassID, selectedTerm);
                         int count = 1;
                         foreach (var ex in t)
                         {
@@ -107,23 +109,23 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 if (isInClassMode)
                 {
-                    var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassCombinedExamResultAsync(selectedClass.ClassID, exams));
+                    var temp = new ExamResultClassDisplayModel(await DataController.GetClassCombinedExamResultAsync(selectedClass.ClassID, exams));
                     classResult.Entries = temp.Entries;
                     classResult.ExamID = temp.ExamID;
                     classResult.ExamResultID = temp.ExamResultID;
 
-                    ClassModel st = await DataAccess.GetClassAsync(classResult.ClassID);
+                    ClassModel st = await DataController.GetClassAsync(classResult.ClassID);
                     classResult.NameOfClass = st.NameOfClass;
 
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
-                    ClassExamResultModel stt = DataAccess.GetClassExamResult(classResult);
+                    ClassExamResultModel stt = DataController.GetClassExamResult(classResult);
 
                     CommonCommands.ExportToExcelCommand.Execute(classResult.ResultTable);
                 }
 
                 if (isInCombinedMode)
                 {
-                    var temp = new ExamResultClassDisplayModel(await DataAccess.GetCombinedClassCombinedExamResultAsync(selectedCombinedClass.Entries, exams));
+                    var temp = new ExamResultClassDisplayModel(await DataController.GetCombinedClassCombinedExamResultAsync(selectedCombinedClass.Entries, exams));
 
                     classResult.ExamID = temp.ExamID;
                     classResult.ExamResultID = temp.ExamResultID;
@@ -131,7 +133,7 @@ namespace UmanyiSMS.ViewModels
                     classResult.Entries = temp.Entries;
 
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
-                    ClassExamResultModel st = DataAccess.GetClassExamResult(classResult);
+                    ClassExamResultModel st = DataController.GetClassExamResult(classResult);
                     CommonCommands.ExportToExcelCommand.Execute(classResult.ResultTable);
                 }
                 IsBusy = false;
@@ -142,23 +144,23 @@ namespace UmanyiSMS.ViewModels
                 IsBusy = true;
                 if (isInClassMode)
                 {                    
-                    var temp = new ExamResultClassDisplayModel(await DataAccess.GetClassCombinedExamResultAsync(selectedClass.ClassID, exams));
+                    var temp = new ExamResultClassDisplayModel(await DataController.GetClassCombinedExamResultAsync(selectedClass.ClassID, exams));
                     classResult.Entries = temp.Entries;
                     classResult.ExamID = temp.ExamID;
                     classResult.ExamResultID = temp.ExamResultID;
 
-                    ClassModel st = await DataAccess.GetClassAsync(classResult.ClassID);
+                    ClassModel st = await DataController.GetClassAsync(classResult.ClassID);
                     classResult.NameOfClass = st.NameOfClass;
 
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
-                    ClassExamResultModel stt = DataAccess.GetClassExamResult(classResult);
+                    ClassExamResultModel stt = DataController.GetClassExamResult(classResult);
                     if (ShowClassTranscriptAction != null)
                         ShowClassTranscriptAction.Invoke(stt);
                 }
 
                 if (isInCombinedMode)
                 {
-                        var temp = new ExamResultClassDisplayModel(await DataAccess.GetCombinedClassCombinedExamResultAsync(selectedCombinedClass.Entries, exams));
+                        var temp = new ExamResultClassDisplayModel(await DataController.GetCombinedClassCombinedExamResultAsync(selectedCombinedClass.Entries, exams));
                         
                             classResult.ExamID = temp.ExamID;
                             classResult.ExamResultID = temp.ExamResultID;
@@ -166,7 +168,7 @@ namespace UmanyiSMS.ViewModels
                          classResult.Entries = temp.Entries;
                     
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
-                    ClassExamResultModel st = DataAccess.GetClassExamResult(classResult);
+                    ClassExamResultModel st = DataController.GetClassExamResult(classResult);
                     if (ShowClassTranscriptAction != null)
                         ShowClassTranscriptAction.Invoke(st);
                 }
@@ -186,9 +188,9 @@ namespace UmanyiSMS.ViewModels
                     DataTable dt = new DataTable();
                     ObservableCollection<SubjectModel> g;
                     if (isInClassMode)
-                        g = DataAccess.GetSubjectsRegistredToClassAsync(selectedClass.ClassID).Result;
+                        g = DataController.GetSubjectsRegistredToClassAsync(selectedClass.ClassID).Result;
                     else
-                        g = DataAccess.GetSubjectsRegistredToClassAsync(selectedCombinedClass.Entries[0].ClassID).Result;
+                        g = DataController.GetSubjectsRegistredToClassAsync(selectedCombinedClass.Entries[0].ClassID).Result;
 
                     dt.Columns.Add(new DataColumn("Student ID"));
                     dt.Columns.Add(new DataColumn("Name"));

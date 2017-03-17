@@ -10,8 +10,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Models;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Institution.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class EnterExamResultsBySubjectVM:ViewModelBase
@@ -41,10 +46,10 @@ namespace UmanyiSMS.ViewModels
             Tutor = "";
             allSubjectResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>();
             allSubjects = new ObservableImmutableList<ExamResultSubjectEntryModel>();
-            AllClasses = await DataAccess.GetAllClassesAsync();
+            AllClasses = await DataController.GetAllClassesAsync();
             SelectedExamID = 0;
             AllExams = new ObservableImmutableList<ExamModel>();
-            AllTerms = await DataAccess.GetAllTermsAsync();
+            AllTerms = await DataController.GetAllTermsAsync();
             allSubjectResults.CollectionChanged += (o, e) =>
             {
                 if (isRemovingInvalid)
@@ -68,7 +73,7 @@ namespace UmanyiSMS.ViewModels
                         SelectedExamID = 0;
                         if (SelectedClassID != 0&&selectedTerm!=null)
                         {              
-                            AllExams = new ObservableImmutableList<ExamModel>(await DataAccess.GetExamsByClass(selectedClassID,selectedTerm));
+                            AllExams = new ObservableImmutableList<ExamModel>(await DataController.GetExamsByClass(selectedClassID,selectedTerm));
                         }
                         return;
                     }
@@ -85,8 +90,8 @@ namespace UmanyiSMS.ViewModels
                         IsBusy = true;
                         if (SelectedSubjectID > 0)
                         {
-                            AllSubjectResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>(await DataAccess.GetStudentSubjectsResults(selectedClassID, selectedExamID, selectedSubjectID, selectedExam.OutOf));
-                            tempResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>(await DataAccess.GetStudentSubjectsResults(selectedClassID, selectedExamID, selectedSubjectID, selectedExam.OutOf));
+                            AllSubjectResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>(await DataController.GetStudentSubjectsResults(selectedClassID, selectedExamID, selectedSubjectID, selectedExam.OutOf));
+                            tempResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>(await DataController.GetStudentSubjectsResults(selectedClassID, selectedExamID, selectedSubjectID, selectedExam.OutOf));
                         }
                         IsBusy = false;
                     }
@@ -111,7 +116,7 @@ namespace UmanyiSMS.ViewModels
         private async Task RefreshSubjectEntries()
         {
             allSubjects.Clear();
-            var temp = (await DataAccess.GetExamAsync(selectedExamID)).Entries;
+            var temp = (await DataController.GetExamAsync(selectedExamID)).Entries;
             foreach (SubjectModel sm in temp)
                 allSubjects.Add(new ExamResultSubjectEntryModel(sm));
         }
@@ -134,7 +139,7 @@ namespace UmanyiSMS.ViewModels
                     temp.Add(em);
                 }
                 IsBusy = true;
-                bool succ = await DataAccess.SaveNewExamResultAsync(temp);
+                bool succ = await DataController.SaveNewExamResultAsync(temp);
                 IsBusy = false;
                 if (succ)
                 {

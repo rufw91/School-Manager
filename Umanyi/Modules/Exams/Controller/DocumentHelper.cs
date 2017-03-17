@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Media;
 using UmanyiSMS.Lib.Controllers;
 using UmanyiSMS.Modules.Exams.Models;
@@ -13,10 +15,92 @@ namespace UmanyiSMS.Modules.Exams.Controller
 {
     public class DocumentHelper:DocumentHelperBase
     {
-        public DocumentHelper()
+        private DocumentHelper(object workObject)
         {
-
+            if (workObject == null)
+                throw new ArgumentNullException("workObject", "workObject cannot be null.");
+            InitVars(myWorkObject);
+            AddPagesToDocument(noOfPages,ResourceString);
+            AddDataToDocument();
         }
+
+        public static FixedDocument GenerateDocument(object workObject)
+        {
+            new DocumentHelper(workObject);
+            return doc;
+        }
+
+        private void InitVars(object workObject)
+        {
+            myWorkObject = workObject;
+            noOfPages = GetNoOfPages(workObject);
+            ResourceString = GetResString(workObject);
+            doc = new FixedDocument();
+        }
+        
+        protected void AddDataToDocument()
+        {
+            if (myWorkObject is StudentTranscriptModel)
+                GenerateTranscript();
+            if (myWorkObject is StudentTranscriptModel2)
+                GenerateTranscript3();
+            //if (workObject is ReportFormModel)
+                //return 1;
+            if (myWorkObject is ClassReportFormModel)
+                GenerateClassTranscripts();
+            if (myWorkObject is ClassTranscriptsModel2)
+                GenerateClassTranscripts();
+            if (myWorkObject is ClassTranscriptsModel)
+                GenerateClassTranscripts();
+            if (myWorkObject is ClassStudentsExamResultModel)
+                GenerateClassExamResults();
+            if (myWorkObject is ClassExamResultModel)
+                GenerateClassMarkList();
+
+            
+                
+             throw new ArgumentException();
+            
+        }
+
+        protected string GetResString(object docType)
+        {
+            string resString = "";
+            switch (docType)
+            {
+                case DocType.Transcript: resString = Helper.Properties.Resources.Transcript; break;
+                case DocType.Transcript2: resString = Helper.Properties.Resources.Transcript2; break;
+                case DocType.Transcript3: resString = Helper.Properties.Resources.Transcript4; break;
+                case DocType.ClassTranscripts: resString = Helper.Properties.Resources.Transcript2; break;
+                case DocType.ClassTranscripts2: resString = Helper.Properties.Resources.Transcript4; break;
+                case DocType.ClassExamResults: resString = Helper.Properties.Resources.Transcript; break;
+                case DocType.ClassMarkList: resString = Helper.Properties.Resources.ClassMarkList; break;
+                case DocType.AggregateResult: resString = Helper.Properties.Resources.AggregateResult; break;
+                default: throw new ArgumentException();
+            }
+            return resString;
+        }
+        
+        private static int GetNoOfPages(object workObject)
+        {
+            if (workObject is StudentTranscriptModel)
+                return 1;
+            if (workObject is StudentTranscriptModel2)
+                return 1;
+            if (workObject is ReportFormModel)
+                return 1;
+            if (workObject is ClassReportFormModel)
+                return (workObject as ClassReportFormModel).Count;
+            if (workObject is ClassTranscriptsModel2)
+                return (workObject as ClassTranscriptsModel2).Entries.Count;
+            if (workObject is ClassTranscriptsModel)
+                return (workObject as ClassTranscriptsModel).Entries.Count;
+            if (workObject is ClassStudentsExamResultModel)
+                return (workObject as ClassStudentsExamResultModel).Entries.Count;
+
+            return 0;
+        }
+
 
         #region Aggregate Result
 
@@ -89,15 +173,15 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         #region Class Mark List
 
-        private static void AddCMLClass(string nameOfClass, int pageNo)
+        private void AddCMLClass(string nameOfClass, int pageNo)
         {
             AddText(nameOfClass, "Arial", 14, true, 0, Colors.Black, 70, 70, pageNo);
         }
-        private static void AddCMLExam(string nameOfExam, int pageNo)
+        private void AddCMLExam(string nameOfExam, int pageNo)
         {
             AddText(nameOfExam, "Arial", 14, true, 0, Colors.Black, 350, 75, pageNo);
         }
-        private static void AddCMLSubjects(DataTable entries, int pageNo)
+        private void AddCMLSubjects(DataTable entries, int pageNo)
         {
             double xPos = 255;
             double count = 0;
@@ -111,7 +195,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 count++;
             }
         }
-        private static void AddCMLStudent(DataRow item, int itemIndex, int pageNo)
+        private void AddCMLStudent(DataRow item, int itemIndex, int pageNo)
         {
             int pageRelativeIndex = itemIndex - itemsPerPage * pageNo;
             double yPos = 140 + pageRelativeIndex * 26;
@@ -129,7 +213,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             AddText(item["Total"].ToString(), "Times New Roman", 12, false, 0, Colors.Black, 715, yPos, pageNo);
             AddText(item["Position"].ToString(), "Times New Roman", 12, false, 0, Colors.Black, 754, yPos, pageNo);
         }
-        private static void AddCMLStudents(DataTable psi, int pageNo)
+        private void AddCMLStudents(DataTable psi, int pageNo)
         {
             int startIndex = pageNo * itemsPerPage;
             int endIndex = startIndex + itemsPerPage - 1;
@@ -142,7 +226,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AddCMLStudent(psi.Rows[i], i, pageNo);
         }
 
-        private static void GenerateClassMarkList()
+        private void GenerateClassMarkList()
         {
             ClassExamResultModel si = myWorkObject as ClassExamResultModel;
 
@@ -158,7 +242,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         #endregion
 
         #region ClassExamResults
-        private static void GenerateClassExamResults()
+        private void GenerateClassExamResults()
         {
             ClassStudentsExamResultModel si = myWorkObject as ClassStudentsExamResultModel;
 
@@ -179,7 +263,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         #endregion
 
         #region ClassTranscripts
-        private static void GenerateClassTranscripts()
+        private void GenerateClassTranscripts()
         {
             ClassTranscriptsModel si = myWorkObject as ClassTranscriptsModel;
 
@@ -206,7 +290,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AddTR2Closing(si.Entries[pageNo].ClosingDay, pageNo);
                 AddTR2ClustPoints(si.Entries[pageNo].Points, pageNo);
                 AddTR2ClassTRComments(si.Entries[pageNo].ClassTeacherComments, pageNo);
-                TR2DrawGraph(DataAccess.CalculateGrade(decimal.Ceiling(Convert.ToDecimal(si.Entries[pageNo].KCPEScore) / 5m)),
+                TR2DrawGraph(DataController.CalculateGrade(decimal.Ceiling(Convert.ToDecimal(si.Entries[pageNo].KCPEScore) / 5m)),
                    si.Entries[pageNo].CAT1Grade,
                    si.Entries[pageNo].CAT2Grade,
                    si.Entries[pageNo].ExamGrade,
@@ -216,7 +300,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         #endregion
 
         #region ClassTranscripts2
-        private static void GenerateClassTranscripts2()
+        private void GenerateClassTranscripts2()
         {
             ClassTranscriptsModel2 si = myWorkObject as ClassTranscriptsModel2;
             int pageNo;
@@ -280,40 +364,40 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         #region Transcript
 
-        private static void AddTRStudentID(int studentID, int pageNo)
+        private void AddTRStudentID(int studentID, int pageNo)
         {
             AddText(studentID.ToString(), "Arial", 14, false, 0, Colors.Black, 95, 170, pageNo);
         }
-        private static void AddTRName(string nameOfStudent, int pageNo)
+        private void AddTRName(string nameOfStudent, int pageNo)
         {
             AddText(nameOfStudent, "Arial", 14, false, 0, Colors.Black, 247, 170, pageNo);
         }
-        private static void AddTRClassName(string className, int pageNo)
+        private void AddTRClassName(string className, int pageNo)
         {
             AddText(className, "Arial", 14, true, 0, Colors.Black, 619, 170, pageNo);
         }
-        private static void AddTRClassPosition(string classPosition, int pageNo)
+        private void AddTRClassPosition(string classPosition, int pageNo)
         {
             AddText(classPosition, "Arial", 14, true, 0, Colors.Black, 75, 580, pageNo);
         }
 
-        private static void AddTRTotalMarks(decimal totalMarks, int pageNo)
+        private void AddTRTotalMarks(decimal totalMarks, int pageNo)
         {
             AddText(totalMarks.ToString(), "Arial", 14, true, 0, Colors.Black, 250, 580, pageNo);
         }
-        private static void AddTRPointsPosition(decimal points, int pageNo)
+        private void AddTRPointsPosition(decimal points, int pageNo)
         {
             AddText(points.ToString("N0"), "Arial", 14, true, 0, Colors.Black, 570, 580, pageNo);
         }
-        private static void AddTRMeanGrade(string meanGrade, int pageNo)
+        private void AddTRMeanGrade(string meanGrade, int pageNo)
         {
             AddText(meanGrade, "Arial", 14, true, 0, Colors.Black, 410, 580, pageNo);
         }
-        private static void AddTRExamName(string nameOfExam, int pageNo)
+        private void AddTRExamName(string nameOfExam, int pageNo)
         {
             AddText(nameOfExam, "Arial", 14, true, 0, Colors.Black, 350, 145, pageNo);
         }
-        private static void AddTRSubjectScore(StudentTranscriptSubjectModel item, int itemIndex, int pageNo)
+        private void AddTRSubjectScore(StudentTranscriptSubjectModel item, int itemIndex, int pageNo)
         {
             double fontsize = 14;
             int pageRelativeIndex = itemIndex;
@@ -327,13 +411,13 @@ namespace UmanyiSMS.Modules.Exams.Controller
             AddText(item.Remarks, "Arial", fontsize, false, 0, Colors.Black, 480, yPos, pageNo);
             AddText(item.Tutor, "Arial", fontsize, false, 0, Colors.Black, 705, yPos, pageNo);
         }
-        private static void AddTRSubjectScores(ObservableCollection<StudentTranscriptSubjectModel> psi, int pageNo)
+        private void AddTRSubjectScores(ObservableCollection<StudentTranscriptSubjectModel> psi, int pageNo)
         {
             for (int i = 0; i <= psi.Count - 1; i++)
                 AddTRSubjectScore(psi[i], i, pageNo);
         }
 
-        private static void GenerateTranscript()
+        private void GenerateTranscript()
         {
             StudentExamResultModel si = myWorkObject as StudentExamResultModel;
             int pageNo;
@@ -353,86 +437,86 @@ namespace UmanyiSMS.Modules.Exams.Controller
         #endregion
 
         #region Transcript2
-        private static void AddTR2Responsibilities(string responsibilities, int pageNo)
+        private void AddTR2Responsibilities(string responsibilities, int pageNo)
         {
             AddTextWithWrap(responsibilities, "Arial", 200, 40, 14, false, 0, Colors.Black, 30, 670, pageNo);
         }
-        private static void AddTR2Clubs(string clubs, int pageNo)
+        private void AddTR2Clubs(string clubs, int pageNo)
         {
             AddTextWithWrap(clubs, "Arial", 200, 40, 14, false, 0, Colors.Black, 30, 740, pageNo);
         }
-        private static void AddTR2Boarding(string boarding, int pageNo)
+        private void AddTR2Boarding(string boarding, int pageNo)
         {
             AddTextWithWrap(boarding, "Arial", 200, 60, 14, false, 0, Colors.Black, 30, 810, pageNo);
         }
-        private static void AddTR2ClassTR(string classTR, int pageNo)
+        private void AddTR2ClassTR(string classTR, int pageNo)
         {
             AddTextWithWrap(classTR, "Arial", 200, 30, 14, false, 0, Colors.Black, 30, 940, pageNo);
         }
-        private static void AddTR2ClassTRComments(string classTRComments, int pageNo)
+        private void AddTR2ClassTRComments(string classTRComments, int pageNo)
         {
             AddTextWithWrap(classTRComments, "Arial", 524, 30, 14, false, 0, Colors.Black, 250, 940, pageNo);
         }
-        private static void AddTR2Principal(string principal, int pageNo)
+        private void AddTR2Principal(string principal, int pageNo)
         {
             AddTextWithWrap(principal, "Arial", 200, 30, 14, false, 0, Colors.Black, 30, 1010, pageNo);
         }
-        private static void AddTR2PrincipalComments(string principalComments, int pageNo)
+        private void AddTR2PrincipalComments(string principalComments, int pageNo)
         {
             AddTextWithWrap(principalComments, "Arial", 524, 30, 14, false, 0, Colors.Black, 30, 1010, pageNo);
         }
-        private static void AddTR2Opening(DateTime opening, int pageNo)
+        private void AddTR2Opening(DateTime opening, int pageNo)
         {
             AddText(opening.ToString("dd-MM-yyyy"), "Arial", 14, false, 0, Colors.Black, 350, 1055, pageNo);
         }
-        private static void AddTR2Closing(DateTime closing, int pageNo)
+        private void AddTR2Closing(DateTime closing, int pageNo)
         {
             AddText(closing.ToString("dd-MM-yyyy"), "Arial", 14, false, 0, Colors.Black, 120, 1055, pageNo);
         }
-        private static void AddTR2StudentID(int studentID, int pageNo)
+        private void AddTR2StudentID(int studentID, int pageNo)
         {
             AddText(studentID.ToString(), "Arial", 14, false, 0, Colors.Black, 100, 135, pageNo);
         }
-        private static void AddTR2Name(string nameOfStudent, int pageNo)
+        private void AddTR2Name(string nameOfStudent, int pageNo)
         {
             AddText(nameOfStudent, "Arial", 14, false, 0, Colors.Black, 255, 135, pageNo);
         }
-        private static void AddTR2ClassName(string className, int pageNo)
+        private void AddTR2ClassName(string className, int pageNo)
         {
             AddText(className, "Arial", 14, true, 0, Colors.Black, 630, 135, pageNo);
         }
-        private static void AddTR2KCPEScore(int kcpeScore, int pageNo)
+        private void AddTR2KCPEScore(int kcpeScore, int pageNo)
         {
             AddText(kcpeScore.ToString(), "Arial", 14, true, 0, Colors.Black, 135, 173, pageNo);
         }
 
-        private static void AddTR2Image(byte[] image, int pageNo)
+        private void AddTR2Image(byte[] image, int pageNo)
         {
             AddImage(image, double.NaN, double.NaN, 642, 10, 0, pageNo);
         }
 
-        private static void AddTR2ClassPosition(string classPosition, int pageNo)
+        private void AddTR2ClassPosition(string classPosition, int pageNo)
         {
             AddText(classPosition, "Arial", 14, true, 0, Colors.Black, 75, 580, pageNo);
         }
-        private static void AddTR2TotalMarks(decimal totalMarks, int pageNo)
+        private void AddTR2TotalMarks(decimal totalMarks, int pageNo)
         {
             AddText(totalMarks.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 250, 580, pageNo);
         }
-        private static void AddTR2OverAllPosition(string meanGrade, int pageNo)
+        private void AddTR2OverAllPosition(string meanGrade, int pageNo)
         {
             AddText(meanGrade, "Arial", 14, true, 0, Colors.Black, 650, 580, pageNo);
         }
-        private static void AddTR2MeanGrade(string meanGrade, int pageNo)
+        private void AddTR2MeanGrade(string meanGrade, int pageNo)
         {
             AddText(meanGrade, "Arial", 14, true, 0, Colors.Black, 410, 580, pageNo);
         }
-        private static void AddTR2ClustPoints(decimal point, int pageNo)
+        private void AddTR2ClustPoints(decimal point, int pageNo)
         {
             AddText(point.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 495, 580, pageNo);
         }
 
-        private static void AddTR2SubjectScore(StudentExamResultEntryModel item, int itemIndex, int pageNo)
+        private void AddTR2SubjectScore(StudentExamResultEntryModel item, int itemIndex, int pageNo)
         {
             double fontsize = 14;
             int pageRelativeIndex = itemIndex;
@@ -452,7 +536,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             AddText(item.Remarks, "Arial", fontsize, false, 0, Colors.Black, 620, yPos, pageNo);
             AddText(item.Tutor, "Arial", fontsize, false, 0, Colors.Black, 715, yPos, pageNo);
         }
-        private static void AddTR2SubjectScores(ObservableCollection<StudentExamResultEntryModel> psi, int pageNo)
+        private void AddTR2SubjectScores(ObservableCollection<StudentExamResultEntryModel> psi, int pageNo)
         {
             for (int i = 0; i <= psi.Count - 1; i++)
                 AddTR2SubjectScore(psi[i], i, pageNo);
@@ -521,7 +605,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             g.Children.Add(bd4);
         }
 
-        private static void GenerateTranscript2()
+        private void GenerateTranscript2()
         {
             StudentTranscriptModel si = myWorkObject as StudentTranscriptModel;
 
@@ -549,7 +633,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AddTR2ClustPoints(si.Points, pageNo);
                 AddTR2ClassTRComments(si.ClassTeacherComments, pageNo);
                 AddTR2Image(si.SPhoto, pageNo);
-                TR2DrawGraph(DataAccess.CalculateGrade(decimal.Ceiling(Convert.ToDecimal(si.KCPEScore) / 5m)),
+                TR2DrawGraph(DataController.CalculateGrade(decimal.Ceiling(Convert.ToDecimal(si.KCPEScore) / 5m)),
                     si.CAT1Grade,
                     si.CAT2Grade,
                     si.ExamGrade,
@@ -561,29 +645,29 @@ namespace UmanyiSMS.Modules.Exams.Controller
         #endregion
 
         #region Transcript3
-        private static void AddTR3StudentID(int studentID, int pageNo)
+        private void AddTR3StudentID(int studentID, int pageNo)
         {
             AddText(studentID.ToString(), "Arial", 14, true, 0, Colors.Black, 135, 270, pageNo);
         }
-        private static void AddTR3Name(string nameOfStudent, int pageNo)
+        private void AddTR3Name(string nameOfStudent, int pageNo)
         {
             AddText(nameOfStudent, "Arial", 14, true, 0, Colors.Black, 120, 237, pageNo);
         }
-        private static void AddTR3ClassName(string className, int pageNo)
+        private void AddTR3ClassName(string className, int pageNo)
         {
             AddText(className, "Arial", 14, true, 0, Colors.Black, 535, 237, pageNo);
         }
-        private static void AddTR3KCPEScore(int kcpeScore, int pageNo)
+        private void AddTR3KCPEScore(int kcpeScore, int pageNo)
         {
             AddText(kcpeScore.ToString(), "Arial", 14, true, 0, Colors.Black, 580, 270, pageNo);
         }
 
-        private static void AddTR3Image(byte[] image, int pageNo)
+        private void AddTR3Image(byte[] image, int pageNo)
         {
             AddImage(image, 135, 150, 640, 17, 0, pageNo);
         }
 
-        private static void AddTR3SubjectScore(StudentExamResultEntryModel item, int itemIndex, int pageNo)
+        private void AddTR3SubjectScore(StudentExamResultEntryModel item, int itemIndex, int pageNo)
         {
             double fontsize = 14;
             int pageRelativeIndex = itemIndex;
@@ -603,46 +687,46 @@ namespace UmanyiSMS.Modules.Exams.Controller
             AddText(item.Remarks, "Arial", fontsize, true, 0, Colors.Black, 560, yPos, pageNo);
             AddText(item.Tutor, "Arial", fontsize, true, 0, Colors.Black, 725, yPos, pageNo);
         }
-        private static void AddTR3SubjectScores(ObservableCollection<StudentExamResultEntryModel> psi, int pageNo)
+        private void AddTR3SubjectScores(ObservableCollection<StudentExamResultEntryModel> psi, int pageNo)
         {
             for (int i = 0; i <= psi.Count - 1; i++)
                 AddTR3SubjectScore(psi[i], i, pageNo);
         }
 
-        private static void AddTR3TotalMarks(decimal totalMarks, int pageNo)
+        private void AddTR3TotalMarks(decimal totalMarks, int pageNo)
         {
             AddText(totalMarks.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 410, 616, pageNo);
         }
-        private static void AddTR3OutOf(decimal outOf, int pageNo)
+        private void AddTR3OutOf(decimal outOf, int pageNo)
         {
             AddText(outOf.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 410, 640, pageNo);
         }
 
-        private static void AddTR3Term1TotalScore(string term1TotalScore, int pageNo)
+        private void AddTR3Term1TotalScore(string term1TotalScore, int pageNo)
         {
             AddText(term1TotalScore, "Arial", 14, true, 0, Colors.Black, 150, 692, pageNo);
         }
-        private static void AddTR3Term2TotalScore(string term2TotalScore, int pageNo)
+        private void AddTR3Term2TotalScore(string term2TotalScore, int pageNo)
         {
             AddText(term2TotalScore, "Arial", 14, true, 0, Colors.Black, 150, 712, pageNo);
         }
-        private static void AddTR3Term3TotalScore(string term3TotalScore, int pageNo)
+        private void AddTR3Term3TotalScore(string term3TotalScore, int pageNo)
         {
             AddText(term3TotalScore, "Arial", 14, true, 0, Colors.Black, 150, 732, pageNo);
         }
-        private static void AddTR3Term1AvgPts(decimal term1Avgpts, int pageNo)
+        private void AddTR3Term1AvgPts(decimal term1Avgpts, int pageNo)
         {
             AddText(term1Avgpts > 0 ? term1Avgpts.ToString("N2") : "-", "Arial", 14, true, 0, Colors.Black, 267, 692, pageNo);
         }
-        private static void AddTR3Term2AvgPts(decimal term2Avgpts, int pageNo)
+        private void AddTR3Term2AvgPts(decimal term2Avgpts, int pageNo)
         {
             AddText(term2Avgpts > 0 ? term2Avgpts.ToString("N2") : "-", "Arial", 14, true, 0, Colors.Black, 267, 712, pageNo);
         }
-        private static void AddTR3Term3AvgPts(decimal term3Avgpts, int pageNo)
+        private void AddTR3Term3AvgPts(decimal term3Avgpts, int pageNo)
         {
             AddText(term3Avgpts > 0 ? term3Avgpts.ToString("N2") : "-", "Arial", 14, true, 0, Colors.Black, 267, 732, pageNo);
         }
-        private static void AddTR3Term1PtsChange(decimal term1PtsChange, int pageNo)
+        private void AddTR3Term1PtsChange(decimal term1PtsChange, int pageNo)
         {
             if (term1PtsChange > 0)
                 AddText("+" + term1PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 315, 692, pageNo);
@@ -651,7 +735,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             else
                 AddText(term1PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 320, 692, pageNo);
         }
-        private static void AddTR3Term2PtsChange(decimal term2PtsChange, int pageNo)
+        private void AddTR3Term2PtsChange(decimal term2PtsChange, int pageNo)
         {
             if (term2PtsChange > 0)
                 AddText("+" + term2PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 315, 712, pageNo);
@@ -660,7 +744,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             else
                 AddText(term2PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 320, 712, pageNo);
         }
-        private static void AddTR3Term3PtsChange(decimal term3PtsChange, int pageNo)
+        private void AddTR3Term3PtsChange(decimal term3PtsChange, int pageNo)
         {
             if (term3PtsChange > 0)
                 AddText("+" + term3PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 315, 732, pageNo);
@@ -669,86 +753,86 @@ namespace UmanyiSMS.Modules.Exams.Controller
             else
                 AddText(term3PtsChange.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 320, 732, pageNo);
         }
-        private static void AddTR3Term1TotalPts(string term1TotalPts, int pageNo)
+        private void AddTR3Term1TotalPts(string term1TotalPts, int pageNo)
         {
             AddText(term1TotalPts, "Arial", 14, true, 0, Colors.Black, 380, 692, pageNo);
         }
-        private static void AddTR3Term2TotalPts(string term2TotalPts, int pageNo)
+        private void AddTR3Term2TotalPts(string term2TotalPts, int pageNo)
         {
             AddText(term2TotalPts, "Arial", 14, true, 0, Colors.Black, 380, 712, pageNo);
         }
-        private static void AddTR3Term3TotalPts(string term3TotalPts, int pageNo)
+        private void AddTR3Term3TotalPts(string term3TotalPts, int pageNo)
         {
             AddText(term3TotalPts, "Arial", 14, true, 0, Colors.Black, 380, 732, pageNo);
         }
-        private static void AddTR3Term1Score(decimal term1Score, int pageNo)
+        private void AddTR3Term1Score(decimal term1Score, int pageNo)
         {
             AddText(term1Score.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 485, 692, pageNo);
         }
-        private static void AddTR3Term2Score(decimal term2Score, int pageNo)
+        private void AddTR3Term2Score(decimal term2Score, int pageNo)
         {
             AddText(term2Score.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 485, 712, pageNo);
         }
-        private static void AddTR3Term3Score(decimal term3Score, int pageNo)
+        private void AddTR3Term3Score(decimal term3Score, int pageNo)
         {
             AddText(term3Score.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 485, 732, pageNo);
         }
-        private static void AddTR3Term1Grade(string term1Grade, int pageNo)
+        private void AddTR3Term1Grade(string term1Grade, int pageNo)
         {
             AddText(term1Grade, "Arial", 14, true, 0, Colors.Black, 584, 692, pageNo);
         }
-        private static void AddTR3Term2Grade(string term2Grade, int pageNo)
+        private void AddTR3Term2Grade(string term2Grade, int pageNo)
         {
             AddText(term2Grade, "Arial", 14, true, 0, Colors.Black, 584, 712, pageNo);
         }
-        private static void AddTR3Term3Grade(string term3Grade, int pageNo)
+        private void AddTR3Term3Grade(string term3Grade, int pageNo)
         {
             AddText(term3Grade, "Arial", 14, true, 0, Colors.Black, 584, 732, pageNo);
         }
-        private static void AddTR3Term1ClassPOS(string term1POS, int pageNo)
+        private void AddTR3Term1ClassPOS(string term1POS, int pageNo)
         {
             AddText(term1POS, "Arial", 14, true, 0, Colors.Black, 640, 692, pageNo);
         }
-        private static void AddTR3Term2ClassPOS(string term2POS, int pageNo)
+        private void AddTR3Term2ClassPOS(string term2POS, int pageNo)
         {
             AddText(term2POS, "Arial", 14, true, 0, Colors.Black, 640, 712, pageNo);
         }
-        private static void AddTR3Term3ClassPOS(string term3POS, int pageNo)
+        private void AddTR3Term3ClassPOS(string term3POS, int pageNo)
         {
             AddText(term3POS, "Arial", 14, true, 0, Colors.Black, 640, 732, pageNo);
         }
-        private static void AddTR3Term1CombinedClassPOS(string term1POS, int pageNo)
+        private void AddTR3Term1CombinedClassPOS(string term1POS, int pageNo)
         {
             AddText(term1POS, "Arial", 14, true, 0, Colors.Black, 705, 692, pageNo);
         }
-        private static void AddTR3Term2CombinedClassPOS(string term1POS, int pageNo)
+        private void AddTR3Term2CombinedClassPOS(string term1POS, int pageNo)
         {
             AddText(term1POS, "Arial", 14, true, 0, Colors.Black, 705, 712, pageNo);
         }
-        private static void AddTR3Term3CombinedClassPOS(string term1POS, int pageNo)
+        private void AddTR3Term3CombinedClassPOS(string term1POS, int pageNo)
         {
             AddText(term1POS, "Arial", 14, true, 0, Colors.Black, 705, 732, pageNo);
         }
 
 
-        private static void AddTR3ClassTRComments(string classTRComments, int pageNo)
+        private void AddTR3ClassTRComments(string classTRComments, int pageNo)
         {
             AddTextWithWrap(classTRComments, "Arial", 524, 30, 14, true, 0, Colors.Black, 50, 860, pageNo);
         }
-        private static void AddTR3PrincipalComments(string principalComments, int pageNo)
+        private void AddTR3PrincipalComments(string principalComments, int pageNo)
         {
             AddTextWithWrap(principalComments, "Arial", 445, 100, 14, true, 0, Colors.Black, 50, 945, pageNo);
         }
-        private static void AddTR3Opening(DateTime opening, int pageNo)
+        private void AddTR3Opening(DateTime opening, int pageNo)
         {
             AddText(opening.ToString("dd MMM yyyy"), "Arial", 14, true, 0, Colors.Black, 545, 1017, pageNo);
         }
-        private static void AddTR3Closing(DateTime closing, int pageNo)
+        private void AddTR3Closing(DateTime closing, int pageNo)
         {
             AddText(closing.ToString("dd MMM yyyy"), "Arial", 14, true, 0, Colors.Black, 545, 950, pageNo);
         }
 
-        private static void GenerateTranscript3()
+        private void GenerateTranscript3()
         {
             StudentTranscriptModel2 si = myWorkObject as StudentTranscriptModel2;
 

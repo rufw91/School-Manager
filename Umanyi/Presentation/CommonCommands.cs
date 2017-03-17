@@ -1,19 +1,16 @@
-﻿using Helper;
-using Microsoft.Win32;
-
-using UmanyiSMS.ViewModels;
-using System;
+﻿using Microsoft.Win32;
 using System.Data;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Lib.Controllers;
 using UmanyiSMS.Lib.Controls;
 using UmanyiSMS.Lib.Converters;
-using UmanyiSMS.Lib.Controllers;
-using System.Threading.Tasks;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.ViewModels;
 
 namespace UmanyiSMS.Presentation
 {
