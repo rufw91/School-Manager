@@ -1,7 +1,7 @@
 ﻿<core:CustomWindow x:Class="UmanyiSMS.Views.FindBooks" Style="{StaticResource {x:Type core:CustomWindow}}" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:core="clr-namespace:Helper.Controls;assembly=Helper"
+        xmlns:core="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
         xmlns:helper="clr-namespace:Helper;assembly=UmanyiSMS.Helper"
         xmlns:converters="clr-namespace:Helper.Converters;assembly=UmanyiSMS.Helper"
         Title="Find Items" Height="600" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow">

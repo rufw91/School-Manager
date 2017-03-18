@@ -1,7 +1,7 @@
 ﻿<helper:CustomWindow x:Class="UmanyiSMS.Login" Style="{StaticResource {x:Type helper:CustomWindow}}" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helper="clr-namespace:Helper.Controls;assembly=Helper"
+        xmlns:helper="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
         Title="Login" Height="330" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
     <Grid Name="mnGrid">
         <Border Height="190" VerticalAlignment="Top" Background="{DynamicResource Accent2}"/>

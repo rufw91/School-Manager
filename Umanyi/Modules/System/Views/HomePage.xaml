@@ -4,8 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:views ="clr-namespace:UmanyiSMS.Views"
-      xmlns:controls="clr-namespace:Helper.Controls;assembly=UmanyiSMS.Helper"
-     xmlns:Controls="clr-namespace:Helper.Controls;assembly=Helper" x:Class="UmanyiSMS.Views.HomePage" 
+      xmlns:controls="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Helper"
+     xmlns:Controls="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib" x:Class="UmanyiSMS.Views.HomePage" 
       mc:Ignorable="d" Background="White"
      d:DesignHeight="724" d:DesignWidth="1022">
 

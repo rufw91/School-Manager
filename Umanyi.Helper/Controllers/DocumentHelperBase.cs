@@ -11,27 +11,31 @@ namespace UmanyiSMS.Lib.Controllers
 {
     public abstract class DocumentHelperBase
     {
-        protected static FixedDocument doc { get; set; }
-        protected static int noOfPages { get; set; }
-        //protected static int itemsPerPage { get; set; }
-        protected static object myWorkObject { get; set; }
+        protected static FixedDocument Document { get; set; }
+        protected static int NoOfPages { get; set; }
+        protected static int ItemsPerPage { get; set; }
+        protected static object MyWorkObject { get; set; }
         protected static string ResourceString { get; set; }
 
-        public DocumentHelperBase()
+        public DocumentHelperBase(object workObject)
         {
-            doc = null;
+            if (workObject == null)
+                throw new ArgumentNullException("workObject", "workObject cannot be null.");
+            InitVars(workObject);
+            AddPagesToDocument();
+            AddDataToDocument();
         }
-        protected void AddPagesToDocument(int noOfPages,string pageDefn)
+        protected void AddPagesToDocument()
         {
             try
             {
                 FixedPage p;
-                for (int i = 0; i < noOfPages; i++)
+                for (int i = 0; i < NoOfPages; i++)
                 {
                     PageContent pageContent = new PageContent();
-                    p = GetPage(pageDefn);
+                    p = GetPage(ResourceString);
                     ((IAddChild)pageContent).AddChild(p);
-                    doc.Pages.Add(pageContent);
+                    Document.Pages.Add(pageContent);
                 }
             }
             catch { throw new InvalidOperationException(); }
@@ -44,6 +48,28 @@ namespace UmanyiSMS.Lib.Controllers
             FixedPage page = (FixedPage)XamlReader.Load(xmlReader);
             return page;
         }
+
+        protected string GetResourceString(Uri assemblyLocation)
+        {
+            string resString = "";
+            StreamReader tr = new StreamReader(Application.GetResourceStream(assemblyLocation).Stream);
+            resString = tr.ReadToEnd();
+            return resString;
+        }
+
+        protected void InitVars(object workObject)
+        {
+            MyWorkObject = workObject;
+            NoOfPages = GetNoOfPages();
+            ResourceString = GetResString();
+            Document = new FixedDocument();
+        }
+
+        protected abstract void AddDataToDocument();
+
+        protected abstract string GetResString();
+
+        protected abstract int GetNoOfPages();
 
         protected void AddText(string text, string fontFamily, double fontSize, bool isBold, double rotateAngle,
             Color fontColor, double left, double top, int pageNo)
@@ -67,7 +93,7 @@ namespace UmanyiSMS.Lib.Controllers
             text1.VerticalAlignment = VerticalAlignment.Top;
             text1.Margin = new Thickness((left == -1) ? 0 : left, top, 0, 0);
 
-            Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
+            Grid g = Document.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(text1);
         }
 
@@ -94,7 +120,7 @@ namespace UmanyiSMS.Lib.Controllers
             text1.VerticalAlignment = VerticalAlignment.Top;
             text1.Margin = new Thickness((left == -1) ? 0 : left, top, 0, 0);
 
-            Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
+            Grid g = Document.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(text1);
         }
 
@@ -124,7 +150,7 @@ namespace UmanyiSMS.Lib.Controllers
             text1.VerticalAlignment = VerticalAlignment.Top;
             text1.Margin = new Thickness((left == -1) ? 0 : left, top, 0, 0);
 
-            Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
+            Grid g = Document.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(text1);
         }
 
@@ -151,7 +177,7 @@ namespace UmanyiSMS.Lib.Controllers
             text1.Margin = new Thickness((left == -1) ? 0 : left, top, 0, 0);
             
 
-            Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
+            Grid g = Document.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(text1);
         }
         protected void AddImage( byte[] image, double width, double height, double left, double top, double rotateAngle, int pageNo)
@@ -173,7 +199,7 @@ namespace UmanyiSMS.Lib.Controllers
             text1.Height = height;
             if (image!=null&&image.Length>10)
             text1.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(image);
-            Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
+            Grid g = Document.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(text1);
         }
         protected void AddText(FixedDocument doc, string text, double left, double top, int pageNo)
