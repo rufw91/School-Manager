@@ -25,7 +25,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
         protected async override void InitVars()
         {
             Title = "CLASS LISTS";
-            AllClasses = await DataController.GetAllClassesAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
         }
 
         protected override void CreateCommands()

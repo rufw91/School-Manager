@@ -1,8 +1,6 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Documents;
@@ -81,7 +79,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             SelectedClassID = 0;
             OpeningDay = DateTime.Now;
             ClosingDay = DateTime.Now;
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             PropertyChanged += async (o, e) =>
                 {
                     /*if (e.PropertyName == "ClassTeacher")
@@ -138,7 +136,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                         }
                     }
                 };
-            AllClasses = await DataController.GetAllClassesAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
             NotifyPropertyChanged("AllClasses");
         }
         private bool CanRefresh()

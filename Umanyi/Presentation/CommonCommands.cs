@@ -10,7 +10,7 @@ using UmanyiSMS.Lib.Controllers;
 using UmanyiSMS.Lib.Controls;
 using UmanyiSMS.Lib.Converters;
 using UmanyiSMS.Lib.Presentation;
-using UmanyiSMS.ViewModels;
+using UmanyiSMS.Modules.System.ViewModels;
 
 namespace UmanyiSMS.Presentation
 {

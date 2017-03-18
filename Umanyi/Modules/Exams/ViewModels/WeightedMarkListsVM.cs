@@ -41,9 +41,9 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             classResult = new ExamResultClassDisplayModel();
             exams = new ObservableCollection<ExamWeightModel>();
             IsInClassMode = true;
-            AllClasses = await DataController.GetAllClassesAsync();
-            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
+            AllCombinedClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
 
             PropertyChanged += async (o, e) =>
                 {
@@ -114,7 +114,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     classResult.ExamID = temp.ExamID;
                     classResult.ExamResultID = temp.ExamResultID;
 
-                    ClassModel st = await DataController.GetClassAsync(classResult.ClassID);
+                    ClassModel st = await Institution.Controller.DataController.GetClassAsync(classResult.ClassID);
                     classResult.NameOfClass = st.NameOfClass;
 
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
@@ -149,7 +149,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     classResult.ExamID = temp.ExamID;
                     classResult.ExamResultID = temp.ExamResultID;
 
-                    ClassModel st = await DataController.GetClassAsync(classResult.ClassID);
+                    ClassModel st = await Institution.Controller.DataController.GetClassAsync(classResult.ClassID);
                     classResult.NameOfClass = st.NameOfClass;
 
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
@@ -188,9 +188,9 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     DataTable dt = new DataTable();
                     ObservableCollection<SubjectModel> g;
                     if (isInClassMode)
-                        g = DataController.GetSubjectsRegistredToClassAsync(selectedClass.ClassID).Result;
+                        g = Institution.Controller.DataController.GetInstitutionSubjectsAsync().Result;
                     else
-                        g = DataController.GetSubjectsRegistredToClassAsync(selectedCombinedClass.Entries[0].ClassID).Result;
+                        g = Institution.Controller.DataController.GetInstitutionSubjectsAsync().Result;
 
                     dt.Columns.Add(new DataColumn("Student ID"));
                     dt.Columns.Add(new DataColumn("Name"));

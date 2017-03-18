@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Students.Models;
 
 namespace UmanyiSMS.Modules.Exams.Models
 {
@@ -131,8 +132,8 @@ namespace UmanyiSMS.Modules.Exams.Models
                 foreach (ExamResultSubjectEntryModel current in this.entries)
                 {
                     this.Total += current.Score;
-                    num += DataController.CalculatePoints(DataController.CalculateGrade(DataController.ConvertScoreToOutOf(current.Score, current.OutOf, 100m)));
-                    this.MeanGrade = DataController.CalculateGrade(decimal.Parse((this.Total / this.entries.Count).ToString("N2")));
+                    num += Institution.Controller.DataController.CalculatePoints(Institution.Controller.DataController.CalculateGrade(DataController.ConvertScoreToOutOf(current.Score, current.OutOf, 100m)));
+                    this.MeanGrade = Institution.Controller.DataController.CalculateGrade(decimal.Parse((this.Total / this.entries.Count).ToString("N2")));
                 }
             };
             this.IsActive = true;
@@ -160,7 +161,7 @@ namespace UmanyiSMS.Modules.Exams.Models
                 }
                 else
                 {
-                    StudentModel student = DataController.GetStudent(this.StudentID);
+                    StudentModel student = Students.Controller.DataController.GetStudent(this.StudentID);
                     if (student.StudentID == 0)
                     {
                         base.SetErrors("StudentID", new List<string>

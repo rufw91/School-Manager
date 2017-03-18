@@ -1,5 +1,5 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -32,7 +32,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
         protected async override void InitVars()
         {
             Title = "VIEW FULL FEES STRUCTURE";
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
         }
 
         protected override void CreateCommands()

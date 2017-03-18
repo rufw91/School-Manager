@@ -1,4 +1,4 @@
-﻿using Helper;
+﻿
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;

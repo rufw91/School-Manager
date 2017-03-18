@@ -1,4 +1,4 @@
-﻿using Helper;
+﻿
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -163,7 +163,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
                 "OTHER"
             };
 
-            AllTerms =await  DataController.GetAllTermsAsync();
+            AllTerms =await Institution.Controller.DataController.GetAllTermsAsync();
             currentPayment.PropertyChanged += OnPropertyChanged;
             this.PropertyChanged += OnPropertyChanged;
         }

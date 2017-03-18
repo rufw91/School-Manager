@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UmanyiSMS.Modules.Purchases.Controller;
 
 namespace UmanyiSMS.Modules.Purchases.Models
 {
@@ -7,7 +8,7 @@ namespace UmanyiSMS.Modules.Purchases.Models
     {
         public override bool CheckErrors()
         {
-            ErrorCheckingStatus = UmanyiSMS.Lib.ErrorCheckingStatus.Incomplete;
+            ErrorCheckingStatus = Lib.ErrorCheckingStatus.Incomplete;
             try
             {
                 ClearAllErrors();

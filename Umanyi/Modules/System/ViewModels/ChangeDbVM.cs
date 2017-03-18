@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Controllers;
 using UmanyiSMS.Lib.Presentation;
 
 namespace UmanyiSMS.Modules.System.ViewModels
@@ -21,7 +22,7 @@ namespace UmanyiSMS.Modules.System.ViewModels
         protected async override void InitVars()
         {
             IsBusy = true;
-            SelectedDB= Lib.Properties.Settings.Default.DBName;
+            SelectedDB= Lib.Properties.Settings.Default.Info.DBName;
             string selectString = "SELECT name FROM sys.databases WHERE name NOT IN (N'master',N'tempdb',N'model',N'msdb')";
             await Task.Factory.StartNew(() => { AllDatabases = new ObservableCollection<string>(DataAccessHelper.Helper.CopyFirstColumnToList(selectString)); });
             IsBusy = false;
@@ -34,7 +35,7 @@ namespace UmanyiSMS.Modules.System.ViewModels
                 if (MessageBoxResult.Yes == MessageBox.Show("This action may leave your database inaccessible. Are you sure you would like to proceed?", "Info",
                      MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
-                    Lib.Properties.Settings.Default.DBName = selectedDB;
+                    Lib.Properties.Settings.Default.Info.DBName = selectedDB;
                     Lib.Properties.Settings.Default.Save();
                     App.Restart();
                 }
@@ -45,7 +46,7 @@ namespace UmanyiSMS.Modules.System.ViewModels
                 if (MessageBoxResult.Yes == MessageBox.Show("This action may leave your database inaccessible.. Are you sure you would like to proceed?", "Info",
                      MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
-                    Lib.Properties.Settings.Default.DBName = "UmanyiSMS";
+                    Lib.Properties.Settings.Default.Info.DBName = "UmanyiSMS";
                     Lib.Properties.Settings.Default.Save();
                 }
             }, o => true);

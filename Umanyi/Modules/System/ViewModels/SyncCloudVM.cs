@@ -3,7 +3,7 @@ using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.System.ViewModels
 {
     public class SyncCloudVM: ViewModelBase
     {

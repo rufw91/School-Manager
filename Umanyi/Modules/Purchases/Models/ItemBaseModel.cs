@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using Helper.Models;
+
 using UmanyiSMS.Lib;
 
 namespace UmanyiSMS.Modules.Purchases.Models

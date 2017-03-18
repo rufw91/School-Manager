@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+using UmanyiSMS.Modules.Purchases.Controller;
 
 namespace UmanyiSMS.Modules.Purchases.Models
 {

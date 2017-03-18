@@ -40,7 +40,7 @@ namespace UmanyiSMS.Modules.System.ViewModels
         protected async override void InitVars()
         {
             Source = new HomePageVM();
-            App.AppExamSettings.CopyFrom(await DataController.GetExamSettingsAsync());
+            App.AppExamSettings.CopyFrom(await Institution.Controller.DataController.GetExamSettingsAsync());
         }
 
         protected override void CreateCommands()
@@ -75,7 +75,7 @@ namespace UmanyiSMS.Modules.System.ViewModels
             ExamsEnterResultsPSCommand = new RelayCommand(o => Source = new EnterExamResultsVM(), o => true);
             ExamsEnterResultsPCCommand = new RelayCommand(o => Source = new EnterExamResultsBySubjectVM(), o => true);
             ExamsViewResultsCommand = new RelayCommand(o => Source = new ViewExamResultsVM(), o => true);
-            ExamsReportFormPSCommand = new RelayCommand(o => Source = new StudentTranscriptVM(), o => true);
+            ExamsReportFormPSCommand = new RelayCommand(o => Source = new StudentReportFormVM(), o => true);
             ExamsReportFormPCCommand = new RelayCommand(o => Source = new ClassReportFormsVM(), o => true);
             ExamsMarkListNCommand = new RelayCommand(o => Source = new MarkListsVM(), o => true);
             ExamsMarkListWCommand = new RelayCommand(o => Source = new CombinedMarkListsVM(), o => true);

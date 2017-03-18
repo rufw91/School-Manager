@@ -1,4 +1,4 @@
-﻿using Helper;
+﻿
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
@@ -45,7 +45,7 @@ namespace UmanyiSMS.Modules.Library.ViewModels
         {
             GenerateCommand = new RelayCommand(async o =>
             {
-                var c = DataController.GetClass(await DataController.GetClassIDFromStudentID(selectedStudent.StudentID));
+                var c = Institution.Controller.DataController.GetClass(await Students.Controller.DataController.GetClassIDFromStudentID(selectedStudent.StudentID));
                 UnreturnedBooksModel brm = new UnreturnedBooksModel();
                 brm.StudentID = selectedStudent.StudentID;
                 brm.NameOfStudent = selectedStudent.NameOfStudent;
@@ -57,7 +57,7 @@ namespace UmanyiSMS.Modules.Library.ViewModels
 
             FullPreviewCommand = new RelayCommand(async o =>
             {
-                var c = DataController.GetClass(await DataController.GetClassIDFromStudentID(selectedStudent.StudentID));
+                var c = Institution.Controller.DataController.GetClass(await Students.Controller.DataController.GetClassIDFromStudentID(selectedStudent.StudentID));
                 UnreturnedBooksModel brm = new UnreturnedBooksModel();
                 brm.StudentID = selectedStudent.StudentID;
                 brm.NameOfStudent = selectedStudent.NameOfStudent;

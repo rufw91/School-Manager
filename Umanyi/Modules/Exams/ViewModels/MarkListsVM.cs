@@ -1,5 +1,5 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,12 +42,12 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             ClassResult = new ExamResultClassDisplayModel();
             AllExams = new ObservableCollection<ExamModel>();
             IsInClassMode = true;
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             classResult.PropertyChanged += OnPropertyChanged;
             PropertyChanged += OnPropertyChanged;
-            AllClasses = await DataController.GetAllClassesAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
             NotifyPropertyChanged("AllClasses");
-            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
+            AllCombinedClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
             NotifyPropertyChanged("AllCombinedClasses");
         }
 
@@ -85,7 +85,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     ClassResult.ExamID = temp.ExamID;
                     ClassResult.ExamResultID = temp.ExamResultID;
 
-                    ClassModel st = await DataController.GetClassAsync(classResult.ClassID);
+                    ClassModel st = await Institution.Controller.DataController.GetClassAsync(classResult.ClassID);
                     classResult.NameOfClass = st.NameOfClass;
                     classResult.NameOfExam = selectedExam.NameOfExam;
 
@@ -161,7 +161,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             if (temp.Count == 0)
                 return new DataTable();
             DataTable dt = new DataTable();
-            var g = await DataController.GetSubjectsRegistredToClassAsync(classResult.ClassID);
+            var g = await Institution.Controller.DataController.GetInstitutionSubjectsAsync();
 
             dt.Columns.Add(new DataColumn("Student ID"));
             dt.Columns.Add(new DataColumn("Name"));

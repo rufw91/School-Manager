@@ -1,11 +1,12 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.System.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "SystemAdmin")]
    public class QueryEditorVM: ViewModelBase
@@ -45,19 +46,19 @@ namespace UmanyiSMS.ViewModels
                     int c1 = -1, c2 = -1, c3 = -1;
                     try
                     {
-                        c1=query.IndexOf("SELECT", System.StringComparison.InvariantCultureIgnoreCase);
+                        c1=query.IndexOf("SELECT", StringComparison.InvariantCultureIgnoreCase);
                     }
                     catch { }
 
                     try
                     {
-                        c2 = query.IndexOf("INSERT", System.StringComparison.InvariantCultureIgnoreCase);
+                        c2 = query.IndexOf("INSERT", StringComparison.InvariantCultureIgnoreCase);
                     }
                     catch { }
 
                     try
                     {
-                        c2 = query.IndexOf("UPDATE", System.StringComparison.InvariantCultureIgnoreCase);
+                        c2 = query.IndexOf("UPDATE", StringComparison.InvariantCultureIgnoreCase);
                     }
                     catch { }
 

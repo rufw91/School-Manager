@@ -1,6 +1,4 @@
-﻿using Helper;
-using Helper.Models;
-using Helper.Presentation;
+﻿
 using log4net.Config;
 using Microsoft.Shell;
 using System;
@@ -11,11 +9,15 @@ using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using UmanyiSMS.Lib.Controllers;
+using UmanyiSMS.Lib.Models;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Institution.Models;
 using UmanyiSMS.Views;
 
 namespace UmanyiSMS
 {
-    public partial class App : Application, ISingleInstanceApp, IApp
+    public partial class App : Application, ISingleInstanceApp
     {
         private const string Unique = "UmanyiSMS";
         private static ApplicationModel info;
@@ -110,15 +112,13 @@ namespace UmanyiSMS
                 FileHelper.CheckFiles();
                 examSettings = new ExamSettingsModel();
                 
-                Info = new ApplicationModel(Helper.Properties.Settings.Default.Info);
-                if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.DBName))
-                    Helper.Properties.Settings.Default.DBName = "UmanyiSMS";
-                if (string.IsNullOrWhiteSpace(Helper.Properties.Settings.Default.MostRecentBackup))
-                    Helper.Properties.Settings.Default.MostRecentBackup = "";
+                Info = new ApplicationModel(Lib.Properties.Settings.Default.Info);
+                if (string.IsNullOrWhiteSpace(Lib.Properties.Settings.Default.Info.DBName))
+                    Lib.Properties.Settings.Default.Info.DBName = "UmanyiSMS";
 
-                Helper.Properties.Settings.Default.PropertyChanged += (o, e) =>
+                Lib.Properties.Settings.Default.PropertyChanged += (o, e) =>
                 {
-                    Helper.Properties.Settings.Default.Save();
+                    Lib.Properties.Settings.Default.Save();
                 };
 
             }
@@ -136,10 +136,10 @@ namespace UmanyiSMS
             Log.I("Init Vars", this);
 
            
-            if (Helper.Properties.Settings.Default.Info == null)
+            if (Lib.Properties.Settings.Default.Info == null)
             {
-                Helper.Properties.Settings.Default.Info = GetDefaultInfo();
-                Helper.Properties.Settings.Default.Save();
+                Lib.Properties.Settings.Default.Info = GetDefaultInfo();
+                Lib.Properties.Settings.Default.Save();
             }
 
             InitGlobalVar();

@@ -1,5 +1,5 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -66,8 +66,8 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
             IsInStudentMode = true;
             selectedCombinedClass = new CombinedClassModel();
             selectedStudent = new StudentSelectModel();
-            AllTerms = await DataController.GetAllTermsAsync();
-            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
+            AllCombinedClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
             selectedStudent.PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName == "StudentID" )
@@ -111,7 +111,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
             {
                 FeesStructureModel fs;
                 if (isInStudentMode)
-                    fs = await DataController.GetFeesStructureAsync(await DataController.GetClassIDFromStudentID(selectedStudent.StudentID), selectedTerm.StartDate.AddDays(1));
+                    fs = await DataController.GetFeesStructureAsync(await Students.Controller.DataController.GetClassIDFromStudentID(selectedStudent.StudentID), selectedTerm.StartDate.AddDays(1));
                 else
                     fs = fs = await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.StartDate.AddDays(1));
                 currentFeesStructure.Entries.Clear();

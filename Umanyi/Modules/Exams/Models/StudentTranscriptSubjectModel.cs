@@ -1,4 +1,5 @@
 ﻿using System;
+using UmanyiSMS.Modules.Institution.Controller;
 
 namespace UmanyiSMS.Modules.Exams.Models
 {

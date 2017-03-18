@@ -1,7 +1,10 @@
-﻿using Helper;
-using Helper.Controls;
-using UmanyiSMS.ViewModels;
+﻿
+
+
 using System;
+using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Modules.System.Models;
+using UmanyiSMS.Modules.System.ViewModels;
 
 namespace UmanyiSMS.Views
 {
@@ -10,9 +13,9 @@ namespace UmanyiSMS.Views
     /// </summary>
     public partial class StartupRepair : CustomWindow
     {
-        private StartUp startUp;
+        private StartUpModel startUp;
 
-        public StartupRepair(StartUp startUp)
+        public StartupRepair(StartUpModel startUp)
         {
             this.startUp = startUp;
             InitializeComponent();

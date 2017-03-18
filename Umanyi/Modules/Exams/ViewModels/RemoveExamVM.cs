@@ -53,8 +53,8 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         {
             Title = "REMOVE EXAM";
             AllExams = new ObservableImmutableList<ExamModel>();
-            AllClasses = await DataController.GetAllClassesAsync();
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             NotifyPropertyChanged("AllClasses");
             PropertyChanged += async (o, e) =>
                 {
@@ -80,7 +80,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                 {
                     if (MessageBoxResult.Yes == MessageBox.Show("Are you ABSOLUTELY sure you would like to delete this exam? This will delete the results for all students who took the exam.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Information))
                     {
-                        bool succ = await DataController.RemoveExam(selectedExamID);
+                        bool succ = await DataController.RemoveExamAsync(selectedExamID);
                         MessageBox.Show(succ ? "Successfully completed operation" : "Operation failed!", succ ? "Success" : "Error", MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Error);
                         if (succ)
                             Reset();

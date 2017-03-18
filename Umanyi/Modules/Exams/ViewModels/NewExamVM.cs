@@ -1,5 +1,5 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
@@ -51,7 +51,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             Title = "NEW EXAM";
             SelectedCombinedClass =null;
             NewExam = new ExamModel();
-            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
+            AllCombinedClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
             PropertyChanged +=async (o, e) =>
                 {
                     if (e.PropertyName=="SelectedCombinedClass")
@@ -103,7 +103,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             if (newExam.Classes.Count== 0)
                 return;
             var temp =
-                await DataController.GetSubjectsRegistredToCombinedClassAsync(selectedCombinedClass);
+                await Institution.Controller.DataController.GetInstitutionSubjectsAsync();
             foreach (SubjectModel sm in temp)
                 newExam.Entries.Add(new ExamSubjectEntryModel(sm));
         }
@@ -137,7 +137,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         {
             SelectedCombinedClass = null;
             NewExam = new ExamModel();
-            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
+            AllCombinedClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
         }
     }
 }

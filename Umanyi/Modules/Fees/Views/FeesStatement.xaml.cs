@@ -1,7 +1,10 @@
-﻿using Helper.Controls;
-using UmanyiSMS.ViewModels;
+﻿
+
 using System.Windows;
 using System.Windows.Controls;
+using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Modules.Fees.ViewModels;
+
 namespace UmanyiSMS.Views
 {
     public partial class FeesStatement : UserControl

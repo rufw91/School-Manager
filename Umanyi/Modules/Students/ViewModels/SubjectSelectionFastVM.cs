@@ -36,7 +36,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
             Year = DateTime.Now.Year;
              Entries = new DataTable();
             
-            AllClasses = await DataController.GetAllClassesAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
             PropertyChanged += async (o, e) =>
                 {
                    
@@ -45,7 +45,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
                         if (selectedClassID==0)
                         return;
                         IsBusy = true;
-                        var f = await DataController.GetSubjectsRegistredToClassAsync(selectedClassID);
+                        var f = await Institution.Controller.DataController.GetInstitutionSubjectsAsync();
                         DataTable rf = new DataTable();
 
                         rf.Columns.Add(new DataColumn("ADM NO", typeof(int)) { ReadOnly = true });

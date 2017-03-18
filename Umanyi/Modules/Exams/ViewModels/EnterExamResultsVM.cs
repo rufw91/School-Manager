@@ -1,17 +1,15 @@
-﻿using Helper;
-using Helper.Models;
-using System;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Exams.Controller;
 using UmanyiSMS.Modules.Exams.Models;
 using UmanyiSMS.Modules.Institution.Models;
-using UmanyiSMS.Modules.Exams.Controller;
-using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Students.Models;
 
 namespace UmanyiSMS.Modules.Exams.ViewModels
 {
@@ -36,7 +34,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             StudentSubjectSelection = new ObservableCollection<StudentSubjectSelectionEntryModel>();
             NewResult = new ExamResultStudentModel();
             AllExams = new ObservableCollection<ExamModel>();
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             newResult.PropertyChanged += async (o, e) =>
             {
                 if (e.PropertyName == "StudentID")
@@ -45,9 +43,9 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     newResult.CheckErrors();
                     if ((newResult.StudentID != 0)&&(!newResult.HasErrors)&&selectedTerm!=null)
                     {
-                        var s = await DataController.GetClassIDFromStudentID(newResult.StudentID);
+                        var s = await Students.Controller.DataController.GetClassIDFromStudentID(newResult.StudentID);
                         AllExams = await DataController.GetExamsByClass(s,selectedTerm);
-                        StudentSubjectSelection = (await DataController.GetStudentSubjectSelection(newResult.StudentID)).Entries;
+                        StudentSubjectSelection = (await Students.Controller.DataController.GetStudentSubjectSelection(newResult.StudentID)).Entries;
                     }
                 }
 
@@ -63,9 +61,9 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                         newResult.CheckErrors();
                         if ((newResult.StudentID != 0) && (!newResult.HasErrors) && selectedTerm != null)
                         {
-                            var s = await DataController.GetClassIDFromStudentID(newResult.StudentID);
+                            var s = await Students.Controller.DataController.GetClassIDFromStudentID(newResult.StudentID);
                             AllExams = await DataController.GetExamsByClass(s, selectedTerm);
-                            StudentSubjectSelection = (await DataController.GetStudentSubjectSelection(newResult.StudentID)).Entries;
+                            StudentSubjectSelection = (await Students.Controller.DataController.GetStudentSubjectSelection(newResult.StudentID)).Entries;
                         }
                     }
                     if (e.PropertyName == "SelectedExam")

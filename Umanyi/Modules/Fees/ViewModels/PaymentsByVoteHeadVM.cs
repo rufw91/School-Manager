@@ -38,8 +38,8 @@ private  ObservableCollection<TermModel> allTerms;
         {
             Title = "PAYMENTS BY VOTE HEAD";
             allVoteHeads = new ObservableCollection<VoteHeadModel>();
-            AllClasses = await DataController.GetAllClassesAsync();
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
         }
 
         protected override void CreateCommands()

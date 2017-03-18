@@ -1,10 +1,12 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using UmanyiSMS.Modules.Staff.Models;
+
 namespace UmanyiSMS.Views
 {
     

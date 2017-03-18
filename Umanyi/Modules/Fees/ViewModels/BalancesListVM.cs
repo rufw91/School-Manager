@@ -1,4 +1,4 @@
-﻿using Helper;
+﻿
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Permissions;
@@ -26,7 +26,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
         protected override async void InitVars()
         {
             Title = "BALANCES LIST";
-            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
+            AllCombinedClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
         }
 
         protected override void CreateCommands()

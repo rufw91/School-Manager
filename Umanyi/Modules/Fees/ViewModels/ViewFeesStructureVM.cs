@@ -26,8 +26,8 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
         {
             Title = "VIEW FEES STRUCTURE";
             currentStruct = new FeesStructureModel();
-            allCombinedClasses = await DataController.GetAllCombinedClassesAsync();
-            AllTerms = await DataController.GetAllTermsAsync();
+            allCombinedClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             NotifyPropertyChanged("AllCombinedClasses");
             PropertyChanged += async (o, e) =>
                 {

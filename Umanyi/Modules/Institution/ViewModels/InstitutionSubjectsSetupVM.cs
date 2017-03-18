@@ -24,7 +24,7 @@ namespace UmanyiSMS.Modules.Institution.ViewModels
         {
             Title = "INSTITUTION SUBJECTS SETUP";
             selectedSubjects = new ObservableCollection<SubjectModel>();
-            selectedSubjects = await DataController.GetSubjectsRegistredToInstitutionAsync();
+            selectedSubjects = await DataController.GetInstitutionSubjectsAsync();
             startCount = selectedSubjects.Count;
                 
             NotifyPropertyChanged("SelectedSubjects");
@@ -52,7 +52,7 @@ namespace UmanyiSMS.Modules.Institution.ViewModels
                 bool succ = await DataController.SaveNewInstitutionSubjectSetup(selectedSubjects);
                 MessageBox.Show(succ ? "Successfully updated details." : "Could not details at this time", "Information", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
-                selectedSubjects = await DataController.GetSubjectsRegistredToInstitutionAsync();
+                selectedSubjects = await DataController.GetInstitutionSubjectsAsync();
                 startCount = selectedSubjects.Count;
                 NotifyPropertyChanged("SelectedSubjects");
                 IsBusy = false;

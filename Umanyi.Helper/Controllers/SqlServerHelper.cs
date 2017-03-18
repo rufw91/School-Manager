@@ -556,19 +556,19 @@ namespace UmanyiSMS.Lib.Controllers
                 try
                 {
                     string commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n";
-                    commandText += "DELETE FROM [Institution].[ClassSetupDetail] WHERE ClassSetupID IN (SELECT ClassSetupID FROM [Institution].[ClassSetupHeader] WHERE IsActive=0)\r\n"+
-                        "DELETE FROM [Institution].[ClassSetupHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [Institution].[ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM [Institution].[ExamResultHeader] WHERE IsActive=0)\r\n" +
-                        "DELETE FROM [Institution].[ExamResultHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [Institution].[FeesStructureDetail] WHERE FeesStructureID IN (SELECT FeesStructureID FROM [Institution].[FeesStructureHeader] WHERE IsActive=0)\r\n" +
-                        "DELETE FROM [Institution].[FeesStructureHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [Institution].[StudentSubjectSelectionDetail] WHERE StudentSubjectSelectionID IN (SELECT StudentSubjectSelectionID FROM [Institution].[StudentSubjectSelectionHeader] WHERE IsActive=0)\r\n" +
-                        "DELETE FROM [Institution].[StudentSubjectSelectionHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [Institution].[SubjectSetupDetail] WHERE SubjectSetupID IN (SELECT SubjectSetupID FROM [Institution].[SubjectSetupHeader] WHERE IsActive=0)\r\n" +
-                        "DELETE FROM [Institution].[SubjectSetupHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [Institution].[TimeTableDetail] WHERE TimeTableID IN (SELECT TimeTableID FROM [Institution].[TimeTableHeader] WHERE IsActive=0)\r\n" +
-                        "DELETE FROM [Institution].[TimeTableHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [Institution].[TimeTableSettings] WHERE IsActive=0\r\n";
+                    commandText += "DELETE FROM [ClassSetupDetail] WHERE ClassSetupID IN (SELECT ClassSetupID FROM [ClassSetupHeader] WHERE IsActive=0)\r\n"+
+                        "DELETE FROM [ClassSetupHeader] WHERE IsActive=0\r\n"+
+                        "DELETE FROM [ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM [ExamResultHeader] WHERE IsActive=0)\r\n" +
+                        "DELETE FROM [ExamResultHeader] WHERE IsActive=0\r\n"+
+                        "DELETE FROM [FeesStructureDetail] WHERE FeesStructureID IN (SELECT FeesStructureID FROM [FeesStructureHeader] WHERE IsActive=0)\r\n" +
+                        "DELETE FROM [FeesStructureHeader] WHERE IsActive=0\r\n"+
+                        "DELETE FROM [StudentSubjectSelectionDetail] WHERE StudentSubjectSelectionID IN (SELECT StudentSubjectSelectionID FROM [StudentSubjectSelectionHeader] WHERE IsActive=0)\r\n" +
+                        "DELETE FROM [StudentSubjectSelectionHeader] WHERE IsActive=0\r\n"+
+                        "DELETE FROM [SubjectSetupDetail] WHERE SubjectSetupID IN (SELECT SubjectSetupID FROM [SubjectSetupHeader] WHERE IsActive=0)\r\n" +
+                        "DELETE FROM [SubjectSetupHeader] WHERE IsActive=0\r\n"+
+                        "DELETE FROM [TimeTableDetail] WHERE TimeTableID IN (SELECT TimeTableID FROM [TimeTableHeader] WHERE IsActive=0)\r\n" +
+                        "DELETE FROM [TimeTableHeader] WHERE IsActive=0\r\n"+
+                        "DELETE FROM [TimeTableSettings] WHERE IsActive=0\r\n";
                     bool succ = false;
 
                     int y = 0;

@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Purchases.Controller;
 
 namespace UmanyiSMS.Modules.Purchases.Models
 {

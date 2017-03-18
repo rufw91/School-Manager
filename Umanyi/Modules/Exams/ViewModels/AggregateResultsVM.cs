@@ -1,5 +1,5 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
@@ -39,9 +39,9 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             Title = "EXAM SUBJECT PERFOMANCE";            
             AllExams = new ObservableCollection<ExamModel>();
             IsInClassMode = true;
-            AllClasses = await DataController.GetAllClassesAsync();
-            AllTerms = await DataController.GetAllTermsAsync();
-            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
+            AllCombinedClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
             PropertyChanged += async (o, e) =>
             {
                 if (isInClassMode)
