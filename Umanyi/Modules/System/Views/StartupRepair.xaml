@@ -1,9 +1,9 @@
 ﻿<Controls:CustomWindow Style="{StaticResource {x:Type Controls:CustomWindow}}"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helper="clr-namespace:UmanyiSMS;assembly=Helper"
-        xmlns:converters="clr-namespace:Helper.Converters;assembly=Helper"
-        xmlns:Controls="clr-namespace:Helper.Controls;assembly=Helper" x:Class="UmanyiSMS.Views.StartupRepair"
+        xmlns:helper="clr-namespace:UmanyiSMS;assembly=UmanyiSMS.Lib"
+        xmlns:converters="clr-namespace:UmanyiSMS.Lib.Converters;assembly=UmanyiSMS.Lib"
+        xmlns:Controls="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib" x:Class="UmanyiSMS.Views.StartupRepair"
         Title="Startup Repair" Height="560" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
                        >
     <Window.Resources>

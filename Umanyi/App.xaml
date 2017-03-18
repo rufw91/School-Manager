@@ -8,11 +8,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/UmanyiSMS.Helper;component/Converters/Converters.xaml" />
-                <ResourceDictionary Source="/UmanyiSMS.Helper;component/Themes/Generic.xaml" />
-                <ResourceDictionary Source="ViewModelsDataTemplates.xaml" />
-                <ResourceDictionary Source="ModelsDataTemplates.xaml" />
-                <ResourceDictionary Source="DropDown.xaml" />
+                <ResourceDictionary Source="/UmanyiSMS.Lib;component/Converters/Converters.xaml" />
+                <ResourceDictionary Source="/UmanyiSMS.Lib;component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

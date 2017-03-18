@@ -1,11 +1,9 @@
-﻿using Helper.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using UmanyiSMS.Lib.Controllers;
@@ -13,90 +11,78 @@ using UmanyiSMS.Modules.Exams.Models;
 
 namespace UmanyiSMS.Modules.Exams.Controller
 {
-    public class DocumentHelper:DocumentHelperBase
+    public class DocumentHelper : DocumentHelperBase
     {
         private DocumentHelper(object workObject)
-        {
-            if (workObject == null)
-                throw new ArgumentNullException("workObject", "workObject cannot be null.");
-            InitVars(myWorkObject);
-            AddPagesToDocument(noOfPages,ResourceString);
-            AddDataToDocument();
+            :base(workObject)
+        {            
         }
 
         public static FixedDocument GenerateDocument(object workObject)
         {
             new DocumentHelper(workObject);
-            return doc;
+            return Document;
         }
 
-        private void InitVars(object workObject)
+        protected override void AddDataToDocument()
         {
-            myWorkObject = workObject;
-            noOfPages = GetNoOfPages(workObject);
-            ResourceString = GetResString(workObject);
-            doc = new FixedDocument();
-        }
-        
-        protected void AddDataToDocument()
-        {
-            if (myWorkObject is StudentTranscriptModel)
+            if (MyWorkObject is StudentTranscriptModel)
                 GenerateTranscript();
-            if (myWorkObject is StudentTranscriptModel2)
+            if (MyWorkObject is StudentTranscriptModel2)
                 GenerateTranscript3();
             //if (workObject is ReportFormModel)
-                //return 1;
-            if (myWorkObject is ClassReportFormModel)
+            //return 1;
+            if (MyWorkObject is ClassReportFormModel)
                 GenerateClassTranscripts();
-            if (myWorkObject is ClassTranscriptsModel2)
+            if (MyWorkObject is ClassTranscriptsModel2)
                 GenerateClassTranscripts();
-            if (myWorkObject is ClassTranscriptsModel)
+            if (MyWorkObject is ClassTranscriptsModel)
                 GenerateClassTranscripts();
-            if (myWorkObject is ClassStudentsExamResultModel)
+            if (MyWorkObject is ClassStudentsExamResultModel)
                 GenerateClassExamResults();
-            if (myWorkObject is ClassExamResultModel)
+            if (MyWorkObject is ClassExamResultModel)
                 GenerateClassMarkList();
 
-            
-                
-             throw new ArgumentException();
-            
+            throw new ArgumentException();
+
         }
 
-        protected string GetResString(object docType)
+        protected override string GetResString()
         {
-            string resString = "";
-            switch (docType)
-            {
-                case DocType.Transcript: resString = Helper.Properties.Resources.Transcript; break;
-                case DocType.Transcript2: resString = Helper.Properties.Resources.Transcript2; break;
-                case DocType.Transcript3: resString = Helper.Properties.Resources.Transcript4; break;
-                case DocType.ClassTranscripts: resString = Helper.Properties.Resources.Transcript2; break;
-                case DocType.ClassTranscripts2: resString = Helper.Properties.Resources.Transcript4; break;
-                case DocType.ClassExamResults: resString = Helper.Properties.Resources.Transcript; break;
-                case DocType.ClassMarkList: resString = Helper.Properties.Resources.ClassMarkList; break;
-                case DocType.AggregateResult: resString = Helper.Properties.Resources.AggregateResult; break;
-                default: throw new ArgumentException();
-            }
-            return resString;
+            if (MyWorkObject is StudentTranscriptModel)
+                return GetResourceString(null);
+            if (MyWorkObject is StudentTranscriptModel2)
+                return GetResourceString(null);
+            if (MyWorkObject is ReportFormModel)
+                return GetResourceString(null);
+            if (MyWorkObject is ClassReportFormModel)
+                return GetResourceString(null);
+            if (MyWorkObject is ClassTranscriptsModel2)
+                return GetResourceString(null);
+            if (MyWorkObject is ClassTranscriptsModel)
+                return GetResourceString(null);
+            if (MyWorkObject is ClassStudentsExamResultModel)
+                return GetResourceString(null);
+
+            return "";
         }
-        
-        private static int GetNoOfPages(object workObject)
+
+        protected override int GetNoOfPages()
         {
-            if (workObject is StudentTranscriptModel)
+            if (MyWorkObject is StudentTranscriptModel)
                 return 1;
-            if (workObject is StudentTranscriptModel2)
+            if (MyWorkObject is StudentTranscriptModel2)
                 return 1;
-            if (workObject is ReportFormModel)
+            if (MyWorkObject is ReportFormModel)
                 return 1;
-            if (workObject is ClassReportFormModel)
-                return (workObject as ClassReportFormModel).Count;
-            if (workObject is ClassTranscriptsModel2)
-                return (workObject as ClassTranscriptsModel2).Entries.Count;
-            if (workObject is ClassTranscriptsModel)
-                return (workObject as ClassTranscriptsModel).Entries.Count;
-            if (workObject is ClassStudentsExamResultModel)
-                return (workObject as ClassStudentsExamResultModel).Entries.Count;
+            if (MyWorkObject is ClassReportFormModel)
+                return (MyWorkObject as ClassReportFormModel).Count;
+            if (MyWorkObject is ClassTranscriptsModel2)
+                return (MyWorkObject as ClassTranscriptsModel2).Entries.Count;
+            if (MyWorkObject is ClassTranscriptsModel)
+                return (MyWorkObject as ClassTranscriptsModel).Entries.Count;
+            if (MyWorkObject is ClassStudentsExamResultModel)
+                return (MyWorkObject as ClassStudentsExamResultModel).Entries.Count;
 
             return 0;
         }
@@ -131,7 +117,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         private void AddAGEntry(AggregateResultEntryModel item, int itemIndex, int pageNo)
         {
             double fontsize = 14;
-            int pageRelativeIndex = itemIndex - itemsPerPage * pageNo;
+            int pageRelativeIndex = itemIndex - ItemsPerPage * pageNo;
             double yPos = 355 + pageRelativeIndex * 25;
 
             AddText(item.NameOfSubject, "Arial", 14, false, 0, Colors.Black, 45, yPos, pageNo);
@@ -142,8 +128,8 @@ namespace UmanyiSMS.Modules.Exams.Controller
         private void AddAGEntries(ObservableCollection<AggregateResultEntryModel> psi, int pageNo)
         {
 
-            int startIndex = pageNo * itemsPerPage;
-            int endIndex = startIndex + itemsPerPage - 1;
+            int startIndex = pageNo * ItemsPerPage;
+            int endIndex = startIndex + ItemsPerPage - 1;
             if (startIndex >= psi.Count)
                 return;
             if (endIndex >= psi.Count)
@@ -155,10 +141,10 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         private void GenerateAggregateResult()
         {
-            AggregateResultModel si = myWorkObject as AggregateResultModel;
+            AggregateResultModel si = MyWorkObject as AggregateResultModel;
 
             int pageNo;
-            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
                 AddAGClass(si.NameOfClass, pageNo);
                 AddAGDate(DateTime.Now, pageNo);
@@ -197,7 +183,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         }
         private void AddCMLStudent(DataRow item, int itemIndex, int pageNo)
         {
-            int pageRelativeIndex = itemIndex - itemsPerPage * pageNo;
+            int pageRelativeIndex = itemIndex - ItemsPerPage * pageNo;
             double yPos = 140 + pageRelativeIndex * 26;
             double xPos = 255;
             double count = 0;
@@ -215,8 +201,8 @@ namespace UmanyiSMS.Modules.Exams.Controller
         }
         private void AddCMLStudents(DataTable psi, int pageNo)
         {
-            int startIndex = pageNo * itemsPerPage;
-            int endIndex = startIndex + itemsPerPage - 1;
+            int startIndex = pageNo * ItemsPerPage;
+            int endIndex = startIndex + ItemsPerPage - 1;
             if (startIndex >= psi.Rows.Count)
                 return;
             if (endIndex >= psi.Rows.Count)
@@ -228,10 +214,10 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         private void GenerateClassMarkList()
         {
-            ClassExamResultModel si = myWorkObject as ClassExamResultModel;
+            ClassExamResultModel si = MyWorkObject as ClassExamResultModel;
 
             int pageNo;
-            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
                 AddCMLExam(si.NameOfExam, pageNo);
                 AddCMLClass(si.NameOfClass, pageNo);
@@ -244,10 +230,10 @@ namespace UmanyiSMS.Modules.Exams.Controller
         #region ClassExamResults
         private void GenerateClassExamResults()
         {
-            ClassStudentsExamResultModel si = myWorkObject as ClassStudentsExamResultModel;
+            ClassStudentsExamResultModel si = MyWorkObject as ClassStudentsExamResultModel;
 
             int pageNo;
-            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
                 AddTRStudentID(si.Entries[pageNo].StudentID, pageNo);
                 AddTRName(si.Entries[pageNo].NameOfStudent, pageNo);
@@ -265,10 +251,10 @@ namespace UmanyiSMS.Modules.Exams.Controller
         #region ClassTranscripts
         private void GenerateClassTranscripts()
         {
-            ClassTranscriptsModel si = myWorkObject as ClassTranscriptsModel;
+            ClassTranscriptsModel si = MyWorkObject as ClassTranscriptsModel;
 
             int pageNo;
-            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
                 si.Entries[pageNo].Entries = new ObservableCollection<StudentExamResultEntryModel>(si.Entries[pageNo].Entries.OrderBy(o => o.Code));
                 AddTR2StudentID(si.Entries[pageNo].StudentID, pageNo);
@@ -290,11 +276,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AddTR2Closing(si.Entries[pageNo].ClosingDay, pageNo);
                 AddTR2ClustPoints(si.Entries[pageNo].Points, pageNo);
                 AddTR2ClassTRComments(si.Entries[pageNo].ClassTeacherComments, pageNo);
-                TR2DrawGraph(DataController.CalculateGrade(decimal.Ceiling(Convert.ToDecimal(si.Entries[pageNo].KCPEScore) / 5m)),
-                   si.Entries[pageNo].CAT1Grade,
-                   si.Entries[pageNo].CAT2Grade,
-                   si.Entries[pageNo].ExamGrade,
-                   pageNo);
+
             }
         }
         #endregion
@@ -302,9 +284,9 @@ namespace UmanyiSMS.Modules.Exams.Controller
         #region ClassTranscripts2
         private void GenerateClassTranscripts2()
         {
-            ClassTranscriptsModel2 si = myWorkObject as ClassTranscriptsModel2;
+            ClassTranscriptsModel2 si = MyWorkObject as ClassTranscriptsModel2;
             int pageNo;
-            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
                 si.Entries[pageNo].Entries = new ObservableCollection<StudentExamResultEntryModel>(si.Entries[pageNo].Entries.OrderBy(o => o.Code));
                 AddTR3StudentID(si.Entries[pageNo].StudentID, pageNo);
@@ -419,9 +401,9 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         private void GenerateTranscript()
         {
-            StudentExamResultModel si = myWorkObject as StudentExamResultModel;
+            StudentExamResultModel si = MyWorkObject as StudentExamResultModel;
             int pageNo;
-            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
                 AddTRStudentID(si.StudentID, pageNo);
                 AddTRName(si.NameOfStudent, pageNo);
@@ -598,7 +580,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             bd4.Background = new SolidColorBrush(Colors.Gray);
             bd4.Margin = new Thickness(428, 0, 0, 271);
 
-            Grid g = doc.Pages[pageNo].Child.Children[0] as Grid;
+            Grid g = Document.Pages[pageNo].Child.Children[0] as Grid;
             g.Children.Add(bd1);
             g.Children.Add(bd2);
             g.Children.Add(bd3);
@@ -607,10 +589,10 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         private void GenerateTranscript2()
         {
-            StudentTranscriptModel si = myWorkObject as StudentTranscriptModel;
+            StudentTranscriptModel si = MyWorkObject as StudentTranscriptModel;
 
             int pageNo;
-            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
                 si.Entries = new ObservableCollection<StudentExamResultEntryModel>(si.Entries.OrderBy(o => o.Code));
                 AddTR2StudentID(si.StudentID, pageNo);
@@ -633,11 +615,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AddTR2ClustPoints(si.Points, pageNo);
                 AddTR2ClassTRComments(si.ClassTeacherComments, pageNo);
                 AddTR2Image(si.SPhoto, pageNo);
-                TR2DrawGraph(DataController.CalculateGrade(decimal.Ceiling(Convert.ToDecimal(si.KCPEScore) / 5m)),
-                    si.CAT1Grade,
-                    si.CAT2Grade,
-                    si.ExamGrade,
-                    pageNo);
+
                 var t = si.CAT1Grade;
             }
         }
@@ -834,10 +812,10 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         private void GenerateTranscript3()
         {
-            StudentTranscriptModel2 si = myWorkObject as StudentTranscriptModel2;
+            StudentTranscriptModel2 si = MyWorkObject as StudentTranscriptModel2;
 
             int pageNo;
-            for (pageNo = 0; pageNo < noOfPages; pageNo++)
+            for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
                 si.Entries = new ObservableCollection<StudentExamResultEntryModel>(si.Entries.OrderBy(o => o.Code));
                 AddTR3StudentID(si.StudentID, pageNo);

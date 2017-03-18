@@ -1,6 +1,6 @@
 ﻿<FixedPage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-           xmlns:converters="clr-namespace:UmanyiSMS.Lib.Converters;assembly=Helper"
+           xmlns:converters="clr-namespace:UmanyiSMS.Lib.Converters;assembly=UmanyiSMS.Lib"
            Width="793.76" Height="1122.56">
     <FixedPage.Resources>
         <converters:ToUpperConverter x:Key="ToUpperConverter" />

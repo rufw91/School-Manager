@@ -2,7 +2,7 @@
                      x:Class="UmanyiSMS.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helper="clr-namespace:Helper.Controls;assembly=Helper"
+        xmlns:helper="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
                      Width="1024" Height="726"
         Title="Umanyi School Management System" WindowStartupLocation="CenterScreen" 
         MinWidth="1024" MinHeight="726" Closed="CustomWindow_Closed">

@@ -1,7 +1,7 @@
 ﻿<helper:CustomWindow x:Class="UmanyiSMS.Views.Activation" Style="{StaticResource {x:Type helper:CustomWindow}}" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helper="clr-namespace:Helper.Controls;assembly=Helper"
+        xmlns:helper="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
         Title="Activation" Height="500" Width="650" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
     <Grid>
         <Border Background="{DynamicResource Accent}" Height="120"  VerticalAlignment="Top"/>

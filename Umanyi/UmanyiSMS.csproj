@@ -172,11 +172,15 @@
     </Page>
     <Compile Include="Modules\Exams\Controller\DataController.cs" />
     <Compile Include="Modules\Fees\Controller\DataController.cs" />
+    <Compile Include="Modules\Fees\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Institution\Controller\DataController.cs" />
     <Compile Include="Modules\Library\Controller\DataController.cs" />
+    <Compile Include="Modules\Library\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Purchases\Controller\DataController.cs" />
+    <Compile Include="Modules\Purchases\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Staff\Controller\DataController.cs" />
     <Compile Include="Modules\Students\Controller\DataController.cs" />
+    <Compile Include="Modules\Students\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\System\Controller\DataController.cs" />
     <Compile Include="Presentation\CommonCommands.cs" />
     <Compile Include="Modules\Exams\Controller\DocumentHelper.cs" />
@@ -211,10 +215,6 @@
     <Compile Include="Modules\Exams\Models\SyncExamResultModel.cs" />
     <Compile Include="Modules\Exams\Models\SyncTranscriptEntryModel.cs" />
     <Compile Include="Modules\Exams\Models\SyncTranscriptModel.cs" />
-    <Compile Include="Modules\Fees\Controller\DocumentHelper.FullFeesStructure.cs" />
-    <Compile Include="Modules\Fees\Controller\DocumentHelper.Receipt.cs" />
-    <Compile Include="Modules\Fees\Controller\DocumentHelper.Receipt2.cs" />
-    <Compile Include="Modules\Fees\Controller\DocumentHelper.Statement.cs" />
     <Compile Include="Modules\Fees\Models\ClassBalancesListModel.cs" />
     <Compile Include="Modules\Fees\Models\FeePaymentModel.cs" />
     <Compile Include="Modules\Fees\Models\FeePaymentReceipt2Model.cs" />
@@ -239,8 +239,6 @@
     <Compile Include="Modules\Institution\Models\SubjectBaseModel.cs" />
     <Compile Include="Modules\Institution\Models\SubjectModel.cs" />
     <Compile Include="Modules\Institution\Models\TermModel.cs" />
-    <Compile Include="Modules\Library\Controller\DocumentHelper.AllUnreturnedBooks.cs" />
-    <Compile Include="Modules\Library\Controller\DocumentHelper.UnretunedBooks.cs" />
     <Compile Include="Modules\Library\Models\AllUnreturnedBooksModel.cs" />
     <Compile Include="Modules\Library\Models\BookIssueModel.cs" />
     <Compile Include="Modules\Library\Models\BookModel.cs" />
@@ -248,9 +246,6 @@
     <Compile Include="Modules\Library\Models\BookSelectModel.cs" />
     <Compile Include="Modules\Library\Models\UnreturnedBookModel.cs" />
     <Compile Include="Modules\Library\Models\UnreturnedBooksModel.cs" />
-    <Compile Include="Modules\Purchases\Controller\DocumentHelper.SupplierPayment.cs" />
-    <Compile Include="Modules\Purchases\Controller\DocumentHelper.SupplierStatement.cs" />
-    <Compile Include="Modules\Purchases\Controller\DocumentHelper.Voucher.cs" />
     <Compile Include="Modules\Purchases\Models\ItemBaseModel.cs" />
     <Compile Include="Modules\Purchases\Models\ItemCategoryModel.cs" />
     <Compile Include="Modules\Purchases\Models\ItemFindModel.cs" />
@@ -275,10 +270,6 @@
     <Compile Include="Modules\Staff\Models\StaffBaseModel.cs" />
     <Compile Include="Modules\Staff\Models\StaffModel.cs" />
     <Compile Include="Modules\Staff\Models\StaffSelectModel.cs" />
-    <Compile Include="Modules\Students\Controller\DocumentHelper.ClassBalances.cs" />
-    <Compile Include="Modules\Students\Controller\DocumentHelper.ClassLeavingCertificates.cs" />
-    <Compile Include="Modules\Students\Controller\DocumentHelper.ClassList.cs" />
-    <Compile Include="Modules\Students\Controller\DocumentHelper.LeavingCertificate.cs" />
     <Compile Include="Modules\Students\Models\ClassStudentListModel.cs" />
     <Compile Include="Modules\Students\Models\DisciplineModel.cs" />
     <Compile Include="Modules\Students\Models\LeavingCertificateModel.cs" />
@@ -733,10 +724,6 @@
     <Page Include="Modules\Students\Resources\LeavingCert.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ViewModelsDataTemplates.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\System\Views\About.xaml">
       <Generator>MSBuild:Compile</Generator>
