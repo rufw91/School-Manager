@@ -127,6 +127,7 @@
     <Compile Include="Controllers\Enums.cs" />
     <Compile Include="Controllers\ExcelHelper.cs" />
     <Compile Include="Controls\CustomWindow.cs" />
+    <Compile Include="Controls\DropDownButton.cs" />
     <Compile Include="Controls\ProgressRing.cs" />
     <Compile Include="Controls\ProgressText.cs" />
     <Compile Include="Controls\SyncIcon.cs" />
@@ -208,7 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
@@ -249,7 +250,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\DropDown.xaml">
+    <Page Include="Styles\DropDownButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UmanyiSMS.Modules.Library.Controller;
 
 namespace UmanyiSMS.Modules.Library.Models
 {
     public class BookSelectModel: BookModel
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        
         public BookSelectModel()
         {
             CheckErrors();

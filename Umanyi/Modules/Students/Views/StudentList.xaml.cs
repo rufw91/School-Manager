@@ -1,9 +1,11 @@
 ﻿
-using Helper.Models;
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using UmanyiSMS.Modules.Students.Models;
+
 namespace UmanyiSMS.Views
 {
     public partial class StudentList : UserControl

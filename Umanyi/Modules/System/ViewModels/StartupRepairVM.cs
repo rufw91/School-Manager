@@ -11,7 +11,7 @@ namespace UmanyiSMS.Modules.System.ViewModels
 {
     public class StartupRepairVM: ViewModelBase
     {
-        StartUp start;
+        StartUpModel start;
         TaskStates creatingBackup;
         TaskStates repairingInstallation;
         TaskStates repairingInstance;
@@ -24,7 +24,7 @@ namespace UmanyiSMS.Modules.System.ViewModels
         bool showErrors;
         string message;
 
-        public StartupRepairVM(StartUp args)
+        public StartupRepairVM(StartUpModel args)
         {
             start = args;
             InitVars();
@@ -221,13 +221,13 @@ namespace UmanyiSMS.Modules.System.ViewModels
             }
         }
 
-        private async void StartRepair(StartUp start)
+        private async void StartRepair(StartUpModel start)
         {
             RepairInProgress = true;
             ShowErrors = false;
             await Task.Factory.StartNew(() =>
                 {
-                    StartUp st = start;
+                    StartUpModel st = start;
 
                     CreatingBackup = TaskStates.PerformingTask;
                     if (CreateBackup())

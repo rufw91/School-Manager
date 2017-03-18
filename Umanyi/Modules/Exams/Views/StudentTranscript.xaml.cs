@@ -1,7 +1,9 @@
-﻿using Helper.Controls;
-using UmanyiSMS.ViewModels;
+﻿
+
 using System.Windows;
 using System.Windows.Controls;
+using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Modules.Exams.ViewModels;
 
 namespace UmanyiSMS.Views
 {
@@ -14,7 +16,7 @@ namespace UmanyiSMS.Views
             {
                 if (DataContext != null)
                 {
-                    StudentTranscriptVM nfpvm = DataContext as StudentTranscriptVM;
+                    StudentReportFormVM nfpvm = DataContext as StudentReportFormVM;
                     nfpvm.ShowPrintDialogAction = (p) =>
                     {
                         CustomWindow w = new CustomWindow();

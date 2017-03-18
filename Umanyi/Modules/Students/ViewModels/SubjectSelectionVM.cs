@@ -41,7 +41,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
                     if (!selectedStudent.HasErrors)
                     {
                         studentSubjectSelection.Entries = (await DataController.GetStudentSubjectSelection(studentSubjectSelection.StudentID)).Entries;
-                        AllSubjects = await DataController.GetSubjectsRegistredToClassAsync(await DataController.GetClassIDFromStudentID(studentSubjectSelection.StudentID));
+                        AllSubjects = await Institution.Controller.DataController.GetInstitutionSubjectsAsync();
                         NotifyPropertyChanged("AllSubjects");
                     }
 

@@ -1,6 +1,6 @@
-﻿using Helper;
-using Helper.Controls;
-using Helper.Models;
+﻿
+
+
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using UmanyiSMS.Lib.Controllers;
+using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Modules.Library.Models;
 
 namespace UmanyiSMS.Views
 {
@@ -113,7 +116,7 @@ namespace UmanyiSMS.Views
                                    "Author," +
                                    "Publisher," +
                                    "Price" +
-                                   " FROM [Institution].[Book]";
+                                   " FROM [Book]";
                 try
                 {
                     using (SqlConnection DBConnection = DataAccessHelper.Helper.CreateConnection())
@@ -150,9 +153,9 @@ namespace UmanyiSMS.Views
 
         private void dtGrid_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Space)
+         /*   if (e.Key == System.Windows.Input.Key.Space)
                 if (dtGrid.SelectedItem != null)
-                    (dtGrid.SelectedItem as ItemFindModel).IsSelected = !(dtGrid.SelectedItem as ItemFindModel).IsSelected;
+                    (dtGrid.SelectedItem as BookModel).IsSelected = !(dtGrid.SelectedItem as BookModel).IsSelected;*/
             if (e.Key == System.Windows.Input.Key.Enter)
                 FocusManager.SetFocusedElement(this, btnFinish);
         }

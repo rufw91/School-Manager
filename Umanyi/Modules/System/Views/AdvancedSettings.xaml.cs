@@ -1,8 +1,11 @@
-﻿using Helper.Controls;
+﻿
 using System.Windows;
 using System.Windows.Controls;
-using UmanyiSMS.ViewModels;
+
 using System.Data.SqlClient;
+using UmanyiSMS.Modules.System.ViewModels;
+using UmanyiSMS.Lib.Controls;
+
 namespace UmanyiSMS.Views
 {
     public partial class AdvancedSettings : UserControl

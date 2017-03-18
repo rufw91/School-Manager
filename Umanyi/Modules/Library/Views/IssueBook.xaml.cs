@@ -1,6 +1,7 @@
-﻿using Helper.Models;
+﻿
 using System.Windows.Controls;
-using UmanyiSMS.ViewModels;
+using UmanyiSMS.Modules.Library.Models;
+using UmanyiSMS.Modules.Library.ViewModels;
 
 namespace UmanyiSMS.Views
 {

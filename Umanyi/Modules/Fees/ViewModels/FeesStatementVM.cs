@@ -1,12 +1,13 @@
 ﻿
-using Helper;
-using Helper.Models;
+
+
 using System;
 using System.Security.Permissions;
 using System.Windows.Documents;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Fees.Controller;
 using UmanyiSMS.Modules.Fees.Models;
 
 namespace UmanyiSMS.Modules.Fees.ViewModels

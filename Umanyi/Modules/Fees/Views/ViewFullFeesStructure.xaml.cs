@@ -1,7 +1,8 @@
-﻿using Helper.Controls;
+﻿
 using System.Windows;
 using System.Windows.Controls;
-using UmanyiSMS.ViewModels;
+using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Modules.Fees.ViewModels;
 
 namespace UmanyiSMS.Views
 {

@@ -1,11 +1,13 @@
-﻿using Helper;
+﻿
 using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security;
 using System.Windows;
 using System.Windows.Controls;
-using UmanyiSMS.ViewModels;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Controllers;
+using UmanyiSMS.Modules.System.ViewModels;
 
 namespace UmanyiSMS.Views
 {

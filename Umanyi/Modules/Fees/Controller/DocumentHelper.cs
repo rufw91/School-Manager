@@ -20,7 +20,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
         {
         }
 
-        public FixedDocument GenerateDocument(object workObject)
+        public static FixedDocument GenerateDocument(object workObject)
         {
             new DocumentHelper(workObject);
             return Document;

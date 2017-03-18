@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Helper.Models
+namespace UmanyiSMS.Lib.Models
 {
     public class ComparisonModel
     {

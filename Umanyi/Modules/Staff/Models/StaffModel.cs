@@ -170,11 +170,11 @@ namespace UmanyiSMS.Modules.Staff.Models
 
         public override bool CheckErrors()
         {
-            ErrorCheckingStatus = Helper.ErrorCheckingStatus.Incomplete;
+            ErrorCheckingStatus =Lib.ErrorCheckingStatus.Incomplete;
             try
             {
                 ClearAllErrors();
-                var s = DataController.GetStaff(StaffID);
+                var s = Controller.DataController.GetStaff(StaffID);
                 if (s.StaffID > 0)
                 {
                     List<string> errors = new List<string>();
@@ -189,7 +189,7 @@ namespace UmanyiSMS.Modules.Staff.Models
                 SetErrors("", errors);
             }
             NotifyPropertyChanged("HasErrors");
-            ErrorCheckingStatus = Helper.ErrorCheckingStatus.Complete;
+            ErrorCheckingStatus = Lib.ErrorCheckingStatus.Complete;
             return HasErrors;
         }
 

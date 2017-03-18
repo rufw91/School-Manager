@@ -1,11 +1,13 @@
-﻿using Helper.Controls;
+﻿
 using System;
 using System.ComponentModel;
 using System.Security.Permissions;
 using System.Windows;
-using Helper;
+
 using System.Diagnostics;
 using System.Reflection;
+using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Lib;
 
 namespace UmanyiSMS
 {

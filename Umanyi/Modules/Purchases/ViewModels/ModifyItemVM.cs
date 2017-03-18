@@ -13,7 +13,6 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
     public class ModifyItemVM: ViewModelBase
     {
         ModifyItemModel item;
-        bool isTaxable;
         ObservableCollection<ItemCategoryModel> allItemCategories;
         public ModifyItemVM()
         {
@@ -26,9 +25,7 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
             Title = "MODIFY ITEM";
             IsBusy = true;
             NewItem = new ModifyItemModel();
-            IsTaxable = true;
             AllItemCategories = await DataController.GetAllItemCategoriesAsync();
-            AllVats = await DataController.GetAllVatsAsync();
             IsBusy = false;
             NewItem.PropertyChanged += (o, e) =>
                 {
@@ -79,23 +76,7 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
                 }
             }
         }
-
-        public bool IsTaxable
-        {
-            get { return this.isTaxable; }
-
-            set
-            {
-                if (value != this.isTaxable)
-                {
-                    this.isTaxable = value;
-                    if (!isTaxable)
-                        NewItem.VatID = 0;
-                    NotifyPropertyChanged("IsTaxable");
-                }
-            }
-        }
-
+        
         public ObservableCollection<ItemCategoryModel> AllItemCategories
         {
             get { return this.allItemCategories; }
@@ -113,7 +94,6 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
         public override void Reset()
         {            
             item.Reset();
-            IsTaxable = true;
         }
     }
 }

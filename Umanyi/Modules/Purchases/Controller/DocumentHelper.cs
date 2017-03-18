@@ -133,6 +133,48 @@ namespace UmanyiSMS.Modules.Purchases.Controller
 
         }
 
+        private void AddSTPageNo(int pageNo, int totalPages)
+        {
+            AddText("Page " + (pageNo + 1).ToString() + " of " + totalPages, 12.5, false, 0, Colors.Black, 640, 40, pageNo);
+        }
+        private void AddSTDate(DateTime dt, int pageNo)
+        {
+            AddText(dt.ToString("dd MMM yyyy hh:mm:ss"), 12.5, false, 0, Colors.Black, 640, 70, pageNo);
+        }
+        private void AddSTStudentID(int studentID, int pageNo)
+        {
+            AddText(studentID.ToString(), 14, true, 0, Colors.Black, 165, 180, pageNo);
+        }
+        private void AddSTCustomerName(string customerName, int pageNo)
+        {
+            AddText(customerName.ToUpperInvariant(), 14, true, 0, Colors.Black, 165, 210, pageNo);
+        }
+        private void AddSTPeriod(string period, int pageNo)
+        {
+            AddText(period, 16, true, 0, Colors.Black, 165, 240, pageNo);
+        }
+        private void AddSTSales(decimal sales, int pageNo)
+        {
+            if (pageNo == 0)
+                AddText(sales.ToString("N2"), 16, true, 0, Colors.Black, 280, 340, pageNo);
+            else
+                AddText("-", 16, true, 0, Colors.Black, 280, 340, pageNo);
+        }
+        private void AddSTPayments(decimal payments, int pageNo)
+        {
+            if (pageNo == 0)
+                AddText(payments.ToString("N2"), 16, true, 0, Colors.Black, 448, 340, pageNo);
+            else
+                AddText("-", 16, true, 0, Colors.Black, 448, 340, pageNo);
+        }
+        private void AddSTTotal(decimal total, int pageNo)
+        {
+            if (pageNo == 0)
+                AddText(total.ToString("N2"), 16, true, 0, Colors.Black, 645, 340, pageNo);
+            else
+                AddText("-", 16, true, 0, Colors.Black, 645, 340, pageNo);
+        }
+        
         private void GenerateSupplierStatement()
         {
             SupplierStatementModel si = MyWorkObject as SupplierStatementModel;

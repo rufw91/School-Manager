@@ -84,7 +84,7 @@ namespace UmanyiSMS.Modules.Students.Models
                 SetErrors("", errors);
             }
             NotifyPropertyChanged("HasErrors");
-            ErrorCheckingStatus = Helper.ErrorCheckingStatus.Complete;
+            ErrorCheckingStatus = ErrorCheckingStatus.Complete;
             return HasErrors;
         }
 

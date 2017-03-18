@@ -1,7 +1,7 @@
-﻿using Helper.Models;
+﻿
 using System.Collections.ObjectModel;
 
-namespace Helper
+namespace UmanyiSMS.Lib.Models
 {
     public class ComparisonCollection:ObservableCollection<ComparisonModel>
     {

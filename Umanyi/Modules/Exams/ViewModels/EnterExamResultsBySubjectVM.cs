@@ -1,5 +1,5 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +15,8 @@ using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Exams.Models;
 using UmanyiSMS.Modules.Exams.Controller;
 using UmanyiSMS.Modules.Institution.Models;
+using System.Collections.Specialized;
+using UmanyiSMS.Lib.Controllers;
 
 namespace UmanyiSMS.Modules.Exams.ViewModels
 {
@@ -46,15 +48,15 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             Tutor = "";
             allSubjectResults = new ObservableImmutableList<ExamResultStudentSubjectEntryModel>();
             allSubjects = new ObservableImmutableList<ExamResultSubjectEntryModel>();
-            AllClasses = await DataController.GetAllClassesAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
             SelectedExamID = 0;
             AllExams = new ObservableImmutableList<ExamModel>();
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             allSubjectResults.CollectionChanged += (o, e) =>
             {
                 if (isRemovingInvalid)
                     return;
-                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                if (e.Action == NotifyCollectionChangedAction.Add)
                     foreach (ExamSubjectEntryModel i in e.NewItems)
                     {
                         if (i.MaximumScore > selectedExam.OutOf)
@@ -177,9 +179,9 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     {
                         string remStr="";
                         foreach (var i in t)
-                            remStr += "DELETE FROM [Institution].[ExamResultDetail] WHERE SubjectID=" + i.SubjectID + " AND ExamResultID=" + i.ExamResultID + "\r\n"+
-                                "IF NOT EXISTS (SELECT * FROM [Institution].[ExamResultDetail] WHERE ExamResultID="+i.ExamResultID+")\r\n"+
-                                "DELETE FROM [Institution].[ExamResultHeader] WHERE ExamResultID=" + i.ExamResultID;                            
+                            remStr += "DELETE FROM [ExamResultDetail] WHERE SubjectID=" + i.SubjectID + " AND ExamResultID=" + i.ExamResultID + "\r\n"+
+                                "IF NOT EXISTS (SELECT * FROM [ExamResultDetail] WHERE ExamResultID="+i.ExamResultID+")\r\n"+
+                                "DELETE FROM [ExamResultHeader] WHERE ExamResultID=" + i.ExamResultID;                            
                         
                         bool succ = DataAccessHelper.Helper.ExecuteNonQuery(remStr);
                     }

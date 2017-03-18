@@ -1,7 +1,8 @@
-﻿using Helper.Controls;
+﻿
 using System.Security.Permissions;
 using System.Windows;
-using Helper;
+using UmanyiSMS.Lib.Controls;
+
 namespace UmanyiSMS.Views
 {
     /// <summary>

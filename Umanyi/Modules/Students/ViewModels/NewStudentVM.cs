@@ -30,7 +30,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
             Title = "NEW STUDENT";
 
             newStudent = new StudentModel();
-            AllClasses = await DataController.GetAllClassesAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
             newStudent.PropertyChanged += (o, e) =>
                 {
                     if ((e.PropertyName=="BedNo")||(e.PropertyName=="StudentID"))

@@ -1,11 +1,13 @@
-﻿using Helper;
-using Helper.Controls;
-using UmanyiSMS.ViewModels;
+﻿
+
+
 using System;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Media;
-using Helper.Presentation;
+
+using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Modules.System.ViewModels;
 
 namespace UmanyiSMS.Views
 {

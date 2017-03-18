@@ -1,8 +1,11 @@
-﻿using Helper;
-using Helper.Controls;
-using UmanyiSMS.ViewModels;
+﻿
+
+
 using System.Windows;
 using System.Windows.Controls;
+using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Modules.Exams.Controller;
+using UmanyiSMS.Modules.Exams.ViewModels;
 
 namespace UmanyiSMS.Views
 {

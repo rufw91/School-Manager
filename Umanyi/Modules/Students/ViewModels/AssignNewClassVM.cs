@@ -41,13 +41,13 @@ namespace UmanyiSMS.Modules.Students.ViewModels
                     if (e.PropertyName=="StudentID")
                         selectedStudent.CheckErrors();
                     if (!selectedStudent.HasErrors)
-                        CurrentClass = await DataController.GetClassAsync(await DataController.GetClassIDFromStudentID(selectedStudent.StudentID));
+                        CurrentClass = await Institution.Controller.DataController.GetClassAsync(await DataController.GetClassIDFromStudentID(selectedStudent.StudentID));
                 };
 
             SelectedClassID = 0;
             NewClassID = 0;
             IsInStudentMode = true;
-            AllClasses = await DataController.GetAllClassesAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
             CurrYear = DateTime.Now.Year;
         }
 

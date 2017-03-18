@@ -1,15 +1,18 @@
-﻿using Helper;
-using Helper.Controls;
+﻿
+
 using System;
 using System.Data.SqlClient;
 using System.Security;
 using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Views;
-using UmanyiSMS.ViewModels;
+
 using UmanyiSMS.Views.FirstRun;
 using System.Threading;
 using System.Security.Principal;
+using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Modules.System.ViewModels;
+using UmanyiSMS.Lib.Controllers;
 
 namespace UmanyiSMS
 {

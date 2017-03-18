@@ -1,5 +1,5 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,9 +41,9 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             exams = new ObservableCollection<ExamWeightModel>();
             IsInClassMode = true;
             
-            AllClasses = await DataController.GetAllClassesAsync();
-            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
+            AllCombinedClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             PropertyChanged += async (o, e) =>
             {
                 if (isInClassMode)

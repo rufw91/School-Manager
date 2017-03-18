@@ -1,5 +1,6 @@
-﻿using Helper.Controls;
+﻿
 using System.Windows;
+using UmanyiSMS.Lib.Controls;
 
 namespace UmanyiSMS.Views.FirstRun
 {

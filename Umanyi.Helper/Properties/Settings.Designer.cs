@@ -13,7 +13,7 @@ namespace UmanyiSMS.Lib.Properties {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
@@ -25,9 +25,9 @@ namespace UmanyiSMS.Lib.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::UmanyiSMS.Lib.Models.ApplicationModel Info {
+        public global::UmanyiSMS.Lib.Models.ApplicationPersistModel Info {
             get {
-                return ((global::UmanyiSMS.Lib.Models.ApplicationModel)(this["Info"]));
+                return ((global::UmanyiSMS.Lib.Models.ApplicationPersistModel)(this["Info"]));
             }
             set {
                 this["Info"] = value;

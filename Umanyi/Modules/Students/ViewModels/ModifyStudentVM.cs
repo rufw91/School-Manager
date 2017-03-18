@@ -41,7 +41,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
                         
                     }
                 };
-            AllClasses = await DataController.GetAllClassesAsync();
+            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
             IsBusy = false;
         }
 

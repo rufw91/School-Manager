@@ -1,11 +1,12 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Fees.Controller;
 using UmanyiSMS.Modules.Fees.Models;
 using UmanyiSMS.Modules.Institution.Models;
@@ -35,8 +36,8 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
             currentStruct = new FeesStructureModel();
             newEntry = new FeesStructureEntryModel();
             SaveForAllClasses = false;
-            AllCombinedClasses = await DataController.GetAllCombinedClassesAsync();
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllCombinedClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
         }
 
         public ObservableCollection<TermModel> AllTerms

@@ -1,4 +1,4 @@
-﻿using Helper;
+﻿
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
@@ -13,7 +13,7 @@ using UmanyiSMS.Modules.Institution.Models;
 namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
-    public class StudentTranscriptVM: ViewModelBase
+    public class StudentReportFormVM: ViewModelBase
     {
         ReportFormModel reportForm;
         FixedDocument fd;
@@ -21,7 +21,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         bool resultsIsReadOnly;
         private TermModel selectedTerm;
         private ObservableCollection<TermModel> allTerms;
-        public StudentTranscriptVM()
+        public StudentReportFormVM()
         {
             InitVars();
             CreateCommands();
@@ -32,7 +32,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             reportForm = new ReportFormModel();
             exams = new ObservableCollection<ExamWeightModel>();
             ResultsIsReadOnly = false;
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             reportForm.PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName == "StudentID")
@@ -44,7 +44,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                         if (!reportForm.HasErrors&& selectedTerm!=null)
                         {
                             ResultsIsReadOnly = false;
-                            var t = await DataController.GetExamsByClass(await DataController.GetClassIDFromStudentID(reportForm.StudentID),selectedTerm);
+                            var t = await DataController.GetExamsByClass(await Students.Controller.DataController.GetClassIDFromStudentID(reportForm.StudentID),selectedTerm);
                             int count = 1;
                             foreach (var ex in t)
                             {
@@ -73,7 +73,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                         if (!reportForm.HasErrors && selectedTerm != null)
                         {
                             ResultsIsReadOnly = false;
-                            var t = await DataController.GetExamsByClass(await DataController.GetClassIDFromStudentID(reportForm.StudentID), selectedTerm);
+                            var t = await DataController.GetExamsByClass(await Students.Controller.DataController.GetClassIDFromStudentID(reportForm.StudentID), selectedTerm);
                             int count = 1;
                             foreach (var ex in t)
                             {

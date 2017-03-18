@@ -1,6 +1,7 @@
-﻿using UmanyiSMS.ViewModels;
+﻿
 using System.Windows;
 using System.Windows.Controls;
+using UmanyiSMS.Modules.Staff.ViewModels;
 
 namespace UmanyiSMS.Views
 {

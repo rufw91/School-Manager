@@ -1,6 +1,6 @@
 ﻿using UmanyiSMS.Lib;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.System.ViewModels
 {
     public class PDFViewVM: ViewModelBase
     {

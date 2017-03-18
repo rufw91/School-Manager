@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
@@ -31,7 +32,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
             selectedStudent = new StudentSelectModel();
             selectedStudent.PropertyChanged += OnPropertyChanged;
             PropertyChanged += OnPropertyChanged;
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             currentBill.SaleItems.CollectionChanged += (o, e) =>
             {
                 BillTotal = 0;
@@ -41,7 +42,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
             
         }
 
-        private async void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "StudentID" || e.PropertyName == "SelectedTerm")
             {

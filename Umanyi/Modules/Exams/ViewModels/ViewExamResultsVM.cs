@@ -32,7 +32,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             Title = "VIEW EXAM RESULTS";
             StudentResult = new ExamResultStudentDisplayModel();
             AllExams = new ObservableCollection<ExamModel>();
-            AllTerms = await DataController.GetAllTermsAsync();
+            AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             
             studentResult.PropertyChanged += OnPropertyChanged;
             PropertyChanged += OnPropertyChanged;
@@ -60,9 +60,9 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     StudentResult.ExamID = temp.ExamID;
                     StudentResult.ExamResultID = temp.ExamResultID;
 
-                    StudentModel st = await DataController.GetStudentAsync(studentResult.StudentID);
+                    StudentModel st = await Students.Controller.DataController.GetStudentAsync(studentResult.StudentID);
                     studentResult.NameOfStudent = st.NameOfStudent;
-                    studentResult.NameOfClass = (await DataController.GetClassAsync(st.ClassID)).NameOfClass;
+                    studentResult.NameOfClass = (await Institution.Controller.DataController.GetClassAsync(st.ClassID)).NameOfClass;
                     studentResult.NameOfExam = selectedExam.NameOfExam;
                
                 
@@ -80,7 +80,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                 {
                     if (e.PropertyName != "SelectedExam")
                     {
-                        int classID = await DataController.GetClassIDFromStudentID(studentResult.StudentID);
+                        int classID = await Students.Controller.DataController.GetClassIDFromStudentID(studentResult.StudentID);
                         AllExams = await DataController.GetExamsByClass(classID, selectedTerm);
                     }
                     if (selectedExam != null)
