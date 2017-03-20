@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UmanyiSMS.Views.StudentList"
+﻿<UserControl x:Class="UmanyiSMS.Modules.Students.Views.StudentList"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,20 +6,8 @@
              xmlns:commands="clr-namespace:UmanyiSMS.Presentation" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"       
       mc:Ignorable="d" Background="White"
-             xmlns:views ="clr-namespace:UmanyiSMS.Views"
+             xmlns:views ="clr-namespace:UmanyiSMS.Modules.MySystem.Views"
       d:DesignHeight="548" d:DesignWidth="984">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/UmanyiSMS;component/ModelsDataTemplates.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
-            <Style x:Key="dt" TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                <EventSetter Event="ListBoxItem.MouseDoubleClick" Handler="OnDoubleClick" />
-            </Style>
-
-        </ResourceDictionary>
-    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>

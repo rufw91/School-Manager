@@ -1,10 +1,12 @@
 ﻿
-using System.Windows;
-using System.Windows.Controls;
+
+
 using UmanyiSMS.Modules.Exams.ViewModels;
 using UmanyiSMS.Lib.Controls;
+using System.Windows;
+using System.Windows.Controls;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Exams.Views
 {
     public partial class AggregateResults : UserControl
     {
@@ -25,7 +27,7 @@ namespace UmanyiSMS.Views
                         w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         w.WindowState = WindowState.Maximized;
 
-                        w.Content = new PrintDialog(p);
+                        w.Content = new MySystem.Views.MyPrintDialog(p);
                         w.ShowDialog();
 
                     };

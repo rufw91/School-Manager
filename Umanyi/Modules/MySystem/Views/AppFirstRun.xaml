@@ -1,0 +1,13 @@
+﻿<helper:CustomWindow x:Class="UmanyiSMS.Modules.MySystem.Views.AppFirstRun" Style="{StaticResource {x:Type helper:CustomWindow}}" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helper="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
+        Title="First Run" Height="600" Width="800" ResizeMode="NoResize" ShowInTaskbar="True" WindowStartupLocation="CenterScreen" >
+    <Grid>
+        <Border Background="{DynamicResource Accent}" Height="120"  VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,30,0,0" 
+                   Text="Welcome" VerticalAlignment="Top"
+                   Style="{DynamicResource LargeTitle}" Foreground="White" FontSize="48"/>
+        <ContentControl Content="{Binding Source}" Margin="0,120,0,0"/>
+    </Grid>
+</helper:CustomWindow>

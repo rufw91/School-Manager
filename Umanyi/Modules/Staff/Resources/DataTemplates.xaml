@@ -1,0 +1,18 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:UmanyiSMS.Modules.Staff.ViewModels"
+             xmlns:views="clr-namespace:UmanyiSMS.Modules.Staff.Views">
+    <DataTemplate DataType="{x:Type viewModels:ModifyStaffVM}" >
+        <views:ModifyStaff/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewStaffVM}" >
+        <views:NewStaff/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:StaffDetailsVM}" >
+        <views:StaffDetails/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:StaffListVM}" >
+        <views:StaffList/>
+    </DataTemplate>
+
+</ResourceDictionary>

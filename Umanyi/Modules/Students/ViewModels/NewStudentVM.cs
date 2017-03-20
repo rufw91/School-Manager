@@ -30,12 +30,14 @@ namespace UmanyiSMS.Modules.Students.ViewModels
             Title = "NEW STUDENT";
 
             newStudent = new StudentModel();
+            
             AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
             newStudent.PropertyChanged += (o, e) =>
                 {
-                    if ((e.PropertyName=="BedNo")||(e.PropertyName=="StudentID"))
+                    if (e.PropertyName=="StudentID")
                         newStudent.CheckErrors();
                 };
+            newStudent.StudentID = await MySystem.Controller.DataController.GetNewID("dbo.Student");
         }
 
         protected override void CreateCommands()
@@ -59,7 +61,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
         public override void Reset()
         {
             newStudent.Reset();
-
+            
         }
 
         public Array GenderValues

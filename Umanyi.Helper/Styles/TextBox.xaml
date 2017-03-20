@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Helper;component/Converters/Converters.xaml" />
+        <ResourceDictionary Source="/UmanyiSMS.Lib;component/Converters/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <Style x:Key="{x:Type TextBoxBase}" TargetType="{x:Type TextBoxBase}" BasedOn="{x:Null}">

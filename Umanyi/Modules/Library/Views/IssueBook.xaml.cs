@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using UmanyiSMS.Modules.Library.Models;
 using UmanyiSMS.Modules.Library.ViewModels;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Library.Views
 {
     public partial class IssueBook : UserControl
     {

@@ -2,7 +2,6 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
@@ -15,7 +14,7 @@ using UmanyiSMS.Lib.Controllers;
 using UmanyiSMS.Lib.Controls;
 using UmanyiSMS.Modules.Purchases.Models;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Purchases.Views
 {
     public partial class FindItems : CustomWindow, INotifyPropertyChanged
     {
@@ -96,13 +95,13 @@ namespace UmanyiSMS.Views
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = System.Windows.Visibility.Collapsed;
+            this.Visibility = Visibility.Collapsed;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.SelectedItem = null;
-            this.Visibility = System.Windows.Visibility.Collapsed;
+            this.Visibility = Visibility.Collapsed;
         }
 
         private async void GetAllItems(Dispatcher dispatcher)
@@ -154,12 +153,12 @@ namespace UmanyiSMS.Views
             });
         }
 
-        private void dtGrid_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void dtGrid_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Space)
+            if (e.Key == Key.Space)
                 if (dtGrid.SelectedItem != null)
                     (dtGrid.SelectedItem as ItemFindModel).IsSelected = !(dtGrid.SelectedItem as ItemFindModel).IsSelected;
-            if (e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == Key.Enter)
                 FocusManager.SetFocusedElement(this, btnFinish);
         }
 

@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:UmanyiSMS.Modules.Library.ViewModels"
+             xmlns:views="clr-namespace:UmanyiSMS.Modules.Library.Views">
+
+    <DataTemplate DataType="{x:Type viewModels:AllUnreturnedBooksVM}" >
+        <views:AllUnreturnedBooks/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:BookReturnVM}" >
+        <views:BookReturn/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:IssueBookVM}" >
+        <views:IssueBook/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ModifyBookVM}" >
+        <views:ModifyBook/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewBookVM}" >
+        <views:NewBook/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:UnreturnedBooksVM}" >
+        <views:UnreturnedBooks/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ViewBooksVM}" >
+        <views:ViewBooks/>
+    </DataTemplate>
+
+</ResourceDictionary>

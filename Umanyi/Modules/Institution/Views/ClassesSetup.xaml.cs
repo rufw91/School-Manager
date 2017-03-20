@@ -1,7 +1,7 @@
 ﻿
 using System.Windows.Controls;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Institution.Views
 {
     public partial class ClassesSetup : UserControl
     {

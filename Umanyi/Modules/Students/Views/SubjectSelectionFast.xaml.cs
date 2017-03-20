@@ -1,8 +1,7 @@
 ﻿
 using System.Windows.Controls;
-using System.Windows.Data;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Students.Views
 {
     public partial class SubjectSelectionFast : UserControl
     {

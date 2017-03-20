@@ -311,7 +311,7 @@ namespace Helper
                 if (newPayment.DatePaid.Date.Equals(DateTime.Now.Date))
                     newPayment.DatePaid = DateTime.Now;
                 ObservableCollection<SqlParameter> observableCollection = new ObservableCollection<SqlParameter>();
-                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Institution.FeesPayment')\r\nDECLARE @id2 int; SET @id2 = dbo.GetNewID('Sales.SaleHeader')\r\nINSERT INTO [FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid,PaymentMethod) VALUES(@id,@studentID,@amount,@dop,@paym)\r\nINSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,IsDiscount,PaymentID) VALUES(@id2,@studentID,@employeeID,@isCancelled,@dateAdded,@isDiscount,@id)";
+                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('dbo.FeesPayment')\r\nDECLARE @id2 int; SET @id2 = dbo.GetNewID('Sales.SaleHeader')\r\nINSERT INTO [FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid,PaymentMethod) VALUES(@id,@studentID,@amount,@dop,@paym)\r\nINSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,IsDiscount,PaymentID) VALUES(@id2,@studentID,@employeeID,@isCancelled,@dateAdded,@isDiscount,@id)";
                 int num = 1;
                 foreach (FeesStructureEntryModel current in newSale.SaleItems)
                 {
@@ -584,7 +584,7 @@ namespace Helper
                         "\r\nUPDATE [StudentTranscriptHeader] SET Responsibilities=@resp,ClubsAndSport=@clubsp,Boarding=@board,ClassTeacher=@clstr,ClassTeacherComments=@clstrC,",
                         "Principal=@princ,PrincipalComments=@princC,OpeningDay=@openD,ClosingDay=@closD,DateSaved=@dtSav WHERE StudentTranscriptID= ",
                         transcript.StudentTranscriptID,
-                        "\r\nEND\r\nELSE\r\nBEGIN\r\nSET @id = [dbo].GetNewID('Institution.StudentTranscriptHeader') INSERT INTO [StudentTranscriptHeader] (StudentTranscriptID,StudentID,Responsibilities,ClubsAndSport,Boarding,ClassTeacher,ClassTeacherComments,Principal,PrincipalComments,OpeningDay,ClosingDay,DateSaved) VALUES (@id,",
+                        "\r\nEND\r\nELSE\r\nBEGIN\r\nSET @id = [dbo].GetNewID('dbo.StudentTranscriptHeader') INSERT INTO [StudentTranscriptHeader] (StudentTranscriptID,StudentID,Responsibilities,ClubsAndSport,Boarding,ClassTeacher,ClassTeacherComments,Principal,PrincipalComments,OpeningDay,ClosingDay,DateSaved) VALUES (@id,",
                         transcript.StudentID,
                         ",'",
                         transcript.Responsibilities,
@@ -1589,7 +1589,7 @@ namespace Helper
                     obj,
                     "IF NOT EXISTS (SELECT * FROM [SubjectSetupHeader] WHERE IsActive=1 AND ClassID=",
                     classID,
-                    ")BEGIN SET @id = [dbo].GetNewID('Institution.SubjectSetupHeader') INSERT INTO [SubjectSetupHeader] (SubjectSetupID,ClassID,StartDate) VALUES (@id,",
+                    ")BEGIN SET @id = [dbo].GetNewID('dbo.SubjectSetupHeader') INSERT INTO [SubjectSetupHeader] (SubjectSetupID,ClassID,StartDate) VALUES (@id,",
                     classID,
                     ",'",
                     DateTime.Now.ToString("g"),

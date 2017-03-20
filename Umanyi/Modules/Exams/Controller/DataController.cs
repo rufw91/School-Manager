@@ -353,7 +353,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
 "SELECT esd.StudentID,s.NameOfStudent, cc.ClassID,sub.NameOfSubject, sssd.SubjectID,sum(ex1.Score) Exam1Score, sum(ex2.Score) Exam2Score, sum(ex3.Score) Exam3Score," +
 "subjectRank.SubjectRank, streamRank.StreamRank,classRank.ClassRank " +
 "FROM[ExamStudentDetail] esd " +
-"LEFT OUTER JOIN[CurrentClass] cc ON(esd.StudentID = cc.StudentID AND cc.Year = DATEPART(YEAR, SYSDATETIME()))" +
+"LEFT OUTER JOIN[StudentClass] cc ON(esd.StudentID = cc.StudentID AND cc.Year = DATEPART(YEAR, SYSDATETIME()))" +
 "LEFT OUTER JOIN[Student] s ON(s.StudentID = esd.StudentID)" +
 "LEFT OUTER JOIN[StudentSubjectSelectionHeader] sssh ON(sssh.StudentID = esd.StudentID AND sssh.Year = DATEPART(year, SYSDATETIME()))" +
 "LEFT OUTER JOIN[StudentSubjectSelectionDetail] sssd ON(sssh.StudentSubjectSelectionID = sssd.StudentSubjectSelectionID)" +
@@ -441,7 +441,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
     "desc) classRank " +
     "FROM(" +
     "SELECT esd.StudentID, s.SubjectID, sum(ISNULL(ex1.Score, 0)) + SUM(ISNULL(ex2.Score, 0)) + SUM(ISNULL(ex3.Score, 0)) Exam1Score FROM " +
-    "[CurrentClass] cs " +
+    "[StudentClass] cs " +
     "LEFT OUTER JOIN[ExamStudentDetail] esd " +
     "ON(cs.StudentID = esd.StudentID AND cs.[Year] = DATEPART(YEAR, SYSDATETIME()))" +
     "LEFT OUTER JOIN" +
@@ -560,7 +560,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
 "SELECT esd.StudentID,s.NameOfStudent, cc.ClassID,sub.NameOfSubject, sssd.SubjectID,sum(ex1.Score) Exam1Score, sum(ex2.Score) Exam2Score, sum(ex3.Score) Exam3Score," +
 "subjectRank.SubjectRank, streamRank.StreamRank,classRank.ClassRank " +
 "FROM[ExamStudentDetail] esd " +
-"LEFT OUTER JOIN[CurrentClass] cc ON(esd.StudentID = cc.StudentID AND cc.Year = DATEPART(YEAR, SYSDATETIME()))" +
+"LEFT OUTER JOIN[StudentClass] cc ON(esd.StudentID = cc.StudentID AND cc.Year = DATEPART(YEAR, SYSDATETIME()))" +
 "LEFT OUTER JOIN[Student] s ON(s.StudentID = esd.StudentID)" +
 "LEFT OUTER JOIN[StudentSubjectSelectionHeader] sssh ON(sssh.StudentID = esd.StudentID AND sssh.Year = DATEPART(year, SYSDATETIME()))" +
 "LEFT OUTER JOIN[StudentSubjectSelectionDetail] sssd ON(sssh.StudentSubjectSelectionID = sssd.StudentSubjectSelectionID)" +
@@ -648,7 +648,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
     "desc) classRank " +
     "FROM(" +
     "SELECT esd.StudentID, s.SubjectID, sum(ISNULL(ex1.Score, 0)) + SUM(ISNULL(ex2.Score, 0)) + SUM(ISNULL(ex3.Score, 0)) Exam1Score FROM " +
-    "[CurrentClass] cs " +
+    "[StudentClass] cs " +
     "LEFT OUTER JOIN[ExamStudentDetail] esd " +
     "ON(cs.StudentID = esd.StudentID AND cs.[Year] = DATEPART(YEAR, SYSDATETIME()))" +
     "LEFT OUTER JOIN" +
@@ -771,7 +771,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     "ON (sssh.StudentID=s.StudentID AND sssh.[Year]=DATEPART(YEAR,SYSDATETIME())) LEFT OUTER JOIN (SELECT * FROM [ExamResultHeader] WHERE ExamID=@eid) erh ",
                     "ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [ExamresultDetail] erd ",
                     "ON (erh.ExamresultID=erd.ExamResultID AND sssd.SubjectID=erd.SubjectID) LEFT OUTER JOIN [Subject] sub ",
-                    "ON (sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [CurrentClass] cs ",
+                    "ON (sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] cs ",
                     "ON (sssh.StudentID=cs.StudentID AND cs.[Year]=DATEPART(YEAR,SYSDATETIME())) WHERE sssd.SubjectID=@sid AND cs.ClassID=@cid AND cs.[Year]=DATEPART(YEAR,SYSDATETIME())",
                     "AND sssh.[Year]=DATEPART(YEAR,SYSDATETIME()) ORDER BY s.StudentID"
                 });
@@ -804,7 +804,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id int; \r\n ";
-                text += "SET @id = dbo.GetNewID('Institution.ExamResultHeader')\r\n";
+                text += "SET @id = dbo.GetNewID('dbo.ExamResultHeader')\r\n";
                 object obj = text;
                 text = string.Concat(new object[]
                 {
@@ -885,7 +885,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id int; \r\n ";
                 foreach (ExamResultStudentModel current in newResult)
                 {
-                    text += "SET @id = dbo.GetNewID('Institution.ExamResultHeader')\r\n";
+                    text += "SET @id = dbo.GetNewID('dbo.ExamResultHeader')\r\n";
                     object obj = text;
                     text = string.Concat(new object[]
                     {
@@ -964,7 +964,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         {
             string selectStr = string.Concat(new object[]
             {
-                "SELECT sssd.SubjectID, s.NameOfSubject, ISNULL(erd.Score,0), erd.Remarks,ssd.Tutor,s.Code,erh.ExamResultID FROM [StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [ExamResultHeader] erh ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [ExamResultDetail] erd ON (erh.ExamResultID = erd.ExamResultID AND erd.SubjectID=sssd.SubjectID) LEFT OUTER JOIN [Subject] s ON(sssd.SubjectID=s.SubjectID) LEFT OUTER JOIN [Student] st ON (sssh.StudentID = st.StudentID) LEFT OUTER JOIN [CurrentClass] cs ON (st.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) LEFT OUTER JOIN  [SubjectSetupHeader] ssh ON (ssh.ClassID=cs.ClassID) LEFT OUTER JOIN [SubjectSetupDetail] ssd ON (ssd.SubjectID=sssd.SubjectID AND ssd.SubjectSetupID=ssh.SubjectSetupID)  WHERE ssh.IsActive=1 AND sssh.IsActive=1 AND erh.IsActive=1 AND sssh.StudentID=",
+                "SELECT sssd.SubjectID, s.NameOfSubject, ISNULL(erd.Score,0), erd.Remarks,ssd.Tutor,s.Code,erh.ExamResultID FROM [StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [ExamResultHeader] erh ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [ExamResultDetail] erd ON (erh.ExamResultID = erd.ExamResultID AND erd.SubjectID=sssd.SubjectID) LEFT OUTER JOIN [Subject] s ON(sssd.SubjectID=s.SubjectID) LEFT OUTER JOIN [Student] st ON (sssh.StudentID = st.StudentID) LEFT OUTER JOIN [StudentClass] cs ON (st.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) LEFT OUTER JOIN  [SubjectSetupHeader] ssh ON (ssh.ClassID=cs.ClassID) LEFT OUTER JOIN [SubjectSetupDetail] ssd ON (ssd.SubjectID=sssd.SubjectID AND ssd.SubjectSetupID=ssh.SubjectSetupID)  WHERE ssh.IsActive=1 AND sssh.IsActive=1 AND erh.IsActive=1 AND sssh.StudentID=",
                 studentID,
                 " AND erh.ExamID=",
                 examID,
@@ -1023,7 +1023,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 text = string.Concat(new object[]
                 {
                     obj,
-                    " FROM [Student]s LEFT OUTER JOIN [CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=",
+                    " FROM [Student]s LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=",
                     classID,
                     " AND s.IsACtive=1"
                 });
@@ -1115,7 +1115,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 text = string.Concat(new object[]
                 {
                     obj,
-                    " FROM [Student] s LEFT OUTER JOIN [CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=",
+                    " FROM [Student] s LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=",
                     classID,
                     " AND IsACtive=1"
                 });
@@ -1162,7 +1162,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 var paramColl = new List<SqlParameter>();
                 string text = string.Concat(new object[]
                 {
-                    "BEGIN TRANSACTION\r\nDECLARE @id int;\r\n SET @id = dbo.GetNewID('Institution.ExamHeader') INSERT INTO [ExamHeader] (ExamID,NameOfExam,OutOf,ExamDateTime) ",
+                    "BEGIN TRANSACTION\r\nDECLARE @id int;\r\n SET @id = dbo.GetNewID('dbo.ExamHeader') INSERT INTO [ExamHeader] (ExamID,NameOfExam,OutOf,ExamDateTime) ",
                     "VALUES (@id,@name,@ouf,@dtime)\r\n"
                 });
                 paramColl.Add(new SqlParameter("@name", newExam.NameOfExam));
@@ -1178,7 +1178,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                         "INSERT INTO [ExamClassDetail] (ExamID,ClassID) VALUES (@id,@cls"+index+")\r\n"
                     });
                     paramColl.Add(new SqlParameter("@cls" + index, current.ClassID));
-                    string selecteStr = "SELECT s.StudentID FROM [Student]s LEFT OUTER JOIN [CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID =@cls" + index;
+                    string selecteStr = "SELECT s.StudentID FROM [Student]s LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID =@cls" + index;
                     var pms = new List<SqlParameter>() { new SqlParameter("@cls" + index, current.ClassID) };
                     List<string> list = DataAccessHelper.Helper.CopyFirstColumnToList(selecteStr, pms);
                     foreach (var t in list)
@@ -1358,7 +1358,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             text = string.Concat(new object[]
             {
                 text,
-                " FROM [Student]s LEFT OUTER JOIN [CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=",
+                " FROM [Student]s LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=",
                 classID,
                 " AND s.IsACtive=1"
             });
@@ -1428,7 +1428,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 text += "),";
             }
             text = text.Remove(text.Length - 1);
-            text = text + " FROM [Student]s LEFT OUTER JOIN [CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE ClassID IN (" + text2 + ") AND IsACtive=1";
+            text = text + " FROM [Student]s LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE ClassID IN (" + text2 + ") AND IsACtive=1";
             DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
             foreach (DataRow dataRow in dataTable.Rows)
             {

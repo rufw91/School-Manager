@@ -1,0 +1,40 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:UmanyiSMS.Modules.Students.ViewModels"
+             xmlns:views="clr-namespace:UmanyiSMS.Modules.Students.Views">
+
+    <DataTemplate DataType="{x:Type viewModels:AssignNewClassVM}" >
+        <views:AssignNewClass/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ClassListVM}" >
+        <views:ClassList/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:CombinedClassListVM}" >
+        <views:CombinedClassList/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:LeavingCertificateVM}" >
+        <views:LeavingCertificate/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ModifyStudentVM}" >
+        <views:ModifyStudent/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewStudentVM}" >
+        <views:NewStudent/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:StudentClearanceVM}" >
+        <views:StudentClearance/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:StudentDetailsVM}" >
+        <views:StudentDetails/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:StudentListVM}" >
+        <views:StudentList/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:SubjectSelectionFastVM}" >
+        <views:SubjectSelectionFast/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:SubjectSelectionVM}" >
+        <views:SubjectSelection/>
+    </DataTemplate>
+
+</ResourceDictionary>

@@ -228,7 +228,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
                 DateTime? dateTime = term.StartDate;
                 DateTime? dateTime2 = term.EndDate;
 
-                string selectString = "SELECT s.StudentID FROM [Student]s LEFT OUTER JOIN [CurrentClass]cs ON (s.StudentID = cs.StudentID AND cs.IsActive=1) WHERE s.IsActive=1 AND cs.ClassID=" + newSale.CustomerID;
+                string selectString = "SELECT s.StudentID FROM [Student]s LEFT OUTER JOIN [StudentClass]cs ON (s.StudentID = cs.StudentID AND cs.IsActive=1) WHERE s.IsActive=1 AND cs.ClassID=" + newSale.CustomerID;
                 List<string> observableCollection = DataAccessHelper.Helper.CopyFirstColumnToList(selectString);
                 string text = "BEGIN TRANSACTION\r\n DECLARE @id int;\r\n";
                 foreach (string current in observableCollection)
@@ -521,7 +521,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
             {
                 if (newPayment.DatePaid.Date.Equals(DateTime.Now.Date))
                     newPayment.DatePaid = DateTime.Now;
-                string commandText = "INSERT INTO [FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid,PaymentMethod) VALUES(dbo.GetNewID('Institution.FeesPayment'),@studentID,@amount,@dop,@paym)";
+                string commandText = "INSERT INTO [FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid,PaymentMethod) VALUES(dbo.GetNewID('dbo.FeesPayment'),@studentID,@amount,@dop,@paym)";
                 return DataAccessHelper.Helper.ExecuteNonQuery(commandText, new ObservableCollection<SqlParameter>
                 {
                     new SqlParameter("@studentID", newPayment.StudentID),
@@ -615,7 +615,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
             {
                 string text = string.Concat(new object[]
                 {
-                    "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Institution.FeesStructureHeader')\r\nINSERT INTO [FeesStructureHeader] (FeesStructureID,ClassID, StartDate) VALUES (@id,",
+                    "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('dbo.FeesStructureHeader')\r\nINSERT INTO [FeesStructureHeader] (FeesStructureID,ClassID, StartDate) VALUES (@id,",
                     currrentStruct.ClassID,
                     ",'",
                     currrentStruct.StartDate.ToString("g"),

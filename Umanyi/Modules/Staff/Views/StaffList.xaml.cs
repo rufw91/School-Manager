@@ -6,8 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using UmanyiSMS.Modules.Staff.Models;
+using UmanyiSMS.Modules.MySystem.Views;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Staff.Views
 {
     
     public partial class StaffList : UserControl

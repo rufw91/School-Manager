@@ -1,0 +1,40 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:UmanyiSMS.Modules.Fees.ViewModels"
+             xmlns:views="clr-namespace:UmanyiSMS.Modules.Fees.Views">
+
+    <DataTemplate DataType="{x:Type viewModels:BalancesListVM}" >
+        <views:BalancesList/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:BillStudentVM}" >
+        <views:BillStudents/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:FeesPaymentHistoryVM}" >
+        <views:FeesPaymentHistory/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewFeesPaymentVM}" >
+        <views:NewFeesPayment/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:PaymentsByVoteHeadVM}" >
+        <views:PaymentsByVoteHead/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:RemoveBillVM}" >
+        <views:RemoveBill/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:RemovePaymentVM}" >
+        <views:RemovePayment/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ReprintReceiptVM}" >
+        <views:ReprintReceipt/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:SetFeesStructureVM}" >
+        <views:SetFeesStructure/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ViewFeesStructureVM}" >
+        <views:ViewFeesStructure/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ViewFullFeesStructureVM}" >
+        <views:ViewFullFeesStructure/>
+    </DataTemplate>
+
+</ResourceDictionary>

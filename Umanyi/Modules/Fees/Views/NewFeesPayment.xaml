@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UmanyiSMS.Views.NewFeesPayment"
+﻿<UserControl x:Class="UmanyiSMS.Modules.Fees.Views.NewFeesPayment"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -36,10 +36,17 @@
             <TextBlock HorizontalAlignment="Left" Margin="30,373,0,0" Text="Date Paid/Deposited" TextWrapping="Wrap" VerticalAlignment="Top" Height="33" Width="56"/>
             <DatePicker HorizontalAlignment="Left" Margin="92,375,0,0" VerticalAlignment="Top" Width="200" SelectedDateFormat="Long"              
                  SelectedDate="{Binding CurrentPayment.DatePaid, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="350,70,0,0" Style="{DynamicResource Title0}" Text="Recent Payments" VerticalAlignment="Top"/>
-            <ListBox Margin="350,109,30,50" ItemsSource="{Binding RecentPayments}" 
-                     ItemTemplate="{StaticResource FeePaymentModel}" />
-
+            <TextBlock HorizontalAlignment="Left" Margin="350,70,0,0" Style="{DynamicResource Title0}" Text="Previous Payments" VerticalAlignment="Top"/>
+            
+            <DataGrid AutoGenerateColumns="False" Margin="350,109,30,50" CanUserAddRows="False"
+                  CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False"
+                  ItemsSource="{Binding RecentPayments}" ToolTip="You can right-click an entry to reprint receipt.">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date Paid" Binding="{Binding DatePaid}" Width="200*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Amount Paid" Binding="{Binding AmountPaid}" Width="200*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Mode of PMT" Binding="{Binding PaymentMethod}" Width="200*" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
             <Button Content="_Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"
                 Command="{Binding SaveCommand}"/>
             <Button Content="Save &amp; Print" HorizontalAlignment="Right" Margin="0,0,95,10" VerticalAlignment="Bottom" Width="120"

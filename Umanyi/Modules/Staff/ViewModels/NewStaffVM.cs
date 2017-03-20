@@ -32,7 +32,7 @@ namespace UmanyiSMS.Modules.Staff.ViewModels
             newStaff = new StaffModel();
             Title = "NEW STAFF MEMBER";
             IsBusy = true;
-            newStaff.StaffID = await GetNewID();
+            newStaff.StaffID = await MySystem.Controller.DataController.GetNewID("dbo.Staff");
             newStaff.PropertyChanged += (o, e) =>
                 {
                     if (e.PropertyName == "StaffID")
@@ -40,20 +40,7 @@ namespace UmanyiSMS.Modules.Staff.ViewModels
                 };
             IsBusy = false;
         }
-
-        private Task<int> GetNewID()
-        {
-            return Task.Factory.StartNew<int>(() =>
-            {
-                string selectStr = "declare @newid int;  set @newid =dbo.GetNewID('Institution.Staff');  select @newid;";
-
-                string finalStr = DataAccessHelper.Helper.ExecuteScalar(selectStr);
-                int res;
-                int.TryParse(finalStr, out res);
-                return res;
-            });
-        }
-
+                
         protected override void CreateCommands()
         {
             SaveCommand = new RelayCommand(async o =>

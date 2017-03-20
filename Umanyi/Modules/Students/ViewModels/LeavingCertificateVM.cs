@@ -9,7 +9,7 @@ using UmanyiSMS.Modules.Students.Models;
 using UmanyiSMS.Modules.Students.Controller;
 using UmanyiSMS.Lib.Presentation;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Students.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class LeavingCertificateVM: ViewModelBase

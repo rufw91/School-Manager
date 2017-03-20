@@ -190,6 +190,8 @@ namespace UmanyiSMS.Modules.Institution.Controller
                 string text = "SELECT [Key],Value,Value2 FROM [Settings] WHERE [Type]='ExamSettings'";
                 DataTable dt = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
                 var tx = new List<IEnumerable<string>>();
+                if (dt.Rows.Count == 0)
+                    return new ExamSettingsModel();
                 foreach (DataRow dtr in dt.Rows)
                 {
                     List<string> rw = new List<string>();
@@ -227,7 +229,7 @@ namespace UmanyiSMS.Modules.Institution.Controller
             return Task.Factory.StartNew(delegate
             {
                 ObservableCollection<ClassModel> observableCollection = new ObservableCollection<ClassModel>();
-                string commandText = "DECLARE @id int\r\n SET @id=(SELECT ClassSetupID FROM [ClassSetupHeader] WHERE IsActive=1)\r\nIF @id>0\r\nBEGIN\r\nSELECT csd.ClassID,c.NameOfClass FROM [ClassSetupDetail] csd LEFT OUTER JOIN [Class] c on (csd.ClassID = c.ClassID) WHERE csd.ClassSetupID =@id\r\nEND";
+                string commandText = "SELECT ClassID,NameOfClass FROM [Class]";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -247,7 +249,7 @@ namespace UmanyiSMS.Modules.Institution.Controller
             {
                 ObservableCollection<CombinedClassModel> observableCollection = new ObservableCollection<CombinedClassModel>();
                 ObservableCollection<ClassModel> observableCollection2 = new ObservableCollection<ClassModel>();
-                string commandText = "DECLARE @id int\r\n SET @id=(SELECT ClassSetupID FROM [ClassSetupHeader] WHERE IsActive=1)\r\nIF @id>0\r\nBEGIN\r\nSELECT csd.ClassID,c.NameOfClass FROM [ClassSetupDetail] csd LEFT OUTER JOIN [Class] c on (csd.ClassID = c.ClassID) WHERE csd.ClassSetupID =@id\r\nEND";
+                string commandText = "SELECT ClassID,NameOfClass FROM [Class]";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -412,26 +414,36 @@ namespace UmanyiSMS.Modules.Institution.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string text = "BEGIN TRANSACTION\r\ndeclare @id int; declare @id2 int; SET @id = [dbo].GetNewID('Institution.ClassSetupHeader') INSERT INTO [ClassSetupHeader] (ClassSetupID,StartDate) VALUES (@id,'" + classSetup.StartDate.ToString("g") + "')\r\n";
+                string text = "BEGIN TRANSACTION\r\nDECLARE @id2 int\r\n";
+                int index = 0;
+                string text2 = "'0',";
+                foreach (var c2 in classSetup.Entries)
+                {
+                    text2 = text2 + "@nam" + index+",";
+                    index++;
+                }
+                text2 = text2.Remove(text2.Length - 1);
+                index = 0;
+                var paramColl = new List<SqlParameter>();
                 foreach (ClassesSetupEntryModel current in classSetup.Entries)
                 {
                     object obj = text;
+                    
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "IF NOT EXISTS (SELECT * FROM [Class] WHERE ClassID=",
-                        current.ClassID,
-                        " AND NameOfClass='",
-                        current.NameOfClass,
-                        "')\r\nBEGIN\r\nSET @id2 = [dbo].GetNewID('Institution.Class')\r\n INSERT INTO [Class] (ClassID,NameOfClass) VALUES (@id2,'",
-                        current.NameOfClass,
-                        "')\r\nINSERT INTO [ClassSetupDetail] (ClassSetupID,ClassID) VALUES (@id,@id2)\r\n END\r\nELSE\r\nBEGIN\r\nUPDATE [ClassSetupDetail] SET ClassSetupID=@id WHERE ClassID=",
-                        current.ClassID,
-                        "\r\nEND\r\n"
+                        "IF NOT EXISTS (SELECT * FROM [Class] WHERE ClassID=@cid",index," AND NameOfClass=@nam",index,
+                        ")\r\nBEGIN\r\nSET @id2 = [dbo].GetNewID('dbo.Class')\r\n ",
+                        "INSERT INTO [Class] (ClassID,NameOfClass) VALUES (@id2,@nam" ,index,")\r\nEND\r\n"
                     });
+                    
+                    paramColl.Add(new SqlParameter("@cid" + index, current.ClassID));
+                    paramColl.Add(new SqlParameter("@nam" + index, current.NameOfClass));
+
+                    index++;
                 }
-                text += " COMMIT";
-                return DataAccessHelper.Helper.ExecuteNonQuery(text);
+                text += "DELETE FROM [Class] WHERE NameOfClass NOT IN (" + text2+") COMMIT";
+                return DataAccessHelper.Helper.ExecuteNonQuery(text,paramColl);
             });
         }
 
@@ -456,7 +468,7 @@ namespace UmanyiSMS.Modules.Institution.Controller
             });
         }
 
-        public static Task<bool> SaveNewInstitutionSubjectSetup(ObservableCollection<SubjectModel> selectedSubjects)
+        public static Task<bool> SaveNewInstitutionSubjectSetup(IEnumerable<SubjectModel> selectedSubjects)
         {
             return Task.Factory.StartNew<bool>(delegate
             {
@@ -477,7 +489,7 @@ namespace UmanyiSMS.Modules.Institution.Controller
                         obj,
                         "IF NOT EXISTS (SELECT * FROM[Subject] WHERE NameOfSubject='",
                         current.NameOfSubject,
-                        "')INSERT INTO [Subject] (SubjectID, NameOfSubject, Code, MaximumScore, IsOptional) VALUES(dbo.GetNewID('Institution.Subject'), '",
+                        "')INSERT INTO [Subject] (SubjectID, NameOfSubject, Code, MaximumScore, IsOptional) VALUES(dbo.GetNewID('dbo.Subject'), '",
                         current.NameOfSubject,
                         "',",
                         current.Code,

@@ -1,7 +1,7 @@
 ﻿
 using System.Windows.Controls;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Students.Views
 {
     public partial class NewStudent : UserControl
     {

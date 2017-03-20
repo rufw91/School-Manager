@@ -29,11 +29,11 @@ namespace UmanyiSMS.Modules.Students.Controller
         {
             if (MyWorkObject is ClassBalancesListModel)
                 GenerateBalanceList();
-            if (MyWorkObject is ClassStudentListModel)
+            else if (MyWorkObject is ClassStudentListModel)
                 GenerateClassList();
-            if (MyWorkObject is LeavingCertificateModel)
+            else if (MyWorkObject is LeavingCertificateModel)
                 GenerateLeavingCert();
-
+            else
             throw new ArgumentException();
 
         }
@@ -41,11 +41,11 @@ namespace UmanyiSMS.Modules.Students.Controller
         protected override string GetResString()
         {
             if (MyWorkObject is ClassBalancesListModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Students/Resources/ClassList.xaml"));
             if (MyWorkObject is ClassStudentListModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Students/Resources/ClassList.xaml"));
             if (MyWorkObject is LeavingCertificateModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Students/Resources/LeavingCert.xaml"));
 
             return "";
         }

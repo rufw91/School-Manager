@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using UmanyiSMS.Modules.Purchases.Models;
 using UmanyiSMS.Modules.Purchases.ViewModels;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Purchases.Views
 {
     public partial class ReceiveItems : UserControl
     {

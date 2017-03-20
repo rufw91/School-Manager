@@ -13,7 +13,7 @@ using UmanyiSMS.Lib.Controllers;
 using UmanyiSMS.Lib.Models;
 using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Institution.Models;
-using UmanyiSMS.Views;
+using UmanyiSMS.Modules.MySystem.Views;
 
 namespace UmanyiSMS
 {

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Fees.Views
 {
     public partial class SetFeesStructure : UserControl
     {

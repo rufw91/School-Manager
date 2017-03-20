@@ -19,7 +19,7 @@ namespace UmanyiSMS.Modules.Staff.Controller
             return Task.Factory.StartNew<bool>(delegate
             {
                 bool flag = newStaff.StaffID == 0;
-                string commandText = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('Institution.Staff'); INSERT INTO [Staff] (StaffID,Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto,Designation) VALUES(" + (flag ? "@id" : "@staffID") + ",@name,@nationalID,@doa,@phoneNo,@email,@address,@city,@postalCode,@photo,@designation)\r\nCOMMIT";
+                string commandText = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('dbo.Staff'); INSERT INTO [Staff] (StaffID,Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto,Designation) VALUES(" + (flag ? "@id" : "@staffID") + ",@name,@nationalID,@doa,@phoneNo,@email,@address,@city,@postalCode,@photo,@designation)\r\nCOMMIT";
                 return DataAccessHelper.Helper.ExecuteNonQuery(commandText, new List<SqlParameter>
                 {
                     new SqlParameter("@staffID", newStaff.StaffID),

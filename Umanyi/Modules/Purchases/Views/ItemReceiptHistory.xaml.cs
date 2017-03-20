@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Purchases.Views
 {
     public partial class ItemReceiptHistory : UserControl
     {

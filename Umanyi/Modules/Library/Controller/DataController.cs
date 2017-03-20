@@ -77,7 +77,7 @@ namespace UmanyiSMS.Modules.Library.Controller
             {
                 string text = string.Concat(new object[]
                 {
-                    "BEGIN TRANSACTION\r\ndeclare @id int; SET @id = [dbo].GetNewID('Institution.BookIssueHeader') INSERT INTO [BookIssueHeader] (BookIssueID,StudentID,DateIssued) VALUES (@id,",
+                    "BEGIN TRANSACTION\r\ndeclare @id int; SET @id = [dbo].GetNewID('dbo.BookIssueHeader') INSERT INTO [BookIssueHeader] (BookIssueID,StudentID,DateIssued) VALUES (@id,",
                     bim.StudentID,
                     ",'",
                     bim.DateIssued.ToString("g"),
@@ -162,7 +162,7 @@ namespace UmanyiSMS.Modules.Library.Controller
             {
                 string text = string.Concat(new object[]
                 {
-                    "BEGIN TRANSACTION\r\ndeclare @id int; SET @id = [dbo].GetNewID('Institution.BookReturnHeader') INSERT INTO [BookReturnHeader] (BookReturnID,StudentID,DateReturned) VALUES (@id,",
+                    "BEGIN TRANSACTION\r\ndeclare @id int; SET @id = [dbo].GetNewID('dbo.BookReturnHeader') INSERT INTO [BookReturnHeader] (BookReturnID,StudentID,DateReturned) VALUES (@id,",
                     bim.StudentID,
                     ",'",
                     bim.DateReturned.ToString("g"),
