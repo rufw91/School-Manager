@@ -2,14 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:UmanyiSMS.Lib.Converters" >
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Helper;component/Converters/Converters.xaml" />
-    </ResourceDictionary.MergedDictionaries>
     
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <converters:BooleansToVisibilityConverter x:Key="BooleansToVisibilityConverter" />    
+    <converters:BooleansToVisibilityConverter x:Key="BooleansToVisibilityConverter" />
     <converters:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
-    <converters:DataGridToDataTable x:Key="DataGridToDataTable"/>    
     <converters:InverseVisibilityConverter x:Key="InverseVisibilityConverter" />
     <converters:NegateConverter x:Key="NegateConverter"/>
     <converters:NullOrEmptyStringToVisibilityConverter x:Key="NullOrEmptyStringToVisibilityConverter" />
@@ -19,4 +15,6 @@
     <converters:ToLowerConverter x:Key="ToLowerConverter" />
     <converters:UriToImageSourceConverter x:Key="UriToImageSourceConverter"/>
     <converters:ValidationErrorConverter x:Key="ValidationErrorConverter"/>
+    <converters:NullOrNotImageToVisibilityConverter x:Key="NullOrNotImageToVisibilityConverter"/>
+    
 </ResourceDictionary>

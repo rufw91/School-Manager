@@ -3,8 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using UmanyiSMS.Lib.Controls;
 using UmanyiSMS.Modules.Fees.ViewModels;
+using UmanyiSMS.Modules.MySystem.Views;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Fees.Views
 {
     public partial class ViewFullFeesStructure : UserControl
     {
@@ -26,7 +27,7 @@ namespace UmanyiSMS.Views
                     w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                     w.WindowState = WindowState.Maximized;
 
-                    w.Content = new PrintDialog(d);
+                    w.Content = new MyPrintDialog(d);
                     w.ShowDialog();
                 };
             };

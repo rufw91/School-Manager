@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="UmanyiSMS.Modules.MySystem.Views.AdvancedSettings" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+              xmlns:Controls="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib" 
+              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="984"
+             Background="White">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Advanced" 
+				VerticalAlignment="Top"/>
+
+
+        <TextBlock HorizontalAlignment="Left" Margin="45,75,0,0" Text="Database" VerticalAlignment="Top" Style="{DynamicResource Title0}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="60,125,0,0" Text="Clean database (remove unused entries)" VerticalAlignment="Top"
+                       Style="{DynamicResource ContentTextSemiBold}"/>
+        <Button Content="Clean" HorizontalAlignment="Left" Margin="80,170,0,0" VerticalAlignment="Top" Width="150"
+                Command="{Binding CleanDbCommand}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="60,225,0,0" VerticalAlignment="Top" Text="Test for database connectivity"
+                       Style="{DynamicResource ContentTextSemiBold}"/>
+        <Button Content="Test" Margin="80,270,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"
+                Command="{Binding TestDbCommand}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="60,325,0,0" VerticalAlignment="Top" Text="Create Database Backup"
+                       Style="{DynamicResource ContentTextSemiBold}"/>
+        <Button Content="Backup" Margin="80,370,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"
+                Command="{Binding BackupDbCommand}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="60,425,0,0" VerticalAlignment="Top" Text="Restore Database from Backup"
+                       Style="{DynamicResource ContentTextSemiBold}"/>
+        <Button Content="Restore" Margin="80,470,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" BorderBrush="Red"
+                Command="{Binding RestoreDbCommand}" IsEnabled="False">
+            <Button.Resources>
+                <SolidColorBrush x:Key="Accent" Color="Red"/>
+            </Button.Resources>
+        </Button>
+
+        <TextBlock HorizontalAlignment="Left" Margin="350,125,0,0" Text="Change Current Database" VerticalAlignment="Top"
+                       Style="{DynamicResource ContentTextSemiBold}"/>
+        <Button Content="Change" HorizontalAlignment="Left" Margin="350,170,0,0" VerticalAlignment="Top" Width="150" BorderBrush="Red"
+                    Command="{Binding ChangeDbCommand}" IsEnabled="False">
+            <Button.Resources>
+                <SolidColorBrush x:Key="Accent" Color="Red"/>
+            </Button.Resources>
+        </Button>
+
+        <TextBlock HorizontalAlignment="Left" Margin="350,225,0,0" Text="Clear all data in the database" VerticalAlignment="Top"
+                       Style="{DynamicResource ContentTextSemiBold}"/>
+        <Button Content="Clear" HorizontalAlignment="Left" Margin="350,270,0,0" VerticalAlignment="Top" Width="150" BorderBrush="Red"
+                    Command="{Binding ClearDbCommand}" IsEnabled="False">
+            <Button.Resources>
+                <SolidColorBrush x:Key="Accent" Color="Red"/>
+            </Button.Resources>
+        </Button>
+
+        <TextBlock HorizontalAlignment="Left" Margin="350,325,0,0" Text="Delete the database" VerticalAlignment="Top"
+                       Style="{DynamicResource ContentTextSemiBold}"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="350,370,0,0" VerticalAlignment="Top" Width="150" BorderBrush="Red"
+                    Command="{Binding DeleteDbCommand}" IsEnabled="False">
+            <Button.Resources>
+                <SolidColorBrush x:Key="Accent" Color="Red"/>
+            </Button.Resources>
+        </Button>
+        <TextBlock HorizontalAlignment="Left" Margin="20,0,0,20" Height="16" VerticalAlignment="Bottom">
+            <Hyperlink Command="{Binding OpenQueryEditorCommand}">Open Query Editor</Hyperlink>
+        </TextBlock>
+        <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+            <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
+        </Border>
+        <TextBlock HorizontalAlignment="Right" Margin="0,75,10,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding ShowLogCommand}">Show Log</Hyperlink>
+        </TextBlock>
+    </Grid>
+</UserControl>

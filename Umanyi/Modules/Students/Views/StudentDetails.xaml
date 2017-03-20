@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UmanyiSMS.Views.StudentDetails"
+﻿<UserControl x:Class="UmanyiSMS.Modules.Students.Views.StudentDetails"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/UmanyiSMS.Helper;component/Converters/Converters.xaml" />
+                <ResourceDictionary Source="/UmanyiSMS.Lib;component/Converters/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
         </ResourceDictionary>

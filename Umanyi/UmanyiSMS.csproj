@@ -135,12 +135,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Common\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAPICodePack">
-      <HintPath>..\..\..\..\Common\Microsoft.WindowsAPICodePack.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAPICodePack.Shell">
-      <HintPath>..\..\..\..\Common\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
-    </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
@@ -276,7 +270,6 @@
     <Compile Include="Modules\Library\Models\BookSelectModel.cs" />
     <Compile Include="Modules\Library\Models\UnreturnedBookModel.cs" />
     <Compile Include="Modules\Library\Models\UnreturnedBooksModel.cs" />
-    <Compile Include="Modules\Library\ViewModels\AllBooksVM.cs" />
     <Compile Include="Modules\Library\ViewModels\AllUnreturnedBooksVM.cs" />
     <Compile Include="Modules\Library\ViewModels\BookReturnVM.cs" />
     <Compile Include="Modules\Library\ViewModels\IssueBookVM.cs" />
@@ -308,6 +301,10 @@
     <Compile Include="Modules\Library\Views\ViewBooks.xaml.cs">
       <DependentUpon>ViewBooks.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\MySystem\ViewModels\InvalidLicenseVM.cs" />
+    <Compile Include="Modules\MySystem\Views\ChangeDb.xaml.cs">
+      <DependentUpon>ChangeDb.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Purchases\Controller\DataController.cs" />
     <Compile Include="Modules\Purchases\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Purchases\Models\ItemBaseModel.cs" />
@@ -330,7 +327,6 @@
     <Compile Include="Modules\Purchases\Models\SupplierPaymentModel.cs" />
     <Compile Include="Modules\Purchases\Models\SupplierStatementModel.cs" />
     <Compile Include="Modules\Purchases\Models\TransactionModel.cs" />
-    <Compile Include="Modules\Purchases\ViewModels\ItemCategoryListVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\ItemListVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\ItemReceiptHistoryVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\ModifyItemVM.cs" />
@@ -341,7 +337,6 @@
     <Compile Include="Modules\Purchases\ViewModels\PaymentToSupplierHistoryVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\PaymentToSupplierVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\ReceiveItemsVM.cs" />
-    <Compile Include="Modules\Purchases\ViewModels\RemoveSupplierVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\ReprintPaymentVoucherVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\StockTakeResultsVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\StockTakingVM.cs" />
@@ -450,15 +445,6 @@
     <Compile Include="Modules\Students\Views\CombinedClassList.xaml.cs">
       <DependentUpon>CombinedClassList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Students\Views\DiscipineDetails.xaml.cs">
-      <DependentUpon>DiscipineDetails.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Students\Views\DisciplineTracker.xaml.cs">
-      <DependentUpon>DisciplineTracker.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Students\Views\DisciplineTrackerHistory.xaml.cs">
-      <DependentUpon>DisciplineTrackerHistory.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Modules\Students\Views\LeavingCertificate.xaml.cs">
       <DependentUpon>LeavingCertificate.xaml</DependentUpon>
     </Compile>
@@ -483,99 +469,93 @@
     <Compile Include="Modules\Students\Views\SubjectSelectionFast.xaml.cs">
       <DependentUpon>SubjectSelectionFast.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Controller\DataController.cs" />
-    <Compile Include="Modules\System\Enums.cs" />
-    <Compile Include="Modules\System\Models\StartUpModel.cs" />
-    <Compile Include="Modules\System\ViewModels\AdvancedSettingsVM.cs" />
-    <Compile Include="Modules\System\ViewModels\BackupVM.cs" />
-    <Compile Include="Modules\System\ViewModels\ChangeDbVM.cs" />
-    <Compile Include="Modules\System\ViewModels\ChangeSAPasswordVM.cs" />
-    <Compile Include="Modules\System\ViewModels\FirstRunVM.cs" />
-    <Compile Include="Modules\System\ViewModels\GeneralSettingsVM.cs" />
-    <Compile Include="Modules\System\ViewModels\HomePageVM.cs" />
-    <Compile Include="Modules\System\ViewModels\LogWindowVM.cs" />
-    <Compile Include="Modules\System\ViewModels\MainWindowVM.cs" />
-    <Compile Include="Modules\System\ViewModels\NetworkOptionsVM.cs" />
-    <Compile Include="Modules\System\ViewModels\PDFViewVM.cs" />
-    <Compile Include="Modules\System\ViewModels\QueryEditorVM.cs" />
-    <Compile Include="Modules\System\ViewModels\StartupRepairVM.cs" />
-    <Compile Include="Modules\System\ViewModels\SyncCloudVM.cs" />
-    <Compile Include="Modules\System\Views\About.xaml.cs">
+    <Compile Include="Modules\MySystem\Controller\DataController.cs" />
+    <Compile Include="Modules\MySystem\Enums.cs" />
+    <Compile Include="Modules\MySystem\Models\StartUpModel.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\AdvancedSettingsVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\BackupVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\ChangeDbVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\ChangeSAPasswordVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\AppFirstRunVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\GeneralSettingsVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\HomePageVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\LogWindowVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\MainWindowVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\NetworkOptionsVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\PDFViewVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\QueryEditorVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\StartupRepairVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\SyncCloudVM.cs" />
+    <Compile Include="Modules\MySystem\Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\Activation.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\Activation.xaml.cs">
       <DependentUpon>Activation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\AdvancedSettings.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\AdvancedSettings.xaml.cs">
       <DependentUpon>AdvancedSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\Backup.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\Backup.xaml.cs">
       <DependentUpon>Backup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\ChangeSAPassword.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\ChangeSAPassword.xaml.cs">
       <DependentUpon>ChangeSAPassword.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\FirstRun\Colors.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\FirstRun\Colors.xaml.cs">
       <DependentUpon>Colors.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\FirstRun\Finally.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\FirstRun\Finally.xaml.cs">
       <DependentUpon>Finally.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\FirstRun\FirstRun.xaml.cs">
-      <DependentUpon>FirstRun.xaml</DependentUpon>
+    <Compile Include="Modules\MySystem\Views\AppFirstRun.xaml.cs">
+      <DependentUpon>AppFirstRun.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\FirstRun\ImportData.xaml.cs">
-      <DependentUpon>ImportData.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\System\Views\FirstRun\ImportData2.xaml.cs">
-      <DependentUpon>ImportData2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\System\Views\FirstRun\InstitutionSetup.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\FirstRun\InstitutionSetup.xaml.cs">
       <DependentUpon>InstitutionSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\FirstRun\Logo.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\FirstRun\Logo.xaml.cs">
       <DependentUpon>Logo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\FirstRun\Welcome.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\FirstRun\Welcome.xaml.cs">
       <DependentUpon>Welcome.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\GeneralSettings.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\GeneralSettings.xaml.cs">
       <DependentUpon>GeneralSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\Help.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\Help.xaml.cs">
       <DependentUpon>Help.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\HomePage.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\InvalidLicense.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\InvalidLicense.xaml.cs">
       <DependentUpon>InvalidLicense.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\LoginWindow.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\LogWindow.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\LogWindow.xaml.cs">
       <DependentUpon>LogWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\MainWindow.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\NetworkOptions.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\NetworkOptions.xaml.cs">
       <DependentUpon>NetworkOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\PDFView.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\PDFView.xaml.cs">
       <DependentUpon>PDFView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\PrintDialog.xaml.cs">
-      <DependentUpon>PrintDialog.xaml</DependentUpon>
+    <Compile Include="Modules\MySystem\Views\MyPrintDialog.xaml.cs">
+      <DependentUpon>MyPrintDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\QueryEditor.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\QueryEditor.xaml.cs">
       <DependentUpon>QueryEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\StartupRepair.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\StartupRepair.xaml.cs">
       <DependentUpon>StartupRepair.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\System\Views\SyncCloud.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\SyncCloud.xaml.cs">
       <DependentUpon>SyncCloud.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\CommonCommands.cs" />
@@ -611,7 +591,7 @@
     <Compile Include="Modules\Exams\ViewModels\MarkListsVM.cs" />
     <Compile Include="Modules\Exams\ViewModels\ClassReportFormsVM.cs" />
     <Compile Include="Modules\Exams\ViewModels\CombinedAggregateResultsVM.cs" />
-    <Compile Include="Modules\Exams\ViewModels\WeightedMarkListsVM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\WeightedMarkListVM.cs" />
     <Compile Include="Modules\Exams\ViewModels\EnterExamResultsBySubjectVM.cs" />
     <Compile Include="Modules\Exams\ViewModels\EnterExamResultsVM.cs" />
     <Compile Include="Modules\Exams\ViewModels\NewExamVM.cs" />
@@ -621,8 +601,8 @@
     <Compile Include="Modules\Exams\Views\CombinedAggregateResults.xaml.cs">
       <DependentUpon>CombinedAggregateResults.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Exams\Views\CombinedMarkLists.xaml.cs">
-      <DependentUpon>CombinedMarkLists.xaml</DependentUpon>
+    <Compile Include="Modules\Exams\Views\WeightedMarkList.xaml.cs">
+      <DependentUpon>WeightedMarkList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Exams\Views\MarkLists.xaml.cs">
       <DependentUpon>MarkLists.xaml</DependentUpon>
@@ -657,6 +637,10 @@
     <Compile Include="Modules\Exams\Views\ViewExamResults.xaml.cs">
       <DependentUpon>ViewExamResults.xaml</DependentUpon>
     </Compile>
+    <Page Include="Modules\Exams\Resources\DataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Modules\Exams\Resources\AggregateResult.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -688,7 +672,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\Exams\Views\CombinedMarkLists.xaml">
+    <Page Include="Modules\Exams\Views\WeightedMarkList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -742,6 +726,10 @@
     <Page Include="Modules\Fees\Resources\Balances.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Fees\Resources\DataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Modules\Fees\Resources\FullFeesStructure.xaml">
       <SubType>Designer</SubType>
@@ -807,6 +795,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\Institution\Resources\DataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Modules\Institution\Views\AcademicYearSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -826,6 +818,10 @@
     <Page Include="Modules\Institution\Views\InstitutionSubjectsSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Library\Resources\DataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Modules\Library\Resources\UnreturnedBooks.xaml">
       <SubType>Designer</SubType>
@@ -866,6 +862,14 @@
     <Page Include="Modules\Library\Views\ViewBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\MySystem\Views\ChangeDb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Purchases\Resources\DataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Modules\Purchases\Resources\PaymentVoucher.xaml">
       <SubType>Designer</SubType>
@@ -943,6 +947,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\Staff\Resources\DataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Modules\Staff\Views\ModifyStaff.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -959,14 +967,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\Students\Resources\ClassList.xaml">
+    <Resource Include="Modules\Students\Resources\ClassList.xaml">
       <SubType>Designer</SubType>
+    </Resource>
+    <Page Include="Modules\Students\Resources\DataTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Students\Resources\LeavingCert.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Resource Include="Modules\Students\Resources\LeavingCert.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
     <Page Include="Modules\Students\Views\AssignNewClass.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -976,18 +986,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Students\Views\CombinedClassList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Students\Views\DiscipineDetails.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Students\Views\DisciplineTracker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Students\Views\DisciplineTrackerHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1023,107 +1021,103 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\About.xaml">
+    <Page Include="Modules\MySystem\Resources\DataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\MySystem\Views\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\Activation.xaml">
+    <Page Include="Modules\MySystem\Views\Activation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\AdvancedSettings.xaml">
+    <Page Include="Modules\MySystem\Views\AdvancedSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\Backup.xaml">
+    <Page Include="Modules\MySystem\Views\Backup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\ChangeSAPassword.xaml">
+    <Page Include="Modules\MySystem\Views\ChangeSAPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\FirstRun\Colors.xaml">
+    <Page Include="Modules\MySystem\Views\FirstRun\Colors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\FirstRun\Finally.xaml">
+    <Page Include="Modules\MySystem\Views\FirstRun\Finally.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\FirstRun\FirstRun.xaml">
+    <Page Include="Modules\MySystem\Views\AppFirstRun.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\FirstRun\ImportData.xaml">
+    <Page Include="Modules\MySystem\Views\FirstRun\InstitutionSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\FirstRun\ImportData2.xaml">
+    <Page Include="Modules\MySystem\Views\FirstRun\Logo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\FirstRun\InstitutionSetup.xaml">
+    <Page Include="Modules\MySystem\Views\FirstRun\Welcome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\FirstRun\Logo.xaml">
+    <Page Include="Modules\MySystem\Views\GeneralSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\FirstRun\Welcome.xaml">
+    <Page Include="Modules\MySystem\Views\Help.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\GeneralSettings.xaml">
+    <Page Include="Modules\MySystem\Views\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\Help.xaml">
+    <Page Include="Modules\MySystem\Views\InvalidLicense.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\HomePage.xaml">
+    <Page Include="Modules\MySystem\Views\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\InvalidLicense.xaml">
+    <Page Include="Modules\MySystem\Views\LogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\LoginWindow.xaml">
+    <Page Include="Modules\MySystem\Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\LogWindow.xaml">
+    <Page Include="Modules\MySystem\Views\NetworkOptions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\MainWindow.xaml">
+    <Page Include="Modules\MySystem\Views\PDFView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\NetworkOptions.xaml">
+    <Page Include="Modules\MySystem\Views\MyPrintDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\PDFView.xaml">
+    <Page Include="Modules\MySystem\Views\QueryEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\PrintDialog.xaml">
+    <Page Include="Modules\MySystem\Views\StartupRepair.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\System\Views\QueryEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\System\Views\StartupRepair.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\System\Views\SyncCloud.xaml">
+    <Page Include="Modules\MySystem\Views\SyncCloud.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1177,11 +1171,7 @@
   <ItemGroup>
     <Resource Include="Resources\noImage.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modules\Institution\Resources\" />
-    <Folder Include="Modules\Staff\Resources\" />
-    <Folder Include="Modules\System\Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>

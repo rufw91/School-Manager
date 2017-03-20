@@ -33,7 +33,7 @@ namespace UmanyiSMS.Lib.Controllers
                         login.PasswordPolicyEnforced = false;
                         login.Create(cred.Password);
 
-                        Database db = server.Databases[UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName];
+                        Database db = server.Databases[Lib.Properties.Settings.Default.Info.DBName];
                         User u = new User(db, cred.UserId) { Login = login.Name };
 
                         u.Create();
@@ -166,7 +166,7 @@ namespace UmanyiSMS.Lib.Controllers
                             if (l.Name.ToUpperInvariant() == p.ToUpperInvariant())
                                 return true;
                         }
-                        Database db = new Database(server, UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName);
+                        Database db = new Database(server, Lib.Properties.Settings.Default.Info.DBName);
                         foreach (User u in db.Users)
                         {
                             if (u.Name.ToUpperInvariant() == p.ToUpperInvariant())
@@ -259,7 +259,7 @@ namespace UmanyiSMS.Lib.Controllers
                         succ = true;
                         if (credential.UserId.Trim().ToUpper() != "SA")
                         {
-                            Database db = server.Databases[UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName];
+                            Database db = server.Databases[Lib.Properties.Settings.Default.Info.DBName];
                             User u = db.Users[credential.UserId];
                             foreach (DatabaseRole dbr in db.Roles)
                             {
@@ -294,7 +294,7 @@ namespace UmanyiSMS.Lib.Controllers
                         var login = server.Logins[userID];
                         login.Drop();
 
-                        Database db = server.Databases[UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName];
+                        Database db = server.Databases[Lib.Properties.Settings.Default.Info.DBName];
                         User u = db.Users[userID];
 
                         u.Drop();

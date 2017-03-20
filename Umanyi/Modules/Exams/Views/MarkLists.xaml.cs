@@ -3,12 +3,11 @@ using System.Windows.Controls;
 using UmanyiSMS.Lib.Controls;
 using UmanyiSMS.Modules.Exams.Controller;
 using UmanyiSMS.Modules.Exams.ViewModels;
+using UmanyiSMS.Modules.MySystem.Views;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Exams.Views
 {
-    /// <summary>
-    /// Interaction logic for MarkLists.xaml
-    /// </summary>
+    
     public partial class MarkLists : UserControl
     {
         public MarkLists()
@@ -27,7 +26,7 @@ namespace UmanyiSMS.Views
                         w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         w.WindowState = WindowState.Maximized;
                         var v = DocumentHelper.GenerateDocument(p);
-                        w.Content = new PrintDialog(v);
+                        w.Content = new MyPrintDialog(v);
                         w.ShowDialog();
                     };
                     vervm.ShowClassStudentsTranscriptAction = (p) =>
@@ -38,7 +37,7 @@ namespace UmanyiSMS.Views
                         w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         w.WindowState = WindowState.Maximized;
                         var v = DocumentHelper.GenerateDocument(p);
-                        w.Content = new PrintDialog(v);
+                        w.Content = new MyPrintDialog(v);
                         w.ShowDialog();
                     };
                     vervm.ShowClassTranscriptAction = (p) =>
@@ -49,7 +48,7 @@ namespace UmanyiSMS.Views
                         w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         w.WindowState = WindowState.Maximized;
                         var v = DocumentHelper.GenerateDocument(p);
-                        w.Content = new PrintDialog(v);
+                        w.Content = new MyPrintDialog(v);
                         w.ShowDialog();
                     };
                 }

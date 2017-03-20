@@ -3,7 +3,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Library.Views
 {
     public partial class ViewBooks : UserControl
     {

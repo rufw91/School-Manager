@@ -2,9 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using UmanyiSMS.Lib.Controls;
+using UmanyiSMS.Modules.MySystem.Views;
 using UmanyiSMS.Modules.Purchases.ViewModels;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Purchases.Views
 {
     public partial class ReprintPaymentVoucher : UserControl
     {
@@ -25,7 +26,7 @@ namespace UmanyiSMS.Views
                         w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         w.WindowState = WindowState.Maximized;
 
-                        w.Content = new PrintDialog(p);
+                        w.Content = new MyPrintDialog(p);
                         w.ShowDialog();
 
                     };

@@ -3,7 +3,7 @@
                     xmlns:e="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                     xmlns:behaviours="clr-namespace:UmanyiSMS.Lib.Presentation">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Helper;component/Converters/Converters.xaml" />
+        <ResourceDictionary Source="/UmanyiSMS.Lib;component/Converters/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Geometry x:Key="DownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
 

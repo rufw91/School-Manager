@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Institution.Views
 {
     public partial class InstitutionSetup : UserControl
     {

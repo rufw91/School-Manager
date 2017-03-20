@@ -15,16 +15,16 @@ namespace UmanyiSMS.Lib.Controllers
     public static class ConnectionStringHelper
     {
         static readonly string connStr = "Data Source=" +
-                UmanyiSMS.Lib.Properties.Settings.Default.Info.ServerName +
+                Lib.Properties.Settings.Default.Info.ServerName +
                 ";Database=UmanyiSMS;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
         static readonly string masterConnString = "Data Source=" +
-                UmanyiSMS.Lib.Properties.Settings.Default.Info.ServerName +
+                Lib.Properties.Settings.Default.Info.ServerName +
                 ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
         static readonly string win32ConnString = "Data Source=" +
-                UmanyiSMS.Lib.Properties.Settings.Default.Info.ServerName +
+                Lib.Properties.Settings.Default.Info.ServerName +
                 ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;Integrated Security='SSPI'";
         static readonly string testConnString = "Data Source=" +
-               UmanyiSMS.Lib.Properties.Settings.Default.Info.ServerName +
+               Lib.Properties.Settings.Default.Info.ServerName +
                ";Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
 
         public static string ConnectionString

@@ -4,9 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using UmanyiSMS.Modules.MySystem.Views;
 using UmanyiSMS.Modules.Students.Models;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Students.Views
 {
     public partial class StudentList : UserControl
     {

@@ -61,7 +61,7 @@ namespace UmanyiSMS.Modules.Institution.ViewModels
 
         private bool CanSave()
         {
-            return selectedSubjects.Count > 0 && (selectedSubjects.Any(o => o.SubjectID == 0) || selectedSubjects.Count != startCount);
+            return selectedSubjects.Count > 0&& selectedSubjects.Count<=12 && (selectedSubjects.Any(o => o.SubjectID == 0) || selectedSubjects.Count != startCount);
         }
 
         private bool CanRemove()

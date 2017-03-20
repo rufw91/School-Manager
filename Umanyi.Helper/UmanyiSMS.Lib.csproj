@@ -142,6 +142,7 @@
     <Compile Include="Converters\InverseVisibilityConverter.cs" />
     <Compile Include="Converters\NegateConverter.cs" />
     <Compile Include="Converters\NullOrEmptyStringToVisibilityConverter.cs" />
+    <Compile Include="Converters\NullOrNotImageToVisibilityConverter.cs" />
     <Compile Include="Converters\StreamToImageSourceConverter.cs" />
     <Compile Include="Converters\TitleConverter.cs" />
     <Compile Include="Converters\ToLowerConverter.cs" />

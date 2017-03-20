@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Staff.Views
 {
     public partial class ModifyStaff : UserControl
     {

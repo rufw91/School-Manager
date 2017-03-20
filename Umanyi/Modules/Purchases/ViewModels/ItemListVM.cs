@@ -10,7 +10,7 @@ using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Purchases.Controller;
 using UmanyiSMS.Modules.Purchases.Models;
 
-namespace UmanyiSMS.ViewModels
+namespace UmanyiSMS.Modules.Purchases.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ItemListVM: ViewModelBase

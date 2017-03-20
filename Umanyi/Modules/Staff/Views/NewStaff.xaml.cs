@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using UmanyiSMS.Modules.Staff.ViewModels;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Staff.Views
 {
     public partial class NewStaff : UserControl
     {

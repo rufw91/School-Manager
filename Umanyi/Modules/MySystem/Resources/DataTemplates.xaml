@@ -1,0 +1,43 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:UmanyiSMS.Modules.MySystem.ViewModels"
+             xmlns:views="clr-namespace:UmanyiSMS.Modules.MySystem.Views">
+
+    <DataTemplate DataType="{x:Type viewModels:AdvancedSettingsVM}" >
+        <views:AdvancedSettings/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:BackupVM}" >
+        <views:Backup/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ChangeDbVM}" >
+        <views:ChangeDb/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ChangeSAPasswordVM}" >
+        <views:ChangeSAPassword/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:AppFirstRunVM}" >
+        <views:AppFirstRun/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:GeneralSettingsVM}" >
+        <views:GeneralSettings/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:HomePageVM}" >
+        <views:HomePage/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:InvalidLicenseVM}" >
+        <views:InvalidLicense/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:LogWindowVM}" >
+        <views:LogWindow/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NetworkOptionsVM}" >
+        <views:NetworkOptions/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:QueryEditorVM}" >
+        <views:QueryEditor/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:SyncCloudVM}" >
+        <views:SyncCloud/>
+    </DataTemplate>
+
+</ResourceDictionary>

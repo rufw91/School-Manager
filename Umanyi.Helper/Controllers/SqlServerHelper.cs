@@ -141,7 +141,7 @@ namespace UmanyiSMS.Lib.Controllers
             {
                 object tx;
                 if (hasHeader)
-                    commandText = "USE "+UmanyiSMS.Lib.Properties.Settings.Default.Info+"\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    commandText = "USE "+UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName+"\r\nSET DATEFORMAT DMY\r\n" + commandText;
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand sqlcmd = new SqlCommand(commandText, DBConnection);
@@ -162,7 +162,7 @@ namespace UmanyiSMS.Lib.Controllers
             {
                 object tx;
                 if (hasHeader)
-                    commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand sqlcmd = new SqlCommand(commandText, DBConnection);
@@ -193,7 +193,7 @@ namespace UmanyiSMS.Lib.Controllers
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand dtab = new SqlCommand();
-                    dtab.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    dtab.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                     dtab.Connection = DBConnection;
                     foreach (SqlParameter param in paramColl)
                     { dtab.Parameters.Add(param); }
@@ -216,13 +216,13 @@ namespace UmanyiSMS.Lib.Controllers
         {
             DataTable result = new DataTable();
             if (hasHeader)
-                commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
             try
             {
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand cmd = new SqlCommand();
-                    cmd.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    cmd.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                     cmd.Connection = DBConnection;
 
                     cmd.ExecuteNonQuery();
@@ -256,7 +256,7 @@ namespace UmanyiSMS.Lib.Controllers
                 {
                     using (SqlCommand dta = new SqlCommand())
                     {
-                        dta.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                        dta.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                         dta.Connection = DBConnection;
                         foreach (SqlParameter param in paramColl)
                         { dta.Parameters.Add(param); }
@@ -277,7 +277,7 @@ namespace UmanyiSMS.Lib.Controllers
         {
             bool succ = false;
             if (hasHeader)
-                commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
 
             try
             {
@@ -327,7 +327,7 @@ namespace UmanyiSMS.Lib.Controllers
                     using (SqlConnection DBConnection = new SqlConnection(connectionStr, Credentials))
                     {
                         DBConnection.Open();
-                        SqlCommand dta = new SqlCommand("USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "", DBConnection);
+                        SqlCommand dta = new SqlCommand("USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "", DBConnection);
                         dta.ExecuteNonQuery();
                         dta.Dispose();
                     }
@@ -555,9 +555,8 @@ namespace UmanyiSMS.Lib.Controllers
             {
                 try
                 {
-                    string commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n";
-                    commandText += "DELETE FROM [ClassSetupDetail] WHERE ClassSetupID IN (SELECT ClassSetupID FROM [ClassSetupHeader] WHERE IsActive=0)\r\n"+
-                        "DELETE FROM [ClassSetupHeader] WHERE IsActive=0\r\n"+
+                    string commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n";
+                    commandText += 
                         "DELETE FROM [ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM [ExamResultHeader] WHERE IsActive=0)\r\n" +
                         "DELETE FROM [ExamResultHeader] WHERE IsActive=0\r\n"+
                         "DELETE FROM [FeesStructureDetail] WHERE FeesStructureID IN (SELECT FeesStructureID FROM [FeesStructureHeader] WHERE IsActive=0)\r\n" +
@@ -620,13 +619,13 @@ namespace UmanyiSMS.Lib.Controllers
         public override List<string> CopyFirstColumnToList(string commandText)
         {
             List<string> result = new List<string>();
-                commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
             try
             {
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand cmd = new SqlCommand();
-                    cmd.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    cmd.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                     cmd.Connection = DBConnection;
 
                     cmd.ExecuteNonQuery();
@@ -655,7 +654,7 @@ namespace UmanyiSMS.Lib.Controllers
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand dtab = new SqlCommand();
-                    dtab.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    dtab.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                     dtab.Connection = DBConnection;
                     foreach (SqlParameter param in paramColl)
                     { dtab.Parameters.Add(param); }

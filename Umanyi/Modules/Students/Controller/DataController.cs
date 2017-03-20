@@ -22,7 +22,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                 {
                     "BEGIN TRANSACTION\r\nDELETE FROM [LeavingCertificate] WHERE StudentID=",
                     leavingCertificate.StudentID,
-                    "\r\nINSERT INTO [LeavingCertificate] (LeavingCertificateID,StudentID,DateOfIssue,DateOfBirth,DateOfAdmission,DateOfLeaving,Nationality,ClassEntered,ClassLeft,Remarks) VALUES (dbo.GetNewID('Institution.LeavingCertificate'),",
+                    "\r\nINSERT INTO [LeavingCertificate] (LeavingCertificateID,StudentID,DateOfIssue,DateOfBirth,DateOfAdmission,DateOfLeaving,Nationality,ClassEntered,ClassLeft,Remarks) VALUES (dbo.GetNewID('dbo.LeavingCertificate'),",
                     leavingCertificate.StudentID,
                     ",'",
                     leavingCertificate.DateOfIssue.ToString("g"),
@@ -90,9 +90,9 @@ namespace UmanyiSMS.Modules.Students.Controller
             {
                 string commandText = string.Concat(new object[]
                 {
-                    "IF NOT EXISTS (SELECT * FROM [CurrentClass] WHERE StudentID=@sid AND [Year]=@yer)\r\n",
-                    "INSERT INTO [CurrentClass] (StudentID,ClassID,[Year]) VALUES(@sid,@cid,@yer)\r\n",
-                    "ELSE UPDATE [CurrentClass] SET ClassID = @cid WHERE StudentID=@sid AND [Year]=@yer"
+                    "IF NOT EXISTS (SELECT * FROM [StudentClass] WHERE StudentID=@sid AND [Year]=@yer)\r\n",
+                    "INSERT INTO [StudentClass] (StudentID,ClassID,[Year]) VALUES(@sid,@cid,@yer)\r\n",
+                    "ELSE UPDATE [StudentClass] SET ClassID = @cid WHERE StudentID=@sid AND [Year]=@yer"
             });
                 var paramColl = new List<SqlParameter>();
                 paramColl.Add(new SqlParameter("@sid", studentID));
@@ -107,7 +107,7 @@ namespace UmanyiSMS.Modules.Students.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string commandText = "SELECT DISTINCT StudentID FROM [CurrentClass] WHERE [Year]=@pyer AND ClassID =@cid";
+                string commandText = "SELECT DISTINCT StudentID FROM [StudentClass] WHERE [Year]=@pyer AND ClassID =@cid";
                 var pc = new List<SqlParameter>();
                 pc.Add(new SqlParameter("@cid", newClassID));
                 pc.Add(new SqlParameter("@pyer", prevYear));
@@ -123,10 +123,10 @@ namespace UmanyiSMS.Modules.Students.Controller
                 {
                     paramColl.Add(new SqlParameter("@sid" + index, current));
                     commandText +=
-                    "IF NOT EXISTS (SELECT * FROM [CurrentClass] WHERE [Year]=@yer AND StudentID=@sid" + index + ")\r\n " +
-                    "INSERT INTO [CurrentClass] (StudentID,ClassID,[Year]) VALUES(@sid" +
+                    "IF NOT EXISTS (SELECT * FROM [StudentClass] WHERE [Year]=@yer AND StudentID=@sid" + index + ")\r\n " +
+                    "INSERT INTO [StudentClass] (StudentID,ClassID,[Year]) VALUES(@sid" +
                     index + ",@cid,@yer)\r\n" +
-                    "ELSE UPDATE [CurrentClass] SET ClassID = @cid WHERE StudentID=@sid" + index + " AND [Year]=@yer";
+                    "ELSE UPDATE [StudentClass] SET ClassID = @cid WHERE StudentID=@sid" + index + " AND [Year]=@yer";
                     index++;
                 }
 
@@ -141,9 +141,9 @@ namespace UmanyiSMS.Modules.Students.Controller
             {
                 string commandText = string.Concat(new object[]
                 {
-                    "IF EXISTS(SELECT cs.ClassID FROM [Student]s LEFT OUTER JOIN [CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE s.StudentID = ",
+                    "IF EXISTS(SELECT cs.ClassID FROM [Student]s LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE s.StudentID = ",
                     selectedStudentID,
-                    ")\r\nSELECT ISNULL(cs.ClassID,0) FROM [Student]s LEFT OUTER JOIN [CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE s.StudentID = ",
+                    ")\r\nSELECT ISNULL(cs.ClassID,0) FROM [Student]s LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE s.StudentID = ",
                     selectedStudentID,
                     "\r\nELSE SELECT 0"
                 });
@@ -180,10 +180,11 @@ namespace UmanyiSMS.Modules.Students.Controller
 
             StudentModel studentModel = new StudentModel();
             string commandText = "SELECT FirstName,LastName,MiddleName,ISNULL(cs.ClassID,0),DateOfBirth,DateOfAdmission,NameOfGuardian,GuardianPhoneNo,Email,Address,City,PostalCode," +
-                "PreviousInstitution,KCPEScore,DormitoryID,BedNo,SPhoto,PreviousBalance,Gender,s.IsActive FROM [Student] s LEFT OUTER JOIN " +
-                "[CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=@acYear) WHERE s.StudentID=" + studentID;
+                "PreviousInstitution,KCPEScore,SPhoto,PreviousBalance,Gender,s.IsActive FROM [Student] s LEFT OUTER JOIN " +
+                "[StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=@acYear) WHERE s.StudentID=@sid";
             var paramColl = new List<SqlParameter>();
             paramColl.Add(new SqlParameter("@acYear", DateTime.Now.Year));
+            paramColl.Add(new SqlParameter("@sid", studentID));
             DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText, paramColl);
             if (dataTable.Rows.Count != 0)
             {
@@ -210,10 +211,10 @@ namespace UmanyiSMS.Modules.Students.Controller
                 studentModel.PostalCode = dataTable.Rows[0][11].ToString();
                 studentModel.PrevInstitution = dataTable.Rows[0][12].ToString();
                 studentModel.KCPEScore = (string.IsNullOrWhiteSpace(dataTable.Rows[0][13].ToString()) ? 0 : int.Parse(dataTable.Rows[0][13].ToString()));
-               studentModel.SPhoto = (byte[])dataTable.Rows[0][16];
-                studentModel.PrevBalance = decimal.Parse(dataTable.Rows[0][17].ToString());
-                studentModel.Gender = (Gender)Enum.Parse(typeof(Gender), dataTable.Rows[0][18].ToString());
-                studentModel.IsActive = bool.Parse(dataTable.Rows[0][19].ToString());
+                studentModel.SPhoto = (byte[])dataTable.Rows[0][14];
+                studentModel.PrevBalance = decimal.Parse(dataTable.Rows[0][15].ToString());
+                studentModel.Gender = (Gender)Enum.Parse(typeof(Gender), dataTable.Rows[0][16].ToString());
+                studentModel.IsActive = int.Parse(dataTable.Rows[0][17].ToString()) == 1;
             }
             return studentModel;
         }
@@ -226,7 +227,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                 classStudentListModel.ClassID = selectedClass.ClassID;
                 classStudentListModel.NameOfClass = selectedClass.NameOfClass;
                 string commandText = "SELECT s.StudentID,FirstName,LastName,MiddleName FROM [Student] s " +
-                "LEFT OUTER JOIN [CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=@cid AND s.IsActive=1";
+                "LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE cs.ClassID=@cid AND s.IsActive=1";
                 var paramColl = new List<SqlParameter>();
                 paramColl.Add(new SqlParameter("@cid", selectedClass.ClassID));
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText, paramColl);
@@ -262,7 +263,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                 classStudentListModel.ClassID = 0;
                 classStudentListModel.NameOfClass = currentClass.Description;
                 string commandText = "SELECT s.StudentID,FirstName+' '+LastName+' '+MiddleName FROM [Student]s " +
-                "LEFT OUTER JOIN [CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime()))" +
+                "LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime()))" +
                 "WHERE cs.ClassID IN (" + text + ") AND s.IsActive=1";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
@@ -354,7 +355,7 @@ namespace UmanyiSMS.Modules.Students.Controller
             return Task.Factory.StartNew<bool>(delegate
             {
                 bool flag = student.StudentID == 0;
-                string text = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('Institution.Student')INSERT INTO [Student] (StudentID,FirstName,LastName,MiddleName,Gender,DateOfBirth,DateOfAdmission,NameOfGuardian,GuardianPhoneNo,Email,Address,City,PostalCode,IsBoarder";
+                string text = "BEGIN TRANSACTION\r\nDECLARE @id INT; SET @id=dbo.GetNewID('dbo.Student')INSERT INTO [Student] (StudentID,FirstName,LastName,MiddleName,Gender,DateOfBirth,DateOfAdmission,NameOfGuardian,GuardianPhoneNo,Email,Address,City,PostalCode";
                 
                 string text2 = text;
                 text = string.Concat(new string[]
@@ -363,12 +364,9 @@ namespace UmanyiSMS.Modules.Students.Controller
                     ",PreviousInstitution,KCPEScore,PreviousBalance,SPhoto) VALUES(",
                     flag ? "@id" : "@studID",
                     ",@firstName,@lastName,@middleName,@gender,@dob,@doa,@nameOfGuardian,@guardianPhoneNo,@email,@address,@city,@postalCode,",
-                    
-                    ","
+                    "@prevInstitution,@kcpeScore,@prevBalance,@photo)\r\nINSERT INTO [StudentClass] (StudentID,ClassID,Year) " +
+                "VALUES(" + (flag ? "@id" : "@studID") + ",@classID,@yer)\r\nCOMMIT"
                 });
-                
-                text = text + "@prevInstitution,@kcpeScore,@prevBalance,@photo)\r\nINSERT INTO [CurrentClass] (StudentID,ClassID,Year) " +
-                "VALUES(" + (flag ? "@id" : "@studID") + ",@classID,@yer)\r\nCOMMIT";
                 return DataAccessHelper.Helper.ExecuteNonQuery(text, new ObservableCollection<SqlParameter>
                 {
                     new SqlParameter("@studID", student.StudentID),
@@ -409,42 +407,38 @@ namespace UmanyiSMS.Modules.Students.Controller
         {
             return Task.Factory.StartNew<ObservableCollection<StudentListModel>>(delegate
             {
-                string commandText = "SELECT TOP 1000000 s.StudentID,s.FirstName,s.LastName,s.MiddleName,cs.ClassID, c.NameOfClass,s.DateOfBirth," +
-                "s.DateOfAdmission,s.NameOfGuardian,s.GuardianPhoneNo,s.Address,s.City,s.PostalCode,s.BedNo,s.PreviousInstitution,s.KCPEScore, s.DormitoryID, " +
-                "s.PreviousBalance,d.NameOfDormitory, s.IsActive,s.IsBoarder,s.Gender, s.SPhoto FROM [Student] s LEFT OUTER JOIN [CurrentClass] cs" +
-                " ON (s.StudentID = cs.StudentID AND cs.[Year]=DATEPART(year,SYSDATETIME()))LEFT OUTER JOIN [Class] c ON(cs.ClassID=c.ClassID) LEFT OUTER JOIN " +
-                " [Dormitory] d ON (s.DormitoryID=d.DormitoryID)";
+                string commandText = "SELECT s.StudentID,s.FirstName,s.LastName,s.MiddleName,cs.ClassID, c.NameOfClass,s.DateOfBirth," +
+                "s.DateOfAdmission,s.NameOfGuardian,s.GuardianPhoneNo,s.Address,s.City,s.PostalCode,s.PreviousInstitution,s.KCPEScore, " +
+                "s.PreviousBalance, s.IsActive,s.Gender, s.SPhoto FROM [Student] s LEFT OUTER JOIN [StudentClass] cs" +
+                " ON (s.StudentID = cs.StudentID AND cs.[Year]=DATEPART(year,SYSDATETIME()))LEFT OUTER JOIN [Class] c ON(cs.ClassID=c.ClassID)";
                 ObservableCollection<StudentListModel> observableCollection = new ObservableCollection<StudentListModel>();
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 if (dataTable.Rows.Count != 0)
                 {
                     foreach (DataRow dataRow in dataTable.Rows)
                     {
-                        observableCollection.Add(new StudentListModel
-                        {
-                            StudentID = int.Parse(dataRow[0].ToString()),
-                            FirstName = dataRow[1].ToString(),
-                            LastName = dataRow[2].ToString(),
-                            MiddleName = dataRow[3].ToString(),
-                            ClassID = string.IsNullOrWhiteSpace(dataRow[4].ToString()) ? 0 : int.Parse(dataRow[4].ToString()),
-                            NameOfClass = dataRow[5].ToString(),
-                            DateOfBirth = DateTime.Parse(dataRow[6].ToString()),
-                            DateOfAdmission = DateTime.Parse(dataRow[7].ToString()),
-                            NameOfGuardian = dataRow[8].ToString(),
-                            GuardianPhoneNo = dataRow[9].ToString(),
-                            Address = dataRow[10].ToString(),
-                            City = dataRow[11].ToString(),
-                            PostalCode = dataRow[12].ToString(),
-                            PrevInstitution = dataRow[14].ToString(),
-                            KCPEScore = string.IsNullOrWhiteSpace(dataRow[15].ToString()) ? 0 : int.Parse(dataRow[15].ToString()),
-                            
-                            PrevBalance = decimal.Parse(dataRow[17].ToString()),
-                            
-                            IsActive = bool.Parse(dataRow[19].ToString()),
-                            
-                            Gender = (Gender)Enum.Parse(typeof(Gender), dataRow[21].ToString()),
-                            SPhoto = (byte[])dataRow[22]
-                        });
+
+                        StudentListModel stud = new StudentListModel();
+                        stud.StudentID = int.Parse(dataRow[0].ToString());
+                        stud.FirstName = dataRow[1].ToString();
+                        stud.LastName = dataRow[2].ToString();
+                        stud.MiddleName = dataRow[3].ToString();
+                        stud.ClassID = string.IsNullOrWhiteSpace(dataRow[4].ToString()) ? 0 : int.Parse(dataRow[4].ToString());
+                        stud.NameOfClass = dataRow[5].ToString();
+                        stud.DateOfBirth = DateTime.Parse(dataRow[6].ToString());
+                        stud.DateOfAdmission = DateTime.Parse(dataRow[7].ToString());
+                        stud.NameOfGuardian = dataRow[8].ToString();
+                        stud.GuardianPhoneNo = dataRow[9].ToString();
+                        stud.Address = dataRow[10].ToString();
+                        stud.City = dataRow[11].ToString();
+                        stud.PostalCode = dataRow[12].ToString();
+                        stud.PrevInstitution = dataRow[13].ToString();
+                        stud.KCPEScore = string.IsNullOrWhiteSpace(dataRow[14].ToString()) ? 0 : int.Parse(dataRow[14].ToString());
+                        stud.PrevBalance = decimal.Parse(dataRow[15].ToString());
+                        stud.IsActive = int.Parse(dataRow[16].ToString())==1;
+                        stud.Gender = (Gender)Enum.Parse(typeof(Gender), dataRow[17].ToString());
+                        stud.SPhoto = (byte[])dataRow[18];
+                        observableCollection.Add(stud);
                     }
                 }
                 return observableCollection;
@@ -476,7 +470,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                     });
                 }
                 text = text.Remove(text.Length - 1);
-                text = text + " FROM [Student]s LEFT OUTER JOIN [CurrentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE s.IsActive=1 AND cs.ClassID=" + classID;
+                text = text + " FROM [Student]s LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE s.IsActive=1 AND cs.ClassID=" + classID;
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -511,7 +505,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                     }
                     text2 = text2.Remove(text2.Length - 1);
                     text2 = (text2 ?? "");
-                    text += "SET @id = dbo.GetNewID('Institution.StudentSubjectSelectionHeader')\r\n";
+                    text += "SET @id = dbo.GetNewID('dbo.StudentSubjectSelectionHeader')\r\n";
                     object obj = text;
                     text = string.Concat(new object[]
                     {
@@ -567,7 +561,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                     text2 = text2 + current.SubjectID + ",";
                 }
                 text2 = text2.Remove(text2.Length - 1);
-                text += "SET @id = dbo.GetNewID('Institution.StudentSubjectSelectionHeader')\r\n";
+                text += "SET @id = dbo.GetNewID('dbo.StudentSubjectSelectionHeader')\r\n";
                 object obj = text;
                 text = string.Concat(new object[]
                 {

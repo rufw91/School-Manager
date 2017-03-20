@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UmanyiSMS.Views.NewStudent"
+﻿<UserControl x:Class="UmanyiSMS.Modules.Students.Views.NewStudent"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -76,34 +76,16 @@
                 <TextBox  HorizontalAlignment="Left" Margin="525,211,0,0" 
                       Text="{Binding NewStudent.PrevInstitution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"  Width="200" 
         	ToolTip="If transfer student enter name of Previous School"/>
-                <TextBlock Text="Boarding Category" HorizontalAlignment="Left" Margin="423,259,0,0" VerticalAlignment="Top" />
-                <ComboBox HorizontalAlignment="Left" Margin="525,259,0,0" VerticalAlignment="Top" Width="200"
-                      ItemsSource="{Binding BoardingValues}"
-                      SelectedItem="{Binding BoardingValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock HorizontalAlignment="Left" Margin="425,170,0,0" Style="{DynamicResource ResourceKey=Title0}" Text="Optional" 
         	VerticalAlignment="Top"/>
-
-                <TextBlock Text="Current Dormitory" HorizontalAlignment="Left" Margin="423,307,0,0" x:Name="label5" VerticalAlignment="Top" />
-                <ComboBox DisplayMemberPath="NameOfDormitory"  HorizontalAlignment="Left" Margin="525,307,0,0" 
-        	ItemsSource="{Binding AllDorms}" IsEnabled="{Binding NewStudent.IsBoarder}"
-        	SelectedValuePath="DormitoryID" 
-        	SelectedValue="{Binding NewStudent.DormitoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-        	VerticalAlignment="Top" Width="200" />
-                <TextBlock HorizontalAlignment="Left" Margin="730,306,0,0" 
-        	VerticalAlignment="Top" ><Hyperlink Command="{Binding ClearDormCommand}"><Run Text="Clear"/></Hyperlink></TextBlock>
-                <TextBlock Text="Bed No." HorizontalAlignment="Left" Margin="423,352,0,0" VerticalAlignment="Top" />
+                <TextBlock Text="KCPE Score" HorizontalAlignment="Left" Margin="423,259,0,0" VerticalAlignment="Top" />
                 <TextBox HorizontalAlignment="Left" 
-        	Margin="525,352,0,0" TabIndex="2"  VerticalAlignment="Top" Width="200" 
-        	Text="{Binding NewStudent.BedNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     IsEnabled="{Binding NewStudent.IsBoarder}"/>
-                <TextBlock Text="KCPE Score" HorizontalAlignment="Left" Margin="423,402,0,0" VerticalAlignment="Top" />
-                <TextBox HorizontalAlignment="Left" 
-        	Margin="525,402,0,0" TabIndex="2"  VerticalAlignment="Top" Width="200" 
+        	Margin="525,259,0,0" TabIndex="2"  VerticalAlignment="Top" Width="200" 
         	Text="{Binding NewStudent.KCPEScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock HorizontalAlignment="Left" Margin="425,455,0,0" Style="{DynamicResource ResourceKey=Title0}" Text="Fees" 
+                <TextBlock HorizontalAlignment="Left" Margin="425,320,0,0" Style="{DynamicResource ResourceKey=Title0}" Text="Fees" 
         	VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="425,490,0,0" TextWrapping="Wrap" LineHeight="10" VerticalAlignment="Top" Text="Prev. Fees Balance" Height="32" Width="86" />
-                <TextBox  HorizontalAlignment="Left" Margin="525,490,0,0" 
+                <TextBlock HorizontalAlignment="Left" Margin="425,350,0,0" TextWrapping="Wrap" LineHeight="10" VerticalAlignment="Top" Text="Prev. Fees Balance" Height="32" Width="86" />
+                <TextBox  HorizontalAlignment="Left" Margin="525,350,0,0" 
                       Text="{Binding NewStudent.PrevBalance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"  Width="200" 
         	ToolTip="Fees Balance."/>
                 <TextBlock Visibility="Collapsed"  HorizontalAlignment="Left" Margin="800,60,0,0" Style="{DynamicResource ResourceKey=Title0}" Text="Photo" 
@@ -118,7 +100,7 @@
                 <TextBlock HorizontalAlignment="Left" Margin="200,20,0,0" Text="All fields outside 'Optional' category are mandatory" VerticalAlignment="Top" Foreground="{DynamicResource Accent}"/>
                 <Button Content="_Save" HorizontalAlignment="Right" Margin="0,0,10,9" VerticalAlignment="Bottom" Width="75" 
                 Command="{Binding SaveCommand}"/>
-                
+
                 <TextBlock HorizontalAlignment="Left" Margin="825,70,0,0" Style="{DynamicResource ResourceKey=Title0}" Text="Optional" 
         	VerticalAlignment="Top"/>
                 <Border BorderBrush="LightGray" BorderThickness="2" HorizontalAlignment="Left" Height="290" Margin="825,110,20,0" VerticalAlignment="Top" Width="400">
