@@ -62,6 +62,7 @@ namespace UmanyiSMS.Lib.Controllers
             MyWorkObject = workObject;
             NoOfPages = GetNoOfPages();
             ResourceString = GetResString();
+            ItemsPerPage = GetItemsPerPage();
             Document = new FixedDocument();
         }
 
@@ -70,6 +71,8 @@ namespace UmanyiSMS.Lib.Controllers
         protected abstract string GetResString();
 
         protected abstract int GetNoOfPages();
+
+        protected abstract int GetItemsPerPage();
 
         protected void AddText(string text, string fontFamily, double fontSize, bool isBold, double rotateAngle,
             Color fontColor, double left, double top, int pageNo)

@@ -19,10 +19,20 @@
         <TextBlock Grid.Row="0"  HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" >
                 <Hyperlink Command="{Binding RefreshCommand}">Refresh</Hyperlink>
         </TextBlock>
-        <DataGrid Grid.Row="1" Margin="20,0,20,20"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 ItemsSource="{Binding CollViewSource.View, IsAsync=True}">
-            
+
+        <DataGrid Name="lbx" AutoGenerateColumns="False" VirtualizingStackPanel.IsVirtualizing="True" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Margin="20,0,20,20"  IsReadOnly="True"
+                 ItemsSource="{Binding CollViewSource.View, IsAsync=True}" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Staff ID" Binding="{Binding StaffID}" Width="80" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" IsReadOnly="True"/>
+                <DataGridTextColumn Header="National ID" Binding="{Binding NationalID}" Width="150" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Designation" Binding="{Binding Designation}" Width="150" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="250" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="150" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Postal Code" Binding="{Binding PostalCode}" Width="150" IsReadOnly="True"/>
+                <DataGridTextColumn Header="City" Binding="{Binding City}" Width="150" IsReadOnly="True"/>
+                </DataGrid.Columns>
         </DataGrid>
     </Grid>
 </UserControl>

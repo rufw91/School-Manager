@@ -39,17 +39,17 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
         {
             GenerateCommand = new RelayCommand(async o =>
              {
-                 var f =await DataController.GetFullFeesStructure(selectedTerm.StartDate.AddDays(1));
-                 Document = DocumentHelper.GenerateDocument(new FullFeesStructureModel( f ));
-             },o => true);
+                 var f = await DataController.GetFullFeesStructure(selectedTerm.StartDate.AddDays(1));
+                 Document = DocumentHelper.GenerateDocument(new FullFeesStructureModel(f));
+             }, o => selectedTerm != null);
 
             FullPreviewCommand = new RelayCommand(async o =>
             {
                 var f = await DataController.GetFullFeesStructure(selectedTerm.StartDate.AddDays(1));
-                var xdc = DocumentHelper.GenerateDocument(new FullFeesStructureModel( f ));
+                var xdc = DocumentHelper.GenerateDocument(new FullFeesStructureModel(f));
                 if (ShowFullPreviewAction != null)
                     ShowFullPreviewAction.Invoke(xdc);
-            }, o => true);
+            }, o => selectedTerm != null);
         }
 
         public Action<FixedDocument> ShowFullPreviewAction

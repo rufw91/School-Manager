@@ -29,7 +29,7 @@ namespace Helper
             string text;
             if (studentID.HasValue)
             {
-                text = "SELECT SaleID,CustomerID,EmployeeID,OrderDate,TotalAmt FROM [Sales].[SaleHeader] WHERE CustomerID=" + studentID;
+                text = "SELECT SaleID,CustomerID,EmployeeID,OrderDate,TotalAmt FROM [SaleHeader] WHERE CustomerID=" + studentID;
                 if (startTime.HasValue && endTime.HasValue)
                 {
                     string text2 = text;
@@ -54,7 +54,7 @@ namespace Helper
             }
             else
             {
-                text = "SELECT SaleID,CustomerID,EmployeeID,OrderDate,TotalAmt FROM [Sales].[SaleHeader]";
+                text = "SELECT SaleID,CustomerID,EmployeeID,OrderDate,TotalAmt FROM [SaleHeader]";
                 if (startTime.HasValue && endTime.HasValue)
                 {
                     string text2 = text;
@@ -311,7 +311,7 @@ namespace Helper
                 if (newPayment.DatePaid.Date.Equals(DateTime.Now.Date))
                     newPayment.DatePaid = DateTime.Now;
                 ObservableCollection<SqlParameter> observableCollection = new ObservableCollection<SqlParameter>();
-                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('dbo.FeesPayment')\r\nDECLARE @id2 int; SET @id2 = dbo.GetNewID('Sales.SaleHeader')\r\nINSERT INTO [FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid,PaymentMethod) VALUES(@id,@studentID,@amount,@dop,@paym)\r\nINSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,IsDiscount,PaymentID) VALUES(@id2,@studentID,@employeeID,@isCancelled,@dateAdded,@isDiscount,@id)";
+                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('dbo.FeesPayment')\r\nDECLARE @id2 int; SET @id2 = dbo.GetNewID('dbo.SaleHeader')\r\nINSERT INTO [FeesPayment] (FeesPaymentID,StudentID,AmountPaid,DatePaid,PaymentMethod) VALUES(@id,@studentID,@amount,@dop,@paym)\r\nINSERT INTO [SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,IsDiscount,PaymentID) VALUES(@id2,@studentID,@employeeID,@isCancelled,@dateAdded,@isDiscount,@id)";
                 int num = 1;
                 foreach (FeesStructureEntryModel current in newSale.SaleItems)
                 {
@@ -323,7 +323,7 @@ namespace Helper
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "\r\nINSERT INTO [Sales].[SaleDetail] (SaleID,Name,Amount) VALUES(@id2,@entryName",
+                        "\r\nINSERT INTO [SaleDetail] (SaleID,Name,Amount) VALUES(@id2,@entryName",
                         num,
                         ",@entryAmount",
                         num,
@@ -430,7 +430,7 @@ namespace Helper
             return Task.Factory.StartNew<SaleModel>(delegate
             {
                 SaleModel saleModel = new SaleModel();
-                string commandText = "SELECT SaleID,CustomerID,EmployeeID,OrderDate,TotalAmt FROM [Sales].[SaleHeader] WHERE PaymentID=" + feesPaymentID;
+                string commandText = "SELECT SaleID,CustomerID,EmployeeID,OrderDate,TotalAmt FROM [SaleHeader] WHERE PaymentID=" + feesPaymentID;
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 if (dataTable.Rows.Count > 0)
                 {

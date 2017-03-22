@@ -84,42 +84,55 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
 
         protected override void CreateCommands()
         {
-            AddEntryCommand = new RelayCommand(o => 
-            { 
-                CurrentStructure.Entries.Add(newEntry); 
+            AddEntryCommand = new RelayCommand(o =>
+            {
+                CurrentStructure.Entries.Add(newEntry);
                 NewEntry = new FeesStructureEntryModel();
             },
                 o => CanAddNewEntry());
             SaveCommand = new RelayCommand(async o =>
             {
                 bool succ = true;
-                if (saveForAllTerms)
-                {
-                    currentStruct.StartDate = allTerms[0].StartDate;
-                    currentStruct.EndDate = allTerms[2].EndDate;
-                }
-                else
-                {
-                    currentStruct.StartDate = selectedTerm.StartDate;
-                    currentStruct.EndDate = selectedTerm.EndDate;
-                }
+
                 if (saveForAllClasses)
                 {
-                    foreach (var s in allCombinedClasses)
-                        foreach (var c in s.Entries)
-                        {
-                            currentStruct.ClassID = c.ClassID;
-                            succ = succ&&await DataController.SaveNewFeesStructureAsync(currentStruct);
-                        }
+                    if (saveForAllTerms)
+                        foreach (var t in allTerms)
+                            foreach (var s in allCombinedClasses)
+                                foreach (var c in s.Entries)
+                                {
+                                    currentStruct.ClassID = c.ClassID;
+                                    currentStruct.Term = t.TermID;
+                                    succ = succ && await DataController.SaveNewFeesStructureAsync(currentStruct);
+                                }
+
+                    else
+                        foreach (var s in allCombinedClasses)
+                            foreach (var c in s.Entries)
+                            {
+                                currentStruct.ClassID = c.ClassID;
+                                currentStruct.Term = selectedTerm.TermID;
+                                succ = succ && await DataController.SaveNewFeesStructureAsync(currentStruct);
+                            }
                 }
                 else
                 {
+                    if (saveForAllTerms)
+                        foreach (var t in allTerms)
+                            foreach (var c in selectedCombinedClass.Entries)
+                            {
+                                currentStruct.ClassID = c.ClassID;
+                                currentStruct.Term = t.TermID;
+                                succ = succ && await DataController.SaveNewFeesStructureAsync(currentStruct);
+                            }
+                    else
+                        foreach (var c in selectedCombinedClass.Entries)
+                        {
+                            currentStruct.ClassID = c.ClassID;
+                            currentStruct.Term = selectedTerm.TermID;
+                            succ = succ && await DataController.SaveNewFeesStructureAsync(currentStruct);
+                        }
 
-                    foreach (var c in selectedCombinedClass.Entries)
-                    {
-                        currentStruct.ClassID = c.ClassID;
-                        succ = succ && await DataController.SaveNewFeesStructureAsync(currentStruct);
-                    }
                 }
                 MessageBox.Show(succ ? "Successfully saved details" : "Could not save details.", succ ? "Success" : "Error",
                                 MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
@@ -194,7 +207,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
         
         private async void RefreshEntries()
         {
-            CurrentStructure.Entries = (await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID,DateTime.Now)).Entries;
+            CurrentStructure.Entries = (await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID,Institution.Controller.DataController.GetTerm(DateTime.Now))).Entries;
         }
 
         public FeesStructureEntryModel NewEntry

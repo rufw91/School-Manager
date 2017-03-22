@@ -27,38 +27,38 @@ namespace UmanyiSMS.Modules.Exams.Controller
         protected override void AddDataToDocument()
         {
             if (MyWorkObject is StudentTranscriptModel)
-                GenerateTranscript();
-            //if (MyWorkObject is StudentTranscriptModel2)
-                //GenerateTranscript3();
-            //if (workObject is ReportFormModel)
-            //return 1;
-            if (MyWorkObject is ClassReportFormModel)
+                GenerateTranscript2();
+            else if (MyWorkObject is StudentExamResultModel)
+             GenerateTranscript();
+           else if (MyWorkObject is ReportFormModel)
+                GenerateTranscript2();
+            else if (MyWorkObject is ClassReportFormModel)
                 GenerateClassTranscripts();
-           // if (MyWorkObject is ClassTranscriptsModel2)
-             //   GenerateClassTranscripts();
-            if (MyWorkObject is ClassTranscriptsModel)
+            // if (MyWorkObject is ClassTranscriptsModel2)
+            //   GenerateClassTranscripts();
+            else if (MyWorkObject is ClassTranscriptsModel)
                 GenerateClassTranscripts();
-            if (MyWorkObject is ClassStudentsExamResultModel)
+            else if (MyWorkObject is ClassStudentsExamResultModel)
                 GenerateClassExamResults();
-            if (MyWorkObject is ClassExamResultModel)
+            else if (MyWorkObject is ClassExamResultModel)
                 GenerateClassMarkList();
 
-            throw new ArgumentException();
+            else throw new ArgumentException();
 
         }
 
         protected override string GetResString()
         {
             if (MyWorkObject is StudentTranscriptModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/Transcript.xaml"));
             if (MyWorkObject is ReportFormModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ReportForm.xaml"));
             if (MyWorkObject is ClassReportFormModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ReportForm.xaml"));
             if (MyWorkObject is ClassTranscriptsModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/Transcript.xaml"));
             if (MyWorkObject is ClassStudentsExamResultModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ClassMarkList.xaml"));
 
             return "";
         }
@@ -75,9 +75,20 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 return (MyWorkObject as ClassTranscriptsModel).Entries.Count;
             if (MyWorkObject is ClassStudentsExamResultModel)
                 return (MyWorkObject as ClassStudentsExamResultModel).Entries.Count;
+            if (MyWorkObject is ClassStudentsExamResultModel)
+                return (MyWorkObject as ClassStudentsExamResultModel).Entries.Count;
+
+            throw new ArgumentException();
+        }
+
+        protected override int GetItemsPerPage()
+        {           
+            if (MyWorkObject is ClassStudentsExamResultModel)
+                return 37;
 
             return 0;
         }
+
 
 
         #region Aggregate Result

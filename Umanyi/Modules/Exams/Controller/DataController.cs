@@ -813,7 +813,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     newResult.ExamID,
                     " AND StudentID=",
                     newResult.StudentID,
-                    " AND IsActive=1)\r\n"
+                    ")\r\n"
                 });
                 obj = text;
                 text = string.Concat(new object[]
@@ -833,7 +833,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     newResult.ExamID,
                     " AND StudentID=",
                     newResult.StudentID,
-                    " AND IsActive=1)\r\n"
+                    ")\r\n"
                 });
                 foreach (ExamResultSubjectEntryModel current in newResult.Entries)
                 {
@@ -964,7 +964,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         {
             string selectStr = string.Concat(new object[]
             {
-                "SELECT sssd.SubjectID, s.NameOfSubject, ISNULL(erd.Score,0), erd.Remarks,ssd.Tutor,s.Code,erh.ExamResultID FROM [StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [ExamResultHeader] erh ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [ExamResultDetail] erd ON (erh.ExamResultID = erd.ExamResultID AND erd.SubjectID=sssd.SubjectID) LEFT OUTER JOIN [Subject] s ON(sssd.SubjectID=s.SubjectID) LEFT OUTER JOIN [Student] st ON (sssh.StudentID = st.StudentID) LEFT OUTER JOIN [StudentClass] cs ON (st.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) LEFT OUTER JOIN  [SubjectSetupHeader] ssh ON (ssh.ClassID=cs.ClassID) LEFT OUTER JOIN [SubjectSetupDetail] ssd ON (ssd.SubjectID=sssd.SubjectID AND ssd.SubjectSetupID=ssh.SubjectSetupID)  WHERE ssh.IsActive=1 AND sssh.IsActive=1 AND erh.IsActive=1 AND sssh.StudentID=",
+                "SELECT sssd.SubjectID, s.NameOfSubject, ISNULL(erd.Score,0), erd.Remarks,s.Code,erh.ExamResultID FROM [StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID=sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [ExamResultHeader] erh ON (sssh.StudentID=erh.StudentID) LEFT OUTER JOIN [ExamResultDetail] erd ON (erh.ExamResultID = erd.ExamResultID AND erd.SubjectID=sssd.SubjectID) LEFT OUTER JOIN [Subject] s ON(sssd.SubjectID=s.SubjectID) LEFT OUTER JOIN [Student] st ON (sssh.StudentID = st.StudentID) LEFT OUTER JOIN [StudentClass] cs ON (st.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE sssh.[Year]=DATEPART(year,sysdatetime()) AND sssh.StudentID=",
                 studentID,
                 " AND erh.ExamID=",
                 examID,
@@ -983,10 +983,9 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     examResultSubjectEntryModel.NameOfSubject = dataRow[1].ToString();
                     examResultSubjectEntryModel.Remarks = dataRow[3].ToString();
                     examResultSubjectEntryModel.OutOf = outOf;
-                    examResultSubjectEntryModel.Score = (string.IsNullOrWhiteSpace(dataRow[2].ToString()) ? 0m : decimal.Parse(dataRow[2].ToString()));
-                    examResultSubjectEntryModel.Tutor = dataRow[4].ToString();
-                    examResultSubjectEntryModel.Code = int.Parse(dataRow[5].ToString());
-                    examResultSubjectEntryModel.ExamResultID = int.Parse(dataRow[6].ToString());
+                    examResultSubjectEntryModel.Score = (string.IsNullOrWhiteSpace(dataRow[2].ToString()) ? 0m : decimal.Parse(dataRow[2].ToString()));                    
+                    examResultSubjectEntryModel.Code = int.Parse(dataRow[4].ToString());
+                    examResultSubjectEntryModel.ExamResultID = int.Parse(dataRow[5].ToString());
                     examResultStudentModel.Entries.Add(examResultSubjectEntryModel);
                 }
                 return examResultStudentModel;
@@ -1272,11 +1271,11 @@ namespace UmanyiSMS.Modules.Exams.Controller
             int classIDFromStudent = Students.Controller.DataController.GetClassIDFromStudentID(studentID).Result;
             string commandText = string.Concat(new object[]
             {
-                "SELECT row_no,no_of_students FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no, res.StudentID,(SELECT COUNT(*) FROM [Student] WHERE ClassID =",
+                "SELECT row_no,no_of_students FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no, res.StudentID,(SELECT COUNT(*) FROM [Student]s LEFT OUTER JOIN [StudentClass]sc ON (s.StudentID=sc.StudentID) WHERE sc.[Year]=DATEPART(year,sysdatetime()) AND sc.ClassID =",
                 classIDFromStudent,
-                ")no_of_students FROM [ExamResultDetail] erd RIGHT OUTER JOIN (SELECT StudentID,ExamResultID FROM [ExamResultHeader] WHERE IsActive=1 AND ExamID =",
+                ")no_of_students FROM [ExamResultDetail] erd RIGHT OUTER JOIN (SELECT StudentID,ExamResultID FROM [ExamResultHeader] WHERE ExamID =",
                 examID,
-                " AND StudentID IN (SELECT StudentID FROM [Student] WHERE ClassID=",
+                " AND StudentID IN (SELECT s.StudentID FROM [Student]s LEFT OUTER JOIN [StudentClass]sc ON (s.StudentID=sc.StudentID) WHERE sc.[Year]=DATEPART(year,sysdatetime()) AND sc.ClassID =",
                 classIDFromStudent,
                 ")) res ON (erd.ExamResultID=res.ExamResultID) GROUP BY res.StudentID )x WHERE x.StudentID=",
                 studentID
@@ -1299,9 +1298,9 @@ namespace UmanyiSMS.Modules.Exams.Controller
             char c = Institution.Controller.DataController.GetClass(Students.Controller.DataController.GetClassIDFromStudentID(studentID).Result).NameOfClass[5];
             string commandText = string.Concat(new object[]
             {
-                "SELECT row_no,studs FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no, res.StudentID, (SELECT COUNT(*) FROM [Student] WHERE ClassID IN(SELECT ClassID FROM [Class] WHERE NameOfClass LIKE '%",
+                "SELECT row_no,studs FROM(SELECT ROW_NUMBER() OVER(ORDER BY ISNULL(SUM(ISNULL(CONVERT(decimal,erd.Score),0)),0) DESC) row_no, res.StudentID, (SELECT COUNT(*) FROM [Student]s LEFT OUTER JOIN [StudentClass]sc ON (s.StudentID=sc.StudentID) WHERE sc.[Year]=DATEPART(year,sysdatetime()) AND sc.ClassID IN(SELECT ClassID FROM [Class] WHERE NameOfClass LIKE '%",
                 c,
-                "%'))studs FROM [ExamResultDetail] erd RIGHT OUTER JOIN (SELECT StudentID,ExamResultID FROM [ExamResultHeader] WHERE IsActive=1 AND ExamID =",
+                "%'))studs FROM [ExamResultDetail] erd RIGHT OUTER JOIN (SELECT StudentID,ExamResultID FROM [ExamResultHeader] WHERE ExamID =",
                 examID,
                 ") res ON (erd.ExamResultID=res.ExamResultID) GROUP BY res.StudentID)x WHERE x.StudentID=",
                 studentID

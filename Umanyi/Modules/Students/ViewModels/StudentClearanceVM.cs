@@ -15,11 +15,6 @@ namespace UmanyiSMS.Modules.Students.ViewModels
     public class StudentClearanceVM: ViewModelBase
     {
         StudentClearanceModel selectedStudent;
-        private byte[] sPhoto;
-        private bool isInClassMode;
-        private bool isInStudentMode;
-        private int selectedClassID;
-        private ObservableCollection<ClassModel> allClasses;
 
         public StudentClearanceVM()
         {
@@ -57,7 +52,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
                     MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 if (succ)
                     Reset();
-            }, o => selectedStudent.HasErrors);
+            }, o => !selectedStudent.HasErrors);
         }
         
         public StudentClearanceModel SelectedStudent

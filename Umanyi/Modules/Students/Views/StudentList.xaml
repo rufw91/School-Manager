@@ -37,8 +37,7 @@
         <DataGrid Name="lbx" AutoGenerateColumns="False" VirtualizingStackPanel.IsVirtualizing="True" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto"
                  Margin="20,0,20,20"  IsReadOnly="True"
                  ItemsSource="{Binding CollViewSource.View, IsAsync=True}" 
-                  Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}"
-                  >
+                  Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type views:MainWindow}}}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Adm No." Binding="{Binding StudentID}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding NameOfStudent}" Width="200" IsReadOnly="True"/>
@@ -52,10 +51,7 @@
                 <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Postal Code" Binding="{Binding PostalCode}" Width="80" IsReadOnly="True"/>
                 <DataGridTextColumn Header="City" Binding="{Binding City}" Width="80" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Boarding Value" Binding="{Binding BoardingValue}" Width="80" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Dormitory" Binding="{Binding NameOfDormitory}" Width="80" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Bed No" Binding="{Binding BedNo}" Width="80" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Prev. Institution" Binding="{Binding PrevInstitution}" Width="200" IsReadOnly="True"/>
+                 <DataGridTextColumn Header="Prev. Institution" Binding="{Binding PrevInstitution}" Width="200" IsReadOnly="True"/>
                 <DataGridTextColumn Header="KCPE Score" Binding="{Binding KCPEScore}" Width="200" IsReadOnly="True"/>
             </DataGrid.Columns>
             <DataGrid.Resources>

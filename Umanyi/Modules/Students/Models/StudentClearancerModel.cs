@@ -46,6 +46,12 @@ namespace UmanyiSMS.Modules.Students.Models
                         errors.Add("Student does not exist.");
                         SetErrors("StudentID", errors);
                     }
+                    else if (!student.IsActive)
+                    {
+                        List<string> errors = new List<string>();
+                        errors.Add("Student is already cleared.");
+                        SetErrors("StudentID", errors);
+                    }
                     else
                     {
                         ClearErrors("StudentID");

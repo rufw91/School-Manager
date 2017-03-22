@@ -13,8 +13,8 @@ namespace UmanyiSMS.Modules.Fees.Models
             NameOfCombinedClass = "";
             ClassID = 0;
             IsActive = true;
-            StartDate = DateTime.Now;
-            EndDate = null;
+            Term = Institution.Controller.DataController.GetTerm(DateTime.Now);
+            Year = DateTime.Now.Year;
             Entries = new ObservableCollection<FeesStructureEntryModel>();
         }
 
@@ -24,8 +24,8 @@ namespace UmanyiSMS.Modules.Fees.Models
             FeesStructureID = 0;
             ClassID = 0;
             IsActive = true;
-            StartDate = DateTime.Now;
-            EndDate = null;
+            Term = Institution.Controller.DataController.GetTerm(DateTime.Now);
+            Year = DateTime.Now.Year;
             Entries.Clear();
         }
 
@@ -41,10 +41,10 @@ namespace UmanyiSMS.Modules.Fees.Models
         public bool IsActive
         { get; set; }
 
-        public DateTime StartDate
+        public int Term
         { get; set; }
 
-        public DateTime? EndDate
+        public int Year
         { get; set; }
 
         public ObservableCollection<FeesStructureEntryModel> Entries

@@ -36,5 +36,59 @@
     <DataTemplate DataType="{x:Type viewModels:ViewFullFeesStructureVM}" >
         <views:ViewFullFeesStructure/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:FeesStatementVM}" >
+        <views:FeesStatement/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FeePaymentModel">
+        <Grid Height="60">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Amount Paid:"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AmountPaid}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Date Paid:"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding DatePaid, StringFormat={}{0:dd MMM yyyy}}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FeesStructureEntryModel">
+        <Grid Height="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Item:"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Cost:"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Amount}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FeesStructureEditableEntryModel">
+        <Grid Height="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Item:"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Cost:"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BorderThickness="0"/>
+        </Grid>
+    </DataTemplate>
 
 </ResourceDictionary>

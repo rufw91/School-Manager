@@ -7,12 +7,12 @@ namespace UmanyiSMS.Modules.Students.Models
         private bool isSelected;
         public StudentSubjectSelectionEntryModel()
         {
-            IsSelected = true;
+            IsSelected = false;
         }
 
         public StudentSubjectSelectionEntryModel(SubjectBaseModel subject)
         {
-            IsSelected = true;
+            IsSelected = false;
             this.SubjectID = subject.SubjectID;
             this.NameOfSubject = subject.NameOfSubject;
         }

@@ -641,33 +641,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Modules\Exams\Resources\AggregateResult.xaml">
+    <Resource Include="Modules\Exams\Resources\AggregateResult.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Modules\Exams\Resources\ClassMarkList.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Modules\Exams\Resources\ReportForm.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Modules\Exams\Resources\Transcript.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Exams\Resources\ClassMarkList.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Modules\Exams\Resources\Transcript2.xaml">
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Exams\Resources\ReportForm.xaml">
+    </Resource>
+    <Resource Include="Modules\Exams\Resources\Transcript3.xaml">
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Exams\Resources\Transcript.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Modules\Exams\Resources\Transcript4.xaml">
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Exams\Resources\Transcript2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Exams\Resources\Transcript3.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Exams\Resources\Transcript4.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    </Resource>
     <Page Include="Modules\Exams\Views\CombinedAggregateResults.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -723,30 +718,25 @@
     <Compile Include="Modules\Exams\Views\EnterExamResults.xaml.cs">
       <DependentUpon>EnterExamResults.xaml</DependentUpon>
     </Compile>
-    <Page Include="Modules\Fees\Resources\Balances.xaml">
+    <Resource Include="Modules\Fees\Resources\Balances.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </Resource>
     <Page Include="Modules\Fees\Resources\DataTemplates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Fees\Resources\FullFeesStructure.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\Fees\Resources\Receipt.xaml">
+    <Resource Include="Modules\Fees\Resources\FullFeesStructure.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Fees\Resources\Receipt2.xaml">
+    </Resource>
+    <Resource Include="Modules\Fees\Resources\Receipt.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Fees\Resources\Statement.xaml">
+    </Resource>
+    <Resource Include="Modules\Fees\Resources\Receipt2.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </Resource>
+    <Resource Include="Modules\Fees\Resources\Statement.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
     <Page Include="Modules\Fees\Views\BalancesList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

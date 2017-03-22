@@ -15,7 +15,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
     public class StudentListVM : ViewModelBase
     {
         ObservableCollection<StudentListModel> allStudents;
-        string searchText="";
+        string searchText = "";
         CollectionViewSource collViewSource;
         bool showInactive;
         public StudentListVM()
@@ -45,20 +45,20 @@ namespace UmanyiSMS.Modules.Students.ViewModels
             IsBusy = false;
             ShowInactive = false;
             PropertyChanged += async (o, e) =>
-                {
-                    if (e.PropertyName=="IsActive")
-                        if (IsActive)
-                        {
-                            allStudents = await DataController.GetAllStudentsListAsync();
-                            CollViewSource.Source = allStudents;
-                        }
-                };
+            {
+                if (e.PropertyName == "IsActive")
+                    if (IsActive)
+                    {
+                        allStudents = await DataController.GetAllStudentsListAsync();
+                        CollViewSource.Source = allStudents;
+                    }
+            };
             ShowInactive = true;
         }
 
         private int GetSelectedItemsCount()
         {
-            int i=0;
+            int i = 0;
             ObservableCollection<StudentListModel> l = (ObservableCollection<StudentListModel>)collViewSource.Source;
             foreach (StudentListModel slm in l)
                 if (slm.IsSelected)
@@ -136,7 +136,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
             }
         }
 
-        
+
         private void RenewFilter()
         {
             RemoveFilter();
@@ -175,20 +175,12 @@ namespace UmanyiSMS.Modules.Students.ViewModels
             private set;
         }
 
-        
+
         public ICommand ExportToExcelCommand
         {
             get;
             private set;
         }
         
-            
-                    
-                        
-                        
-                            
-                            
-                                
-                                
     }
 }

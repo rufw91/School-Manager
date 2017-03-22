@@ -5,6 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
             mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="984"
              Background="White">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+            <Setter Property="Padding" Value="5,0,0,0"/>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Subject Selection" 
 			VerticalAlignment="Top"/>
@@ -19,21 +24,10 @@
         <TextBox HorizontalAlignment="Left" Height="23" Margin="114,130,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding SelectedStudent.NameOfStudent}"
                  IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,200,0,0" Style="{DynamicResource Title0}" Text="Add Subject" VerticalAlignment="Top"/>
-
-        <TextBlock HorizontalAlignment="Left" Margin="50,250,0,0" TextWrapping="Wrap" Text="Subject" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" ItemsSource="{Binding AllSubjects}"
-        	DisplayMemberPath="NameOfSubject"
-        	SelectedItem="{Binding SelectedSubject, Mode=TwoWay}" Margin="114,250,0,0"/>
-        <Button Content="_Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" 
-        	Command="{Binding AddNewSubjectCommand}" Margin="239,300,0,0"/>
         <TextBlock HorizontalAlignment="Left" Margin="350,80,0,0" Text="Selected Subjects" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
-        <ListBox Height="350" Margin="350,118,20,0" VerticalAlignment="Top" 
-                 ItemsSource="{Binding StudentSubjectSelection.Entries}" DisplayMemberPath="NameOfSubject"
-                 SelectedItem="{Binding CurrentSubject, Mode=TwoWay}"/>
-        <TextBlock HorizontalAlignment="Right" Margin="0,97,20,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding RemoveSubjectCommand}">Remove</Hyperlink>
-        </TextBlock>
+        <ListBox Margin="350,120,20,45" 
+                 ItemTemplate="{StaticResource SubjectSelectionModelTemplate}"
+                 ItemsSource="{Binding AllSubjects}"/>
         <Button Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
                 Command="{Binding SaveCommand}"/>
         <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">

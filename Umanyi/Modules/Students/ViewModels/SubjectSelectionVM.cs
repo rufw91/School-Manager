@@ -14,35 +14,33 @@ namespace UmanyiSMS.Modules.Students.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class SubjectSelectionVM:ViewModelBase
     {
-        private StudentSelectModel selectedStudent;
-        private SubjectModel selectedSubject;        
-        private StudentSubjectSelectionModel studentSubjectSelection;
+        private StudentSubjectSelectionModel selectedStudent; 
         public SubjectSelectionVM()
         {
             InitVars();
             CreateCommands();
         }
-        protected override void InitVars()
+        protected async override void InitVars()
         {
             Title = "SUBJECT SELECTION";
-            SelectedStudent = new StudentSelectModel();
-            studentSubjectSelection = new StudentSubjectSelectionModel();
-            AllSubjects = new ObservableCollection<SubjectModel>();
+            selectedStudent = new StudentSubjectSelectionModel();
+            AllSubjects = new ObservableCollection<StudentSubjectSelectionEntryModel>();
+            var ass= await Institution.Controller.DataController.GetInstitutionSubjectsAsync();
+            foreach (var s in ass)
+                AllSubjects.Add(new StudentSubjectSelectionEntryModel(s));
             selectedStudent.PropertyChanged += async (o, e) =>
             {
                 
                 if (e.PropertyName == "StudentID")
                 {
-                    AllSubjects.Clear();
-                    selectedStudent.CheckErrors();
-                    studentSubjectSelection.Reset();
-                    studentSubjectSelection.StudentID = selectedStudent.StudentID;
-                    studentSubjectSelection.NameOfStudent = selectedStudent.NameOfStudent;
+                    foreach (var s in AllSubjects)
+                        s.IsSelected = false;
+                        selectedStudent.CheckErrors();
                     if (!selectedStudent.HasErrors)
                     {
-                        studentSubjectSelection.Entries = (await DataController.GetStudentSubjectSelection(studentSubjectSelection.StudentID)).Entries;
-                        AllSubjects = await Institution.Controller.DataController.GetInstitutionSubjectsAsync();
-                        NotifyPropertyChanged("AllSubjects");
+                        var ty = (await DataController.GetStudentSubjectSelection(selectedStudent.StudentID)).Entries;
+                        foreach (var s in ty)
+                            AllSubjects.First(x => x.SubjectID == s.SubjectID).IsSelected = true;                        
                     }
 
                 }
@@ -52,20 +50,11 @@ namespace UmanyiSMS.Modules.Students.ViewModels
 
         protected override void CreateCommands()
         {
-            AddNewSubjectCommand = new RelayCommand(o =>
-            {
-                studentSubjectSelection.Entries.Add(new StudentSubjectSelectionEntryModel(selectedSubject));
-            }, o => CanAdd());
-
-            RemoveSubjectCommand = new RelayCommand(o =>
-            {
-                studentSubjectSelection.Entries.Remove(CurrentSubject);
-            }, o => CurrentSubject != null);
-
             SaveCommand = new RelayCommand(async o =>
                 {
                     IsBusy = true;
-                    bool succ = await DataController.SaveNewSubjectSelection(studentSubjectSelection);
+                    selectedStudent.Entries = new ObservableCollection<StudentSubjectSelectionEntryModel>(AllSubjects.Where(x => x.IsSelected));
+                    bool succ = await DataController.SaveNewSubjectSelection(selectedStudent);
                     MessageBox.Show(succ ? "Successfully saved details." : "An error occurred. Could not save details.", succ ? "Success" : "Error",
                         MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                     if (succ)
@@ -75,15 +64,10 @@ namespace UmanyiSMS.Modules.Students.ViewModels
         }
         private bool CanSave()
         {
-            return studentSubjectSelection.StudentID > 0 && !IsBusy && (studentSubjectSelection.Entries.Count > 0);
+            return selectedStudent.StudentID > 0 && !IsBusy && AllSubjects.Any(o=>o.IsSelected);
         }
-        private bool CanAdd()
-        {
-            return selectedSubject != null && !studentSubjectSelection.Entries.Any(o => (o.NameOfSubject == selectedSubject.NameOfSubject) && 
-                (o.SubjectID == selectedSubject.SubjectID));
-        }
-
-        public StudentSelectModel SelectedStudent
+        
+        public StudentSubjectSelectionModel SelectedStudent
         {
             get { return selectedStudent; }
             set
@@ -96,52 +80,15 @@ namespace UmanyiSMS.Modules.Students.ViewModels
 
             }
         }
-
-        public StudentSubjectSelectionModel StudentSubjectSelection
-        {
-            get { return studentSubjectSelection; }
-            set
-            {
-                if (studentSubjectSelection != value)
-                {
-                    studentSubjectSelection = value;
-                    NotifyPropertyChanged("StudentSubjectSelection");
-                }
-
-            }
-        }
-
-        public SubjectModel SelectedSubject
-        {
-            get { return selectedSubject; }
-            set
-            {
-                if (selectedSubject != value)
-                {
-                    selectedSubject = value;
-                    NotifyPropertyChanged("SelectedSubject");
-                }
-
-            }
-        }
-
-        public ObservableCollection<SubjectModel> AllSubjects { get; set; }
-
-        public StudentSubjectSelectionEntryModel CurrentSubject { get; set; }
+        
+        public ObservableCollection<StudentSubjectSelectionEntryModel> AllSubjects { get; private set; }
 
         public ICommand SaveCommand
-        { get; private set; }
-
-        public ICommand AddNewSubjectCommand
-        { get; private set; }
-
-        public ICommand RemoveSubjectCommand
         { get; private set; }
         
         public override void Reset()
         {
             selectedStudent.Reset();
-            StudentSubjectSelection.Reset();
         }
     }
 }

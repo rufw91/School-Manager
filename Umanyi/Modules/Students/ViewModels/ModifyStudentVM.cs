@@ -74,7 +74,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
             {
                 IsStudentInactive = false;
                 IsBusy = true;
-                await DataController.SetStudentActiveAsync(newStudent);
+                await DataController.SetStudentActiveAsync(newStudent.StudentID);
                 IsBusy = false;
             }, o => !newStudent.HasErrors && isStudentInactive);
             IgnoreCommand = new RelayCommand(o => { IsStudentInactive = false; }, o => !newStudent.HasErrors && isStudentInactive);
