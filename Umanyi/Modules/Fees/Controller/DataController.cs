@@ -45,7 +45,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
             return Task.Factory.StartNew<ObservableCollection<StudentFeesDefaultModel>>(delegate
             {
                 ObservableCollection<StudentFeesDefaultModel> observableCollection = new ObservableCollection<StudentFeesDefaultModel>();
-                string commandText = "SELECT s.StudentID, FirstName+' '+LastName+' '+MiddleName, GuardianPhoneNo,dbo.GetCurrentBalance(s.StudentID) FROM [Student]s  WHERE s.ClassID=" + classID + " AND s.IsActive = 1";
+                string commandText = "SELECT s.StudentID, NameOfStudent, GuardianPhoneNo,dbo.GetCurrentBalance(s.StudentID) FROM [Student]s LEFT OUTER JOIN [StudentClass]sc ON (sc.StudentID=s.StudentID AND sc.[Year]=DATEPART(year,sysdatetime())) WHERE sc.ClassID=" + classID + " AND sc.[Year]=DATEPART(year,sysdatetime()) AND s.IsActive = 1";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -73,37 +73,23 @@ namespace UmanyiSMS.Modules.Fees.Controller
             return Task.Factory.StartNew<SaleModel>(delegate
             {
                 SaleModel saleModel = new SaleModel();
-                DateTime? dateTime = term.StartDate;
-                DateTime? dateTime2 = term.EndDate;
-                string text = "SELECT SaleID,EmployeeID,PaymentID,OrderDate,TotalAmt FROM [Sales].[SaleHeader] WHERE CustomerID=" + studentID + " AND IsCancelled=0 AND OrderDate BETWEEN '";
+                DateTime startd = term.StartDate.Date;
+                DateTime endd = new DateTime(term.EndDate.Year, term.EndDate.Month, term.EndDate.Day, 23, 59, 59, 998);
 
-                string text2 = text;
-                text = string.Concat(new string[]
-                {
-                    text2,
-                    dateTime.Value.Day.ToString(),
-                    "/",
-                    dateTime.Value.Month.ToString(),
-                    "/",
-                    dateTime.Value.Year.ToString(),
-                    " 00:00:00.000' AND '",
-                    dateTime2.Value.Day.ToString(),
-                    "/",
-                    dateTime2.Value.Month.ToString(),
-                    "/",
-                    dateTime2.Value.Year.ToString(),
-                    " 23:59:59.998'"
-                });
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+                string text = "SELECT SaleID,EmployeeID,OrderDate,TotalAmt FROM [SaleHeader] WHERE CustomerID=@cid AND OrderDate BETWEEN @startd AND @endd";
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@cid", studentID));
+                paramColl.Add(new SqlParameter("@startd", startd));
+                paramColl.Add(new SqlParameter("@endd", endd));
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text,paramColl);
                 if (dataTable.Rows.Count > 0)
                 {
                     DataRow dataRow = dataTable.Rows[0];
                     saleModel.SaleID = int.Parse(dataRow[0].ToString());
                     saleModel.CustomerID = studentID;
                     saleModel.EmployeeID = int.Parse(dataRow[1].ToString());
-                    saleModel.PaymentID = int.Parse(dataRow[2].ToString());
-                    saleModel.DateAdded = DateTime.Parse(dataRow[3].ToString());
-                    saleModel.OrderTotal = decimal.Parse(dataRow[4].ToString());
+                    saleModel.DateAdded = DateTime.Parse(dataRow[2].ToString());
+                    saleModel.OrderTotal = decimal.Parse(dataRow[3].ToString());
                     saleModel.SaleItems = GetSaleItems(saleModel.SaleID);
                 }
                 return saleModel;
@@ -113,7 +99,9 @@ namespace UmanyiSMS.Modules.Fees.Controller
         private static ObservableCollection<FeesStructureEntryModel> GetSaleItems(int saleID)
         {
             ObservableCollection<FeesStructureEntryModel> observableCollection = new ObservableCollection<FeesStructureEntryModel>();
-            string commandText = "SELECT Name,Amount FROM [Sales].[SaleDetail] WHERE SaleID=" + saleID;
+            if (saleID==0)
+                return observableCollection;
+            string commandText = "SELECT Name,Amount FROM [SaleDetail] WHERE SaleID=" + saleID;
             DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -126,13 +114,14 @@ namespace UmanyiSMS.Modules.Fees.Controller
             return observableCollection;
         }
 
-        public static Task<FeesStructureModel> GetFeesStructureAsync(int currentClassID, DateTime currentDate)
+        public static Task<FeesStructureModel> GetFeesStructureAsync(int currentClassID,int term)
         {
             return Task.Factory.StartNew<FeesStructureModel>(delegate
             {
                 FeesStructureModel feesStructureModel = new FeesStructureModel();
                 // string text = currentDate.Date.ToString("g");
-                string commandText = "DECLARE @id int\r\nSET @id=(SELECT TOP 1 FeesStructureID FROM [FeesStructureHeader] WHERE ClassID=" + currentClassID + "\r\nAND IsActive=1)\r\nSELECT ISNULL(@id,0)";
+                string commandText = "DECLARE @id int\r\nSET @id=(SELECT TOP 1 FeesStructureID FROM [FeesStructureHeader] WHERE ClassID=" 
+                + currentClassID + "AND Term="+term+" AND [Year]=DATEPART(YEAR,sysdatetime()))\r\nSELECT ISNULL(@id,0)";
                 int num = int.Parse(DataAccessHelper.Helper.ExecuteScalar(commandText));
                 FeesStructureModel result;
                 if (num <= 0)
@@ -160,28 +149,14 @@ namespace UmanyiSMS.Modules.Fees.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                DateTime? dateTime = term.StartDate;
-                DateTime? dateTime2 = term.EndDate;
-                string text = "IF EXISTS(SELECT * FROM [Sales].[SaleHeader] WHERE CustomerID=" + studentID + " AND IsCancelled=0 AND OrderDate BETWEEN '";
-
-                string text2 = text;
-                text = string.Concat(new string[]
-                {
-                    text2,
-                    dateTime.Value.Day.ToString(),
-                    "/",
-                    dateTime.Value.Month.ToString(),
-                    "/",
-                    dateTime.Value.Year.ToString(),
-                    " 00:00:00.000' AND '",
-                    dateTime2.Value.Day.ToString(),
-                    "/",
-                    dateTime2.Value.Month.ToString(),
-                    "/",
-                    dateTime2.Value.Year.ToString(),
-                    " 23:59:59.998') SELECT 'True' ELSE SELECT 'False'"
-                });
-                return bool.Parse(DataAccessHelper.Helper.ExecuteScalar(text));
+                DateTime startd = term.StartDate.Date;
+                DateTime endd = new DateTime(term.EndDate.Year, term.EndDate.Month, term.EndDate.Day, 23, 59, 59, 998);
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@cid", studentID));
+                paramColl.Add(new SqlParameter("@startd", startd));
+                paramColl.Add(new SqlParameter("@endd", endd));
+                string text = "IF EXISTS(SELECT * FROM [SaleHeader] WHERE CustomerID=@cid AND OrderDate BETWEEN @startd AND @endd) SELECT 'True' ELSE SELECT 'False'";
+                return bool.Parse(DataAccessHelper.Helper.ExecuteScalar(text,paramColl));
             });
         }
 
@@ -189,35 +164,31 @@ namespace UmanyiSMS.Modules.Fees.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
+                var paramColl = new List<SqlParameter>();
                 string text = string.Concat(new object[]
                 {
-                    "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('Sales.SaleHeader')\r\nINSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,IsDiscount,PaymentID) VALUES(@id,'",
-                    newSale.CustomerID,
-                    "',",
-                    newSale.EmployeeID,
-                    ",'",
-                    newSale.IsCancelled,
-                    "','",
-                    newSale.DateAdded.ToString("g"),
-                    "','",
-                    newSale.IsDiscount,
-                    "',@id)"
+                    "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('dbo.SaleHeader')\r\n",
+                    "INSERT INTO [SaleHeader] (SaleID,CustomerID,EmployeeID,OrderDate)" ,
+                    " VALUES(@id,@cid,@eid,@odate)"
                 });
+                paramColl.Add(new SqlParameter("@cid", newSale.CustomerID));
+                paramColl.Add(new SqlParameter("@eid", newSale.EmployeeID));
+                paramColl.Add(new SqlParameter("@odate", newSale.DateAdded));
+                int index = 0;
                 foreach (FeesStructureEntryModel current in newSale.SaleItems)
                 {
+                    paramColl.Add(new SqlParameter("@nam"+index, current.Name));
+                    paramColl.Add(new SqlParameter("@amt"+index, current.Amount));
                     object obj = text;
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "\r\nINSERT INTO [Sales].[SaleDetail] (SaleID,Name,Amount) VALUES(@id,'",
-                        current.Name,
-                        "',",
-                        current.Amount,
-                        ")"
+                        "\r\nINSERT INTO [SaleDetail] (SaleID,Name,Amount) VALUES(@id,@nam",index,",@amt",index,")"
                     });
+                    index++;
                 }
                 text += "\r\nCOMMIT";
-                return DataAccessHelper.Helper.ExecuteNonQuery(text);
+                return DataAccessHelper.Helper.ExecuteNonQuery(text,paramColl);
             });
         }
 
@@ -225,61 +196,56 @@ namespace UmanyiSMS.Modules.Fees.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                DateTime? dateTime = term.StartDate;
-                DateTime? dateTime2 = term.EndDate;
+                DateTime startd = term.StartDate.Date;
+                DateTime endd = new DateTime(term.EndDate.Year, term.EndDate.Month, term.EndDate.Day, 23, 59, 59, 998);
 
-                string selectString = "SELECT s.StudentID FROM [Student]s LEFT OUTER JOIN [StudentClass]cs ON (s.StudentID = cs.StudentID AND cs.IsActive=1) WHERE s.IsActive=1 AND cs.ClassID=" + newSale.CustomerID;
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@startd", startd));
+                paramColl.Add(new SqlParameter("@endd", endd));
+                paramColl.Add(new SqlParameter("@ordd", startd.AddDays(1)));
+                paramColl.Add(new SqlParameter("@eid", newSale.EmployeeID));
+
+                int index2 = 0;
+                foreach (var current2 in newSale.SaleItems)
+                {
+                    paramColl.Add(new SqlParameter("@nam" + index2, current2.Name));
+                    paramColl.Add(new SqlParameter("@amt" + index2, current2.Amount));
+                    index2++;
+                }
+
+                string selectString = "SELECT s.StudentID FROM [Student]s LEFT OUTER JOIN [StudentClass]cs ON (s.StudentID = cs.StudentID AND cs.[Year]=DATEPART(YEAR,sysdatetime())) WHERE s.IsActive=1 AND cs.[Year]=DATEPART(YEAR,sysdatetime()) AND cs.ClassID=" + newSale.CustomerID;
                 List<string> observableCollection = DataAccessHelper.Helper.CopyFirstColumnToList(selectString);
-                string text = "BEGIN TRANSACTION\r\n DECLARE @id int;\r\n";
+
+                int index = 0;
+                
+                string text = "BEGIN TRANSACTION\r\nDECLARE @id int;";
                 foreach (string current in observableCollection)
                 {
-                    object obj = text;
-                    text = string.Concat(new object[]
+                    paramColl.Add(new SqlParameter("@cid" + index, current));
+                    text +=
+                        "\r\nIF NOT EXISTS(SELECT * FROM [SaleHeader] WHERE CustomerID=@cid" + index + " AND OrderDate BETWEEN @startd AND @endd)\r\n" +
+                        "BEGIN\r\nSET @id = dbo.GetNewID('dbo.SaleHeader');\r\nINSERT INTO [SaleHeader] (SaleID,CustomerID,EmployeeID,OrderDate) " +
+                        "VALUES(@id,@cid" + index + ",@eid,@ordd)\r\n";
+                    index2 = 0;
+                    foreach (var current2 in newSale.SaleItems)
                     {
-                        obj,
-                        "IF NOT EXISTS(SELECT * FROM [Sales].[SaleHeader] WHERE CustomerID=",
-                        current,
-                        " AND OrderDate BETWEEN '",
-                        dateTime.Value.Day.ToString(),
-                        "/",
-                        dateTime.Value.Month.ToString(),
-                        "/",
-                        dateTime.Value.Year.ToString(),
-                        " 00:00:00.000' AND '",
-                        dateTime2.Value.Day.ToString(),
-                        "/",
-                        dateTime2.Value.Month.ToString(),
-                        "/",
-                        dateTime2.Value.Year.ToString(),
-                        " 23:59:59.998')\r\nBEGIN\r\nSET @id = dbo.GetNewID('Sales.SaleHeader');\r\nINSERT INTO [Sales].[SaleHeader] (SaleID,CustomerID,EmployeeID,IsCancelled,OrderDate,IsDiscount,PaymentID) VALUES(@id,'",
-                        current,
-                        "',",
-                        newSale.EmployeeID,
-                        ",'",
-                        newSale.IsCancelled,
-                        "','",
-                        newSale.DateAdded.ToString("g"),
-                        "','",
-                        newSale.IsDiscount,
-                        "',0)\r\n;"
-                    });
-                    foreach (FeesStructureEntryModel current2 in newSale.SaleItems)
-                    {
-                        obj = text;
-                        text = string.Concat(new object[]
-                        {
-                            obj,
-                            "INSERT INTO [Sales].[SaleDetail] (SaleID,Name,Amount) VALUES(@id,'",
-                            current2.Name,
-                            "',",
-                            current2.Amount,
-                            ");\r\n"
-                        });
+                        text += "INSERT INTO [SaleDetail] (SaleID,Name,Amount) VALUES(@id,@nam" + index2 + ",@amt" + index2 + ");\r\n";
+                        index2++;
                     }
-                    text += "\r\nEND\r\n";
+                    text += "END\r\nELSE\r\nBEGIN\r\n";
+                    text += "SET @id =(SELECT SaleID FROM [SaleHeader] WHERE CustomerID=@cid" + index + " AND OrderDate BETWEEN @startd AND @endd) " +
+                    "DELETE FROM [SaleDetail] WHERE SaleID=@id";
+                    index2 = 0;
+                    foreach (var current2 in newSale.SaleItems)
+                    {
+                        text += "\r\nINSERT INTO [SaleDetail] (SaleID,Name,Amount) VALUES(@id,@nam" + index2 + ",@amt" + index2 + ")";
+                        index2++;
+                    }
+                    text+="\r\nEND";
+                    index++;
                 }
-                text += "COMMIT";
-                return DataAccessHelper.Helper.ExecuteNonQuery(text);
+                text += "\r\nCOMMIT";
+                return DataAccessHelper.Helper.ExecuteNonQuery(text, paramColl);
             });
         }
 
@@ -288,24 +254,23 @@ namespace UmanyiSMS.Modules.Fees.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string text = "BEGIN TRANSACTION\r\nDELETE FROM [Sales].[SaleDetail] WHERE SaleID=" + newSale.SaleID;
+                string text = "BEGIN TRANSACTION\r\nDELETE FROM [SaleDetail] WHERE SaleID=@sid";
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@sid", newSale.SaleID));
+                int index = 0;
                 foreach (FeesStructureEntryModel current in newSale.SaleItems)
                 {
+                    paramColl.Add(new SqlParameter("@nam" + index, current.Name));
+                    paramColl.Add(new SqlParameter("@amt" + index, current.Amount));
                     object obj = text;
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "\r\nINSERT INTO [Sales].[SaleDetail] (SaleID,Name,Amount) VALUES(",
-                        newSale.SaleID,
-                        ",'",
-                        current.Name,
-                        "',",
-                        current.Amount,
-                        ")"
+                         "\r\nINSERT INTO [SaleDetail] (SaleID,Name,Amount) VALUES(@sid,@nam",index,",@amt",index,")"
                     });
                 }
                 text += "\r\nCOMMIT";
-                return DataAccessHelper.Helper.ExecuteNonQuery(text);
+                return DataAccessHelper.Helper.ExecuteNonQuery(text,paramColl);
             });
         }
 
@@ -375,7 +340,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
                 else
                 {
                     FeesStatementModel feesStatementModel = new FeesStatementModel();
-                    string text = "SELECT SaleID,OrderDate, TotalAmt FROM [Sales].[SaleHeader] WHERE [CustomerID] ='" + studentID + "'";
+                    string text = "SELECT SaleID,OrderDate, TotalAmt FROM [SaleHeader] WHERE [CustomerID] =" + studentID ;
                     if (startTime.HasValue && endTime.HasValue)
                     {
                         string text2 = text;
@@ -389,7 +354,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
                             " 23:59:59.998')"
                         });
                     }
-                    string text3 = "SELECT FeesPaymentID, DatePaid, AmountPaid FROM [FeesPayment]  WHERE [StudentID] ='" + studentID + "'";
+                    string text3 = "SELECT FeesPaymentID, DatePaid, AmountPaid FROM [FeesPayment]  WHERE [StudentID] =" + studentID;
                     if (startTime.HasValue && endTime.HasValue)
                     {
                         string text2 = text3;
@@ -447,7 +412,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
         {
             return Task.Factory.StartNew<decimal>(delegate
             {
-                string commandText = "DECLARE  @sal decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,TotalAmt),0)) FROM  [Sales].[SaleHeader] WHERE CustomerID =@studentID AND OrderDate <CONVERT(datetime,@dt));\r\n" +
+                string commandText = "DECLARE  @sal decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,TotalAmt),0)) FROM  [SaleHeader] WHERE CustomerID =@studentID AND OrderDate <CONVERT(datetime,@dt));\r\n" +
                 "DECLARE  @pur decimal=(SELECT SUM(ISNULL(CONVERT(DECIMAL,AmountPaid),0)) FROM  [FeesPayment] WHERE StudentID =@studentID  AND DatePaid <CONVERT(datetime,@dt));\r\n" +
                 "DECLARE  @prev decimal=(SELECT CONVERT(DECIMAL,PreviousBalance) FROM  [Student] WHERE StudentID=@studentID)\r\n" +
                 "SELECT (select (ISNULL(@sal,0)+ISNULL(@prev,0))-ISNULL(@pur,0));";
@@ -460,20 +425,13 @@ namespace UmanyiSMS.Modules.Fees.Controller
             });
         }
 
-        public static Task<int> GetLastPaymentIDAsync(int studentID, DateTime datePaid)
+        public static Task<int> GetLastPaymentIDAsync(int studentID)
         {
             return Task.Factory.StartNew<int>(delegate
             {
-                string commandText = string.Concat(new object[]
-                {
-                    "SELECT FeesPaymentID FROM [FeesPayment] WHERE StudentID=",
-                    studentID,
-                    " AND DatePaid='",
-                    datePaid.ToString("g"),
-                    "'"
-                });
+                string commandText = "SELECT TOP 1 FeesPaymentID FROM [FeesPayment] WHERE StudentID=@sid ORDER BY ModifiedDate DESC";
                 int result;
-                int.TryParse(DataAccessHelper.Helper.ExecuteScalar(commandText), out result);
+                int.TryParse(DataAccessHelper.Helper.ExecuteScalar(commandText,new List<SqlParameter>() { new SqlParameter("@sid",studentID)}), out result);
                 return result;
             });
         }
@@ -559,25 +517,21 @@ namespace UmanyiSMS.Modules.Fees.Controller
         {
             return Task.Factory.StartNew<ObservableCollection<VoteHeadModel>>(delegate
             {
+                DateTime startd = term.StartDate.Date;
+                DateTime endd = new DateTime(term.EndDate.Year, term.EndDate.Month, term.EndDate.Day, 23, 59, 59, 998);
+
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@startd", startd));
+                paramColl.Add(new SqlParameter("@endd", endd));
+                paramColl.Add(new SqlParameter("@cid", classID));
                 string commandText = string.Concat(new object[]
                 {
-                    "SELECT sd.Name,ISNULL(SUM(sd.Amount),0) FROM [Sales].[SaleDetail] sd LEFT OUTER JOIN [Sales].[SaleHeader] sh ON (sd.SaleID=sh.SaleID) INNER JOIN [Student] s ON (s.StudentID=CONVERT(INT,CustomerID)) WHERE s.CLassID=",
-                    classID,
-                    " AND s.IsActive=1 AND sh.OrderDate BETWEEN CONVERT(datetime,'",
-                    term.StartDate.Day.ToString(),
-                    "/",
-                    term.StartDate.Month.ToString(),
-                    "/",
-                    term.StartDate.Year.ToString(),
-                    " 00:00:00.000') AND CONVERT(datetime,'",
-                    term.EndDate.Day.ToString(),
-                    "/",
-                    term.EndDate.Month.ToString(),
-                    "/",
-                    term.EndDate.Year.ToString(),
-                    " 23:59:59.998') GROUP BY sd.Name"
+                    "SELECT sd.Name,ISNULL(SUM(sd.Amount),0) FROM [SaleDetail] sd LEFT OUTER JOIN [SaleHeader] sh ON (sd.SaleID=sh.SaleID) ",
+                    "LEFT OUTER JOIN [Student] s ON (s.StudentID=sh.CustomerID)",
+                    "LEFT OUTER JOIN [StudentClass] sc ON (s.StudentID = sc.StudentID AND sc.[Year] = DATEPART(year,sysdatetime()))",
+                    "WHERE sc.CLassID=@cid AND sc.[Year]=DATEPART(year,sysdatetime()) AND s.IsActive=1 AND sh.OrderDate BETWEEN @startd AND @endd GROUP BY sd.Name"
                 });
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText,paramColl);
                 ObservableCollection<VoteHeadModel> observableCollection = new ObservableCollection<VoteHeadModel>();
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -598,8 +552,8 @@ namespace UmanyiSMS.Modules.Fees.Controller
                 bool result = false;
                 try
                 {
-                    string text = "DELETE FROM [Sales].[SaleHeader] WHERE SaleID = " + saleID;
-                    text = text + "\r\nDELETE FROM [Sales].[SaleDetail] WHERE SaleID = " + saleID;
+                    string text = "DELETE FROM [SaleDetail] WHERE SaleID = " + saleID;
+                    text = text + "\r\nDELETE FROM [SaleHeader] WHERE SaleID = " + saleID;
                     result = DataAccessHelper.Helper.ExecuteNonQuery(text);
                 }
                 catch
@@ -615,11 +569,12 @@ namespace UmanyiSMS.Modules.Fees.Controller
             {
                 string text = string.Concat(new object[]
                 {
-                    "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('dbo.FeesStructureHeader')\r\nINSERT INTO [FeesStructureHeader] (FeesStructureID,ClassID, StartDate) VALUES (@id,",
+                    "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('dbo.FeesStructureHeader')\r\nINSERT INTO [FeesStructureHeader] (FeesStructureID,ClassID, Term,[Year]) VALUES (@id,",
                     currrentStruct.ClassID,
-                    ",'",
-                    currrentStruct.StartDate.ToString("g"),
-                    "')\r\n"
+                    ",",
+                    currrentStruct.Term,
+                    ",",currrentStruct.Year,
+                    ")\r\n"
                 });
                 foreach (FeesStructureEntryModel current in currrentStruct.Entries)
                 {
@@ -670,8 +625,11 @@ namespace UmanyiSMS.Modules.Fees.Controller
                         CombinedClassModel c = enumerator.Current;
                         FeesStructureModel feesStructureModel = new FeesStructureModel();
                         string text = currentDate.Date.ToString("g");
-                        string commandText = "DECLARE @id int\r\nSET @id=(SELECT TOP 1 FeesStructureID FROM [FeesStructureHeader] WHERE ClassID=" + c.Entries[0].ClassID + "\r\nAND IsActive=1)\r\nSELECT ISNULL(@id,0)";
+                        string commandText = "DECLARE @id int\r\nSET @id=(SELECT TOP 1 FeesStructureID FROM [FeesStructureHeader] WHERE ClassID=" + c.Entries[0].ClassID + 
+                        " AND Term="+Institution.Controller.DataController.GetTerm(currentDate)+" AND [Year]="+currentDate.Year+")\r\nSELECT ISNULL(@id,0)";
                         feesStructureModel.NameOfCombinedClass = result.First((CombinedClassModel o) => o.Entries.Any((ClassModel a) => a.ClassID == c.Entries[0].ClassID)).Description;
+                        feesStructureModel.Term = Institution.Controller.DataController.GetTerm(currentDate);
+                        feesStructureModel.Year = currentDate.Year;
                         int num = int.Parse(DataAccessHelper.Helper.ExecuteScalar(commandText));
                         if (num <= 0)
                         {

@@ -52,7 +52,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
                     sm.RefreshTotal();
                 }
                 MessageBox.Show("Dont forget to save the transaction!!!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                currentPayment.FeePaymentID = await DataController.GetLastPaymentIDAsync(currentPayment.StudentID, currentPayment.DatePaid);
+                currentPayment.FeePaymentID = await DataController.GetLastPaymentIDAsync(currentPayment.StudentID);
                 FeePaymentReceiptModel fprm = await DataController.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(sm.SaleItems));
                 fprm.Entries.Where(o1 => o1.Name == "TOTAL BALANCE").First().Amount = fprm.Entries.Where(o1 => o1.Name == "TOTAL BALANCE").First().Amount - currentPayment.AmountPaid;
 
@@ -104,7 +104,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
                 if (succ)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    currentPayment.FeePaymentID = await DataController.GetLastPaymentIDAsync(currentPayment.StudentID,currentPayment.DatePaid);                    
+                    currentPayment.FeePaymentID = await DataController.GetLastPaymentIDAsync(currentPayment.StudentID);                    
                     FeePaymentReceiptModel fprm = await DataController.GetReceiptAsync(currentPayment, new ObservableImmutableList<FeesStructureEntryModel>(sm.SaleItems));
                     RefreshRecentPayments();                    
                     

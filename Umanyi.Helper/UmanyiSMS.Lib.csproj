@@ -167,7 +167,6 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Models\ApplicationModel.cs" />
     <Compile Include="Models\ApplicationPersistModel.cs" />
-    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Presentation\BasicPair.cs" />
     <Compile Include="Models\ColumnModel.cs" />
     <Compile Include="Models\ComparisonModel.cs" />

@@ -81,9 +81,9 @@ namespace UmanyiSMS.Modules.Staff.ViewModels
         internal SecureString SecurePassword
         { get; set; }
 
-        public ObservableCollection<UserRole> AllRoles
+        public Array AllRoles
         {
-            get { return UsersHelper.GetUserRolesForDisplay(); }
+            get { return Enum.GetValues(typeof(UserRole)); }
         }
 
         public UserRole Role

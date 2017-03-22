@@ -96,7 +96,8 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
                     if ((e.PropertyName == "SelectedClass") && (isInClassMode) && (selectedCombinedClass != null) && (selectedCombinedClass.Entries.Count > 0))
                     {
                         currentFeesStructure.Entries.Clear();
-                        var v = await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, DateTime.Now);
+                        var v = await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, 
+                            Institution.Controller.DataController.GetTerm(DateTime.Now));
                         foreach (var f in v.Entries)
                         {
                             currentFeesStructure.Entries.Add(f);
@@ -111,9 +112,9 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
             {
                 FeesStructureModel fs;
                 if (isInStudentMode)
-                    fs = await DataController.GetFeesStructureAsync(await Students.Controller.DataController.GetClassIDFromStudentID(selectedStudent.StudentID), selectedTerm.StartDate.AddDays(1));
+                    fs = await DataController.GetFeesStructureAsync(await Students.Controller.DataController.GetClassIDFromStudentID(selectedStudent.StudentID), selectedTerm.TermID);
                 else
-                    fs = fs = await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.StartDate.AddDays(1));
+                    fs = fs = await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.TermID);
                 currentFeesStructure.Entries.Clear();
                 foreach (var f in fs.Entries)
                 {
@@ -143,7 +144,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
                     {
                         SaleModel sm = new SaleModel();
                         sm.CustomerID = selectedStudent.StudentID;
-                        sm.DateAdded = DateTime.Now;
+                        sm.DateAdded = selectedTerm.StartDate.AddDays(1);
                         sm.EmployeeID = 0;
                         sm.SaleItems = currentFeesStructure.Entries;
                         sm.RefreshTotal();
@@ -174,7 +175,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
                     {
                         sm = new SaleModel();
                         sm.CustomerID = c.ClassID;
-                        sm.DateAdded = DateTime.Now;
+                        sm.DateAdded = selectedTerm.StartDate.AddDays(1);
                         sm.EmployeeID = 0;
                         sm.SaleItems = currentFeesStructure.Entries;
                         sm.RefreshTotal();                        

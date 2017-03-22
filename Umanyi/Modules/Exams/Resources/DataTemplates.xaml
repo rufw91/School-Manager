@@ -119,4 +119,16 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="SubjectSelectionModelTemplate">
+        <Grid Height="40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center" Grid.Column="0" Text="{Binding NameOfSubject}"/>
+            <CheckBox VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1" IsChecked="{Binding IsSelected}"/>
+        </Grid>
+    </DataTemplate>
+
+
 </ResourceDictionary>

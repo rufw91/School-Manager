@@ -2,15 +2,9 @@
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
-using UmanyiSMS.Lib.Models;
 
 namespace UmanyiSMS.Lib.Controllers
 {
@@ -23,7 +17,6 @@ namespace UmanyiSMS.Lib.Controllers
                 SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
                 try
                 {
-                    bool succ;
                     using (conn)
                     {
                         var sc = new ServerConnection(conn);
@@ -37,15 +30,11 @@ namespace UmanyiSMS.Lib.Controllers
                         User u = new User(db, cred.UserId) { Login = login.Name };
 
                         u.Create();
-                        List<UserRole> roles = GetChildRoles(role);
-                        foreach (UserRole r in roles)
-                            u.AddToRole(r.ToString());
-                        succ = SaveUserInfo(cred, role, name, photo).Result;
-
+                        u.AddToRole(role.ToString());
                         if ((role == UserRole.Principal) || (role == UserRole.SystemAdmin))
                         {
                             ServerPermissionSet sps = new ServerPermissionSet(ServerPermission.AlterAnyLogin);
-                            server.Grant(sps, cred.UserId,true);
+                            server.Grant(sps, cred.UserId, true);
                         }
                     }
                     return true;
@@ -54,105 +43,9 @@ namespace UmanyiSMS.Lib.Controllers
             });
         }
 
-        private static List<UserRole> GetChildRoles(UserRole role)
+        public static Task<UserRole> GetUserRole(string userID)
         {
-            List<UserRole> temp = new List<UserRole>() { UserRole.None };
-            switch(role)
-            {
-                case UserRole.None: 
-                    break;
-                case UserRole.User: 
-                    temp.Add(UserRole.User); 
-                    break;
-                case UserRole.Teacher: 
-                    temp.Add(UserRole.User); 
-                    temp.Add(UserRole.Teacher);
-                    break;
-                case UserRole.Accounts: 
-                    temp.Add(UserRole.User); 
-                    temp.Add(UserRole.Accounts); 
-                    break;
-                case UserRole.Deputy: 
-                    temp.Add(UserRole.User);                     
-                    temp.Add(UserRole.Teacher); 
-                    temp.Add(UserRole.Accounts);
-                    temp.Add(UserRole.Deputy);
-                    break;
-                case UserRole.Principal: 
-                    temp.Add(UserRole.User);
-                    temp.Add(UserRole.Teacher);
-                    temp.Add(UserRole.Accounts);
-                    temp.Add(UserRole.Deputy);
-                    temp.Add(UserRole.Principal);
-                    break;
-                case UserRole.SystemAdmin: 
-                    temp.Add(UserRole.User); 
-                    temp.Add(UserRole.Teacher);
-                    temp.Add(UserRole.Accounts); 
-                    temp.Add(UserRole.Deputy);
-                    temp.Add(UserRole.Principal);
-                    temp.Add(UserRole.SystemAdmin);
-                    break;
-            }
-            return temp;
-        }
-
-        private static Task<bool> SaveUserInfo(SqlCredential cred, UserRole role, string name, byte[] photo)
-        {
-            return Task.Factory.StartNew<bool>(() =>
-            {
-                string insertStr = "BEGIN TRANSACTION\r\n" +
-                    " INSERT INTO [Users].[User] (UserID,Name,SPhoto) " +
-                   "VALUES('" + cred.UserId + "','" + name + "',@sPhoto)";
-                Array allRoles = Enum.GetValues(typeof(UserRole));
-                for (int i = 0; i < allRoles.Length; i++)
-                {
-                    if (role >= (UserRole)allRoles.GetValue(i))
-                        insertStr += "\r\nINSERT INTO [Users].[UserDetail] (UserID,UserRoleID) " +
-                            "VALUES('" + cred.UserId + "'," + i + ")";
-                }
-                insertStr += "\r\nCOMMIT";
-                DataAccessHelper.Helper.ExecuteNonQuery(insertStr, 
-                    new ObservableCollection<SqlParameter>() { new SqlParameter("@sPhoto", photo) });
-                return true;
-            });
-        }
-
-        private static Task<bool> RemoveUserInfo(string userID)
-        {
-            return Task.Factory.StartNew<bool>(() =>
-            {
-                string insertStr = "BEGIN TRANSACTION\r\nDELETE FROM [Users].[UserDetail] WHERE UserID='" + userID + "'\r\n";
-
-                insertStr += "DELETE FROM [Users].[User] WHERE UserID='" + userID + "'\r\nCOMMIT";
-                DataAccessHelper.Helper.ExecuteNonQuery(insertStr);
-                return true;
-            });
-        }
-
-        private static Task<bool> UpdateUserInfo(SqlCredential cred, UserRole role)
-        {
-            return Task.Factory.StartNew<bool>(() =>
-            {
-                string insertStr = "BEGIN TRANSACTION\r\nDELETE FROM [Users].[UserDetail] WHERE UserID='" + cred.UserId + "'\r\n";
-
-                Array allRoles = Enum.GetValues(typeof(UserRole));
-                for (int i = 0; i < allRoles.Length; i++)
-                {
-                    if (role >= (UserRole)allRoles.GetValue(i))
-                        insertStr += "\r\nINSERT INTO [Users].[UserDetail] (UserID,UserRoleID) " +
-                                "VALUES('" + cred.UserId + "'," + i + ")";
-                }
-
-                insertStr += "\r\nCOMMIT";
-                DataAccessHelper.Helper.ExecuteNonQuery(insertStr);
-                return true;
-            });
-        }
-
-        public static Task<bool> UserExists(string p)
-        {
-            return Task.Factory.StartNew<bool>(() =>
+            return Task.Factory.StartNew<UserRole>(() =>
             {
                 SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
                 try
@@ -161,77 +54,22 @@ namespace UmanyiSMS.Lib.Controllers
                     {
                         var sc = new ServerConnection(conn);
                         Server server = new Server(sc);
-                        foreach (Login l in server.Logins)
-                        {
-                            if (l.Name.ToUpperInvariant() == p.ToUpperInvariant())
-                                return true;
-                        }
-                        Database db = new Database(server, Lib.Properties.Settings.Default.Info.DBName);
-                        foreach (User u in db.Users)
-                        {
-                            if (u.Name.ToUpperInvariant() == p.ToUpperInvariant())
-                                return true;
-                        }
+
+                        if (userID.Trim().ToUpper() == "SA")
+                            return UserRole.SystemAdmin;
+                        
+                            Database db = server.Databases[Lib.Properties.Settings.Default.Info.DBName];
+                            User u = db.Users[userID];
+                        if (u == null)
+                            return UserRole.None;
+                            var t = u.EnumRoles();
+                            if (t!=null&&t.Count>0)                            
+                                return (UserRole)Enum.Parse(typeof(UserRole), t[0]);                            
                     }
+                    return UserRole.None;
                 }
-                catch { }
-                return false;
+                catch { return UserRole.None; }
             });
-        }
-
-        public static UserModel CurrentUser
-        { get { return GetCurrUser(); } }
-
-        public static int CurrentUserId
-        {
-            get
-            {
-                UserModel u = new UserModel();
-                IIdentity ii = Thread.CurrentPrincipal.Identity; int i; int.TryParse(ii.Name, out i); return i;
-            }
-        }
-
-        static UserModel GetCurrUser()
-        {
-            UserModel u = new UserModel();
-            IIdentity ii = Thread.CurrentPrincipal.Identity;
-            int i; 
-            if (int.TryParse(ii.Name, out i))
-                u = GetCurrDbUser(i);
-            else
-            {
-                u.UserName = ii.Name;
-                u.Photo = null;
-                u.UserID = ii.Name;
-                u.Role = "SystemAdmin";
-            }
-            return u;
-        }
-        static UserModel GetCurrDbUser(int userID)
-        {
-            UserModel temp = new UserModel();
-            string selectStr = "SELECT UserID,Name,SPhoto FROM [Users].[User] WHERE UserID=" + userID;
-            DataTable dt=DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
-            if (dt.Rows.Count>0)
-            {
-                temp.UserID = dt.Rows[0][0].ToString();
-                temp.UserName = dt.Rows[0][1].ToString();
-                temp.Role = GetUserRole(userID).ToString();
-                temp.Photo = (byte[])dt.Rows[0][2]; ;
-            }
-            return temp;
-        }
-        public static UserRole GetUserRole(int userID)
-        {
-            string selectStr = "SELECT UserRoleID FROM [Users].[UserDetail] WHERE UserID='" + userID + "'";
-            List<string> coll = DataAccessHelper.Helper.CopyFirstColumnToList(selectStr);
-            List<UserRole> roles = new List<UserRole>();
-            foreach (string s in coll)
-                roles.Add((UserRole)int.Parse(s));
-            UserRole maxRole = UserRole.None;
-            foreach (UserRole ur in roles)
-                maxRole = (UserRole)Math.Max((int)maxRole, (int)ur);
-            return maxRole;
         }
 
         public static Task<bool> UpdateUserAsync(SqlCredential credential, UserRole userRole)
@@ -241,7 +79,6 @@ namespace UmanyiSMS.Lib.Controllers
                 SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
                 try
                 {
-                    bool succ;
                     using (conn)
                     {
                         var sc = new ServerConnection(conn);
@@ -256,7 +93,7 @@ namespace UmanyiSMS.Lib.Controllers
                         login.ChangePassword(pwd);
                         login.Alter();
                         Marshal.FreeBSTR(ptr);
-                        succ = true;
+
                         if (credential.UserId.Trim().ToUpper() != "SA")
                         {
                             Database db = server.Databases[Lib.Properties.Settings.Default.Info.DBName];
@@ -268,12 +105,10 @@ namespace UmanyiSMS.Lib.Controllers
                                         dbr.DropMember(u.Name);
                             }
                             u.AddToRole(userRole.ToString());
-                            u.Alter();
-
-                            succ = UpdateUserInfo(credential, userRole).Result;
+                            u.Alter();                            
                         }
                     }
-                    return succ;
+                    return true;
                 }
                 catch { return false; }
             });
@@ -286,7 +121,6 @@ namespace UmanyiSMS.Lib.Controllers
                 SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
                 try
                 {
-                    bool succ;
                     using (conn)
                     {
                         var sc = new ServerConnection(conn);
@@ -298,18 +132,13 @@ namespace UmanyiSMS.Lib.Controllers
                         User u = db.Users[userID];
 
                         u.Drop();
-
-                        succ = RemoveUserInfo(userID).Result;
+                        
                     }
-                    return succ;
+                    return true;
                 }
                 catch { return false; }
             });
         }
-
-        public static ObservableCollection<UserRole> GetUserRolesForDisplay()
-        {
-            return new ObservableCollection<UserRole>() { UserRole.None, UserRole.User, UserRole.Teacher, UserRole.Accounts, UserRole.Deputy, UserRole.Principal };
-        }
+        
     }
 }

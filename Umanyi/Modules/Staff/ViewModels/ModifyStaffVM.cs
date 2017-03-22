@@ -29,20 +29,19 @@ namespace UmanyiSMS.Modules.Staff.ViewModels
             Title = "MODIFY STAFF DETAILS";
             NewStaff = new ModifyStaffModel();
             IsBusy = false;
-            newStaff.PropertyChanged += (o, e) =>
+            newStaff.PropertyChanged += async (o, e) =>
                 {
                     if (e.PropertyName == "StaffID")
                     {
                         newStaff.CheckErrors();
                         if (!newStaff.HasErrors)
-                            Role = UsersHelper.GetUserRole(newStaff.StaffID);
+                            Role = await UsersHelper.GetUserRole(newStaff.StaffID.ToString());
                     }
                 };
         }
 
         protected override void CreateCommands()
         {
-
             SaveCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
@@ -78,9 +77,9 @@ namespace UmanyiSMS.Modules.Staff.ViewModels
         internal SecureString SecurePassword
         { get; set; }
 
-        public ObservableCollection<UserRole> AllRoles
+        public Array AllRoles
         {
-            get { return UsersHelper.GetUserRolesForDisplay(); }
+            get { return Enum.GetValues(typeof(UserRole)); }
         }
 
         public UserRole? Role

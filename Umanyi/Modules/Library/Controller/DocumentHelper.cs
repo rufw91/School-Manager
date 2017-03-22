@@ -55,6 +55,16 @@ namespace UmanyiSMS.Modules.Library.Controller
             return 0;
         }
 
+        protected override int GetItemsPerPage()
+        {            
+            if (MyWorkObject is AllUnreturnedBooksModel)
+                return 34;
+            if (MyWorkObject is UnreturnedBooksModel)
+                return 34;
+
+            return 0;
+        }
+
         #region Unreturned Books List
 
         private void AddUB2Date(DateTime dateTime, int pageNo)

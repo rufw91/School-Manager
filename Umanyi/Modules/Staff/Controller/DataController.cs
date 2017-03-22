@@ -108,7 +108,7 @@ namespace UmanyiSMS.Modules.Staff.Controller
         {
             return Task.Factory.StartNew<ObservableCollection<StaffModel>>(delegate
             {
-                string commandText = "SELECT TOP 1000000 StaffID,Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto FROM [Staff]";
+                string commandText = "SELECT TOP 1000000 StaffID,Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto,Designation FROM [Staff]";
                 ObservableCollection<StaffModel> observableCollection = new ObservableCollection<StaffModel>();
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 if (dataTable.Rows.Count != 0)
@@ -126,7 +126,8 @@ namespace UmanyiSMS.Modules.Staff.Controller
                             Address = dataRow[6].ToString(),
                             City = dataRow[7].ToString(),
                             PostalCode = dataRow[8].ToString(),
-                            SPhoto = dataRow[9] as byte[]
+                            SPhoto = dataRow[9] as byte[],
+                            Designation = dataRow[10].ToString()
                         });
                     }
                 }

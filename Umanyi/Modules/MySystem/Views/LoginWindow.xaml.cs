@@ -103,7 +103,6 @@ namespace UmanyiSMS.Modules.MySystem.Views
                     MessageBoxButton.OK, MessageBoxImage.Warning);
             else
             {
-                App.Info.CurrentUser = UsersHelper.CurrentUser;
                 if (_type == LoginType.Login)
                 {
                    

@@ -8,13 +8,6 @@
       d:DesignHeight="600" d:DesignWidth="900"
              Background="White"
 	>
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/UmanyiSMS;component/ModelsDataTemplates.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Set Fees Structure" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,153,0,0" Style="{DynamicResource Title0}" Text="New Entry" VerticalAlignment="Top"/>

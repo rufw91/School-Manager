@@ -116,7 +116,7 @@ namespace UmanyiSMS.Modules.Purchases.Views
                                    "Cost," +
                                    "StartQuantity," +
                                    "VatID" +
-                                   " FROM [Sales].[Item]";
+                                   " FROM [Item]";
                 try
                 {
                     using (SqlConnection DBConnection = DataAccessHelper.Helper.CreateConnection())

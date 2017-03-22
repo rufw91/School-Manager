@@ -19,7 +19,7 @@ namespace UmanyiSMS.Modules.Exams.Models
             SubjectID = subjectID;
             NameOfSubject = nameOfSubject;
             Exam1Score = exam1Score;
-            Exam1Score = exam2Score;
+            Exam2Score = exam2Score;
             Exam3Score = exam3Score;
             StreamRank = streamRank;
         }

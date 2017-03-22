@@ -11,25 +11,19 @@ namespace UmanyiSMS.Modules.Fees.Models
     public class SaleModel : ModelBase
     {
         int saleID;
-        int paymentID;
         DateTime dateAdded;
         int customerID;
         ObservableCollection<FeesStructureEntryModel> saleItems;
         decimal orderTotal;
         decimal numberOfItems;
-        bool isDiscount;
         int employeeID;
-        bool isCancelled;
 
         public SaleModel()
         {
             SaleID = 0;
-            PaymentID = 0;
             CustomerID = 0;
             OrderTotal = 0;
             NoOfItems = 0;
-            IsDiscount = false;
-            IsCancelled = false;
             EmployeeID = 0;
             DateAdded = DateTime.Now;
             SaleItems = new ObservableCollection<FeesStructureEntryModel>();
@@ -60,21 +54,7 @@ namespace UmanyiSMS.Modules.Fees.Models
                 }
             }
         }
-
-        public int PaymentID
-        {
-            get { return this.paymentID; }
-
-            set
-            {
-                if (value != this.paymentID)
-                {
-                    this.paymentID = value;
-                    NotifyPropertyChanged("PaymentID");
-                }
-            }
-        }
-
+        
         public int CustomerID
         {
             get { return this.customerID; }
@@ -113,34 +93,6 @@ namespace UmanyiSMS.Modules.Fees.Models
                 {
                     this.numberOfItems = value;
                     NotifyPropertyChanged("NoOfItems");
-                }
-            }
-        }
-
-        public bool IsDiscount
-        {
-            get { return this.isDiscount; }
-
-            set
-            {
-                if (value != this.isDiscount)
-                {
-                    this.isDiscount = value;
-                    NotifyPropertyChanged("IsDiscount");
-                }
-            }
-        }
-
-        public bool IsCancelled
-        {
-            get { return this.isCancelled; }
-
-            set
-            {
-                if (value != this.isCancelled)
-                {
-                    this.isCancelled = value;
-                    NotifyPropertyChanged("IsCancelled");
                 }
             }
         }

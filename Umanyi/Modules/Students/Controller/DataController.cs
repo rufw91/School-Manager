@@ -157,7 +157,7 @@ namespace UmanyiSMS.Modules.Students.Controller
             return Task.Factory.StartNew<StudentSubjectSelectionModel>(delegate
             {
                 StudentSubjectSelectionModel studentSubjectSelectionModel = new StudentSubjectSelectionModel();
-                string commandText = "SELECT sub.NameOfSubject,sssd.SubjectID FROM [StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID = sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) WHERE sssh.IsActive=1 AND sssh.StudentID=" + studentID + " ORDER BY sub.[Code]";
+                string commandText = "SELECT sub.NameOfSubject,sssd.SubjectID FROM [StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID = sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) WHERE sssh.[Year]=DATEPART(YEAR,sysdatetime()) AND sssh.StudentID=" + studentID + " ORDER BY sub.[Code]";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -324,29 +324,14 @@ namespace UmanyiSMS.Modules.Students.Controller
             });
         }
 
-        public static Task<bool> SetStudentActiveAsync(StudentBaseModel student)
+        public static Task<bool> SetStudentActiveAsync(int studentID)
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string text = "BEGIN TRANSACTION\r\n";
-                object obj = text;
-                text = string.Concat(new object[]
-                {
-                    obj,
-                    "DELETE FROM [StudentClearance] WHERE StudentID=",
-                    student.StudentID,
-                    "\r\n"
-                });
-                obj = text;
-                text = string.Concat(new object[]
-                {
-                    obj,
-                    "DELETE FROM [StudentTransfer] WHERE StudentID=",
-                    student.StudentID,
-                    "\r\n"
-                });
-                text += " COMMIT";
-                return DataAccessHelper.Helper.ExecuteNonQuery(text);
+                string text = "BEGIN TRANSACTION\r\n"+
+                "DELETE FROM [StudentClearance] WHERE StudentID=@sid\r\nCOMMIT";
+                var paramColl = new List<SqlParameter>() { new SqlParameter("@sid",studentID)};
+                return DataAccessHelper.Helper.ExecuteNonQuery(text,paramColl);
             });
         }
 

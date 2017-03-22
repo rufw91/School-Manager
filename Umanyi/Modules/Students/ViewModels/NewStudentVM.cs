@@ -60,8 +60,7 @@ namespace UmanyiSMS.Modules.Students.ViewModels
 
         public override void Reset()
         {
-            newStudent.Reset();
-            
+            newStudent.Reset();            
         }
 
         public Array GenderValues

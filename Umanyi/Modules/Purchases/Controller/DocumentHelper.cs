@@ -56,6 +56,14 @@ namespace UmanyiSMS.Modules.Purchases.Controller
             return 0;
         }
 
+        protected override int GetItemsPerPage()
+        {
+            if (MyWorkObject is SupplierStatementModel)
+                return 22;
+
+            return 0;
+        }
+
         #region Payment Voucher2
 
         private void AddPV2VoucherNo(int voucherNo, int pageNo)

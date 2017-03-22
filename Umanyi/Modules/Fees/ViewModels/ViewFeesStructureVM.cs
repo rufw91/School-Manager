@@ -94,7 +94,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
 
         private async Task<FeesStructureModel> RefreshEntries()
         {
-            return await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.StartDate);
+            return await DataController.GetFeesStructureAsync(selectedCombinedClass.Entries[0].ClassID, selectedTerm.TermID);
         }
 
         public override void Reset()

@@ -13,7 +13,6 @@ namespace UmanyiSMS.Lib.Models
         byte[] sPhoto;
         private string id;
         private string name;
-        private UserModel currentUser;
         private string serverName;
         private string dbName;
         private BitmapImage logo;
@@ -43,7 +42,6 @@ namespace UmanyiSMS.Lib.Models
             Address = "";
             City = "";
             PhoneNo = "";
-            CurrentUser = new UserModel();
             Email = "";
             ServerName = Environment.MachineName + "\\Umanyi";
             DBName = "UmanyiSMS";
@@ -71,7 +69,6 @@ namespace UmanyiSMS.Lib.Models
             Address = info.Address;
             City = info.City;
             PhoneNo = info.PhoneNo;
-            CurrentUser = new UserModel();
             Email = info.Email;
             DBName = info.DBName;
             ServerName = info.ServerName;
@@ -287,20 +284,7 @@ namespace UmanyiSMS.Lib.Models
             return gy;
 
         }
-
-        public UserModel CurrentUser
-        {
-            get { return currentUser; }
-            set
-            {
-                if (this.currentUser != value)
-                {
-                    this.currentUser = value;
-                    NotifyPropertyChanged("CurrentUser");
-                }
-            }
-        }
-
+        
         public byte[] SPhoto
         {
             get { return sPhoto; }
