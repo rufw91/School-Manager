@@ -80,7 +80,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             ExamsMarkListNCommand = new RelayCommand(o => Source = new MarkListsVM(), o => true);
             ExamsMarkListWCommand = new RelayCommand(o => Source = new WeightedMarkListVM(), o => true);
             ExamsSubjectPerfomanceNCommand = new RelayCommand(o => Source = new AggregateResultsVM(), o => true);
-            ExamsSubjectPerfomanceCCommand = new RelayCommand(o => Source = new CombinedAggregateResultsVM(), o => true);
+            ExamsSubjectPerfomanceWCommand = new RelayCommand(o => Source = new CombinedAggregateResultsVM(), o => true);
             ExamsRemoveExamCommand = new RelayCommand(o => Source = new RemoveExamVM(), o => true);
             PurchasesNewPurchaseCommand = new RelayCommand(o => Source = new ReceiveItemsVM(), o => true);
             PurchasesPHistoryCommand = new RelayCommand(o => Source = new ItemReceiptHistoryVM(), o => true);
@@ -332,7 +332,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             private set;
         }
 
-        public ICommand ExamsSubjectPerfomanceCCommand
+        public ICommand ExamsSubjectPerfomanceWCommand
         {
             get;
             private set;

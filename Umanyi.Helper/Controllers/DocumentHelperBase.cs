@@ -60,9 +60,10 @@ namespace UmanyiSMS.Lib.Controllers
         protected void InitVars(object workObject)
         {
             MyWorkObject = workObject;
+            ItemsPerPage = GetItemsPerPage();
             NoOfPages = GetNoOfPages();
             ResourceString = GetResString();
-            ItemsPerPage = GetItemsPerPage();
+            
             Document = new FixedDocument();
         }
 

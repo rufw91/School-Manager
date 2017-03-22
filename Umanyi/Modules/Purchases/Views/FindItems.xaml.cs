@@ -114,8 +114,7 @@ namespace UmanyiSMS.Modules.Purchases.Views
                                    "ItemCategoryID," +
                                    "Price," +
                                    "Cost," +
-                                   "StartQuantity," +
-                                   "VatID" +
+                                   "StartQuantity" +
                                    " FROM [Item]";
                 try
                 {
@@ -137,7 +136,6 @@ namespace UmanyiSMS.Modules.Purchases.Views
                             im.Price = decimal.Parse(dtr[4].ToString());
                             im.Cost = decimal.Parse(dtr[5].ToString());
                             im.StartQuantity = decimal.Parse(dtr[6].ToString());
-                            im.VatID = int.Parse(dtr[7].ToString());
                             dispatcher.Invoke(() => { AllItems.Add(im); });
                         }
 

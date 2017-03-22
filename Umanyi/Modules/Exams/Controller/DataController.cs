@@ -117,9 +117,9 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 aggregateResultModel.NameOfExam = selectedExam.NameOfExam;
                 string commandText = string.Concat(new object[]
                 {
-                    "SELECT ISNULL(AVG(x.[Average]),0) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Student] s ON(erh.StudentID=s.StudentID) WHERE s.ClassID=",
+                    "SELECT ISNULL(AVG(x.[Average]),0) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] sc ON(erh.StudentID=sc.StudentID) WHERE sc.ClassID=",
                     selectedClass.ClassID,
-                    " AND sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=",
+                    " AND sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME()) AND erh.ExamID=",
                     selectedExam.ExamID,
                     " GROUP BY sub.SubjectID,sub.NameOfSubject) x"
                 });
@@ -136,9 +136,9 @@ namespace UmanyiSMS.Modules.Exams.Controller
             ObservableCollection<AggregateResultEntryModel> observableCollection = new ObservableCollection<AggregateResultEntryModel>();
             string commandText = string.Concat(new object[]
             {
-                "SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Student] s ON(erh.StudentID=s.StudentID) WHERE s.ClassID=",
+                "SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] sc ON(erh.StudentID=sc.StudentID) WHERE sc.ClassID=",
                 selectedClass.ClassID,
-                " AND sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=",
+                " AND sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME()) AND erh.ExamID=",
                 selectedExam.ExamID,
                 " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG(erd.Score),4) DESC"
             });
@@ -159,7 +159,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         private static ObservableCollection<AggregateResultEntryModel> GetAggregateResultEntries(ObservableCollection<ClassModel> classes, ExamModel selectedExam)
         {
             ObservableCollection<AggregateResultEntryModel> observableCollection = new ObservableCollection<AggregateResultEntryModel>();
-            string commandText = "SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Student] s ON(erh.StudentID=s.StudentID) WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG(erd.Score),4) DESC";
+            string commandText = "SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] sc ON(erh.StudentID=sc.StudentID) WHERE sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME())  AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG(erd.Score),4) DESC";
             DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -181,7 +181,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AggregateResultModel aggregateResultModel = new AggregateResultModel();
                 aggregateResultModel.NameOfClass = selectedCombinedClass.Description;
                 aggregateResultModel.NameOfExam = selectedExam.NameOfExam;
-                string commandText = "SELECT ISNULL(AVG(x.[Average]),0) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Student] s ON(erh.StudentID=s.StudentID) WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY sub.SubjectID,sub.NameOfSubject) x";
+                string commandText = "SELECT ISNULL(AVG(x.[Average]),0) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] sc ON(erh.StudentID=sc.StudentID) WHERE sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME())  AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY sub.SubjectID,sub.NameOfSubject) x";
                 aggregateResultModel.MeanScore = decimal.Parse(DataAccessHelper.Helper.ExecuteScalar(commandText));
                 aggregateResultModel.MeanGrade =Institution.Controller.DataController.CalculateGrade(aggregateResultModel.MeanScore * 100m / selectedExam.OutOf);
                 aggregateResultModel.Points = Institution.Controller.DataController.CalculatePoints(aggregateResultModel.MeanGrade);
@@ -204,9 +204,9 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     {
                         "SELECT AVG(x.[Average]) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG((erd.Score*",
                         current.Weight,
-                        "/eh.OutOf)),4) [Average] FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Student] s ON(erh.StudentID=s.StudentID) WHERE s.ClassID=",
+                        "/eh.OutOf)),4) [Average] FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] sc ON(erh.StudentID=sc.StudentID) WHERE sc.ClassID=",
                         selectedClass.ClassID,
-                        " AND sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=",
+                        " AND sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME())  AND erh.ExamID=",
                         current.ExamID,
                         " GROUP BY sub.SubjectID,sub.NameOfSubject) x"
                     });
@@ -233,7 +233,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     {
                         "SELECT AVG(x.[Average]) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG((erd.Score*",
                         current.Weight,
-                        "/eh.OutOf)),4) [Average] FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Student] s ON(erh.StudentID=s.StudentID) WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=",
+                        "/eh.OutOf)),4) [Average] FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] sc ON(erh.StudentID=sc.StudentID) WHERE sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME()) AND erh.ExamID=",
                         current.ExamID,
                         " GROUP BY sub.SubjectID,sub.NameOfSubject) x"
                     });
@@ -257,8 +257,8 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     "ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN " +
                     "[StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID)" +
                     " INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN " +
-                    "[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Student] s ON(erh.StudentID=s.StudentID) " +
-                    "WHERE s.ClassID=" + selectedClass.ClassID + " AND sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=" + e.ExamID +
+                    "[Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] sc ON(erh.StudentID=sc.StudentID) " +
+                    "WHERE sc.ClassID=" + selectedClass.ClassID + " AND sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME()) AND erh.ExamID=" + e.ExamID +
                     " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG((erd.Score*" + e.Weight + "/eh.OutOf)),4) DESC";
 
                 DataTable dt = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
@@ -296,7 +296,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 {
                     "SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG((erd.Score*",
                     current.Weight,
-                    "/eh.OutOf)),4) FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [Student] s ON(erh.StudentID=s.StudentID) WHERE sssh.IsActive=1 AND erh.IsActive=1  AND erh.ExamID=",
+                    "/eh.OutOf)),4) FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] sc ON(erh.StudentID=sc.StudentID) WHERE sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME()) AND erh.ExamID=",
                     current.ExamID,
                     " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG((erd.Score*",
                     current.Weight,
@@ -1226,6 +1226,8 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     ")\r\nDELETE FROM [ExamResultHeader] WHERE ExamID=",
                     examID,
                     "\r\nDELETE FROM [ExamDetail] WHERE ExamID=",
+                    examID,
+                     "\r\nDELETE FROM [ExamStudentDetail] WHERE ExamID=",
                     examID,
                     "\r\nDELETE FROM [ExamHeader] WHERE ExamID=",
                     examID,

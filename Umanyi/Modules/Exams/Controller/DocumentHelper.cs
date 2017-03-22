@@ -26,7 +26,9 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         protected override void AddDataToDocument()
         {
-            if (MyWorkObject is StudentTranscriptModel)
+            if (MyWorkObject is AggregateResultModel)
+                GenerateAggregateResult();
+            else if (MyWorkObject is StudentTranscriptModel)
                 GenerateTranscript2();
             else if (MyWorkObject is StudentExamResultModel)
              GenerateTranscript();
@@ -49,6 +51,8 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         protected override string GetResString()
         {
+            if (MyWorkObject is AggregateResultModel)
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/AggregateResult.xaml"));
             if (MyWorkObject is StudentTranscriptModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/Transcript.xaml"));
             if (MyWorkObject is ReportFormModel)
@@ -59,12 +63,16 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/Transcript.xaml"));
             if (MyWorkObject is ClassStudentsExamResultModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ClassMarkList.xaml"));
+            if (MyWorkObject is ClassExamResultModel)
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ClassMarkList.xaml"));
 
-            return "";
+            throw new ArgumentException();
         }
 
         protected override int GetNoOfPages()
         {
+            if (MyWorkObject is AggregateResultModel)
+                return 1;
             if (MyWorkObject is StudentTranscriptModel)
                 return 1;
             if (MyWorkObject is ReportFormModel)
@@ -77,13 +85,20 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 return (MyWorkObject as ClassStudentsExamResultModel).Entries.Count;
             if (MyWorkObject is ClassStudentsExamResultModel)
                 return (MyWorkObject as ClassStudentsExamResultModel).Entries.Count;
-
+            if (MyWorkObject is ClassExamResultModel)
+            {
+                var totalNoOfItems = (MyWorkObject as ClassExamResultModel).Entries.Rows.Count;
+                return (totalNoOfItems % ItemsPerPage) != 0 ?
+                                (totalNoOfItems / ItemsPerPage) + 1 : (totalNoOfItems / ItemsPerPage);
+            }
             throw new ArgumentException();
         }
 
         protected override int GetItemsPerPage()
         {           
             if (MyWorkObject is ClassStudentsExamResultModel)
+                return 37;
+            if (MyWorkObject is ClassExamResultModel)
                 return 37;
 
             return 0;
