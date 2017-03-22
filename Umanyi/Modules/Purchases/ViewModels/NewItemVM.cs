@@ -27,11 +27,8 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
             Title = "NEW ITEM / SERVICE";
             IsBusy = true;
             NewItem = new ItemModel();
-            IsTaxable = true;
             var t = await DataController.GetAllItemCategoriesAsync();
-            var exp = t.First(o => o.Description.ToUpperInvariant() == "EXPENSES").ItemCategoryID;
-            var accs = t.Where(o => o.ParentCategoryID == exp);
-            AllItemCategories = new ObservableCollection<ItemCategoryModel>(accs);
+            AllItemCategories = new ObservableCollection<ItemCategoryModel>(t);
             IsBusy = false;
         }
 
@@ -79,23 +76,7 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
                 }
             }
         }
-
-        public bool IsTaxable
-        {
-            get { return this.isTaxable; }
-
-            set
-            {
-                if (value != this.isTaxable)
-                {
-                    this.isTaxable = value;
-                    if (!isTaxable)
-                        NewItem.VatID = 0;
-                    NotifyPropertyChanged("IsTaxable");
-                }
-            }
-        }
-
+        
         public ObservableCollection<ItemCategoryModel> AllItemCategories
         {
             get { return this.allItemCategories; }
@@ -110,14 +91,9 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
             }
         }
 
-        public async override void Reset()
+        public override void Reset()
         {
             NewItem.Reset();
-            IsTaxable = true;
-            var t =DataController.GetAllItemCategoriesAsync().Result;
-            var exp = t.First(o => o.Description.ToUpperInvariant() == "EXPENSES").ItemCategoryID;
-            var accs = t.Where(o => o.ParentCategoryID == exp);
-            AllItemCategories = new ObservableCollection<ItemCategoryModel>(accs);
         }
     }
 }

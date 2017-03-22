@@ -23,7 +23,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         internal static ItemModel GetItem(long itemID)
         {
             ItemModel itemModel = new ItemModel();
-            string commandText = "SELECT ItemID,Description,DateAdded,ItemCategoryID,Price,Cost,StartQuantity,VatID FROM [Item] WHERE ItemID =" + itemID;
+            string commandText = "SELECT ItemID,Description,DateAdded,ItemCategoryID,Price,Cost,StartQuantity FROM [Item] WHERE ItemID =" + itemID;
             DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             if (dataTable.Rows.Count > 0)
             {
@@ -35,7 +35,6 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                 itemModel.Price = decimal.Parse(dataRow[4].ToString());
                 itemModel.Cost = 1m;
                 itemModel.StartQuantity = decimal.Parse(dataRow[6].ToString());
-                itemModel.VatID = int.Parse(dataRow[7].ToString());
             }
             return itemModel;
         }
@@ -73,7 +72,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
             {
                 string commandText = string.Concat(new object[]
                 {
-                    "INSERT INTO [Item] (ItemID,Description,DateAdded,ItemCategoryID,Price,Cost,VatID,StartQuantity) VALUES(",
+                    "INSERT INTO [Item] (ItemID,Description,DateAdded,ItemCategoryID,Price,Cost,StartQuantity) VALUES(",
                     item.ItemID,
                     ",'",
                     item.Description,
@@ -85,8 +84,6 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                     item.Price,
                     ",",
                     item.Cost,
-                    ",",
-                    item.VatID,
                     ",",
                     item.StartQuantity,
                     ")"
@@ -216,7 +213,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
             return Task.Factory.StartNew<ObservableCollection<ItemListModel>>(delegate
             {
                 ObservableCollection<ItemListModel> observableCollection = new ObservableCollection<ItemListModel>();
-                string commandText = "SELECT ItemID,Description,DateAdded,ItemCategoryID,Price,Cost,StartQuantity,VatID,dbo.GetCurrentQuantity(ItemID) FROM [Item]";
+                string commandText = "SELECT ItemID,Description,DateAdded,ItemCategoryID,Price,Cost,StartQuantity,dbo.GetCurrentQuantity(ItemID) FROM [Item]";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -229,8 +226,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                         Price = decimal.Parse(dataRow[4].ToString()),
                         Cost = decimal.Parse(dataRow[5].ToString()),
                         StartQuantity = decimal.Parse(dataRow[6].ToString()),
-                        VatID = int.Parse(dataRow[7].ToString()),
-                        CurrentQuantity = decimal.Parse(dataRow[8].ToString())
+                        CurrentQuantity = decimal.Parse(dataRow[7].ToString())
                     });
                 }
                 return observableCollection;
@@ -295,8 +291,6 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                     item.Cost,
                     ", StartQuantity=",
                     item.StartQuantity,
-                    ", VatID=",
-                    item.VatID,
                     " WHERE ItemID=",
                     item.ItemID
                 });

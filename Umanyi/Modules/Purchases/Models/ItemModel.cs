@@ -10,7 +10,6 @@ namespace UmanyiSMS.Modules.Purchases.Models
         decimal price;
         decimal cost;
         decimal startQuantity;
-        int vatID;
 
         public ItemModel()
         {
@@ -19,7 +18,6 @@ namespace UmanyiSMS.Modules.Purchases.Models
             Price = 1;
             Cost = 1;
             StartQuantity = 0;
-            VatID = 0;
         }
 
         public ItemModel(ItemModel item):base(item)
@@ -29,7 +27,6 @@ namespace UmanyiSMS.Modules.Purchases.Models
             Price = item.Price;
             Cost = 1;
             StartQuantity = item.StartQuantity;
-            VatID = item.VatID;
         }
         public DateTime DateAdded
         {
@@ -96,19 +93,7 @@ namespace UmanyiSMS.Modules.Purchases.Models
                 }
             }
         }
-        public int VatID
-        {
-            get { return this.vatID; }
-
-            set
-            {
-                if (value != this.vatID)
-                {
-                    this.vatID = value;
-                    NotifyPropertyChanged("VatID");
-                }
-            }
-        }
+        
         public override void Reset()
         {
             base.Reset();
@@ -117,7 +102,6 @@ namespace UmanyiSMS.Modules.Purchases.Models
             Price = 1;
             Cost = 1;
             StartQuantity = 0;
-            VatID = 0;
         }
 
         

@@ -37,7 +37,6 @@ namespace UmanyiSMS.Modules.Purchases.Models
                         this.ItemCategoryID = item.ItemCategoryID;
                         this.Price = item.Price;
                         this.StartQuantity = item.StartQuantity;
-                        this.VatID = item.VatID;
                     }
                 }
 

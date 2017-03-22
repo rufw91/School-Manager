@@ -85,7 +85,10 @@
                         <MenuItem Header="Exam Mark List" Command="{Binding ExamsMarkListNCommand}"/>
                         <MenuItem Header="Weighted Mark List" Command="{Binding ExamsMarkListWCommand}"/>
                     </MenuItem>
-                    <MenuItem Header="Subject Perfomance" Command="{Binding ExamsSubjectPerfomanceCommand}"/>
+                    <MenuItem Header="Subject Perfomance">
+                        <MenuItem Header="Per Exam" Command="{Binding ExamsSubjectPerfomanceNCommand}"/>
+                        <MenuItem Header="Weighted" Command="{Binding ExamsSubjectPerfomanceWCommand}"/>
+                    </MenuItem>
                     <MenuItem Header="Remove Exam" Command="{Binding ExamsRemoveExamCommand}"/>
                 </MenuItem>
                 <MenuItem Header="Purchases">
@@ -93,6 +96,7 @@
                     <MenuItem Header="Purchase History" Command="{Binding PurchasesPHistoryCommand}"/>
                     <MenuItem Header="Items">
                         <MenuItem Header="New Item" Command="{Binding PurchasesNewItemCommand}"/>
+                        <MenuItem Header="New Item Category" Command="{Binding PurchasesNewItemCategoryCommand}"/>
                         <MenuItem Header="Modify Item" Command="{Binding PurchasesModifyItemCommand}"/>
                         <MenuItem Header="Remove Item" Command="{Binding PurchasesRemoveItemCommand}"/>
                     </MenuItem>

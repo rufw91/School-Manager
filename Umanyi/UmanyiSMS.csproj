@@ -305,6 +305,7 @@
     <Compile Include="Modules\MySystem\Views\ChangeDb.xaml.cs">
       <DependentUpon>ChangeDb.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Purchases\Controller\AccountToAccountIDConverter.cs" />
     <Compile Include="Modules\Purchases\Controller\DataController.cs" />
     <Compile Include="Modules\Purchases\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Purchases\Models\ItemBaseModel.cs" />

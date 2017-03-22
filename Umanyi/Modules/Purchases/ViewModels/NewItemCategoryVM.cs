@@ -20,11 +20,10 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
 
         protected override void InitVars()
         {
-            Title = "NEW ACCOUNT";
+            Title = "NEW ITEM CATEGORY";
             IsBusy = true;
             NewCategory = new ItemCategoryModel();
             IsBusy = false;
-            NotifyPropertyChanged("ChartOfAccounts");
         }
 
         protected override void CreateCommands()
