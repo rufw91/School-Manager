@@ -8,58 +8,37 @@ using System.Windows;
 using System.Security;
 using System.Net;
 using System.Data.SqlClient;
-
+using System.IO;
 
 namespace UmanyiSMS.Lib.Controllers
 {
     public static class ConnectionStringHelper
     {
+        static string localDB = "Server=(LocalDB)\\v11.0;MultipleActiveResultSets=true;TrustServerCertificate=True;" +
+            "AttachDBFilename="+ Path.Combine(new FileInfo(Application.ResourceAssembly.Location).DirectoryName,"UmanyiSMS.mdf")+";Initial Catalog=UmanyiSMS;";
+        static string masterLocalDB = "Server=(LocalDB)\\v11.0;Integrated Security=SSPI;MultipleActiveResultSets=true;TrustServerCertificate=True;" 
+           + ";Initial Catalog=master;";
         static readonly string connStr = "Data Source=" +
                 Lib.Properties.Settings.Default.Info.ServerName +
                 ";Database=UmanyiSMS;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
         static readonly string masterConnString = "Data Source=" +
                 Lib.Properties.Settings.Default.Info.ServerName +
-                ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
-        static readonly string win32ConnString = "Data Source=" +
-                Lib.Properties.Settings.Default.Info.ServerName +
-                ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;Integrated Security='SSPI'";
-        static readonly string testConnString = "Data Source=" +
-               Lib.Properties.Settings.Default.Info.ServerName +
-               ";Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
-
+                ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;Intergrated Security=SSPI;";
+        
         public static string ConnectionString
         {
-            get { return connStr; }
+            get { return localDB; }
+        }
+
+        public static string SSPIConnectionString
+        {
+            get { return masterLocalDB; }
         }
 
         public static string MasterConnectionString
         {
-            get { return masterConnString; }
+            get { return masterLocalDB; }
         }
-        public static string TestConnectionString
-        {
-            get { return testConnString; }
-        }
-
-        public static string Win32ConnectionString
-        {
-            get { return win32ConnString; }
-        }
-
-        public static string CreateTestConnSTr(string serverName)
-        {
-            return "Data Source=" + serverName +
-                ";Connection Timeout=30;Encrypt=True;TrustServerCertificate=True;";
-        }
-
-        public static string GetConnectionString(SqlCredential newCredentials)
-        {
-            return connStr + "User Id=" + newCredentials.UserId + ";Password=" + new NetworkCredential(newCredentials.UserId, newCredentials.Password).Password;
-        }
-        internal static string GetConnectionString(SqlCredential newCredentials,string connStr)
-        {
-            return connStr + " User Id=" + newCredentials.UserId + ";Password=" + new NetworkCredential(newCredentials.UserId, newCredentials.Password).Password;
-        }
-    
+            
     }
 }

@@ -19,8 +19,7 @@ namespace UmanyiSMS.Modules.Institution.Models
         {
             AllTerms = new ObservableCollection<TermModel>();
             Year = DateTime.Now.Year;
-            Description = DateTime.Now.Year.ToString();
-            NoOfTerms = 0;
+            NoOfTerms = 3;
         }
 
         public int Year
@@ -31,6 +30,7 @@ namespace UmanyiSMS.Modules.Institution.Models
                 if (value != year)
                 {
                     year = value;
+                    Description = value.ToString();
                     NotifyPropertyChanged("Year");
                 }
             }
@@ -78,7 +78,7 @@ namespace UmanyiSMS.Modules.Institution.Models
         public override void Reset()
         {
             allTerms.Clear();
-            noOfTerms = 0;
+            NoOfTerms = 3;
             Year = DateTime.Now.Year;
             Description = DateTime.Now.Year.ToString();
         }

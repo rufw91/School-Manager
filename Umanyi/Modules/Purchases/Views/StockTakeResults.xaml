@@ -43,7 +43,7 @@
             <ComboBox HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllStocktakings}" SelectedValuePath="StockTakingID"
                   DisplayMemberPath="DateTaken"
-                      ItemStringFormat="{}{0:dd MMM yyyy hh:mm}"
+                      ItemStringFormat="{}{0:dd MMM yyyy HH:mm}"
                   SelectedValue="{Binding CurrentStocktaking.StockTakingID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <DataGrid AutoGenerateColumns="False" Margin="0,50,10,10" ItemsSource="{Binding CurrentStocktaking.Items}" IsReadOnly="True" Grid.Column="1">

@@ -134,6 +134,7 @@
     <Compile Include="Controls\TimePicker.cs" />
     <Compile Include="Controls\ToggleSwitch.cs" />
     <Compile Include="Controls\VirtualizingWrapPanel.cs" />
+    <Compile Include="Converters\Best7SubjectConverter.cs" />
     <Compile Include="Converters\BooleansToVisibilityConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToBrushConverter.cs" />

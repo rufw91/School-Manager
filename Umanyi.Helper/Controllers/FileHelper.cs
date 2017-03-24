@@ -17,6 +17,7 @@ namespace UmanyiSMS.Lib.Controllers
             saveDialog.Title = "Select location to save backup file";
             saveDialog.Filter = "Backup Files|*.bak";
             saveDialog.OverwritePrompt = true;
+            saveDialog.FileName = DateTime.Now.ToString("yyyy.MM.dd HH.mm.ss");
             if ((saveDialog.ShowDialog() == true) &&
                 (new System.IO.FileInfo(saveDialog.FileName).Extension.ToLower() == ".bak"))
             {
@@ -197,7 +198,7 @@ namespace UmanyiSMS.Lib.Controllers
         internal static string GetNewNetworkServiceTempFilePath(string pref)
         {
             //C:\Windows\ServiceProfiles\NetworkService
-           return Environment.GetFolderPath(Environment.SpecialFolder.Windows) + "\\ServiceProfiles\\NetworkService\\AppData\\Local\\Temp\\" + "UmanyiSMS_"+pref + DateTime.Now.ToString("dd.MM.yyyy.hh.mm.ss");
+           return Environment.GetFolderPath(Environment.SpecialFolder.Windows) + "\\ServiceProfiles\\NetworkService\\AppData\\Local\\Temp\\" + "UmanyiSMS_"+pref + DateTime.Now.ToString("dd.MM.yyyy.HH.mm.ss");
             
         }
 

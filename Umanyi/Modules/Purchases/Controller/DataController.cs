@@ -14,6 +14,25 @@ namespace UmanyiSMS.Modules.Purchases.Controller
 {
     public class DataController
     {
+        internal static Task<ItemCategoryModel> GetAccountAsync(int accountID)
+        {
+            return Task.Factory.StartNew<ItemCategoryModel>(() =>
+            {
+                string text = "SELECT ItemCategoryID,Description FROM [Sales].[ItemCategory] WHERE ItemCategoryID = @catID";
+                ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                paramColl.Add(new SqlParameter("@catID", accountID));
+                var result = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text, paramColl);
+
+                if (result.Rows.Count == 0)
+                    return null;
+                ItemCategoryModel temp2 = new ItemCategoryModel();
+                temp2.ItemCategoryID = int.Parse(result.Rows[0][0].ToString());
+                temp2.Description = result.Rows[0][1].ToString();
+                return temp2;
+
+            });
+
+        }
 
         public static Task<ItemModel> GetItemAsync(long itemID)
         {
@@ -192,7 +211,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         public static ObservableCollection<ItemPurchaseModel> GetItemsReceiptItems(int saleId)
         {
             ObservableCollection<ItemPurchaseModel> observableCollection = new ObservableCollection<ItemPurchaseModel>();
-            string commandText = "SELECT sod.ItemID,p.Description,sod.UnitCost,sod.Quantity FROM Sales.ItemReceiptDetail sod LEFT OUTER JOIN Sales.Item p ON( sod.ItemID = p.ItemID) WHERE sod.ItemReceiptID = " + saleId;
+            string commandText = "SELECT sod.ItemID,p.Description,sod.UnitCost,sod.Quantity FROM [ItemReceiptDetail] sod LEFT OUTER JOIN [Item] p ON( sod.ItemID = p.ItemID) WHERE sod.ItemReceiptID = " + saleId;
             DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -239,15 +258,14 @@ namespace UmanyiSMS.Modules.Purchases.Controller
             return Task.Factory.StartNew<ObservableCollection<ItemCategoryModel>>(delegate
             {
                 ObservableCollection<ItemCategoryModel> observableCollection = new ObservableCollection<ItemCategoryModel>();
-                string commandText = "SELECT ItemCategoryID,Description,ISNULL(ParentCategoryID,0) FROM [ItemCategory]";
+                string commandText = "SELECT ItemCategoryID,Description FROM [ItemCategory]";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new ItemCategoryModel
                     {
                         ItemCategoryID = int.Parse(dataRow[0].ToString()),
-                        Description = dataRow[1].ToString(),
-                        ParentCategoryID = int.Parse(dataRow[2].ToString())
+                        Description = dataRow[1].ToString()
                     });
                 }
                 return observableCollection;
@@ -370,10 +388,9 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string commandText = "INSERT INTO [ItemCategory] (Description,ParentCategoryID) VALUES(@desc,@parCatID)";
+                string commandText = "INSERT INTO [ItemCategory] (Description) VALUES(@desc)";
                 ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
                 paramColl.Add(new SqlParameter("@desc", itemCategory.Description));
-                paramColl.Add(new SqlParameter("@parCatID", itemCategory.ParentCategoryID));
                 bool succ = DataAccessHelper.Helper.ExecuteNonQuery(commandText, paramColl);
                 return succ;
             });
@@ -682,20 +699,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                 else
                 {
                     SupplierStatementModel suppStatementModel = new SupplierStatementModel();
-                    string text = "SELECT BookReceiptID,DateReceived,ISNULL(TotalAmt,0) FROM [BookReceiptHeader] WHERE [SupplierID] =" + supplierID;
-                    if (startTime.HasValue && endTime.HasValue)
-                    {
-                        string text2 = text;
-                        text = string.Concat(new string[]
-                        {
-                            text2,
-                            " AND DateReceived BETWEEN CONVERT(datetime,'",
-                            startTime.Value.ToString("dd-MM-yyyy"),
-                            " 00:00:00.000') AND CONVERT(datetime,'",
-                            endTime.Value.ToString("dd-MM-yyyy"),
-                            " 23:59:59.998')"
-                        });
-                    }
+                   
                     string text3 = "SELECT ItemReceiptID, OrderDate, TotalAmt FROM [ItemReceiptHeader]  WHERE [SupplierID] =" + supplierID;
                     if (startTime.HasValue && endTime.HasValue)
                     {
@@ -718,16 +722,11 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                             " 00:00:00.000') AND CONVERT(datetime,'" + endTime.Value.ToString("dd-MM-yyyy") + " 23:59:59.998')";
                     }
 
-                    DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+                    
                     DataTable dataTable2 = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text3);
                     DataTable dataTable3 = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text4);
                     ObservableCollection<TransactionModel> observableCollection = new ObservableCollection<TransactionModel>();
-                    foreach (DataRow dataRow in dataTable.Rows)
-                    {
-                        observableCollection.Add(new TransactionModel(TransactionTypes.Credit, "BK-" + dataRow[0].ToString(), DateTime.Parse(dataRow[1].ToString()), decimal.Parse(dataRow[2].ToString())));
-                        suppStatementModel.TotalSales += decimal.Parse(dataRow[2].ToString());
-                        suppStatementModel.TotalDue += decimal.Parse(dataRow[2].ToString());
-                    }
+                    
                     foreach (DataRow dataRow in dataTable2.Rows)
                     {
                         DateTime transactionDateTime;
@@ -770,9 +769,9 @@ namespace UmanyiSMS.Modules.Purchases.Controller
             return Task.Factory.StartNew<decimal>(delegate
             {
                 string commandText = "DECLARE  @pur1 decimal=(SELECT SUM(ISNULL(TotalAmt,0)) FROM  [ItemReceiptHeader] WHERE SupplierID =@supplierID AND OrderDate <CONVERT(datetime,@dt));\r\n" +
-                         "DECLARE  @pur2 decimal=(SELECT SUM(ISNULL(TotalAmt,0)) FROM  [BookReceiptHeader] WHERE SupplierID =@supplierID AND DateReceived <CONVERT(datetime,@dt));\r\n" +
+                         
                         "DECLARE  @pay decimal=(SELECT SUM(ISNULL(AmountPaid,0)) FROM  [SupplierPayment] WHERE SupplierID=@supplierID AND DatePaid <CONVERT(datetime,@dt));\r\n" +
-                        "SELECT (select (ISNULL(@pur1,0)+ISNULL(@pur2,0))-ISNULL(@pay,0));";
+                        "SELECT (select ISNULL(@pur1,0)-ISNULL(@pay,0));";
                 decimal result;
                 var paramColl = new ObservableCollection<SqlParameter>();
                 paramColl.Add(new SqlParameter("@supplierID", supplierID));

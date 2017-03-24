@@ -48,7 +48,7 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
 
         private bool CanSave()
         {
-            return !string.IsNullOrWhiteSpace(category.Description) && category.ParentCategoryID > 0; 
+            return !string.IsNullOrWhiteSpace(category.Description); 
         }
 
         public ICommand SaveCommand

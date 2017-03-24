@@ -29,19 +29,19 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             if (MyWorkObject is SupplierPaymentModel)
                 GenerateVoucher2();
-            if (MyWorkObject is SupplierStatementModel)
+            else if (MyWorkObject is SupplierStatementModel)
                 GenerateSupplierStatement();
-
+            else
             throw new ArgumentException();
 
         }
 
         protected override string GetResString()
         {
-            if (MyWorkObject is SupplierPaymentModel)
-                return GetResourceString(null);
+            if (MyWorkObject is SupplierPaymentModel) 
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Purchases/Resources/PaymentVoucher2.xaml"));
             if (MyWorkObject is SupplierStatementModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Purchases/Resources/SupplierStatement.xaml"));
 
             return "";
         }
@@ -147,7 +147,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         }
         private void AddSTDate(DateTime dt, int pageNo)
         {
-            AddText(dt.ToString("dd MMM yyyy hh:mm:ss"), 12.5, false, 0, Colors.Black, 640, 70, pageNo);
+            AddText(dt.ToString("dd MMM yyyy HH:mm:ss"), 12.5, false, 0, Colors.Black, 640, 70, pageNo);
         }
         private void AddSTStudentID(int studentID, int pageNo)
         {

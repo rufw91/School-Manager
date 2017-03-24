@@ -29,8 +29,7 @@ namespace UmanyiSMS.Lib.Controllers
             #else
                 using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.ConnectionString))
                 {
-                    conn.Credential = newCredentials;
-                    
+                    conn.Credential = newCredentials;                    
                     conn.Open();
                 }
             #endif
@@ -57,8 +56,11 @@ namespace UmanyiSMS.Lib.Controllers
             SqlConnection conn;
             try
             {
-                conn = CreateConnection(ConnectionStringHelper.MasterConnectionString);
-                conn.Credential = Credentials;
+                conn = new SqlConnection(ConnectionStringHelper.MasterConnectionString);
+                conn.Open();
+                if (conn.State == ConnectionState.Connecting)
+                    while (conn.State != ConnectionState.Open)
+                    { }
             }
             catch (Exception e)
             {
@@ -73,7 +75,7 @@ namespace UmanyiSMS.Lib.Controllers
             SqlConnection conn;
             try
             {
-                conn = CreateConnection(ConnectionStringHelper.GetConnectionString(Credentials));
+                conn = CreateConnection(ConnectionStringHelper.ConnectionString);
             }
             catch (Exception e)
             {
@@ -89,6 +91,7 @@ namespace UmanyiSMS.Lib.Controllers
             try
             {
                 conn = new SqlConnection(connectionString);
+                conn.Credential = Credentials;
                 conn.Open();
                 if (conn.State == ConnectionState.Connecting)
                     while (conn.State != ConnectionState.Open)
@@ -556,18 +559,7 @@ namespace UmanyiSMS.Lib.Controllers
                 try
                 {
                     string commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n";
-                    commandText += 
-                        "DELETE FROM [ExamResultDetail] WHERE ExamResultID IN (SELECT ExamResultID FROM [ExamResultHeader] WHERE IsActive=0)\r\n" +
-                        "DELETE FROM [ExamResultHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [FeesStructureDetail] WHERE FeesStructureID IN (SELECT FeesStructureID FROM [FeesStructureHeader] WHERE IsActive=0)\r\n" +
-                        "DELETE FROM [FeesStructureHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [StudentSubjectSelectionDetail] WHERE StudentSubjectSelectionID IN (SELECT StudentSubjectSelectionID FROM [StudentSubjectSelectionHeader] WHERE IsActive=0)\r\n" +
-                        "DELETE FROM [StudentSubjectSelectionHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [SubjectSetupDetail] WHERE SubjectSetupID IN (SELECT SubjectSetupID FROM [SubjectSetupHeader] WHERE IsActive=0)\r\n" +
-                        "DELETE FROM [SubjectSetupHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [TimeTableDetail] WHERE TimeTableID IN (SELECT TimeTableID FROM [TimeTableHeader] WHERE IsActive=0)\r\n" +
-                        "DELETE FROM [TimeTableHeader] WHERE IsActive=0\r\n"+
-                        "DELETE FROM [TimeTableSettings] WHERE IsActive=0\r\n";
+                   
                     bool succ = false;
 
                     int y = 0;
@@ -601,7 +593,7 @@ namespace UmanyiSMS.Lib.Controllers
                 try
                 {
                     string commandText = "ALTER DATABASE UmanyiSMS SET OFFLINE";
-                    using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.Win32ConnectionString))
+                    using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.SSPIConnectionString))
                     {
                         SqlCommand dta = new SqlCommand(commandText, DBConnection);
                         dta.ExecuteNonQuery();
