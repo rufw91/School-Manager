@@ -302,8 +302,8 @@ namespace UmanyiSMS.Modules.Institution.Controller
 
                     paramColl.Add(new SqlParameter("@tid" + index, t.TermID));
                     paramColl.Add(new SqlParameter("@desc" + index, t.Description));
-                    paramColl.Add(new SqlParameter("@std" + index, t.StartDate.ToString("dd-MM-yyyy hh:mm:ss")));
-                    paramColl.Add(new SqlParameter("@edd" + index, t.EndDate.ToString("dd-MM-yyyy hh:mm:ss")));
+                    paramColl.Add(new SqlParameter("@std" + index, t.StartDate.ToString("dd-MM-yyyy HH:mm:ss")));
+                    paramColl.Add(new SqlParameter("@edd" + index, t.EndDate.ToString("dd-MM-yyyy HH:mm:ss")));
                     index++;
                 }
 

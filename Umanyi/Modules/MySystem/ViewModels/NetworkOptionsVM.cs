@@ -55,7 +55,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             TestCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await (DataAccessHelper.Helper as SqlServerHelper).TestDb(ConnectionStringHelper.CreateTestConnSTr(newSchool.ServerName));
+                bool succ = await (DataAccessHelper.Helper as SqlServerHelper).TestDb(ConnectionStringHelper.SSPIConnectionString);
                 MessageBox.Show(succ ? "Test Succeeded." : "Test Failed.", "Info", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 isTested = succ;

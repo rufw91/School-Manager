@@ -30,15 +30,13 @@ namespace UmanyiSMS.Modules.Institution.ViewModels
             NewYear =  await DataController.GetAcademicYearAsync(DateTime.Now);
             newYear.PropertyChanged += (o, e) =>
                 {
-                    if (e.PropertyName=="NoOfTerms")
+                    if (e.PropertyName=="NoOfTerms"||e.PropertyName=="Year")
                     {
-                        if (newYear.AllTerms.Count == newYear.NoOfTerms||newYear.NoOfTerms<0)
-                            return;
                         newYear.AllTerms.Clear();
-                        for(int i =0;i<newYear.NoOfTerms;i++)
-                        {
-                            newYear.AllTerms.Add(new TermModel() { Description = "TERM " + (i+1), StartDate = DateTime.Now.Date, EndDate = DateTime.Now.Date, TermID = i + 1 });
-                        }
+                        newYear.AllTerms.Add(new TermModel() { Description = "TERM 1", StartDate = new DateTime(newYear.Year, 1, 1), EndDate = new DateTime(newYear.Year, 4, 30), TermID =1 });
+                        newYear.AllTerms.Add(new TermModel() { Description = "TERM 2", StartDate = new DateTime(newYear.Year, 5, 1), EndDate = new DateTime(newYear.Year, 8, 31), TermID = 2 });
+                        newYear.AllTerms.Add(new TermModel() { Description = "TERM 3", StartDate = new DateTime(newYear.Year, 9, 1), EndDate = new DateTime(newYear.Year, 12, 31), TermID = 3 });
+
                     }
                 };
         }
@@ -56,7 +54,7 @@ namespace UmanyiSMS.Modules.Institution.ViewModels
 
         private bool CanSave()
         {
-            if (newYear==null||newYear.NoOfTerms < 0 || newYear.NoOfTerms > 4 || newYear.AllTerms.Count == 0 || newYear.AllTerms.Count > 4)
+            if (newYear==null||newYear.NoOfTerms !=3 || newYear.AllTerms.Count != 3)
                 return false;
 
             for (int i = 0; i < newYear.AllTerms.Count; i++)
@@ -74,11 +72,11 @@ namespace UmanyiSMS.Modules.Institution.ViewModels
                         return false;
                 }
                 else
-                    if (!newYear.AllTerms[i].EndDate.Equals(newYear.Year))
+                    if (!newYear.AllTerms[i].EndDate.Year.Equals(newYear.Year))
                         return false;
 
                 if (i == 0)
-                    if (!newYear.AllTerms[i].StartDate.Equals(newYear.Year))
+                    if (!newYear.AllTerms[i].StartDate.Year.Equals(newYear.Year))
                         return false;
             }
 

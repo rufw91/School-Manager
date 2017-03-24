@@ -305,11 +305,10 @@
     <Compile Include="Modules\MySystem\Views\ChangeDb.xaml.cs">
       <DependentUpon>ChangeDb.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Purchases\Controller\AccountToAccountIDConverter.cs" />
+    <Compile Include="Modules\Purchases\Models\ItemCategoryBaseModel.cs" />
     <Compile Include="Modules\Purchases\Controller\DataController.cs" />
     <Compile Include="Modules\Purchases\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Purchases\Models\ItemBaseModel.cs" />
-    <Compile Include="Modules\Purchases\Models\ItemCategoryModel.cs" />
     <Compile Include="Modules\Purchases\Models\ItemFindModel.cs" />
     <Compile Include="Modules\Purchases\Models\ItemListModel.cs" />
     <Compile Include="Modules\Purchases\Models\ItemModel.cs" />
@@ -862,18 +861,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Modules\Purchases\Resources\PaymentVoucher.xaml">
+    <Resource Include="Modules\Purchases\Resources\PaymentVoucher.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Purchases\Resources\PaymentVoucher2.xaml">
+    </Resource>
+    <Resource Include="Modules\Purchases\Resources\PaymentVoucher2.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Purchases\Resources\SupplierStatement.xaml">
+    </Resource>
+    <Resource Include="Modules\Purchases\Resources\SupplierStatement.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </Resource>
     <Page Include="Modules\Purchases\Views\FindItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

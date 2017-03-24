@@ -46,7 +46,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
         protected override void CreateCommands()
         {
             FileHomeCommand = new RelayCommand(o => Source = new HomePageVM(), o => !(Source is HomePageVM));
-            FileBackupCommand = new RelayCommand(o => { }, o => true);
+            FileBackupCommand = new RelayCommand(o => { Source = new BackupVM(); }, o => true);
             FileExitCommand = new RelayCommand(o => Application.Current.Shutdown(), o => true);
             StudentsNewStudentCommand = new RelayCommand(o => Source = new NewStudentVM() , o => true);
             StudentsModifyStudentCommand = new RelayCommand(o => Source = new ModifyStudentVM(), o => true);

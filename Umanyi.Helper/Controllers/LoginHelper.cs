@@ -20,7 +20,7 @@ namespace UmanyiSMS.Lib.Controllers
                 DataAccessHelper.Helper.TestCredential(cred);
                 if (test)
                 {
-                    DataAccessHelper.Helper.SetCredential(cred);
+                   DataAccessHelper.Helper.SetCredential(cred);
                     string[] roles = await GetUserRolesAsync(cred.UserId);
                     
                     if ((roles.Length == 1) && (roles[0] == UserRole.None.ToString()))
@@ -49,8 +49,7 @@ namespace UmanyiSMS.Lib.Controllers
                 {
                     SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
 
-                    string[] temp = new string[1];
-                    temp[0] = "None";
+                    List<string> temp = new List<string>() { "None" };
                     try
                     {
                         using (conn)
@@ -59,15 +58,17 @@ namespace UmanyiSMS.Lib.Controllers
                             Server server = new Server(sc);
                             Database db = server.Databases["UmanyiSMS"];
 
-                            StringCollection coll=db.Users[userId].EnumRoles();
-                            temp = new string[coll.Count];
+                            var u = db.Users[userId];
+                            if (u == null)
+                                return temp.ToArray();
+                            StringCollection coll=u.EnumRoles();
                             for (int i = 0; i < coll.Count; i++)
-                                temp[i] = coll[i];
+                                temp.Add(coll[i]);
                         }
                     }
                     catch { }
 
-                    return temp;
+                    return temp.ToArray();
                 }                        
             });
         }

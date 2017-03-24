@@ -9,16 +9,13 @@
 
     <Grid >
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Academic Year Setup" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Description" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="100,80,0,0" VerticalAlignment="Top" Width="200"            
-                 Text="{Binding NewYear.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxLength="20" Background="WhiteSmoke" IsEnabled="False"/>
-        <TextBlock HorizontalAlignment="Left" Margin="65,120,0,0" Text="Year" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="100,120,0,0" VerticalAlignment="Top" Width="200"
+        <TextBlock HorizontalAlignment="Left" Margin="20,90,0,0" Text="Year" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="100,90,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllYears}"
                  SelectedValue="{Binding NewYear.Year, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,160,0,0" Text="No. of Terms" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="102,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                 Text="{Binding NewYear.NoOfTerms, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxLength="2"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,140,0,0" Text="No. of Terms" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="102,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                 Text="{Binding NewYear.NoOfTerms, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxLength="2" IsEnabled="False" Background="WhiteSmoke"/>
         <TextBlock HorizontalAlignment="Left" Margin="400,80,0,0" Style="{DynamicResource SmallTitle}" Text="Terms" VerticalAlignment="Top"/>
         <DataGrid AutoGenerateColumns="False" Margin="400,110,10,50" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False"
                  ItemsSource="{Binding NewYear.AllTerms}">

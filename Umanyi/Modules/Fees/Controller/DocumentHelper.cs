@@ -70,7 +70,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
             if (MyWorkObject is FeePaymentReceiptModel)
                 return 1;
             if (MyWorkObject is FullFeesStructureModel)
-                return 1;
+                return (MyWorkObject as FullFeesStructureModel).Count;
 
             return 0;
         }
@@ -81,6 +81,10 @@ namespace UmanyiSMS.Modules.Fees.Controller
                 return 34;
             if (MyWorkObject is FeesStatementModel)
                 return 22;
+            if (MyWorkObject is FeePaymentReceiptModel)
+                return (MyWorkObject as FeePaymentReceiptModel).Entries.Count;
+            if (MyWorkObject is FullFeesStructureModel)
+                return (MyWorkObject as FullFeesStructureModel).Max(o=>o.Entries.Count);
             return 0;
         }
 
@@ -147,8 +151,8 @@ namespace UmanyiSMS.Modules.Fees.Controller
         double page2Offset = 561.28;
         private void AddRCDate(DateTime dt, int pageNo)
         {
-            AddText(dt.ToString("dd MMM yyyy hh:mm:ss"), 12.5, false, 0, Colors.Black, 300, 220, pageNo);
-            AddText(dt.ToString("dd MMM yyyy hh:mm:ss"), 12.5, false, 0, Colors.Black, 300 + page2Offset, 220, pageNo);
+            AddText(dt.ToString("dd MMM yyyy HH:mm:ss"), 12.5, false, 0, Colors.Black, 300, 220, pageNo);
+            AddText(dt.ToString("dd MMM yyyy HH:mm:ss"), 12.5, false, 0, Colors.Black, 300 + page2Offset, 220, pageNo);
         }
         private void AddRCStudentID(int studentID, int pageNo)
         {
@@ -242,7 +246,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
 
         private void AddRC2Date(DateTime dt, int pageNo)
         {
-            AddText(dt.ToString("dd MMM yyyy hh:mm:ss"), 12.5, false, 0, Colors.Black, 300, 220, pageNo);
+            AddText(dt.ToString("dd MMM yyyy HH:mm:ss"), 12.5, false, 0, Colors.Black, 300, 220, pageNo);
         }
         private void AddRC2StudentID(int studentID, int pageNo)
         {
@@ -316,7 +320,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
         }
         private void AddSTDate(DateTime dt, int pageNo)
         {
-            AddText(dt.ToString("dd MMM yyyy hh:mm:ss"), 12.5, false, 0, Colors.Black, 640, 70, pageNo);
+            AddText(dt.ToString("dd MMM yyyy HH:mm:ss"), 12.5, false, 0, Colors.Black, 640, 70, pageNo);
         }
         private void AddSTStudentID(int studentID, int pageNo)
         {
