@@ -24,6 +24,7 @@ namespace UmanyiSMS.Lib.Models
         private string altInfo;
         private string fullNameAlt;
         private string fullName;
+
         public ApplicationModel()
         {
             PropertyChanged += (o, e) =>
@@ -49,8 +50,8 @@ namespace UmanyiSMS.Lib.Models
             SPhoto = null;
             Logo = GetImage();
             Motto = "";
-            
         }
+
         public ApplicationModel(ApplicationPersistModel info)
         {
             PropertyChanged += (o, e) =>
@@ -90,7 +91,7 @@ namespace UmanyiSMS.Lib.Models
                 }
             }
         }
-
+        
         public string ID
         {
             get { return id; }

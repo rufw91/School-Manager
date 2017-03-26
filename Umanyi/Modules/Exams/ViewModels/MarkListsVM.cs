@@ -61,7 +61,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                 IsBusy = false;
                 if (ShowClassStudentsTranscriptAction != null)
                     ShowClassStudentsTranscriptAction.Invoke(st);
-            }, o => isInClassMode && CanPrintResult());
+            }, o => false);
 
             PrintTranscriptCommand = new RelayCommand(o =>
             {

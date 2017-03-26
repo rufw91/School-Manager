@@ -9,19 +9,27 @@ namespace UmanyiSMS.Modules.Exams.Models
 {
     public class ReportFormSubjectModel : SubjectBaseModel
     {
+        private int _code;
         private string _exam1Score;
         private string _exam2Score;
         private string _exam3Score;
         private string _streamRank;
 
-        public ReportFormSubjectModel(int subjectID,string nameOfSubject, string exam1Score, string exam2Score, string exam3Score, string streamRank)
+        public ReportFormSubjectModel()
+        { }
+
+        public int Code
         {
-            SubjectID = subjectID;
-            NameOfSubject = nameOfSubject;
-            Exam1Score = exam1Score;
-            Exam2Score = exam2Score;
-            Exam3Score = exam3Score;
-            StreamRank = streamRank;
+            get { return this._code; }
+
+            set
+            {
+                if (value != this._code)
+                {
+                    this._code = value;
+                    NotifyPropertyChanged("Code");
+                }
+            }
         }
 
         public string Exam1Score
@@ -66,6 +74,10 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
+        public string Grade { get; internal set; }
+        public decimal MeanScore { get; internal set; }
+        public string Remarks { get; internal set; }
+
         public string StreamRank
         {
             get { return this._streamRank; }
@@ -79,5 +91,6 @@ namespace UmanyiSMS.Modules.Exams.Models
                 }
             }
         }
+        
     }
 }

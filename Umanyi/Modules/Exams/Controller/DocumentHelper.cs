@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
@@ -28,18 +29,12 @@ namespace UmanyiSMS.Modules.Exams.Controller
         {
             if (MyWorkObject is AggregateResultModel)
                 GenerateAggregateResult();
-            else if (MyWorkObject is StudentTranscriptModel)
-                GenerateTranscript2();
             else if (MyWorkObject is StudentExamResultModel)
              GenerateTranscript();
            else if (MyWorkObject is ReportFormModel)
-                GenerateTranscript2();
+                GenerateReportForm();
             else if (MyWorkObject is ClassReportFormModel)
-                GenerateClassTranscripts();
-            // if (MyWorkObject is ClassTranscriptsModel2)
-            //   GenerateClassTranscripts();
-            else if (MyWorkObject is ClassTranscriptsModel)
-                GenerateClassTranscripts();
+                GenerateClassReportForms();
             else if (MyWorkObject is ClassStudentsExamResultModel)
                 GenerateClassExamResults();
             else if (MyWorkObject is ClassExamResultModel)
@@ -53,18 +48,16 @@ namespace UmanyiSMS.Modules.Exams.Controller
         {
             if (MyWorkObject is AggregateResultModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/AggregateResult.xaml"));
-            if (MyWorkObject is StudentTranscriptModel)
-                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/Transcript.xaml"));
             if (MyWorkObject is ReportFormModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ReportForm.xaml"));
             if (MyWorkObject is ClassReportFormModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ReportForm.xaml"));
-            if (MyWorkObject is ClassTranscriptsModel)
+           if (MyWorkObject is ClassStudentsExamResultModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/Transcript.xaml"));
-            if (MyWorkObject is ClassStudentsExamResultModel)
-                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ClassMarkList.xaml"));
             if (MyWorkObject is ClassExamResultModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ClassMarkList.xaml"));
+            if (MyWorkObject is StudentExamResultModel)
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/Transcript.xaml"));
 
             throw new ArgumentException();
         }
@@ -72,8 +65,6 @@ namespace UmanyiSMS.Modules.Exams.Controller
         protected override int GetNoOfPages()
         {
             if (MyWorkObject is AggregateResultModel)
-                return 1;
-            if (MyWorkObject is StudentTranscriptModel)
                 return 1;
             if (MyWorkObject is ReportFormModel)
                 return 1;
@@ -83,14 +74,14 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 return (MyWorkObject as ClassTranscriptsModel).Entries.Count;
             if (MyWorkObject is ClassStudentsExamResultModel)
                 return (MyWorkObject as ClassStudentsExamResultModel).Entries.Count;
-            if (MyWorkObject is ClassStudentsExamResultModel)
-                return (MyWorkObject as ClassStudentsExamResultModel).Entries.Count;
             if (MyWorkObject is ClassExamResultModel)
             {
                 var totalNoOfItems = (MyWorkObject as ClassExamResultModel).Entries.Rows.Count;
                 return (totalNoOfItems % ItemsPerPage) != 0 ?
                                 (totalNoOfItems / ItemsPerPage) + 1 : (totalNoOfItems / ItemsPerPage);
             }
+            if (MyWorkObject is StudentExamResultModel)
+                return 1;
             throw new ArgumentException();
         }
 
@@ -103,9 +94,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
             return 0;
         }
-
-
-
+        
         #region Aggregate Result
 
         private void AddAGClass(string nameOfClass, int pageNo)
@@ -266,34 +255,30 @@ namespace UmanyiSMS.Modules.Exams.Controller
         }
         #endregion
 
-        #region ClassTranscripts
-        private void GenerateClassTranscripts()
+        #region Class Reportforms
+        private void GenerateClassReportForms()
         {
-            ClassTranscriptsModel si = MyWorkObject as ClassTranscriptsModel;
+            ClassReportFormModel si = MyWorkObject as ClassReportFormModel;
 
             int pageNo;
             for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
-                si.Entries[pageNo].Entries = new ObservableCollection<StudentExamResultEntryModel>(si.Entries[pageNo].Entries.OrderBy(o => o.Code));
-                AddTR2StudentID(si.Entries[pageNo].StudentID, pageNo);
-                AddTR2Name(si.Entries[pageNo].NameOfStudent, pageNo);
-                AddTR2ClassName(si.Entries[pageNo].NameOfClass, pageNo);
-                AddTR2ClassPosition(si.Entries[pageNo].ClassPosition, pageNo);
-                AddTR2KCPEScore(si.Entries[pageNo].KCPEScore, pageNo);
-                AddTR2OverAllPosition(si.Entries[pageNo].OverAllPosition, pageNo);
-                AddTR2TotalMarks(si.Entries[pageNo].TotalMarks, pageNo);
-                AddTR2MeanGrade(si.Entries[pageNo].MeanGrade, pageNo);
-                AddTR2SubjectScores(si.Entries[pageNo].Entries, pageNo);
-                AddTR2Boarding(si.Entries[pageNo].Boarding, pageNo);
-                AddTR2Responsibilities(si.Entries[pageNo].Responsibilities, pageNo);
-                AddTR2Clubs(si.Entries[pageNo].ClubsAndSport, pageNo);
-                AddTR2Principal(si.Entries[pageNo].Principal, pageNo);
-                AddTR2PrincipalComments(si.Entries[pageNo].PrincipalComments, pageNo);
-                AddTR2ClassTR(si.Entries[pageNo].ClassTeacher, pageNo);
-                AddTR2Opening(si.Entries[pageNo].OpeningDay, pageNo);
-                AddTR2Closing(si.Entries[pageNo].ClosingDay, pageNo);
-                AddTR2ClustPoints(si.Entries[pageNo].Points, pageNo);
-                AddTR2ClassTRComments(si.Entries[pageNo].ClassTeacherComments, pageNo);
+                si[pageNo].SubjectEntries = new ObservableCollection<ReportFormSubjectModel>(si[pageNo].SubjectEntries.OrderBy(o => o.Code));
+                AddRPMStudentID(si[pageNo].StudentID, pageNo);
+                AddRPMName(si[pageNo].NameOfStudent, pageNo);
+                AddRPMClassName(si[pageNo].NameOfClass, pageNo);
+                AddRPMClassPosition(si[pageNo].ClassRank, pageNo);
+                AddRPMOverAllPosition(si[pageNo].StreamRank, pageNo);
+                AddRPMTotalMarks(si[pageNo].TotalMarks, pageNo);
+                AddRPMMeanGrade(si[pageNo].MeanGrade, pageNo);
+                AddRPMMeanScore(si[pageNo].MeanScore, pageNo);
+                AddRPMTotalPoints(si[pageNo].TotalPoints, pageNo);
+                AddRPMAvgPoints(si[pageNo].AvgPoints, pageNo);
+                AddRPMPrincipalComments(si[pageNo].PrincipalComments, pageNo);
+                AddRPMOpening(si[pageNo].OpeningDay, pageNo);
+                AddRPMClosing(si[pageNo].ClosingDay, pageNo);                
+                AddRPMClassTRComments(si[pageNo].ClassTeacherComments, pageNo);
+                AddRPMSubjectScores(si[pageNo].SubjectEntries, pageNo);
 
             }
         }
@@ -374,87 +359,71 @@ namespace UmanyiSMS.Modules.Exams.Controller
         }
         #endregion
 
-        #region Transcript2
-        private void AddTR2Responsibilities(string responsibilities, int pageNo)
-        {
-            AddTextWithWrap(responsibilities, "Arial", 200, 40, 14, false, 0, Colors.Black, 30, 670, pageNo);
-        }
-        private void AddTR2Clubs(string clubs, int pageNo)
-        {
-            AddTextWithWrap(clubs, "Arial", 200, 40, 14, false, 0, Colors.Black, 30, 740, pageNo);
-        }
-        private void AddTR2Boarding(string boarding, int pageNo)
-        {
-            AddTextWithWrap(boarding, "Arial", 200, 60, 14, false, 0, Colors.Black, 30, 810, pageNo);
-        }
-        private void AddTR2ClassTR(string classTR, int pageNo)
-        {
-            AddTextWithWrap(classTR, "Arial", 200, 30, 14, false, 0, Colors.Black, 30, 940, pageNo);
-        }
-        private void AddTR2ClassTRComments(string classTRComments, int pageNo)
+        #region Report Form
+        private void AddRPMClassTRComments(string classTRComments, int pageNo)
         {
             AddTextWithWrap(classTRComments, "Arial", 524, 30, 14, false, 0, Colors.Black, 250, 940, pageNo);
         }
-        private void AddTR2Principal(string principal, int pageNo)
-        {
-            AddTextWithWrap(principal, "Arial", 200, 30, 14, false, 0, Colors.Black, 30, 1010, pageNo);
-        }
-        private void AddTR2PrincipalComments(string principalComments, int pageNo)
+        private void AddRPMPrincipalComments(string principalComments, int pageNo)
         {
             AddTextWithWrap(principalComments, "Arial", 524, 30, 14, false, 0, Colors.Black, 30, 1010, pageNo);
         }
-        private void AddTR2Opening(DateTime opening, int pageNo)
+        private void AddRPMOpening(DateTime opening, int pageNo)
         {
             AddText(opening.ToString("dd-MM-yyyy"), "Arial", 14, false, 0, Colors.Black, 350, 1055, pageNo);
         }
-        private void AddTR2Closing(DateTime closing, int pageNo)
+        private void AddRPMClosing(DateTime closing, int pageNo)
         {
             AddText(closing.ToString("dd-MM-yyyy"), "Arial", 14, false, 0, Colors.Black, 120, 1055, pageNo);
         }
-        private void AddTR2StudentID(int studentID, int pageNo)
+        private void AddRPMStudentID(int studentID, int pageNo)
         {
             AddText(studentID.ToString(), "Arial", 14, false, 0, Colors.Black, 100, 135, pageNo);
         }
-        private void AddTR2Name(string nameOfStudent, int pageNo)
+        private void AddRPMName(string nameOfStudent, int pageNo)
         {
             AddText(nameOfStudent, "Arial", 14, false, 0, Colors.Black, 255, 135, pageNo);
         }
-        private void AddTR2ClassName(string className, int pageNo)
+        private void AddRPMClassName(string className, int pageNo)
         {
             AddText(className, "Arial", 14, true, 0, Colors.Black, 630, 135, pageNo);
         }
-        private void AddTR2KCPEScore(int kcpeScore, int pageNo)
-        {
-            AddText(kcpeScore.ToString(), "Arial", 14, true, 0, Colors.Black, 135, 173, pageNo);
-        }
-
-        private void AddTR2Image(byte[] image, int pageNo)
+        
+        private void AddRPMImage(byte[] image, int pageNo)
         {
             AddImage(image, double.NaN, double.NaN, 642, 10, 0, pageNo);
         }
 
-        private void AddTR2ClassPosition(string classPosition, int pageNo)
+        private void AddRPMClassPosition(string classPosition, int pageNo)
         {
             AddText(classPosition, "Arial", 14, true, 0, Colors.Black, 75, 580, pageNo);
         }
-        private void AddTR2TotalMarks(decimal totalMarks, int pageNo)
+        private void AddRPMTotalMarks(decimal totalMarks, int pageNo)
         {
             AddText(totalMarks.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 250, 580, pageNo);
         }
-        private void AddTR2OverAllPosition(string meanGrade, int pageNo)
+        private void AddRPMOverAllPosition(string meanGrade, int pageNo)
         {
             AddText(meanGrade, "Arial", 14, true, 0, Colors.Black, 650, 580, pageNo);
         }
-        private void AddTR2MeanGrade(string meanGrade, int pageNo)
+        private void AddRPMMeanGrade(string meanGrade, int pageNo)
         {
             AddText(meanGrade, "Arial", 14, true, 0, Colors.Black, 410, 580, pageNo);
         }
-        private void AddTR2ClustPoints(decimal point, int pageNo)
+        private void AddRPMMeanScore(decimal point, int pageNo)
+        {
+            AddText(point.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 495, 580, pageNo);
+        }
+        private void AddRPMTotalPoints(decimal point, int pageNo)
+        {
+            AddText(point.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 495, 580, pageNo);
+        }
+        private void AddRPMAvgPoints(decimal point, int pageNo)
         {
             AddText(point.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 495, 580, pageNo);
         }
 
-        private void AddTR2SubjectScore(StudentExamResultEntryModel item, int itemIndex, int pageNo)
+        private void AddRPMSubjectScore(ReportFormSubjectModel item, int itemIndex, int pageNo)
         {
             double fontsize = 14;
             int pageRelativeIndex = itemIndex;
@@ -462,117 +431,48 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
             AddText(item.Code.ToString(), "Arial", 14, false, 0, Colors.Black, 40, yPos, pageNo);
             AddText(item.NameOfSubject, "Arial", 14, false, 0, Colors.Black, 100, yPos, pageNo);
-            if (item.Cat1Score.HasValue)
-                AddText(item.Cat1Score.Value.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 242, yPos, pageNo);
-            if (item.Cat2Score.HasValue)
-                AddText(item.Cat2Score.Value.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 302, yPos, pageNo);
-            if (item.ExamScore.HasValue)
-                AddText(item.ExamScore.Value.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 362, yPos, pageNo);
+            if (!string.IsNullOrWhiteSpace(item.Exam1Score))
+                AddText(item.Exam1Score, "Arial", fontsize, false, 0, Colors.Black, 242, yPos, pageNo);
+            if (!string.IsNullOrWhiteSpace(item.Exam2Score))
+                AddText(item.Exam2Score, "Arial", fontsize, false, 0, Colors.Black, 302, yPos, pageNo);
+            if (!string.IsNullOrWhiteSpace(item.Exam3Score))
+                AddText(item.Exam3Score, "Arial", fontsize, false, 0, Colors.Black, 362, yPos, pageNo);
             AddText(item.MeanScore.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 422, yPos, pageNo);
             AddText(item.Grade, "Arial", fontsize, false, 0, Colors.Black, 505, yPos, pageNo);
-            AddText(item.Points.ToString(), "Arial", fontsize, false, 0, Colors.Black, 562, yPos, pageNo);
+            AddText(item.StreamRank, "Arial", fontsize, false, 0, Colors.Black, 562, yPos, pageNo);
             AddText(item.Remarks, "Arial", fontsize, false, 0, Colors.Black, 620, yPos, pageNo);
-            AddText(item.Tutor, "Arial", fontsize, false, 0, Colors.Black, 715, yPos, pageNo);
         }
-        private void AddTR2SubjectScores(ObservableCollection<StudentExamResultEntryModel> psi, int pageNo)
+        
+        private void AddRPMSubjectScores(IEnumerable<ReportFormSubjectModel> psi, int pageNo)
         {
-            for (int i = 0; i <= psi.Count - 1; i++)
-                AddTR2SubjectScore(psi[i], i, pageNo);
+            for (int i = 0; i <= psi.Count() - 1; i++)
+                AddRPMSubjectScore(psi.ElementAt(i), i, pageNo);
         }
-
-        private static double GetYHeight(string grade)
+        
+        private void GenerateReportForm()
         {
-            switch (grade)
-            {
-                case "A": return 188;
-                case "A-": return 171;
-                case "B+": return 155;
-                case "B": return 140;
-                case "B-": return 123;
-                case "C+": return 107;
-                case "C": return 92;
-                case "C-": return 75;
-                case "D+": return 59;
-                case "D": return 44;
-                case "D-": return 27;
-                case "E": return 12;
-            }
-            throw new ArgumentOutOfRangeException("Invalid grade value: " + grade);
-        }
-
-        private static void TR2DrawGraph(string kcpeGrade, string cat1Grade, string cat2Grade, string examGrade, int pageNo)
-        {
-
-            Border bd1, bd2, bd3, bd4;
-            bd1 = new Border();
-            bd1.Width = 10;
-            bd1.Height = GetYHeight(kcpeGrade);
-            bd1.HorizontalAlignment = HorizontalAlignment.Left;
-            bd1.VerticalAlignment = VerticalAlignment.Bottom;
-            bd1.Background = new SolidColorBrush(Colors.Gray);
-            bd1.Margin = new Thickness(285, 0, 0, 271);
-
-            bd2 = new Border();
-            bd2.Width = 10;
-            bd2.Height = GetYHeight(cat1Grade);
-            bd2.HorizontalAlignment = HorizontalAlignment.Left;
-            bd2.VerticalAlignment = VerticalAlignment.Bottom;
-            bd2.Background = new SolidColorBrush(Colors.Gray);
-            bd2.Margin = new Thickness(330, 0, 0, 271);
-
-            bd3 = new Border();
-            bd3.Width = 10;
-            bd3.Height = GetYHeight(cat2Grade);
-            bd3.HorizontalAlignment = HorizontalAlignment.Left;
-            bd3.VerticalAlignment = VerticalAlignment.Bottom;
-            bd3.Background = new SolidColorBrush(Colors.Gray);
-            bd3.Margin = new Thickness(380, 0, 0, 271);
-
-            bd4 = new Border();
-            bd4.Width = 10;
-            bd4.Height = GetYHeight(examGrade);
-            bd4.HorizontalAlignment = HorizontalAlignment.Left;
-            bd4.VerticalAlignment = VerticalAlignment.Bottom;
-            bd4.Background = new SolidColorBrush(Colors.Gray);
-            bd4.Margin = new Thickness(428, 0, 0, 271);
-
-            Grid g = Document.Pages[pageNo].Child.Children[0] as Grid;
-            g.Children.Add(bd1);
-            g.Children.Add(bd2);
-            g.Children.Add(bd3);
-            g.Children.Add(bd4);
-        }
-
-        private void GenerateTranscript2()
-        {
-            StudentTranscriptModel si = MyWorkObject as StudentTranscriptModel;
+            ReportFormModel si = MyWorkObject as ReportFormModel;
 
             int pageNo;
             for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
-                si.Entries = new ObservableCollection<StudentExamResultEntryModel>(si.Entries.OrderBy(o => o.Code));
-                AddTR2StudentID(si.StudentID, pageNo);
-                AddTR2Name(si.NameOfStudent, pageNo);
-                AddTR2ClassName(si.NameOfClass, pageNo);
-                AddTR2ClassPosition(si.ClassPosition, pageNo);
-                AddTR2KCPEScore(si.KCPEScore, pageNo);
-                AddTR2OverAllPosition(si.OverAllPosition, pageNo);
-                AddTR2TotalMarks(si.TotalMarks, pageNo);
-                AddTR2MeanGrade(si.MeanGrade, pageNo);
-                AddTR2SubjectScores(si.Entries, pageNo);
-                AddTR2Boarding(si.Boarding, pageNo);
-                AddTR2Responsibilities(si.Responsibilities, pageNo);
-                AddTR2Clubs(si.ClubsAndSport, pageNo);
-                AddTR2Principal(si.Principal, pageNo);
-                AddTR2PrincipalComments(si.PrincipalComments, pageNo);
-                AddTR2ClassTR(si.ClassTeacher, pageNo);
-                AddTR2Opening(si.OpeningDay, pageNo);
-                AddTR2Closing(si.ClosingDay, pageNo);
-                AddTR2ClustPoints(si.Points, pageNo);
-                AddTR2ClassTRComments(si.ClassTeacherComments, pageNo);
-                AddTR2Image(si.SPhoto, pageNo);
-
-                var t = si.CAT1Grade;
+                si.SubjectEntries = new ObservableCollection<ReportFormSubjectModel>(si.SubjectEntries.OrderBy(o => o.Code));
+                AddRPMStudentID(si.StudentID, pageNo);
+                AddRPMName(si.NameOfStudent, pageNo);
+                AddRPMClassName(si.NameOfClass, pageNo);
+                AddRPMClassPosition(si.ClassRank, pageNo);
+                AddRPMOverAllPosition(si.StreamRank, pageNo);
+                AddRPMTotalMarks(si.TotalMarks, pageNo);
+                AddRPMMeanScore(si.MeanScore, pageNo);
+                AddRPMMeanGrade(si.MeanGrade, pageNo);
+                AddRPMTotalPoints(si.TotalPoints, pageNo);
+                AddRPMAvgPoints(si.AvgPoints, pageNo);                            
+                AddRPMOpening(si.OpeningDay, pageNo);
+                AddRPMClosing(si.ClosingDay, pageNo);
+                AddRPMPrincipalComments(si.PrincipalComments, pageNo);
+                AddRPMClassTRComments(si.ClassTeacherComments, pageNo);
+                AddRPMImage(si.SPhoto, pageNo);
+                AddRPMSubjectScores(si.SubjectEntries, pageNo);
             }
         }
 

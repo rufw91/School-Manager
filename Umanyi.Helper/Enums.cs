@@ -10,4 +10,9 @@ namespace UmanyiSMS.Lib
     {
         Idle, Running, Complete
     }
+
+    public enum ServerType
+    {
+        SqlServer, LocalDb
+    }
 }
