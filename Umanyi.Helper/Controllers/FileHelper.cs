@@ -104,17 +104,9 @@ namespace UmanyiSMS.Lib.Controllers
             return succ;
         }
 
-        public static string GetNewDefBackupPath()
+        public static string GetTempFilePath(string pref)
         {
-            string newpath = Constants.BackupDirectoryPath +
-                (new Random().Next(1000) *
-                new Random().Next(2000)).ToString() + ".BAK";
-            while (File.Exists(newpath))
-            {
-                newpath = Constants.BackupDirectoryPath + (new Random().Next(1000) *
-                   new Random().Next(2000)).ToString() + ".BAK";
-            }
-            return newpath;
+            return Path.Combine(Path.GetTempPath(), "UmanyiSMS_" + pref + DateTime.Now.ToString("dd.MM.yyyy.HH.mm.ss")); 
         }
 
       

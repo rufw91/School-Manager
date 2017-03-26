@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 namespace UmanyiSMS.Lib.Controllers
@@ -432,8 +433,9 @@ namespace UmanyiSMS.Lib.Controllers
                 {
                     using (conn)
                     {
-                        string dbName = UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName;
-                        string bkPath = FileHelper.GetNewNetworkServiceTempFilePath("Bak");
+                        string dbName = Properties.Settings.Default.Info.DBName;
+                        string bkPath = Regex.Match(Properties.Settings.Default.Info.ServerName, "LocalDB", RegexOptions.IgnoreCase).Success ? FileHelper.GetTempFilePath("Bak") : FileHelper.GetNewNetworkServiceTempFilePath("Bak");                    
+                     
                         var sc = new ServerConnection(conn);
                         Server server = new Server(sc);
                         Database db = server.Databases[dbName];

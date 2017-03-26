@@ -20,7 +20,7 @@ namespace UmanyiSMS.Modules.Exams.Models
             subjectEntries = new ObservableCollection<ReportFormSubjectModel>();
         }
 
-        public string ClassName
+        public string NameOfClass
         {
             get { return this.className; }
 
@@ -29,14 +29,23 @@ namespace UmanyiSMS.Modules.Exams.Models
                 if (value != this.className)
                 {
                     this.className = value;
-                    NotifyPropertyChanged("ClassName");
+                    NotifyPropertyChanged("NameOfClass");
                 }
             }
         }
         public ObservableCollection<ReportFormSubjectModel> SubjectEntries
         {
             get { return this.subjectEntries; }
-            
+
+            set
+            {
+                if (value != this.subjectEntries)
+                {
+                    this.subjectEntries = value;
+                    NotifyPropertyChanged("SubjectEntries");
+                }
+            }
+
         }
         public string ClassRank
         {
@@ -66,9 +75,20 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
+        public decimal TotalMarks { get; internal set; }
+        public decimal MeanScore { get; internal set; }
+        public string MeanGrade { get; internal set; }
+        public decimal TotalPoints { get; internal set; }
+        public decimal AvgPoints { get; internal set; }
+        public DateTime OpeningDay { get; internal set; }
+        public DateTime ClosingDay { get; internal set; }
+        public string PrincipalComments { get; internal set; }
+        public string ClassTeacherComments { get; internal set; }
+        public byte[] SPhoto { get; internal set; }
+
         public void Clean()
         {
-            ClassName = "";
+            NameOfClass = "";
             StreamRank = "";
             ClassRank = "";
             subjectEntries.Clear();
@@ -76,8 +96,8 @@ namespace UmanyiSMS.Modules.Exams.Models
 
         public void CopyFrom(ReportFormModel reportForm)
         {
-            ClassName = reportForm.ClassName;
-            StreamRank = reportForm.ClassName;
+            NameOfClass = reportForm.NameOfClass;
+            StreamRank = reportForm.NameOfClass;
             ClassRank = reportForm.ClassRank;
             subjectEntries.Clear();
             foreach (var t in reportForm.subjectEntries)

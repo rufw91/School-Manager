@@ -9,36 +9,37 @@ using System.Security;
 using System.Net;
 using System.Data.SqlClient;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace UmanyiSMS.Lib.Controllers
 {
     public static class ConnectionStringHelper
     {
-        static string localDB = "Server=(LocalDB)\\v11.0;MultipleActiveResultSets=true;TrustServerCertificate=True;" +
-            "AttachDBFilename="+ Path.Combine(new FileInfo(Application.ResourceAssembly.Location).DirectoryName,"UmanyiSMS.mdf")+";Initial Catalog=UmanyiSMS;";
-        static string masterLocalDB = "Server=(LocalDB)\\v11.0;Integrated Security=SSPI;MultipleActiveResultSets=true;TrustServerCertificate=True;" 
-           + ";Initial Catalog=master;";
-        static readonly string connStr = "Data Source=" +
+        static string localDB = "Server=" + Properties.Settings.Default.Info.ServerName + ";MultipleActiveResultSets=true;AttachDBFilename=" +
+            Path.Combine(new FileInfo(Application.ResourceAssembly.Location).DirectoryName, "UmanyiSMS.mdf") + ";Initial Catalog=UmanyiSMS;";
+        static string sqlServer = "Data Source=" +
                 Lib.Properties.Settings.Default.Info.ServerName +
-                ";Database=UmanyiSMS;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
+                ";Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;Initial Catalog=UmanyiSMS;";
+        static string masterLocalDB = "Server=" + Properties.Settings.Default.Info.ServerName + ";Integrated Security=SSPI;MultipleActiveResultSets=true;TrustServerCertificate=True;"
+           + ";Initial Catalog=master;";
         static readonly string masterConnString = "Data Source=" +
                 Lib.Properties.Settings.Default.Info.ServerName +
                 ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;Intergrated Security=SSPI;";
-        
+
         public static string ConnectionString
         {
-            get { return localDB; }
+            get { return Regex.Match(Properties.Settings.Default.Info.ServerName, "LocalDB", RegexOptions.IgnoreCase).Success ? localDB : sqlServer; }
         }
 
         public static string SSPIConnectionString
         {
-            get { return masterLocalDB; }
+            get { return Regex.Match(Properties.Settings.Default.Info.ServerName, "LocalDB", RegexOptions.IgnoreCase).Success ? masterLocalDB : masterConnString; }
         }
 
         public static string MasterConnectionString
         {
-            get { return masterLocalDB; }
+            get { return Regex.Match(Properties.Settings.Default.Info.ServerName, "LocalDB", RegexOptions.IgnoreCase).Success ? masterLocalDB : masterConnString; }
         }
-            
+
     }
 }

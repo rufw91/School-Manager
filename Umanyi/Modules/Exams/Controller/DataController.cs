@@ -530,11 +530,11 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 var dt = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr, paramColl);
 
                 ReportFormModel rpm = new ReportFormModel();
-
+                ReportFormSubjectModel l;
                 foreach (DataRow dtr in dt.Rows)
                 {
-                    rpm.SubjectEntries.Add(new ReportFormSubjectModel(int.Parse(dtr[4].ToString()), dtr[3].ToString(), dtr[5].ToString(), dtr[6].ToString(),
-                        dtr[7].ToString(), dtr[8].ToString()));
+                    l = new ReportFormSubjectModel();
+                    rpm.SubjectEntries.Add(l);
                 }
                 return rpm;
             });
@@ -739,6 +739,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 var last_id = 0;
                 bool addNew = false;
                 ReportFormModel temp = null;
+                ReportFormSubjectModel l;
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     addNew = int.Parse(dt.Rows[i][0].ToString()) != last_id;
@@ -751,8 +752,9 @@ namespace UmanyiSMS.Modules.Exams.Controller
                         temp.StudentID = int.Parse(dt.Rows[i][0].ToString());
                         temp.NameOfStudent = dt.Rows[i][1].ToString();
                     }
-                    temp.SubjectEntries.Add(new ReportFormSubjectModel(int.Parse(dt.Rows[i][4].ToString()), dt.Rows[i][3].ToString(),
-                        dt.Rows[i][5].ToString(), dt.Rows[i][6].ToString(), dt.Rows[i][7].ToString(), dt.Rows[i][8].ToString()));
+                    l = new ReportFormSubjectModel();
+                    temp.SubjectEntries.Add(l);/* new ReportFormSubjectModel(int.Parse(dt.Rows[i][4].ToString()), dt.Rows[i][3].ToString(),
+                        dt.Rows[i][5].ToString(), dt.Rows[i][6].ToString(), dt.Rows[i][7].ToString(), dt.Rows[i][8].ToString()));*/
                 }
                 return rpm;
             });
@@ -1137,6 +1139,19 @@ namespace UmanyiSMS.Modules.Exams.Controller
                             studentExamResultModel.Entries.Add(new StudentTranscriptSubjectModel(examResultSubjectEntryModel));
                         }
                     }
+                    decimal num=0,num2 = 0;
+                    studentExamResultModel.OverAllPosition = GetOverallPosition(studentExamResultModel.StudentID, examID);
+                    foreach (var current in studentExamResultModel.Entries)
+                    {
+                        num += current.Score;
+                    }
+                    foreach (StudentTranscriptSubjectModel current2 in studentExamResultModel.Entries)
+                    {
+                        num2 += current2.Points;
+                    }
+                    studentExamResultModel.MeanGrade = ((studentExamResultModel.Entries.Count > 0) ? Institution.Controller.DataController.CalculateGradeFromPoints((num2 + (studentExamResultModel.Entries.Count - 1)) / studentExamResultModel.Entries.Count) : "E");
+                    studentExamResultModel.TotalMarks = num;
+                    studentExamResultModel.Points = Institution.Controller.DataController.CalculatePoints(studentExamResultModel.MeanGrade);
                     classStudentsExamResultModel.Entries.Add(studentExamResultModel);
                 }
                 return classStudentsExamResultModel;

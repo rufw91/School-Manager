@@ -97,7 +97,7 @@
                 <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="1" Margin="287,615,0,0" VerticalAlignment="Top" Width="150"/>
                 <Border BorderBrush="Black" BorderThickness="2" Width="1" HorizontalAlignment="Left"
                 	Height="315" Margin="485,275,0,0" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="447,287,0,0" TextWrapping="Wrap" Text="PTS" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="14"/>
+                <TextBlock HorizontalAlignment="Left" Margin="435,281,0,0" TextWrapping="Wrap" Text="STREAM POS" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="12" Width="53"/>
                 <Image x:Name="image" HorizontalAlignment="Left" Height="90" Margin="634,0,0,0" VerticalAlignment="Top" Width="120"/>
             </Grid>
         </Border>
