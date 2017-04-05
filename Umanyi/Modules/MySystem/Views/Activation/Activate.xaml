@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="UmanyiSMS.Modules.MySystem.Views.Activate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UmanyiSMS.Modules.MySystem.Views"
+             mc:Ignorable="d" Background="White"
+             d:DesignHeight="500" d:DesignWidth="800">
+    <Grid>
+
+        <TextBlock HorizontalAlignment="Left" Margin="20,30,0,0" Text="Activation" Style="{DynamicResource Title}" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,75,0,0" Text="You need to activate this app to continue using it." Style="{DynamicResource ContentTextBold}" VerticalAlignment="Top"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="40,140,0,0" Text="This will only take a sec :)" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,190,0,0" Text="License Key (XXXXX-XXXXX-XXXXX-XXXXX-XXXXX)" Style="{DynamicResource ContentTextBold}" VerticalAlignment="Top"/>
+        <TextBox Name="txtLicense" HorizontalAlignment="Left" Height="23" Margin="40,226,0,0" Text="" FontSize="16" VerticalAlignment="Top" Width="358" MaxLength="25"/>
+        <Button Content="Activate" IsCancel="True" HorizontalAlignment="Right" Margin="0,0,20,20" VerticalAlignment="Bottom" Width="130"/>
+
+
+
+    </Grid>
+</UserControl>

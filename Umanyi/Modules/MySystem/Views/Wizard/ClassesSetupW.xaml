@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="UmanyiSMS.Modules.MySystem.Views.ClassesSetupW"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:local="clr-namespace:UmanyiSMS.Modules.MySystem.Views"
+             mc:Ignorable="d" Background="{DynamicResource WindowBackground}"
+      d:DesignHeight="700" d:DesignWidth="860">
+
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Classes Setup" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,75,0,0" Style="{DynamicResource Title0}" Text="Add New Class" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="40,120,0,0" Text="Name of Class" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="126,120,0,0"  VerticalAlignment="Top" Width="200"
+                 DataContext="{Binding NewClass}"
+                 Text="{Binding NameOfClass, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Content="_Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" 
+        	Command="{Binding AddNewClassCommand}" Margin="251,170,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="350,100,0,0" Style="{DynamicResource Title0}" Text="Registred Classes" VerticalAlignment="Top"/>
+        <ListBox Margin="350,129,30,30" 
+                 ItemsSource="{Binding ClassesSetup.Entries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 DisplayMemberPath="NameOfClass"/>
+
+
+        <TextBlock HorizontalAlignment="Left" Margin="40,211,0,0" Foreground="Red" VerticalAlignment="Top" Text="IMPORTANT: Class Names should be in format 'FORM No XXX' eg 'FORM 1 EAST" TextWrapping="Wrap" Width="224"/>
+        <Button Content="Next" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Bottom" Width="100"
+                Command="{Binding DataContext.Page5Command, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,0,120,15" Height="16" VerticalAlignment="Bottom">
+            <Hyperlink Command="{Binding DataContext.Page3Command, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">Back</Hyperlink>
+        </TextBlock>
+
+    </Grid>
+</UserControl>
