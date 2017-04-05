@@ -101,15 +101,15 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             LibraryModifyBookCommand = new RelayCommand(o => Source = new ModifyBookVM(), o => true);
             LibraryBookListCommand = new RelayCommand(o => Source = new ViewBooksVM(), o => true);
             LibraryUnreturnedBooksCommand = new RelayCommand(o => Source = new UnreturnedBooksVM(), o => true);
-            
+            SettingsSetupWizardCommand = new RelayCommand(o => { if (SettingsSetupWizardAction != null) SettingsSetupWizardAction.Invoke(); }, o => true);
             SettingsInstInfoCommand = new RelayCommand(o => Source = new InstitutionSetupVM(), o => true);
             SettingsACYSCommand = new RelayCommand(o => Source = new AcademicYearSetupVM(), o => true);
             SettingsCSCommand = new RelayCommand(o => Source = new ClassesSetupVM(), o => true);
             SettingsISSCommand = new RelayCommand(o => Source = new InstitutionSubjectsSetupVM(), o => true);
             SettingsGSCommand = new RelayCommand(o => Source = new ExamSetupVM(), o => true);
-            SettingsATCommand = new RelayCommand(o => { }, o => false);
             SettingsAdvancedCommand = new RelayCommand(o => Source = new AdvancedSettingsVM(), o => true);
             HelpGetHelpCommand = new RelayCommand(o => { if (HelpGetHelpAction != null) HelpGetHelpAction.Invoke(); }, o => true);
+            HelpActivationCommand = new RelayCommand(o => { if (HelpActivationAction != null) HelpActivationAction.Invoke(); }, o => true);
             HelpAboutCommand = new RelayCommand(o => { if (HelpAboutAction != null) HelpAboutAction.Invoke(); }, o => true);
         }
 
@@ -464,8 +464,15 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             private set;
         }
         #endregion
-        
+
         #region Settings
+        public ICommand SettingsSetupWizardCommand
+        {
+            get;
+            private set;
+        }
+        
+
         public ICommand SettingsInstInfoCommand
         {
             get;
@@ -495,13 +502,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             get;
             private set;
         }
-
-        public ICommand SettingsATCommand
-        {
-            get;
-            private set;
-        }
-
+        
         public ICommand SettingsAdvancedCommand
         {
             get;
@@ -515,7 +516,12 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             get;
             private set;
         }
-
+        public ICommand HelpActivationCommand
+        {
+            get;
+            private set;
+        }
+        
         public ICommand HelpAboutCommand
         {
             get;
@@ -526,9 +532,14 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
 
         public Action HelpAboutAction
         { get; set; }
-
+        public Action HelpActivationAction
+        { get; set; }        
         public Action HelpGetHelpAction
         { get; set; }
+
+        public Action SettingsSetupWizardAction
+        { get; set; }
+        
 
 
         public override void Reset()

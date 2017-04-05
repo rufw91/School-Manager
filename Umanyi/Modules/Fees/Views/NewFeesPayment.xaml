@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800" Background="White">
+             d:DesignHeight="600" d:DesignWidth="800" 
+             Background="{DynamicResource WindowBackground}">
     <Grid>
         <TextBlock Margin="20,20,0,0" Text="New Fees Payment" VerticalAlignment="Top" HorizontalAlignment="Left"
                  Style="{DynamicResource Title}"/>
@@ -42,7 +43,7 @@
                   CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False"
                   ItemsSource="{Binding RecentPayments}" ToolTip="You can right-click an entry to reprint receipt.">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Date Paid" Binding="{Binding DatePaid}" Width="200*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Date Paid" Binding="{Binding DatePaid, StringFormat={}{0:dd-MM-yyyy HH:mm:ss}}" Width="200*" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Amount Paid" Binding="{Binding AmountPaid}" Width="200*" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Mode of PMT" Binding="{Binding PaymentMethod}" Width="200*" IsReadOnly="True"/>
                 </DataGrid.Columns>

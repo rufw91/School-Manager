@@ -7,8 +7,7 @@
             xmlns:commands="clr-namespace:UmanyiSMS.Presentation" 
              mc:Ignorable="d" 
              d:DesignHeight="722" d:DesignWidth="1024"
-             
-	 Background="White">
+             Background="{DynamicResource WindowBackground}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
@@ -43,13 +42,13 @@
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
                     <Grid Height="150">
-                        <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" BorderThickness="0">
+                        <DataGrid MinWidth="300" ItemsSource="{Binding Items}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" BorderThickness="0">
                             
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
-                                <DataGridTextColumn Header="Price" Binding="{Binding Cost}" Width="*"/>
-                                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
-                                <DataGridTextColumn Header="Total" Binding="{Binding TotalAmt}" Width="*"/>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="200"/>
+                                <DataGridTextColumn Header="Price" Binding="{Binding Cost}" Width="150"/>
+                                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="150"/>
+                                <DataGridTextColumn Header="Total" Binding="{Binding TotalAmt}" Width="150"/>
                             </DataGrid.Columns>
 
                         </DataGrid>

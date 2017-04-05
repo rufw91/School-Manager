@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              xmlns:Controls="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
              xmlns:commands="clr-namespace:UmanyiSMS.Presentation" 
-	 Background="White">
+	 Background="{DynamicResource WindowBackground}">
     <Grid>
         <TextBlock Text="List of all Suppliers" Style="{StaticResource Title}" HorizontalAlignment="Left"  Margin="10,10,0,0"
                        VerticalAlignment="Top"/>

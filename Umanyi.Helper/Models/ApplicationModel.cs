@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using UmanyiSMS.Lib.Presentation;
 
@@ -24,6 +25,8 @@ namespace UmanyiSMS.Lib.Models
         private string altInfo;
         private string fullNameAlt;
         private string fullName;
+        private string theme;
+        private Color accentColor;
 
         public ApplicationModel()
         {
@@ -44,10 +47,12 @@ namespace UmanyiSMS.Lib.Models
             City = "";
             PhoneNo = "";
             Email = "";
-            ServerName = Environment.MachineName + "\\Umanyi";
+            ServerName = @"(localdb)\v11.0";
             DBName = "UmanyiSMS";
             Culture = new CultureInfo("en-GB").LCID;
             SPhoto = null;
+            Theme = "Dark";
+            AccentColor = new Color(); 
             Logo = GetImage();
             Motto = "";
         }
@@ -75,6 +80,8 @@ namespace UmanyiSMS.Lib.Models
             ServerName = info.ServerName;
             Culture = info.Culture;
             SPhoto = info.SPhoto;
+            Theme = info.Theme;
+            AccentColor = Color.FromArgb(info.AccentColor[0], info.AccentColor[1], info.AccentColor[2], info.AccentColor[3]);
             Logo = GetImage();
             Motto = info.Motto;
         }
@@ -129,6 +136,7 @@ namespace UmanyiSMS.Lib.Models
                 }
             }
         }
+
         public string FullNameAlt
         {
             get { return fullNameAlt; }
@@ -298,6 +306,32 @@ namespace UmanyiSMS.Lib.Models
                 }
             }
         }
+        
+        public string Theme
+        {
+            get { return theme; }
+            set
+            {
+                if (this.theme != value)
+                {
+                    this.theme = value;
+                    NotifyPropertyChanged("Theme");
+                }
+            }
+        }
+
+        public Color AccentColor
+        {
+            get { return accentColor; }
+            set
+            {
+                if (this.accentColor != value)
+                {
+                    this.accentColor = value;
+                    NotifyPropertyChanged("AccentColor");
+                }
+            }
+        }
 
         public void CopyFrom(ApplicationModel info)
         {
@@ -315,7 +349,9 @@ namespace UmanyiSMS.Lib.Models
             ServerName = info.ServerName;
             Culture = info.Culture;
             SPhoto = info.SPhoto;
+            Theme = info.Theme;
             Logo = GetImage();
+            AccentColor = info.AccentColor;
         }
     }
 }

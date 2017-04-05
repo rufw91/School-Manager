@@ -15,7 +15,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Separator">
-                    <Border Background="{DynamicResource SeparatorBackground}"
+                    <Border Background="{DynamicResource Accent}"
                                     Height="2"
                                     Margin="10,0,10,0" />
                 </ControlTemplate>
@@ -87,7 +87,7 @@
                                 <Grid>
                                     <!--Border 2-->
                                     <Border x:Name="SubMenuBorder"
-                                                    BorderBrush="{DynamicResource TitleBackgroundBrush}"
+                                                    BorderBrush="{DynamicResource Accent}"
                                                     BorderThickness="2"
                                                     Background="{DynamicResource WindowBackground}"
                                                     SnapsToDevicePixels="True">
@@ -107,7 +107,7 @@
                                                     Background="{DynamicResource WindowBackground}"
                                                     SnapsToDevicePixels="False"
                                                     BorderThickness="2"
-                                                    BorderBrush="{DynamicResource TitleBackgroundBrush}" />
+                                                    BorderBrush="{DynamicResource Accent}" />
                                 </Grid>
                             </Popup>
                         </Grid>
@@ -208,7 +208,7 @@
 
                             <Setter TargetName="Border"
                                             Property="BorderBrush"
-                                            Value="{DynamicResource TitleBackgroundBrush}" />
+                                            Value="{DynamicResource Accent}" />
 
                         </MultiTrigger>
 
@@ -221,7 +221,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border"
                                             Property="Background"
-                                            Value="{DynamicResource TitleBackgroundBrush}" />
+                                            Value="{DynamicResource Accent}" />
                             <Setter TargetName="Border"
                                             Property="BorderBrush"
                                             Value="LightGray" />
@@ -235,7 +235,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border"
                                             Property="Background"
-                                            Value="{DynamicResource TitleBackgroundBrush}" />
+                                            Value="{DynamicResource Accent}" />
                             <Setter TargetName="Border"
                                             Property="BorderBrush"
                                             Value="LightGray" />
@@ -250,7 +250,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border"
                                             Property="Background"
-                                            Value="{DynamicResource TitleBackgroundBrush}" />
+                                            Value="{DynamicResource Accent}" />
                             <Setter TargetName="Border"
                                             Property="BorderBrush"
                                             Value="LightGray" />
@@ -280,7 +280,7 @@
                                             Value="{DynamicResource InputTextDisabled}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource TitleBackgroundBrush}"/>
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource Accent}"/>
                             <Setter Property="Foreground" Value="White"/>
                         </Trigger>
                     </ControlTemplate.Triggers>

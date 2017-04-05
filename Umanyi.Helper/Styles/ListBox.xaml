@@ -30,7 +30,7 @@
                             <Setter Property="Foreground" Value="{DynamicResource ItemTextHover}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource TitleBackgroundBrush}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Accent}"/>
                             <Setter Property="Foreground" Value="White"/>
                             <Setter Property="FontWeight" Value="SemiBold" />
                         </Trigger>

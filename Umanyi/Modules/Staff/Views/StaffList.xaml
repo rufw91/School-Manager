@@ -7,7 +7,7 @@
       xmlns:local="clr-namespace:UmanyiSMS"
       mc:Ignorable="d" 
       d:DesignHeight="548" d:DesignWidth="984"
-             Background="White">
+             Background="{DynamicResource WindowBackground}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>

@@ -20,9 +20,11 @@ namespace UmanyiSMS.Lib.Converters
                 string temp = "";
                 var t=(List<string>)value;
                 foreach(var f in t )
-                    temp += " - " + f + "\r\n"; 
+                    temp += " - " + f + "\r\n";
+                temp=temp.Remove(temp.Length - 1);
                 return temp;
             }
+            
             return value;
         }
 

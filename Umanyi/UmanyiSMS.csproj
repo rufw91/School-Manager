@@ -301,9 +301,42 @@
     <Compile Include="Modules\Library\Views\ViewBooks.xaml.cs">
       <DependentUpon>ViewBooks.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\MySystem\ViewModels\InvalidLicenseVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Activation\ActivateVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\ActivationVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Activation\InvalidLicenseVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\SetupWizardVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Wizard\AcademicSetupVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Wizard\ClassesSetupVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Wizard\ColorsVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Wizard\FinallyVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Wizard\GradesSetupVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Wizard\InstitutionSetupVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Wizard\LogoVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Wizard\SubjectsSetupVM.cs" />
+    <Compile Include="Modules\MySystem\ViewModels\Wizard\WelcomeVM.cs" />
+    <Compile Include="Modules\MySystem\Views\Activation\Activate.xaml.cs">
+      <DependentUpon>Activate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\MySystem\Views\Activation\Activated.xaml.cs">
+      <DependentUpon>Activated.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\MySystem\Views\ChangeDb.xaml.cs">
       <DependentUpon>ChangeDb.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\MySystem\Views\SetupWizard.xaml.cs">
+      <DependentUpon>SetupWizard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\MySystem\Views\Wizard\AcademicSetupW.xaml.cs">
+      <DependentUpon>AcademicSetupW.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\MySystem\Views\Wizard\ClassesSetupW.xaml.cs">
+      <DependentUpon>ClassesSetupW.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\MySystem\Views\Wizard\GradesSetupW.xaml.cs">
+      <DependentUpon>GradesSetupW.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\MySystem\Views\Wizard\SubjectsSetupW.xaml.cs">
+      <DependentUpon>SubjectsSetupW.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Purchases\Models\ItemCategoryBaseModel.cs" />
     <Compile Include="Modules\Purchases\Controller\DataController.cs" />
@@ -377,12 +410,6 @@
     </Compile>
     <Compile Include="Modules\Purchases\Views\ReprintPaymentVoucher.xaml.cs">
       <DependentUpon>ReprintPaymentVoucher.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Purchases\Views\StockTakeResults.xaml.cs">
-      <DependentUpon>StockTakeResults.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Purchases\Views\StockTaking.xaml.cs">
-      <DependentUpon>StockTaking.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Purchases\Views\SupplierList.xaml.cs">
       <DependentUpon>SupplierList.xaml</DependentUpon>
@@ -477,15 +504,12 @@
     <Compile Include="Modules\MySystem\ViewModels\ChangeDbVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\ChangeSAPasswordVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\AppFirstRunVM.cs" />
-    <Compile Include="Modules\MySystem\ViewModels\GeneralSettingsVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\HomePageVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\LogWindowVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\MainWindowVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\NetworkOptionsVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\PDFViewVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\QueryEditorVM.cs" />
-    <Compile Include="Modules\MySystem\ViewModels\StartupRepairVM.cs" />
-    <Compile Include="Modules\MySystem\ViewModels\SyncCloudVM.cs" />
     <Compile Include="Modules\MySystem\Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
@@ -501,26 +525,20 @@
     <Compile Include="Modules\MySystem\Views\ChangeSAPassword.xaml.cs">
       <DependentUpon>ChangeSAPassword.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\MySystem\Views\FirstRun\Colors.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\Wizard\Colors.xaml.cs">
       <DependentUpon>Colors.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\MySystem\Views\FirstRun\Finally.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\Wizard\Finally.xaml.cs">
       <DependentUpon>Finally.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\MySystem\Views\AppFirstRun.xaml.cs">
-      <DependentUpon>AppFirstRun.xaml</DependentUpon>
+    <Compile Include="Modules\MySystem\Views\Wizard\InstitutionSetupW.xaml.cs">
+      <DependentUpon>InstitutionSetupW.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\MySystem\Views\FirstRun\InstitutionSetup.xaml.cs">
-      <DependentUpon>InstitutionSetup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\MySystem\Views\FirstRun\Logo.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\Wizard\Logo.xaml.cs">
       <DependentUpon>Logo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\MySystem\Views\FirstRun\Welcome.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\Wizard\Welcome.xaml.cs">
       <DependentUpon>Welcome.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\MySystem\Views\GeneralSettings.xaml.cs">
-      <DependentUpon>GeneralSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\MySystem\Views\Help.xaml.cs">
       <DependentUpon>Help.xaml</DependentUpon>
@@ -528,7 +546,7 @@
     <Compile Include="Modules\MySystem\Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\MySystem\Views\InvalidLicense.xaml.cs">
+    <Compile Include="Modules\MySystem\Views\Activation\InvalidLicense.xaml.cs">
       <DependentUpon>InvalidLicense.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\MySystem\Views\LoginWindow.xaml.cs">
@@ -551,12 +569,6 @@
     </Compile>
     <Compile Include="Modules\MySystem\Views\QueryEditor.xaml.cs">
       <DependentUpon>QueryEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\MySystem\Views\StartupRepair.xaml.cs">
-      <DependentUpon>StartupRepair.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\MySystem\Views\SyncCloud.xaml.cs">
-      <DependentUpon>SyncCloud.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\CommonCommands.cs" />
     <Compile Include="Modules\Exams\Controller\DocumentHelper.cs" />
@@ -625,11 +637,8 @@
     <Compile Include="Controls\PDFViewer.Designer.cs">
       <DependentUpon>PDFViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Exams\Views\StudentTranscript.xaml.cs">
-      <DependentUpon>StudentTranscript.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Exams\Views\StudentTranscript2.xaml.cs">
-      <DependentUpon>StudentTranscript2.xaml</DependentUpon>
+    <Compile Include="Modules\Exams\Views\ReportForm.xaml.cs">
+      <DependentUpon>ReportForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Exams\Views\NewExam.xaml.cs">
       <DependentUpon>NewExam.xaml</DependentUpon>
@@ -691,11 +700,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\Exams\Views\StudentTranscript.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Exams\Views\StudentTranscript2.xaml">
+    <Page Include="Modules\Exams\Views\ReportForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -853,7 +858,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\MySystem\Views\Activation\Activate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\MySystem\Views\Activation\Activated.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\MySystem\Views\ChangeDb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\MySystem\Views\SetupWizard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\MySystem\Views\Wizard\AcademicSetupW.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\MySystem\Views\Wizard\ClassesSetupW.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\MySystem\Views\Wizard\GradesSetupW.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\MySystem\Views\Wizard\SubjectsSetupW.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -915,14 +948,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Purchases\Views\ReprintPaymentVoucher.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Purchases\Views\StockTakeResults.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Purchases\Views\StockTaking.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1032,31 +1057,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\MySystem\Views\FirstRun\Colors.xaml">
+    <Page Include="Modules\MySystem\Views\Wizard\Colors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\MySystem\Views\FirstRun\Finally.xaml">
+    <Page Include="Modules\MySystem\Views\Wizard\Finally.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\MySystem\Views\AppFirstRun.xaml">
+    <Page Include="Modules\MySystem\Views\Wizard\InstitutionSetupW.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\MySystem\Views\FirstRun\InstitutionSetup.xaml">
+    <Page Include="Modules\MySystem\Views\Wizard\Logo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\MySystem\Views\FirstRun\Logo.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\MySystem\Views\FirstRun\Welcome.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\MySystem\Views\GeneralSettings.xaml">
+    <Page Include="Modules\MySystem\Views\Wizard\Welcome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1068,7 +1085,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\MySystem\Views\InvalidLicense.xaml">
+    <Page Include="Modules\MySystem\Views\Activation\InvalidLicense.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1097,14 +1114,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\MySystem\Views\QueryEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\MySystem\Views\StartupRepair.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\MySystem\Views\SyncCloud.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

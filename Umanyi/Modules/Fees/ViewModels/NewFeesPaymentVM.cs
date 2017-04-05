@@ -152,6 +152,7 @@ namespace UmanyiSMS.Modules.Fees.ViewModels
         {
             Title = "NEW FEES PAYMENT";
             CurrentPayment = new FeePaymentModel();
+            currentPayment.CheckErrors();
             RecentPayments = new ObservableCollection<FeePaymentModel>();
             this.PaymentMethods = new ObservableCollection<string>
             {

@@ -3,16 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Background="White"
-             d:DesignHeight="600" d:DesignWidth="900">
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900"
+             Background="{DynamicResource WindowBackground}">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/UmanyiSMS;component/ModelsDataTemplates.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
+   
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="View Fees Structure" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="88,80,0,0" TextWrapping="Wrap" Text="Class" VerticalAlignment="Top"/>

@@ -4,8 +4,9 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
        xmlns:views ="clr-namespace:UmanyiSMS.Modules.MySystem.Views"
-      mc:Ignorable="d" Background="White"
-     d:DesignHeight="724" d:DesignWidth="1022">
+      mc:Ignorable="d"
+     d:DesignHeight="724" d:DesignWidth="1022"
+             Background="{DynamicResource WindowBackground}">
 
     <Grid DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=views:MainWindow}}">
         <Grid.ColumnDefinitions>
@@ -20,7 +21,6 @@
         <TextBlock HorizontalAlignment="Left" Margin="40,401,0,0" Text="Exams" VerticalAlignment="Top" Style="{DynamicResource Emphasis2}" Foreground="Gray"/>
         <TextBlock HorizontalAlignment="Left" Margin="0,80,0,0" Text="Purchases" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="0,240,0,0" Text="Library" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="0,344,0,0" Text="Accounts" VerticalAlignment="Top" Foreground="Gray" Style="{DynamicResource Emphasis2}" Grid.Column="1"/>
 
 
         <TextBlock HorizontalAlignment="Left" Margin="50,115,0,0" VerticalAlignment="Top">
@@ -70,18 +70,6 @@
             <Hyperlink Command="{Binding LibraryIssueBookCommand}">Issue Book</Hyperlink></TextBlock>
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding LibraryReturnBookCommand}">Return Book</Hyperlink></TextBlock>
-
-
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,379,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding AccountsNewAccountCommand}">New Account</Hyperlink></TextBlock>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,404,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding AccountsPrepareBudgetCommand}">Prepare Budget</Hyperlink></TextBlock>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,429,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding AccountsCurrentExpenditureCommand}">View Current Expenditure</Hyperlink></TextBlock>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,454,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding AccountsSTOCSCommand}">Statement of Cashflows</Hyperlink></TextBlock>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,479,0,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding AccountsCOACommand}">Chart of Accounts</Hyperlink></TextBlock>
         <Grid Grid.Column="2">
             <TextBlock TextWrapping="WrapWithOverflow" Margin="0,20,20,0" Text="{Binding Info.Name, StringFormat=Welcome to {0} School Management System,
                 FallbackValue=Welcome to Umanyi School Management System, Source={x:Static Application.Current}}" VerticalAlignment="Top"

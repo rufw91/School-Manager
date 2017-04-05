@@ -5,7 +5,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Theme.Common.xaml"/>
-        <ResourceDictionary Source="Theme.Light.xaml"/>
         <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/Button.xaml"/>
         <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/Calendar.xaml"/>
         <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/Calendar.xaml"/>

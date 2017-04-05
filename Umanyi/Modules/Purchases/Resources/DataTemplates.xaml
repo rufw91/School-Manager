@@ -37,13 +37,7 @@
         <DataTemplate DataType="{x:Type viewModels:ReprintPaymentVoucherVM}" >
         <views:ReprintPaymentVoucher/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModels:StockTakeResultsVM}" >
-            <views:StockTakeResults/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModels:StockTakingVM}" >
-            <views:StockTaking/>
-        </DataTemplate>
-    
+            
     <DataTemplate DataType="{x:Type viewModels:SupplierListVM}" >
         <views:SupplierList/>
     </DataTemplate>

@@ -5,33 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
     d:DesignHeight="600" d:DesignWidth="900"
-	Background="White">
+	Background="{DynamicResource WindowBackground}">
 
     <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Class Report Forms" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Class Report Forms" VerticalAlignment="Top" Height="31" Width="185"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Class" VerticalAlignment="Top"/>
-        <ComboBox Margin="107,80,40,0" VerticalAlignment="Top"
+        <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Class" VerticalAlignment="Top" Height="16" Width="27"/>
+        <ComboBox Margin="107,80,0,0" VerticalAlignment="Top"
                   ItemsSource="{Binding AllClasses}"
-                  SelectedValue="{Binding SelectedClassID, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="NameOfClass" SelectedValuePath="ClassID"
+                  SelectedValue="{Binding SelectedClassID, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="NameOfClass" SelectedValuePath="ClassID" HorizontalAlignment="Left" Width="303" Height="30"
                   />
-        <TextBlock HorizontalAlignment="Left" Margin="30,130,0,0" Text="Term" VerticalAlignment="Top"/>
-        <ComboBox Margin="107,130,40,0" VerticalAlignment="Top" 
+        <TextBlock HorizontalAlignment="Left" Margin="30,130,0,0" Text="Term" VerticalAlignment="Top" Height="16" Width="27"/>
+        <ComboBox Margin="107,130,0,0" VerticalAlignment="Top" 
                   ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description"
-                  SelectedItem="{Binding SelectedTerm}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,180,0,0" Text="Class Teacher" VerticalAlignment="Top"/>
-        <TextBox Margin="107,180,40,0" VerticalAlignment="Top"
-                  Text="{Binding ClassTeacher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  SelectedItem="{Binding SelectedTerm}" HorizontalAlignment="Left" Width="303" Height="30"/>
 
-        
-        
-        <TextBlock HorizontalAlignment="Left" Margin="30,218,0,0" Text="Exams" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
-        <DataGrid Margin="30,249,40,0" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="{Binding ResultsIsReadOnly}" 
-                  ItemsSource="{Binding Exams}" CanUserDeleteRows="True" CanUserAddRows="False" Height="182" VerticalAlignment="Top">
+
+
+        <TextBlock HorizontalAlignment="Left" Margin="30,200,0,0" Text="Exams" Style="{DynamicResource Title0}" VerticalAlignment="Top" Height="24" Width="47"/>
+        <DataGrid Margin="30,231,0,0" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="{Binding ResultsIsReadOnly}" 
+                  ItemsSource="{Binding Exams}" CanUserDeleteRows="True" CanUserAddRows="False" Height="182" VerticalAlignment="Top" HorizontalAlignment="Left" Width="380">
             <DataGrid.Columns>
 
                 <DataGridTextColumn Binding="{Binding Path=NameOfExam, Mode=OneWay}" Header="Name" Width="1*" IsReadOnly="True"/>
@@ -40,48 +37,25 @@
 
             </DataGrid.Columns>
         </DataGrid>
-        <TextBlock HorizontalAlignment="Right" Margin="0,228,40,0" VerticalAlignment="Top">
+        <TextBlock HorizontalAlignment="Left" Margin="381,210,0,0" VerticalAlignment="Top" Height="16" Width="29">
             <Hyperlink Command="{Binding ResetCommand}">Reset</Hyperlink>
         </TextBlock>
 
-        <TextBlock HorizontalAlignment="Right" Margin="0,38,20,0" VerticalAlignment="Top" Grid.Column="1">
-            <Hyperlink Command="{Binding RefreshCommand}">Fetch Results</Hyperlink>
-        </TextBlock>
 
+        <TextBlock HorizontalAlignment="Left" Margin="17,436,0,0" Text="Closing Day:" Height="16" VerticalAlignment="Top" Width="65"/>
+        <DatePicker Margin="107,431,0,0" SelectedDateFormat="Long"
+                    SelectedDate="{Binding ClosingDay, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="17,454,0,0" Text="Closing Day:" Height="16" VerticalAlignment="Top"/>
-        <DatePicker Margin="107,449,40,0" SelectedDateFormat="Long"
-                    SelectedDate="{Binding ClosingDay, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="32" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="17,481,0,0" Text="Opening Day:" VerticalAlignment="Top" Height="16" Width="72" />
+        <DatePicker Margin="107,476,0,0" VerticalAlignment="Top" SelectedDateFormat="Long"
+                    SelectedDate="{Binding OpeningDay, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Width="303" Height="32"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="17,499,0,0" Text="Opening Day:" VerticalAlignment="Top" />
-        <DatePicker Margin="107,494,40,0" VerticalAlignment="Top" SelectedDateFormat="Long"
-                    SelectedDate="{Binding OpeningDay, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
+                Command="{Binding RefreshCommand}" Height="30"/>
+        <Button Content="Print" HorizontalAlignment="Right" Margin="0,0,120,10" VerticalAlignment="Bottom" Width="100"
+                Command="{Binding GenerateCommand}" Height="30"/>
 
-
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,97,0,0" Text="Class Teacher" VerticalAlignment="Top"/>
-
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,118,0,0" Text="Comments" VerticalAlignment="Top"/>
-
-        <TextBox Grid.Column="1" Margin="120,100,20,0" VerticalAlignment="Top"
-                 VerticalScrollBarVisibility="Visible" MaxLength="20"
-                 TextWrapping="Wrap" Height="70"
-                 Text="{Binding ClassTeacherComments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,203,0,0" Text="Principal" VerticalAlignment="Top"/>
-
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="30,224,0,0" Text="Comments" VerticalAlignment="Top"/>
-
-        <TextBox Grid.Column="1" Margin="120,203,20,0" VerticalAlignment="Top"
-                 VerticalScrollBarVisibility="Visible" MaxLength="20"
-                 TextWrapping="Wrap" Height="70"
-                 Text="{Binding PrincipalComments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-
-        <Button Grid.Column="1" Content="Generate" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"
-                Command="{Binding GenerateCommand}"/>
-
-        <Border Grid.ColumnSpan="2" Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Hidden}">
+        <Border Background="#7FF5F5F5" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=Hidden}">
             <Grid>
                 <TextBlock Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Please Wait..." Style="{DynamicResource LargeTitle}"/>
                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,340,0,0" Text="{Binding OverallProgress, StringFormat={}{0} %}" Style="{DynamicResource Emphasis1}"/>

@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/UmanyiSMS.Lib;component/Converters/Converters.xaml" />
+                <ResourceDictionary Source="/UmanyiSMS.Lib;component/Themes/Theme.Light.xaml" />
                 <ResourceDictionary Source="/UmanyiSMS.Lib;component/Themes/Generic.xaml" />
                 <ResourceDictionary Source="/UmanyiSMS;component/Modules/Exams/Resources/DataTemplates.xaml" />
                 <ResourceDictionary Source="/UmanyiSMS;component/Modules/Fees/Resources/DataTemplates.xaml" />

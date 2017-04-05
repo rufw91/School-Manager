@@ -13,6 +13,7 @@ namespace UmanyiSMS.Modules.Institution.Controller
 {
     public class DataController
     {
+        
         public static Task<Dictionary<int, DateTime?[]>> GetTermDatesAsync(int schoolYear)
         {
             return Task.Factory.StartNew<Dictionary<int, DateTime?[]>>(delegate
@@ -49,64 +50,20 @@ namespace UmanyiSMS.Modules.Institution.Controller
             });
         }
 
+        public static string GetRemark(decimal score, bool isSwahili)
+        {
+            int num = CalculatePoints(CalculateGrade(score));
+            if (!isSwahili)
+
+                return App.AppExamSettings.GradeRemarks[12 - num];
+            else
+                return App.AppExamSettings.SwahiliGradeRemarks[12 - num];
+        }
 
         internal static string CalculateGrade(decimal scoreNew)
         {
-            decimal num = decimal.Ceiling(scoreNew);
-            string result;
-            if (num >= 85m && num <= 100m)
-            {
-                result = "A";
-            }
-            else if (num >= 80m && num <= 84m)
-            {
-                result = "A-";
-            }
-            else if (num >= 75m && num <= 79m)
-            {
-                result = "B+";
-            }
-            else if (num >= 70m && num <= 74m)
-            {
-                result = "B";
-            }
-            else if (num >= 65m && num <= 69m)
-            {
-                result = "B-";
-            }
-            else if (num >= 60m && num <= 64m)
-            {
-                result = "C+";
-            }
-            else if (num >= 55m && num <= 59m)
-            {
-                result = "C";
-            }
-            else if (num >= 50m && num <= 54m)
-            {
-                result = "C-";
-            }
-            else if (num >= 45m && num <= 49m)
-            {
-                result = "D+";
-            }
-            else if (num >= 40m && num <= 44m)
-            {
-                result = "D";
-            }
-            else if (num >= 35m && num <= 39m)
-            {
-                result = "D-";
-            }
-            else
-            {
-                if (!(num >= 0m) || !(num <= 34m))
-                {
-                    throw new ArgumentOutOfRangeException("Score", "Value [" + num + "] should be a non-negative number less than or equal to 100.");
-                }
-                result = "E";
-            }
-            return result;
+            decimal num = decimal.Ceiling(scoreNew);           
+         return CalculateGradeFromPoints(12-App.AppExamSettings.GradeRanges.IndexOf(App.AppExamSettings.GradeRanges.First(o => num >= o.Key && num <= o.Value)));            
         }
 
 
@@ -223,6 +180,8 @@ namespace UmanyiSMS.Modules.Institution.Controller
                 return settings;
             });
         }
+
+        
 
         public static Task<ObservableCollection<ClassModel>> GetAllClassesAsync()
         {

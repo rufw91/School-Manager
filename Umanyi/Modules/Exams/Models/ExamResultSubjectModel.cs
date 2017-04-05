@@ -91,25 +91,10 @@ namespace UmanyiSMS.Modules.Exams.Models
             {
                 if (e.PropertyName == "Score" || e.PropertyName == "NameOfSubject" || e.PropertyName == "OutOf")
                 {
-                    base.ClearAllErrors();
-                    if (this.score > this.outOf)
-                    {
-                        base.SetErrors("Score", new List<string>
-                        {
-                            string.Concat(new object[]
-                            {
-                                "Value [",
-                                this.score,
-                                "] should be a non-negative number less than or equal to [",
-                                this.outOf,
-                                "]"
-                            })
-                        });
-                    }
-                    base.NotifyPropertyChanged("HasErrors");
+                    CheckErrors();
                     if (!base.HasErrors)
                     {
-                        this.Remarks = this.GetRemark(this.score);
+                        this.Remarks = Institution.Controller.DataController.GetRemark((100m/OutOf)*this.score,this.Code==102);
                     }
                 }
             };
@@ -124,25 +109,10 @@ namespace UmanyiSMS.Modules.Exams.Models
             {
                 if (e.PropertyName == "Score" || e.PropertyName == "NameOfSubject" || e.PropertyName == "OutOf")
                 {
-                    base.ClearErrors("Score");
-                    if (this.score > this.outOf)
-                    {
-                        base.SetErrors("Score", new List<string>
-                        {
-                            string.Concat(new object[]
-                            {
-                                "Value [",
-                                this.score,
-                                "] should be a non-negative number less than or equal to [",
-                                this.outOf,
-                                "]"
-                            })
-                        });
-                    }
-                    base.NotifyPropertyChanged("HasErrors");
+                    CheckErrors();
                     if (!base.HasErrors)
                     {
-                        this.Remarks = this.GetRemark(this.score);
+                        this.Remarks = Institution.Controller.DataController.GetRemark((100m / OutOf) * this.score, this.Code == 102);
                     }
                 }
             };
@@ -157,10 +127,21 @@ namespace UmanyiSMS.Modules.Exams.Models
             {
                 if (e.PropertyName == "Score" || e.PropertyName == "NameOfSubject" || e.PropertyName == "OutOf")
                 {
-                    base.ClearErrors("Score");
-                    if (this.score > this.outOf)
+                    CheckErrors();
+                    if (!base.HasErrors)
                     {
-                        base.SetErrors("Score", new List<string>
+                        this.Remarks = Institution.Controller.DataController.GetRemark((100m / OutOf) * this.score, this.Code == 102);
+                    }
+                }
+            };
+        }
+
+        public override bool CheckErrors()
+        {
+            base.ClearErrors("Score");
+            if (this.score > this.outOf)
+            {
+                base.SetErrors("Score", new List<string>
                         {
                             string.Concat(new object[]
                             {
@@ -171,106 +152,10 @@ namespace UmanyiSMS.Modules.Exams.Models
                                 "]"
                             })
                         });
-                    }
-                    base.NotifyPropertyChanged("HasErrors");
-                    if (!base.HasErrors)
-                    {
-                        this.Remarks = this.GetRemark(this.score);
-                    }
-                }
-            };
-        }
+            }
 
-        private string GetRemark(decimal score)
-        {
-            int num = Institution.Controller.DataController.CalculatePoints(Institution.Controller.DataController.CalculateGrade(DataController.ConvertScoreToOutOf(score, this.outOf, 100m)));
-            string result;
-            if (base.NameOfSubject.ToUpper().Trim() != "KISWAHILI")
-            {
-                switch (num)
-                {
-                    case 1:
-                        result = "WAKE UP";
-                        return result;
-                    case 2:
-                        result = "VERY POOR";
-                        return result;
-                    case 3:
-                        result = "POOR";
-                        return result;
-                    case 4:
-                        result = "BELOW AVERAGE";
-                        return result;
-                    case 5:
-                        result = "FAIR";
-                        return result;
-                    case 6:
-                        result = "AVERAGE";
-                        return result;
-                    case 7:
-                        result = "AVERAGE";
-                        return result;
-                    case 8:
-                        result = "ABOVE AVERAGE";
-                        return result;
-                    case 9:
-                        result = "GOOD";
-                        return result;
-                    case 10:
-                        result = "VERY GOOD";
-                        return result;
-                    case 11:
-                        result = "VERY GOOD";
-                        return result;
-                    case 12:
-                        result = "EXCELLENT";
-                        return result;
-                }
-            }
-            else
-            {
-                switch (num)
-                {
-                    case 1:
-                        result = "ZINDUKA";
-                        return result;
-                    case 2:
-                        result = "PUNGUZA MZAHA";
-                        return result;
-                    case 3:
-                        result = "AMKA";
-                        return result;
-                    case 4:
-                        result = "TIA BIDII";
-                        return result;
-                    case 5:
-                        result = "TIA BIDII";
-                        return result;
-                    case 6:
-                        result = "CHINI YA WASTANI";
-                        return result;
-                    case 7:
-                        result = "WASTANI";
-                        return result;
-                    case 8:
-                        result = "HEKO";
-                        return result;
-                    case 9:
-                        result = "VIZURI";
-                        return result;
-                    case 10:
-                        result = "VIZURI SANA";
-                        return result;
-                    case 11:
-                        result = "PONGEZI";
-                        return result;
-                    case 12:
-                        result = "HONGERA";
-                        return result;
-                }
-            }
-            result = "";
-            return result;
+            base.NotifyPropertyChanged("HasErrors");
+            return base.HasErrors;
         }
 
         public override void Reset()

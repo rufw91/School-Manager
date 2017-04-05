@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              d:DesignHeight="722" d:DesignWidth="1024"
              mc:Ignorable="d"
-	 Background="White">
+	 Background="{DynamicResource WindowBackground}">
     <Grid>
 
         <Grid.ColumnDefinitions>

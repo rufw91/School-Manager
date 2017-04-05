@@ -136,6 +136,7 @@
         </Setter>
     </Style>
     <Style TargetType="{x:Type TabItem}">
+        <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
         <Setter Property="HeaderTemplate">
             <Setter.Value>
                 <DataTemplate>
