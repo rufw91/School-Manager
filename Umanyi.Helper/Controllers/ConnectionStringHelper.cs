@@ -15,7 +15,8 @@ namespace UmanyiSMS.Lib.Controllers
 {
     public static class ConnectionStringHelper
     {
-        static string localDB = "Server=" + Properties.Settings.Default.Info.ServerName + ";MultipleActiveResultSets=true;AttachDBFilename=" +
+        static string localDB = "Server=" + Properties.Settings.Default.Info.ServerName + ";MultipleActiveResultSets=true;Connection Timeout=300;Initial Catalog=UmanyiSMS;";
+        static string saLocalDB = "Server=" + Properties.Settings.Default.Info.ServerName + ";MultipleActiveResultSets=true;Connection Timeout=300;AttachDBFilename=" +
             Path.Combine(new FileInfo(Application.ResourceAssembly.Location).DirectoryName, "UmanyiSMS.mdf") + ";Initial Catalog=UmanyiSMS;";
         static string sqlServer = "Data Source=" +
                 Lib.Properties.Settings.Default.Info.ServerName +
@@ -29,6 +30,11 @@ namespace UmanyiSMS.Lib.Controllers
         public static string ConnectionString
         {
             get { return Regex.Match(Properties.Settings.Default.Info.ServerName, "LocalDB", RegexOptions.IgnoreCase).Success ? localDB : sqlServer; }
+        }
+
+        public static string SAConnectionString
+        {
+            get { return Regex.Match(Properties.Settings.Default.Info.ServerName, "LocalDB", RegexOptions.IgnoreCase).Success ? saLocalDB : sqlServer; }
         }
 
         public static string SSPIConnectionString

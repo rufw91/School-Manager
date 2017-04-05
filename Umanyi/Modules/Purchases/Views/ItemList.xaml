@@ -7,7 +7,7 @@
             xmlns:commands="clr-namespace:UmanyiSMS.Presentation" 
              mc:Ignorable="d" 
             d:DesignHeight="722" d:DesignWidth="1024"
-	 Background="White">
+	 Background="{DynamicResource WindowBackground}">
     <Grid>
         <TextBlock Text="List of all Items." Style="{StaticResource Title}" HorizontalAlignment="Left"  Margin="30,20,0,0"
                        VerticalAlignment="Top"/>
@@ -28,7 +28,7 @@
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Margin="10,0,0,0" FontWeight="Bold" FontSize="14" Text="{Binding Name, Converter={StaticResource AccountToAccountIDConverter}, ConverterParameter=nameOnly, IsAsync=True}"/>
+                            <TextBlock Margin="10,0,0,0" FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
                 </GroupStyle>

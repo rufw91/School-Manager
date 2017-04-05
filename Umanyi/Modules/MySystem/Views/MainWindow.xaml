@@ -123,17 +123,19 @@
                     <MenuItem Header="Unreturned Books" Command="{Binding LibraryUnreturnedBooksCommand}"/>
                 </MenuItem>
                 <MenuItem Header="Settings">
+                    <MenuItem Header="Setup WIzard" Command="{Binding SettingsSetupWizardCommand}"/>
+                    <Separator/>
                     <MenuItem Header="Institution Setup" Command="{Binding SettingsInstInfoCommand}"/>
                     <MenuItem Header="Academic Year Setup" Command="{Binding SettingsACYSCommand}"/>
                     <MenuItem Header="Classes Setup" Command="{Binding SettingsCSCommand}"/>
                     <MenuItem Header="Institution Subjects Setup" Command="{Binding SettingsISSCommand}"/>
                     <MenuItem Header="Exam &amp; Grades Setup" Command="{Binding SettingsGSCommand}"/>
                     <Separator/>
-                    <MenuItem Header="Automated Tasks" Command="{Binding SettingsATCommand}"/>
                     <MenuItem Header="Advanced" Command="{Binding SettingsAdvancedCommand}"/>
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="Get Help" Command="{Binding HelpGetHelpCommand}"/>
+                    <MenuItem Header="Activation" Command="{Binding HelpActivationCommand}"/>
                     <MenuItem Header="About" Command="{Binding HelpAboutCommand}"/>
                 </MenuItem>
             </Menu>

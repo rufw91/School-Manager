@@ -6,7 +6,8 @@
       xmlns:Controls="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
       xmlns:local="clr-namespace:UmanyiSMS"
       mc:Ignorable="d" 
-       d:DesignHeight="700" d:DesignWidth="984" Background="White">
+       d:DesignHeight="700" d:DesignWidth="984" 
+              Background="{DynamicResource WindowBackground}">
 
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Modify Staff Details" VerticalAlignment="Top"/>

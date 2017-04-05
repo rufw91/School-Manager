@@ -2,14 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style x:Key="{x:Type Hyperlink}" TargetType="{x:Type Hyperlink}">
-        <Setter Property="Foreground" Value="{DynamicResource Hyperlink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
         <Setter Property="TextDecorations" Value="Underline"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource HyperlinkHover}" />
+                <Setter Property="Foreground" Value="{DynamicResource ItemTextHover}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource HyperlinkDisabled}"/>
+                <Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="True">
                 <Setter Property="Cursor" Value="Hand"/>

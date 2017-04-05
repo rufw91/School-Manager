@@ -1,5 +1,5 @@
 ﻿
-
+using System.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
@@ -10,6 +10,7 @@ using UmanyiSMS.Modules.Exams.Models;
 using UmanyiSMS.Modules.Institution.Models;
 using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Exams.Controller;
+using System.Collections.Generic;
 
 namespace UmanyiSMS.Modules.Exams.ViewModels
 {
@@ -41,12 +42,11 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             {
                 ClassReportFormModel cs = new ClassReportFormModel();
                 cs.CopyFrom(classReportForms);
-                /*foreach(var f in cs)
+                foreach(var f in cs)
                 {
                     f.OpeningDay = openingDay;
                     f.ClosingDay = closingDay;
-                    f.ClassTeacher = classTeacher;
-                }*/
+                }
                 Document = DocumentHelper.GenerateDocument(cs);
                 if (ShowPrintDialogAction != null)
                     ShowPrintDialogAction.Invoke(Document);
@@ -82,9 +82,6 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
             PropertyChanged += async (o, e) =>
                 {
-                    /*if (e.PropertyName == "ClassTeacher")
-                        foreach (var ed in classReportForms)
-                            ed.ClassTeacher = classTeacher;
                     if (e.PropertyName == "ClassTeacherComments")
                         foreach (var ed in classReportForms)
                             ed.ClassTeacherComments = classTeacherComments;
@@ -97,10 +94,8 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                             ed.OpeningDay = openingDay;
                             ed.ClosingDay = closingDay;
                         }
-                    if (e.PropertyName == "ClassTranscripts")
+                    if (e.PropertyName == "ClassReportForms")
                     {
-                            foreach (var ed in classReportForms)
-                                ed.ClassTeacher = classTeacher;
                             foreach (var ed in classReportForms)
                                 ed.ClassTeacherComments = classTeacherComments;
                             foreach (var ed in classReportForms)
@@ -110,7 +105,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                                 ed.OpeningDay = openingDay;
                                 ed.ClosingDay = closingDay;
                             }
-                    }*/
+                    }
                     if (e.PropertyName == "SelectedClassID" || e.PropertyName == "SelectedTerm")
                     {
                         exams.Clear();
@@ -143,12 +138,15 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         {
             decimal tot = 0;
             int count = 0;
+            List<int> indices = new List<int>();
             foreach (var ed in exams)
             {
                 tot += ed.Weight;
+                indices.Add(ed.Index);
                 count++;
             }
-            return  tot == 100 && count <= 3 && count > 0;
+            bool repeated = indices.Count != indices.Distinct().Count();
+            return  tot == 100 && count <= 3 && count > 0&&!repeated;
         }
         public ObservableCollection<TermModel> AllTerms
         {

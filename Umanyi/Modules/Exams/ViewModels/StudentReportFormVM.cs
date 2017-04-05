@@ -1,5 +1,7 @@
 ﻿
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using System.Windows.Documents;
@@ -43,6 +45,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                         reportForm.CheckErrors();
                         if (!reportForm.HasErrors&& selectedTerm!=null)
                         {
+                            reportForm.ClosingDay = selectedTerm.EndDate;
                             ResultsIsReadOnly = false;
                             var t = await DataController.GetExamsByClass(await Students.Controller.DataController.GetClassIDFromStudentID(reportForm.StudentID),selectedTerm);
                             int count = 1;
@@ -72,6 +75,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                         reportForm.CheckErrors();
                         if (!reportForm.HasErrors && selectedTerm != null)
                         {
+                            reportForm.ClosingDay = selectedTerm.EndDate;
                             ResultsIsReadOnly = false;
                             var t = await DataController.GetExamsByClass(await Students.Controller.DataController.GetClassIDFromStudentID(reportForm.StudentID), selectedTerm);
                             int count = 1;
@@ -97,9 +101,6 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
 
         protected override void CreateCommands()
         {
-            SaveCommand = new RelayCommand(o => 
-            {
-            }, o => CanSave());
             PreviewCommand = new RelayCommand(o =>
             {
                 Document = DocumentHelper.GenerateDocument(reportForm);
@@ -107,20 +108,12 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                 if (ShowPrintDialogAction != null)
                     ShowPrintDialogAction.Invoke(Document);
             }, o => CanSave());
-            SaveAndPrintCommand = new RelayCommand(o =>
-            {                              
-                Document = DocumentHelper.GenerateDocument(reportForm);
-                Reset();
-                IsBusy = false;
-                if (ShowPrintDialogAction != null)
-                    ShowPrintDialogAction.Invoke(Document);
-            }, o => CanSave());
-
+            
             RefreshCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
                 reportForm.CopyFrom(await DataController.GetStudentReportFormAsync(reportForm.StudentID, exams));
-                
+                reportForm.ClosingDay = selectedTerm.EndDate;
                 ResultsIsReadOnly = true;
                 IsBusy = false;
             }, o =>CanRefresh());
@@ -131,13 +124,17 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             decimal tot = 0;
             int count = 0;
             bool hasErr = false;
+
+            List<int> indices = new List<int>(); 
             foreach (var ed in exams)
             {
                 tot += ed.Weight;
                 hasErr = hasErr || (ed.ExamID == 0);
+                indices.Add(ed.Index);
                 count++;
             }
-            return !reportForm.HasErrors && tot == 100 && count <= 3 && count > 0 && !hasErr;
+            bool repeated = indices.Count != indices.Distinct().Count();
+                return !reportForm.HasErrors && tot == 100 && count <= 3 && count > 0 && !hasErr&&!repeated;
         }
 
         private bool CanSave()

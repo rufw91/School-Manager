@@ -3,7 +3,7 @@ using UmanyiSMS.Modules.Students.Models;
 
 namespace UmanyiSMS.Modules.Fees.Models
 {
-    public class FeePaymentModel : StudentSelectModel
+    public class FeePaymentModel : StudentBaseModel
     {
         private int feePaymentID;
 

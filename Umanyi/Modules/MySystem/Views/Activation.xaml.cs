@@ -8,14 +8,22 @@ namespace UmanyiSMS.Modules.MySystem.Views
     public partial class Activation : CustomWindow
     {
         private bool canClose = false;
-        public Activation()
+        public Activation():this(false)
+        {
+           
+        }
+
+        public Activation(bool isA)
         {
             InitializeComponent();
-            this.Closed += (o, e) =>
+            if (!isA)
+            {
+                this.Closed += (o, e) =>
                 {
                     if (!canClose)
                         App.Current.Shutdown(8900);
                 };
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

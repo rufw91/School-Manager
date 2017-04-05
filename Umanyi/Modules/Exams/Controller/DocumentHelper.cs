@@ -267,19 +267,20 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AddRPMStudentID(si[pageNo].StudentID, pageNo);
                 AddRPMName(si[pageNo].NameOfStudent, pageNo);
                 AddRPMClassName(si[pageNo].NameOfClass, pageNo);
-                AddRPMClassPosition(si[pageNo].ClassRank, pageNo);
-                AddRPMOverAllPosition(si[pageNo].StreamRank, pageNo);
+                AddRPMImage(si[pageNo].SPhoto, pageNo);
+                AddRPMSubjectScores(si[pageNo].SubjectEntries, pageNo);
                 AddRPMTotalMarks(si[pageNo].TotalMarks, pageNo);
-                AddRPMMeanGrade(si[pageNo].MeanGrade, pageNo);
+                AddRPMOutOf(si[pageNo].SubjectEntries.Count * 100, pageNo);
+                AddRPMAvgPts(si[pageNo].AvgPoints, pageNo);
+                AddRPMTotalPts(si[pageNo].TotalPoints.ToString("N2"), pageNo);
                 AddRPMMeanScore(si[pageNo].MeanScore, pageNo);
-                AddRPMTotalPoints(si[pageNo].TotalPoints, pageNo);
-                AddRPMAvgPoints(si[pageNo].AvgPoints, pageNo);
+                AddRPMGrade(si[pageNo].MeanGrade, pageNo);
+                AddRPMClassPOS(si[pageNo].ClassRank, pageNo);
+                AddRPMCombinedClassPOS(si[pageNo].StreamRank, pageNo);
+                AddRPMClassTRComments(si[pageNo].ClassTeacherComments, pageNo);
                 AddRPMPrincipalComments(si[pageNo].PrincipalComments, pageNo);
                 AddRPMOpening(si[pageNo].OpeningDay, pageNo);
-                AddRPMClosing(si[pageNo].ClosingDay, pageNo);                
-                AddRPMClassTRComments(si[pageNo].ClassTeacherComments, pageNo);
-                AddRPMSubjectScores(si[pageNo].SubjectEntries, pageNo);
-
+                AddRPMClosing(si[pageNo].ClosingDay, pageNo);
             }
         }
         #endregion
@@ -358,7 +359,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             }
         }
         #endregion
-
+        /*
         #region Report Form
         private void AddRPMClassTRComments(string classTRComments, int pageNo)
         {
@@ -477,6 +478,130 @@ namespace UmanyiSMS.Modules.Exams.Controller
         }
 
         #endregion
-        
+        */
+        #region Transcript3
+       private void AddRPMStudentID(int studentID, int pageNo)
+        {
+            AddText(studentID.ToString(), "Arial", 14, true, 0, Colors.Black, 135, 270, pageNo);
+        }
+       private void AddRPMName(string nameOfStudent, int pageNo)
+        {
+            AddText(nameOfStudent, "Arial", 14, true, 0, Colors.Black, 120, 237, pageNo);
+        }
+       private void AddRPMClassName(string className, int pageNo)
+        {
+            AddText(className, "Arial", 14, true, 0, Colors.Black, 535, 237, pageNo);
+        }
+       private void AddRPMImage(byte[] image, int pageNo)
+        {
+            AddImage(image, 135, 150, 640, 17, 0, pageNo);
+        }
+        private void AddRPMSubjectScore(ReportFormSubjectModel item, int itemIndex, int pageNo)
+        {
+            double fontsize = 14;
+            int pageRelativeIndex = itemIndex;
+            double yPos = 337 + pageRelativeIndex * 25;
+            
+            AddText(item.NameOfSubject, "Segoe UI", 14, false, 0, Colors.Black, 50, yPos, pageNo);
+            if (!string.IsNullOrWhiteSpace(item.Exam1Score))
+                AddText(item.Exam1Score, "Arial", fontsize, false, 0, Colors.Black, 260, yPos, pageNo);
+            if (!string.IsNullOrWhiteSpace(item.Exam2Score))
+                AddText(item.Exam2Score, "Arial", fontsize, false, 0, Colors.Black, 310, yPos, pageNo);
+            if (!string.IsNullOrWhiteSpace(item.Exam3Score))
+                AddText(item.Exam3Score, "Arial", fontsize, false, 0, Colors.Black, 360, yPos, pageNo);
+            AddText(item.MeanScore.ToString("N0"), "Arial", fontsize, false, 0, Colors.Black, 412, yPos, pageNo);
+            AddText(item.StreamRank, "Arial", fontsize, false, 0, Colors.Black, 460, yPos, pageNo);
+
+            AddText(item.Grade, "Segoe UI", fontsize, false, 0, Colors.Black, 510, yPos, pageNo);
+            AddText(item.Remarks, "Segoe UI", fontsize, false, 0, Colors.Black, 567, yPos, pageNo);
+        }
+        private void AddRPMSubjectScores(ObservableCollection<ReportFormSubjectModel> psi, int pageNo)
+        {
+            for (int i = 0; i <= psi.Count - 1; i++)
+                AddRPMSubjectScore(psi[i], i, pageNo);
+        }
+
+       private void AddRPMTotalMarks(decimal totalMarks, int pageNo)
+        {
+            AddText(totalMarks.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 410, 615, pageNo);
+        }
+       private void AddRPMOutOf(decimal outOf, int pageNo)
+        {
+            AddText(outOf.ToString("N2"), "Arial", 14, true, 0, Colors.Black, 410, 640, pageNo);
+        }
+
+       private void AddRPMMeanScore(decimal meanScore, int pageNo)
+        {
+            AddText(meanScore.ToString("N2"), "Segoe UI", 14, true, 0, Colors.Black, 110, 692, pageNo);
+        }
+        private void AddRPMAvgPts(decimal term1Avgpts, int pageNo)
+        {
+            AddText(term1Avgpts > 0 ? term1Avgpts.ToString("N2") : "-", "Arial", 14, true, 0, Colors.Black, 225, 692, pageNo);
+        }
+        private void AddRPMTotalPts(string term1TotalPts, int pageNo)
+        {
+            AddText(term1TotalPts, "Arial", 14, true, 0, Colors.Black, 325, 692, pageNo);
+        }
+        private void AddRPMGrade(string term1Grade, int pageNo)
+        {
+            AddText(term1Grade, "Arial", 14, true, 0, Colors.Black, 430, 692, pageNo);
+        }
+       private void AddRPMClassPOS(string term1POS, int pageNo)
+        {
+            AddText(term1POS, "Arial", 14, true, 0, Colors.Black, 520, 692, pageNo);
+        }
+       private void AddRPMCombinedClassPOS(string term1POS, int pageNo)
+        {
+            AddText(term1POS, "Arial", 14, true, 0, Colors.Black, 630, 692, pageNo);
+        }
+
+
+       private void AddRPMClassTRComments(string classTRComments, int pageNo)
+        {
+            AddTextWithWrap(classTRComments, "Arial", 700, 70, 14, true, 0, Colors.Black, 50, 800, pageNo);
+        }
+       private void AddRPMPrincipalComments(string principalComments, int pageNo)
+        {
+            AddTextWithWrap(principalComments, "Arial", 445, 80, 14, true, 0, Colors.Black, 50, 945, pageNo);
+        }
+       private void AddRPMOpening(DateTime opening, int pageNo)
+        {
+            AddText(opening.ToString("dd MMM yyyy"), "Arial", 14, true, 0, Colors.Black, 545, 1017, pageNo);
+        }
+       private void AddRPMClosing(DateTime closing, int pageNo)
+        {
+            AddText(closing.ToString("dd MMM yyyy"), "Arial", 14, true, 0, Colors.Black, 545, 950, pageNo);
+        }
+
+       private void GenerateReportForm()
+        {
+            ReportFormModel si = MyWorkObject as ReportFormModel;
+
+            int pageNo;
+            for (pageNo = 0; pageNo < NoOfPages; pageNo++)
+            {
+                si.SubjectEntries = new ObservableCollection<ReportFormSubjectModel>(si.SubjectEntries.OrderBy(o => o.Code));
+                AddRPMStudentID(si.StudentID, pageNo);
+                AddRPMName(si.NameOfStudent, pageNo);
+                AddRPMClassName(si.NameOfClass, pageNo);
+                AddRPMImage(si.SPhoto, pageNo);
+                AddRPMSubjectScores(si.SubjectEntries, pageNo);
+                AddRPMTotalMarks(si.TotalMarks, pageNo);
+                AddRPMOutOf(si.SubjectEntries.Count * 100, pageNo);
+                AddRPMAvgPts(si.AvgPoints, pageNo);
+                AddRPMTotalPts(si.TotalPoints.ToString("N2"), pageNo);
+                AddRPMMeanScore(si.MeanScore, pageNo);
+                AddRPMGrade(si.MeanGrade, pageNo);
+                AddRPMClassPOS(si.ClassRank, pageNo);
+                AddRPMCombinedClassPOS(si.StreamRank, pageNo);
+                AddRPMClassTRComments(si.ClassTeacherComments, pageNo);
+                AddRPMPrincipalComments(si.PrincipalComments, pageNo);
+                AddRPMOpening(si.OpeningDay, pageNo);
+                AddRPMClosing(si.ClosingDay, pageNo);
+            }
+        }
+
+        #endregion
+
     }
 }

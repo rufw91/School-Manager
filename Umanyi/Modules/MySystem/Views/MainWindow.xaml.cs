@@ -23,10 +23,21 @@ namespace UmanyiSMS.Modules.MySystem.Views
                 {
                     MessageBox.Show("Contact your system administrator for assistance.","Help", MessageBoxButton.OK, MessageBoxImage.Information);
                 };
+            v.HelpActivationAction = () =>
+            {
+                Activation a = new Activation(true);
+                a.ShowDialog();
+            };
 
             v.HelpAboutAction = () =>
             {
                 About a = new About();
+                a.ShowDialog();
+            };
+
+            v.SettingsSetupWizardAction = () =>
+            {
+                SetupWizard a = new SetupWizard();
                 a.ShowDialog();
             };
             DataContext = v;            

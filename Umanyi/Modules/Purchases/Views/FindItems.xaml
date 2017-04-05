@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:core="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
         xmlns:converters="clr-namespace:UmanyiSMS.Lib.Converters;assembly=UmanyiSMS.Lib"
-        Title="Find Items" Height="600" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow">
+        Title="Find Items" Height="600" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" 
+                   WindowStyle="SingleBorderWindow">
     
     <Grid>
         <Grid>

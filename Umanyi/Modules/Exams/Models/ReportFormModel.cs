@@ -87,21 +87,43 @@ namespace UmanyiSMS.Modules.Exams.Models
         public byte[] SPhoto { get; internal set; }
 
         public void Clean()
-        {
+        {            
             NameOfClass = "";
             StreamRank = "";
             ClassRank = "";
+            TotalMarks = 0;
+            MeanScore = 0;
+            MeanGrade = "E";
+            TotalPoints = 1;
+            AvgPoints = 1;
+            OpeningDay = DateTime.Now;
+            ClosingDay = DateTime.Now;
+            PrincipalComments = "";
+            ClassTeacherComments = "";
+            SPhoto = new byte[1];
             subjectEntries.Clear();
         }
 
-        public void CopyFrom(ReportFormModel reportForm)
+        public ReportFormModel CopyFrom(ReportFormModel reportForm)
         {
             NameOfClass = reportForm.NameOfClass;
-            StreamRank = reportForm.NameOfClass;
+            StreamRank = reportForm.streamRank;
             ClassRank = reportForm.ClassRank;
+            TotalMarks = reportForm.TotalMarks;
+            MeanScore = reportForm.MeanScore;
+            MeanGrade = reportForm.MeanGrade;
+            TotalPoints = reportForm.TotalPoints;
+            AvgPoints = reportForm.AvgPoints;
+            OpeningDay = reportForm.ClosingDay;
+            ClosingDay = reportForm.ClosingDay;
+            PrincipalComments = reportForm.PrincipalComments;
+            ClassTeacherComments = reportForm.ClassTeacherComments;
+            SPhoto = reportForm.SPhoto;
+
             subjectEntries.Clear();
             foreach (var t in reportForm.subjectEntries)
                 subjectEntries.Add(t);
+            return this;
         }
     }
 }

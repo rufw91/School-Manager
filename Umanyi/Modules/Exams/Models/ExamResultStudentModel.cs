@@ -182,6 +182,8 @@ namespace UmanyiSMS.Modules.Exams.Models
                                 "Student is not active."
                             });
                         }
+                        foreach (var s in entries)
+                            s.CheckErrors();
                     }
                 }
             }

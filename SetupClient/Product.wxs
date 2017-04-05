@@ -18,7 +18,7 @@
   <?define ProductCode = "E87C0D4B-1902-4730-B169-8F776E2EFFC2" ?>
   <?endif ?>
 
-  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="6.8.805.6500" Manufacturer="Umanyi Digital Technologies Ltd"
+  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="7.1.1.6728" Manufacturer="Umanyi Digital Technologies Ltd"
            UpgradeCode="$(var.ProductCode)">
 
     <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
@@ -42,9 +42,9 @@
       <ComponentGroupRef Id="ShortcutComponents" />
     </Feature>
 
-    <CustomAction Id="SetServerName" Property="DB_SERVER" Value="[ComputerName]\Umanyi" Execute="immediate"/>
+    <CustomAction Id="SetServerName" Property="DB_SERVER" Value="(LocalDB)\v11.0" Execute="immediate"/>
 
-    <CustomAction Id="SetPassword" Property="DB_SERVER" Value="[ComputerName]\Umanyi" Execute="immediate"/>
+    <CustomAction Id="SetPassword" Property="DB_SERVER" Value="password" Execute="immediate"/>
 
     <InstallExecuteSequence>
       <Custom Action="SetServerName"
@@ -91,36 +91,55 @@
       <Component Id="cmp4" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)log4net.dll" />
       </Component>
-      <Component Id="cmp5" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.WindowsAPICodePack.dll" />
-      </Component>
-      <Component Id="cmp6" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll" />
-      </Component>
       <Component Id="cmp7" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)Newtonsoft.Json.dll" />
       </Component>
       <Component Id="cmp8" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)Helper.dll" />
+        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.Lib.dll" />
       </Component>
-      <Component Id="cmp9" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)OpenXmlPackaging.dll" />
-      </Component>  
+        
       <Component Id="cmp10" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe" />
-      </Component>
-      <Component Id="cmp11" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.Helper.dll" />
       </Component>
       <Component Id="cmp12" Guid="*">
         <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.exe.config" />
       </Component>
-      <Component Id="cmp13" Guid="*">
-        <File Source="$(var.UmanyiSMS.TargetDir)System.Windows.Interactivity.dll" />
-      </Component>
+      
       <Component Id="cmp14" Guid="*">
         <File Source="C:\Dev\Common\gxps-9.15-win32.exe" />
       </Component>
+    <Component Id="cmp15" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.SqlServer.ConnectionInfo.dll" />
+      </Component>
+    <Component Id="cmp16" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.SqlServer.Dmf.dll" />
+      </Component>
+  <Component Id="cmp17" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.SqlServer.Management.Sdk.Sfc.dll" />
+      </Component>
+        <Component Id="cmp18" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.SqlServer.RegSvrEnum.dll" />
+      </Component>
+        <Component Id="cmp19" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.SqlServer.ServiceBrokerEnum.dll" />
+      </Component>
+    
+    <Component Id="cmp21" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.SqlServer.SmoExtended.dll" />
+      </Component>
+  <Component Id="cmp22" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.SqlServer.SqlEnum.dll" />
+      </Component>
+        <Component Id="cmp23" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)Microsoft.SqlServer.Smo.dll" />
+      </Component>
+        <Component Id="cmp24" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.mdf" />
+      </Component>
+      <Component Id="cmp25" Guid="*">
+        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS_log.ldf" />
+      </Component>
+    
     </ComponentGroup>
   </Fragment>
 

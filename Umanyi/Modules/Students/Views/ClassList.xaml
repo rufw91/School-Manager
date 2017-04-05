@@ -6,7 +6,7 @@
              xmlns:Controls="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib" 
             xmlns:commands="clr-namespace:UmanyiSMS.Presentation" 
              mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="984"
-             Background="White">
+             Background="{DynamicResource WindowBackground}">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Class List" 
 			VerticalAlignment="Top"/>

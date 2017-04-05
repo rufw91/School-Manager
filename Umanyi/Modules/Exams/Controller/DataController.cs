@@ -332,13 +332,15 @@ namespace UmanyiSMS.Modules.Exams.Controller
             return observableCollection;
         }
         
+        
         public static Task<ReportFormModel> GetStudentReportFormAsync(int studentID, IEnumerable<ExamWeightModel> exams)
         {
             return Task.Factory.StartNew(() =>
             {
                 int classID = Students.Controller.DataController.GetClassIDFromStudentID(studentID).Result;
+                var nameOfClass = Institution.Controller.DataController.GetClass(classID).NameOfClass;
                 var subjects = Institution.Controller.DataController.GetInstitutionSubjectsAsync().Result;
-
+                                
                 int e1 = exams.Any(o => o.Index == 1) ? exams.First(o => o.Index == 1).ExamID : 0;
                 int e2 = exams.Any(o => o.Index == 2) ? exams.First(o => o.Index == 2).ExamID : 0;
                 int e3 = exams.Any(o => o.Index == 3) ? exams.First(o => o.Index == 3).ExamID : 0;
@@ -347,11 +349,25 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 decimal e2w = exams.Any(o => o.Index == 2) ? exams.First(o => o.Index == 2).Weight : 0m;
                 decimal e3w = exams.Any(o => o.Index == 3) ? exams.First(o => o.Index == 3).Weight : 0m;
 
-                string selectStr = "SELECT * FROM (" +
+                string selectStr = "DECLARE @classSCount varchar(50)= '/'+CONVERT(varchar(50),(SELECT COUNT(DISTINCT esd.StudentID) FROM [ExamStudentDetail]esd LEFT OUTER JOIN [StudentClass]sc ON (sc.StudentID=esd.StudentID)" +
+                "WHERE sc.ClassID=@cid AND sc.[Year] = DATEPART(year,sysdatetime()) AND esd.ExamID IN (";
+                foreach (var t in exams)
+                    selectStr += t.ExamID + ",";
+                selectStr = selectStr.Remove(selectStr.Length - 1);
+                selectStr += ")))\r\n"+
+
+                "DECLARE @streamSCount varchar(50) ='/'+CONVERT(varchar(50),(SELECT COUNT(DISTINCT StudentID) FROM [ExamStudentDetail]esd WHERE ExamID IN (";
+                foreach (var t in exams)
+                    selectStr += t.ExamID + ",";
+                selectStr = selectStr.Remove(selectStr.Length - 1);
+                selectStr += ")))"+
+
+
+                "SELECT * FROM (" +
 
 
 "SELECT esd.StudentID,s.NameOfStudent, cc.ClassID,sub.NameOfSubject, sssd.SubjectID,sum(ex1.Score) Exam1Score, sum(ex2.Score) Exam2Score, sum(ex3.Score) Exam3Score," +
-"subjectRank.SubjectRank, streamRank.StreamRank,classRank.ClassRank " +
+"CONVERT(varchar(50),subjectRank.SubjectRank)+@streamSCount SubjectRank, CONVERT(varchar(50),streamRank.StreamRank)+@streamSCount StreamRank,CONVERT(varchar(50),classRank.ClassRank)+@classSCount ClassRank " +
 "FROM[ExamStudentDetail] esd " +
 "LEFT OUTER JOIN[StudentClass] cc ON(esd.StudentID = cc.StudentID AND cc.Year = DATEPART(YEAR, SYSDATETIME()))" +
 "LEFT OUTER JOIN[Student] s ON(s.StudentID = esd.StudentID)" +
@@ -441,8 +457,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
     "desc) classRank " +
     "FROM(" +
     "SELECT esd.StudentID, s.SubjectID, sum(ISNULL(ex1.Score, 0)) + SUM(ISNULL(ex2.Score, 0)) + SUM(ISNULL(ex3.Score, 0)) Exam1Score FROM " +
-    "[StudentClass] cs " +
-    "LEFT OUTER JOIN[ExamStudentDetail] esd " +
+    "[ExamStudentDetail] esd LEFT OUTER JOIN [StudentClass] cs " +
     "ON(cs.StudentID = esd.StudentID AND cs.[Year] = DATEPART(YEAR, SYSDATETIME()))" +
     "LEFT OUTER JOIN" +
     "(SELECT StudentID, erh.ExamID, SubjectID, CONVERT(decimal(18, 2), Score * (@e1w / eh.OutOf), 2)Score FROM[ExamResultHeader] erh " +
@@ -530,12 +545,37 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 var dt = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr, paramColl);
 
                 ReportFormModel rpm = new ReportFormModel();
+                rpm.NameOfClass = nameOfClass;
                 ReportFormSubjectModel l;
+                if (dt.Rows.Count>0)
+                {
+                    rpm.StreamRank = dt.Rows[0][10].ToString();
+                    rpm.ClassRank = dt.Rows[0][9].ToString();
+                }
                 foreach (DataRow dtr in dt.Rows)
                 {
                     l = new ReportFormSubjectModel();
+                   
+                    l.SubjectID = int.Parse(dtr[4].ToString());
+                    l.NameOfSubject = dtr[3].ToString();
+                    l.Code = SubjectModel.AllSubjects.First(o => o.NameOfSubject == l.NameOfSubject).Code;
+                    l.Exam1Score = dtr[5].ToString();
+                    l.Exam2Score = dtr[6].ToString();
+                    l.Exam3Score = dtr[7].ToString();
+                    l.StreamRank = dtr[8].ToString();                    
+                    l.MeanScore = (string.IsNullOrWhiteSpace(l.Exam1Score) ? 0 : decimal.Parse(l.Exam1Score)) +
+                    (string.IsNullOrWhiteSpace(l.Exam2Score) ? 0 : decimal.Parse(l.Exam2Score)) +
+                    (string.IsNullOrWhiteSpace(l.Exam3Score) ? 0 : decimal.Parse(l.Exam3Score));
+                    l.Grade = Institution.Controller.DataController.CalculateGrade(l.MeanScore);
+                    l.Remarks = Institution.Controller.DataController.GetRemark(l.MeanScore,(l.Code==102));
+
+                    rpm.TotalMarks += l.MeanScore;
+                    rpm.TotalPoints += Institution.Controller.DataController.CalculatePoints(l.Grade);
                     rpm.SubjectEntries.Add(l);
                 }
+                rpm.MeanScore = rpm.SubjectEntries.Count == 0 ? 0 : rpm.TotalMarks / rpm.SubjectEntries.Count;
+                rpm.AvgPoints = rpm.SubjectEntries.Count == 0 ? 1 : rpm.TotalPoints / rpm.SubjectEntries.Count;
+                rpm.MeanGrade = Institution.Controller.DataController.CalculateGrade(rpm.MeanScore);
                 return rpm;
             });
         }
@@ -544,6 +584,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         {
             return Task.Factory.StartNew(() =>
             {
+                var nameOfClass = Institution.Controller.DataController.GetClass(classID).NameOfClass;
                 var subjects = Institution.Controller.DataController.GetInstitutionSubjectsAsync().Result;
 
                 int e1 = exams.Any(o => o.Index == 1) ? exams.First(o => o.Index == 1).ExamID : 0;
@@ -554,11 +595,26 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 decimal e2w = exams.Any(o => o.Index == 2) ? exams.First(o => o.Index == 2).Weight : 0m;
                 decimal e3w = exams.Any(o => o.Index == 3) ? exams.First(o => o.Index == 3).Weight : 0m;
 
-                string selectStr = "SELECT * FROM (" +
+                string selectStr =
+                "DECLARE @classSCount varchar(50)= '/'+CONVERT(varchar(50),(SELECT COUNT(DISTINCT esd.StudentID) FROM [ExamStudentDetail]esd LEFT OUTER JOIN [StudentClass]sc ON (sc.StudentID=esd.StudentID)" +
+                "WHERE sc.ClassID=@cid AND sc.[Year] = DATEPART(year,sysdatetime()) AND esd.ExamID IN (";
+                foreach (var t in exams)
+                    selectStr += t.ExamID + ",";
+                selectStr = selectStr.Remove(selectStr.Length - 1);
+                selectStr += ")))\r\n" +
+
+                "DECLARE @streamSCount varchar(50)='/'+CONVERT(varchar(50),(SELECT COUNT(DISTINCT StudentID) FROM [ExamStudentDetail]esd WHERE ExamID IN (";
+                foreach (var t in exams)
+                    selectStr += t.ExamID + ",";
+                selectStr = selectStr.Remove(selectStr.Length - 1);
+                selectStr += ")))" +
+
+
+                "SELECT * FROM (" +
 
 
 "SELECT esd.StudentID,s.NameOfStudent, cc.ClassID,sub.NameOfSubject, sssd.SubjectID,sum(ex1.Score) Exam1Score, sum(ex2.Score) Exam2Score, sum(ex3.Score) Exam3Score," +
-"subjectRank.SubjectRank, streamRank.StreamRank,classRank.ClassRank " +
+"CONVERT(varchar(50),subjectRank.SubjectRank)+@streamSCount SubjectRank, CONVERT(varchar(50),streamRank.StreamRank)+@streamSCount StreamRank,CONVERT(varchar(50),classRank.ClassRank)+@classSCount ClassRank " +
 "FROM[ExamStudentDetail] esd " +
 "LEFT OUTER JOIN[StudentClass] cc ON(esd.StudentID = cc.StudentID AND cc.Year = DATEPART(YEAR, SYSDATETIME()))" +
 "LEFT OUTER JOIN[Student] s ON(s.StudentID = esd.StudentID)" +
@@ -737,24 +793,47 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
                 ClassReportFormModel rpm = new ClassReportFormModel();
                 var last_id = 0;
-                bool addNew = false;
+                bool isNew = false;
                 ReportFormModel temp = null;
                 ReportFormSubjectModel l;
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    addNew = int.Parse(dt.Rows[i][0].ToString()) != last_id;
-
-                    if (addNew)
+                    isNew = int.Parse(dt.Rows[i][0].ToString()) != last_id;
+                    
+                    if (isNew)
                     {
-                        rpm.Add(temp);
+                        if (temp != null)
+                             rpm.Add(temp);            
                         last_id = int.Parse(dt.Rows[i][0].ToString());
                         temp = new ReportFormModel();
                         temp.StudentID = int.Parse(dt.Rows[i][0].ToString());
                         temp.NameOfStudent = dt.Rows[i][1].ToString();
+                        temp.NameOfClass = nameOfClass;
+                        temp.StreamRank = dt.Rows[i][10].ToString();
+                        temp.ClassRank = dt.Rows[i][9].ToString();
                     }
                     l = new ReportFormSubjectModel();
-                    temp.SubjectEntries.Add(l);/* new ReportFormSubjectModel(int.Parse(dt.Rows[i][4].ToString()), dt.Rows[i][3].ToString(),
-                        dt.Rows[i][5].ToString(), dt.Rows[i][6].ToString(), dt.Rows[i][7].ToString(), dt.Rows[i][8].ToString()));*/
+                    l.SubjectID = int.Parse(dt.Rows[i][4].ToString());
+                    l.NameOfSubject = dt.Rows[i][3].ToString();
+                    l.Exam1Score = dt.Rows[i][5].ToString();
+                    l.Exam2Score = dt.Rows[i][6].ToString();
+                    l.Exam3Score = dt.Rows[i][7].ToString();
+                    l.StreamRank = dt.Rows[i][8].ToString();                    
+                    l.Code = SubjectModel.AllSubjects.First(o => o.NameOfSubject == l.NameOfSubject).Code;
+                    l.MeanScore = (string.IsNullOrWhiteSpace(l.Exam1Score) ? 0 : decimal.Parse(l.Exam1Score)) +
+                    (string.IsNullOrWhiteSpace(l.Exam2Score) ? 0 : decimal.Parse(l.Exam2Score)) +
+                    (string.IsNullOrWhiteSpace(l.Exam3Score) ? 0 : decimal.Parse(l.Exam3Score));
+                    l.Grade = Institution.Controller.DataController.CalculateGrade(l.MeanScore);
+                    l.Remarks = Institution.Controller.DataController.GetRemark(l.MeanScore, (l.Code == 102));
+
+                    temp.TotalMarks += l.MeanScore;                    
+                    temp.SubjectEntries.Add(l);
+                    temp.TotalPoints += Institution.Controller.DataController.CalculatePoints(l.Grade);
+                    temp.MeanScore = temp.SubjectEntries.Count == 0 ? 0 : temp.TotalMarks / temp.SubjectEntries.Count;
+                    temp.AvgPoints = temp.SubjectEntries.Count == 0 ? 1 : temp.TotalPoints / temp.SubjectEntries.Count;
+                    temp.MeanGrade = Institution.Controller.DataController.CalculateGrade(temp.MeanScore);
+                    if (i == dt.Rows.Count - 1)
+                        rpm.Add(temp);
                 }
                 return rpm;
             });

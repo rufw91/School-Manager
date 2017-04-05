@@ -11,6 +11,7 @@ namespace UmanyiSMS.Modules.Institution.Models
     {
         ObservableCollection<BasicPair<int, int>> gradeRanges;
         ObservableCollection<string> gradeRemarks;
+        ObservableCollection<string> swahiliGradeRemarks;
         private int best7Subjects;
         private int meanGradeCalculation;
 
@@ -18,6 +19,7 @@ namespace UmanyiSMS.Modules.Institution.Models
         {
             gradeRanges = new ObservableCollection<BasicPair<int,int>>();
             gradeRemarks = new ObservableCollection<string>();
+            swahiliGradeRemarks = new ObservableCollection<string>();
             Best7Subjects = 3;
             MeanGradeCalculation = 1;
             gradeRanges.Add(new BasicPair<int, int>(85, 100));
@@ -45,47 +47,20 @@ namespace UmanyiSMS.Modules.Institution.Models
             gradeRemarks.Add("POOR");
             gradeRemarks.Add("VERY POOR");
             gradeRemarks.Add("WAKE UP");
-            /*
-            else
-            {
-                switch (num)
-                {
-                    case 1:
-                        result = "ZINDUKA";
-                        return result;
-                    case 2:
-                        result = "PUNGUZA MZAHA";
-                        return result;
-                    case 3:
-                        result = "AMKA";
-                        return result;
-                    case 4:
-                        result = "TIA BIDII";
-                        return result;
-                    case 5:
-                        result = "TIA BIDII";
-                        return result;
-                    case 6:
-                        result = "CHINI YA WASTANI";
-                        return result;
-                    case 7:
-                        result = "WASTANI";
-                        return result;
-                    case 8:
-                        result = "HEKO";
-                        return result;
-                    case 9:
-                        result = "VIZURI";
-                        return result;
-                    case 10:
-                        result = "VIZURI SANA";
-                        return result;
-                    case 11:
-                        result = "PONGEZI";
-                        return result;
-                    case 12:
-                        result = "HONGERA";
-                        return result;/*/
+
+            swahiliGradeRemarks.Add("HONGERA");
+            swahiliGradeRemarks.Add("HONGERA");
+            swahiliGradeRemarks.Add("VIZURI SANA");
+            swahiliGradeRemarks.Add("VIZURI");
+            swahiliGradeRemarks.Add("VIZURI");
+            swahiliGradeRemarks.Add("WASTANI");
+            swahiliGradeRemarks.Add("CHINI YA WASTANI");
+            swahiliGradeRemarks.Add("TIA BIDII");
+            swahiliGradeRemarks.Add("TIA BIDII");
+            swahiliGradeRemarks.Add("AMKA");
+            swahiliGradeRemarks.Add("PUNGUZA MZAHA");
+            swahiliGradeRemarks.Add("ZINDUKA");
+          
         }
 
         public ObservableCollection<BasicPair<int, int>> GradeRanges
@@ -96,6 +71,11 @@ namespace UmanyiSMS.Modules.Institution.Models
         public ObservableCollection<string> GradeRemarks
         {
             get { return gradeRemarks; }
+        }
+
+        public ObservableCollection<string> SwahiliGradeRemarks
+        {
+            get { return swahiliGradeRemarks; }
         }
 
         /// <summary>

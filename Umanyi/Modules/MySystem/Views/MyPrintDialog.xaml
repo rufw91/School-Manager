@@ -5,9 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:Controls="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
              xmlns:commands="clr-namespace:UmanyiSMS.Presentation" 
-      mc:Ignorable="d" Background="White"
+      mc:Ignorable="d"
       d:DesignHeight="514" d:DesignWidth="732"
-	 Loaded="Page_Loaded">
+	 Loaded="Page_Loaded"
+             Background="{DynamicResource WindowBackground}">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}" Text="Print" VerticalAlignment="Top"/>
         <Controls:DropDownButton Content="Export" HorizontalAlignment="Right" Margin="0,55,20,0" VerticalAlignment="Top" DataContext="{Binding Document, ElementName=docViewer}">

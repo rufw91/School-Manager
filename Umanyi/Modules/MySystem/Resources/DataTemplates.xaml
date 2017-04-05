@@ -15,12 +15,6 @@
     <DataTemplate DataType="{x:Type viewModels:ChangeSAPasswordVM}" >
         <views:ChangeSAPassword/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AppFirstRunVM}" >
-        <views:AppFirstRun/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:GeneralSettingsVM}" >
-        <views:GeneralSettings/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:HomePageVM}" >
         <views:HomePage/>
     </DataTemplate>
@@ -36,8 +30,33 @@
     <DataTemplate DataType="{x:Type viewModels:QueryEditorVM}" >
         <views:QueryEditor/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:SyncCloudVM}" >
-        <views:SyncCloud/>
+
+    <DataTemplate DataType="{x:Type viewModels:WelcomeVM}" >
+        <views:Welcome/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:AcademicSetupWVM}" >
+        <views:AcademicSetupW/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ClassesSetupWVM}" >
+        <views:ClassesSetupW/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ColorsVM}" >
+        <views:Colors/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:FinallyVM}" >
+        <views:Finally/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:GradesSetupWVM}" >
+        <views:GradesSetupW/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:LogoVM}" >
+        <views:Logo/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:SubjectsSetupWVM}" >
+        <views:SubjectsSetupW/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:InstitutionSetupWVM}" >
+        <views:InstitutionSetupW/>
     </DataTemplate>
 
 </ResourceDictionary>

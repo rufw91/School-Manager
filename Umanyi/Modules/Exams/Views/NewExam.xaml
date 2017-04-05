@@ -7,8 +7,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     d:DesignHeight="548" d:DesignWidth="984"
       mc:Ignorable="d" 
-      
-        Background="White" >
+      Background="{DynamicResource WindowBackground}">
 
     <Grid Name="mnGrid">
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="New Exam" 

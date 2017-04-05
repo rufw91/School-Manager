@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="722" d:DesignWidth="1024"
-	 Background="White">
+	 Background="{DynamicResource WindowBackground}">
     <UserControl.Resources>
         <SolidColorBrush x:Key="TitleBackgroundBrush" Color="{DynamicResource AccentColor}"/>
     </UserControl.Resources>

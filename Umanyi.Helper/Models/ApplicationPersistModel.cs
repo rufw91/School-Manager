@@ -10,7 +10,7 @@ namespace UmanyiSMS.Lib.Models
     {
         public ApplicationPersistModel()
         {
-
+            AccentColor = new byte[4] { 0, 0, 0, 0 };
         }
         public ApplicationPersistModel(ApplicationModel value)
         {
@@ -27,8 +27,10 @@ namespace UmanyiSMS.Lib.Models
             Motto = value.Motto;
             SPhoto = value.SPhoto;
             ServerName = value.ServerName;
-           DBName= value.DBName;
+            DBName = value.DBName;
             Culture = value.Culture;
+            Theme = value.Theme;
+            AccentColor = new byte[4] { value.AccentColor.A, value.AccentColor.R, value.AccentColor.G, value.AccentColor.B };
         }
         public string SyncAddress { get; set; }
         public string ID { get; set; }
@@ -41,6 +43,8 @@ namespace UmanyiSMS.Lib.Models
         public string PhoneNo { get; set; }
         public string Email { get; set; }
         public string Motto { get; set; }
+        public string Theme { get; set; }
+        public byte[] AccentColor { get; set; }
         public byte[] SPhoto { get; set; }
         public string ServerName { get; set; }
         public string DBName { get; set; }

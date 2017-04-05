@@ -138,7 +138,13 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         private bool CanSave()
         {
             newResult.CheckErrors();
-            return !newResult.HasErrors && selectedExam!=null;
+            
+            if (!(!newResult.HasErrors && selectedExam != null))
+                return false;
+            bool succ = true;
+            foreach (var s in newResult.Entries)
+                succ = succ && s.Score <= selectedExam.OutOf;
+            return succ;
         }
 
         private bool SubjectExists(int ID)

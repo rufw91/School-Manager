@@ -3,12 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-               mc:Ignorable="d" Background="White"
-     d:DesignHeight="500" d:DesignWidth="700">
-
+               mc:Ignorable="d"
+     d:DesignHeight="500" d:DesignWidth="700"
+             Background="{DynamicResource WindowBackground}">
+    
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Application Log" Style="{DynamicResource Title}" VerticalAlignment="Top"/>
         <ListBox Margin="10,70,10,50" ItemsSource="{Binding Entries}" BorderBrush="LightGray" BorderThickness="2">
+            <ListBox.Resources>
+                <SolidColorBrush x:Key="Accent">LightGray</SolidColorBrush>
+            </ListBox.Resources>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border >

@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
               xmlns:Controls="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib" 
             xmlns:commands="clr-namespace:UmanyiSMS.Presentation" 
-             mc:Ignorable="d" Background="White"
-             d:DesignHeight="800" d:DesignWidth="900">
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="900"
+             Background="{DynamicResource WindowBackground}">
     <Grid>
         <TextBlock Margin="10,10,0,0" Text="Balances List" VerticalAlignment="Top" HorizontalAlignment="Left"
                  Style="{DynamicResource Title}"/>

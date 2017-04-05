@@ -74,9 +74,9 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
-        public string Grade { get; internal set; }
-        public decimal MeanScore { get; internal set; }
-        public string Remarks { get; internal set; }
+        public string Grade { get; set; }
+        public decimal MeanScore { get; set; }
+        public string Remarks { get; set; }
 
         public string StreamRank
         {
