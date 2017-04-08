@@ -10,9 +10,9 @@ using SetupUI;
 [assembly: AssemblyTitle("SetupUI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Raphael Muindi")]
 [assembly: AssemblyProduct("SetupUI")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright ©  2017 Raphael Muindi")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

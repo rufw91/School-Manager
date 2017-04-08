@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:local="clr-namespace:SetupUI">
+                     xmlns:local="clr-namespace:SetupUI"
+                    xmlns:shell ="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Theme.Dark.xaml"/>
         <ResourceDictionary Source="Theme.Common.xaml"/>
@@ -91,13 +92,13 @@
        TargetType="{x:Type local:CustomWindow}">
         <Setter Property="SnapsToDevicePixels"
           Value="true" />
-        <Setter Property="WindowChrome.WindowChrome">
+        <Setter Property="shell:WindowChrome.WindowChrome">
             <Setter.Value>
-                <WindowChrome
+                <shell:WindowChrome
             ResizeBorderThickness="6"
             CornerRadius="0"
             GlassFrameThickness="0">
-                </WindowChrome>
+                </shell:WindowChrome>
             </Setter.Value>
         </Setter>
         <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
@@ -115,13 +116,13 @@
                                 <ContentPresenter />
                             </AdornerDecorator>
 
-                            <StackPanel Margin="0" WindowChrome.IsHitTestVisibleInChrome="True" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <StackPanel Margin="0" shell:WindowChrome.IsHitTestVisibleInChrome="True" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <!--Minimize-->
                                 <Button 
                             IsTabStop="False"
                                 Width="34"
                                 MaxHeight="34"
-                                Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" 
+                                Command="{Binding Source={x:Static shell:SystemCommands.MinimizeWindowCommand}}" 
                                 Style="{StaticResource SystemButton}"
                                 Visibility="{TemplateBinding ShowMinimize,
                                 Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -135,7 +136,7 @@
                                 IsTabStop="False"
                                 Width="34"
                                 MaxHeight="34"
-                                Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}" 
+                                Command="{Binding Source={x:Static shell:SystemCommands.MaximizeWindowCommand}}" 
                                 Style="{StaticResource SystemButton}"
                                 Visibility="{TemplateBinding ShowMaximize,
                                 Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -150,7 +151,7 @@
                                 IsTabStop="False"
                                 Width="34"
                                 MaxHeight="34"
-                                Command="{Binding Source={x:Static SystemCommands.RestoreWindowCommand}}" 
+                                Command="{Binding Source={x:Static shell:SystemCommands.RestoreWindowCommand}}" 
                                 Style="{StaticResource SystemButton}"
                                 Visibility="{TemplateBinding ShowRestore, 
                                 Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -164,7 +165,7 @@
                                 IsTabStop="False"
                                 Width="34"
                                 MaxHeight="34"
-                                Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}"
+                                Command="{Binding Source={x:Static shell:SystemCommands.CloseWindowCommand}}"
                                 ToolTip="Close">
                                     <Path Data="F1M0,0L2,0 5,3 8,0 10,0 6,4 10,8 8,8 5,5 2,8 0,8 4,4 0,0z"
                                   SnapsToDevicePixels="True"

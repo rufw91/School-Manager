@@ -12,6 +12,13 @@
         <ResourceDictionary Source="CustomWindow.xaml" />
         <ResourceDictionary Source="Button.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Storyboard x:Key="SlideIn" >
+                <ThicknessAnimation Duration="0:0:.45" Storyboard.TargetProperty="Margin" From="500,0,-500,0" To="0" DecelerationRatio=".9" />
+            </Storyboard>
+
+            <Storyboard x:Key="SlideOut">
+                <ThicknessAnimation Duration="0:0:.30" Storyboard.TargetProperty="Margin" To="-500,0,500,0" AccelerationRatio=".9"/>
+            </Storyboard>
         </ResourceDictionary>
     </helper:CustomWindow.Resources>
     <Window.Style>
@@ -21,20 +28,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <Grid Background="{DynamicResource Accent2}"></Grid>
-        <Grid Grid.Row="1">
-
-            <TextBlock Style="{DynamicResource ContentTextSemiBold}" HorizontalAlignment="Center" Margin="0,30,0,0" Text="UMANYI SCHOOL MANAGEMENT SYSTEM" FontSize="18" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="34,91,0,0" VerticalAlignment="Top" TextWrapping="Wrap">
-                Thank you for purchasing Umanyi School Management System <LineBreak/>
-                <LineBreak/>
-                Setup requires 123 MB free disk space. Any previous versions of Umanyi School Management System will be removed.
-            </TextBlock>
-
-
+        <Grid Background="{DynamicResource Accent2}">
+            <TextBlock HorizontalAlignment="Left" Margin="10,15,0,0" Text="UMANYI" Style="{DynamicResource Emphasis2}" VerticalAlignment="Top"/>
         </Grid>
-        <Button Grid.Row="2" BorderThickness="0" Content="Install" TextBlock.FontSize="26" Padding="0,0,5,5" TextBlock.FontWeight="Light"/>
+        <ContentControl Grid.Row="1" x:Name="contentPresenter"/>
+        
+        
     </Grid>
 </helper:CustomWindow>

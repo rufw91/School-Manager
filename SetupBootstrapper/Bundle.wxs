@@ -1,25 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
 
-  <Bundle Name="Umanyi School MS" Version="7.1.1.0" Manufacturer="Umanyi Ltd" UpgradeCode="93752b90-f087-408a-9226-4f2f65ea067d"
+  <Bundle Name="Umanyi School MS" Version="7.1.2" Manufacturer="Raphael Muindi" UpgradeCode="93752b90-f087-408a-9226-4f2f65ea067d"
 HelpTelephone="+254-721-626-250"
 HelpUrl="http://www.umanyi.co.ke/sms/help"
-AboutUrl="http://www.umanyi.co.ke/sms/">
+AboutUrl="http://www.umanyi.co.ke/sms/" SplashScreenSourceFile="C:\Dev\SplashSCreen.bmp"
+     DisableModify="yes" DisableRepair="yes">
+    <Variable Name="LogLocation" Value="C:\ProgramData\Umanyi\UmanyiSMS\Logs\InstallLog.Log"/>
+    <Log PathVariable="LogLocation"/>
     <bal:Condition Message="This software can only be installed on Windows 7 or newer OS.">
       <![CDATA[VersionNT >= v6.1]]>
     </bal:Condition>
     <BootstrapperApplicationRef Id="ManagedBootstrapperApplicationHost">
-      <bal:WixManagedBootstrapperApplicationHost NetFxPackageId="NetFx451Redist" LicenseUrl="http://www.umanyi.co.ke/"/>
+      
       <Payload SourceFile="$(var.SetupUI.TargetDir)SetupUI.dll" />
       <Payload SourceFile="$(var.SetupUI.TargetDir)Microsoft.Deployment.WindowsInstaller.dll" />
+      <Payload SourceFile="$(var.SetupUI.TargetDir)Microsoft.WindowsAPICodePack.dll" />
+      <Payload SourceFile="$(var.SetupUI.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll" />
+      <Payload SourceFile="$(var.SetupUI.TargetDir)Microsoft.Windows.Shell.dll" />
+      <Payload SourceFile="$(var.SetupUI.TargetDir)System.Windows.Controls.Input.Toolkit.dll" />
+      <Payload SourceFile="$(var.SetupUI.TargetDir)System.Windows.Controls.Layout.Toolkit.dll" />
+      <Payload SourceFile="$(var.SetupUI.TargetDir)WPFToolkit.dll" />
       <Payload SourceFile= "$(var.SetupUI.TargetDir)BootstrapperCore.config" />
     </BootstrapperApplicationRef>
     
     <Chain>
-      <MsiPackage SourceFile="C:\Users\Raphael\Downloads\Programs\SqlLocalDb.msi" />
-      <MsiPackage SourceFile="$(var.SetupClient.TargetDir)Setup Client.msi" />
+      <PackageGroupRef Id="NetFx451Redist"/>
+      <MsiPackage Permanent="yes" Compressed="no" ForcePerMachine="yes" SourceFile="C:\Users\Raphael\Downloads\Programs\SqlLocalDb.msi" InstallCondition="NOT " />
+      <MsiPackage Id="UmanyiSMS" SourceFile="$(var.SetupClient.TargetDir)Setup Client.msi" />
     </Chain>
   </Bundle>
 </Wix>
