@@ -16,6 +16,9 @@ using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Institution.Models;
 using UmanyiSMS.Modules.MySystem.Views;
 using System.Windows.Media;
+using log4net;
+using log4net.Appender;
+using System.IO;
 
 namespace UmanyiSMS
 {
@@ -28,8 +31,11 @@ namespace UmanyiSMS
 
         [STAThread]
         public static void Main()
-        {
+        {            
             XmlConfigurator.Configure();
+            var appender = (FileAppender)LogManager.GetRepository().GetAppenders()[0];
+            appender.File = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Umanyi\UmanyiSMS\Logs\LogFile.txt");
+            appender.ActivateOptions();
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
             if (SingleInstance<App>.InitializeAsFirstInstance(Unique))
@@ -177,7 +183,7 @@ namespace UmanyiSMS
             info = new ApplicationModel();
             log = new ObservableImmutableList<string>();
             Log.Init(ref log);
-            Log.I("Init Vars", this);
+            Log.I("Initializing...", this);
 
            
             if (Lib.Properties.Settings.Default.Info == null)

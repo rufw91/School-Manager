@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("UmanyiSMS.Lib")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Umanyi Ltd")]
+[assembly: AssemblyCompany("Raphael Muindi")]
 [assembly: AssemblyProduct("UmanyiSMS.Lib")]
-[assembly: AssemblyCopyright("Copyright © 2017 Umanyi Ltd")]
+[assembly: AssemblyCopyright("Copyright © 2017 Raphael Muindi")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.8.576.6348")]
-[assembly: AssemblyFileVersion("6.8.576.6348")]
+[assembly: AssemblyVersion("7.1.1.6348")]
+[assembly: AssemblyFileVersion("7.1.1.6348")]

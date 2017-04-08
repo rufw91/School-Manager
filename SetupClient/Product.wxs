@@ -18,7 +18,7 @@
   <?define ProductCode = "E87C0D4B-1902-4730-B169-8F776E2EFFC2" ?>
   <?endif ?>
 
-  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="7.1.1.6728" Manufacturer="Umanyi Digital Technologies Ltd"
+  <Product Id="*" Name="$(var.ProductName)" Language="2057" Version="7.1.2" Manufacturer="Raphael Muindi"
            UpgradeCode="$(var.ProductCode)">
 
     <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
@@ -27,34 +27,13 @@
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes"/>
 
-    <Property Hidden="yes" Id="DB_USER" Value="sa"/>
-    <Property Hidden="yes" Id="DB_PASSWORD" Value="000002"/>
-    <Property Hidden="yes" Id="DB_DATABASE" Value="UmanyiSMS"/>
-
-    <!-- Specify UI -->
-    <UIRef Id="MyUI" />
-    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
-    <Binary Id="CheckSqlConnection.dll" SourceFile="$(var.CheckSqlConnection.TargetDir)CheckSqlConnection.CA.dll"/>
-    <CustomAction Id="CheckSqlConnectionAction" BinaryKey="CheckSqlConnection.dll" DllEntry="CheckSqlConnection"/>
-
     <Feature Id="ProductFeature" Title="Umanyi" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="ShortcutComponents" />
     </Feature>
 
-    <CustomAction Id="SetServerName" Property="DB_SERVER" Value="(LocalDB)\v11.0" Execute="immediate"/>
-
-    <CustomAction Id="SetPassword" Property="DB_SERVER" Value="password" Execute="immediate"/>
-
-    <InstallExecuteSequence>
-      <Custom Action="SetServerName"
-      After="LaunchConditions" />
-    </InstallExecuteSequence>
-
-
-
-    <Condition Message="OS must be Windows Vista SP2, Server 2008, or higher.">
-      <![CDATA[Installed OR VersionNT >= 600]]>
+    <Condition Message="This software can only be installed on Windows 7 or newer OS.">
+      <![CDATA[VersionNT >= v6.1]]>
     </Condition>
 
    
@@ -64,8 +43,6 @@
 
   <!-- Program Folders & SQL Tables -->
   <Fragment>
-    <util:User Id="SQLUserSA" Name="[DB_USER]" Password="[DB_PASSWORD]"></util:User>
-
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="$(var.PlatformProgramFilesFolder)">
         <Directory Id="ALFolder" Name="Umanyi">
@@ -150,13 +127,13 @@
         Description="Umanyi School Management System"
         Target="[INSTALLFOLDER]UmanyiSMS.exe" />
         <RegistryValue Root="HKCU"
-        Key="Software\Umanyi Digital Technologies"
+        Key="Software\Umanyi\UmanyiSMS"
         Name="installed"
         Type="integer"
         Value="1"
         KeyPath="yes" />
         <RegistryValue Root="HKCU"
-          Key="Software\Umanyi Digital Technologies"
+          Key="Software\Umanyi\UmanyiSMS"
           Name="first_run"
           Type="integer"
           Value="1"/>

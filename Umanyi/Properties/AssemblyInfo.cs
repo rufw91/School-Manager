@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("Umanyi School MS")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Umanyi Digital Technologies Ltd")]
+[assembly: AssemblyCompany("Raphael Muindi")]
 [assembly: AssemblyProduct("Umanyi School MS")]
-[assembly: AssemblyCopyright("Copyright © 2015 Umanyi Digital Technologies Ltd")]
+[assembly: AssemblyCopyright("Copyright © 2017 Raphael Muindi")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
