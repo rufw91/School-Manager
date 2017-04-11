@@ -19,6 +19,7 @@ using System.Windows.Media;
 using log4net;
 using log4net.Appender;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace UmanyiSMS
 {
@@ -30,15 +31,18 @@ namespace UmanyiSMS
         private static ExamSettingsModel examSettings;
 
         [STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {            
             XmlConfigurator.Configure();
             var appender = (FileAppender)LogManager.GetRepository().GetAppenders()[0];
-            appender.File = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Umanyi\UmanyiSMS\Logs\LogFile.txt");
+            appender.File = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Raphael Muindi\UmanyiSMS\Logs\LogFile.txt");
             appender.ActivateOptions();
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
-            if (SingleInstance<App>.InitializeAsFirstInstance(Unique))
+
+            if (args != null && args.Length > 0 && args.Any(o => o.Trim().ToLowerInvariant() == "/b"))
+                StartBackup();
+            else if (SingleInstance<App>.InitializeAsFirstInstance(Unique))
             {
 
                 var application = new App();
@@ -50,6 +54,42 @@ namespace UmanyiSMS
                 // Allow single instance code to perform cleanup operations
                 SingleInstance<App>.Cleanup();
             }
+        }
+
+        private static void StartBackup()
+        {
+            string exp = @"^(?:""([^""]*)""\s*|([^""\s]+)\s*)+";
+            var m = Regex.Match(Environment.CommandLine, exp);
+
+            if (m.Groups.Count < 3)
+                App.Current.Shutdown();
+
+            var captures = m.Groups[1].Captures.Cast<Capture>().Concat(
+                       m.Groups[2].Captures.Cast<Capture>()).
+                       OrderBy(x => x.Index).
+                       ToArray();
+
+            if (captures.Length < 3)
+                App.Current.Shutdown();
+
+            if (captures[1].Value.ToLowerInvariant().Trim() == "/b")
+            {
+                string path = "";
+                bool exists = false;
+                try
+                {
+                    exists = File.Exists(captures[2].Value);
+                }
+                catch { exists = true; }
+                if (exists)
+                    path = FileHelper.GetDefaultBakPath();
+                else
+                    path = captures[2].Value;
+                var t = new SqlServerHelper(null).CreateBackupAsync(path);
+
+                t.Wait();
+            }
+            App.Current.Shutdown();
         }
         #region ISingleInstanceApp Members
 
@@ -100,7 +140,7 @@ namespace UmanyiSMS
             try
             {
 
-                MainWindow m = (Application.Current.MainWindow as MainWindow);
+                var m = (Application.Current.MainWindow as Window);
                 if (m != null)
                 {
                     m.Visibility = Visibility.Collapsed;
@@ -117,16 +157,18 @@ namespace UmanyiSMS
             try
             {
                 DataAccessHelper.Helper = new SqlServerHelper(null);
-                FileHelper.CheckFiles();
+
                 examSettings = new ExamSettingsModel();
                 
-                Info = new ApplicationModel(Lib.Properties.Settings.Default.Info);
+                
                 if (string.IsNullOrWhiteSpace(Lib.Properties.Settings.Default.Info.DBName))
                     Lib.Properties.Settings.Default.Info.DBName = "UmanyiSMS";
+                Info = new ApplicationModel(Lib.Properties.Settings.Default.Info);
                 if (Info.Theme=="Dark")
                 {
                     SetTheme("Dark");
                 }
+                SetAccent(info.AccentColor);
                 Lib.Properties.Settings.Default.PropertyChanged += (o, e) =>
                 {
                     Lib.Properties.Settings.Default.Save();
@@ -139,16 +181,12 @@ namespace UmanyiSMS
         internal static void SetAccent(Color accentColor)
         {
             Application.Current.Resources["AccentColor"] = accentColor;
-            Application.Current.Resources["Accent"] = new SolidColorBrush(accentColor);
-            App.Info.AccentColor = accentColor;
-            App.SaveInfo();
+            Application.Current.Resources["Accent"] = new SolidColorBrush(accentColor);            
         }
 
 
         internal static void SetTheme(string theme)
         {
-            App.Info.Theme = theme;
-            App.SaveInfo();
             Uri source;
             if (theme == "Light")
                 source = new Uri("pack://application:,,,/UmanyiSMS.Lib;component/Themes/Theme.Light.xaml");
@@ -169,9 +207,9 @@ namespace UmanyiSMS
         }
 
 
-        internal static void SaveInfo()
+        internal static void SaveInfo(ApplicationModel appInfo)
         {
-            Lib.Properties.Settings.Default.Info = new ApplicationPersistModel(Info);
+            Lib.Properties.Settings.Default.Info = new ApplicationPersistModel(appInfo);
             Lib.Properties.Settings.Default.Save();
         }
 
@@ -193,12 +231,16 @@ namespace UmanyiSMS
             }
 
             InitGlobalVar();
-            
+
+            Window lg;
+            if (RegistryHelper.IsFirstRun())
+                lg = new SetupWizard(false);
+            else lg = new Login();
+           
             try
             {
-                Login lg = new Login();
                 MainWindow = lg;
-                lg.ShowDialog();
+                lg.ShowDialog();                
             }
             catch { }
             
@@ -217,7 +259,8 @@ namespace UmanyiSMS
             defaultInfo.Name = "St Marys Girls";
             defaultInfo.PhoneNo = "+254 721 437 475";
             defaultInfo.SPhoto = null;
-
+            defaultInfo.Theme = "Light";
+            defaultInfo.AccentColor = Color.FromRgb(100, 118, 135);
             return new ApplicationPersistModel(defaultInfo);
         }
 

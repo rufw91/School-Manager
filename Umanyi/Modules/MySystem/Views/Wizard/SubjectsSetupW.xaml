@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UmanyiSMS.Modules.MySystem.Views" 
              mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="984"
-             Background="{DynamicResource WindowBackground}">
+             Background="{DynamicResource WindowBackground}"
+             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Institution Subjects Setup" 
 			VerticalAlignment="Top"/>
@@ -21,15 +22,11 @@
 
         <TextBlock HorizontalAlignment="Left" Margin="350,62,0,0" Style="{DynamicResource Title0}" Text="Subjects" VerticalAlignment="Top"/>
         <ListBox Margin="350,89,10,50" ItemsSource="{Binding SelectedSubjects, UpdateSourceTrigger=PropertyChanged}"
-                 DisplayMemberPath="NameOfSubject"
-                 SelectedItem="{Binding SelectedAddedSubject, Mode=TwoWay}"/>
-        <TextBlock HorizontalAlignment="Right" Margin="0,68,10,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding RemoveSubjectCommand}">Remove</Hyperlink>
-        </TextBlock>
+                 DisplayMemberPath="NameOfSubject"/>
         <Button Content="Next" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Bottom" Width="100"
-                Command="{Binding DataContext.Page6Command, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}"/>
+                Command="{Binding Page6Command}"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,0,120,15" Height="16" VerticalAlignment="Bottom">
-            <Hyperlink Command="{Binding DataContext.Page4Command, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">Back</Hyperlink>
+            <Hyperlink Command="{Binding Page4Command}">Back</Hyperlink>
         </TextBlock>
     </Grid>
 </UserControl>

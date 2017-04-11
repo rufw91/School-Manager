@@ -91,7 +91,8 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 return 37;
             if (MyWorkObject is ClassExamResultModel)
                 return 37;
-
+            if (MyWorkObject is AggregateResultModel)
+                return (MyWorkObject as AggregateResultModel).Entries.Count;
             return 0;
         }
         

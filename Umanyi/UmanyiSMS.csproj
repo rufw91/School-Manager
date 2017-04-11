@@ -570,7 +570,6 @@
     <Compile Include="Modules\MySystem\Views\QueryEditor.xaml.cs">
       <DependentUpon>QueryEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\CommonCommands.cs" />
     <Compile Include="Modules\Exams\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Exams\Models\AggregateResultEntryModel.cs" />
     <Compile Include="Modules\Exams\Models\AggregateResultModel.cs" />
@@ -1119,6 +1118,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Presentation\CommonCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

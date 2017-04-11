@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helper="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
                   
-        Title="Activation" Height="600" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
+        Title="Activation" Height="450" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -15,5 +15,7 @@
 
         </Grid>
         <ContentControl Grid.Row="1" Content="{Binding Path=Source}"/>
+        <TextBlock Grid.Row="1" HorizontalAlignment="Left" Margin="40,30,0,0" Text="Invalid activation data." Style="{DynamicResource ContentTextBold}" VerticalAlignment="Top"/>
+        <TextBlock Grid.Row="1" HorizontalAlignment="Left" Margin="40,70,0,0" Text="We cannot determine the activation status of your application" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
     </Grid>
 </helper:CustomWindow>

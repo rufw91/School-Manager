@@ -2,13 +2,13 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-
-  <Bundle Name="Umanyi School MS" Version="7.1.2" Manufacturer="Raphael Muindi" UpgradeCode="93752b90-f087-408a-9226-4f2f65ea067d"
+  
+  <Bundle Name="Umanyi School MS" Version="7.1.4" Manufacturer="Raphael Muindi" UpgradeCode="93752b90-f087-408a-9226-4f2f65ea067d"
 HelpTelephone="+254-721-626-250"
 HelpUrl="http://www.umanyi.co.ke/sms/help"
 AboutUrl="http://www.umanyi.co.ke/sms/" SplashScreenSourceFile="C:\Dev\SplashSCreen.bmp"
      DisableModify="yes" DisableRepair="yes">
-    <Variable Name="LogLocation" Value="C:\ProgramData\Umanyi\UmanyiSMS\Logs\InstallLog.Log"/>
+    <Variable Name="LogLocation" Value="C:\ProgramData\Raphael Muindi\UmanyiSMS\Logs\InstallLog.Log"/>
     <Log PathVariable="LogLocation"/>
     <bal:Condition Message="This software can only be installed on Windows 7 or newer OS.">
       <![CDATA[VersionNT >= v6.1]]>
@@ -25,11 +25,21 @@ AboutUrl="http://www.umanyi.co.ke/sms/" SplashScreenSourceFile="C:\Dev\SplashSCr
       <Payload SourceFile="$(var.SetupUI.TargetDir)WPFToolkit.dll" />
       <Payload SourceFile= "$(var.SetupUI.TargetDir)BootstrapperCore.config" />
     </BootstrapperApplicationRef>
-    
     <Chain>
+      
       <PackageGroupRef Id="NetFx451Redist"/>
-      <MsiPackage Permanent="yes" Compressed="no" ForcePerMachine="yes" SourceFile="C:\Users\Raphael\Downloads\Programs\SqlLocalDb.msi" InstallCondition="NOT " />
-      <MsiPackage Id="UmanyiSMS" SourceFile="$(var.SetupClient.TargetDir)Setup Client.msi" />
+      <MsiPackage Id="sqlncli2012x64" InstallCondition="NOT VersionNT64"  Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\Sql Feature Pack\x86\sqlncli2012.msi">
+         <MsiProperty Name="IACCEPTSQLNCLILICENSETERMS" Value="Yes"/>
+      </MsiPackage>
+      <MsiPackage Id="sqlncli2012x86" InstallCondition="VersionNT64" Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\Sql Feature Pack\x64\sqlncli2012.msi" >
+         <MsiProperty Name="IACCEPTSQLNCLILICENSETERMS" Value="Yes"/>
+      </MsiPackage>
+      <MsiPackage Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\Sql Feature Pack\x86\SQLSysClrTypes2012.msi" />
+        <MsiPackage Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\Sql Feature Pack\x86\SharedManagementObjects2012.msi" />
+      <MsiPackage Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\SqlLocalDb.msi" InstallCondition="NOT (LDB2012Exists OR LDB2014Exists OR LDB2016Exists) " >
+        <MsiProperty Name="IACCEPTSQLLOCALDBLICENSETERMS" Value="Yes"/>
+      </MsiPackage>
+      <MsiPackage Id="UmanyiSMS" ForcePerMachine="yes" SourceFile="$(var.SetupClient.TargetDir)SetupClient.msi" />
     </Chain>
   </Bundle>
 </Wix>

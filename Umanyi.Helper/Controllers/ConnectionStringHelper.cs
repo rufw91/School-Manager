@@ -17,7 +17,7 @@ namespace UmanyiSMS.Lib.Controllers
     {
         static string localDB = "Server=" + Properties.Settings.Default.Info.ServerName + ";MultipleActiveResultSets=true;Connection Timeout=300;Initial Catalog=UmanyiSMS;";
         static string saLocalDB = "Server=" + Properties.Settings.Default.Info.ServerName + ";MultipleActiveResultSets=true;Connection Timeout=300;AttachDBFilename=" +
-            Path.Combine(new FileInfo(Application.ResourceAssembly.Location).DirectoryName, "UmanyiSMS.mdf") + ";Initial Catalog=UmanyiSMS;";
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Raphael Muindi\UmanyiSMS\UmanyiSMS.mdf") + ";Initial Catalog=UmanyiSMS;Integrated Security=SSPI;";
         static string sqlServer = "Data Source=" +
                 Lib.Properties.Settings.Default.Info.ServerName +
                 ";Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;Initial Catalog=UmanyiSMS;";
@@ -27,9 +27,18 @@ namespace UmanyiSMS.Lib.Controllers
                 Lib.Properties.Settings.Default.Info.ServerName +
                 ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;Intergrated Security=SSPI;";
 
+        private static string GetConnStr()
+        {
+            if (RegistryHelper.IsFirstRun())
+                return Regex.Match(Properties.Settings.Default.Info.ServerName, "LocalDB", RegexOptions.IgnoreCase).Success ? saLocalDB : sqlServer;
+            else
+            return Regex.Match(Properties.Settings.Default.Info.ServerName, "LocalDB", RegexOptions.IgnoreCase).Success ? localDB : sqlServer;
+        }
+    
         public static string ConnectionString
         {
-            get { return Regex.Match(Properties.Settings.Default.Info.ServerName, "LocalDB", RegexOptions.IgnoreCase).Success ? localDB : sqlServer; }
+           
+            get { return GetConnStr(); }
         }
 
         public static string SAConnectionString
