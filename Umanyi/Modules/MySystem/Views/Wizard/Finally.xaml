@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UmanyiSMS.Modules.MySystem.Views" 
              mc:Ignorable="d" 
-             d:DesignHeight="480" d:DesignWidth="800" Background="{DynamicResource WindowBackground}">
+             d:DesignHeight="480" d:DesignWidth="800" Background="{DynamicResource WindowBackground}"
+             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="That is it for now. You are ready to use the app." VerticalAlignment="Top"
                    Style="{DynamicResource Title}"/>
@@ -15,7 +16,7 @@
         
         <Image HorizontalAlignment="Left" Height="40" Margin="627,84,0,0" VerticalAlignment="Top" Width="40" />
         <Button Content="Get Started" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Bottom" Width="100"
-                Command="{Binding DataContext.CloseCommand, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}"/>
+                Command="{Binding DataContext.StartCommand, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,0,120,15" Height="16" VerticalAlignment="Bottom">
             <Hyperlink Command="{Binding DataContext.Page7Command, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">Back</Hyperlink>
         </TextBlock>

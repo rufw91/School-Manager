@@ -5,14 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UmanyiSMS.Modules.MySystem.Views" 
              mc:Ignorable="d" 
-             d:DesignHeight="480" d:DesignWidth="800" Background="{DynamicResource WindowBackground}">
+             d:DesignHeight="480" d:DesignWidth="800" Background="{DynamicResource WindowBackground}"
+             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Institution Logo" VerticalAlignment="Top"
                    Style="{DynamicResource Title}"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,90,0,0" TextWrapping="Wrap" Text="Click 'Browse' and select the image used in all letterheads." VerticalAlignment="Top" Height="83" Width="175"/>
         <Border BorderBrush="{DynamicResource InputBorder}" BorderThickness="2" HorizontalAlignment="Left" Height="300" Margin="200,90,0,0" VerticalAlignment="Top" 
                 Width="400">
-            <Image/>
+            <Image Source="{Binding NewSchool.SPhoto, Converter={StaticResource StreamToImageSourceConverter}}"/>
         </Border>
         <Button Content="Browse" Margin="525,395,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75" 
                 Command="{Binding DataContext.BrowseCommand, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}"/>

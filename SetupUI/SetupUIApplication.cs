@@ -19,19 +19,18 @@ namespace SetupUI
     public class SetupUIApplication : BootstrapperApplication
     {
         public static Dispatcher Dispatcher { get; set; }
-        public ActionResult ActionResult { get; private set; }
         IntPtr ptr = IntPtr.Zero;
         SetupUIViewModel viewModel = null;
         BootstrapperApplicationData bundleData;
         protected override void Run()
-        {
+        {                        
             Thread.Sleep(new TimeSpan(0, 0, 2));
-            bundleData = new BootstrapperApplicationData();
+            bundleData = new BootstrapperApplicationData();    
             Dispatcher = Dispatcher.CurrentDispatcher;
             viewModel = new SetupUIViewModel(this);
             var view = new SetupUIView();
             view.DataContext = viewModel;
-            this.Engine.StringVariables["LogLocation"] = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Umanyi\UmanyiSMS\InstallLog.Log");
+            
             ptr = new WindowInteropHelper(view).Handle;            
             this.Engine.Detect();
             this.Engine.CloseSplashScreen();
@@ -56,37 +55,6 @@ namespace SetupUI
         }
 
         
-
-        private void OnApplyCompleted(object sender, ApplyCompleteEventArgs e)
-        {
-            this.ApplyComplete -= OnApplyCompleted;
-            
-            if (e.Status >= 0)
-            {
-                this.ActionResult = ActionResult.Success;
-            }
-            else
-            {
-                this.ActionResult = ActionResult.Failure;
-            }
-
-        }
-        
-        private void OnExecutedFilesInUse(object sender, ExecuteFilesInUseEventArgs e)
-        {
-            var message = new StringBuilder("The following files are in use. Please close the applications that are using them.n");
-            foreach (var file in e.Files)
-            {
-                message.AppendLine(" - " + file);
-            }
-
-            var userButton = MessageBox.Show(message.ToString(), "Files In Use", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-
-            if (userButton != MessageBoxResult.OK)
-                e.Result = Result.Cancel;
-
-        }
-
         public BootstrapperApplicationData BundleData
         {
             get { return bundleData; }

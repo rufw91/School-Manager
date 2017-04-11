@@ -37,7 +37,7 @@ namespace UmanyiSMS.Modules.MySystem.Views
 
             v.SettingsSetupWizardAction = () =>
             {
-                SetupWizard a = new SetupWizard();
+                SetupWizard a = new SetupWizard(true);
                 a.ShowDialog();
             };
             DataContext = v;            

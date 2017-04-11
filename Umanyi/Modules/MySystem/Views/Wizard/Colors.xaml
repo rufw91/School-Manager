@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UmanyiSMS.Modules.MySystem.Views" 
              mc:Ignorable="d" 
-             d:DesignHeight="480" d:DesignWidth="800" Background="{DynamicResource WindowBackground}">
+             d:DesignHeight="480" d:DesignWidth="800" Background="{DynamicResource WindowBackground}"
+             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Color is everything" VerticalAlignment="Top"
                    Style="{DynamicResource Title}"/>
         <ListBox Margin="30,125,30,100" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 ItemsSource="{Binding DataContext.AccentColors, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}"
-                 SelectedItem="{Binding DataContext.AccentColor, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">
+                 ItemsSource="{Binding AccentColors}"
+                 SelectedItem="{Binding AccentColor}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel IsItemsHost="True"/>
@@ -27,13 +28,13 @@
 
         <TextBlock HorizontalAlignment="Left" Margin="30,71,0,0" Text="You can choose the accent color which appears in your application." VerticalAlignment="Top"/>
         <Button Content="Next" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Bottom" Width="100"
-                Command="{Binding DataContext.Page8Command, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}"/>
+                Command="{Binding Page8Command}"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,0,120,15" Height="16" VerticalAlignment="Bottom">
-            <Hyperlink Command="{Binding DataContext.Page6Command, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">Back</Hyperlink>
+            <Hyperlink Command="{Binding Page6Command}">Back</Hyperlink>
         </TextBlock>
         <TextBlock Style="{DynamicResource Title0}" HorizontalAlignment="Left" Margin="30,0,0,71" Text="Theme" VerticalAlignment="Bottom"/>
         <ComboBox HorizontalAlignment="Left" Margin="30,0,0,36" Width="120" 
-                  SelectedItem="{Binding DataContext.SelectedTheme, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}"
-                  ItemsSource="{Binding DataContext.Themes, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}" Height="30" VerticalAlignment="Bottom"/>
+                  SelectedItem="{Binding SelectedTheme}"
+                  ItemsSource="{Binding Themes}" Height="30" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>

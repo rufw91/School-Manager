@@ -51,7 +51,7 @@ namespace UmanyiSMS.Lib.Models
             DBName = "UmanyiSMS";
             Culture = new CultureInfo("en-GB").LCID;
             SPhoto = null;
-            Theme = "Dark";
+            Theme = "Light";
             AccentColor = new Color(); 
             Logo = GetImage();
             Motto = "";
@@ -351,6 +351,7 @@ namespace UmanyiSMS.Lib.Models
             SPhoto = info.SPhoto;
             Theme = info.Theme;
             Logo = GetImage();
+            Motto = info.Motto;
             AccentColor = info.AccentColor;
         }
     }

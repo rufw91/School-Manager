@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace SetupUI
 {
-    public class SetupUIViewModel: NotifiesPropertyChanged
+    public class SetupUIViewModel : NotifiesPropertyChanged
     {
         public enum InstallState
         {
@@ -35,6 +35,11 @@ namespace SetupUI
         {
             if (app != null)
             {
+                app.DetectRelatedMsiPackage += (o, e) =>
+                  {
+                      if (true)
+                      { }
+                  };
                 app.DetectRelatedBundle += (o, e) =>
                   {
                       if (true)
@@ -42,7 +47,6 @@ namespace SetupUI
                   };
                 app.DetectComplete += (o, e) =>
                   {
-                      
                       SetupUIApplication.Dispatcher.Invoke((Action)delegate { CommandManager.InvalidateRequerySuggested(); });
                   };
                 app.DetectPackageComplete += (o, e) =>
@@ -90,15 +94,14 @@ namespace SetupUI
                   };
                 app.ExecuteFilesInUse += (o, e) =>
                 {
-                    var message = new StringBuilder("The following files are in use. Please close the applications that are using them.n");
+                    var message = new StringBuilder("The following files are in use. Please close the applications that are using them.");
                     foreach (var file in e.Files)
                     {
                         message.AppendLine(" - " + file);
                     }
 
                     var userButton = MessageBox.Show(message.ToString(), "Files In Use", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-
-                    if (userButton != MessageBoxResult.OK)
+                    
                         e.Result = Result.Cancel;
                 };
                 app.ExecutePackageBegin += (o, e) =>
@@ -158,16 +161,17 @@ namespace SetupUI
                 State = InstallState.Applying;
                 if (OpenPage2Action != null)
                     OpenPage2Action.Invoke();
-                app.PlanAction(LaunchAction.Install);
-                }, p => this.State == InstallState.NotPresent);
+                app.PlanAction(app.Command.Action);
+            }, p => app.Command.Action == LaunchAction.Install);
             this.UninstallCommand = new RelayCommand(p => {
                 State = InstallState.Applying;
                 uninstall = true;
                 if (OpenPage2Action != null)
                     OpenPage2Action.Invoke();
-                app.PlanAction(LaunchAction.Uninstall);
-                },
-            o => this.State == InstallState.Present);
+                app.PlanAction(app.Command.Action);
+            },
+            o => app.Command.Action == LaunchAction.Uninstall);
+
             this.CancelCommand = new RelayCommand(p => {
                 if (OpenPage6Action != null)
                     OpenPage6Action.Invoke();
@@ -193,18 +197,24 @@ namespace SetupUI
                 {
                     if (LaunchApp)
                     {
-                        RunAsAdmin(GetExecIntallPath(),"");
+                        RunAsAdmin(GetExecIntallPath(), "");
                     }
                     SetupUIApplication.Dispatcher.InvokeShutdown();
                 }
             },
             o => true);
+            this.InstallationLogCommand = new RelayCommand(p => {
+                try
+                {
+                    Process.Start(app.Engine.StringVariables["LogLocation"]);
+                }
+                catch (Exception) { }
+            },
+            o => true);
         }
         private string GetExecIntallPath()
         {
-            if (8==IntPtr.Size||!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432")))            
-                return Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), @"Umanyi\Umanyi School MS\UmanyiSMS.exe");
-            else return Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), @"Umanyi\Umanyi School MS\UmanyiSMS.exe");
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"Raphael Muindi\Umanyi School MS\UmanyiSMS.exe");
         }
         private void RunAsAdmin(string fileName, string args)
         {
@@ -214,7 +224,7 @@ namespace SetupUI
                 FileName = fileName,
                 Arguments = args,
             };
-            
+
             try
             {
                 Process.Start(processInfo);
@@ -310,7 +320,9 @@ namespace SetupUI
             get;
             set;
         }
-        
+        public ICommand InstallationLogCommand
+        { get; private set; }
+
         public ICommand InstallCommand
         {
             get;

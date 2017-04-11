@@ -20,15 +20,9 @@ namespace WpfApplication1
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             SetupUI.SetupUIView v = new SetupUI.SetupUIView();
-            //v.DataContext = new SetupUIViewModel(null);
-            // v.ShowDialog();
+            v.DataContext = new SetupUIViewModel(null);
+            v.ShowDialog();
 
-            
-            Window t = new Window();
-            t.Show();
-            TaskbarManager.Instance.SetProgressValue(78, 100);
-            TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal);
-            
             
 
         }

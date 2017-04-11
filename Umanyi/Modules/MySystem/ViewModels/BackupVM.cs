@@ -1,4 +1,7 @@
-﻿using System.Security.Permissions;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.Security.Permissions;
+using System.Security.Principal;
 using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
@@ -32,17 +35,51 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             }, o => !IsBusy);
             BackupCommand = new RelayCommand(async o =>
             {
+                bool succ = false;
                 IsBusy = true;
-                bool succ = await (DataAccessHelper.Helper as SqlServerHelper).CreateBackupAsync(pathToFile);
+                if (IsAdmin())
+                    succ = await (DataAccessHelper.Helper as SqlServerHelper).CreateBackupAsync(pathToFile);
+                else
+                {
+                    RunAsAdmin(Application.ResourceAssembly.Location, "/b " + pathToFile);
+                    succ = true;
+                }
+
                 if (succ)
                     MessageBox.Show("Successfully completed operation.");
                 else
-                    MessageBox.Show("Operation failed. Ensure you have sufficient permission to access the current folder."+
-                        "\r\nYou can also try saving to a different location e.g. a removable disk.", "Error", MessageBoxButton.OK, 
+                    MessageBox.Show("Operation failed. Ensure you have sufficient permission to access the current folder." +
+                        "\r\nYou can also try saving to a different location e.g. a removable disk.", "Error", MessageBoxButton.OK,
                         MessageBoxImage.Error);
                 Reset();
                 IsBusy = false;
             }, o => !IsBusy && !string.IsNullOrEmpty(pathToFile));
+        }
+
+        public bool IsAdmin()
+        {
+            var pricipal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+
+            return pricipal != null && pricipal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        private void RunAsAdmin(string fileName, string args)
+        {
+            var processInfo = new ProcessStartInfo
+            {
+                Verb = "runas",
+                FileName = fileName,
+                Arguments = args,
+            };
+
+            try
+            {
+                Process.Start(processInfo).WaitForExit();
+            }
+            catch (Win32Exception)
+            {
+                // Do nothing...
+            }
         }
 
         public string PathToFile

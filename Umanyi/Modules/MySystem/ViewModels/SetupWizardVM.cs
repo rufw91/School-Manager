@@ -9,12 +9,16 @@ using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Institution.Models;
 using System;
 using System.Collections.Generic;
+using UmanyiSMS.Lib.Controllers;
+using System.Threading.Tasks;
 
 namespace UmanyiSMS.Modules.MySystem.ViewModels
 {
     public class SetupWizardVM : ViewModelBase
-    {
-        private ViewModelBase source;
+    { 
+        ClassesSetupModel classesSetup;
+        ClassesSetupEntryModel newClass;
+        ViewModelBase source;
         ApplicationModel newSchool;
         ExamSettingsModel examSettings;
         private Color accentColor;
@@ -30,7 +34,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
         public override void Reset()
         {
         }
-
+        
         protected override void CreateCommands()
         {
             Page1Command = new RelayCommand(o =>
@@ -48,12 +52,14 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             Page3Command = new RelayCommand(o =>
             {
                 IsBusy = true;
+                App.SaveInfo(newSchool);
                 Source = new LogoVM();
                 IsBusy = false;
             }, o => !IsBusy);
             Page4Command = new RelayCommand(o =>
             {
                 IsBusy = true;
+                App.SaveInfo(newSchool);
                 Source = new ClassesSetupWVM();
                 IsBusy = false;
             }, o => !IsBusy);
@@ -69,22 +75,58 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
                 Source = new GradesSetupWVM();
                 IsBusy = false;
             }, o => !IsBusy);
-            Page7Command = new RelayCommand(o =>
+            Page7Command = new RelayCommand(async o =>
             {
                 IsBusy = true;
+                bool succ = await Institution.Controller.DataController.SaveNewExamSettingsAsync(examSettings);
+                App.AppExamSettings.CopyFrom(examSettings);
                 Source = new ColorsVM();
                 IsBusy = false;
-            }, o => !IsBusy);
+            }, o => !IsBusy&&CanSaveExamSettings());
             Page8Command = new RelayCommand(o =>
             {
                 IsBusy = true;
+                App.SaveInfo(newSchool);
                 Source = new FinallyVM();
+                IsBusy = false;
+            }, o => !IsBusy);
+            BrowseCommand = new RelayCommand(o =>
+            {
+                IsBusy = true;
+                newSchool.SPhoto = FileHelper.BrowseImageAsByteArray();
+                IsBusy = false;
+            }, o => !IsBusy);
+            AddNewClassCommand = new RelayCommand(async o =>
+            {
+                classesSetup.Entries.Add(newClass);
+                bool succ = await Institution.Controller.DataController.SaveNewClassSetupAsync(classesSetup);
+                if (succ)
+                    await RefreshClassEntries();
+                else
+                    classesSetup.Entries.Remove(newClass);
+
+                NewClass = new ClassesSetupEntryModel();
+            }, o => CanAddClass());
+            AddSubjectCommand = new RelayCommand(async o =>
+            {
+                subjects.Add(SelectedSubject);
+                bool succ = await Institution.Controller.DataController.SaveNewInstitutionSubjectSetup(subjects);
+                subjects = await Institution.Controller.DataController.GetInstitutionSubjectsAsync();
+                NotifyPropertyChanged("SelectedSubjects");
+            }, o => CanAddSubject());
+            StartCommand = new RelayCommand(o =>
+            {
+                IsBusy = true;
+                RegistryHelper.SetFirstRunComplete();
+                if (CloseAction != null)
+                    CloseAction.Invoke();
                 IsBusy = false;
             }, o => !IsBusy);
         }
 
         protected async override void InitVars()
         {
+            UserClosed = true;
             Source = new WelcomeVM();
             newSchool = new ApplicationModel();
             examSettings = new ExamSettingsModel();
@@ -93,17 +135,71 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             SelectedTheme = newSchool.Theme;
             examSettings.CopyFrom(App.AppExamSettings);
             classes = await Institution.Controller.DataController.GetAllClassesAsync();
+            classesSetup = new ClassesSetupModel();
+            newClass = new ClassesSetupEntryModel();
+            await EnableDb();
+            foreach (ClassModel c in classes)
+                classesSetup.Entries.Add(new ClassesSetupEntryModel(c));
             subjects = await Institution.Controller.DataController.GetInstitutionSubjectsAsync();
             PropertyChanged += (o, e) =>
               {
                   if (e.PropertyName == "AccentColor")
-                  { App.SetAccent(accentColor); }
+                  {
+                      newSchool.AccentColor = accentColor;
+                      App.SetAccent(accentColor);
+                  }
 
                   if (e.PropertyName == "SelectedTheme")
-                  { App.SetTheme(selectedTheme); }
-                     
-                  
+                  {
+                      newSchool.Theme = selectedTheme;
+                      App.SetTheme(selectedTheme);
+                  }
               };
+        }
+
+        private Task<bool> EnableDb()
+        {
+            return Task.Factory.StartNew(() =>
+           {
+               string cmdStr = "USE [master]\r\nALTER DATABASE[UmanyiSMS] SET READ_WRITE WITH NO_WAIT\r\nALTER LOGIN [sa] WITH PASSWORD='000002'\r\nALTER LOGIN[sa] ENABLE";
+               return DataAccessHelper.Helper.ExecuteNonQuery(cmdStr);
+           });
+        }
+
+        private bool CanSaveExamSettings()
+        {
+            bool succ = true;
+            for (int i = 0; i <= 11; i++)
+            {
+                if (i == 0)
+                    succ = examSettings.GradeRanges[i].Value == 100;
+                if (i < 11)
+                    succ = succ && (examSettings.GradeRanges[i].Key == (examSettings.GradeRanges[i + 1].Value + 1));
+                else
+                    succ = succ && examSettings.GradeRanges[i].Key == 0;
+            }
+            return succ;
+        }
+        
+
+        private bool CanAddSubject()
+        {
+            return SelectedSubject != null && !subjects.Any(o => o.NameOfSubject == SelectedSubject.NameOfSubject);
+        }
+
+        private async Task RefreshClassEntries()
+        {
+            classesSetup.Entries.Clear();
+            ObservableCollection<ClassModel> allClasses = await Institution.Controller.DataController.GetAllClassesAsync();
+            foreach (ClassModel c in allClasses)
+                classesSetup.Entries.Add(new ClassesSetupEntryModel(c));
+        }
+
+        private bool CanAddClass()
+        {
+            int testInt;
+            return !string.IsNullOrWhiteSpace(newClass.NameOfClass) && (newClass.NameOfClass.Length >= 6)
+                && (newClass.NameOfClass.Substring(0, 5) == "FORM ") && int.TryParse(newClass.NameOfClass.Substring(5, 1), out testInt);
         }
 
         private Color[] accentColors = new Color[]
@@ -131,6 +227,42 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             Color.FromRgb(135, 121, 78)
         };
         private string selectedTheme;
+        public Action CloseAction
+        { get; set; }
+        public ObservableCollection<SubjectModel> AllSubjects
+        {
+            get { return SubjectModel.AllSubjects; }
+        }
+
+        public ObservableCollection<SubjectModel> SelectedSubjects
+        {
+            get { return subjects; }
+        }
+
+        public SubjectModel SelectedSubject
+        {
+            get;
+            set;
+        }
+
+        public ClassesSetupModel ClassesSetup
+        {
+            get { return this.classesSetup; }
+        }
+
+        public ClassesSetupEntryModel NewClass
+        {
+            get { return this.newClass; }
+
+            set
+            {
+                if (value != newClass)
+                {
+                    newClass = value;
+                    NotifyPropertyChanged("NewClass");
+                }
+            }
+        }
 
         public Color[] AccentColors
         {
@@ -147,6 +279,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
                 return this.themes;
             }
         }
+
         public string SelectedTheme
         {
             get
@@ -248,7 +381,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
                 }
             }
         }
-
+                
         public ICommand Page1Command
         { get; private set; }        
         public ICommand Page2Command
@@ -265,6 +398,17 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
         { get; private set; }
         public ICommand Page8Command
         { get; private set; }
-
+        public ICommand BrowseCommand
+        { get; private set; }
+        public ICommand AddNewClassCommand
+        { get; private set; }
+        public ICommand AddSubjectCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand StartCommand
+        { get; private set; }
+        public bool UserClosed { get; internal set; }
     }
 }

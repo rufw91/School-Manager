@@ -7,42 +7,37 @@ namespace UmanyiSMS.Lib.Controllers
 {
     public class RegistryHelper
     {
-        const string guid = "{DBA3C969-6B84-495D-9D5B-03DD8D4FFC5C}";
+        const string guid = "UmanyiSMS";
         static RegistryHelper()
         {
             try
             {
-                Registry.CurrentUser.OpenSubKey("SOFTWARE", true).CreateSubKey("Umanyi").
-                CreateSubKey("Umanyi Digital Technologies").CreateSubKey(guid);
+                Registry.CurrentUser.OpenSubKey("SOFTWARE", true).CreateSubKey("Raphael Muindi").
+                CreateSubKey(guid);
 
             }
             catch { }
 
         }
-        internal static object GetKeyValue(string key, string name)
+        internal static object GetKeyValue(string name)
         {
             object val = null;
             try
             {
-                val = string.IsNullOrEmpty(key) ? Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Umanyi").OpenSubKey("Umanyi Digital Technologies")
-                    .OpenSubKey(guid).GetValue(name) : Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Umanyi").OpenSubKey("Umanyi Digital Technologies")
-                    .OpenSubKey(guid).OpenSubKey(key).GetValue(name);
+                val = Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Raphael Muindi")
+                    .OpenSubKey(guid).GetValue(name, null);
             }
             catch { }
             return val;
         }
 
-        internal static bool SetKeyValue(string key, string name, object value)
+        internal static bool SetKeyValue(string name, object value)
         {
 
             try
             {
-                if (string.IsNullOrWhiteSpace(key))
-                    Registry.CurrentUser.OpenSubKey("SOFTWARE", true).OpenSubKey("Umanyi", true).OpenSubKey("Umanyi Digital Technologies", true)
+                    Registry.CurrentUser.OpenSubKey("SOFTWARE", true).OpenSubKey("Raphael Muindi", true)
                     .OpenSubKey(guid, true).SetValue(name, value);
-                else
-                    Registry.CurrentUser.OpenSubKey("SOFTWARE", true).OpenSubKey("Umanyi", true).OpenSubKey("Umanyi Digital Technologies", true)
-                    .OpenSubKey(guid, true).OpenSubKey(key, true).SetValue(name, value);
                 return true;
             }
             catch { }
@@ -75,7 +70,7 @@ namespace UmanyiSMS.Lib.Controllers
             //HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\UMANYI\MSSQLServer\CurrentVersion
         }
 
-        public static Version GetSQLVersionInstalled()
+        private static Version GetSQLVersionInstalled()
         {
             Version tempCls = new Version();
             try
@@ -90,6 +85,25 @@ namespace UmanyiSMS.Lib.Controllers
             return tempCls;
         }
 
+        public static bool IsFirstRun()
+        {
+            var obj = GetKeyValue("FirstRun");
+            if (obj != null)
+            {
+                if (obj.ToString() == "0")
+                    return false;
+                else if (obj.ToString() == "1")
+                    return true;
+                else throw new Exception("Invalid Value");
+            }
+            else
+                return false;
+        }
+
+        public static bool SetFirstRunComplete()
+        {
+            return SetKeyValue("FirstRun", 0);
+        }
     }
 }
 

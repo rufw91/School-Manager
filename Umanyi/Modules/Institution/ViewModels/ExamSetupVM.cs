@@ -31,7 +31,22 @@ namespace UmanyiSMS.Modules.Institution.ViewModels
                 App.AppExamSettings.CopyFrom(settings);
                 MessageBox.Show(succ ? "Successfully saved details" : "Could not save details", succ ? "Success" : "Error", MessageBoxButton.OK,
                      succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
-            }, o => true);
+            }, o => CanSaveExamSettings());
+        }
+
+        private bool CanSaveExamSettings()
+        {
+            bool succ = true;
+            for (int i = 0; i <= 11; i++)
+            {
+                if (i == 0)
+                    succ = settings.GradeRanges[i].Value == 100;
+                if (i < 11)
+                    succ = succ && (settings.GradeRanges[i].Key == (settings.GradeRanges[i + 1].Value + 1));
+                else
+                    succ = succ && settings.GradeRanges[i].Key == 0;
+            }
+            return succ;
         }
 
         public ExamSettingsModel Settings

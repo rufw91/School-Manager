@@ -74,6 +74,11 @@ namespace UmanyiSMS.Modules.Institution.ViewModels
             return SelectedSubject != null && !selectedSubjects.Any(o => o.NameOfSubject == SelectedSubject.NameOfSubject);
         }
 
+        public ObservableCollection<SubjectModel> AllSubjects
+        {
+            get { return SubjectModel.AllSubjects; }
+        }
+
         public ObservableCollection<SubjectModel> SelectedSubjects
         {
             get { return selectedSubjects; }
@@ -91,10 +96,7 @@ namespace UmanyiSMS.Modules.Institution.ViewModels
             set;
         }
 
-        public ObservableCollection<SubjectModel> AllSubjects
-        {
-            get { return SubjectModel.AllSubjects; }
-        }
+        
 
         public ICommand AddSubjectCommand
         {

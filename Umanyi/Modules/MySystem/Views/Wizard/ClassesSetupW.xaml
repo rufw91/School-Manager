@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
             xmlns:local="clr-namespace:UmanyiSMS.Modules.MySystem.Views"
              mc:Ignorable="d" Background="{DynamicResource WindowBackground}"
-      d:DesignHeight="700" d:DesignWidth="860">
+      d:DesignHeight="700" d:DesignWidth="860"
+             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">
 
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}"  Text="Classes Setup" VerticalAlignment="Top"/>
@@ -24,9 +25,9 @@
 
         <TextBlock HorizontalAlignment="Left" Margin="40,211,0,0" Foreground="Red" VerticalAlignment="Top" Text="IMPORTANT: Class Names should be in format 'FORM No XXX' eg 'FORM 1 EAST" TextWrapping="Wrap" Width="224"/>
         <Button Content="Next" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Bottom" Width="100"
-                Command="{Binding DataContext.Page5Command, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}"/>
+                Command="{Binding Page5Command}"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,0,120,15" Height="16" VerticalAlignment="Bottom">
-            <Hyperlink Command="{Binding DataContext.Page3Command, RelativeSource={RelativeSource AncestorType=local:SetupWizard}}">Back</Hyperlink>
+            <Hyperlink Command="{Binding Page3Command}">Back</Hyperlink>
         </TextBlock>
 
     </Grid>

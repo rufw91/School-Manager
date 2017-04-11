@@ -25,20 +25,7 @@ namespace UmanyiSMS.Lib.Controllers
             }
             else return null;
         }
-
-        public static bool CheckFiles()
-        {
-            try
-            {
-                if (!Directory.Exists(Constants.LogDirectoryPath))
-                    Directory.CreateDirectory(Constants.LogDirectoryPath);
-                if (!Directory.Exists(Constants.BackupDirectoryPath))
-                    Directory.CreateDirectory(Constants.BackupDirectoryPath);
-                return true;
-            }
-            catch { return false; }
-        }
-
+        
         public static bool Decompress(string fileToDecompress, string destNewFile)
         {
 
@@ -165,7 +152,12 @@ namespace UmanyiSMS.Lib.Controllers
             return null;
 
         }
-        
+
+        public static string GetDefaultBakPath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UmanyiSMSBAK" + DateTime.Now.ToString("dd.MM.yyyy.HH.mm.ss") + ".bak");
+        }
+
         public async static Task<string> BrowseBAKFileAsString()
         {
             try

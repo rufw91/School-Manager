@@ -9,7 +9,7 @@ namespace UmanyiSMS.Lib
             get
             {
                 return Environment.GetFolderPath(
-                  Environment.SpecialFolder.CommonApplicationData) + "\\Umanyi MS\\Logs\\";
+                  Environment.SpecialFolder.CommonApplicationData) + "\\Raphael Muindi\\UmanyiSMS\\Logs\\";
             }
         }
         public static string BackupDirectoryPath
@@ -17,7 +17,7 @@ namespace UmanyiSMS.Lib
             get
             {
                 return Environment.GetFolderPath(
-                  Environment.SpecialFolder.CommonApplicationData) + "\\Umanyi MS\\Backups\\";
+                  Environment.SpecialFolder.CommonApplicationData) + "\\Raphael Muindi\\UmanyiSMS\\Backups\\";
             }
         }
     }
