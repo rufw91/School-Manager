@@ -12,7 +12,7 @@ namespace UmanyiSMS.Lib.Controllers
         internal abstract bool TestCredential(SqlCredential newCredentials);
         internal abstract void SetCredential(SqlCredential newCredentials);
         public abstract dynamic CreateConnection();
-        internal abstract dynamic CreateConnection(string connectionString);
+        internal abstract dynamic CreateConnection(string connectionString,SqlCredential credential);
         public abstract string ExecuteScalar(string commandText);
         public abstract string ExecuteScalar(string commandText, IEnumerable<DbParameter> paramColl);
         public abstract object ExecuteObjectScalar(string commandText);

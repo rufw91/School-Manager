@@ -20,8 +20,8 @@
             <Image Width="100" Height="70" HorizontalAlignment="Left" Margin="10,0,0,0" Stretch="UniformToFill" Source="{Binding Info.Logo, Source={x:Static Application.Current}}"/>
             <TextBlock  Text="{Binding Info.Name, Converter={StaticResource ToUpperConverter}, Source={x:Static Application.Current}}" 
                TextWrapping="NoWrap" VerticalAlignment="Top" FontSize="32" Foreground="{DynamicResource Accent}" FontFamily="Segoe UI Semibold" 
-                        Margin="100,10,0,0"/>
-            <TextBlock HorizontalAlignment="Left" Margin="100,45,0,0" FontStyle="Italic" Text="{Binding Info.Motto, Converter={StaticResource ToUpperConverter}, Source={x:Static Application.Current}}"
+                        Margin="120,10,0,0"/>
+            <TextBlock HorizontalAlignment="Left" Margin="120,45,0,0" FontStyle="Italic" Text="{Binding Info.Motto, Converter={StaticResource ToUpperConverter}, Source={x:Static Application.Current}}"
                        VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="14"/>
 
         </Grid>

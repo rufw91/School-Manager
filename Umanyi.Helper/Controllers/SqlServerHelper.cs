@@ -11,11 +11,30 @@ using System.Threading.Tasks;
 using System.Windows;
 namespace UmanyiSMS.Lib.Controllers
 {
-    public class SqlServerHelper: DBHelper
+    public sealed class SqlServerHelper: DBHelper
     {
-        public SqlServerHelper(SqlCredential credential)
+        static SqlServerHelper instance;
+        private SqlServerHelper()
         {
-            Credentials = credential;
+            _credentials = null;
+            _useSSPI = false; 
+        }
+        private SqlServerHelper(SqlCredential credentials,bool useSSPI)
+        {
+            _credentials = credentials;
+            _useSSPI = useSSPI;
+        }
+
+        public static SqlServerHelper CreateInstance(SqlCredential credentials, bool useSSPI)
+        {
+            if (instance == null)
+                instance = new SqlServerHelper(credentials, useSSPI);
+            else
+            {
+                instance.SetCredential(credentials);
+                instance.SetUseSSPI(useSSPI);
+            }
+            return instance;
         }
         internal override bool TestCredential(SqlCredential newCredentials)
         {
@@ -47,36 +66,26 @@ namespace UmanyiSMS.Lib.Controllers
 
         internal override void SetCredential(SqlCredential newCredentials)
         {
-            Credentials = newCredentials;
+            _credentials = newCredentials;
+            if (_credentials!=null)
+            _useSSPI = false;
         }
 
-        SqlCredential Credentials;
-
-        internal dynamic CreateMasterConnection()
+        internal void SetUseSSPI(bool useSSPI)
         {
-            SqlConnection conn;
-            try
-            {
-                conn = new SqlConnection(ConnectionStringHelper.MasterConnectionString);
-                conn.Open();
-                if (conn.State == ConnectionState.Connecting)
-                    while (conn.State != ConnectionState.Open)
-                    { }
-            }
-            catch (Exception e)
-            {
-                Log.E(e.ToString(), null);
-                throw e;
-            }
-            return conn;
+            _useSSPI = useSSPI;
         }
 
+        SqlCredential _credentials;
+
+        bool _useSSPI;
+        
         public override dynamic CreateConnection()
         {
             SqlConnection conn;
             try
             {
-                conn = CreateConnection(ConnectionStringHelper.ConnectionString);
+                conn=CreateConnection(_useSSPI?ConnectionStringHelper.SSPIConnectionString:ConnectionStringHelper.ConnectionString, _useSSPI?null: _credentials);
             }
             catch (Exception e)
             {
@@ -86,13 +95,14 @@ namespace UmanyiSMS.Lib.Controllers
             return conn;
         }
 
-        internal override dynamic CreateConnection(string connectionString)
+        internal override dynamic CreateConnection(string connectionString,SqlCredential credential)
         {
             SqlConnection conn;
             try
             {
                 conn = new SqlConnection(connectionString);
-                conn.Credential = Credentials;
+                if (_credentials!=null)
+                conn.Credential = _credentials;
                 conn.Open();
                 if (conn.State == ConnectionState.Connecting)
                     while (conn.State != ConnectionState.Open)
@@ -328,7 +338,7 @@ namespace UmanyiSMS.Lib.Controllers
                         dta.Dispose();
                     }
 #else
-                    using (SqlConnection DBConnection = new SqlConnection(connectionStr, Credentials))
+                    using (SqlConnection DBConnection = new SqlConnection(connectionStr, _credentials))
                     {
                         DBConnection.Open();
                         SqlCommand dta = new SqlCommand("USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "", DBConnection);
@@ -411,7 +421,7 @@ namespace UmanyiSMS.Lib.Controllers
 
     "DROP DATABASE " + dbName;
                     SqlConnection.ClearAllPools();
-                    using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.MasterConnectionString))
+                    using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.MasterConnectionString,null))
                     {
                         SqlCommand dta = new SqlCommand(deleteStr, DBConnection);
                         dta.ExecuteNonQuery();
@@ -428,7 +438,7 @@ namespace UmanyiSMS.Lib.Controllers
         {
             return Task.Factory.StartNew<bool>(() =>
             {
-                SqlConnection conn = CreateMasterConnection();
+                SqlConnection conn = CreateConnection(ConnectionStringHelper.MasterConnectionString,null);
                 try
                 {
                     using (conn)
@@ -595,7 +605,7 @@ namespace UmanyiSMS.Lib.Controllers
                 try
                 {
                     string commandText = "ALTER DATABASE UmanyiSMS SET OFFLINE";
-                    using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.SSPIConnectionString))
+                    using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.SSPIConnectionString,null))
                     {
                         SqlCommand dta = new SqlCommand(commandText, DBConnection);
                         dta.ExecuteNonQuery();

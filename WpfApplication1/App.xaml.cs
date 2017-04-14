@@ -19,8 +19,7 @@ namespace WpfApplication1
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            SetupUI.SetupUIView v = new SetupUI.SetupUIView();
-            v.DataContext = new SetupUIViewModel(null);
+            Window1 v = new Window1();
             v.ShowDialog();
 
             
