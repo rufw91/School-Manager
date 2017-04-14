@@ -25,7 +25,7 @@ namespace UmanyiSMS.Lib.Controllers
            + ";Initial Catalog=master;";
         static readonly string masterConnString = "Data Source=" +
                 Lib.Properties.Settings.Default.Info.ServerName +
-                ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;Intergrated Security=SSPI;";
+                ";Database=Master;Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;Integrated Security=SSPI;";
 
         private static string GetConnStr()
         {

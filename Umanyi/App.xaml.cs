@@ -85,7 +85,7 @@ namespace UmanyiSMS
                     path = FileHelper.GetDefaultBakPath();
                 else
                     path = captures[2].Value;
-                var t = new SqlServerHelper(null).CreateBackupAsync(path);
+                var t = SqlServerHelper.CreateInstance(null,true).CreateBackupAsync(path);
 
                 t.Wait();
             }
@@ -156,7 +156,7 @@ namespace UmanyiSMS
         {
             try
             {
-                DataAccessHelper.Helper = new SqlServerHelper(null);
+                DataAccessHelper.Helper = SqlServerHelper.CreateInstance(null,true);
 
                 examSettings = new ExamSettingsModel();
                 
@@ -233,7 +233,7 @@ namespace UmanyiSMS
             InitGlobalVar();
 
             Window lg;
-            if (RegistryHelper.IsFirstRun())
+            if (RegistryHelper.IsFirstRun()) 
                 lg = new SetupWizard(false);
             else lg = new Login();
            
