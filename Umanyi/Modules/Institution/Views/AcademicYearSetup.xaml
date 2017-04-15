@@ -15,7 +15,7 @@
                  SelectedValue="{Binding NewYear.Year, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,140,0,0" Text="No. of Terms" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="102,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                 Text="{Binding NewYear.NoOfTerms, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxLength="2" IsEnabled="False" Background="WhiteSmoke"/>
+                 Text="{Binding NewYear.NoOfTerms, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxLength="2" IsEnabled="False"/>
         <TextBlock HorizontalAlignment="Left" Margin="400,80,0,0" Style="{DynamicResource SmallTitle}" Text="Terms" VerticalAlignment="Top"/>
         <DataGrid AutoGenerateColumns="False" Margin="400,110,10,50" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False"
                  ItemsSource="{Binding NewYear.AllTerms}">

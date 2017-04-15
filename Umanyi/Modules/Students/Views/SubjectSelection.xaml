@@ -23,7 +23,7 @@
 
         <TextBox HorizontalAlignment="Left" Height="23" Margin="114,130,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding SelectedStudent.NameOfStudent}"
-                 IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"/>
+                 IsReadOnly="True" IsReadOnlyCaretVisible="True" />
         <TextBlock HorizontalAlignment="Left" Margin="350,80,0,0" Text="Selected Subjects" Style="{DynamicResource Title0}" VerticalAlignment="Top"/>
         <ListBox Margin="350,120,20,45" 
                  ItemTemplate="{StaticResource SubjectSelectionModelTemplate}"

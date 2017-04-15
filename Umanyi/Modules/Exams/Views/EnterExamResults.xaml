@@ -17,7 +17,7 @@
                          Text="{Binding NewResult.StudentID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=10}"/>
         <TextBlock  HorizontalAlignment="Left" Margin="79,125,0,0" Text="Name" VerticalAlignment="Top" />
         <TextBox HorizontalAlignment="Left" Margin="120,125,0,0" VerticalAlignment="Top" Width="200" 
-                         Text="{Binding NewResult.NameOfStudent}" Background="WhiteSmoke" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
+                         Text="{Binding NewResult.NameOfStudent}" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
         <TextBlock  HorizontalAlignment="Left" Margin="87,170,0,0" Text="Term" VerticalAlignment="Top" />
         <ComboBox HorizontalAlignment="Left" Margin="120,170,0,0" VerticalAlignment="Top" Width="200" 
         	

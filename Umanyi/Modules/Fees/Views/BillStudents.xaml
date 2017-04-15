@@ -23,7 +23,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="51,165,0,0" Text="Name" VerticalAlignment="Top"/>
 
         <TextBox HorizontalAlignment="Left" Height="23" Margin="115,165,0,0" VerticalAlignment="Top" Width="250" IsReadOnly="True" 
-                 Background="WhiteSmoke" IsReadOnlyCaretVisible="True"
+                 IsReadOnlyCaretVisible="True"
                  Text="{Binding SelectedStudent.NameOfStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
             ValidatesOnDataErrors=True,ValidatesOnNotifyDataErrors=True}"
                  IsEnabled="{Binding IsInStudentMode}"/>

@@ -15,7 +15,7 @@
             ValidatesOnDataErrors=True,ValidatesOnNotifyDataErrors=True}"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,135,0,0" Text="Name" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="114,135,0,0" VerticalAlignment="Top" Width="250"
-                 IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"
+                 IsReadOnly="True" IsReadOnlyCaretVisible="True" 
                  Text="{Binding SelectedStudent.NameOfStudent}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,180,0,0" Text="Date Of Birth" VerticalAlignment="Top"/>

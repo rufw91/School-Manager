@@ -6,12 +6,7 @@
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="984"
              Background="{DynamicResource WindowBackground}">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
+   
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" Style="{DynamicResource Title}"  Text="View Exam Results" 
                    VerticalAlignment="Top"/>
@@ -26,7 +21,7 @@
 
         <TextBox HorizontalAlignment="Left" Height="23" Margin="82,135,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding StudentResult.NameOfStudent}"
-                 IsEnabled="{Binding IsInStudentMode}" IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"/>
+                 IsEnabled="{Binding IsInStudentMode}" IsReadOnly="True" IsReadOnlyCaretVisible="True" />
         <TextBlock HorizontalAlignment="Left" Margin="30,180,0,0" Text="Term" VerticalAlignment="Top"/>
         <ComboBox HorizontalAlignment="Left" Margin="82,180,0,0" VerticalAlignment="Top" Width="200"
                   ItemsSource="{Binding AllTerms}" DisplayMemberPath="Description" 
@@ -43,12 +38,22 @@
 
 
         <TextBlock HorizontalAlignment="Left" Margin="310,32,0,0" Style="{DynamicResource Title0}" Text="Result" VerticalAlignment="Top"/>
-        <Border Margin="310,60,10,10" BorderBrush="Silver" BorderThickness="2">
-            <Grid>
-                <ContentControl Name="st" Content="{Binding StudentResult, ValidatesOnNotifyDataErrors=False}" ContentTemplate="{StaticResource StudentResultTemplate}"/>
 
-            </Grid>
-        </Border>
+        <DataGrid AutoGenerateColumns="False" Name="test" Margin="310,60,10,10" CanUserAddRows="False"
+                  CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" Grid.Row="1"
+                  ItemsSource="{Binding StudentResult.Entries}" FontSize="12">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Subject" Binding="{Binding NameOfSubject}" Width="150*" IsReadOnly="True"/>
+
+                        <DataGridTextColumn Binding=
+                          "{Binding Path=Score}" 
+                      Header="Score" Width="120*" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding=
+                          "{Binding Path=Remarks}" 
+                      Header="Remarks" Width="200*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
         <TextBlock HorizontalAlignment="Right" Margin="0,36,10,0" VerticalAlignment="Top">
             <Hyperlink Command="{Binding PrintTranscriptCommand}">Print</Hyperlink>
         </TextBlock>

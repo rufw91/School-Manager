@@ -18,7 +18,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="30,165,0,0" Text="Name" VerticalAlignment="Top"/>
 
         <TextBox HorizontalAlignment="Left" Margin="92,165,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding SelectedStudent.NameOfStudent, Mode=OneWay}" IsEnabled="False" Background="WhiteSmoke" IsReadOnlyCaretVisible="True"/>
+                 Text="{Binding SelectedStudent.NameOfStudent, Mode=OneWay}" IsEnabled="False" IsReadOnlyCaretVisible="True"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="350,70,0,0" Style="{DynamicResource Title0}" Text="Recent Payments" VerticalAlignment="Top"/>
         <ListBox Margin="350,109,10,50" ItemsSource="{Binding RecentPayments}" ItemTemplate="{StaticResource FeePaymentModel}" 

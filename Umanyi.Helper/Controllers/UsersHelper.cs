@@ -2,6 +2,8 @@
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -30,16 +32,67 @@ namespace UmanyiSMS.Lib.Controllers
                         User u = new User(db, cred.UserId) { Login = login.Name };
 
                         u.Create();
-                        u.AddToRole(role.ToString());
                         if ((role == UserRole.Principal) || (role == UserRole.SystemAdmin))
                         {
                             ServerPermissionSet sps = new ServerPermissionSet(ServerPermission.AlterAnyLogin);
                             server.Grant(sps, cred.UserId, true);
+                            if (role == UserRole.SystemAdmin)
+                                login.AddToRole("sysadmin");
+                            else
+                                u.AddToRole(role.ToString());
                         }
+                        else
+                            u.AddToRole(role.ToString());
                     }
                     return true;
                 }
                 catch { return false; }
+            });
+        }
+                
+        internal static Task<List<UserRole>> GetUserRolesAsync(string userId)
+        {
+            return Task.Factory.StartNew<List<UserRole>>(() =>
+
+            {
+                if (userId.ToUpper() == "SA")
+                    return GetAllRoles();
+
+                else
+                {
+                    SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
+
+                    List<UserRole> temp = new List<UserRole>();
+                    try
+                    {
+                        using (conn)
+                        {
+                            var sc = new ServerConnection(conn);
+                            Server server = new Server(sc);
+                            Database db = server.Databases["UmanyiSMS"];
+
+                            var u = db.Users[userId];
+                            if (u == null)
+                            {
+                                temp.Add(UserRole.None);
+                                return temp;
+                            }
+
+
+                            StringCollection coll = u.EnumRoles();
+                            for (int i = 0; i < coll.Count; i++)
+                                temp.Add((UserRole)Enum.Parse(typeof(UserRole), coll[i]));
+
+                            if ((temp.Count == 0) && (new ServerRole(server, "sysadmin").EnumMemberNames().Contains(userId)))
+                                return GetAllRoles();
+                            else
+                                temp = GetChildRoles((UserRole)Enum.Parse(typeof(UserRole),temp[0].ToString()));
+                        }
+                    }
+                    catch { }
+
+                    return temp;
+                }
             });
         }
 
@@ -112,6 +165,27 @@ namespace UmanyiSMS.Lib.Controllers
                 }
                 catch { return false; }
             });
+        }
+
+        public static List<UserRole> GetChildRoles(UserRole role)
+        {
+            List<UserRole> t = new List<UserRole>();
+            var arr = Enum.GetValues(typeof(UserRole));
+            foreach (var i in arr)
+                if (role >= (UserRole)i)
+                    t.Add((UserRole)i);
+            return t;
+
+        }
+
+        public static List<UserRole> GetAllRoles()
+        {
+            List<UserRole> t = new List<UserRole>();
+            var arr = Enum.GetValues(typeof(UserRole));
+            foreach (var i in arr)
+                    t.Add((UserRole)i);
+            return t;
+
         }
 
         public static Task<bool> RemoveUserAsync(string userID)

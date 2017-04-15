@@ -121,8 +121,7 @@ namespace UmanyiSMS.Modules.MySystem.Views
         }
         
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
-        {
-            
+        {            
             CustomWindow w = new CustomWindow();
             w.ResizeMode= ResizeMode.NoResize;
             w.WindowStartupLocation= WindowStartupLocation.CenterScreen;
@@ -130,13 +129,15 @@ namespace UmanyiSMS.Modules.MySystem.Views
             w.MaxWidth = 600;
             w.MinHeight = 400;
             w.MinWidth = 600;
-            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("temp_sa"), new string[1] { "SystemAdmin" });
-            var i = new NetworkOptionsVM(false);
+
+            SecureString p = txtPwd.SecurePassword.Copy();
+            p.MakeReadOnly();
+            SqlCredential c = new SqlCredential(txtUId.Text, p);
+            var i = new NetworkOptionsVM(c);
             w.Content = i;
             w.ShowDialog();
             i = null;
             w = null;
-            Thread.CurrentPrincipal = null;
         }
     }
 }

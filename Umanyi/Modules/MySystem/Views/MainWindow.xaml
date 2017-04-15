@@ -31,6 +31,8 @@
                 <MenuItem Header="File">
                     <MenuItem Header="Home" Command="{Binding FileHomeCommand}"/>
                     <MenuItem Header="Backup" Command="{Binding FileBackupCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="Log out" Command="{Binding FileLogoutCommand}"/>
                     <MenuItem Header="Exit" Command="{Binding FileExitCommand}"/>
                 </MenuItem>
                 <MenuItem Header="Students">

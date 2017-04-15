@@ -15,7 +15,7 @@
             ValidatesOnDataErrors=True, Delay=100}"/>
         <TextBlock HorizontalAlignment="Left" Margin="70,170,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="114,170,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding Statement.NameOfStudent}" IsReadOnly="True" IsReadOnlyCaretVisible="True" Background="WhiteSmoke"/>
+                 Text="{Binding Statement.NameOfStudent}" IsReadOnly="True" IsReadOnlyCaretVisible="True" />
         <TextBlock HorizontalAlignment="Left" Margin="53,126,0,0" TextWrapping="Wrap" Text="Student ID" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="40,217,0,0" TextWrapping="Wrap" Style="{DynamicResource Title0}" Text="Period" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="56,262,0,0" TextWrapping="Wrap" Text="Start Date" VerticalAlignment="Top"/>

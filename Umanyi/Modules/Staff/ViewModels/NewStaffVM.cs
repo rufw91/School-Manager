@@ -14,7 +14,7 @@ using UmanyiSMS.Modules.Staff.Controller;
 
 namespace UmanyiSMS.Modules.Staff.ViewModels
 {
-    [PrincipalPermission(SecurityAction.Demand, Role = "Principal")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class NewStaffVM : ViewModelBase
     {
         StaffModel newStaff;
@@ -96,7 +96,7 @@ namespace UmanyiSMS.Modules.Staff.ViewModels
                 {
                     this.role = value;
                     NotifyPropertyChanged("Role");
-                    CanSaveUser = !(role == UserRole.None);
+                    CanSaveUser = role > UserRole.None;
                 }
             }
         }

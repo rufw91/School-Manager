@@ -21,13 +21,13 @@
                  IsEnabled="{Binding IsInStudentMode}"/>
         <TextBlock HorizontalAlignment="Left" Margin="75,180,0,0" Text="Name" VerticalAlignment="Top"/>
         <TextBox  HorizontalAlignment="Left" Margin="114,180,0,0" VerticalAlignment="Top" Width="250"
-                  Background="WhiteSmoke" IsReadOnly="True" IsReadOnlyCaretVisible="True"
+                  IsReadOnly="True" IsReadOnlyCaretVisible="True"
                   Text="{Binding SelectedStudent.NameOfStudent}"
                   IsEnabled="{Binding IsInStudentMode}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="33,230,0,0" Text="Current Class" VerticalAlignment="Top"/>
         <TextBox  HorizontalAlignment="Left" Margin="114,230,0,0" VerticalAlignment="Top" Width="250"
-                  Background="WhiteSmoke" IsReadOnly="True" IsReadOnlyCaretVisible="True"
+                  IsReadOnly="True" IsReadOnlyCaretVisible="True"
                   Text="{Binding CurrentClass.NameOfClass}"
                   IsEnabled="{Binding IsInStudentMode}"/>
 

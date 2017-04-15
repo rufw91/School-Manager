@@ -10,7 +10,7 @@ using UmanyiSMS.Lib.Presentation;
 
 namespace UmanyiSMS.Modules.MySystem.ViewModels
 {
-    [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class BackupVM : ViewModelBase
     {
         private string pathToFile;

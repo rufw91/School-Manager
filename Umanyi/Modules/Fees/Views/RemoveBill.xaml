@@ -17,7 +17,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="30,165,0,0" Text="Name" VerticalAlignment="Top"/>
 
         <TextBox HorizontalAlignment="Left" Margin="92,165,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding SelectedStudent.NameOfStudent, Mode=OneWay}" IsEnabled="False" Background="WhiteSmoke" IsReadOnlyCaretVisible="True"/>
+                 Text="{Binding SelectedStudent.NameOfStudent, Mode=OneWay}" IsEnabled="False" IsReadOnlyCaretVisible="True"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="30,210,0,0" Text="Term" VerticalAlignment="Top"/>
 

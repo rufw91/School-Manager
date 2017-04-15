@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
@@ -10,32 +11,29 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
 {
     public class NetworkOptionsVM:ViewModelBase
     {
-        bool canTest=true;
         bool isTested;
         string prevServ;
         ApplicationModel newSchool;
-        public NetworkOptionsVM()
+        SqlCredential _credential;
+        public NetworkOptionsVM(SqlCredential credential)
         {
+            _credential = credential;
             InitVars();
             CreateCommands();
         }
-        public NetworkOptionsVM(bool canTest)
-        {
-            this.canTest = canTest;
-            InitVars();
-            isTested = true;
-            CreateCommands();            
-        }
+
         protected override void InitVars()
         {
             Title = "NETWORK OPTIONS";
             isTested = false;
             prevServ = App.Info.ServerName;
             newSchool = App.Info;
+            newSchool.PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == "ServerName")
+                    isTested = false;
+            };
         }
-
-        public bool CanTest
-        { get { return canTest; } }
         
         public ApplicationModel NewSchool
         {
@@ -45,9 +43,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
         {
             SaveCommand = new RelayCommand(o =>
             {
-                Lib.Properties.Settings.Default.Info = new ApplicationPersistModel(newSchool);
-                Lib.Properties.Settings.Default.Save();
-                App.Info.CopyFrom(new ApplicationModel(Lib.Properties.Settings.Default.Info));
+                App.SaveInfo(newSchool);
                 MessageBox.Show("Successfully saved settings.\r\nYou need to RESTART the system for these changes to take effect.","Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 App.Restart();
             }, o => !IsBusy && isTested);
@@ -55,9 +51,9 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             TestCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await (DataAccessHelper.Helper as SqlServerHelper).TestDb(ConnectionStringHelper.SSPIConnectionString);
-                MessageBox.Show(succ ? "Test Succeeded." : "Test Failed.", "Info", MessageBoxButton.OK,
-                    succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
+                bool succ = await (DataAccessHelper.Helper as SqlServerHelper).TestDb(ConnectionStringHelper.GetConnectionString(newSchool.ServerName, false),_credential);
+                MessageBox.Show(succ ? "Test Succeeded." : "Test Failed. The server may not exist or the logon credentials used may be invalid. Close this window and re-enter the credentials then click 'Login problems' to open this window.\r\nFor more assistance, contact you system admin.", "Info", MessageBoxButton.OK,
+                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 isTested = succ;
                 IsBusy = false;
             }, o => !IsBusy);
