@@ -12,7 +12,7 @@ using UmanyiSMS.Modules.Staff.Models;
 
 namespace UmanyiSMS.Modules.Staff.ViewModels
 {
-    [PrincipalPermission(SecurityAction.Demand, Role = "Principal")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class ModifyStaffVM : ViewModelBase
     {
         ModifyStaffModel newStaff;

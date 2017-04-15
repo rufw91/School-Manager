@@ -19,7 +19,7 @@
             <TextBlock HorizontalAlignment="Left" Margin="30,145,0,0" Text="Name" VerticalAlignment="Top"/>
 
             <TextBox HorizontalAlignment="Left" Margin="92,145,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding CurrentPayment.NameOfStudent, Mode=OneWay}" IsEnabled="False" Background="WhiteSmoke" IsReadOnlyCaretVisible="True"/>
+                 Text="{Binding CurrentPayment.NameOfStudent, Mode=OneWay}" IsEnabled="False" IsReadOnlyCaretVisible="True"/>
 
             <TextBlock HorizontalAlignment="Left" Margin="30,190,0,0" Text="Term" VerticalAlignment="Top"/>
 

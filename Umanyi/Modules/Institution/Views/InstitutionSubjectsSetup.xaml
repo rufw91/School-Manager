@@ -22,9 +22,6 @@
         <ListBox Margin="350,89,10,50" ItemsSource="{Binding SelectedSubjects, UpdateSourceTrigger=PropertyChanged}"
                  DisplayMemberPath="NameOfSubject"
                  SelectedItem="{Binding SelectedAddedSubject, Mode=TwoWay}"/>
-        <TextBlock HorizontalAlignment="Right" Margin="0,68,10,0" VerticalAlignment="Top">
-            <Hyperlink Command="{Binding RemoveSubjectCommand}">Remove</Hyperlink>
-        </TextBlock>
         <Button Content="Save" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" 
         	Command="{Binding SaveCommand}" Margin="0,0,10,10"/>
 

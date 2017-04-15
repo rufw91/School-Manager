@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Security.Permissions;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Controllers;
+using UmanyiSMS.Lib.Models;
 using UmanyiSMS.Lib.Presentation;
 
 namespace UmanyiSMS.Modules.MySystem.ViewModels
 {
-    [PrincipalPermission(SecurityAction.Demand, Role = "SystemAdmin")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class AdvancedSettingsVM: ViewModelBase
     {
+        bool isTested;
+        string prevServ;
+        ApplicationModel newSchool;
         public AdvancedSettingsVM()
         {
             InitVars();
@@ -19,13 +24,42 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
         }
 
         protected override void InitVars()
-        {
-            
+        {            
             Title = "ADVANCED";
+            isTested = false;
+            prevServ = App.Info.ServerName;
+            newSchool = App.Info;
+            newSchool.PropertyChanged += (o, e) =>
+              {
+                  if (e.PropertyName == "ServerName")
+                      isTested = false;
+              };
+        }
+
+        public ApplicationModel NewSchool
+        {
+            get { return this.newSchool; }
         }
 
         protected override void CreateCommands()
         {
+            SaveServerCommand = new RelayCommand(o =>
+            {
+                App.SaveInfo(newSchool);
+                MessageBox.Show("Successfully saved settings.\r\nYou need to RESTART the system for these changes to take effect.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                App.Restart();
+            }, o => !IsBusy && isTested);
+
+            TestServerCommand = new RelayCommand(async o =>
+            {
+                IsBusy = true;
+               
+                bool succ = await (DataAccessHelper.Helper as SqlServerHelper).TestDb(ConnectionStringHelper.GetConnectionString(newSchool.ServerName,false));
+                MessageBox.Show(succ ? "Test Succeeded." : "Test Failed. The server may not exist or the logon credentials used may be invalid.\r\nContact you system admin for more info.", "Info", MessageBoxButton.OK,
+                    succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
+                isTested = succ;
+                IsBusy = false;
+            }, o => !IsBusy);
             CleanDbCommand = new RelayCommand(async o =>
                 {
                     IsBusy = true;
@@ -42,7 +76,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             TestDbCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                bool succ = await (DataAccessHelper.Helper as SqlServerHelper).TestDb();
+                bool succ = await (DataAccessHelper.Helper as SqlServerHelper).TestDb(ConnectionStringHelper.GetConnectionString(newSchool.ServerName, false));
                 MessageBox.Show(succ ? "Test Succeeded." : "Test Failed.", "Info", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                 IsBusy = false;
@@ -129,7 +163,19 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
         { get; internal set; }
 
         public Action<ViewModelBase> OpenTaskWindowAction2
-        { get; internal set; }        
+        { get; internal set; }
+
+        public ICommand SaveServerCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand TestServerCommand
+        {
+            get;
+            private set;
+        }
 
         public ICommand ShowLogCommand
         { get; private set; }

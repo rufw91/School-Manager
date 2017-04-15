@@ -11,9 +11,11 @@ using System;
 using System.Collections.Generic;
 using UmanyiSMS.Lib.Controllers;
 using System.Threading.Tasks;
+using System.Security.Permissions;
 
 namespace UmanyiSMS.Modules.MySystem.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class SetupWizardVM : ViewModelBase
     { 
         ClassesSetupModel classesSetup;
@@ -161,7 +163,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
         {
             return Task.Factory.StartNew(() =>
            {
-               string cmdStr = "USE [master]\r\nALTER DATABASE[UmanyiSMS] SET READ_WRITE WITH NO_WAIT\r\nALTER LOGIN [sa] WITH PASSWORD='000002'\r\nALTER LOGIN[sa] ENABLE";
+               string cmdStr = "USE [master]\r\nIF (1=(select is_disabled from sys.server_principals where name='sa'))\r\nBEGIN\r\nALTER LOGIN [sa] WITH PASSWORD='000002'\r\nALTER LOGIN[sa] ENABLE\r\nEND";
                return DataAccessHelper.Helper.ExecuteNonQuery(cmdStr);
            });
         }

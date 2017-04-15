@@ -17,7 +17,7 @@
             ValidatesOnDataErrors=True, ValidatesOnNotifyDataErrors=True}"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,170,0,0" Text="Name of Student" 
 			VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="125,165,0,0" VerticalAlignment="Top" Width="250" IsReadOnly="True" Background="WhiteSmoke"
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="125,165,0,0" VerticalAlignment="Top" Width="250" IsReadOnly="True"
                  IsReadOnlyCaretVisible="True" Text="{Binding SelectedStudent.NameOfStudent}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="20,230,0,0" Style="{DynamicResource Title0}"  Text="This Issue" 

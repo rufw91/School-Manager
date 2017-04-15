@@ -47,6 +47,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
         {
             FileHomeCommand = new RelayCommand(o => Source = new HomePageVM(), o => !(Source is HomePageVM));
             FileBackupCommand = new RelayCommand(o => { Source = new BackupVM(); }, o => true);
+            FileLogoutCommand = new RelayCommand(o => App.Restart(), o => true);
             FileExitCommand = new RelayCommand(o => Application.Current.Shutdown(), o => true);
             StudentsNewStudentCommand = new RelayCommand(o => Source = new NewStudentVM() , o => true);
             StudentsModifyStudentCommand = new RelayCommand(o => Source = new ModifyStudentVM(), o => true);
@@ -127,6 +128,12 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             private set;
         }
 
+        public ICommand FileLogoutCommand
+        {
+            get;
+            private set;
+        }
+        
         public ICommand FileExitCommand
         {
             get;

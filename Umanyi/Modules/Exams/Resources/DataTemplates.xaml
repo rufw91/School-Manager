@@ -39,50 +39,6 @@
         <views:WeightedMarkList/>
     </DataTemplate>
 
-    <DataTemplate x:Key="StudentResultTemplate">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="90*"/>
-                <RowDefinition Height="329*"/>
-            </Grid.RowDefinitions>
-            <TextBlock HorizontalAlignment="Left" Margin="22,24,0,0"  Text="NAME:" VerticalAlignment="Top"
-                   FontFamily="Calibri" FontWeight="Bold" FontSize="16" Height="20" Width="46"/>
-            <TextBlock HorizontalAlignment="Left" Margin="75,20,0,0" VerticalAlignment="Top"
-                   Style="{DynamicResource Title0}"
-                   Text="{Binding NameOfStudent,Converter={StaticResource ToLowerConverter}}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="22,54,0,0"  Text="CLASS:" VerticalAlignment="Top"
-        	FontFamily="Calibri" FontWeight="Bold" FontSize="16" Height="20" Width="44"/>
-            <TextBlock HorizontalAlignment="Left" Margin="75,50,0,0" VerticalAlignment="Top"
-                   Style="{DynamicResource Title0}"
-                   Text="{Binding NameOfClass, Converter={StaticResource ToLowerConverter}}" />
-            <DataGrid AutoGenerateColumns="False" Name="test" Margin="10,10,10,0" CanUserAddRows="False"
-                  CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" Grid.Row="1"
-                  ItemsSource="{Binding Entries}" FontSize="12">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Subject" Binding="{Binding NameOfSubject}" Width="200*" IsReadOnly="True"/>
-
-                    <DataGridTextColumn Binding=
-                          "{Binding Path=Score}" 
-                      Header="Score" Width="200*" IsReadOnly="True"/>
-                </DataGrid.Columns>
-            </DataGrid>
-
-            <Controls:DropDownButton Content="Export" HorizontalAlignment="Right" Margin="0,60,10,0" VerticalAlignment="Top" DataContext="{Binding ElementName=test}">
-                <Controls:DropDownButton.DropDownContent>
-                    <Menu>
-                        <Menu.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" IsItemsHost="True"/>
-                            </ItemsPanelTemplate>
-                        </Menu.ItemsPanel>
-                        <MenuItem Header="Export to PDF" Command="{Binding Source={x:Static presentation:CommonCommands.ExportToPDFCommand}}" CommandParameter="{Binding}"/>
-                        <MenuItem Header="Export to Excel" Command="{Binding Source={x:Static presentation:CommonCommands.ExportToExcelCommand}}" CommandParameter="{Binding}"/>
-                    </Menu>
-                </Controls:DropDownButton.DropDownContent>
-            </Controls:DropDownButton>
-        </Grid>
-    </DataTemplate>
-
     <DataTemplate x:Key="ClassResultTemplate">
         <Grid>
             <Grid.RowDefinitions>

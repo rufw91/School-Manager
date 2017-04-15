@@ -23,8 +23,6 @@ namespace UmanyiSMS.Lib.Controllers
                    DataAccessHelper.Helper.SetCredential(cred);
                     string[] roles = await GetUserRolesAsync(cred.UserId);
                     
-                    if ((roles.Length == 1) && (roles[0] == UserRole.None.ToString()))
-                        return false;
                     SetPrincipal(cred.UserId, roles);
                 }
                 return test;
@@ -32,47 +30,15 @@ namespace UmanyiSMS.Lib.Controllers
             catch{ return false; }
         }
 
-        private static string[] GetAllRoles()
+        private async static Task<string[]> GetUserRolesAsync(string userId)
         {
-            return Enum.GetNames(typeof(UserRole));
+            var rs = await UsersHelper.GetUserRolesAsync(userId);
+            List<string> t = new List<string>();
+            foreach (var y in rs)
+                t.Add(y.ToString());
+            return t.ToArray();
         }
 
-        private static Task<string[]> GetUserRolesAsync(string userId)
-        {
-            return Task.Factory.StartNew<string[]>(() =>
-
-            {
-                if (userId.ToUpper() == "SA")
-                    return GetAllRoles();
-
-                else
-                {
-                    SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
-
-                    List<string> temp = new List<string>() { "None" };
-                    try
-                    {
-                        using (conn)
-                        {
-                            var sc = new ServerConnection(conn);
-                            Server server = new Server(sc);
-                            Database db = server.Databases["UmanyiSMS"];
-
-                            var u = db.Users[userId];
-                            if (u == null)
-                                return temp.ToArray();
-                            StringCollection coll=u.EnumRoles();
-                            for (int i = 0; i < coll.Count; i++)
-                                temp.Add(coll[i]);
-                        }
-                    }
-                    catch { }
-
-                    return temp.ToArray();
-                }                        
-            });
-        }
-        
         private static void SetPrincipal(string userId,string[] roles)
         {
             GenericIdentity MyIdentity = new GenericIdentity(userId);

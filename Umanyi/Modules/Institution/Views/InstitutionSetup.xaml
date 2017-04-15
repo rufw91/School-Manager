@@ -27,10 +27,10 @@
         <TextBlock HorizontalAlignment="Left" Margin="475,155,0,0" Text="(Max 35 char)" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="475,200,0,0" Text="(Max 40 char)" VerticalAlignment="Top"/>
 
-        <TextBox Name="txtSyncID" Height="23" Margin="590,110,20,0" MaxLength="25" VerticalAlignment="Top" IsEnabled="False" Background="WhiteSmoke"
+        <TextBox Name="txtSyncID" Height="23" Margin="590,110,20,0" MaxLength="25" VerticalAlignment="Top" IsEnabled="False"
         	Text="{Binding NewSchool.ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBox Name="txtSyncAddr" Height="23" Margin="590,200,20,0" MaxLength="255" VerticalAlignment="Top" IsEnabled="False" Background="WhiteSmoke"
+        <TextBox Name="txtSyncAddr" Height="23" Margin="590,200,20,0" MaxLength="255" VerticalAlignment="Top" IsEnabled="False"
         	Text="{Binding NewSchool.SyncAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Alt Info" VerticalAlignment="Top" 
