@@ -114,8 +114,7 @@ namespace UmanyiSMS.Modules.Library.Views
                                    "ISBN," +
                                    "[Name]," +
                                    "Author," +
-                                   "Publisher," +
-                                   "Price" +
+                                   "Publisher" +
                                    " FROM [Book]";
                 try
                 {
@@ -135,7 +134,6 @@ namespace UmanyiSMS.Modules.Library.Views
                             im.Title = dtr[2].ToString();
                             im.Author = dtr[3].ToString();
                             im.Publisher = dtr[4].ToString();
-                            im.Price = decimal.Parse(dtr[5].ToString());
                             dispatcher.Invoke(() => { AllItems.Add(im); });
                         }
 

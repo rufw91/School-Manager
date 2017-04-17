@@ -14,15 +14,14 @@
 
             <DataGrid AutoGenerateColumns="False"  Name="dtGrid" ItemsSource="{Binding AllItems, IsAsync=True}"
                           CanUserAddRows="False" CanUserResizeRows="False" CanUserReorderColumns="False" 
-                          RowHeaderWidth="0" Margin="10,100,10,50" 
-                           KeyUp="dtGrid_KeyUp">
+                          RowHeaderWidth="0" Margin="10,100,10,50" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Path=ItemID, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged}" Header="Item ID" Width="150*" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Description" 
-                                            IsReadOnly="True" Width="250*"
-                                            />
-                    <DataGridTextColumn Binding="{Binding Path=Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Price" IsReadOnly="True" Width="150*" />
+                    <DataGridCheckBoxColumn Binding="{Binding Path=IsSelected, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" Width="30"/>
+                    <DataGridTextColumn Binding="{Binding Path=ItemID}" Header="Item ID" Width="80*" IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding Path=Description}" Header="Description" IsReadOnly="True" Width="250*"/>
+                    <DataGridTextColumn Binding="{Binding Path=Quantity, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" Header="Quantity" Width="80*"/>
                 </DataGrid.Columns>
             </DataGrid>
 

@@ -24,7 +24,7 @@ namespace SetupUI
         BootstrapperApplicationData bundleData;
         protected override void Run()
         {                        
-            Thread.Sleep(new TimeSpan(0, 0, 2));
+            Thread.Sleep(new TimeSpan(0, 0, 50));
             bundleData = new BootstrapperApplicationData();    
             Dispatcher = Dispatcher.CurrentDispatcher;
             viewModel = new SetupUIViewModel(this);

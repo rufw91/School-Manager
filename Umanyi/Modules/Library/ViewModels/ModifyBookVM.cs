@@ -29,6 +29,11 @@ namespace UmanyiSMS.Modules.Library.ViewModels
         {
             Title = "MODIFY BOOK";
             book = new BookSelectModel();
+            book.PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == "BookID")
+                    book.CheckErrors();
+            };
         }
 
         protected override void CreateCommands()

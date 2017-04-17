@@ -11,6 +11,8 @@ using UmanyiSMS.Modules.Purchases.ViewModels;
 using UmanyiSMS.Modules.Staff.ViewModels;
 using UmanyiSMS.Modules.Students.ViewModels;
 using UmanyiSMS.Modules.MySystem.Controller;
+using System.Security.Permissions;
+using System.Threading;
 
 namespace UmanyiSMS.Modules.MySystem.ViewModels
 {
@@ -88,6 +90,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             PurchasesNewItemCommand = new RelayCommand(o => Source = new NewItemVM(), o => true);
             PurchasesNewItemCategoryCommand = new RelayCommand(o => Source = new NewItemCategoryVM(), o => true);
             PurchasesModifyItemCommand = new RelayCommand(o => Source = new ModifyItemVM(), o => true);
+            PurchasesItemListCommand = new RelayCommand(o => Source = new ItemListVM(), o => true);
             PurchasesRemoveItemCommand = new RelayCommand(o => { }/* Source = new RemoveItemVM()*/, o => false);
             PurchasesNewSupplierCommand = new RelayCommand(o => Source = new NewSupplierVM(), o => true);
             PurchasesModifySupplierCommand = new RelayCommand(o => Source = new ModifySupplierVM(), o => true);
@@ -102,7 +105,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             LibraryModifyBookCommand = new RelayCommand(o => Source = new ModifyBookVM(), o => true);
             LibraryBookListCommand = new RelayCommand(o => Source = new ViewBooksVM(), o => true);
             LibraryUnreturnedBooksCommand = new RelayCommand(o => Source = new UnreturnedBooksVM(), o => true);
-            SettingsSetupWizardCommand = new RelayCommand(o => { if (SettingsSetupWizardAction != null) SettingsSetupWizardAction.Invoke(); }, o => true);
+            SettingsSetupWizardCommand = new RelayCommand(o => { new PrincipalPermission(Thread.CurrentPrincipal.Identity.Name, "Deputy").Demand(); if (SettingsSetupWizardAction != null) SettingsSetupWizardAction.Invoke(); }, o => true);
             SettingsInstInfoCommand = new RelayCommand(o => Source = new InstitutionSetupVM(), o => true);
             SettingsACYSCommand = new RelayCommand(o => Source = new AcademicYearSetupVM(), o => true);
             SettingsCSCommand = new RelayCommand(o => Source = new ClassesSetupVM(), o => true);
@@ -383,6 +386,12 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             private set;
         }
 
+        public ICommand PurchasesItemListCommand
+        {
+            get;
+            private set;
+        }
+        
         public ICommand PurchasesRemoveItemCommand
         {
             get;

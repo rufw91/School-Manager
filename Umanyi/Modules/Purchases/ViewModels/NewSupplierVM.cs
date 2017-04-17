@@ -18,11 +18,12 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
             CreateCommands();
         }
 
-        protected override void InitVars()
+        protected async override void InitVars()
         {
             Title = "NEW SUPPLIER";
             IsBusy = true;
-            NewSupplier = new SupplierModel();
+            newSupplier = new SupplierModel();
+            newSupplier.SupplierID = await MySystem.Controller.DataController.GetNewID("dbo.Supplier");
             IsBusy = false;
         }
 

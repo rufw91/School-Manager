@@ -135,6 +135,7 @@ namespace SetupUI
                         e.Result = Result.Cancel;
                     }
                 };
+                
                 app.ApplyComplete += (o, e) =>
                 {
                     OverallProgressPercentage = 100;
@@ -162,7 +163,7 @@ namespace SetupUI
                 if (OpenPage2Action != null)
                     OpenPage2Action.Invoke();
                 app.PlanAction(app.Command.Action);
-            }, p => app.Command.Action == LaunchAction.Install);
+            }, p => (app.Command.Action == LaunchAction.Install)&&(state!= InstallState.Present));
             this.UninstallCommand = new RelayCommand(p => {
                 State = InstallState.Applying;
                 uninstall = true;
@@ -170,7 +171,7 @@ namespace SetupUI
                     OpenPage2Action.Invoke();
                 app.PlanAction(app.Command.Action);
             },
-            o => app.Command.Action == LaunchAction.Uninstall);
+            o => (app.Command.Action == LaunchAction.Uninstall)|| (state == InstallState.Present));
 
             this.CancelCommand = new RelayCommand(p => {
                 if (OpenPage6Action != null)

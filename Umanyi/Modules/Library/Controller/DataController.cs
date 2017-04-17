@@ -17,7 +17,7 @@ namespace UmanyiSMS.Modules.Library.Controller
         public static bool SearchAllBookProperties(BookModel book, string searchText)
         {
             Regex.CacheSize = 14;
-            return Regex.Match(book.ISBN, searchText, RegexOptions.IgnoreCase).Success || Regex.Match(book.Title, searchText, RegexOptions.IgnoreCase).Success || Regex.Match(book.Author, searchText, RegexOptions.IgnoreCase).Success || Regex.Match(book.Publisher, searchText, RegexOptions.IgnoreCase).Success || Regex.Match(book.Price.ToString(), searchText, RegexOptions.IgnoreCase).Success;
+            return Regex.Match(book.ISBN, searchText, RegexOptions.IgnoreCase).Success || Regex.Match(book.Title, searchText, RegexOptions.IgnoreCase).Success || Regex.Match(book.Author, searchText, RegexOptions.IgnoreCase).Success || Regex.Match(book.Publisher, searchText, RegexOptions.IgnoreCase).Success;
         }
 
         public static Task<ObservableCollection<BookModel>> GetAllBooksAsync()
@@ -25,7 +25,7 @@ namespace UmanyiSMS.Modules.Library.Controller
             return Task.Factory.StartNew<ObservableCollection<BookModel>>(delegate
             {
                 ObservableCollection<BookModel> observableCollection = new ObservableCollection<BookModel>();
-                string commandText = "SELECT ISBN, Name,Author,Publisher,SPhoto,BookID,Price FROM [Book]";
+                string commandText = "SELECT ISBN, Name,Author,Publisher,SPhoto,BookID FROM [Book]";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -36,8 +36,7 @@ namespace UmanyiSMS.Modules.Library.Controller
                         Author = dataRow[2].ToString(),
                         Publisher = dataRow[3].ToString(),
                         SPhoto = (dataRow[4] != null && !(dataRow[4] is DBNull)) ? ((byte[])dataRow[4]) : new byte[0],
-                        BookID = int.Parse(dataRow[5].ToString()),
-                        Price = decimal.Parse(dataRow[6].ToString())
+                        BookID = int.Parse(dataRow[5].ToString())
                     });
                 }
                 return observableCollection;
@@ -51,20 +50,14 @@ namespace UmanyiSMS.Modules.Library.Controller
             {
                 string commandText = string.Concat(new object[]
                 {
-                    "INSERT INTO [Book] (Name,ISBN,Author,Price,Publisher,SPhoto) VALUES('",
-                    book.Title,
-                    "','",
-                    book.ISBN,
-                    "','",
-                    book.Author,
-                    "',",
-                    book.Price,
-                    ",'",
-                    book.Publisher,
-                    "',@Photo)"
+                    "INSERT INTO [Book] (Name,ISBN,Author,Publisher,SPhoto) VALUES(@nam,@isbn,@auth,@publ,@Photo)"
                 });
                 return DataAccessHelper.Helper.ExecuteNonQuery(commandText, new List<SqlParameter>
                 {
+                    new SqlParameter("@nam", book.Title),
+                    new SqlParameter("@isbn", book.ISBN),
+                    new SqlParameter("@auth", book.Author),
+                    new SqlParameter("@publ", book.Publisher),
                     new SqlParameter("@Photo", book.SPhoto)
                 });
             });
@@ -107,7 +100,7 @@ namespace UmanyiSMS.Modules.Library.Controller
                 ObservableCollection<BookModel> observableCollection = new ObservableCollection<BookModel>();
                 string commandText = string.Concat(new object[]
                 {
-                    "SELECT x.BookID,b.ISBN,b.Name,b.Author,b.Publisher,b.SPhoto,b.Price FROM ((SELECT bid.BookID FROM [BookIssueDetail] bid INNER JOIN [BookIssueHeader] bih ON(bid.BookIssueID=bih.BookIssueID) WHERE bih.StudentID=",
+                    "SELECT x.BookID,b.ISBN,b.Name,b.Author,b.Publisher,b.SPhoto FROM ((SELECT bid.BookID FROM [BookIssueDetail] bid INNER JOIN [BookIssueHeader] bih ON(bid.BookIssueID=bih.BookIssueID) WHERE bih.StudentID=",
                     studenID,
                     " AND NOT EXISTS(SELECT brd.BookID FROM [BookReturnDetail] brd INNER JOIN [BookReturnHeader] brh ON(brd.BookReturnID=brh.BookReturnID) WHERE brh.DateReturned>bih.DateIssued AND brd.BookID=bid.BookID AND brh.StudentID=",
                     studenID,
@@ -123,8 +116,8 @@ namespace UmanyiSMS.Modules.Library.Controller
                         Title = dataRow[2].ToString(),
                         Author = dataRow[3].ToString(),
                         Publisher = dataRow[4].ToString(),
-                        SPhoto = (dataRow[5] != null && !(dataRow[5] is DBNull)) ? ((byte[])dataRow[5]) : new byte[0],
-                        Price = decimal.Parse(dataRow[6].ToString())
+                        SPhoto = (dataRow[5] != null && !(dataRow[5] is DBNull)) ? ((byte[])dataRow[5]) : new byte[0]
+                       
                     });
                 }
                 return observableCollection;
@@ -136,7 +129,7 @@ namespace UmanyiSMS.Modules.Library.Controller
             return Task.Factory.StartNew<ObservableCollection<UnreturnedBookModel>>(delegate
             {
                 ObservableCollection<UnreturnedBookModel> observableCollection = new ObservableCollection<UnreturnedBookModel>();
-                string commandText = "SELECT x.BookID,b.ISBN,b.Name,b.Author,b.Publisher,b.SPhoto,b.Price,dbo.GetUnreturnedCopies(x.BookID) FROM ((SELECT bid.BookID FROM [BookIssueDetail] bid INNER JOIN [BookIssueHeader] bih ON(bid.BookIssueID=bih.BookIssueID) WHERE NOT EXISTS(SELECT brd.BookID FROM [BookReturnDetail] brd INNER JOIN [BookReturnHeader] brh ON(brd.BookReturnID=brh.BookReturnID) WHERE brh.DateReturned>bih.DateIssued AND brd.BookID=bid.BookID)) x LEFT OUTER JOIN [Book] b ON (x.BookID=b.BookID))";
+                string commandText = "SELECT x.BookID,b.ISBN,b.Name,b.Author,b.Publisher,b.SPhoto,dbo.GetUnreturnedCopies(x.BookID) FROM ((SELECT bid.BookID FROM [BookIssueDetail] bid INNER JOIN [BookIssueHeader] bih ON(bid.BookIssueID=bih.BookIssueID) WHERE NOT EXISTS(SELECT brd.BookID FROM [BookReturnDetail] brd INNER JOIN [BookReturnHeader] brh ON(brd.BookReturnID=brh.BookReturnID) WHERE brh.DateReturned>bih.DateIssued AND brd.BookID=bid.BookID)) x LEFT OUTER JOIN [Book] b ON (x.BookID=b.BookID))";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -148,8 +141,7 @@ namespace UmanyiSMS.Modules.Library.Controller
                         Author = dataRow[3].ToString(),
                         Publisher = dataRow[4].ToString(),
                         SPhoto = (dataRow[5] != null && !(dataRow[5] is DBNull)) ? ((byte[])dataRow[5]) : new byte[0],
-                        Price = decimal.Parse(dataRow[6].ToString()),
-                        UnreturnedCopies = decimal.Parse(dataRow[7].ToString())
+                        UnreturnedCopies = decimal.Parse(dataRow[6].ToString())
                     });
                 }
                 return observableCollection;
@@ -186,7 +178,7 @@ namespace UmanyiSMS.Modules.Library.Controller
 
         internal static BookModel GetBook(int bookID)
         {
-            string commandText = "SELECT BookID,ISBN,Name,Author,Publisher,SPhoto,b.Price FROM [Book] WHERE BookID=" + bookID;
+            string commandText = "SELECT BookID,ISBN,Name,Author,Publisher,SPhoto FROM [Book] WHERE BookID=" + bookID;
             DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
             BookModel result;
             if (dataTable.Rows.Count == 0)
@@ -204,8 +196,7 @@ namespace UmanyiSMS.Modules.Library.Controller
                     Title = dataRow[2].ToString(),
                     Author = dataRow[3].ToString(),
                     Publisher = dataRow[4].ToString(),
-                    SPhoto = (dataRow[5] != null && !(dataRow[5] is DBNull)) ? ((byte[])dataRow[5]) : new byte[0],
-                    Price = decimal.Parse(dataRow[6].ToString())
+                    SPhoto = (dataRow[5] != null && !(dataRow[5] is DBNull)) ? ((byte[])dataRow[5]) : new byte[0]
                 };
             }
             return result;
@@ -215,23 +206,15 @@ namespace UmanyiSMS.Modules.Library.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string commandText = string.Concat(new object[]
-                {
-                    "UPDATE [Book] SET ISBN='",
-                    book.ISBN,
-                    "', Name='",
-                    book.Title,
-                    "', Author='",
-                    book.Author,
-                    "', Publisher='",
-                    book.Publisher,
-                    "', Price='",
-                    book.Price,
-                    "', SPhoto=@photo WHERE BookID=",
-                    book.BookID
-                });
+                string commandText = "UPDATE [Book] SET ISBN=@isbn, Name=@nam, Author=@auth, Publisher=@publ,SPhoto=@photo WHERE BookID=@bid";
+                
                 return DataAccessHelper.Helper.ExecuteNonQuery(commandText, new List<SqlParameter>
                 {
+                    new SqlParameter("@bid", book.BookID),
+                    new SqlParameter("@isbn", book.ISBN),
+                    new SqlParameter("@nam", book.Title),
+                    new SqlParameter("@auth", book.Author),
+                    new SqlParameter("@publ", book.Publisher),
                     new SqlParameter("@photo", book.SPhoto)
                 });
             });

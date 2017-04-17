@@ -594,6 +594,15 @@ namespace UmanyiSMS.Lib.Controllers
             });
         }
 
+        public static bool IsServerMachine
+        { get { return GetIsServerMachine(); } }
+
+        private static bool GetIsServerMachine()
+        {
+            if (Properties.Settings.Default.Info.ServerName.ToLowerInvariant().Contains("localdb"))
+                return true;
+            return Properties.Settings.Default.Info.ServerName.ToLowerInvariant() == (Environment.MachineName + @"\Umanyi").ToLowerInvariant();
+        }
 
         public override List<string> CopyFirstColumnToList(string commandText)
         {

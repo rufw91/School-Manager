@@ -12,10 +12,11 @@ using System.Collections.Generic;
 using UmanyiSMS.Lib.Controllers;
 using System.Threading.Tasks;
 using System.Security.Permissions;
+using System.Security;
+using System.Threading;
 
 namespace UmanyiSMS.Modules.MySystem.ViewModels
 {
-    [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class SetupWizardVM : ViewModelBase
     { 
         ClassesSetupModel classesSetup;
@@ -127,7 +128,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
         }
 
         protected async override void InitVars()
-        {
+        {      
             UserClosed = true;
             Source = new WelcomeVM();
             newSchool = new ApplicationModel();

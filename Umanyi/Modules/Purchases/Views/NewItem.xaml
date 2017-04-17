@@ -28,13 +28,9 @@
                     	SelectedValue="{Binding NewItem.ItemCategoryID, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     	ItemsSource="{Binding AllItemCategories}"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Price" VerticalAlignment="Top" Width="79" TextWrapping="WrapWithOverflow" Grid.Column="1" />
+        <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Cost" VerticalAlignment="Top" Width="79" TextWrapping="WrapWithOverflow" Grid.Column="1" />
         <TextBox  Margin="135,80,40,0" VerticalAlignment="Top" Height="23" Grid.Column="1" MaxLength="15"
-                  Text="{Binding NewItem.Price, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-
-        <TextBlock  HorizontalAlignment="Left" Margin="30,130,0,0" Text="Start Quantity" VerticalAlignment="Top" Grid.Column="1" />
-        <TextBox Margin="135,130,40,0"  VerticalAlignment="Top"  Grid.Column="1" MaxLength="15"
-                      Text="{Binding NewItem.StartQuantity, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                  Text="{Binding NewItem.Cost, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
         <Button Content="Save" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="90"
                 Command="{Binding SaveCommand}"/>
 

@@ -34,10 +34,8 @@ namespace UmanyiSMS.Modules.Library.Models
                     else
                     {
                         ClearErrors("BookID");
-                        this.BookID = book.BookID;
                         this.Author = book.Author;
                         this.ISBN = book.ISBN;
-                        this.Price = book.Price;
                         this.Publisher = book.Publisher;
                         this.SPhoto = book.SPhoto;
                         this.Title = book.Title;

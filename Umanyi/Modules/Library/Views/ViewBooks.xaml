@@ -21,7 +21,7 @@
                 <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="250" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Author" Binding="{Binding Author}" Width="100" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Publisher" Binding="{Binding Publisher}" Width="100" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Price" Binding="{Binding Price, StringFormat={}{0:N2}}" Width="80" IsReadOnly="True"/>
+                
             </DataGrid.Columns>
         </DataGrid>
         <TextBlock HorizontalAlignment="Right" Margin="0,90,20,0" VerticalAlignment="Top">

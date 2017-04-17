@@ -14,7 +14,6 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
     public class NewItemVM: ViewModelBase
     {
         ItemModel item;
-        bool isTaxable;
         ObservableCollection<ItemCategoryModel> allItemCategories;
         public NewItemVM()
         {
@@ -57,7 +56,7 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
         private bool CanSave()
         {
             return item.ItemID > 0 && !string.IsNullOrWhiteSpace(item.Description)
-                && item.Cost > 0 && item.Price > 0 && item.ItemCategoryID > 0;
+                && item.Cost > 0 && item.ItemCategoryID > 0;
         }
 
         public ICommand SaveCommand

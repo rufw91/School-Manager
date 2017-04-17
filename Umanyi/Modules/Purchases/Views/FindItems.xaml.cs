@@ -2,6 +2,7 @@
 
 
 using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
@@ -18,66 +19,34 @@ namespace UmanyiSMS.Modules.Purchases.Views
 {
     public partial class FindItems : CustomWindow, INotifyPropertyChanged
     {
-        ItemFindModel selectedItem;
-        ObservableCollection<ItemFindModel> selectedItems;
-
-        string searchText;
+       string searchText;
         public FindItems()
         {
-            selectedItems = new ObservableCollection<ItemFindModel>();
             InitializeComponent();
             SearchText = "";
             GetAllItems(this.Dispatcher);
-            AllItems = new ObservableCollection<ItemModel>();
-
-            dtGrid.SelectionChanged += (o, e) =>
-            {
-                this.selectedItems.Clear();
-                this.selectedItem = new ItemFindModel(dtGrid.SelectedItem as ItemModel);
-                foreach (var i in dtGrid.SelectedItems)
-                    this.SelectedItems.Add(new ItemFindModel(i as ItemModel));
-            };
+            AllItems = new ObservableCollection<ItemFindModel>();
+            
             DataContext = this;
         }
 
         private void Search()
         {
             dtGrid.Items.Filter = null;
-            dtGrid.Items.Filter = new Predicate<object>((item) =>
-            {
-                ItemFindModel findItem = item as ItemFindModel;
-                if (findItem != null)
-                    return findItem.Description.ToUpperInvariant().Contains(searchText.ToUpperInvariant()) ||
-                        (findItem.ItemID.ToString().ToUpperInvariant().Contains(searchText.ToUpperInvariant()));
-                else
-                    return true;
-
-            });
+            dtGrid.Items.Filter = (item) => Controller.DataController.SearchAllItemProperties(item as ItemFindModel, searchText);
         }
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
-        private ObservableCollection<ItemModel> allItems;
+        private ObservableCollection<ItemFindModel> allItems;
         protected void NotifyPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = this.PropertyChanged;
             if (handler != null) { var e = new PropertyChangedEventArgs(propertyName); handler(this, e); }
         }
-        public ItemFindModel SelectedItem
-        {
-            get { return selectedItem; }
-            private set
-            {
-                if (value != this.selectedItem)
-                {
-                    this.selectedItem = value;
-                    NotifyPropertyChanged("SelectedItems");
-                }
-            }
-        }
-
+        
         public ObservableCollection<ItemFindModel> SelectedItems
         {
-            get { return selectedItems; }
+            get { return new ObservableCollection<ItemFindModel>(allItems.Where(o=>o.IsSelected)); }
         }
 
         public string SearchText
@@ -100,7 +69,6 @@ namespace UmanyiSMS.Modules.Purchases.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.SelectedItem = null;
             this.Visibility = Visibility.Collapsed;
         }
 
@@ -112,9 +80,7 @@ namespace UmanyiSMS.Modules.Purchases.Views
                                    "Description," +
                                    "DateAdded," +
                                    "ItemCategoryID," +
-                                   "Price," +
-                                   "Cost," +
-                                   "StartQuantity" +
+                                   "Cost" +
                                    " FROM [Item]";
                 try
                 {
@@ -124,18 +90,17 @@ namespace UmanyiSMS.Modules.Purchases.Views
                         cmd.CommandText = "USE UmanyiSMS\r\nSET DATEFORMAT DMY\r\n" + selectStr;
                         cmd.Connection = DBConnection;
                         SqlDataReader reader = cmd.ExecuteReader();
-                        ItemModel im;
+                        ItemFindModel im;
                         while (reader.Read())
                         {
                             var dtr = (IDataRecord)reader;
-                            im = new ItemModel();
+                            im = new ItemFindModel();
                             im.ItemID = long.Parse(dtr[0].ToString());
                             im.Description = dtr[1].ToString();
                             im.DateAdded = DateTime.Parse(dtr[2].ToString());
                             im.ItemCategoryID = int.Parse(dtr[3].ToString());
-                            im.Price = decimal.Parse(dtr[4].ToString());
-                            im.Cost = decimal.Parse(dtr[5].ToString());
-                            im.StartQuantity = decimal.Parse(dtr[6].ToString());
+                            im.Cost = decimal.Parse(dtr[4].ToString());
+                            im.IsSelected = false;
                             dispatcher.Invoke(() => { AllItems.Add(im); });
                         }
 
@@ -150,17 +115,8 @@ namespace UmanyiSMS.Modules.Purchases.Views
 
             });
         }
-
-        private void dtGrid_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Space)
-                if (dtGrid.SelectedItem != null)
-                    (dtGrid.SelectedItem as ItemFindModel).IsSelected = !(dtGrid.SelectedItem as ItemFindModel).IsSelected;
-            if (e.Key == Key.Enter)
-                FocusManager.SetFocusedElement(this, btnFinish);
-        }
-
-        public ObservableCollection<ItemModel> AllItems
+        
+        public ObservableCollection<ItemFindModel> AllItems
         {
             get { return allItems; }
             private set
@@ -169,7 +125,6 @@ namespace UmanyiSMS.Modules.Purchases.Views
                 {
                     this.allItems = value;
                     NotifyPropertyChanged("AllItems");
-
                 }
             }
         }

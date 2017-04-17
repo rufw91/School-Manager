@@ -37,6 +37,12 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             {
                 bool succ = false;
                 IsBusy = true;
+                if (!SqlServerHelper.IsServerMachine)
+                {
+                    MessageBox.Show("Backup can only be run from the server machine ("+UmanyiSMS.Lib.Properties.Settings.Default.Info.ServerName+")", "Error", MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    return;
+                }
                 if (IsAdmin())
                     succ = await (DataAccessHelper.Helper as SqlServerHelper).CreateBackupAsync(pathToFile);
                 else

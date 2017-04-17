@@ -28,17 +28,25 @@ AboutUrl="http://www.umanyi.co.ke/sms/" SplashScreenSourceFile="C:\Dev\SplashSCr
     <Chain>
       
       <PackageGroupRef Id="NetFx451Redist"/>
+      <RollbackBoundary/>
       <MsiPackage Id="sqlncli2012x64" InstallCondition="NOT VersionNT64"  Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\Sql Feature Pack\x86\sqlncli2012.msi">
          <MsiProperty Name="IACCEPTSQLNCLILICENSETERMS" Value="Yes"/>
-      </MsiPackage>
+      </MsiPackage>      
       <MsiPackage Id="sqlncli2012x86" InstallCondition="VersionNT64" Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\Sql Feature Pack\x64\sqlncli2012.msi" >
          <MsiProperty Name="IACCEPTSQLNCLILICENSETERMS" Value="Yes"/>
       </MsiPackage>
+      <RollbackBoundary/>
       <MsiPackage Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\Sql Feature Pack\x86\SQLSysClrTypes2012.msi" />
-        <MsiPackage Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\Sql Feature Pack\x86\SharedManagementObjects2012.msi" />
-      <MsiPackage Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\SqlLocalDb.msi" InstallCondition="NOT (LDB2012Exists OR LDB2014Exists OR LDB2016Exists) " >
+      <RollbackBoundary/>
+      <MsiPackage Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\Sql Feature Pack\x86\SharedManagementObjects2012.msi" />
+      <RollbackBoundary/>
+      <MsiPackage Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\SqlLocalDbx86.msi" InstallCondition="NOT VersionNT64 AND NOT (LDB2012Exists OR LDB2014Exists OR LDB2016Exists) " >
         <MsiProperty Name="IACCEPTSQLLOCALDBLICENSETERMS" Value="Yes"/>
       </MsiPackage>
+      <MsiPackage Permanent="yes" ForcePerMachine="yes" SourceFile="C:\Storage\Softs\Redist\SqlLocalDbx64.msi" InstallCondition="VersionNT64 AND NOT (LDB2012Exists OR LDB2014Exists OR LDB2016Exists)" >
+        <MsiProperty Name="IACCEPTSQLLOCALDBLICENSETERMS" Value="Yes"/>
+      </MsiPackage>
+      <RollbackBoundary/>
       <MsiPackage Id="UmanyiSMS" ForcePerMachine="yes" SourceFile="$(var.SetupClient.TargetDir)SetupClient.msi" />
     </Chain>
   </Bundle>

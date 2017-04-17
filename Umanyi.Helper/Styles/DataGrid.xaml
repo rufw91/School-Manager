@@ -3,6 +3,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/Button.xaml" />
+        <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/CheckBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 

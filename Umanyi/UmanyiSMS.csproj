@@ -343,10 +343,8 @@
     <Compile Include="Modules\Purchases\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Purchases\Models\ItemBaseModel.cs" />
     <Compile Include="Modules\Purchases\Models\ItemFindModel.cs" />
-    <Compile Include="Modules\Purchases\Models\ItemListModel.cs" />
     <Compile Include="Modules\Purchases\Models\ItemModel.cs" />
     <Compile Include="Modules\Purchases\Models\ItemPurchaseModel.cs" />
-    <Compile Include="Modules\Purchases\Models\ItemSaleModel.cs" />
     <Compile Include="Modules\Purchases\Models\ItemStockTakingModel.cs" />
     <Compile Include="Modules\Purchases\Models\ItemStockTakingResultsModel.cs" />
     <Compile Include="Modules\Purchases\Models\ModifyItemModel.cs" />
@@ -371,8 +369,6 @@
     <Compile Include="Modules\Purchases\ViewModels\PaymentToSupplierVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\ReceiveItemsVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\ReprintPaymentVoucherVM.cs" />
-    <Compile Include="Modules\Purchases\ViewModels\StockTakeResultsVM.cs" />
-    <Compile Include="Modules\Purchases\ViewModels\StockTakingVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\SupplierListVM.cs" />
     <Compile Include="Modules\Purchases\ViewModels\SupplierStatementVM.cs" />
     <Compile Include="Modules\Purchases\Views\FindItems.xaml.cs">

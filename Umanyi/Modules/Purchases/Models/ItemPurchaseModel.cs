@@ -28,7 +28,7 @@ namespace UmanyiSMS.Modules.Purchases.Models
             Cost = buyingPrice;
         }
 
-        public ItemPurchaseModel(ItemModel itemModel)
+        public ItemPurchaseModel(ItemFindModel itemModel)
             : base(itemModel.ItemID, itemModel.Description)
         {
             PropertyChanged += (o, e) =>
@@ -36,8 +36,8 @@ namespace UmanyiSMS.Modules.Purchases.Models
                 if (e.PropertyName == "Cost" || e.PropertyName == "Quantity")
                     TotalAmt = Cost * Quantity;
             };
-            Cost = itemModel.Price;
-            Quantity = 1;
+            Cost = itemModel.Cost;
+            Quantity = itemModel.Quantity;
         }
         
        

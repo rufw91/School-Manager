@@ -57,7 +57,7 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
         private bool CanSave()
         {            
             return !item.HasErrors && !string.IsNullOrWhiteSpace(item.Description)
-                && item.Cost > 0 && item.Price > 0 && item.ItemCategoryID > 0;
+                && item.Cost > 0  && item.ItemCategoryID > 0;
         }
 
         public ICommand SaveCommand
