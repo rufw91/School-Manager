@@ -110,12 +110,12 @@
     </ComponentGroup>
     <ComponentGroup Id="DataComponents" Directory="PD2">
       <Component Id="cmp24" Guid="*" Permanent="yes">
-        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS.mdf" >
+        <File Source="C:\ProgramData\Raphael Muindi\UmanyiSMS\UmanyiSMS.mdf" >
           <Permission User="Users" GenericAll="yes"/>
         </File>
       </Component>
       <Component Id="cmp25" Guid="*" Permanent="yes">
-        <File Source="$(var.UmanyiSMS.TargetDir)UmanyiSMS_log.ldf">
+        <File Source="C:\ProgramData\Raphael Muindi\UmanyiSMS\UmanyiSMS_log.ldf">
            <Permission User="Users" GenericAll="yes"/>
         </File>
       </Component>

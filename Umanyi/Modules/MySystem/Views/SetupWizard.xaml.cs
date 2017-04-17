@@ -9,9 +9,10 @@ namespace UmanyiSMS.Modules.MySystem.Views
 
         public SetupWizard(bool openedAsChild)
         {
+            var vm = new SetupWizardVM();
             InitializeComponent();
             _openedAsChild = openedAsChild;
-            var vm = new SetupWizardVM();
+            
             vm.CloseAction = () =>
               {
                   vm.UserClosed = false;

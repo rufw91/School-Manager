@@ -23,7 +23,7 @@
                     <DataGridTextColumn Binding="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Publisher" 
                                             IsReadOnly="True" Width="150*"
                                             />
-                    <DataGridTextColumn Binding="{Binding Path=Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Price" IsReadOnly="True" Width="80*" />
+                  
                 </DataGrid.Columns>
             </DataGrid>
 

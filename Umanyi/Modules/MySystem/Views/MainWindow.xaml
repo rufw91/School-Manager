@@ -100,6 +100,7 @@
                         <MenuItem Header="New Item" Command="{Binding PurchasesNewItemCommand}"/>
                         <MenuItem Header="New Item Category" Command="{Binding PurchasesNewItemCategoryCommand}"/>
                         <MenuItem Header="Modify Item" Command="{Binding PurchasesModifyItemCommand}"/>
+                        <MenuItem Header="Items List" Command="{Binding PurchasesItemListCommand}"/>
                         <MenuItem Header="Remove Item" Command="{Binding PurchasesRemoveItemCommand}"/>
                     </MenuItem>
                     <MenuItem Header="Suppliers">

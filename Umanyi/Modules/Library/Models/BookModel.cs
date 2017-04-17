@@ -11,7 +11,6 @@ namespace UmanyiSMS.Modules.Library.Models
         string author;
         byte[] sPhoto;
         private string publisher;
-        private decimal price;
 
         public BookModel()
         {
@@ -21,7 +20,6 @@ namespace UmanyiSMS.Modules.Library.Models
             ISBN = "";
             SPhoto = new byte[0];
             Publisher = "";
-            Price = 0;
         }
 
         public BookModel(BookModel book)
@@ -32,7 +30,6 @@ namespace UmanyiSMS.Modules.Library.Models
             ISBN = book.isbn;
             SPhoto = book.sPhoto;
             Publisher = book.publisher;
-            Price = book.price;
         }
         
         public int BookID
@@ -118,19 +115,6 @@ namespace UmanyiSMS.Modules.Library.Models
             }
         }
 
-        public decimal Price
-        {
-            get { return this.price; }
-
-            set
-            {
-                if (value != this.price)
-                {
-                    this.price = value;
-                    NotifyPropertyChanged("Price");
-                }
-            }
-        }
         public override void Reset()
         {
             BookID = 0;
@@ -139,7 +123,6 @@ namespace UmanyiSMS.Modules.Library.Models
             ISBN = "";
             SPhoto = new byte[0];
             Publisher = "";
-            Price = 0;
         }
 
         

@@ -137,7 +137,6 @@ namespace UmanyiSMS.Modules.Library.Controller
             AddText(item.ISBN, "Arial Narrow", fontsize, false, 0, Colors.Black, 20, yPos, pageNo);
             AddText(item.Title, "Arial Narrow", fontsize, false, 0, Colors.Black, 200, yPos, pageNo);
             AddText(item.Publisher, "Arial Narrow", fontsize, false, 0, Colors.Black, 520, yPos, pageNo);
-            AddText(item.Price.ToString("N2"), "Arial Narrow", fontsize, false, 0, Colors.Black, 700, yPos, pageNo);
         }
         private void AddUBEntries(ObservableCollection<BookModel> psi, int pageNo)
         {

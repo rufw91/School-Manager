@@ -18,24 +18,24 @@ namespace UmanyiSMS.Modules.Purchases.Models
         {
             PurchaseID = 0;
             SupplierID = 0;
-            OrderTotal = 0;
+            orderTotal = 0;
             NoOfItems = 0;
             Items = new ObservableCollection<ItemPurchaseModel>();
             OrderDate = DateTime.Now;
             RefNo = "";
-            OrderTotal = 0;
             IsCancelled = false;
-            Items.CollectionChanged += (o, e) =>
-                {
-                    RefreshOrderTotal();
-                };
-            
+            items.CollectionChanged+=(o,e)=>
+            {
+                RefreshOrderTotal();
+                NotifyPropertyChanged("OrderTotal");
+            };
         }
 
         public void RefreshOrderTotal()
-        {OrderTotal=0;
-        foreach (ItemPurchaseModel ipm in Items)
-            OrderTotal += ipm.TotalAmt;
+        {
+            orderTotal = 0;
+            foreach (ItemPurchaseModel ipm in Items)
+                orderTotal += ipm.TotalAmt;
         }
         
         public int PurchaseID
@@ -95,16 +95,7 @@ namespace UmanyiSMS.Modules.Purchases.Models
         }
         public decimal OrderTotal
         {
-            get { return this.orderTotal; }
-
-            set
-            {
-                if (value != this.orderTotal)
-                {
-                    this.orderTotal = value;
-                    NotifyPropertyChanged("OrderTotal");
-                }
-            }
+            get { RefreshOrderTotal(); return this.orderTotal; }            
         }
         public decimal NoOfItems
         {
@@ -151,7 +142,6 @@ namespace UmanyiSMS.Modules.Purchases.Models
             PurchaseID = 0;
             RefNo = "";
             SupplierID = 0;
-            OrderTotal = 0;
             NoOfItems = 0;
             Items = new ObservableCollection<ItemPurchaseModel>();
             OrderDate = DateTime.Now;

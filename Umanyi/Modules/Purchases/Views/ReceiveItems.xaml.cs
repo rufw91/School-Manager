@@ -1,5 +1,5 @@
 ﻿
-
+using System.Linq;
 using System.Windows.Controls;
 using UmanyiSMS.Modules.Purchases.Models;
 using UmanyiSMS.Modules.Purchases.ViewModels;
@@ -21,10 +21,15 @@ namespace UmanyiSMS.Modules.Purchases.Views
                     FindItems f = new FindItems();
                     f.ShowDialog();
                     if (f != null)
-                        if (f.SelectedItems != null)
+                        if (f.SelectedItems.Count >0)
                         {
                             foreach (ItemFindModel ifm in f.SelectedItems)
-                                rivm.NewReceipt.Items.Add(new ItemPurchaseModel(ifm));
+                            {
+                                if (rivm.NewReceipt.Items.Any(item => item.ItemID == ifm.ItemID))
+                                    rivm.NewReceipt.Items.First(item => item.ItemID == ifm.ItemID).Quantity += ifm.Quantity;
+                                else
+                                    rivm.NewReceipt.Items.Add(new ItemPurchaseModel(ifm));
+                            }
                         }
                 };
             };

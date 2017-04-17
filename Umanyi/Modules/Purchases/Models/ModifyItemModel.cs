@@ -32,11 +32,9 @@ namespace UmanyiSMS.Modules.Purchases.Models
                         ClearErrors("ItemID");
                         this.ItemID = item.ItemID;
                         this.Description = item.Description;
-                        this.Cost = 1;
+                        this.Cost = item.Cost;
                         this.DateAdded = item.DateAdded;
                         this.ItemCategoryID = item.ItemCategoryID;
-                        this.Price = item.Price;
-                        this.StartQuantity = item.StartQuantity;
                     }
                 }
 

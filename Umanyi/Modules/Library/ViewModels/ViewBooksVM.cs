@@ -11,8 +11,7 @@ using UmanyiSMS.Lib.Presentation;
 
 namespace UmanyiSMS.Modules.Library.ViewModels
 {
-    [PrincipalPermission(SecurityAction.Demand, Role = "User")]
-    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class ViewBooksVM: ViewModelBase
     {
         CollectionViewSource collViewSource;

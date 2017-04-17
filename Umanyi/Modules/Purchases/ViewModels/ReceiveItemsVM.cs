@@ -62,12 +62,11 @@ namespace UmanyiSMS.Modules.Purchases.ViewModels
 
         private bool CanSave()
         {
-            bool succ = true;
             foreach (var i in newReceipt.Items)
                 if (i.TotalAmt==0)
-                { succ = false; break; }
-            return newReceipt.SupplierID > 0 && succ&&!string.IsNullOrWhiteSpace(newReceipt.RefNo)&&
-                    newReceipt.Items.Count > 0 && newReceipt.OrderTotal > 0;
+                { return false; }
+            return newReceipt.SupplierID > 0 && !string.IsNullOrWhiteSpace(newReceipt.RefNo) &&
+                    newReceipt.Items.Count > 0;
         }
 
         public ObservableCollection<SupplierBaseModel> AllSuppliers

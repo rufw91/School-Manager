@@ -9,19 +9,24 @@ namespace UmanyiSMS.Modules.Purchases.Models
     public class ItemFindModel:ItemModel
     {
         bool isSelected;
+        private decimal quantity;
+
         public ItemFindModel()
         {
             IsSelected = false;
+            Quantity = 1;
         }
         public ItemFindModel(ItemModel item)
             : base(item)
         {
             IsSelected = false;
+            Quantity = 1;
         }
         public override void Reset()
         {
             base.Reset();
             IsSelected = false;
+            Quantity = 1;
         }
 
         public bool IsSelected
@@ -34,6 +39,20 @@ namespace UmanyiSMS.Modules.Purchases.Models
                 {
                     this.isSelected = value;
                     NotifyPropertyChanged("IsSelected");
+                }
+            }
+        }
+
+        public decimal Quantity
+        {
+            get { return this.quantity; }
+
+            set
+            {
+                if (value != this.quantity)
+                {
+                    this.quantity = value;
+                    NotifyPropertyChanged("Quantity");
                 }
             }
         }

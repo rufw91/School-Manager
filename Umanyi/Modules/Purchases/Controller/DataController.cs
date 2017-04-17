@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Controllers;
@@ -14,12 +15,19 @@ namespace UmanyiSMS.Modules.Purchases.Controller
 {
     public class DataController
     {
+        public static bool SearchAllItemProperties(ItemModel item, string searchText)
+        {
+            if (item == null)
+                return false;
+            Regex.CacheSize = 14;
+            return Regex.Match(item.Description, searchText, RegexOptions.IgnoreCase).Success || Regex.Match(item.ItemID.ToString(), searchText, RegexOptions.IgnoreCase).Success;
+        }
         internal static Task<ItemCategoryModel> GetAccountAsync(int accountID)
         {
             return Task.Factory.StartNew<ItemCategoryModel>(() =>
             {
                 string text = "SELECT ItemCategoryID,Description FROM [Sales].[ItemCategory] WHERE ItemCategoryID = @catID";
-                ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                var paramColl = new List<SqlParameter>();
                 paramColl.Add(new SqlParameter("@catID", accountID));
                 var result = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text, paramColl);
 
@@ -42,8 +50,10 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         internal static ItemModel GetItem(long itemID)
         {
             ItemModel itemModel = new ItemModel();
-            string commandText = "SELECT ItemID,Description,DateAdded,ItemCategoryID,Price,Cost,StartQuantity FROM [Item] WHERE ItemID =" + itemID;
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            string commandText = "SELECT ItemID,Description,DateAdded,ItemCategoryID,Cost FROM [Item] WHERE ItemID =@itid";
+            var paramColl = new List<SqlParameter>();
+            paramColl.Add(new SqlParameter("@itid", itemID));
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText,paramColl);
             if (dataTable.Rows.Count > 0)
             {
                 DataRow dataRow = dataTable.Rows[0];
@@ -51,9 +61,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                 itemModel.Description = dataRow[1].ToString();
                 itemModel.DateAdded = DateTime.Parse(dataRow[2].ToString());
                 itemModel.ItemCategoryID = int.Parse(dataRow[3].ToString());
-                itemModel.Price = decimal.Parse(dataRow[4].ToString());
-                itemModel.Cost = 1m;
-                itemModel.StartQuantity = decimal.Parse(dataRow[6].ToString());
+                itemModel.Cost = int.Parse(dataRow[4].ToString());
             }
             return itemModel;
         }
@@ -63,8 +71,10 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string commandText = "DELETE FROM [Supplier] WHERE SupplierID=" + supplierID + ";";
-                return DataAccessHelper.Helper.ExecuteNonQuery(commandText);
+                string commandText = "DELETE FROM [Supplier] WHERE SupplierID=@suppid;";
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@suppid", supplierID));
+                return DataAccessHelper.Helper.ExecuteNonQuery(commandText,paramColl);
             });
         }
 
@@ -72,12 +82,10 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             return Task.Factory.StartNew<int>(delegate
             {
-                string commandText = string.Concat(new object[]
-                {
-                    "SELECT SupplierPaymentID FROM [SupplierPayment] WHERE SupplierID=@suppID AND CONVERT(date,DatePaid)=CONVERT(date,@dtp)"
-                });
+                string commandText = "SELECT SupplierPaymentID FROM [SupplierPayment] WHERE SupplierID=@suppID AND CONVERT(date,DatePaid)=CONVERT(date,@dtp)";
+               
                 int result;
-                ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                var paramColl = new List<SqlParameter>();
                 paramColl.Add(new SqlParameter("@suppID", supplierID));
                 paramColl.Add(new SqlParameter("@dtp", datePaid));
                 int.TryParse(DataAccessHelper.Helper.ExecuteScalar(commandText, paramColl), out result);
@@ -89,25 +97,15 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string commandText = string.Concat(new object[]
-                {
-                    "INSERT INTO [Item] (ItemID,Description,DateAdded,ItemCategoryID,Price,Cost,StartQuantity) VALUES(",
-                    item.ItemID,
-                    ",'",
-                    item.Description,
-                    "','",
-                    item.DateAdded.ToString("g"),
-                    "',",
-                    item.ItemCategoryID,
-                    ",",
-                    item.Price,
-                    ",",
-                    item.Cost,
-                    ",",
-                    item.StartQuantity,
-                    ")"
-                });
-                return DataAccessHelper.Helper.ExecuteNonQuery(commandText);
+                string commandText = "INSERT INTO [Item] (ItemID,Description,DateAdded,ItemCategoryID,Cost) "+
+                "VALUES(@itid,@desc,@det,@catid,@cost)";
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@itid", item.ItemID));
+                paramColl.Add(new SqlParameter("@desc", item.Description));
+                paramColl.Add(new SqlParameter("@det", item.DateAdded));
+                paramColl.Add(new SqlParameter("@catid", item.ItemCategoryID));
+                paramColl.Add(new SqlParameter("@cost", item.Cost));
+                return DataAccessHelper.Helper.ExecuteNonQuery(commandText,paramColl);
             });
         }
 
@@ -184,7 +182,6 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                     PurchaseModel purchaseModel = new PurchaseModel();
                     purchaseModel.PurchaseID = int.Parse(dataRow[0].ToString());
                     purchaseModel.OrderDate = DateTime.Parse(dataRow[1].ToString());
-                    purchaseModel.OrderTotal = decimal.Parse(dataRow[2].ToString());
                     if (supplierID.HasValue)
                     {
                         purchaseModel.SupplierID = supplierID.Value;
@@ -227,25 +224,22 @@ namespace UmanyiSMS.Modules.Purchases.Controller
 
 
 
-        public static Task<ObservableCollection<ItemListModel>> GetAllItemsWithCurrentQuantityAsync()
+        public static Task<ObservableCollection<ItemModel>> GetAllItemsAsync()
         {
-            return Task.Factory.StartNew<ObservableCollection<ItemListModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<ItemModel>>(delegate
             {
-                ObservableCollection<ItemListModel> observableCollection = new ObservableCollection<ItemListModel>();
-                string commandText = "SELECT ItemID,Description,DateAdded,ItemCategoryID,Price,Cost,StartQuantity,dbo.GetCurrentQuantity(ItemID) FROM [Item]";
+                ObservableCollection<ItemModel> observableCollection = new ObservableCollection<ItemModel>();
+                string commandText = "SELECT ItemID,Description,DateAdded,ItemCategoryID,Cost FROM [Item]";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
-                    observableCollection.Add(new ItemListModel
+                    observableCollection.Add(new ItemModel
                     {
                         ItemID = long.Parse(dataRow[0].ToString()),
                         Description = dataRow[1].ToString(),
                         DateAdded = DateTime.Parse(dataRow[2].ToString()),
                         ItemCategoryID = int.Parse(dataRow[3].ToString()),
-                        Price = decimal.Parse(dataRow[4].ToString()),
-                        Cost = decimal.Parse(dataRow[5].ToString()),
-                        StartQuantity = decimal.Parse(dataRow[6].ToString()),
-                        CurrentQuantity = decimal.Parse(dataRow[7].ToString())
+                        Cost = decimal.Parse(dataRow[4].ToString())
                     });
                 }
                 return observableCollection;
@@ -295,24 +289,14 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string commandText = string.Concat(new object[]
-                {
-                    "UPDATE [Item] SET Description='",
-                    item.Description,
-                    "', DateAdded='",
-                    item.DateAdded.ToString("g"),
-                    "', ItemCategoryID=",
-                    item.ItemCategoryID,
-                    ", Price=",
-                    item.Price,
-                    ", Cost=",
-                    item.Cost,
-                    ", StartQuantity=",
-                    item.StartQuantity,
-                    " WHERE ItemID=",
-                    item.ItemID
-                });
-                return DataAccessHelper.Helper.ExecuteNonQuery(commandText);
+                string commandText ="UPDATE [Item] SET Description=@desc, DateAdded=@det, ItemCategoryID=@catid, Cost=@cost WHERE ItemID=@itid";
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@itid", item.ItemID));
+                paramColl.Add(new SqlParameter("@desc", item.Description));
+                paramColl.Add(new SqlParameter("@det", item.DateAdded));
+                paramColl.Add(new SqlParameter("@catid", item.ItemCategoryID));
+                paramColl.Add(new SqlParameter("@cost", item.Cost));
+                return DataAccessHelper.Helper.ExecuteNonQuery(commandText,paramColl);
             });
         }
 
@@ -320,37 +304,28 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string text = string.Concat(new object[]
-                {
-                    "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('dbo.ItemReceiptHeader')\r\nINSERT INTO [ItemReceiptHeader] (ItemReceiptID,SupplierID,OrderDate,RefNo,IsCancelled) VALUES(@id,",
-                    currentPurchase.SupplierID,
-                    ",'",
-                    currentPurchase.OrderDate.ToString("g"),
-                    "','",
-                    currentPurchase.RefNo,
-                    "',",
-                    currentPurchase.IsCancelled ? "1" : "0",
-                    ")"
-                });
+                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('dbo.ItemReceiptHeader')\r\n" +
+                "INSERT INTO [ItemReceiptHeader] (ItemReceiptID,SupplierID,OrderDate,RefNo,IsCancelled) VALUES(@id,@suppid,@det,@refno,@isc)";
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@suppid", currentPurchase.SupplierID));
+                paramColl.Add(new SqlParameter("@refno", currentPurchase.RefNo));
+                paramColl.Add(new SqlParameter("@det", currentPurchase.OrderDate));
+                paramColl.Add(new SqlParameter("@isc", currentPurchase.IsCancelled));
+                int index = 0;
                 foreach (ItemPurchaseModel current in currentPurchase.Items)
                 {
-                    object obj = text;
-                    text = string.Concat(new object[]
-                    {
-                        obj,
-                        "\r\nINSERT INTO [ItemReceiptDetail] (ItemReceiptID,ItemID,UnitCost,Quantity,LineTotal) VALUES(@id,",
-                        current.ItemID,
-                        ",",
-                        current.Cost,
-                        ",",
-                        current.Quantity,
-                        ",",
-                        current.TotalAmt,
-                        ")"
-                    });
+                    text += "\r\nINSERT INTO [ItemReceiptDetail] (ItemReceiptID,ItemID,UnitCost,Quantity,LineTotal) " +
+                    "VALUES(@id,@itid" + index + ",@cost" + index + ",@qty" + index + ",@tot" + index + ")";
+
+                    paramColl.Add(new SqlParameter("@itid" + index, current.ItemID));
+                    paramColl.Add(new SqlParameter("@cost" + index, current.Cost));
+                    paramColl.Add(new SqlParameter("@qty" + index, current.Quantity));
+                    paramColl.Add(new SqlParameter("@tot" + index, current.TotalAmt));
+                    index++;
                 }
                 text += "\r\nCOMMIT";
-                DataAccessHelper.Helper.ExecuteNonQuery(text);
+                
+                DataAccessHelper.Helper.ExecuteNonQuery(text,paramColl);
                 return true;
             });
         }
@@ -389,7 +364,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
             return Task.Factory.StartNew<bool>(delegate
             {
                 string commandText = "INSERT INTO [ItemCategory] (Description) VALUES(@desc)";
-                ObservableCollection<SqlParameter> paramColl = new ObservableCollection<SqlParameter>();
+                var paramColl = new List<SqlParameter>();
                 paramColl.Add(new SqlParameter("@desc", itemCategory.Description));
                 bool succ = DataAccessHelper.Helper.ExecuteNonQuery(commandText, paramColl);
                 return succ;
@@ -400,56 +375,19 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string commandText;
-                if (newSupplier.SupplierID <= 0)
-                {
-                    commandText = string.Concat(new string[]
-                    {
-                        "INSERT INTO [Supplier] (NameOfSupplier,PhoneNo,AltPhoneNo,Email, Address, PostalCode, City,PINNo) VALUES('",
-                        newSupplier.NameOfSupplier,
-                        "','",
-                        newSupplier.PhoneNo,
-                        "','",
-                        newSupplier.AltPhoneNo,
-                        "','",
-                        newSupplier.Email,
-                        "','",
-                        newSupplier.Address,
-                        "','",
-                        newSupplier.PostalCode,
-                        "','",
-                        newSupplier.City,
-                        "','",
-                        newSupplier.PINNo,
-                        "')"
-                    });
-                }
-                else
-                {
-                    commandText = string.Concat(new object[]
-                    {
-                        "INSERT INTO [Supplier] (SupplierID, NameOfSupplier,PhoneNo,AltPhoneNo,Email, Address, PostalCode, City,PINNo) VALUES(",
-                        newSupplier.SupplierID,
-                        ",'",
-                        newSupplier.NameOfSupplier,
-                        "','",
-                        newSupplier.PhoneNo,
-                        "','",
-                        newSupplier.AltPhoneNo,
-                        "','",
-                        newSupplier.Email,
-                        "','",
-                        newSupplier.Address,
-                        "','",
-                        newSupplier.PostalCode,
-                        "','",
-                        newSupplier.City,
-                        "','",
-                        newSupplier.PINNo,
-                        "')"
-                    });
-                }
-                return DataAccessHelper.Helper.ExecuteNonQuery(commandText);
+                string commandText = "INSERT INTO [Supplier] (NameOfSupplier,PhoneNo,AltPhoneNo,Email, Address, PostalCode, City,PINNo) " +
+                        "VALUES(@nam,@phone,@altphone,@email,@address,@postcode,@city,@pinno)";
+
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@nam", newSupplier.NameOfSupplier));
+                paramColl.Add(new SqlParameter("@phone", newSupplier.PhoneNo));
+                paramColl.Add(new SqlParameter("@altphone", newSupplier.AltPhoneNo));
+                paramColl.Add(new SqlParameter("@email", newSupplier.Email));
+                paramColl.Add(new SqlParameter("@address", newSupplier.Address));
+                paramColl.Add(new SqlParameter("@postcode", newSupplier.PostalCode));
+                paramColl.Add(new SqlParameter("@city", newSupplier.City));
+                paramColl.Add(new SqlParameter("@pinno", newSupplier.PINNo));
+                return DataAccessHelper.Helper.ExecuteNonQuery(commandText, paramColl);
             });
         }
 
@@ -529,19 +467,14 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string commandText = string.Concat(new object[]
-                {
-                    "INSERT INTO [SupplierPayment] (SupplierID,DatePaid,AmountPaid,Notes) VALUES(",
-                    newPayment.SupplierID,
-                    ",'",
-                    newPayment.DatePaid.ToString("g"),
-                    "',",
-                    newPayment.AmountPaid,
-                    ",'",
-                    newPayment.Notes,
-                    "')"
-                });
-                return DataAccessHelper.Helper.ExecuteNonQuery(commandText);
+                string commandText = "INSERT INTO [SupplierPayment] (SupplierID,DatePaid,AmountPaid,Notes) "+
+                    "VALUES(@suppID,@det,@amt,@notes)";
+                var paramColl = new List<SqlParameter>();
+                paramColl.Add(new SqlParameter("@suppID", newPayment.SupplierID));
+                paramColl.Add(new SqlParameter("@det", newPayment.DatePaid));
+                paramColl.Add(new SqlParameter("@amt", newPayment.AmountPaid));
+                paramColl.Add(new SqlParameter("@notes", newPayment.Notes));
+                return DataAccessHelper.Helper.ExecuteNonQuery(commandText, paramColl);
             });
         }
 
@@ -595,72 +528,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                 return observableCollection;
             });
         }
-
-        public static Task<ObservableCollection<StockTakingBaseModel>> GetAllStockTakings()
-        {
-            return Task.Factory.StartNew<ObservableCollection<StockTakingBaseModel>>(delegate
-            {
-                ObservableCollection<StockTakingBaseModel> observableCollection = new ObservableCollection<StockTakingBaseModel>();
-                string commandText = "SELECT StockTakingID,DateTaken FROM [StockTakingHeader]";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
-                foreach (DataRow dataRow in dataTable.Rows)
-                {
-                    observableCollection.Add(new StockTakingBaseModel
-                    {
-                        StockTakingID = int.Parse(dataRow[0].ToString()),
-                        DateTaken = new DateTime?(DateTime.Parse(dataRow[1].ToString()))
-                    });
-                }
-                return observableCollection;
-            });
-        }
-
-        public static Task<StockTakingResultsModel> GetStockTakingResults(int stockTakingID)
-        {
-            return Task.Factory.StartNew<StockTakingResultsModel>(delegate
-            {
-                StockTakingResultsModel stockTakingResultsModel = new StockTakingResultsModel();
-                string commandText = "SELECT std.ItemID,i.Description,std.AvailableQuantity,std.Expected,std.VarianceQty,CASE (dbo.GetCurrentQuantity([std].[ItemID])) \r\nWHEN 0 THEN 0\r\nELSE \r\nstd.VariancePc/dbo.GetCurrentQuantity([std].[ItemID]) END FROM [StockTakingDetail] std LEFT OUTER JOIN [Item] i ON( std.ItemID = i.ItemID) WHERE std.StockTakingID = " + stockTakingID;
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
-                foreach (DataRow dataRow in dataTable.Rows)
-                {
-                    ItemStockTakingResultsModel itemStockTakingResultsModel = new ItemStockTakingResultsModel();
-                    itemStockTakingResultsModel.ItemID = long.Parse(dataRow[0].ToString());
-                    itemStockTakingResultsModel.Description = dataRow[1].ToString();
-                    itemStockTakingResultsModel.Counted = decimal.Parse(dataRow[2].ToString());
-                    itemStockTakingResultsModel.Expected = decimal.Parse(dataRow[3].ToString());
-                    itemStockTakingResultsModel.VarianceQty = decimal.Parse(dataRow[4].ToString());
-                    itemStockTakingResultsModel.VariancePc = decimal.Parse(dataRow[5].ToString());
-                    stockTakingResultsModel.Items.Add(itemStockTakingResultsModel);
-                }
-                return stockTakingResultsModel;
-            });
-        }
-
-        public static Task<bool> SaveNewStockTakingAsync(StockTakingModel newStockTaking)
-        {
-            return Task.Factory.StartNew<bool>(delegate
-            {
-                string text = "BEGIN TRANSACTION\r\nDECLARE @id int; SET @id = dbo.GetNewID('dbo.StockTakingHeader')\r\nINSERT INTO [StockTakingHeader] (StockTakingID,DateTaken) VALUES(@id,'" + newStockTaking.DateTaken.Value.ToString("g") + "')";
-                foreach (ItemStockTakingModel current in newStockTaking.Items)
-                {
-                    object obj = text;
-                    text = string.Concat(new object[]
-                    {
-                        obj,
-                        "\r\nINSERT INTO [StockTakingDetail] (StockTakingID,ItemID,AvailableQuantity) VALUES(@id,",
-                        current.ItemID,
-                        ",",
-                        current.AvailableQuantity,
-                        ")"
-                    });
-                }
-                text += "\r\nCOMMIT";
-                DataAccessHelper.Helper.ExecuteNonQuery(text);
-                return true;
-            });
-        }
-
+        
         public static Task<ObservableCollection<SupplierModel>> GetAllSuppliersFullAsync()
         {
             return Task.Factory.StartNew<ObservableCollection<SupplierModel>>(delegate

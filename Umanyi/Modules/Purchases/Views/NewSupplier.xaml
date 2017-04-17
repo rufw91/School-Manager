@@ -13,10 +13,9 @@
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="30,20,0,0" Text="New Supplier" VerticalAlignment="Top"
                    Style="{DynamicResource Title}"/>
-        <TextBlock HorizontalAlignment="Right" Margin="0,63,40,0" Text="Enter zero to fill automatically." VerticalAlignment="Top"/>
 
         <TextBlock  HorizontalAlignment="Left" Margin="30,80,0,0" Text="Supplier ID" VerticalAlignment="Top" />
-        <TextBox  Margin="125,80,40,0" VerticalAlignment="Top" MaxLength="10"
+        <TextBox  Margin="125,80,40,0" VerticalAlignment="Top" MaxLength="10" IsEnabled="False"
                       Text="{Binding NewSupplier.SupplierID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock  HorizontalAlignment="Left" Margin="30,130,0,0" Text="Name" VerticalAlignment="Top" />

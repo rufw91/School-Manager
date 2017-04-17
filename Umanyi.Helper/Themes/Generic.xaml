@@ -8,6 +8,7 @@
         <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/Button.xaml"/>
         <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/Calendar.xaml"/>
         <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/Calendar.xaml"/>
+        <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/CheckBox.xaml"/>
         <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/ComboBox.xaml"/>
         <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/ContextMenu.xaml"/>
         <ResourceDictionary Source="/UmanyiSMS.Lib;component/Styles/CustomWindow.xaml"/>
