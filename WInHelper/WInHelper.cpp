@@ -3,4 +3,11 @@
 
 #include "stdafx.h"
 
+int testData;
+int test2()
+{
+	testData = 0;
+}
+
+
 

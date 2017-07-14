@@ -78,12 +78,25 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
+        public string NameOfExam { get; internal set; }
+
         public ExamResultClassModel()
         {
             this.ClassID = 0;
             this.NameOfClass = "";
             this.Entries = new ObservableCollection<ExamResultStudentModel>();
             this.ResultTable = new DataTable();
+        }
+
+        public ExamResultClassModel(ExamResultClassModel classExamResult)
+        {
+            this.NameOfExam = "";
+            this.NameOfClass = classExamResult.NameOfClass;
+            this.ClassID = classExamResult.ClassID;
+            this.Entries = classExamResult.Entries;
+            base.ExamID = classExamResult.ExamID;
+            base.ExamResultID = classExamResult.ExamResultID;
+            this.ResultTable = classExamResult.ResultTable;
         }
 
         public override void Reset()

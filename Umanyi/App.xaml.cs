@@ -58,6 +58,9 @@ namespace UmanyiSMS
 
         private static void StartBackup()
         {
+            if (string.IsNullOrWhiteSpace(Lib.Properties.Settings.Default.Info.DBName))
+                Lib.Properties.Settings.Default.Info.DBName = "UmanyiSMS";
+            Info = new ApplicationModel(Lib.Properties.Settings.Default.Info);
             string exp = @"^(?:""([^""]*)""\s*|([^""\s]+)\s*)+";
             var m = Regex.Match(Environment.CommandLine, exp);
 
@@ -85,7 +88,7 @@ namespace UmanyiSMS
                     path = FileHelper.GetDefaultBakPath();
                 else
                     path = captures[2].Value;
-                var t = SqlServerHelper.CreateInstance(null,true).CreateBackupAsync(path);
+                var t = SqlServerHelper.CreateInstance(info.ServerName,info.DBName,null,true).CreateBackupAsync(path);
 
                 t.Wait();
             }
@@ -156,7 +159,7 @@ namespace UmanyiSMS
         {
             try
             {
-                DataAccessHelper.Helper = SqlServerHelper.CreateInstance(null,true);
+                
 
                 examSettings = new ExamSettingsModel();
                 
@@ -173,7 +176,7 @@ namespace UmanyiSMS
                 {
                     Lib.Properties.Settings.Default.Save();
                 };
-
+                DataAccessHelper.Helper = SqlServerHelper.CreateInstance(info.ServerName,info.DBName,null, true);
             }
             catch (Exception e) { Log.E(e.ToString(), this); }
         }

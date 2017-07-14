@@ -4,11 +4,11 @@ using UmanyiSMS.Lib;
 
 namespace UmanyiSMS.Modules.Exams.Models
 {
-    public class ClassStudentsExamResultModel : ModelBase
+    public class ClassReportForm2Model : ModelBase
     {
-        private ObservableCollection<StudentExamResultModel> entries;
+        private ObservableCollection<ReportForm2Model> entries;
 
-        public ObservableCollection<StudentExamResultModel> Entries
+        public ObservableCollection<ReportForm2Model> Entries
         {
             get
             {
@@ -24,9 +24,9 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
-        public ClassStudentsExamResultModel()
+        public ClassReportForm2Model()
         {
-            this.entries = new ObservableCollection<StudentExamResultModel>();
+            this.entries = new ObservableCollection<ReportForm2Model>();
         }
 
         public override void Reset()

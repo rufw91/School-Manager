@@ -4,7 +4,7 @@ using UmanyiSMS.Modules.Institution.Models;
 
 namespace UmanyiSMS.Modules.Exams.Models
 {
-    public class StudentExamResultEntryModel : SubjectBaseModel
+    public class ReportForm2SubjectModel : SubjectBaseModel
     {
         public string Grade
         {
@@ -61,7 +61,7 @@ namespace UmanyiSMS.Modules.Exams.Models
         }
 
       
-        public StudentExamResultEntryModel()
+        public ReportForm2SubjectModel()
         {
             this.Grade = "";
             this.Points = 0;

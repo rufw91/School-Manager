@@ -18,8 +18,7 @@ namespace UmanyiSMS.Lib.Controllers
                 if (useIS)
                     return "Server=" + serverName + ";MultipleActiveResultSets=true;Connection Timeout=300;AttachDBFilename=" + dbFilePath +
                 ";Initial Catalog=UmanyiSMS;Integrated Security=SSPI;";
-                else return "Server=" + serverName + ";MultipleActiveResultSets=true;Connection Timeout=300;AttachDBFilename=" + dbFilePath +
-           ";Initial Catalog=UmanyiSMS;";
+                else return "Server=" + serverName + ";MultipleActiveResultSets=true;Connection Timeout=300;Initial Catalog=UmanyiSMS;";
             }
             else
             {
@@ -30,15 +29,6 @@ namespace UmanyiSMS.Lib.Controllers
                 ";Connection Timeout=300;Encrypt=True;TrustServerCertificate=True;";
             }
         }
-
-        public static string GetConnectionString(bool useIS)
-        {
-            return GetConnectionString(Properties.Settings.Default.Info.ServerName, useIS);
-        }
-
-        public static string GetConnectionString()
-        {
-            return GetConnectionString(Properties.Settings.Default.Info.ServerName, false);
-        }
+        
     }
 }

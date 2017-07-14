@@ -123,7 +123,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
                 IsBusy = false;
             }, o => !IsBusy);
 
-            DeleteDbCommand = new RelayCommand(async o =>
+            DeleteDbCommand = new RelayCommand( o =>
             {
                 IsBusy = true;
                 if (MessageBoxResult.Yes != MessageBox.Show("This action is will require your application to RESTART. Are you sure you would like to continue.",
@@ -132,7 +132,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
                 else if (MessageBoxResult.Yes == MessageBox.Show("This action is IRREVERSIBLE. Are you sure you would like to continue.",
                     "Info", MessageBoxButton.YesNo, MessageBoxImage.Warning))
                 {
-                    bool succ = await (DataAccessHelper.Helper as SqlServerHelper).DeleteDb();
+                    bool succ = false;// await (DataAccessHelper.Helper as SqlServerHelper).DeleteDb();
                     MessageBox.Show(succ ? "Action Succeeded." : "Action Failed.", "Info", MessageBoxButton.OK,
                     succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
                     App.Restart();

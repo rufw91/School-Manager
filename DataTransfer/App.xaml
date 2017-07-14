@@ -1,0 +1,27 @@
+﻿<Application x:Class="DataTransfer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DataTransfer"
+             Startup="Application_Startup" DispatcherUnhandledException="Application_DispatcherUnhandledException">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/UmanyiSMS.Lib;component/Converters/Converters.xaml" />
+                <ResourceDictionary Source="/UmanyiSMS.Lib;component/Themes/Theme.Light.xaml" />
+                <ResourceDictionary Source="/UmanyiSMS.Lib;component/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type local:Page1VM}">
+                <local:Page1/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:Page2VM}">
+                <local:Page2/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:ErrorVM}">
+                <local:Error/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:SuccessVM}">
+                <local:Success/>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

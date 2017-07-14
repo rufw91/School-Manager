@@ -168,6 +168,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Models\ApplicationModel.cs" />
     <Compile Include="Models\ApplicationPersistModel.cs" />
+    <Compile Include="Models\PrinterHolderModel.cs" />
     <Compile Include="Presentation\BasicPair.cs" />
     <Compile Include="Models\ColumnModel.cs" />
     <Compile Include="Models\ComparisonModel.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Native\RECT.cs" />
     <Compile Include="Native\UnsafeNativeMethods.cs" />
     <Compile Include="Native\WINDOWPLACEMENT.cs" />
+    <Compile Include="Presentation\CommonCommands.cs" />
     <Compile Include="Presentation\ComparisonCollection.cs" />
     <Compile Include="Presentation\EmailValidator.cs" />
     <Compile Include="Presentation\NotifyPropertyChanged.cs" />
@@ -247,6 +249,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\DatePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\DocumentViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

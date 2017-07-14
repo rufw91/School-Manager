@@ -53,7 +53,7 @@ namespace UmanyiSMS.Modules.Staff.ViewModels
                 {
                     SecurePassword.MakeReadOnly();
                     SqlCredential c = new SqlCredential(newStaff.StaffID + "", SecurePassword);
-                    succ = succ && await UsersHelper.CreateNewUserAsync(c, Role, newStaff.Name, newStaff.SPhoto);
+                    succ = succ && await UsersHelper.CreateNewUserAsync(c, Role);
                 }
                 if (succ)
                 {

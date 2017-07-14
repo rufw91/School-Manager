@@ -19,28 +19,35 @@ namespace UmanyiSMS.Lib.Controllers
             _credentials = null;
             _useSSPI = false; 
         }
-        private SqlServerHelper(SqlCredential credentials,bool useSSPI)
+        private SqlServerHelper(string serverName,string dbName, SqlCredential credentials,bool useSSPI)
         {
+            _serverName = serverName;
+            _dbName = dbName;
             _credentials = credentials;
             _useSSPI = useSSPI;
         }
 
-        public static SqlServerHelper CreateInstance(SqlCredential credentials, bool useSSPI)
+        public static SqlServerHelper CreateInstance(string serverName, string dbName, SqlCredential credentials, bool useSSPI)
         {
-            if (instance == null)
-                instance = new SqlServerHelper(credentials, useSSPI);
-            else
-            {
-                instance.SetCredential(credentials);
-                instance.SetUseSSPI(useSSPI);
-            }
+            instance = new SqlServerHelper(serverName, dbName, credentials, useSSPI);
             return instance;
         }
-        internal override bool TestCredential(SqlCredential newCredentials)
+
+        internal void SetServer(string serverName)
+        {
+            _serverName = serverName;
+        }
+
+        internal void SetDb(string dbName)
+        {
+            _dbName = dbName;
+        }
+
+        internal override bool TestCredential(string serverName,SqlCredential newCredentials)
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
+                using (SqlConnection conn = new SqlConnection(ConnectionStringHelper.GetConnectionString(serverName,false)))
                 {
                     conn.Credential = newCredentials;
                     conn.Open();
@@ -69,13 +76,16 @@ namespace UmanyiSMS.Lib.Controllers
         SqlCredential _credentials;
 
         bool _useSSPI;
-        
+
+        string _dbName;
+        private string _serverName;
+
         public override dynamic CreateConnection()
         {
             SqlConnection conn;
             try
             {
-                conn=CreateConnection(ConnectionStringHelper.GetConnectionString(_useSSPI),_credentials);
+                conn=CreateConnection(ConnectionStringHelper.GetConnectionString(_serverName,_useSSPI),_credentials);
             }
             catch (Exception e)
             {
@@ -144,7 +154,7 @@ namespace UmanyiSMS.Lib.Controllers
             {
                 object tx;
                 if (hasHeader)
-                    commandText = "USE "+UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName+"\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    commandText = "USE "+_dbName+"\r\nSET DATEFORMAT DMY\r\n" + commandText;
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand sqlcmd = new SqlCommand(commandText, DBConnection);
@@ -165,7 +175,7 @@ namespace UmanyiSMS.Lib.Controllers
             {
                 object tx;
                 if (hasHeader)
-                    commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    commandText = "USE " + _dbName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand sqlcmd = new SqlCommand(commandText, DBConnection);
@@ -196,7 +206,7 @@ namespace UmanyiSMS.Lib.Controllers
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand dtab = new SqlCommand();
-                    dtab.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    dtab.CommandText = "USE " + _dbName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                     dtab.Connection = DBConnection;
                     foreach (SqlParameter param in paramColl)
                     { dtab.Parameters.Add(param); }
@@ -219,13 +229,13 @@ namespace UmanyiSMS.Lib.Controllers
         {
             DataTable result = new DataTable();
             if (hasHeader)
-                commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                commandText = "USE " + _dbName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
             try
             {
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand cmd = new SqlCommand();
-                    cmd.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    cmd.CommandText = "USE " + _dbName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                     cmd.Connection = DBConnection;
 
                     cmd.ExecuteNonQuery();
@@ -259,7 +269,7 @@ namespace UmanyiSMS.Lib.Controllers
                 {
                     using (SqlCommand dta = new SqlCommand())
                     {
-                        dta.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                        dta.CommandText = "USE " + _dbName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                         dta.Connection = DBConnection;
                         foreach (SqlParameter param in paramColl)
                         { dta.Parameters.Add(param); }
@@ -280,7 +290,7 @@ namespace UmanyiSMS.Lib.Controllers
         {
             bool succ = false;
             if (hasHeader)
-                commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                commandText = "USE " + _dbName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
 
             try
             {
@@ -351,85 +361,27 @@ namespace UmanyiSMS.Lib.Controllers
                 return succ;
             });
         }
-
-        public Task<bool> DeleteDb()
-        {
-            return Task.Factory.StartNew<bool>(() =>
-            {
-                try
-                {
-                    string dbName = UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName;
-                    string deleteStr = "DECLARE @dbId int\r\n" +
-    "DECLARE @isStatAsyncOn bit\r\n" +
-    "DECLARE @jobId int\r\n" +
-    "DECLARE @sqlString nvarchar(500)\r\n" +
-
-    "SELECT @dbId = database_id,\r\n" +
-           "@isStatAsyncOn = is_auto_update_stats_async_on\r\n" +
-    "FROM sys.databases\r\n" +
-    "WHERE name = '" + dbName + "'\r\n" +
-
-    "IF @isStatAsyncOn = 1\r\n" +
-    "BEGIN\r\n" +
-        "ALTER DATABASE " + dbName + " SET  AUTO_UPDATE_STATISTICS_ASYNC OFF\r\n" +
-
-        "DECLARE jobsCursor CURSOR FOR\r\n" +
-        "SELECT job_id\r\n" +
-        "FROM sys.dm_exec_background_job_queue\r\n" +
-        "WHERE database_id = @dbId\r\n" +
-
-        "OPEN jobsCursor\r\n" +
-
-        "FETCH NEXT FROM jobsCursor INTO @jobId\r\n" +
-        "WHILE @@FETCH_STATUS = 0\r\n" +
-        "BEGIN\r\n" +
-            "set @sqlString = 'KILL STATS JOB ' + STR(@jobId)\r\n" +
-            "EXECUTE sp_executesql @sqlString\r\n" +
-            "FETCH NEXT FROM jobsCursor INTO @jobId\r\n" +
-        "END\r\n" +
-
-        "CLOSE jobsCursor\r\n" +
-        "DEALLOCATE jobsCursor\r\n" +
-    "END\r\n" +
-
-    "ALTER DATABASE " + dbName + " SET  SINGLE_USER WITH ROLLBACK IMMEDIATE\r\n" +
-
-    "DROP DATABASE " + dbName;
-                    SqlConnection.ClearAllPools();
-                    using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.GetConnectionString(),null))
-                    {
-                        SqlCommand dta = new SqlCommand(deleteStr, DBConnection);
-                        dta.ExecuteNonQuery();
-                        DBConnection.Close();
-                        dta.Dispose();
-                    }
-                    return true;
-                }
-                catch(Exception e) { Log.E(e.ToString(), null); return false; }
-            });
-        }
-
+        
         public Task<bool> CreateBackupAsync(string pathToFile)
         {
             return Task.Factory.StartNew<bool>(() =>
-            {
-                SqlConnection conn = CreateConnection(ConnectionStringHelper.GetConnectionString(true), null);
+            {                
                 try
                 {
+                    SqlConnection conn = CreateConnection(ConnectionStringHelper.GetConnectionString(_serverName, true), null);
                     using (conn)
                     {
-                        string dbName = Properties.Settings.Default.Info.DBName;
-                        string bkPath = Regex.Match(Properties.Settings.Default.Info.ServerName, "LocalDB", RegexOptions.IgnoreCase).Success ? FileHelper.GetTempFilePath("Bak") : FileHelper.GetNewNetworkServiceTempFilePath("Bak");                    
+                        string bkPath = Regex.Match(_serverName, "LocalDB", RegexOptions.IgnoreCase).Success ? FileHelper.GetTempFilePath("Bak") : FileHelper.GetNewNetworkServiceTempFilePath("Bak");                    
                      
                         var sc = new ServerConnection(conn);
                         Server server = new Server(sc);
-                        Database db = server.Databases[dbName];
+                        Database db = server.Databases[_dbName];
                         RecoveryModel recoveryMode = db.DatabaseOptions.RecoveryModel;
                         Backup b = new Backup();
                         b.Action = BackupActionType.Database;
-                        b.BackupSetDescription = "Full backup of " + dbName;
-                        b.BackupSetName = dbName + " Backup";
-                        b.Database = dbName;
+                        b.BackupSetDescription = "Full backup of " + _dbName;
+                        b.BackupSetName = _dbName + " Backup";
+                        b.Database = _dbName;
                         b.Devices.AddDevice(bkPath, DeviceType.File);
                         b.Incremental = false;
                         b.SqlBackup(server);
@@ -453,50 +405,23 @@ namespace UmanyiSMS.Lib.Controllers
                     return false;
                 try
                 {
-                        string dbName = UmanyiSMS.Lib.Properties.Settings.Default.Info.Name;
-                        string bkFile=FileHelper.GetNewNetworkServiceTempFilePath("Rest");
-                        FileSystem.CopyFile(fileName, bkFile, UIOption.AllDialogs, UICancelOption.ThrowException);
+                    SqlConnection conn = CreateConnection(ConnectionStringHelper.GetConnectionString(_serverName, true), null);
+                    using (conn)
+                    {                       
+                        var sc = new ServerConnection(conn);
+                        Server server = new Server(sc);
+                        Database db = server.Databases[_dbName];
+                        RecoveryModel recoveryMode = db.DatabaseOptions.RecoveryModel;
+                        Restore b = new Restore();
+                        b.Action = RestoreActionType.Database;
+                        b.Database = db.Name;
+                        b.Restart = true;
+                        b.Database = _dbName;
+                        b.Devices.AddDevice(fileName, DeviceType.File);
+                       
+                        b.SqlRestore(server);
 
-                        string alterStr = "USE master\r\n"+
-                            "DECLARE @dbId int\r\n" +
-    "DECLARE @isStatAsyncOn bit\r\n" +
-    "DECLARE @jobId int\r\n" +
-    "DECLARE @sqlString nvarchar(500)\r\n" +
-
-    "SELECT @dbId = database_id,\r\n" +
-           "@isStatAsyncOn = is_auto_update_stats_async_on\r\n" +
-    "FROM sys.databases\r\n" +
-    "WHERE name = '" + dbName + "'\r\n" +
-
-    "IF @isStatAsyncOn = 1\r\n" +
-    "BEGIN\r\n" +
-        "ALTER DATABASE " + dbName + " SET  AUTO_UPDATE_STATISTICS_ASYNC OFF\r\n" +
-
-        "DECLARE jobsCursor CURSOR FOR\r\n" +
-        "SELECT job_id\r\n" +
-        "FROM sys.dm_exec_background_job_queue\r\n" +
-        "WHERE database_id = @dbId\r\n" +
-
-        "OPEN jobsCursor\r\n" +
-
-        "FETCH NEXT FROM jobsCursor INTO @jobId\r\n" +
-        "WHILE @@FETCH_STATUS = 0\r\n" +
-        "BEGIN\r\n" +
-            "set @sqlString = 'KILL STATS JOB ' + STR(@jobId)\r\n" +
-            "EXECUTE sp_executesql @sqlString\r\n" +
-            "FETCH NEXT FROM jobsCursor INTO @jobId\r\n" +
-        "END\r\n" +
-
-        "CLOSE jobsCursor\r\n" +
-        "DEALLOCATE jobsCursor\r\n" +
-    "END\r\n" +
-    "USE master\r\n" +
-    "ALTER DATABASE UmanyiSMS SET  SINGLE_USER\r\n"+
-    "RESTORE DATABASE [UmanyiSMS] FROM  DISK = N'" + bkFile + "' WITH  FILE = 1,  NOUNLOAD,  STATS = 10";
-                        
-                        SqlConnection.ClearAllPools();
-                        ExecuteNonQuery(alterStr, false);
-                    
+                    }
                     return true;
                 }
                 catch(Exception e)
@@ -545,7 +470,7 @@ namespace UmanyiSMS.Lib.Controllers
             {
                 try
                 {
-                    string commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n";
+                    string commandText = "USE " + _dbName + "\r\nSET DATEFORMAT DMY\r\n";
                    
                     bool succ = false;
 
@@ -579,8 +504,8 @@ namespace UmanyiSMS.Lib.Controllers
             {
                 try
                 {
-                    string commandText = "ALTER DATABASE UmanyiSMS SET OFFLINE";
-                    using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.GetConnectionString(true),null))
+                    string commandText = "ALTER DATABASE "+_dbName+" SET OFFLINE";
+                    using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.GetConnectionString(_serverName,true),null))
                     {
                         SqlCommand dta = new SqlCommand(commandText, DBConnection);
                         dta.ExecuteNonQuery();
@@ -598,22 +523,22 @@ namespace UmanyiSMS.Lib.Controllers
         { get { return GetIsServerMachine(); } }
 
         private static bool GetIsServerMachine()
-        {
-            if (Properties.Settings.Default.Info.ServerName.ToLowerInvariant().Contains("localdb"))
+        {            
+            if (instance._serverName.ToLowerInvariant().Contains("localdb"))
                 return true;
-            return Properties.Settings.Default.Info.ServerName.ToLowerInvariant() == (Environment.MachineName + @"\Umanyi").ToLowerInvariant();
+            return instance._serverName.ToLowerInvariant() == (Environment.MachineName + @"\Umanyi").ToLowerInvariant();
         }
 
         public override List<string> CopyFirstColumnToList(string commandText)
         {
             List<string> result = new List<string>();
-                commandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                commandText = "USE " + _dbName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
             try
             {
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand cmd = new SqlCommand();
-                    cmd.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    cmd.CommandText = "USE " + _dbName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                     cmd.Connection = DBConnection;
 
                     cmd.ExecuteNonQuery();
@@ -642,7 +567,7 @@ namespace UmanyiSMS.Lib.Controllers
                 using (SqlConnection DBConnection = CreateConnection())
                 {
                     SqlCommand dtab = new SqlCommand();
-                    dtab.CommandText = "USE " + UmanyiSMS.Lib.Properties.Settings.Default.Info.DBName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
+                    dtab.CommandText = "USE " + _dbName + "\r\nSET DATEFORMAT DMY\r\n" + commandText;
                     dtab.Connection = DBConnection;
                     foreach (SqlParameter param in paramColl)
                     { dtab.Parameters.Add(param); }

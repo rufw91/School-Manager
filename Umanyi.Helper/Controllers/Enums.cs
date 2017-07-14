@@ -5,7 +5,7 @@ namespace UmanyiSMS.Lib
     { Male=0,Female=1}
     public enum UserRole
     {
-        None=0, Teacher=1, Accounts=2, Deputy=3, Principal=4, SystemAdmin=5
+        None=0, Teacher=1, Accounts=1, Deputy=3, Principal=4, SystemAdmin=5
     }
 
     public enum TaskStates

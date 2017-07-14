@@ -105,7 +105,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             var temp =
                 await Institution.Controller.DataController.GetInstitutionSubjectsAsync();
             foreach (SubjectModel sm in temp)
-                newExam.Entries.Add(new ExamSubjectEntryModel(sm));
+                newExam.Entries.Add(sm);
         }
 
         public ExamModel NewExam

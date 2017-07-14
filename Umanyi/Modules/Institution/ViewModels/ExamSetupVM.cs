@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Security.Permissions;
+using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Presentation;
@@ -7,6 +8,7 @@ using UmanyiSMS.Modules.Institution.Models;
 
 namespace UmanyiSMS.Modules.Institution.ViewModels
 {
+    [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
     public class ExamSetupVM:ViewModelBase
     {
         ExamSettingsModel settings;

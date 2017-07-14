@@ -18,25 +18,9 @@ namespace UmanyiSMS.Modules.Exams.Models
         private decimal total;
 
         private ObservableCollection<ExamResultSubjectEntryModel> entries;
-
-        private bool isActive;
-
-        public bool IsActive
-        {
-            get
-            {
-                return this.isActive;
-            }
-            set
-            {
-                if (value != this.isActive)
-                {
-                    this.isActive = value;
-                    base.NotifyPropertyChanged("IsActive");
-                }
-            }
-        }
-
+        
+        private decimal totalPoints;
+        
         public ObservableCollection<ExamResultSubjectEntryModel> Entries
         {
             get
@@ -117,26 +101,31 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
+        public decimal TotalPoints
+        {
+            get
+            {
+                return this.totalPoints;
+            }
+            set
+            {
+                if (value != this.totalPoints)
+                {
+                    this.totalPoints = value;
+                    base.NotifyPropertyChanged("TotalPoints");
+                }
+            }
+        }
+
         public ExamResultStudentModel()
         {
             this.StudentID = 0;
             this.NameOfStudent = "";
             this.Total = 0m;
             this.CheckErrors();
-            this.Entries = new ObservableCollection<ExamResultSubjectEntryModel>();
-            this.entries.CollectionChanged += delegate (object o, NotifyCollectionChangedEventArgs e)
-            {
-                this.Total = 0m;
-                this.MeanGrade = "";
-                int num = 0;
-                foreach (ExamResultSubjectEntryModel current in this.entries)
-                {
-                    this.Total += current.Score;
-                    num += Institution.Controller.DataController.CalculatePoints(Institution.Controller.DataController.CalculateGrade(DataController.ConvertScoreToOutOf(current.Score, current.OutOf, 100m)));
-                    this.MeanGrade = Institution.Controller.DataController.CalculateGrade(decimal.Parse((this.Total / this.entries.Count).ToString("N2")));
-                }
-            };
-            this.IsActive = true;
+            this.Entries = new ObservableCollection<ExamResultSubjectEntryModel>();  
+            this.MeanGrade = "E";
+            this.TotalPoints = 0;
         }
 
         public override void Reset()
@@ -144,6 +133,9 @@ namespace UmanyiSMS.Modules.Exams.Models
             base.Reset();
             this.StudentID = 0;
             this.NameOfStudent = "";
+            this.Total = 0m;
+            this.MeanGrade = "E";
+            this.TotalPoints = 0;
             this.Entries = new ObservableCollection<ExamResultSubjectEntryModel>();
         }
 
@@ -174,8 +166,7 @@ namespace UmanyiSMS.Modules.Exams.Models
                         base.ClearErrors("StudentID");
                         this.StudentID = student.StudentID;
                         this.NameOfStudent = student.NameOfStudent;
-                        this.IsActive = student.IsActive;
-                        if (!this.isActive)
+                        if (!student.IsActive)
                         {
                             base.SetErrors("StudentID", new List<string>
                             {

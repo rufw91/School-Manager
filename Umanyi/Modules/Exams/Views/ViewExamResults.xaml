@@ -48,10 +48,10 @@
                         <DataGridTextColumn Binding=
                           "{Binding Path=Score}" 
                       Header="Score" Width="120*" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding=
-                          "{Binding Path=Remarks}" 
-                      Header="Remarks" Width="200*"/>
-                    </DataGrid.Columns>
+                <DataGridTextColumn Binding= "{Binding Path=Grade}" Header="Grade" Width="120*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding= "{Binding Path=Remarks}" Header="Remarks" Width="200*"/>
+                <DataGridTextColumn Binding= "{Binding Path=Tutor}" Header="Tutor" Width="200*"/>
+            </DataGrid.Columns>
                 </DataGrid>
 
         <TextBlock HorizontalAlignment="Right" Margin="0,36,10,0" VerticalAlignment="Top">

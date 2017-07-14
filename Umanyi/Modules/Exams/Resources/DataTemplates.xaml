@@ -1,7 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:UmanyiSMS.Modules.Exams.ViewModels"
-                    xmlns:presentation="clr-namespace:UmanyiSMS.Presentation"
+                    xmlns:presentation="clr-namespace:UmanyiSMS.Lib.Presentation;assembly=UmanyiSMS.Lib"
                     xmlns:Controls="clr-namespace:UmanyiSMS.Lib.Controls;assembly=UmanyiSMS.Lib"
              xmlns:views="clr-namespace:UmanyiSMS.Modules.Exams.Views">
     

@@ -9,7 +9,7 @@ namespace UmanyiSMS.Lib.Controllers
 {
     public abstract class DBHelper
     {
-        internal abstract bool TestCredential(SqlCredential newCredentials);
+        internal abstract bool TestCredential(string serverName,SqlCredential newCredentials);
         internal abstract void SetCredential(SqlCredential newCredentials);
         public abstract dynamic CreateConnection();
         internal abstract dynamic CreateConnection(string connectionString,SqlCredential credential);

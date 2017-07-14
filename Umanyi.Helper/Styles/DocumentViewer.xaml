@@ -1,0 +1,459 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:presentation="clr-namespace:UmanyiSMS.Lib.Presentation">
+
+    <Style x:Key="ToolBarStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="Template" >
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContentControl}">
+                    <ControlTemplate.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="4"/>
+                            <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+                            <Setter Property="Width" Value="38"/>
+                            <Setter Property="IsTabStop" Value="True"/>
+                            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Name="Chrome"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                SnapsToDevicePixels="true">
+                                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}" />
+                                    <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource Accent}" />
+                                    <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+
+                        <Viewbox Stretch="Uniform" x:Key="PrintIcon">
+                            <Canvas Name="svg69" Width="249.96948" Height="244.89694">
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </Canvas.RenderTransform>
+                                <Canvas.Resources/>
+                                <Canvas Name="layer1">
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="-2.8262319" Y="-47.221182"/>
+                                    </Canvas.RenderTransform>
+                                    <Canvas Name="g2450">
+                                        <Canvas.RenderTransform>
+                                            <TranslateTransform X="0" Y="-12.170835"/>
+                                        </Canvas.RenderTransform>
+                                        <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="52.826233" Canvas.Top="84.763962" Width="150" Height="50" Name="rect2370" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="9.12826443" StrokeMiterLimit="0" StrokeLineJoin="Round"/>
+                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="rect2372" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="18.89763832" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                            <Path.Data>
+                                                <PathGeometry Figures="M 91.689453 380.43359 V 682.72461 H 222 V 565.59375 H 722 V 682.72461 H 853.19336 V 380.43359 Z M 777.79492 419.91016 A 37.795276 37.795276 0 0 1 815.58984 457.70508 37.795276 37.795276 0 0 1 777.79492 495.5 37.795276 37.795276 0 0 1 740 457.70508 37.795276 37.795276 0 0 1 777.79492 419.91016 Z" FillRule="NonZero"/>
+                                            </Path.Data>
+                                            <Path.RenderTransform>
+                                                <MatrixTransform Matrix="0.26458333 0 0 0.26458333 2.8262319 47.221182"/>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                        <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="79.906769" Canvas.Top="214.28923" Width="93.544327" Height="62.86179" Name="rect2398" StrokeThickness="12" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="93.377144" Canvas.Top="226.99811" Width="65" Height="6" Name="rect2406" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="36.08782196" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="93.811203" Canvas.Top="241.11812" Width="65" Height="6" Name="rect24060" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="36.08782196" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="93.811203" Canvas.Top="256.11813" Width="65" Height="6" Name="rect240604" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="36.08782196" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                    </Canvas>
+                                </Canvas>
+                            </Canvas>
+                        </Viewbox>
+                        <Viewbox x:Key="ZoomInIcon" Stretch="Uniform">
+                            <Canvas Width="611.997" Height="611.998" Canvas.Left="0" Canvas.Top="0">
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </Canvas.RenderTransform>
+                                <Canvas.Resources/>
+                                <!--Unknown tag: metadata-->
+                                <!--Unknown tag: sodipodi:namedview-->
+                                <Canvas Name="g8">
+                                    <Canvas Name="g6">
+                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path2" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                            <Path.Data>
+                                                <PathGeometry Figures="M601.444 535.785L433.663 368.39c1.512-2.27 2.646-6.033 3.772-10.939c17.719-29.785 28.682-62.207 32.052-96.519    c0.772-7.915 1.126-16.208 1.126-24.13c0-26.012-4.343-52.088-13.19-77.665c-11.51-33.243-29.905-62.842-55.426-88.218    c-45.364-45.13-105.189-68.625-166.64-68.625c-60.702 0-120.801 23.607-166.269 68.625    c-30.315 30.009-50.391 65.633-61.08 105.938c-10.802 40.755-10.553 80.681 0 121.026c10.561 40.346 30.652 75.67 61.08 105.945    c45.355 45.131 105.567 68.617 166.269 68.617c47.125 0 89.964-13.625 129.688-38.455l6.033-3.771l168.529 168.15    c6.418 6.402 13.199 10.176 19.609 10.932c1.504 0.377 2.638 0.449 3.764 0.377c4.537-0.297 8.695-1.463 12.065-3.395    c4.552-2.598 9.427-6.41 14.703-11.686l7.544-7.537c5.276-5.285 9.089-10.158 11.688-14.703c1.922-3.369 3.016-7.922 3.016-13.576    v-3.018C611.997 549.345 608.048 542.373 601.444 535.785z M422.354 287.33c-8.848 33.131-25.634 62.207-50.52 87.092    c-36.194 36.188-84.832 56.553-136.478 56.553c-50.905 0-99.221-20.695-136.863-56.553c-73.957-70.466-73.651-202.198 0-273.34    c37.2-35.937 85.588-56.93 136.863-56.93c53.914 0 98.892 19.11 136.478 56.93c24.62 24.765 41.849 53.536 50.52 86.714    C431.024 220.973 431.226 254.103 422.354 287.33z" FillRule="NonZero"/>
+                                            </Path.Data>
+                                        </Path>
+                                        <Polygon xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Points="258.353,138.401 212.732,138.401 212.732,214.563 136.571,214.563 136.571,260.184 212.732,260.184     212.732,336.714 258.353,336.714 258.353,260.184 334.885,260.184 334.885,214.563 258.353,214.563   " Name="polygon4" FillRule="NonZero" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+                                    </Canvas>
+                                </Canvas>
+                            </Canvas>
+                        </Viewbox>
+                        <Viewbox x:Key="ZoomOutIcon" Stretch="Uniform">
+                            <Canvas Width="612.013" Height="612.013" Canvas.Left="0" Canvas.Top="0">
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </Canvas.RenderTransform>
+                                <Canvas.Resources/>
+                                <Canvas>
+                                    <Canvas >
+                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                            <Path.Data>
+                                                <PathGeometry Figures="M601.437 535.885L433.663 368.489c1.512-2.268 2.638-6.032 3.772-10.938c17.719-29.784 28.674-62.206 32.044-96.518    c0.78-7.915 1.134-16.207 1.134-24.13c0-26.012-4.343-52.088-13.198-77.665c-11.51-33.243-30.098-62.648-55.426-88.226    c-90.414-91.298-242.656-91.097-332.901 0c-30.018 30.299-50.391 65.633-61.08 105.945c-10.802 40.755-10.553 80.681 0 121.026    c10.553 40.344 30.652 75.67 61.08 105.944c45.355 45.131 104.811 68.617 166.269 68.617c47.125 0 89.972-13.626 129.697-38.455    l6.032-3.772l168.529 168.151c6.611 6.596 13.183 10.931 19.609 10.931h3.395c4.898 0 9.112-1.013 12.442-3.016    c4.215-2.525 9.129-6.322 14.703-11.687c4.23-4.062 6.41-6.411 6.788-7.537c10.184-10.183 15.459-19.987 15.459-29.414    C611.997 550.21 608.611 543.035 601.437 535.885z M422.354 287.431c-8.848 33.129-25.642 62.206-50.52 87.091    c-36.194 36.187-84.832 56.553-136.485 56.553c-52.78 0-97.942-19.328-136.855-56.553c-73.812-70.61-73.635-202.181 0-273.339    c38.72-37.425 83.698-56.93 136.855-56.93c53.914 0 98.892 19.111 136.485 56.93c24.62 24.773 41.849 53.535 50.52 86.714    C431.024 221.066 431.226 254.196 422.354 287.431z" FillRule="NonZero"/>
+                                            </Path.Data>
+                                        </Path>
+                                        <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="136.571" Canvas.Top="214.656" Width="198.314" Height="45.621" Name="rect4" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+                                    </Canvas>
+                                </Canvas>
+                            </Canvas>
+                        </Viewbox>
+                        <Viewbox x:Key="PageWidthIcon" Stretch="Uniform">
+                            <Canvas  Width="470.586" Height="470.586" Canvas.Left="0" Canvas.Top="0">
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </Canvas.RenderTransform>
+                                <Canvas.Resources/>
+                                <Canvas Name="g4">
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M327.081 0H90.231c-15.9 0-28.85 12.959-28.85 28.859v412.863c0 15.924 12.95 28.863 28.85 28.863H380.35   c15.911 0 28.855-12.939 28.855-28.863V89.234L327.081 0z M333.891 43.187l35.996 39.118h-35.996V43.187z M384.978 441.723   c0 2.542-2.087 4.629-4.628 4.629H90.231c-2.547 0-4.616-2.087-4.616-4.629V28.859c0-2.548 2.069-4.613 4.616-4.613h219.414v70.181   c0 6.682 5.443 12.099 12.129 12.099h63.198v335.196H384.978z" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                </Canvas>
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path43" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M 229.31098 321.03536 162.73603 281.70609 96.161082 242.37683 163.5087 204.38586 230.85632 166.3949 230.08365 243.71513 Z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                    <Path.RenderTransform>
+                                        <MatrixTransform Matrix="0.5939334 0 0 0.64666128 47.886722 78.984862"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path438" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M 229.31098 321.03536 162.73603 281.70609 96.161082 242.37683 163.5087 204.38586 230.85632 166.3949 230.08365 243.71513 Z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                    <Path.RenderTransform>
+                                        <MatrixTransform Matrix="-0.5939334 0 0 0.64666128 422.71818 78.984862"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Canvas>
+                        </Viewbox>
+                        <Viewbox x:Key="FullPageIcon" Stretch="Uniform">
+                            <Canvas Width="470.586" Height="470.586" Canvas.Left="0" Canvas.Top="0">
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </Canvas.RenderTransform>
+                                <Canvas.Resources/>
+                                <Canvas >
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M327.081 0H90.231c-15.9 0-28.85 12.959-28.85 28.859v412.863c0 15.924 12.95 28.863 28.85 28.863H380.35   c15.911 0 28.855-12.939 28.855-28.863V89.234L327.081 0z M333.891 43.187l35.996 39.118h-35.996V43.187z M384.978 441.723   c0 2.542-2.087 4.629-4.628 4.629H90.231c-2.547 0-4.616-2.087-4.616-4.629V28.859c0-2.548 2.069-4.613 4.616-4.613h219.414v70.181   c0 6.682 5.443 12.099 12.129 12.099h63.198v335.196H384.978z" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                </Canvas>
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path53" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M 235.19631 132.586 190 54.303708 l 90.39261 -2e-6 z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                    <Path.RenderTransform>
+                                        <MatrixTransform Matrix="1.1062852 0 0 -1.0219425 -24.194188 188.08127"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path55" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M 241.92085 420.58601 190 330.65645 l 103.84171 -1e-5 z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                    <Path.RenderTransform>
+                                        <MatrixTransform Matrix="0.96300414 0 0 0.88958511 3.0292127 46.438959"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path57" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M 153.78694 275.03055 57.329681 219.34092 153.78694 163.6513 Z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                    <Path.RenderTransform>
+                                        <MatrixTransform Matrix="0.82938285 0 0 0.8978333 57.451745 39.654409"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path59" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="m 337.21916 233.66201 -90.42558 -52.20724 90.42559 -52.20723 z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                    <Path.RenderTransform>
+                                        <MatrixTransform Matrix="-0.8847053 0 0 0.95772161 583.33958 62.80284"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Canvas>
+                        </Viewbox>
+                        <Viewbox x:Key="PageHeightIcon" Stretch="Uniform">
+                            <Canvas Width="470.586" Height="470.586" Canvas.Left="0" Canvas.Top="0">
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </Canvas.RenderTransform>
+                                <Canvas.Resources/>
+                                <Canvas>
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M327.081 0H90.231c-15.9 0-28.85 12.959-28.85 28.859v412.863c0 15.924 12.95 28.863 28.85 28.863H380.35   c15.911 0 28.855-12.939 28.855-28.863V89.234L327.081 0z M333.891 43.187l35.996 39.118h-35.996V43.187z M384.978 441.723   c0 2.542-2.087 4.629-4.628 4.629H90.231c-2.547 0-4.616-2.087-4.616-4.629V28.859c0-2.548 2.069-4.613 4.616-4.613h219.414v70.181   c0 6.682 5.443 12.099 12.129 12.099h63.198v335.196H384.978z" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                </Canvas>
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M 219.86771 110.58599 199.93385 76.05955 180 41.533107 l 39.86771 -1e-6 39.8677 -10e-7 -19.93385 34.526446 z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                    <Path.RenderTransform>
+                                        <MatrixTransform Matrix="1.254148 0 0 -1.1585323 -39.746642 180.70343"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path436" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M 219.86771 110.58599 199.93385 76.05955 180 41.533107 l 39.86771 -1e-6 39.8677 -10e-7 -19.93385 34.526446 z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                    <Path.RenderTransform>
+                                        <MatrixTransform Matrix="1.254148 0 0 1.1585323 -39.746642 292.46856"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Canvas>
+                        </Viewbox>
+                        <Viewbox x:Key="TwoPageIcon" Stretch="Uniform">
+                            <Canvas Width="714.72156" Height="600" Canvas.Left="0" Canvas.Top="0">
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </Canvas.RenderTransform>
+                                <Canvas.Resources/>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas >
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas >
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas >
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas >
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas >
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas >
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas>
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="305.51656" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas >
+                                    <Canvas.RenderTransform>
+                                        <MatrixTransform Matrix="-1 0 0 1 409.205 129.41498"/>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                                <Canvas Name="g3785">
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="0" Y="129.41449"/>
+                                    </Canvas.RenderTransform>
+                                    <Canvas Name="g3783"/>
+                                </Canvas>
+                                <Canvas Name="g37853">
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="368.61118" Y="122.27804"/>
+                                    </Canvas.RenderTransform>
+                                    <Canvas Name="g37839">
+                                        <Canvas Name="g4100">
+                                            <Canvas.RenderTransform>
+                                                <MatrixTransform Matrix="1 0 0 1.2750074 0 -131.37706"/>
+                                            </Canvas.RenderTransform>
+                                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                                <Path.Data>
+                                                    <PathGeometry Figures="M 327.081 0 H 90.231 c -15.9 0 -28.85 12.959 -28.85 28.859 v 412.863 c 0 15.924 12.95 28.863 28.85 28.863 H 380.35 c 15.911 0 28.855 -12.939 28.855 -28.863 V 89.234 Z m 6.81 43.187 35.996 39.118 h -35.996 z m 51.087 398.536 c 0 2.542 -2.087 4.629 -4.628 4.629 H 90.231 c -2.547 0 -4.616 -2.087 -4.616 -4.629 V 28.859 c 0 -2.548 2.069 -4.613 4.616 -4.613 h 219.414 v 70.181 c 0 6.682 5.443 12.099 12.129 12.099 h 63.198 v 335.196 h 0.006 z" FillRule="NonZero"/>
+                                                </Path.Data>
+                                                <Path.RenderTransform>
+                                                    <TranslateTransform X="-63.09462" Y="7.1364441"/>
+                                                </Path.RenderTransform>
+                                            </Path>
+                                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path28" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                                <Path.Data>
+                                                    <PathGeometry Figures="M 327.081 0 H 90.231 c -15.9 0 -28.85 12.959 -28.85 28.859 v 412.863 c 0 15.924 12.95 28.863 28.85 28.863 H 380.35 c 15.911 0 28.855 -12.939 28.855 -28.863 V 89.234 Z m 6.81 43.187 35.996 39.118 h -35.996 z m 51.087 398.536 c 0 2.542 -2.087 4.629 -4.628 4.629 H 90.231 c -2.547 0 -4.616 -2.087 -4.616 -4.629 V 28.859 c 0 -2.548 2.069 -4.613 4.616 -4.613 h 219.414 v 70.181 c 0 6.682 5.443 12.099 12.129 12.099 h 63.198 v 335.196 h 0.006 z" FillRule="NonZero"/>
+                                                </Path.Data>
+                                                <Path.RenderTransform>
+                                                    <MatrixTransform Matrix="-1 0 0 1 40.59382 7.1369437"/>
+                                                </Path.RenderTransform>
+                                            </Path>
+                                            <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="75" Canvas.Top="150.58551" Width="190" Height="25" Name="rect65" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="0.94280124">
+                                                <Rectangle.RenderTransform>
+                                                    <TranslateTransform X="-368.61118" Y="7.1364441"/>
+                                                </Rectangle.RenderTransform>
+                                            </Rectangle>
+                                            <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="75" Canvas.Top="215.58551" Width="190" Height="25" Name="rect651" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="0.94280124">
+                                                <Rectangle.RenderTransform>
+                                                    <TranslateTransform X="-368.61118" Y="7.1364441"/>
+                                                </Rectangle.RenderTransform>
+                                            </Rectangle>
+                                            <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="75" Canvas.Top="280.58551" Width="190" Height="25" Name="rect658" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="0.94280124">
+                                                <Rectangle.RenderTransform>
+                                                    <TranslateTransform X="-368.61118" Y="7.1364441"/>
+                                                </Rectangle.RenderTransform>
+                                            </Rectangle>
+                                            <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="75" Canvas.Top="345.58551" Width="190" Height="25" Name="rect6514" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="0.94280124">
+                                                <Rectangle.RenderTransform>
+                                                    <TranslateTransform X="-368.61118" Y="7.1364441"/>
+                                                </Rectangle.RenderTransform>
+                                            </Rectangle>
+                                            <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="75" Canvas.Top="150.58551" Width="190" Height="25" Name="rect652" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="0.94280124"/>
+                                            <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="75" Canvas.Top="215.58551" Width="190" Height="25" Name="rect6513" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="0.94280124"/>
+                                            <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="75" Canvas.Top="280.58551" Width="190" Height="25" Name="rect6585" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="0.94280124"/>
+                                            <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="75" Canvas.Top="345.58551" Width="190" Height="25" Name="rect65142" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="0.94280124"/>
+                                        </Canvas>
+                                    </Canvas>
+                                </Canvas>
+                            </Canvas>
+                        </Viewbox>
+                    </ControlTemplate.Resources>
+                    <Border Background="{DynamicResource DataGridHeaderBackground}" BorderThickness="1" Height="40" VerticalAlignment="Top">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="{StaticResource PrintIcon}"
+                            ToolTip="Print (Ctrl+P)"
+                                        CommandParameter="{Binding TemplatedParent.Document, RelativeSource={RelativeSource TemplatedParent}}"
+                            Command="presentation:CommonCommands.Print"/>
+                                <Grid Width="15"/>
+                                <Button Content="{StaticResource ZoomInIcon}"
+                            ToolTip="Increase the size of the content (Ctrl +)"
+                            CommandTarget="{Binding TemplatedParent, RelativeSource={RelativeSource TemplatedParent}}" Command="NavigationCommands.IncreaseZoom"/>
+                                <Button Content="{StaticResource ZoomOutIcon}"
+                            ToolTip="Increase the size of the content (Ctrl +)"
+                            CommandTarget="{Binding TemplatedParent, RelativeSource={RelativeSource TemplatedParent}}" Command="NavigationCommands.DecreaseZoom"/>
+                                <Grid Width="15"/>
+                                <Button Content="{StaticResource PageHeightIcon}" 
+                            ToolTip="Zoom 100% (Ctrl+1)"
+                            CommandTarget="{Binding TemplatedParent, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="100.0" Command="NavigationCommands.Zoom"/>
+                                <Button Content="{StaticResource PageWidthIcon}"
+                            ToolTip="Page Width (Ctrl+2)"
+                            CommandTarget="{Binding TemplatedParent, RelativeSource={RelativeSource TemplatedParent}}" Command="DocumentViewer.FitToWidthCommand"/>
+                                <Button Content="{StaticResource FullPageIcon}"
+                            ToolTip="Whole Page (Ctrl+3)"
+                            CommandTarget="{Binding TemplatedParent, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="1" Command="DocumentViewer.FitToMaxPagesAcrossCommand"/>
+                                <Button Content="{StaticResource TwoPageIcon}"
+                            ToolTip="2 Pages (Ctrl+4)"
+                            CommandTarget="{Binding TemplatedParent, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="2" Command="DocumentViewer.FitToMaxPagesAcrossCommand"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type DocumentViewer}">
+        <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+        <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DocumentViewer}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Focusable="False">
+                        <Grid Background="{TemplateBinding Background}" KeyboardNavigation.TabNavigation="Local">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <ContentControl Grid.Column="0" Focusable="{TemplateBinding Focusable}" Grid.Row="0" Style="{StaticResource ToolBarStyle}" TabIndex="0"/>
+                            <!-- <ContentControl Grid.Column="0" Focusable="{TemplateBinding Focusable}" Grid.Row="0" Style="{DynamicResource {ComponentResourceKey ResourceId=PUIDocumentViewerToolBarStyleKey, TypeInTargetAssembly={x:Type Documents:PresentationUIStyleResources}}}" TabIndex="0"/>-->
+                            <ScrollViewer x:Name="PART_ContentHost" CanContentScroll="true" Grid.Column="0" Focusable="{TemplateBinding Focusable}" HorizontalScrollBarVisibility="Auto" IsTabStop="true" Grid.Row="1" TabIndex="1"/>
+                            <DockPanel Grid.Row="1">
+                                <FrameworkElement DockPanel.Dock="Right" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+                                <Rectangle Height="10" Visibility="Visible" VerticalAlignment="top">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStopCollection>
+                                                    <GradientStop Color="#66000000" Offset="0"/>
+                                                    <GradientStop Color="Transparent" Offset="1"/>
+                                                </GradientStopCollection>
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </DockPanel>
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
