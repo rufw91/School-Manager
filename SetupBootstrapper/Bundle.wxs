@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
   
@@ -25,7 +26,24 @@ AboutUrl="http://www.umanyi.co.ke/sms/" SplashScreenSourceFile="C:\Dev\SplashSCr
       <Payload SourceFile="$(var.SetupUI.TargetDir)WPFToolkit.dll" />
       <Payload SourceFile= "$(var.SetupUI.TargetDir)BootstrapperCore.config" />
     </BootstrapperApplicationRef>
+    <util:RegistrySearch Id="SearchForLocalDB2012"
+               Root="HKLM"
+               Key="SOFTWARE\Microsoft\Microsoft SQL Server Local DB\Installed Versions\11.0"
+               Variable="LDB2012Exists"
+               Result="exists"/>
+    <util:RegistrySearch Id="SearchForLocalDB2014"
+             Root="HKLM"
+             Key="SOFTWARE\Microsoft\Microsoft SQL Server Local DB\Installed Versions\12.0"
+             Variable="LDB2014Exists"
+             Result="exists"/>
+    <util:RegistrySearch Id="SearchForLocalDB2016"
+             Root="HKLM"
+             Key="SOFTWARE\Microsoft\Microsoft SQL Server Local DB\Installed Versions\13.0"
+             Variable="LDB2016Exists"
+             Result="exists"/>
+
     <Chain>
+
       
       <PackageGroupRef Id="NetFx451Redist"/>
       <RollbackBoundary/>

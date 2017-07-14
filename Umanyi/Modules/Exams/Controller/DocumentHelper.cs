@@ -29,15 +29,15 @@ namespace UmanyiSMS.Modules.Exams.Controller
         {
             if (MyWorkObject is AggregateResultModel)
                 GenerateAggregateResult();
-            else if (MyWorkObject is StudentExamResultModel)
+            else if (MyWorkObject is ExamResultStudentDisplayModel)
              GenerateTranscript();
            else if (MyWorkObject is ReportFormModel)
                 GenerateReportForm();
             else if (MyWorkObject is ClassReportFormModel)
                 GenerateClassReportForms();
-            else if (MyWorkObject is ClassStudentsExamResultModel)
+            else if (MyWorkObject is ExamResultClassDisplayModel)
                 GenerateClassExamResults();
-            else if (MyWorkObject is ClassExamResultModel)
+            else if (MyWorkObject is ExamResultClassModel)
                 GenerateClassMarkList();
 
             else throw new ArgumentException();
@@ -52,11 +52,11 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ReportForm.xaml"));
             if (MyWorkObject is ClassReportFormModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ReportForm.xaml"));
-           if (MyWorkObject is ClassStudentsExamResultModel)
+           if (MyWorkObject is ExamResultClassDisplayModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/Transcript.xaml"));
-            if (MyWorkObject is ClassExamResultModel)
+            if (MyWorkObject is ExamResultClassModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/ClassMarkList.xaml"));
-            if (MyWorkObject is StudentExamResultModel)
+            if (MyWorkObject is ExamResultStudentDisplayModel)
                 return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Exams/Resources/Transcript.xaml"));
 
             throw new ArgumentException();
@@ -70,26 +70,26 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 return 1;
             if (MyWorkObject is ClassReportFormModel)
                 return (MyWorkObject as ClassReportFormModel).Count;
-            if (MyWorkObject is ClassTranscriptsModel)
-                return (MyWorkObject as ClassTranscriptsModel).Entries.Count;
-            if (MyWorkObject is ClassStudentsExamResultModel)
-                return (MyWorkObject as ClassStudentsExamResultModel).Entries.Count;
-            if (MyWorkObject is ClassExamResultModel)
+            if (MyWorkObject is ClassReportForm2Model)
+                return (MyWorkObject as ClassReportForm2Model).Entries.Count;
+            if (MyWorkObject is ExamResultClassDisplayModel)
+                return (MyWorkObject as ExamResultClassDisplayModel).Entries.Count;
+            if (MyWorkObject is ExamResultClassModel)
             {
-                var totalNoOfItems = (MyWorkObject as ClassExamResultModel).Entries.Rows.Count;
+                var totalNoOfItems = (MyWorkObject as ExamResultClassModel).ResultTable.Rows.Count;
                 return (totalNoOfItems % ItemsPerPage) != 0 ?
                                 (totalNoOfItems / ItemsPerPage) + 1 : (totalNoOfItems / ItemsPerPage);
             }
-            if (MyWorkObject is StudentExamResultModel)
+            if (MyWorkObject is ExamResultStudentDisplayModel)
                 return 1;
             throw new ArgumentException();
         }
 
         protected override int GetItemsPerPage()
         {           
-            if (MyWorkObject is ClassStudentsExamResultModel)
+            if (MyWorkObject is ExamResultClassDisplayModel)
                 return 37;
-            if (MyWorkObject is ClassExamResultModel)
+            if (MyWorkObject is ExamResultClassModel)
                 return 37;
             if (MyWorkObject is AggregateResultModel)
                 return (MyWorkObject as AggregateResultModel).Entries.Count;
@@ -222,15 +222,15 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         private void GenerateClassMarkList()
         {
-            ClassExamResultModel si = MyWorkObject as ClassExamResultModel;
+            var si = MyWorkObject as ExamResultClassModel;
 
             int pageNo;
             for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
                 AddCMLExam(si.NameOfExam, pageNo);
                 AddCMLClass(si.NameOfClass, pageNo);
-                AddCMLSubjects(si.Entries, pageNo);
-                AddCMLStudents(si.Entries, pageNo);
+                AddCMLSubjects(si.ResultTable, pageNo);
+                AddCMLStudents(si.ResultTable, pageNo);
             }
         }
         #endregion
@@ -238,7 +238,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         #region ClassExamResults
         private void GenerateClassExamResults()
         {
-            ClassStudentsExamResultModel si = MyWorkObject as ClassStudentsExamResultModel;
+            ExamResultClassDisplayModel si = MyWorkObject as ExamResultClassDisplayModel;
 
             int pageNo;
             for (pageNo = 0; pageNo < NoOfPages; pageNo++)
@@ -248,8 +248,8 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AddTRClassName(si.Entries[pageNo].NameOfClass, pageNo);
                 AddTRExamName(si.Entries[pageNo].NameOfExam, pageNo);
                 AddTRClassPosition(si.Entries[pageNo].ClassPosition, pageNo);
-                AddTRPointsPosition(si.Entries[pageNo].Points, pageNo);
-                AddTRTotalMarks(si.Entries[pageNo].TotalMarks, pageNo);
+                AddTRPointsPosition(si.Entries[pageNo].TotalPoints, pageNo);
+                AddTRTotalMarks(si.Entries[pageNo].Total, pageNo);
                 AddTRMeanGrade(si.Entries[pageNo].MeanGrade, pageNo);
                 AddTRSubjectScores(si.Entries[pageNo].Entries, pageNo);
             }
@@ -322,21 +322,21 @@ namespace UmanyiSMS.Modules.Exams.Controller
         {
             AddText(nameOfExam, "Arial", 14, true, 0, Colors.Black, 350, 145, pageNo);
         }
-        private void AddTRSubjectScore(StudentTranscriptSubjectModel item, int itemIndex, int pageNo)
+        private void AddTRSubjectScore(ExamResultSubjectEntryModel item, int itemIndex, int pageNo)
         {
             double fontsize = 14;
             int pageRelativeIndex = itemIndex;
             double yPos = 255 + pageRelativeIndex * 21;
 
-            AddText(item.Code, "Arial", 14, false, 0, Colors.Black, 40, yPos, pageNo);
+            AddText(item.Code.ToString(), "Arial", 14, false, 0, Colors.Black, 40, yPos, pageNo);
             AddText(item.NameOfSubject, "Arial", 14, false, 0, Colors.Black, 130, yPos, pageNo);
             AddText(item.Score.ToString(), "Arial", fontsize, false, 0, Colors.Black, 300, yPos, pageNo);
             AddText(item.Grade, "Arial", fontsize, false, 0, Colors.Black, 375, yPos, pageNo);
             AddText(item.Points.ToString(), "Arial", fontsize, false, 0, Colors.Black, 430, yPos, pageNo);
             AddText(item.Remarks, "Arial", fontsize, false, 0, Colors.Black, 480, yPos, pageNo);
-            AddText(item.Tutor, "Arial", fontsize, false, 0, Colors.Black, 705, yPos, pageNo);
+            AddText(item.Tutor.Length>5?item.Tutor.Substring(0,5): item.Tutor, "Arial", fontsize, false, 0, Colors.Black, 705, yPos, pageNo);
         }
-        private void AddTRSubjectScores(ObservableCollection<StudentTranscriptSubjectModel> psi, int pageNo)
+        private void AddTRSubjectScores(ObservableCollection<ExamResultSubjectEntryModel> psi, int pageNo)
         {
             for (int i = 0; i <= psi.Count - 1; i++)
                 AddTRSubjectScore(psi[i], i, pageNo);
@@ -344,7 +344,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
 
         private void GenerateTranscript()
         {
-            StudentExamResultModel si = MyWorkObject as StudentExamResultModel;
+            var si = MyWorkObject as ExamResultStudentDisplayModel;
             int pageNo;
             for (pageNo = 0; pageNo < NoOfPages; pageNo++)
             {
@@ -353,8 +353,8 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AddTRClassName(si.NameOfClass, pageNo);
                 AddTRExamName(si.NameOfExam, pageNo);
                 AddTRClassPosition(si.ClassPosition, pageNo);
-                AddTRPointsPosition(si.Points, pageNo);
-                AddTRTotalMarks(si.TotalMarks, pageNo);
+                AddTRPointsPosition(si.TotalPoints, pageNo);
+                AddTRTotalMarks(si.Total, pageNo);
                 AddTRMeanGrade(si.MeanGrade, pageNo);
                 AddTRSubjectScores(si.Entries, pageNo);
             }

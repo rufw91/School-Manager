@@ -24,7 +24,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         bool isInClassMode;
         bool isInCombinedMode;
         ExamModel selectedExam;
-        ExamResultClassDisplayModel classResult;
+        ExamResultClassModel classResult;
         CombinedClassModel selectedCombinedClass;
         ObservableCollection<ExamModel> allExams;
         bool canExec = false;
@@ -39,7 +39,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         {
             Title = "MARK LIST(S)";
            
-            ClassResult = new ExamResultClassDisplayModel();
+            ClassResult = new ExamResultClassModel();
             AllExams = new ObservableCollection<ExamModel>();
             IsInClassMode = true;
             AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
@@ -56,7 +56,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             PrintAsReportFormCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                ClassStudentsExamResultModel st = await DataController.GetClassExamResultForTranscriptAsync(classResult.ClassID, selectedExam.ExamID, selectedExam.OutOf);
+                ExamResultClassDisplayModel st = await DataController.GetClassExamResultForTranscriptAsync(classResult.ClassID, selectedExam.ExamID, selectedExam.OutOf);
 
                 IsBusy = false;
                 if (ShowClassStudentsTranscriptAction != null)
@@ -66,7 +66,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             PrintTranscriptCommand = new RelayCommand(o =>
             {
                     IsBusy = true;
-                    ClassExamResultModel st = DataController.GetClassExamResult(classResult);
+                var st = new ExamResultClassModel(classResult);
                     IsBusy = false;
                     if (ShowClassTranscriptAction != null)
                         ShowClassTranscriptAction.Invoke(st);
@@ -80,7 +80,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
 
                 if (isInClassMode)
                 {
-                    var temp = new ExamResultClassDisplayModel(await DataController.GetClassExamResultAsync(classResult.ClassID, selectedExam.ExamID, selectedExam.OutOf));
+                    var temp = await DataController.GetClassExamResultAsync(classResult.ClassID, selectedExam.ExamID, selectedExam.OutOf);
                     ClassResult.Entries = temp.Entries;
                     ClassResult.ExamID = temp.ExamID;
                     ClassResult.ExamResultID = temp.ExamResultID;
@@ -99,7 +99,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     for (int i = 0; i < selectedCombinedClass.Entries.Count; i++)
                     {
                         cs = selectedCombinedClass.Entries[i];
-                        var temp = new ExamResultClassDisplayModel(await DataController.GetClassExamResultAsync(cs.ClassID, selectedExam.ExamID, selectedExam.OutOf));
+                        var temp = await DataController.GetClassExamResultAsync(cs.ClassID, selectedExam.ExamID, selectedExam.OutOf);
 
                         foreach (var e in temp.Entries)
                         {
@@ -272,7 +272,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         }
 
         
-        public ExamResultClassDisplayModel ClassResult
+        public ExamResultClassModel ClassResult
         {
             get { return classResult; }
 
@@ -351,13 +351,13 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             classResult.Reset();
         }
 
-        public Action<ClassStudentsExamResultModel> ShowClassStudentsTranscriptAction
+        public Action<ExamResultClassDisplayModel> ShowClassStudentsTranscriptAction
         { get; set; }
 
-        public Action<StudentExamResultModel> ShowStudentTranscriptAction
+        public Action<ExamResultStudentDisplayModel> ShowStudentTranscriptAction
         { get; set; }
 
-        public Action<ClassExamResultModel> ShowClassTranscriptAction
+        public Action<ExamResultClassModel> ShowClassTranscriptAction
         { get; set; }
 
         public ICommand DisplayResultsCommand

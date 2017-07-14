@@ -12,7 +12,7 @@ namespace UmanyiSMS.Lib.Controllers
 {
     public static class UsersHelper
     {
-        public static Task<bool> CreateNewUserAsync(SqlCredential cred, UserRole role, string name, byte[] photo)
+        public static Task<bool> CreateNewUserAsync(SqlCredential cred, UserRole role)
         {
             return Task.Factory.StartNew<bool>(() =>
             {
@@ -50,19 +50,19 @@ namespace UmanyiSMS.Lib.Controllers
             });
         }
                 
-        internal static Task<List<UserRole>> GetUserRolesAsync(string userId)
+        internal static Task<string[]> GetUserRolesAsync(string userId)
         {
-            return Task.Factory.StartNew<List<UserRole>>(() =>
+            return Task.Factory.StartNew<string[]>(() =>
 
             {
                 if (userId.ToUpper() == "SA")
-                    return GetAllRoles();
+                    return Enum.GetNames(typeof(UserRole));
 
                 else
                 {
                     SqlConnection conn = DataAccessHelper.Helper.CreateConnection();
 
-                    List<UserRole> temp = new List<UserRole>();
+                    List<string> temp = new List<string>();
                     try
                     {
                         using (conn)
@@ -74,24 +74,23 @@ namespace UmanyiSMS.Lib.Controllers
                             var u = db.Users[userId];
                             if (u == null)
                             {
-                                temp.Add(UserRole.None);
-                                return temp;
+                                temp.Add("None");
+                                return temp.ToArray();
                             }
-
 
                             StringCollection coll = u.EnumRoles();
                             for (int i = 0; i < coll.Count; i++)
-                                temp.Add((UserRole)Enum.Parse(typeof(UserRole), coll[i]));
+                                temp.Add(coll[i]);
 
                             if ((temp.Count == 0) && (new ServerRole(server, "sysadmin").EnumMemberNames().Contains(userId)))
-                                return GetAllRoles();
+                                return Enum.GetNames(typeof(UserRole));
                             else
-                                temp = GetChildRoles((UserRole)Enum.Parse(typeof(UserRole),temp[0].ToString()));
+                                return GetChildRoles(temp[0].ToString());
                         }
                     }
                     catch { }
 
-                    return temp;
+                    return temp.ToArray();
                 }
             });
         }
@@ -167,25 +166,15 @@ namespace UmanyiSMS.Lib.Controllers
             });
         }
 
-        public static List<UserRole> GetChildRoles(UserRole role)
+        public static string[] GetChildRoles(string role)
         {
-            List<UserRole> t = new List<UserRole>();
+            List<string> t = new List<string>();
             var arr = Enum.GetValues(typeof(UserRole));
             foreach (var i in arr)
-                if (role >= (UserRole)i)
-                    t.Add((UserRole)i);
-            return t;
-
-        }
-
-        public static List<UserRole> GetAllRoles()
-        {
-            List<UserRole> t = new List<UserRole>();
-            var arr = Enum.GetValues(typeof(UserRole));
-            foreach (var i in arr)
-                    t.Add((UserRole)i);
-            return t;
-
+                if ((UserRole)Enum.Parse(typeof(UserRole), role) > (UserRole)i)
+                    t.Add(((UserRole)i).ToString());
+            t.Add(role);
+            return t.ToArray();
         }
 
         public static Task<bool> RemoveUserAsync(string userID)

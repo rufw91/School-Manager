@@ -15,6 +15,8 @@ namespace UmanyiSMS.Modules.Exams.Models
         private int examResultID;
 
         private decimal outOf;
+        private string grade;
+        private decimal points;
 
         public int ExamResultID
         {
@@ -64,6 +66,22 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
+        public decimal Points
+        {
+            get
+            {
+                return this.points;
+            }
+            set
+            {
+                if (value != this.points)
+                {
+                    this.points = value;
+                    base.NotifyPropertyChanged("Points");
+                }
+            }
+        }
+
         public string Remarks
         {
             get
@@ -80,12 +98,29 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
+        public string Grade
+        {
+            get
+            {
+                return this.grade;
+            }
+            set
+            {
+                if (value != this.grade)
+                {
+                    this.grade = value;
+                    base.NotifyPropertyChanged("Grade");
+                }
+            }
+        }
+
         public ExamResultSubjectEntryModel()
         {
             this.ExamResultID = 0;
             this.Score = 0m;
             this.outOf = 100m;
             this.Remarks = "";
+            this.Grade = "E";
             base.Tutor = "";
             base.PropertyChanged += delegate (object o, PropertyChangedEventArgs e)
             {
@@ -163,6 +198,8 @@ namespace UmanyiSMS.Modules.Exams.Models
             base.Reset();
             this.ExamResultID = 0;
             this.Score = 0m;
+            Grade = "E";
+            Points = 1;
             this.Remarks = "";
             base.Tutor = "";
         }

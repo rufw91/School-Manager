@@ -31,11 +31,11 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
 
             set
             {
-                if (value != this.source)
-                {                   
-                    this.source = value;                    
+                var issame = this.source == null ? false : value.GetType().Equals(this.source.GetType());
+                if (issame)
+                    return;
+                this.source = value;                    
                     NotifyPropertyChanged("Source");
-                }
             }
         }
         

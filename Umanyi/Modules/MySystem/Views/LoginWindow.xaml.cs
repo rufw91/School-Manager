@@ -88,7 +88,7 @@ namespace UmanyiSMS.Modules.MySystem.Views
             SecureString p = txtPwd.SecurePassword.Copy();
             p.MakeReadOnly();
             SqlCredential c = new SqlCredential(txtUId.Text, p);
-            bool authentic = await LoginHelper.AuthenticateUser(c);
+            bool authentic = await LoginHelper.AuthenticateUser(App.Info.ServerName,c);
 
             if (txtUId.Text.ToLowerInvariant()=="sa")
             {

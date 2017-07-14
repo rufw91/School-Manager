@@ -25,7 +25,7 @@ namespace UmanyiSMS.Modules.Staff.Views
         }
         private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
-            if ((txtPwd.Password == txtPwd2.Password) && (txtPwd.Password.Length >= 1))
+            if ((txtPwd.Password == txtPwd2.Password) && (txtPwd.Password.Length >= 6))
             {
                 (this.DataContext as NewStaffVM).SecurePassword = txtPwd.SecurePassword.Copy();
             }

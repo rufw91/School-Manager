@@ -13,6 +13,7 @@ using UmanyiSMS.Modules.Students.Models;
 namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ViewExamResultsVM : ViewModelBase
     {
         ExamResultStudentDisplayModel studentResult;        
@@ -43,29 +44,32 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         {
             PrintTranscriptCommand = new RelayCommand(o =>
             {
-                    IsBusy = true;
-                    StudentExamResultModel st = DataController.GetStudentExamResult(studentResult);
-                    IsBusy = false;
-                    if (ShowStudentTranscriptAction != null)
-                        ShowStudentTranscriptAction.Invoke(st);
-                
-               
+                IsBusy = true;
+                var st = new ExamResultStudentDisplayModel(studentResult);
+                IsBusy = false;
+                if (ShowStudentTranscriptAction != null)
+                    ShowStudentTranscriptAction.Invoke(st);
+
+
             }, o => CanPrintResult());
 
             DisplayResultsCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                  var temp = new ExamResultStudentDisplayModel(await DataController.GetStudentExamResultAync(studentResult.StudentID, selectedExam.ExamID,selectedExam.OutOf));
-                    StudentResult.Entries = temp.Entries;
-                    StudentResult.ExamID = temp.ExamID;
-                    StudentResult.ExamResultID = temp.ExamResultID;
+                var temp = await DataController.GetStudentExamResultAync(studentResult.StudentID, selectedExam.ExamID, selectedExam.OutOf);
+                StudentResult.Entries = temp.Entries;
+                StudentResult.ExamID = temp.ExamID;
+                StudentResult.ExamResultID = temp.ExamResultID;
+                StudentResult.Total = temp.Total;
+                StudentResult.TotalPoints = temp.TotalPoints;
+                StudentResult.MeanGrade = temp.MeanGrade;                
+                StudentResult.ClassPosition = DataController.GetClassPosition(studentResult.StudentID, selectedExam.ExamID);
 
-                    StudentModel st = await Students.Controller.DataController.GetStudentAsync(studentResult.StudentID);
-                    studentResult.NameOfStudent = st.NameOfStudent;
-                    studentResult.NameOfClass = (await Institution.Controller.DataController.GetClassAsync(st.ClassID)).NameOfClass;
-                    studentResult.NameOfExam = selectedExam.NameOfExam;
-               
-                
+                var st = await Students.Controller.DataController.GetStudentAsync(studentResult.StudentID);
+                studentResult.NameOfStudent = st.NameOfStudent;
+                studentResult.NameOfClass = (await Institution.Controller.DataController.GetClassAsync(st.ClassID)).NameOfClass;
+                studentResult.NameOfExam = selectedExam.NameOfExam;
+
                 IsBusy = false;
             }, o => CanDisplayResults());
         }
@@ -194,13 +198,13 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             studentResult.Reset();
         }
 
-        public Action<ClassStudentsExamResultModel> ShowClassStudentsTranscriptAction
+        public Action<ExamResultClassDisplayModel> ShowClassStudentsTranscriptAction
         { get; set; }
 
-        public Action<StudentExamResultModel> ShowStudentTranscriptAction
+        public Action<ExamResultStudentDisplayModel> ShowStudentTranscriptAction
         { get; set; }
 
-        public Action<ClassExamResultModel> ShowClassTranscriptAction
+        public Action<ExamResultClassModel> ShowClassTranscriptAction
         { get; set; }
 
         public  ICommand DisplayResultsCommand

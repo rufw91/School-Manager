@@ -57,7 +57,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                 if (isRemovingInvalid)
                     return;
                 if (e.Action == NotifyCollectionChangedAction.Add)
-                    foreach (ExamSubjectEntryModel i in e.NewItems)
+                    foreach (SubjectModel i in e.NewItems)
                     {
                         if (i.MaximumScore > selectedExam.OutOf)
                         {
@@ -140,7 +140,6 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     em.Entries.Add(d);
                     temp.Add(em);
                 }
-                IsBusy = true;
                 bool succ = await DataController.SaveNewExamResultAsync(temp);
                 IsBusy = false;
                 if (succ)

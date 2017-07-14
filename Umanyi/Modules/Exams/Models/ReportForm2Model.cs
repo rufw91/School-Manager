@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UmanyiSMS.Modules.Exams.Models
 {
-    public class StudentTranscriptModel: StudentExamResultModel
+    public class ReportForm2Model: ExamResultStudentDisplayModel
     {
         private int kcpeScore;
         private string responsibilities;
@@ -25,7 +25,7 @@ namespace UmanyiSMS.Modules.Exams.Models
         private string term1Pos;
         private string term2Pos;
         private string term3Pos;
-        private ObservableCollection<StudentExamResultEntryModel> entries;
+        private ObservableCollection<ReportForm2SubjectModel> entries;
         private int studentTranscriptID;
         private DateTime dateSaved;
         private decimal meanScore;
@@ -34,7 +34,7 @@ namespace UmanyiSMS.Modules.Exams.Models
         private string examGrade;
         private byte[] sPhoto;
 
-        public StudentTranscriptModel()
+        public ReportForm2Model()
         {
             SPhoto = null;
             StudentTranscriptID = 0;
@@ -52,7 +52,7 @@ namespace UmanyiSMS.Modules.Exams.Models
             Term1Pos = "1/1";
             Term2Pos = "1/1";
             Term3Pos = "1/1";
-            Entries = new ObservableCollection<StudentExamResultEntryModel>();
+            Entries = new ObservableCollection<ReportForm2SubjectModel>();
             MeanGrade = "E";
             CAT1Grade = "E";
             CAT2Grade = "E";
@@ -62,10 +62,10 @@ namespace UmanyiSMS.Modules.Exams.Models
                 {
                     if ((e.PropertyName=="Entries")&&(entries!=null))
                     {
-                        TotalMarks = 0;
+                        Total = 0;
                         foreach (var v in entries)
                         {
-                            TotalMarks += v.MeanScore;
+                            Total += v.MeanScore;
                         }
                     }
                 };
@@ -73,7 +73,7 @@ namespace UmanyiSMS.Modules.Exams.Models
                 {
                     foreach(var v in entries)
                     {
-                        TotalMarks += v.MeanScore;
+                        Total += v.MeanScore;
                     }
                 };
         }
@@ -344,7 +344,7 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
-        public new ObservableCollection<StudentExamResultEntryModel> Entries
+        public new ObservableCollection<ReportForm2SubjectModel> Entries
         {
             get { return this.entries; }
 
@@ -414,7 +414,7 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
-        public void CopyFrom(StudentTranscriptModel newTranscript)
+        public void CopyFrom(ReportForm2Model newTranscript)
         {
             base.CopyFrom(newTranscript);
             SPhoto = newTranscript.SPhoto;
@@ -436,7 +436,7 @@ namespace UmanyiSMS.Modules.Exams.Models
             Term2Pos = newTranscript.Term2Pos;
             Term3Pos = newTranscript.Term3Pos;
             Entries = newTranscript.Entries;
-            Points = newTranscript.Points;
+            TotalPoints = newTranscript.TotalPoints;
             MeanGrade = newTranscript.MeanGrade;
             CAT1Grade = newTranscript.CAT1Grade;
             CAT2Grade = newTranscript.CAT2Grade;
@@ -488,7 +488,7 @@ namespace UmanyiSMS.Modules.Exams.Models
             Term1Pos = "1/1";
             Term2Pos = "1/1";
             Term3Pos = "1/1";
-            Entries = new ObservableCollection<StudentExamResultEntryModel>();
+            Entries = new ObservableCollection<ReportForm2SubjectModel>();
             MeanGrade = "E";
             CAT1Grade = "E";
             CAT2Grade = "E";

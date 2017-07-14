@@ -17,7 +17,7 @@ using UmanyiSMS.Modules.Institution.Models;
 
 namespace UmanyiSMS.Modules.Fees.ViewModels
 {
-    [PrincipalPermission(SecurityAction.Demand, Role = "User")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
     public class ViewFullFeesStructureVM:ViewModelBase
     {
         private FixedDocument document;

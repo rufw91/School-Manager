@@ -381,10 +381,15 @@ namespace UmanyiSMS.Modules.Students.Controller
         {
             return Task.Factory.StartNew<bool>(delegate
             {
-                string text = "BEGIN TRANSACTION\r\n" +
-                        "INSERT INTO [StudentClearance] (StudentID,DateCleared) VALUES ("+
-                        student.StudentID + ",'" + student.DateCleared.ToString("g") + "')\r\n" + " COMMIT";
-                return DataAccessHelper.Helper.ExecuteNonQuery(text);
+                try
+                {
+                    string text = "BEGIN TRANSACTION\r\n" +
+                            "INSERT INTO [StudentClearance] (StudentID,DateCleared) VALUES (" +
+                            student.StudentID + ",'" + student.DateCleared.ToString("g") + "')\r\n" + " COMMIT";
+                    var succ = DataAccessHelper.Helper.ExecuteNonQuery(text);
+                }
+                catch { return false; }
+                return true;
             });
         }
 

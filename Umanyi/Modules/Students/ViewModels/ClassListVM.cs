@@ -12,6 +12,7 @@ using UmanyiSMS.Modules.Students.Models;
 namespace UmanyiSMS.Modules.Students.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ClassListVM:ViewModelBase
     {
         ClassModel selectedClass;

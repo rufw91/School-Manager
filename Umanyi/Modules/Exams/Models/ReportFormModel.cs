@@ -18,6 +18,19 @@ namespace UmanyiSMS.Modules.Exams.Models
         public ReportFormModel()
         {
             subjectEntries = new ObservableCollection<ReportFormSubjectModel>();
+            NameOfClass = "";
+            StreamRank = "";
+            ClassRank = "";
+            TotalMarks = 0;
+            MeanScore = 0;
+            MeanGrade = "E";
+            TotalPoints = 1;
+            AvgPoints = 1;
+            OpeningDay = DateTime.Now;
+            ClosingDay = DateTime.Now;
+            PrincipalComments = "";
+            ClassTeacherComments = "";
+            SPhoto = new byte[1];
         }
 
         public string NameOfClass

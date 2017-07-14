@@ -11,7 +11,7 @@ namespace UmanyiSMS.Modules.Exams.Models
 
         private string nameOfExam;
 
-        private ObservableCollection<ExamSubjectEntryModel> entries;
+        private ObservableCollection<SubjectModel> entries;
 
         private decimal outOf;
 
@@ -49,7 +49,7 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
         
-        public ObservableCollection<ExamSubjectEntryModel> Entries
+        public ObservableCollection<SubjectModel> Entries
         {
             get
             {
@@ -112,7 +112,7 @@ namespace UmanyiSMS.Modules.Exams.Models
             this.ExamID = 0;
             this.Classes = new ObservableCollection<ClassModel>();
             this.NameOfExam = "";
-            this.Entries = new ObservableCollection<ExamSubjectEntryModel>();
+            this.Entries = new ObservableCollection<SubjectModel>();
             this.OutOf = 100m;
             this.ExamDateTime = DateTime.Now;
         }
@@ -123,7 +123,7 @@ namespace UmanyiSMS.Modules.Exams.Models
             this.classes.Clear();
             this.NameOfExam = "";
             this.ExamDateTime = DateTime.Now;
-            this.Entries = new ObservableCollection<ExamSubjectEntryModel>();
+            this.Entries = new ObservableCollection<SubjectModel>();
         }
     }
 }

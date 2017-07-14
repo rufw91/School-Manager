@@ -12,12 +12,12 @@ namespace UmanyiSMS.Lib.Controllers
 {
     public static class LoginHelper
     {        
-        public async static Task<bool> AuthenticateUser(SqlCredential cred)
+        public async static Task<bool> AuthenticateUser(string serverName,SqlCredential cred)
         {
             try
             {
                 bool test=
-                DataAccessHelper.Helper.TestCredential(cred);
+                DataAccessHelper.Helper.TestCredential(serverName,cred);
                 if (test)
                 {
                    DataAccessHelper.Helper.SetCredential(cred);

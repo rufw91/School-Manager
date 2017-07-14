@@ -41,20 +41,19 @@ namespace UmanyiSMS.Modules.Exams.Controller
             });
         }
 
-        private static Task<ObservableCollection<ExamSubjectEntryModel>> GetExamEntries(int examID, decimal outOf)
+        private static Task<ObservableCollection<SubjectModel>> GetExamEntries(int examID, decimal outOf)
         {
-            return Task.Factory.StartNew<ObservableCollection<ExamSubjectEntryModel>>(delegate
+            return Task.Factory.StartNew<ObservableCollection<SubjectModel>>(delegate
             {
                 string commandText = "SELECT ed.SubjectID, s.NameOfSubject, ed.ExamDateTime FROM [ExamDetail] ed LEFT OUTER JOIN [Subject] s ON (ed.SubjectID = s.SubjectID) WHERE ed.ExamID =" + examID + " ORDER BY s.[Code]";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
-                ObservableCollection<ExamSubjectEntryModel> observableCollection = new ObservableCollection<ExamSubjectEntryModel>();
+                var observableCollection = new ObservableCollection<SubjectModel>();
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
-                    observableCollection.Add(new ExamSubjectEntryModel
+                    observableCollection.Add(new SubjectModel
                     {
                         SubjectID = int.Parse(dataRow[0].ToString()),
                         NameOfSubject = dataRow[1].ToString(),
-                        ExamDateTime = DateTime.Parse(dataRow[2].ToString()),
                         MaximumScore = outOf
                     });
                 }
@@ -124,7 +123,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     " GROUP BY sub.SubjectID,sub.NameOfSubject) x"
                 });
                 aggregateResultModel.MeanScore = decimal.Parse(DataAccessHelper.Helper.ExecuteScalar(commandText));
-                aggregateResultModel.MeanGrade = Institution.Controller.DataController.CalculateGrade(aggregateResultModel.MeanScore * 100m / selectedExam.OutOf);
+                aggregateResultModel.MeanGrade = Institution.Controller.DataController.CalculateGrade(decimal.Parse((aggregateResultModel.MeanScore * 100m / selectedExam.OutOf).ToString("N2")));
                 aggregateResultModel.Points = Institution.Controller.DataController.CalculatePoints(aggregateResultModel.MeanGrade);
                 aggregateResultModel.Entries = GetAggregateResultEntries(selectedClass, selectedExam);
                 return aggregateResultModel;
@@ -148,7 +147,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AggregateResultEntryModel aggregateResultEntryModel = new AggregateResultEntryModel();
                 aggregateResultEntryModel.NameOfSubject = dataRow[1].ToString();
                 aggregateResultEntryModel.MeanScore = decimal.Parse(dataRow[2].ToString());
-                aggregateResultEntryModel.MeanGrade =Institution.Controller.DataController.CalculateGrade(aggregateResultEntryModel.MeanScore * 100m / selectedExam.OutOf);
+                aggregateResultEntryModel.MeanGrade =Institution.Controller.DataController.CalculateGrade(decimal.Parse((aggregateResultEntryModel.MeanScore * 100m / selectedExam.OutOf).ToString("N2")));
                 aggregateResultEntryModel.Points = Institution.Controller.DataController.CalculatePoints(aggregateResultEntryModel.MeanGrade);
                 observableCollection.Add(aggregateResultEntryModel);
             }
@@ -166,7 +165,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 AggregateResultEntryModel aggregateResultEntryModel = new AggregateResultEntryModel();
                 aggregateResultEntryModel.NameOfSubject = dataRow[1].ToString();
                 aggregateResultEntryModel.MeanScore = decimal.Parse(dataRow[2].ToString());
-                aggregateResultEntryModel.MeanGrade = Institution.Controller.DataController.CalculateGrade(aggregateResultEntryModel.MeanScore * 100m / selectedExam.OutOf);
+                aggregateResultEntryModel.MeanGrade = Institution.Controller.DataController.CalculateGrade(decimal.Parse((aggregateResultEntryModel.MeanScore * 100m / selectedExam.OutOf).ToString("N2")));
                 aggregateResultEntryModel.Points = Institution.Controller.DataController.CalculatePoints(aggregateResultEntryModel.MeanGrade);
                 observableCollection.Add(aggregateResultEntryModel);
             }
@@ -183,7 +182,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 aggregateResultModel.NameOfExam = selectedExam.NameOfExam;
                 string commandText = "SELECT ISNULL(AVG(x.[Average]),0) FROM (SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) [Average] FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] sc ON(erh.StudentID=sc.StudentID) WHERE sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME())  AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY sub.SubjectID,sub.NameOfSubject) x";
                 aggregateResultModel.MeanScore = decimal.Parse(DataAccessHelper.Helper.ExecuteScalar(commandText));
-                aggregateResultModel.MeanGrade =Institution.Controller.DataController.CalculateGrade(aggregateResultModel.MeanScore * 100m / selectedExam.OutOf);
+                aggregateResultModel.MeanGrade =Institution.Controller.DataController.CalculateGrade(decimal.Parse((aggregateResultModel.MeanScore * 100m / selectedExam.OutOf).ToString("N2")));
                 aggregateResultModel.Points = Institution.Controller.DataController.CalculatePoints(aggregateResultModel.MeanGrade);
                 aggregateResultModel.Entries = GetAggregateResultEntries(selectedCombinedClass.Entries, selectedExam);
                 return aggregateResultModel;
@@ -308,7 +307,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     AggregateResultEntryModel aggregateResultEntryModel = new AggregateResultEntryModel();
                     aggregateResultEntryModel.NameOfSubject = dataRow[1].ToString();
                     aggregateResultEntryModel.MeanScore = decimal.Parse(dataRow[2].ToString());
-                    aggregateResultEntryModel.MeanGrade = Institution.Controller.DataController.CalculateGrade(aggregateResultEntryModel.MeanScore * 100m / current.Weight);
+                    aggregateResultEntryModel.MeanGrade = Institution.Controller.DataController.CalculateGrade(decimal.Parse((aggregateResultEntryModel.MeanScore * 100m / current.Weight).ToString("N2")));
                     aggregateResultEntryModel.Points = Institution.Controller.DataController.CalculatePoints(aggregateResultEntryModel.MeanGrade);
 
                     temp.Add(aggregateResultEntryModel);
@@ -798,42 +797,48 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 ReportFormSubjectModel l;
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    isNew = int.Parse(dt.Rows[i][0].ToString()) != last_id;
-                    
-                    if (isNew)
+                    try
                     {
-                        if (temp != null)
-                             rpm.Add(temp);            
-                        last_id = int.Parse(dt.Rows[i][0].ToString());
-                        temp = new ReportFormModel();
-                        temp.StudentID = int.Parse(dt.Rows[i][0].ToString());
-                        temp.NameOfStudent = dt.Rows[i][1].ToString();
-                        temp.NameOfClass = nameOfClass;
-                        temp.StreamRank = dt.Rows[i][10].ToString();
-                        temp.ClassRank = dt.Rows[i][9].ToString();
-                    }
-                    l = new ReportFormSubjectModel();
-                    l.SubjectID = int.Parse(dt.Rows[i][4].ToString());
-                    l.NameOfSubject = dt.Rows[i][3].ToString();
-                    l.Exam1Score = dt.Rows[i][5].ToString();
-                    l.Exam2Score = dt.Rows[i][6].ToString();
-                    l.Exam3Score = dt.Rows[i][7].ToString();
-                    l.StreamRank = dt.Rows[i][8].ToString();                    
-                    l.Code = SubjectModel.AllSubjects.First(o => o.NameOfSubject == l.NameOfSubject).Code;
-                    l.MeanScore = (string.IsNullOrWhiteSpace(l.Exam1Score) ? 0 : decimal.Parse(l.Exam1Score)) +
-                    (string.IsNullOrWhiteSpace(l.Exam2Score) ? 0 : decimal.Parse(l.Exam2Score)) +
-                    (string.IsNullOrWhiteSpace(l.Exam3Score) ? 0 : decimal.Parse(l.Exam3Score));
-                    l.Grade = Institution.Controller.DataController.CalculateGrade(l.MeanScore);
-                    l.Remarks = Institution.Controller.DataController.GetRemark(l.MeanScore, (l.Code == 102));
+                        isNew = int.Parse(dt.Rows[i][0].ToString()) != last_id;
 
-                    temp.TotalMarks += l.MeanScore;                    
-                    temp.SubjectEntries.Add(l);
-                    temp.TotalPoints += Institution.Controller.DataController.CalculatePoints(l.Grade);
-                    temp.MeanScore = temp.SubjectEntries.Count == 0 ? 0 : temp.TotalMarks / temp.SubjectEntries.Count;
-                    temp.AvgPoints = temp.SubjectEntries.Count == 0 ? 1 : temp.TotalPoints / temp.SubjectEntries.Count;
-                    temp.MeanGrade = Institution.Controller.DataController.CalculateGrade(temp.MeanScore);
-                    if (i == dt.Rows.Count - 1)
-                        rpm.Add(temp);
+                        if (isNew)
+                        {
+                            if (temp != null)
+                                rpm.Add(temp);
+                            last_id = int.Parse(dt.Rows[i][0].ToString());
+                            temp = new ReportFormModel();
+                            temp.StudentID = int.Parse(dt.Rows[i][0].ToString());
+                            temp.NameOfStudent = dt.Rows[i][1].ToString();
+                            temp.NameOfClass = nameOfClass;
+                            temp.StreamRank = dt.Rows[i][10].ToString();
+                            temp.ClassRank = dt.Rows[i][9].ToString();
+                        }
+                        l = new ReportFormSubjectModel();
+                        l.SubjectID = int.Parse(dt.Rows[i][4].ToString());
+                        l.NameOfSubject = dt.Rows[i][3].ToString();
+                        l.Exam1Score = dt.Rows[i][5].ToString();
+                        l.Exam2Score = dt.Rows[i][6].ToString();
+                        l.Exam3Score = dt.Rows[i][7].ToString();
+                        l.StreamRank = dt.Rows[i][8].ToString();
+                        l.Code = SubjectModel.AllSubjects.First(o => o.NameOfSubject == l.NameOfSubject).Code;
+                        l.MeanScore = (string.IsNullOrWhiteSpace(l.Exam1Score) ? 0 : decimal.Parse(l.Exam1Score)) +
+                        (string.IsNullOrWhiteSpace(l.Exam2Score) ? 0 : decimal.Parse(l.Exam2Score)) +
+                        (string.IsNullOrWhiteSpace(l.Exam3Score) ? 0 : decimal.Parse(l.Exam3Score));
+
+                        
+                        l.Grade = Institution.Controller.DataController.CalculateGrade(l.MeanScore);
+                        l.Remarks = Institution.Controller.DataController.GetRemark(l.MeanScore, (l.Code == 102));
+
+                        temp.TotalMarks += l.MeanScore;
+                        temp.SubjectEntries.Add(l);
+                        temp.TotalPoints += Institution.Controller.DataController.CalculatePoints(l.Grade);
+                        temp.MeanScore = temp.SubjectEntries.Count == 0 ? 0 : temp.TotalMarks / temp.SubjectEntries.Count;
+                        temp.AvgPoints = temp.SubjectEntries.Count == 0 ? 1 : temp.TotalPoints / temp.SubjectEntries.Count;
+                        temp.MeanGrade = Institution.Controller.DataController.CalculateGrade(temp.MeanScore);
+                        if (i == dt.Rows.Count - 1)
+                            rpm.Add(temp);
+                    }
+                    catch (Exception ex){ Log.E(ex.ToString(), null); }
                 }
                 return rpm;
             });
@@ -854,7 +859,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     "ON (erh.ExamresultID=erd.ExamResultID AND sssd.SubjectID=erd.SubjectID) LEFT OUTER JOIN [Subject] sub ",
                     "ON (sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] cs ",
                     "ON (sssh.StudentID=cs.StudentID AND cs.[Year]=DATEPART(YEAR,SYSDATETIME())) WHERE sssd.SubjectID=@sid AND cs.ClassID=@cid AND cs.[Year]=DATEPART(YEAR,SYSDATETIME())",
-                    "AND sssh.[Year]=DATEPART(YEAR,SYSDATETIME()) ORDER BY s.StudentID"
+                    "AND sssh.[Year]=DATEPART(YEAR,SYSDATETIME()) AND s.IsActive=1 ORDER BY s.StudentID"
                 });
                 var paramColl = new List<SqlParameter>();
                 paramColl.Add(new SqlParameter("@eid", examID));
@@ -964,81 +969,77 @@ namespace UmanyiSMS.Modules.Exams.Controller
             return Task.Factory.StartNew<bool>(delegate
             {
                 string text = "BEGIN TRANSACTION\r\nDECLARE @id int; \r\n ";
+                int count1 = 0;
+                var paramColl = new List<SqlParameter>();
+
                 foreach (ExamResultStudentModel current in newResult)
                 {
+                    count1++;
                     text += "SET @id = dbo.GetNewID('dbo.ExamResultHeader')\r\n";
                     object obj = text;
+                    if (count1 < 2)
+                        paramColl.Add(new SqlParameter("@eid", current.ExamID));
+                    paramColl.Add(new SqlParameter("@sid" + count1, current.StudentID));
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "IF NOT EXISTS (SELECT * FROM [ExamResultHeader] WHERE ExamID=",
-                        current.ExamID,
-                        " AND StudentID=",
-                        current.StudentID,
-                        " AND IsActive=1)\r\n"
+                        "IF NOT EXISTS (SELECT * FROM [ExamResultHeader] WHERE ExamID=@eid",
+                        " AND StudentID=@sid",count1,
+                        " )\r\n"
                     });
                     obj = text;
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "INSERT INTO [ExamResultHeader] (ExamResultID,ExamID,StudentID) VALUES (@id,",
-                        current.ExamID,
-                        ",",
-                        current.StudentID,
+                        "INSERT INTO [ExamResultHeader] (ExamResultID,ExamID,StudentID) VALUES (@id,@eid",
+                        ",@sid",count1,
                         ")\r\n"
                     });
                     obj = text;
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "ELSE SET @id=(SELECT ExamResultID FROM [ExamResultHeader] WHERE ExamID=",
-                        current.ExamID,
-                        " AND StudentID=",
-                        current.StudentID,
-                        " AND IsActive=1)\r\n"
+                        "ELSE SET @id=(SELECT ExamResultID FROM [ExamResultHeader] WHERE ExamID=@eid",
+                        " AND StudentID=@sid",count1,
+                        ")\r\n"
                     });
-                    foreach (ExamResultSubjectEntryModel current2 in current.Entries)
+                    var current2 = current.Entries[0];
+
+                    obj = text;
+                    if (count1 < 2)
+                        paramColl.Add(new SqlParameter("@subid", current2.SubjectID));
+                    paramColl.Add(new SqlParameter("@subScore" + count1, current2.Score));
+                    paramColl.Add(new SqlParameter("@subRemark" + count1, current2.Remarks));
+                    paramColl.Add(new SqlParameter("@subTutor" + count1, current2.Tutor));
+                    text = string.Concat(new object[]
                     {
-                        obj = text;
-                        text = string.Concat(new object[]
-                        {
                             obj,
-                            "IF NOT EXISTS (SELECT * FROM [ExamResultDetail] WHERE ExamResultID=@id AND SubjectID=",
-                            current2.SubjectID,
+                            "IF NOT EXISTS (SELECT * FROM [ExamResultDetail] WHERE ExamResultID=@id AND SubjectID=@subid",
                             ")\r\n"
-                        });
-                        obj = text;
-                        text = string.Concat(new object[]
-                        {
+                    });
+                    obj = text;
+                    text = string.Concat(new object[]
+                    {
                             obj,
-                            "INSERT INTO [ExamResultDetail] (ExamResultID,SubjectID,Score,Remarks,Tutor) VALUES (@id,",
-                            current2.SubjectID,
-                            ",'",
-                            current2.Score,
-                            "','",
-                            current2.Remarks,
-                            "','",
-                            current2.Tutor,
-                            "')\r\n"
-                        });
-                        obj = text;
-                        text = string.Concat(new object[]
-                        {
+                            "INSERT INTO [ExamResultDetail] (ExamResultID,SubjectID,Score,Remarks,Tutor) VALUES (@id,@subid",
+                            ",@subScore",count1,",@subRemark",count1,",@subTutor",count1,
+                            ")\r\n"
+                    });
+                    obj = text;
+                    text = string.Concat(new object[]
+                    {
                             obj,
-                            "ELSE UPDATE [ExamResultDetail] SET Score='",
-                            current2.Score,
-                            "', Remarks='",
-                            current2.Remarks,
-                            "', Tutor='",
-                            current2.Tutor,
-                            "' WHERE ExamResultID=@id AND SubjectID=",
-                            current2.SubjectID
-                        });
-                    }
+                            "ELSE UPDATE [ExamResultDetail] SET Score=@subScore",count1,
+                            ", Remarks=@subRemark",count1,
+                            ", Tutor=@subTutor",count1,
+                            " WHERE ExamResultID=@id AND SubjectID=@subid\r\n"
+                    });
+
                 }
                 text += " COMMIT";
-                return DataAccessHelper.Helper.ExecuteNonQuery(text);
+                return DataAccessHelper.Helper.ExecuteNonQuery(text, paramColl);
             });
+
         }
 
         public static Task<ExamResultStudentModel> GetStudentExamResultAync(int studentID, int examID, decimal outOf)
@@ -1064,11 +1065,17 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     examResultSubjectEntryModel.NameOfSubject = dataRow[1].ToString();
                     examResultSubjectEntryModel.Remarks = dataRow[3].ToString();
                     examResultSubjectEntryModel.OutOf = outOf;
-                    examResultSubjectEntryModel.Score = (string.IsNullOrWhiteSpace(dataRow[2].ToString()) ? 0m : decimal.Parse(dataRow[2].ToString()));                    
+                    examResultSubjectEntryModel.Score = (string.IsNullOrWhiteSpace(dataRow[2].ToString()) ? 0m : decimal.Parse(dataRow[2].ToString()));
+                    examResultSubjectEntryModel.Grade = Institution.Controller.DataController.CalculateGrade(decimal.Parse(((100m / outOf) * examResultSubjectEntryModel.Score).ToString("N2")));
+                    examResultSubjectEntryModel.Points = Institution.Controller.DataController.CalculatePoints(examResultSubjectEntryModel.Grade);
                     examResultSubjectEntryModel.Code = int.Parse(dataRow[4].ToString());
                     examResultSubjectEntryModel.ExamResultID = int.Parse(dataRow[5].ToString());
+                    examResultStudentModel.Total += examResultSubjectEntryModel.Score;
+                    examResultStudentModel.TotalPoints += examResultSubjectEntryModel.Points;
                     examResultStudentModel.Entries.Add(examResultSubjectEntryModel);
                 }
+                examResultStudentModel.TotalPoints = dataTable.Rows.Count == 0 ? 1 : decimal.Parse((examResultStudentModel.TotalPoints / dataTable.Rows.Count).ToString("N2"));
+                examResultStudentModel.MeanGrade = Institution.Controller.DataController.CalculateGradeFromPoints(examResultStudentModel.TotalPoints);
                 return examResultStudentModel;
             });
         }
@@ -1122,11 +1129,20 @@ namespace UmanyiSMS.Modules.Exams.Controller
                             examResultSubjectEntryModel.NameOfSubject = result[i - 2].NameOfSubject;
                             examResultSubjectEntryModel.Code = result[i - 2].Code;
                             examResultSubjectEntryModel.Score = decimal.Parse(dataRow[i].ToString());
+                            examResultSubjectEntryModel.Grade = Institution.Controller.DataController.CalculateGrade(decimal.Parse(((100m / outOf) * examResultSubjectEntryModel.Score).ToString("N2")));
+                            examResultSubjectEntryModel.Points = Institution.Controller.DataController.CalculatePoints(examResultSubjectEntryModel.Grade);
                             examResultSubjectEntryModel.OutOf = outOf;
                             examResultStudentModel.Entries.Add(examResultSubjectEntryModel);
                             RemoveLowestOptional(examResultStudentModel.Entries, examResultClassModel.NameOfClass);
                         }
                     }
+
+                    foreach (ExamResultSubjectEntryModel current in examResultStudentModel.Entries)
+                    {
+                        examResultStudentModel.Total += current.Score;
+                        examResultStudentModel.TotalPoints += current.Points;
+                    }
+                    examResultStudentModel.MeanGrade = examResultStudentModel.Entries.Count > 0 ? Institution.Controller.DataController.CalculateGradeFromPoints(decimal.Ceiling(examResultStudentModel.TotalPoints / examResultStudentModel.Entries.Count)) : "E";
                     examResultClassModel.Entries.Add(examResultStudentModel);
                 }
                 return examResultClassModel;
@@ -1167,11 +1183,11 @@ namespace UmanyiSMS.Modules.Exams.Controller
             }
         }
 
-        public static Task<ClassStudentsExamResultModel> GetClassExamResultForTranscriptAsync(int classID, int examID, decimal outOf)
+        public static Task<ExamResultClassDisplayModel> GetClassExamResultForTranscriptAsync(int classID, int examID, decimal outOf)
         {
-            return Task.Factory.StartNew<ClassStudentsExamResultModel>(delegate
+            return Task.Factory.StartNew<ExamResultClassDisplayModel>(delegate
             {
-                ClassStudentsExamResultModel classStudentsExamResultModel = new ClassStudentsExamResultModel();
+                ExamResultClassDisplayModel classStudentsExamResultModel = new ExamResultClassDisplayModel();
                 ObservableCollection<SubjectModel> result = Institution.Controller.DataController.GetInstitutionSubjectsAsync().Result;
                 string text = "SELECT s.StudentID, NameOfStudent,";
                 object obj;
@@ -1202,7 +1218,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
-                    StudentExamResultModel studentExamResultModel = new StudentExamResultModel();
+                    var studentExamResultModel = new ExamResultStudentDisplayModel();
                     studentExamResultModel.StudentID = int.Parse(dataRow[0].ToString());
                     studentExamResultModel.NameOfStudent = dataRow[1].ToString();
                     for (int i = 2; i < dataRow.ItemArray.Length; i++)
@@ -1215,7 +1231,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                             examResultSubjectEntryModel.Code = result[i - 2].Code;
                             examResultSubjectEntryModel.Score = decimal.Parse(dataRow[i].ToString());
                             examResultSubjectEntryModel.OutOf = outOf;
-                            studentExamResultModel.Entries.Add(new StudentTranscriptSubjectModel(examResultSubjectEntryModel));
+                            studentExamResultModel.Entries.Add(examResultSubjectEntryModel);
                         }
                     }
                     decimal num=0,num2 = 0;
@@ -1224,30 +1240,19 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     {
                         num += current.Score;
                     }
-                    foreach (StudentTranscriptSubjectModel current2 in studentExamResultModel.Entries)
+                    foreach (ExamResultSubjectEntryModel current2 in studentExamResultModel.Entries)
                     {
                         num2 += current2.Points;
                     }
                     studentExamResultModel.MeanGrade = ((studentExamResultModel.Entries.Count > 0) ? Institution.Controller.DataController.CalculateGradeFromPoints((num2 + (studentExamResultModel.Entries.Count - 1)) / studentExamResultModel.Entries.Count) : "E");
-                    studentExamResultModel.TotalMarks = num;
-                    studentExamResultModel.Points = Institution.Controller.DataController.CalculatePoints(studentExamResultModel.MeanGrade);
+                    studentExamResultModel.Total= num;
+                    studentExamResultModel.TotalPoints = Institution.Controller.DataController.CalculatePoints(studentExamResultModel.MeanGrade);
                     classStudentsExamResultModel.Entries.Add(studentExamResultModel);
                 }
                 return classStudentsExamResultModel;
             });
         }
-
-        public static ClassExamResultModel GetClassExamResult(ExamResultClassDisplayModel classResult)
-        {
-            return new ClassExamResultModel
-            {
-                ClassID = classResult.ClassID,
-                NameOfClass = classResult.NameOfClass,
-                NameOfExam = classResult.NameOfExam,
-                Entries = classResult.ResultTable
-            };
-        }
-
+        
         public static Task<bool> SaveNewExamAsync(ExamModel newExam)
         {
             return Task.Factory.StartNew<bool>(delegate
@@ -1283,17 +1288,14 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     }
                     index++;
                 }
-                foreach (ExamSubjectEntryModel current2 in newExam.Entries)
+                foreach (var current2 in newExam.Entries)
                 {
                     object obj = text;
                     text = string.Concat(new object[]
                     {
                         obj,
-                        "INSERT INTO [ExamDetail] (ExamID,SubjectID,ExamDateTime) VALUES (@id,",
-                        current2.SubjectID,
-                        ",'",
-                        current2.ExamDateTime.ToString("g"),
-                        "')\r\n"
+                        "INSERT INTO [ExamDetail] (ExamID,SubjectID) VALUES (@id,",
+                        current2.SubjectID,")\r\n"
                     });
                 }
 
@@ -1331,37 +1333,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 return DataAccessHelper.Helper.ExecuteNonQuery(text);
             });
         }
-
-        public static StudentExamResultModel GetStudentExamResult(ExamResultStudentDisplayModel studentResult)
-        {
-            decimal num = 0m;
-            int num2 = 0;
-            StudentExamResultModel studentExamResultModel = new StudentExamResultModel();
-            studentExamResultModel.ClassPosition = GetClassPosition(studentResult.StudentID, studentResult.ExamID);
-            studentExamResultModel.Entries = new ObservableCollection<StudentTranscriptSubjectModel>();
-            foreach (ExamResultSubjectEntryModel current in studentResult.Entries)
-            {
-                studentExamResultModel.Entries.Add(new StudentTranscriptSubjectModel(current));
-            }
-            studentExamResultModel.NameOfClass = studentResult.NameOfClass;
-            studentExamResultModel.NameOfStudent = studentResult.NameOfStudent;
-            studentExamResultModel.StudentID = studentResult.StudentID;
-            studentExamResultModel.NameOfExam = studentResult.NameOfExam;
-            studentExamResultModel.OverAllPosition = GetOverallPosition(studentResult.StudentID, studentResult.ExamID);
-            foreach (ExamResultSubjectEntryModel current in studentResult.Entries)
-            {
-                num += current.Score;
-            }
-            foreach (StudentTranscriptSubjectModel current2 in studentExamResultModel.Entries)
-            {
-                num2 += current2.Points;
-            }
-            studentExamResultModel.MeanGrade = ((studentExamResultModel.Entries.Count > 0) ? Institution.Controller.DataController.CalculateGradeFromPoints((num2 + (studentExamResultModel.Entries.Count - 1)) / studentExamResultModel.Entries.Count) : "E");
-            studentExamResultModel.TotalMarks = num;
-            studentExamResultModel.Points = Institution.Controller.DataController.CalculatePoints(studentExamResultModel.MeanGrade);
-            return studentExamResultModel;
-        }
-
+        
         internal static string GetClassPosition(int studentID, int examID)
         {
             int classIDFromStudent = Students.Controller.DataController.GetClassIDFromStudentID(studentID).Result;
@@ -1463,6 +1435,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 ExamResultStudentModel examResultStudentModel = new ExamResultStudentModel();
                 examResultStudentModel.StudentID = int.Parse(dataRow[0].ToString());
                 examResultStudentModel.NameOfStudent = dataRow[1].ToString();
+
                 for (int i = 2; i < dataRow.ItemArray.Length; i++)
                 {
                     if (!string.IsNullOrWhiteSpace(dataRow[i].ToString()))
@@ -1472,11 +1445,16 @@ namespace UmanyiSMS.Modules.Exams.Controller
                         examResultSubjectEntryModel.NameOfSubject = observableCollection[i - 2].NameOfSubject;
                         examResultSubjectEntryModel.Code = observableCollection[i - 2].Code;
                         examResultSubjectEntryModel.Score = decimal.Parse(dataRow[i].ToString());
-                        examResultSubjectEntryModel.MaximumScore = 100m;
+                        examResultSubjectEntryModel.Grade = Institution.Controller.DataController.CalculateGrade(examResultSubjectEntryModel.Score);
+                        examResultSubjectEntryModel.Points = Institution.Controller.DataController.CalculatePoints(examResultSubjectEntryModel.Grade);
+                        examResultSubjectEntryModel.MaximumScore = 100m;                        
+                        examResultStudentModel.Total += examResultSubjectEntryModel.Score;
+                        examResultStudentModel.TotalPoints += examResultSubjectEntryModel.Points;
                         examResultStudentModel.Entries.Add(examResultSubjectEntryModel);
                         RemoveLowestOptional(examResultStudentModel.Entries, examResultClassModel.NameOfClass);
                     }
                 }
+                examResultStudentModel.MeanGrade = examResultStudentModel.Entries.Count > 0 ? Institution.Controller.DataController.CalculateGradeFromPoints(decimal.Ceiling(examResultStudentModel.TotalPoints / examResultStudentModel.Entries.Count)) : "E";
                 examResultClassModel.Entries.Add(examResultStudentModel);
             }
             return examResultClassModel;
@@ -1539,10 +1517,16 @@ namespace UmanyiSMS.Modules.Exams.Controller
                         examResultSubjectEntryModel.NameOfSubject = observableCollection[i - 2].NameOfSubject;
                         examResultSubjectEntryModel.Code = observableCollection[i - 2].Code;
                         examResultSubjectEntryModel.Score = decimal.Parse(dataRow[i].ToString());
+                        examResultSubjectEntryModel.Grade = Institution.Controller.DataController.CalculateGrade(examResultSubjectEntryModel.Score);
+                        examResultSubjectEntryModel.Points = Institution.Controller.DataController.CalculatePoints(examResultSubjectEntryModel.Grade);
+                        examResultSubjectEntryModel.MaximumScore = 100m;
+                        examResultStudentModel.Total += examResultSubjectEntryModel.Score;
+                        examResultStudentModel.TotalPoints += examResultSubjectEntryModel.Points;
                         examResultStudentModel.Entries.Add(examResultSubjectEntryModel);
                         RemoveLowestOptional(examResultStudentModel.Entries, examResultClassModel.NameOfClass);
                     }
                 }
+                examResultStudentModel.MeanGrade = examResultStudentModel.Entries.Count > 0 ? Institution.Controller.DataController.CalculateGradeFromPoints(decimal.Ceiling(examResultStudentModel.TotalPoints / examResultStudentModel.Entries.Count)) : "E";
                 examResultClassModel.Entries.Add(examResultStudentModel);
             }
             return examResultClassModel;

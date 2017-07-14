@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace UmanyiSMS.Modules.Students.Models
 {
-    public class StudentSubjectSelectionModel:StudentBaseModel
+    public class StudentSubjectSelectionModel:StudentSelectModel
     {
         private ObservableCollection<StudentSubjectSelectionEntryModel> entries;
         private int year;

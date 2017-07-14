@@ -114,6 +114,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <Prefer32Bit>true</Prefer32Bit>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -137,7 +138,7 @@
     </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable">
+    <Reference Include="System.Collections.Immutable, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\Common\System.Collections.Immutable.dll</HintPath>
       <Private>True</Private>
     </Reference>
@@ -504,7 +505,6 @@
     <Compile Include="Modules\MySystem\ViewModels\LogWindowVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\MainWindowVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\NetworkOptionsVM.cs" />
-    <Compile Include="Modules\MySystem\ViewModels\PDFViewVM.cs" />
     <Compile Include="Modules\MySystem\ViewModels\QueryEditorVM.cs" />
     <Compile Include="Modules\MySystem\Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
@@ -557,9 +557,6 @@
     <Compile Include="Modules\MySystem\Views\NetworkOptions.xaml.cs">
       <DependentUpon>NetworkOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\MySystem\Views\PDFView.xaml.cs">
-      <DependentUpon>PDFView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Modules\MySystem\Views\MyPrintDialog.xaml.cs">
       <DependentUpon>MyPrintDialog.xaml</DependentUpon>
     </Compile>
@@ -569,26 +566,21 @@
     <Compile Include="Modules\Exams\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Exams\Models\AggregateResultEntryModel.cs" />
     <Compile Include="Modules\Exams\Models\AggregateResultModel.cs" />
-    <Compile Include="Modules\Exams\Models\ClassExamResultModel.cs" />
     <Compile Include="Modules\Exams\Models\ClassReportFormModel.cs" />
-    <Compile Include="Modules\Exams\Models\ClassStudentsExamResultModel.cs" />
-    <Compile Include="Modules\Exams\Models\ClassTranscriptsModel.cs" />
+    <Compile Include="Modules\Exams\Models\ExamResultClassDisplayModel.cs" />
+    <Compile Include="Modules\Exams\Models\ClassReportForm2Model.cs" />
     <Compile Include="Modules\Exams\Models\ExamModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultBaseModel.cs" />
-    <Compile Include="Modules\Exams\Models\ExamResultClassDisplayModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultClassModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultStudentDisplayModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultStudentModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultStudentSubjectEntryModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamResultSubjectModel.cs" />
-    <Compile Include="Modules\Exams\Models\ExamSubjectEntryModel.cs" />
     <Compile Include="Modules\Exams\Models\ExamWeightModel.cs" />
     <Compile Include="Modules\Exams\Models\ReportFormModel.cs" />
     <Compile Include="Modules\Exams\Models\ReportFormSubjectModel.cs" />
-    <Compile Include="Modules\Exams\Models\StudentExamResultEntryModel.cs" />
-    <Compile Include="Modules\Exams\Models\StudentExamResultModel.cs" />
-    <Compile Include="Modules\Exams\Models\StudentTranscriptModel.cs" />
-    <Compile Include="Modules\Exams\Models\StudentTranscriptSubjectModel.cs" />
+    <Compile Include="Modules\Exams\Models\ReportForm2SubjectModel.cs" />
+    <Compile Include="Modules\Exams\Models\ReportForm2Model.cs" />
     <Compile Include="Modules\Exams\Models\SyncExamResultEntryModel.cs" />
     <Compile Include="Modules\Exams\Models\SyncExamResultModel.cs" />
     <Compile Include="Modules\Exams\Models\SyncTranscriptEntryModel.cs" />
@@ -1100,10 +1092,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\MySystem\Views\PDFView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Modules\MySystem\Views\MyPrintDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1114,7 +1102,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Presentation\CommonCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1163,7 +1150,13 @@
   <ItemGroup>
     <Resource Include="Resources\noImage.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Modules\Projects\Controller\" />
+    <Folder Include="Modules\Projects\Models\" />
+    <Folder Include="Modules\Projects\Resources\" />
+    <Folder Include="Modules\Projects\ViewModels\" />
+    <Folder Include="Modules\Projects\Views\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>

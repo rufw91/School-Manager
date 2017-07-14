@@ -12,7 +12,6 @@ using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Exams.Controller;
 using UmanyiSMS.Modules.Exams.Models;
 using UmanyiSMS.Modules.Institution.Models;
-using UmanyiSMS.Presentation;
 
 namespace UmanyiSMS.Modules.Exams.ViewModels
 {
@@ -20,7 +19,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
     public class WeightedMarkListVM : ViewModelBase
     {
         ObservableCollection<ExamWeightModel> exams;
-        ExamResultClassDisplayModel classResult;
+        ExamResultClassModel classResult;
         private ObservableCollection<ClassModel> allClasses;
         private ClassModel selectedClass;
         private bool resultsIsReadOnly;
@@ -38,7 +37,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         protected async override void InitVars()
         {
             Title = "WEIGHTED MARK LIST(S)";
-            classResult = new ExamResultClassDisplayModel();
+            classResult = new ExamResultClassModel();
             exams = new ObservableCollection<ExamWeightModel>();
             IsInClassMode = true;
             AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
@@ -109,7 +108,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                 IsBusy = true;
                 if (isInClassMode)
                 {
-                    var temp = new ExamResultClassDisplayModel(await DataController.GetClassCombinedExamResultAsync(selectedClass.ClassID, exams));
+                    var temp = await DataController.GetClassCombinedExamResultAsync(selectedClass.ClassID, exams);
                     classResult.Entries = temp.Entries;
                     classResult.ExamID = temp.ExamID;
                     classResult.ExamResultID = temp.ExamResultID;
@@ -118,14 +117,14 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     classResult.NameOfClass = st.NameOfClass;
 
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
-                    ClassExamResultModel stt = DataController.GetClassExamResult(classResult);
+                    var stt = new ExamResultClassModel(classResult);
 
                     CommonCommands.ExportToExcelCommand.Execute(classResult.ResultTable);
                 }
 
                 if (isInCombinedMode)
                 {
-                    var temp = new ExamResultClassDisplayModel(await DataController.GetCombinedClassCombinedExamResultAsync(selectedCombinedClass.Entries, exams));
+                    var temp = await DataController.GetCombinedClassCombinedExamResultAsync(selectedCombinedClass.Entries, exams);
 
                     classResult.ExamID = temp.ExamID;
                     classResult.ExamResultID = temp.ExamResultID;
@@ -133,7 +132,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     classResult.Entries = temp.Entries;
 
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
-                    ClassExamResultModel st = DataController.GetClassExamResult(classResult);
+                    var st = new ExamResultClassModel(classResult);
                     CommonCommands.ExportToExcelCommand.Execute(classResult.ResultTable);
                 }
                 IsBusy = false;
@@ -144,7 +143,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                 IsBusy = true;
                 if (isInClassMode)
                 {                    
-                    var temp = new ExamResultClassDisplayModel(await DataController.GetClassCombinedExamResultAsync(selectedClass.ClassID, exams));
+                    var temp = await DataController.GetClassCombinedExamResultAsync(selectedClass.ClassID, exams);
                     classResult.Entries = temp.Entries;
                     classResult.ExamID = temp.ExamID;
                     classResult.ExamResultID = temp.ExamResultID;
@@ -153,14 +152,14 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                     classResult.NameOfClass = st.NameOfClass;
 
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
-                    ClassExamResultModel stt = DataController.GetClassExamResult(classResult);
+                    var stt = new ExamResultClassModel(classResult);
                     if (ShowClassTranscriptAction != null)
                         ShowClassTranscriptAction.Invoke(stt);
                 }
 
                 if (isInCombinedMode)
                 {
-                        var temp = new ExamResultClassDisplayModel(await DataController.GetCombinedClassCombinedExamResultAsync(selectedCombinedClass.Entries, exams));
+                        var temp = await DataController.GetCombinedClassCombinedExamResultAsync(selectedCombinedClass.Entries, exams);
                         
                             classResult.ExamID = temp.ExamID;
                             classResult.ExamResultID = temp.ExamResultID;
@@ -168,7 +167,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                          classResult.Entries = temp.Entries;
                     
                     classResult.ResultTable = await ConvertClassResults(classResult.Entries.OrderByDescending(x => x.Total).ToList());
-                    ClassExamResultModel st = DataController.GetClassExamResult(classResult);
+                    var st =new ExamResultClassModel(classResult);
                     if (ShowClassTranscriptAction != null)
                         ShowClassTranscriptAction.Invoke(st);
                 }
@@ -400,7 +399,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         {
             
         }
-        public Action<ClassExamResultModel> ShowClassTranscriptAction
+        public Action<ExamResultClassModel> ShowClassTranscriptAction
         { get; set; }
 
         public ICommand GenerateCommand

@@ -1,45 +1,37 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using UmanyiSMS.Lib;
 
 namespace UmanyiSMS.Modules.Exams.Models
 {
-    public class ExamResultClassDisplayModel : ExamResultClassModel
+    public class ExamResultClassDisplayModel : ModelBase
     {
-        private string nameOfExam;
+        private ObservableCollection<ExamResultStudentDisplayModel> entries;
 
-        public string NameOfExam
+        public ObservableCollection<ExamResultStudentDisplayModel> Entries
         {
             get
             {
-                return this.nameOfExam;
+                return this.entries;
             }
             set
             {
-                if (value != this.nameOfExam)
+                if (value != this.entries)
                 {
-                    this.nameOfExam = value;
-                    base.NotifyPropertyChanged("NameOfExam");
+                    this.entries = value;
+                    base.NotifyPropertyChanged("Entries");
                 }
             }
         }
 
         public ExamResultClassDisplayModel()
         {
-            this.NameOfExam = "";
-        }
-
-        public ExamResultClassDisplayModel(ExamResultClassModel classExamResult)
-        {
-            this.NameOfExam = "";
-            base.ClassID = classExamResult.ClassID;
-            base.Entries = classExamResult.Entries;
-            base.ExamID = classExamResult.ExamID;
-            base.ExamResultID = classExamResult.ExamResultID;
+            this.entries = new ObservableCollection<ExamResultStudentDisplayModel>();
         }
 
         public override void Reset()
         {
-            base.Reset();
-            this.NameOfExam = "";
+            this.entries.Clear();
         }
     }
 }

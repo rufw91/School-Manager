@@ -65,7 +65,7 @@ namespace UmanyiSMS.Modules.MySystem.Views
             SqlConnection conn;
             try
             {
-                conn = new SqlConnection(ConnectionStringHelper.GetConnectionString());
+                conn = new SqlConnection(ConnectionStringHelper.GetConnectionString(UmanyiSMS.Lib.Properties.Settings.Default.Info.ServerName,false));
                 conn.Credential = cred;
                 conn.Open();
                 if (conn.State == ConnectionState.Connecting)

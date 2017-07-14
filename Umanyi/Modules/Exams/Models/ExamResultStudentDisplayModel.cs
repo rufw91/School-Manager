@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 
 namespace UmanyiSMS.Modules.Exams.Models
 {
@@ -7,6 +8,8 @@ namespace UmanyiSMS.Modules.Exams.Models
         private string nameOfClass = "";
 
         private string nameOfExam = "";
+        private string overAllPosition;
+        private string classPosition;
 
         public string NameOfClass
         {
@@ -40,20 +43,47 @@ namespace UmanyiSMS.Modules.Exams.Models
             }
         }
 
+        public string ClassPosition
+        {
+            get
+            {
+                return this.classPosition;
+            }
+            set
+            {
+                if (value != this.classPosition)
+                {
+                    this.classPosition = value;
+                    base.NotifyPropertyChanged("ClassPosition");
+                }
+            }
+        }
+
+        public string OverAllPosition
+        {
+            get
+            {
+                return this.overAllPosition;
+            }
+            set
+            {
+                if (value != this.overAllPosition)
+                {
+                    this.overAllPosition = value;
+                    base.NotifyPropertyChanged("OverAllPosition");
+                }
+            }
+        }
+
         public ExamResultStudentDisplayModel()
         {
             this.NameOfClass = "";
             this.NameOfExam = "";
         }
 
-        public ExamResultStudentDisplayModel(ExamResultStudentModel examResultModel)
+        public ExamResultStudentDisplayModel(ExamResultStudentDisplayModel examResultModel)
         {
-            this.NameOfClass = "";
-            this.NameOfExam = "";
-            base.Entries = examResultModel.Entries;
-            base.ExamID = examResultModel.ExamID;
-            base.ExamResultID = examResultModel.ExamResultID;
-            base.StudentID = examResultModel.StudentID;
+            this.CopyFrom(examResultModel);
         }
 
         public override void Reset()
@@ -61,6 +91,34 @@ namespace UmanyiSMS.Modules.Exams.Models
             base.Reset();
             this.NameOfClass = "";
             this.NameOfExam = "";
+            this.ClassPosition = "1/1";
+            this.OverAllPosition = "1/1";
+        }
+        
+        internal virtual void CopyFrom(ExamResultStudentDisplayModel newResult)
+        {
+            this.NameOfStudent = newResult.NameOfStudent;
+            base.ExamID = newResult.ExamID;
+            base.ExamResultID = newResult.ExamResultID;
+            this.NameOfClass = newResult.NameOfClass;
+            this.ClassPosition = newResult.ClassPosition;
+            this.OverAllPosition = newResult.OverAllPosition;
+            this.Total = newResult.Total;
+            this.TotalPoints = newResult.TotalPoints;
+            this.MeanGrade = newResult.MeanGrade;
+            this.Entries = newResult.Entries;
+        }
+
+        public virtual void Clean()
+        {
+            this.NameOfClass = "";
+            this.ClassPosition = "1/1";
+            this.OverAllPosition = "1/1";
+            this.Total = 0m;
+            this.TotalPoints = 0m;
+            this.MeanGrade = "";
+            this.NameOfExam = "";
+            this.Entries = new ObservableCollection<ExamResultSubjectEntryModel>();
         }
     }
 }

@@ -9,15 +9,19 @@ using System.Windows.Input;
 using UmanyiSMS.Lib.Controllers;
 using UmanyiSMS.Lib.Controls;
 using UmanyiSMS.Lib.Converters;
-using UmanyiSMS.Lib.Presentation;
-using UmanyiSMS.Modules.MySystem.ViewModels;
 
-namespace UmanyiSMS.Presentation
+namespace UmanyiSMS.Lib.Presentation
 {
     public static class CommonCommands
     {
         static CommonCommands()
         {
+            Print = new RelayCommand(o =>
+            {
+                if (o != null)
+                    PrintHelper.PrintXPS(o as FixedDocument, true);
+            }, o => true);
+
             ExportToPDFCommand = new RelayCommand(o =>
             {
                 if ((o == null) || (o == DependencyProperty.UnsetValue))
@@ -37,14 +41,12 @@ namespace UmanyiSMS.Presentation
                     MessageBox.Show("Unable to obtain export data.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
-                CustomWindow w = new CustomWindow();
-                w.MinHeight = 610;
-                w.MinWidth = 810;
-                w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                w.WindowState = WindowState.Maximized;
-
-                w.Content = new PDFViewVM(s);
-                w.ShowDialog();
+               s= ExportPDF(s);
+                try
+                {
+                    Process.Start(s);
+                }
+                catch { }
             }, o => true);
 
             ExportToExcelCommand = new RelayCommand(async o =>
@@ -84,6 +86,9 @@ namespace UmanyiSMS.Presentation
         public static ICommand ExportToExcelCommand
         { get; private set; }
 
+        public static ICommand Print
+        { get; private set; }
+
         private async static Task<string> ExportTable(DataTable Items)
         {
             if (Items.Rows.Count == 0)
@@ -105,6 +110,30 @@ namespace UmanyiSMS.Presentation
                 }
                 catch { }
                 
+            }
+            return "";
+        }
+
+        private static string ExportPDF(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+                return "";
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.ValidateNames = true;
+            saveDialog.Title = "Select location to save PDF file";
+            saveDialog.Filter = "PDF Files|*.pdf";
+            if ((saveDialog.ShowDialog() == true) &&
+                (new System.IO.FileInfo(saveDialog.FileName).Extension.ToLower() == ".pdf"))
+            {
+                string name = saveDialog.FileName;
+                try
+                {
+                    Microsoft.VisualBasic.FileSystem.FileCopy(s, name);
+                    return name;
+
+                }
+                catch { }
+
             }
             return "";
         }

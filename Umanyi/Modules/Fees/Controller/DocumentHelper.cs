@@ -13,7 +13,7 @@ using UmanyiSMS.Modules.Purchases.Models;
 
 namespace UmanyiSMS.Modules.Fees.Controller
 {
-    public class DocumentHelper: DocumentHelperBase
+    public class DocumentHelper : DocumentHelperBase
     {
         private DocumentHelper(object workObject)
             : base(workObject)
@@ -39,7 +39,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
             else if (MyWorkObject is FullFeesStructureModel)
                 GenerateFeesStructure();
             else
-            throw new ArgumentException();
+                throw new ArgumentException();
 
         }
 
@@ -84,7 +84,8 @@ namespace UmanyiSMS.Modules.Fees.Controller
             if (MyWorkObject is FeePaymentReceiptModel)
                 return (MyWorkObject as FeePaymentReceiptModel).Entries.Count;
             if (MyWorkObject is FullFeesStructureModel)
-                return (MyWorkObject as FullFeesStructureModel).Max(o=>o.Entries.Count);
+                return (MyWorkObject as FullFeesStructureModel).Count == 0 ? 0 : 
+                    (MyWorkObject as FullFeesStructureModel).Max(o => o.Entries.Count);
             return 0;
         }
 
