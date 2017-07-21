@@ -166,6 +166,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Modules\Exams\Controller\DataController.cs" />
+    <Compile Include="Modules\Exams\Models\ReportForm3Model.cs" />
+    <Compile Include="Modules\Exams\ViewModels\StudentReportForm2VM.cs" />
     <Compile Include="Modules\Fees\Controller\DataController.cs" />
     <Compile Include="Modules\Fees\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Fees\Models\ClassBalancesListModel.cs" />
@@ -643,7 +645,7 @@
     <Resource Include="Modules\Exams\Resources\ClassMarkList.xaml">
       <SubType>Designer</SubType>
     </Resource>
-    <Resource Include="Modules\Exams\Resources\ReportForm.xaml">
+    <Resource Include="Modules\Exams\Resources\ReportForm2.xaml">
       <SubType>Designer</SubType>
     </Resource>
     <Resource Include="Modules\Exams\Resources\Transcript.xaml">
@@ -659,6 +661,9 @@
     <Resource Include="Modules\Exams\Resources\Transcript4.xaml">
       <SubType>Designer</SubType>
     </Resource>
+    <Page Include="Modules\Exams\Resources\ReportForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Modules\Exams\Views\CombinedAggregateResults.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
