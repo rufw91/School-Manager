@@ -1,0 +1,31 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:UmanyiSMS.Modules.Projects.ViewModels"
+             xmlns:views="clr-namespace:UmanyiSMS.Modules.Projects.Views">
+
+    <DataTemplate DataType="{x:Type viewModels:DonationsHistoryVM}" >
+        <views:DonationsHistory/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ModifyDonorVM}" >
+        <views:ModifyDonor/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ModifyProjectVM}" >
+        <views:ModifyProject/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewDonationVM}" >
+        <views:NewDonation/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewDonorVM}" >
+        <views:NewDonor/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:NewProjectVM}" >
+        <views:NewProject/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ProjectHistoryVM}" >
+        <views:ProjectHistory/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:RemoveDonationVM}" >
+        <views:RemoveDonation/>
+    </DataTemplate>
+
+</ResourceDictionary>

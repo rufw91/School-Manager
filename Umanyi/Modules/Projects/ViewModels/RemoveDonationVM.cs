@@ -10,15 +10,15 @@ using UmanyiSMS.Modules.Students.Controller;
 using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Lib.Controllers;
 
-namespace UmanyiSMS.Modules.Students.ViewModels
+namespace UmanyiSMS.Modules.Projects.ViewModels
 {
-    [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
-    public class NewStudentVM : ViewModelBase
+    [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
+    public class RemoveDonationVM : ViewModelBase
     {
         StudentModel newStudent;
         ObservableCollection<ClassModel> allClasses;
 
-        public NewStudentVM()
+        public RemoveDonationVM()
             : base()
         {
             InitVars();

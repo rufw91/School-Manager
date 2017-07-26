@@ -6,7 +6,7 @@
         <converters:ToUpperConverter x:Key="ToUpperConverter" />
     </FixedPage.Resources>
     <Grid Width="793.76" Height="1122.56" DataContext="{Binding Source={x:Static Application.Current}}">
-        <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="{Binding Info.Motto}" VerticalAlignment="Bottom" FontStyle="Italic"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,0,90,18" Text="{Binding Info.Motto}" VerticalAlignment="Bottom" FontStyle="Italic"/>
         <Border Margin="17" BorderBrush="Black" BorderThickness="2">
             <Grid>
                 <TextBlock HorizontalAlignment="Left" Margin="260,645,0,0" Text="TOTAL PTS" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="14"/>
@@ -101,7 +101,8 @@
                 <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="1" Margin="535,929,0,0" VerticalAlignment="Top" Width="180"/>
                 <TextBlock HorizontalAlignment="Left" Margin="535,939,0,0" Text="KCPE" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="580,939,0,0" Text="CAT 1" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="630,939,0,0" Text="CAT 2" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="626,939,0,0" Text="CAT 2" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="670,939,0,0" Text="EXAM" VerticalAlignment="Top"/>
                 <StackPanel Margin="519,734,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <TextBlock><Run Text="A"/></TextBlock>
                     <TextBlock><Run Text="A-"/></TextBlock>
@@ -130,7 +131,9 @@
                 <Rectangle Margin="535,917,0,0" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Stroke="LightGray" StrokeThickness="1" Height="1" StrokeDashArray="4 4" SnapsToDevicePixels="True"/>
                 <Border BorderBrush="Black" BorderThickness="2" Height="1" Margin="49,887,250,0" VerticalAlignment="Top"/>
 
+
             </Grid>
         </Border>
+        
     </Grid>
 </FixedPage>

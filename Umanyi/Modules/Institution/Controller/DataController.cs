@@ -98,6 +98,11 @@ namespace UmanyiSMS.Modules.Institution.Controller
             }
         }
 
+        internal static int CalculatePoints(decimal score)
+        {
+            return CalculatePoints(CalculateGrade(score));
+        }
+
         internal static int CalculatePoints(string grade)
         {
             switch (grade)

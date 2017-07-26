@@ -15,15 +15,15 @@ using UmanyiSMS.Modules.Institution.Models;
 namespace UmanyiSMS.Modules.Exams.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Teacher")]
-    public class StudentReportForm2VM: ViewModelBase
+    public class StudentReportForm3VM: ViewModelBase
     {
-        ReportForm2Model reportForm;
+        ReportForm3Model reportForm;
         FixedDocument fd;
         ObservableCollection<ExamWeightModel> exams;
         bool resultsIsReadOnly;
         private TermModel selectedTerm;
         private ObservableCollection<TermModel> allTerms;
-        public StudentReportForm2VM()
+        public StudentReportForm3VM()
         {
             InitVars();
             CreateCommands();
@@ -31,7 +31,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
         protected async override void InitVars()
         {
             Title = "REPORT FORM";
-            reportForm = new ReportForm2Model();
+            reportForm = new ReportForm3Model();
             exams = new ObservableCollection<ExamWeightModel>();
             ResultsIsReadOnly = false;
             AllTerms = await Institution.Controller.DataController.GetAllTermsAsync();
@@ -112,7 +112,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             RefreshCommand = new RelayCommand(async o =>
             {
                 IsBusy = true;
-                reportForm.CopyFrom(await DataController.GetStudentReportFormAsync(reportForm.StudentID, exams));
+                reportForm.CopyFrom(await DataController.GetStudentReportForm3Async(reportForm.StudentID, exams));
                 reportForm.ClosingDay = selectedTerm.EndDate;
                 ResultsIsReadOnly = true;
                 IsBusy = false;
@@ -192,7 +192,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
             }
         }
 
-        public ReportForm2Model ReportForm
+        public ReportForm3Model ReportForm
         {
             get { return this.reportForm; }
 

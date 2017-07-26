@@ -116,6 +116,19 @@
                         <MenuItem Header="Remove Supplier"  Command="{Binding PurchasesRemoveSupplierCommand}"/>
                     </MenuItem>
                 </MenuItem>
+                <MenuItem Header="Projects">
+                    <MenuItem Header="New Project" Command="{Binding ProjectsNewProjectCommand}"/>
+                    <MenuItem Header="New Donation" Command="{Binding ProjectsNewDonationCommand}"/>
+                    <MenuItem Header="New Donor" Command="{Binding ProjectsNewDonorCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="Modify Project" Command="{Binding ProjectsModifyProjectCommand}"/>
+                    <MenuItem Header="Modify Donor" Command="{Binding ProjectsModifyDonorCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="Project(s) History" Command="{Binding ProjectsProjectsHistoryCommand}"/>
+                    <MenuItem Header="Donations History" Command="{Binding ProjectsDonationsHistoryCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="Remove Donation" Command="{Binding ProjectsRemoveDonationCommand}"/>
+                </MenuItem>
                 <MenuItem Header="Library">
                     <MenuItem Header="Issue Book(s)" Command="{Binding LibraryIssueBookCommand}"/>
                     <MenuItem Header="Return Book(s)" Command="{Binding LibraryReturnBookCommand}"/>

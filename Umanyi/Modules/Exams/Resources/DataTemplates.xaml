@@ -11,6 +11,9 @@
     <DataTemplate DataType="{x:Type viewModels:ClassReportFormsVM}" >
         <views:ClassReportForms/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ClassReportForms3VM}" >
+        <views:ClassReportForms/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:CombinedAggregateResultsVM}" >
         <views:CombinedAggregateResults/>
     </DataTemplate>
@@ -30,6 +33,9 @@
         <views:RemoveExam/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:StudentReportFormVM}" >
+        <views:StudentTranscript2/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:StudentReportForm3VM}" >
         <views:StudentTranscript2/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:ViewExamResultsVM}" >
