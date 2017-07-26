@@ -13,6 +13,7 @@ using UmanyiSMS.Modules.Students.ViewModels;
 using UmanyiSMS.Modules.MySystem.Controller;
 using System.Security.Permissions;
 using System.Threading;
+using UmanyiSMS.Modules.Projects.ViewModels;
 
 namespace UmanyiSMS.Modules.MySystem.ViewModels
 {
@@ -51,7 +52,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             FileBackupCommand = new RelayCommand(o => { Source = new BackupVM(); }, o => true);
             FileLogoutCommand = new RelayCommand(o => App.Restart(), o => true);
             FileExitCommand = new RelayCommand(o => Application.Current.Shutdown(), o => true);
-            StudentsNewStudentCommand = new RelayCommand(o => Source = new NewStudentVM() , o => true);
+            StudentsNewStudentCommand = new RelayCommand(o => Source = new NewStudentVM(), o => true);
             StudentsModifyStudentCommand = new RelayCommand(o => Source = new ModifyStudentVM(), o => true);
             StudentsStudentListCommand = new RelayCommand(o => Source = new StudentListVM(), o => true);
             StudentsClassListNCommand = new RelayCommand(o => Source = new ClassListVM(), o => true);
@@ -78,8 +79,8 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             ExamsEnterResultsPSCommand = new RelayCommand(o => Source = new EnterExamResultsVM(), o => true);
             ExamsEnterResultsPCCommand = new RelayCommand(o => Source = new EnterExamResultsBySubjectVM(), o => true);
             ExamsViewResultsCommand = new RelayCommand(o => Source = new ViewExamResultsVM(), o => true);
-            ExamsReportFormPSCommand = new RelayCommand(o => Source = new StudentReportFormVM(), o => true);
-            ExamsReportFormPCCommand = new RelayCommand(o => Source = new ClassReportFormsVM(), o => true);
+            ExamsReportFormPSCommand = new RelayCommand(o => Source = new StudentReportForm3VM(), o => true);
+            ExamsReportFormPCCommand = new RelayCommand(o => Source = new ClassReportForms3VM(), o => true);
             ExamsMarkListNCommand = new RelayCommand(o => Source = new MarkListsVM(), o => true);
             ExamsMarkListWCommand = new RelayCommand(o => Source = new WeightedMarkListVM(), o => true);
             ExamsSubjectPerfomanceNCommand = new RelayCommand(o => Source = new AggregateResultsVM(), o => true);
@@ -99,6 +100,17 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             PurchasesSupplierStatementCommand = new RelayCommand(o => Source = new SupplierStatementVM(), o => true);
             PurchasesSPaymtHistoryCommand = new RelayCommand(o => Source = new PaymentToSupplierHistoryVM(), o => true);
             PurchasesReprintPVCommand = new RelayCommand(o => Source = new ReprintPaymentVoucherVM(), o => true);
+            ProjectsNewProjectCommand = new RelayCommand(o => Source = new NewProjectVM(), o => true);
+
+            ProjectsNewDonationCommand = new RelayCommand(o => Source = new NewDonationVM(), o => true);
+
+            ProjectsNewDonorCommand = new RelayCommand(o => Source = new NewDonorVM(), o => true);
+            ProjectsModifyProjectCommand = new RelayCommand(o => Source = new ModifyProjectVM(), o => true);
+            ProjectsModifyDonorCommand = new RelayCommand(o => Source = new ModifyDonorVM(), o => true);
+            ProjectsProjectsHistoryCommand = new RelayCommand(o => Source = new ProjectHistoryVM(), o => true);
+
+            ProjectsDonationsHistoryCommand = new RelayCommand(o => Source = new DonationsHistoryVM(), o => true);
+            ProjectsRemoveDonationCommand = new RelayCommand(o => Source = new RemoveDonationVM(), o => true);
             LibraryIssueBookCommand = new RelayCommand(o => Source = new IssueBookVM(), o => true);
             LibraryReturnBookCommand = new RelayCommand(o => Source = new BookReturnVM(), o => true);
             LibraryNewBookCommand = new RelayCommand(o => Source = new NewBookVM(), o => true);
@@ -440,7 +452,57 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             private set;
         }
 
-        
+
+        #endregion
+
+        #region Projects
+        public ICommand ProjectsNewProjectCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ProjectsNewDonationCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ProjectsNewDonorCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ProjectsModifyProjectCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ProjectsModifyDonorCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ProjectsProjectsHistoryCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ProjectsDonationsHistoryCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ProjectsRemoveDonationCommand
+        {
+            get;
+            private set;
+        }
         #endregion
 
         #region Library

@@ -1,7 +1,7 @@
 <FixedPage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-           Width="793.76" Height="1122.56">
-    <Grid Width="793.76" Height="1122.56">
+           Height="793.76" Width="1122.56">
+    <Grid Height="793.76" Width="1122.56">
         <TextBlock HorizontalAlignment="Center" Margin="0,20,0,0" Text="{Binding Info.FullName, Source={x:Static Application.Current}}" VerticalAlignment="Top" FontFamily="Segoe UI Light" FontSize="26"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0" Text="CLASS RESULTS" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="16" FontWeight="Bold"/>
         <Border BorderBrush="Black" BorderThickness="1" Height="1" Margin="10,100,10,0" VerticalAlignment="Top"/>
@@ -9,16 +9,16 @@
         <Border BorderBrush="Black" BorderThickness="1" Height="35" Width="1" VerticalAlignment="Top" Margin="10,100,0,0" HorizontalAlignment="Left"/>
         <Border BorderBrush="Black" BorderThickness="1" Height="35" Width="1" VerticalAlignment="Top" Margin="250,100,0,0" HorizontalAlignment="Left"/>
         <Border BorderBrush="Black" BorderThickness="1" Height="35" Width="1" VerticalAlignment="Top" Margin="47,100,0,0" HorizontalAlignment="Left"/>
-        <Border BorderBrush="Black" BorderThickness="1" Height="35" Width="1" VerticalAlignment="Top" Margin="675,100,0,0" HorizontalAlignment="Left"/>
-        <Border BorderBrush="Black" BorderThickness="1" Height="35" Width="1" VerticalAlignment="Top" Margin="709,100,0,0" HorizontalAlignment="Left"/>
-        <Border BorderBrush="Black" BorderThickness="1" Height="35" Width="1" VerticalAlignment="Top" Margin="750,100,0,0" HorizontalAlignment="Left"/>
+        <Border BorderBrush="Black" BorderThickness="1" Height="35" Width="1" VerticalAlignment="Top" Margin="945,100,0,0" HorizontalAlignment="Left"/>
+        <Border BorderBrush="Black" BorderThickness="1" Height="35" Width="1" VerticalAlignment="Top" Margin="990,100,0,0" HorizontalAlignment="Left"/>
+        <Border BorderBrush="Black" BorderThickness="1" Height="35" Width="1" VerticalAlignment="Top" Margin="1050,100,0,0" HorizontalAlignment="Left"/>
         <Border BorderBrush="Black" BorderThickness="1" Height="35" Width="1" VerticalAlignment="Top" Margin="0,100,10,0" HorizontalAlignment="Right"/>
         <TextBlock HorizontalAlignment="Left" Margin="11,103,0,0" Text="ADM" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="14"/>
         <TextBlock HorizontalAlignment="Left" Margin="16,118,0,0" Text="NO." VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="14"/>
         <TextBlock HorizontalAlignment="Left" Margin="55,110,0,0" Text="NAME" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="14"/>
-        <TextBlock HorizontalAlignment="Left" Margin="711,110,0,0" Text="TOTAL" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="12"/>
-        <TextBlock HorizontalAlignment="Left" Margin="755,110,0,0" Text="POS" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="12"/>
+        <TextBlock HorizontalAlignment="Left" Margin="1000,110,0,0" Text="TOTAL" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="12"/>
+        <TextBlock HorizontalAlignment="Left" Margin="1070,110,0,0" Text="POS" VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="12"/>
         <TextBlock HorizontalAlignment="Left" Margin="16,70,0,0" Text="CLASS:" VerticalAlignment="Top" FontSize="14"/>
-        <TextBlock HorizontalAlignment="Left" Margin="675,104,0,0" Text="MEAN GRADE" VerticalAlignment="Top" TextWrapping="Wrap" FontSize="11" Width="37"/>
+        <TextBlock HorizontalAlignment="Left" Margin="953,104,0,0" Text="MEAN GRADE" VerticalAlignment="Top" TextWrapping="Wrap" FontSize="11" Width="37"/>
     </Grid>
 </FixedPage>

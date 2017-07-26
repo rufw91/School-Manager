@@ -166,8 +166,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Modules\Exams\Controller\DataController.cs" />
+    <Compile Include="Modules\Exams\Models\ClassReportForm3Model.cs" />
     <Compile Include="Modules\Exams\Models\ReportForm3Model.cs" />
-    <Compile Include="Modules\Exams\ViewModels\StudentReportForm2VM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\ClassReportForms3VM.cs" />
+    <Compile Include="Modules\Exams\ViewModels\StudentReportForm3VM.cs" />
     <Compile Include="Modules\Fees\Controller\DataController.cs" />
     <Compile Include="Modules\Fees\Controller\DocumentHelper.cs" />
     <Compile Include="Modules\Fees\Models\ClassBalancesListModel.cs" />
@@ -340,6 +342,44 @@
     </Compile>
     <Compile Include="Modules\MySystem\Views\Wizard\SubjectsSetupW.xaml.cs">
       <DependentUpon>SubjectsSetupW.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Projects\Controller\DataController.cs" />
+    <Compile Include="Modules\Projects\Models\DonorModel.cs" />
+    <Compile Include="Modules\Projects\Models\DonationModel.cs" />
+    <Compile Include="Modules\Projects\Models\ModifyDonorModel.cs" />
+    <Compile Include="Modules\Projects\Models\PojectItemModel.cs" />
+    <Compile Include="Modules\Projects\Models\ProjectModel.cs" />
+    <Compile Include="Modules\Projects\ViewModels\ModifyDonorVM.cs" />
+    <Compile Include="Modules\Projects\ViewModels\ModifyProjectVM.cs" />
+    <Compile Include="Modules\Projects\ViewModels\NewProjectVM.cs" />
+    <Compile Include="Modules\Projects\ViewModels\NewDonationVM.cs" />
+    <Compile Include="Modules\Projects\ViewModels\NewDonorVM.cs" />
+    <Compile Include="Modules\Projects\ViewModels\ProjectHistoryVM.cs" />
+    <Compile Include="Modules\Projects\ViewModels\DonationsHistoryVM.cs" />
+    <Compile Include="Modules\Projects\ViewModels\RemoveDonationVM.cs" />
+    <Compile Include="Modules\Projects\Views\ModifyDonor.xaml.cs">
+      <DependentUpon>ModifyDonor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Projects\Views\ModifyProject.xaml.cs">
+      <DependentUpon>ModifyProject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Projects\Views\NewDonation.xaml.cs">
+      <DependentUpon>NewDonation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Projects\Views\NewDonor.xaml.cs">
+      <DependentUpon>NewDonor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Projects\Views\NewProject.xaml.cs">
+      <DependentUpon>NewProject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Projects\Views\RemoveDonation.xaml.cs">
+      <DependentUpon>RemoveDonation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Projects\Views\ProjectHistory.xaml.cs">
+      <DependentUpon>ProjectHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Projects\Views\DonationsHistory.xaml.cs">
+      <DependentUpon>DonationsHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Purchases\Models\ItemCategoryBaseModel.cs" />
     <Compile Include="Modules\Purchases\Controller\DataController.cs" />
@@ -882,6 +922,42 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\Projects\Resources\DataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Projects\Views\ModifyDonor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Projects\Views\ModifyProject.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Projects\Views\NewDonation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Projects\Views\NewDonor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Projects\Views\NewProject.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Projects\Views\RemoveDonation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Projects\Views\ProjectHistory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Projects\Views\DonationsHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Purchases\Resources\DataTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1155,13 +1231,7 @@
   <ItemGroup>
     <Resource Include="Resources\noImage.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modules\Projects\Controller\" />
-    <Folder Include="Modules\Projects\Models\" />
-    <Folder Include="Modules\Projects\Resources\" />
-    <Folder Include="Modules\Projects\ViewModels\" />
-    <Folder Include="Modules\Projects\Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>

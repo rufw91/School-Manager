@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="/UmanyiSMS;component/Modules/Exams/Resources/DataTemplates.xaml" />
                 <ResourceDictionary Source="/UmanyiSMS;component/Modules/Fees/Resources/DataTemplates.xaml" />
                 <ResourceDictionary Source="/UmanyiSMS;component/Modules/Institution/Resources/DataTemplates.xaml" />
+                <ResourceDictionary Source="/UmanyiSMS;component/Modules/Projects/Resources/DataTemplates.xaml" />
                 <ResourceDictionary Source="/UmanyiSMS;component/Modules/Library/Resources/DataTemplates.xaml" />
                 <ResourceDictionary Source="/UmanyiSMS;component/Modules/MySystem/Resources/DataTemplates.xaml" />
                 <ResourceDictionary Source="/UmanyiSMS;component/Modules/Purchases/Resources/DataTemplates.xaml" />

@@ -25,12 +25,16 @@ namespace UmanyiSMS.Modules.Exams.Models
             MeanScore = 0;
             MeanGrade = "E";
             TotalPoints = 1;
-            AvgPoints = 1;
+            KCPEGrade = "E";
+            CAT1Grade = "E";
+            CAT2Grade = "E";
+            ExamGrade = "E";
             OpeningDay = DateTime.Now;
             ClosingDay = DateTime.Now;
             PrincipalComments = "";
             ClassTeacherComments = "";
             SPhoto = new byte[1];
+            KCPEScore = 0;
         }
 
         public string NameOfClass
@@ -92,12 +96,16 @@ namespace UmanyiSMS.Modules.Exams.Models
         public decimal MeanScore { get; internal set; }
         public string MeanGrade { get; internal set; }
         public decimal TotalPoints { get; internal set; }
-        public decimal AvgPoints { get; internal set; }
         public DateTime OpeningDay { get; internal set; }
         public DateTime ClosingDay { get; internal set; }
         public string PrincipalComments { get; internal set; }
         public string ClassTeacherComments { get; internal set; }
         public byte[] SPhoto { get; internal set; }
+        public string KCPEGrade { get;  set; }
+        public string CAT1Grade { get;  set; }
+        public string CAT2Grade { get;  set; }
+        public string ExamGrade { get;  set; }
+        public decimal KCPEScore { get; internal set; }
 
         public void Clean()
         {            
@@ -108,12 +116,16 @@ namespace UmanyiSMS.Modules.Exams.Models
             MeanScore = 0;
             MeanGrade = "E";
             TotalPoints = 1;
-            AvgPoints = 1;
+            KCPEGrade = "E";
+            CAT1Grade = "E";
+            CAT2Grade = "E";
+            ExamGrade = "E";
             OpeningDay = DateTime.Now;
             ClosingDay = DateTime.Now;
             PrincipalComments = "";
             ClassTeacherComments = "";
             SPhoto = new byte[1];
+            KCPEScore = 0;
             subjectEntries.Clear();
         }
 
@@ -126,12 +138,16 @@ namespace UmanyiSMS.Modules.Exams.Models
             MeanScore = reportForm.MeanScore;
             MeanGrade = reportForm.MeanGrade;
             TotalPoints = reportForm.TotalPoints;
-            AvgPoints = reportForm.AvgPoints;
+            KCPEGrade = reportForm.KCPEGrade;
+            CAT1Grade = reportForm.CAT1Grade;
+            CAT2Grade = reportForm.CAT2Grade;
+            ExamGrade = reportForm.ExamGrade;
             OpeningDay = reportForm.ClosingDay;
             ClosingDay = reportForm.ClosingDay;
             PrincipalComments = reportForm.PrincipalComments;
             ClassTeacherComments = reportForm.ClassTeacherComments;
             SPhoto = reportForm.SPhoto;
+            KCPEScore = reportForm.KCPEScore;
 
             subjectEntries.Clear();
             foreach (var t in reportForm.subjectEntries)
