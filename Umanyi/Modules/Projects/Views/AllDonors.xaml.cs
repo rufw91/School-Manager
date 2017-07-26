@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace UmanyiSMS.Views
 {
     /// <summary>
-    /// Interaction logic for NewDonor.xaml
+    /// Interaction logic for AllDonors.xaml
     /// </summary>
-    public partial class NewDonor : UserControl
+    public partial class AllDonors : UserControl
     {
-        public NewDonor()
+        public AllDonors()
         {
             InitializeComponent();
         }

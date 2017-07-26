@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="UmanyiSMS.Views.AllDonors" Background="#FFFFFFFF" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}" Text="All Donors" VerticalAlignment="Top" />
+        <DataGrid Name="datagrid" AutoGenerateColumns="False" Margin="10,60,10,50" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" IsReadOnly="True" ItemsSource="{Binding AllDonors}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Donor ID" Width="80*" Binding="{Binding Path=DonorID}" />
+                <DataGridTextColumn Header="Name" Width="170*" Binding="{Binding Path=NameOfDonor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Phone Number" Width="100*" Binding="{Binding Path=PhoneNo, Mode=OneWay}" />
+                <DataGridTextColumn Header="Total Donations" Width="100*" Binding="{Binding Path=TotalDonations, Mode=OneWay, StringFormat={}{0:N2}}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Refresh" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100" Command="{Binding RefreshCommand}" />
+    </Grid>
+</UserControl>

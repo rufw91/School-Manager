@@ -1,87 +1,80 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using Helper;
+using Helper.Models;
+using System;
 using System.Security.Permissions;
-using System.Windows.Documents;
+using System.Windows;
 using System.Windows.Input;
-using UmanyiSMS.Lib;
-using UmanyiSMS.Lib.Presentation;
-using UmanyiSMS.Modules.Institution.Models;
-using UmanyiSMS.Modules.Students.Controller;
-using UmanyiSMS.Modules.Students.Models;
 
 namespace UmanyiSMS.Modules.Projects.ViewModels
-{    
+{
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class NewDonorVM : ViewModelBase
     {
-        CombinedClassModel selectedClass;
-        ObservableCollection<CombinedClassModel> allClasses;
-        private FixedDocument doc;
+        private DonorModel newDonor;
+
+        public ICommand SaveCommand
+        {
+            get;
+            private set;
+        }
+
+        public DonorModel NewDonor
+        {
+            get
+            {
+                return this.newDonor;
+            }
+            set
+            {
+                if (value != this.newDonor)
+                {
+                    this.newDonor = value;
+                    base.NotifyPropertyChanged("NewDonor");
+                }
+            }
+        }
+
         public NewDonorVM()
         {
-            InitVars();
-            CreateCommands();
+            this.InitVars();
+            this.CreateCommands();
         }
-        protected async override void InitVars()
+
+        protected override void InitVars()
         {
-            Title = "COMBINED CLASS LISTS";
-            AllClasses = await Institution.Controller.DataController.GetAllCombinedClassesAsync();
+            base.Title = "NEW DONOR";
+            base.IsBusy = true;
+            this.NewDonor = new DonorModel();
+            base.IsBusy = false;
         }
 
         protected override void CreateCommands()
         {
-            GenerateCommand = new RelayCommand(async o =>
+            this.SaveCommand = new RelayCommand(async delegate(object o)
             {
-                IsBusy = true;
-                ClassStudentListModel s = await DataController.GetCombinedClassStudentListAsync(selectedClass);
-                Document = DocumentHelper.GenerateDocument(s);
-                IsBusy = false;
-            }, o => selectedClass != null);
-        }
-
-        public ObservableCollection<CombinedClassModel> AllClasses
-        {
-            get { return allClasses; }
-            private set
-            {
-                if (allClasses != value)
+                base.IsBusy = true;
+                bool flag = await DataAccess.SaveNewDonorAsync(this.newDonor);
+                if (flag)
                 {
-                    allClasses = value;
-                    NotifyPropertyChanged("AllClasses");
+                    MessageBox.Show("Succesfully saved data.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    this.Reset();
                 }
-            }
-        }
-
-        public FixedDocument Document
-        {
-            get { return doc; }
-            private set
-            {
-                if (doc != value)
-                    doc = value;
-                NotifyPropertyChanged("Document");
-            }
-        }
-
-        public ICommand GenerateCommand
-        { get; private set; }
-
-        public CombinedClassModel SelectedClass
-        {
-            get { return selectedClass; }
-            set
-            {
-                if (value != selectedClass)
+                else
                 {
-                    selectedClass = value;
-                    NotifyPropertyChanged("SelectedClass");
+                    MessageBox.Show("An error occured. Could not save details at this Time.\r\n Error: Database Access Failure.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 }
-            }
+                base.IsBusy = false;
+            }, (object o) => this.CanSave());
+        }
+
+        private bool CanSave()
+        {
+            return !base.IsBusy && !string.IsNullOrWhiteSpace(this.newDonor.NameOfDonor) && !string.IsNullOrWhiteSpace(this.newDonor.PhoneNo);
         }
 
         public override void Reset()
         {
-
+            this.newDonor.Reset();
         }
     }
 }
