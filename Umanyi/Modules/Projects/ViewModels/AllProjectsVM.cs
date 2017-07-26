@@ -1,8 +1,10 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Permissions;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Modules.Projects.Models;
 
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
@@ -37,7 +39,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
         {
             base.Title = "ALL PROJECTS";
             base.IsBusy = true;
-            this.AllProjects = await DataAccess.GetAllProjects();
+            this.AllProjects = null;// await DataAccess.GetAllProjects();
             base.IsBusy = false;
         }
 
