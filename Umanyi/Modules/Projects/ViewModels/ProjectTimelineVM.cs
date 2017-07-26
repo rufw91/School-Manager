@@ -1,11 +1,13 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Projects.Models;
 
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
@@ -130,13 +132,13 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             base.Title = "PROJECT TIMELINE";
             this.allTasks = new ObservableCollection<ProjectTaskModel>();
             this.NewTask = new ProjectTaskModel();
-            this.AllProjects = await DataAccess.GetAllProjectsDisplay();
+            this.AllProjects = null;// await DataAccess.GetAllProjectsDisplay();
             this.SelectedProjectID = 0;
             base.PropertyChanged += async delegate(object o, PropertyChangedEventArgs e)
             {
                 if (e.PropertyName == "SelectedProjectID" && this.selectedProjectID != 0)
                 {
-                    this.AllTasks = await DataAccess.GetProjectTasksAsync(this.selectedProjectID);
+                    this.AllTasks = null;// await DataAccess.GetProjectTasksAsync(this.selectedProjectID);
                 }
             };
         }
@@ -151,7 +153,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             this.SaveCommand = new RelayCommand(async delegate(object o)
             {
                 base.IsBusy = true;
-                bool flag = await DataAccess.SaveNewProjectTimeLineAsync(this.selectedProjectID, this.allTasks);
+                bool flag = true;// await DataAccess.SaveNewProjectTimeLineAsync(this.selectedProjectID, this.allTasks);
                 base.IsBusy = false;
                 if (flag)
                 {

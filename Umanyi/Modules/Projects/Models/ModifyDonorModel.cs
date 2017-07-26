@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace UmanyiSMS.Modules.Projects.Models
 {
-    class ProjectModel
-    {
-    }
+    
 }

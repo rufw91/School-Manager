@@ -1,11 +1,14 @@
-﻿using Helper;
-using Helper.Models;
-using Helper.Presentation;
+﻿
+
+
 using System;
 using System.ComponentModel;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Projects.Models;
 
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
@@ -30,11 +33,11 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             }
         }
 
-        public Array DonateToValues
+        public string DonateToValues
         {
             get
             {
-                return Enum.GetValues(typeof(DonateTo));
+                return "";// Enum.GetValues(typeof(DonateTo));
             }
         }
 
@@ -74,7 +77,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             this.SaveCommand = new RelayCommand(async delegate(object o)
             {
                 base.IsBusy = true;
-                bool flag = await DataAccess.SaveNewDonation(this.donation, "P");
+                bool flag = true;// await DataAccess.SaveNewDonation(this.donation, "P");
                 if (flag)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Asterisk);
@@ -89,7 +92,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             this.SaveAndPrintCommand = new RelayCommand(async delegate(object o)
             {
                 base.IsBusy = true;
-                bool flag = await DataAccess.SaveNewDonation(this.donation, "P");
+                bool flag = true;// await DataAccess.SaveNewDonation(this.donation, "P");
                 if (flag)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Asterisk);

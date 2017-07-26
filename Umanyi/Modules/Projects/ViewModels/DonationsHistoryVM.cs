@@ -1,5 +1,5 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +8,9 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Projects.Models;
 
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
@@ -47,7 +50,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
 
         private async Task RefreshItems()
         {
-            Items = await DataAccess.GetDonationsAsync(null, from, to);
+            Items = null;// await DataAccess.GetDonationsAsync(null, from, to);
         }
 
         private bool CanRefresh()

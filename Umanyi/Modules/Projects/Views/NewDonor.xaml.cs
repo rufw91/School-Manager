@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UmanyiSMS.Views
+namespace UmanyiSMS.Modules.Projects.Views
 {
     /// <summary>
     /// Interaction logic for NewDonor.xaml

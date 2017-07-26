@@ -1,9 +1,12 @@
-﻿using Helper;
-using Helper.Models;
+﻿
+
 using System;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Input;
+using UmanyiSMS.Lib;
+using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Projects.Models;
 
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
@@ -53,7 +56,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             this.SaveCommand = new RelayCommand(async delegate(object o)
             {
                 base.IsBusy = true;
-                bool flag = await DataAccess.SaveNewDonorAsync(this.newDonor);
+                bool flag = true;// await DataAccess.SaveNewDonorAsync(this.newDonor);
                 if (flag)
                 {
                     MessageBox.Show("Succesfully saved data.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);

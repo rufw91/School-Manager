@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UmanyiSMS.Views.AllDonors" Background="#FFFFFFFF" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<UserControl x:Class="UmanyiSMS.Modules.Projects.Views.AllDonors" Background="#FFFFFFFF" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}" Text="All Donors" VerticalAlignment="Top" />
         <DataGrid Name="datagrid" AutoGenerateColumns="False" Margin="10,60,10,50" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserReorderColumns="False" IsReadOnly="True" ItemsSource="{Binding AllDonors}">

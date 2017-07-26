@@ -344,11 +344,16 @@
       <DependentUpon>SubjectsSetupW.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Projects\Controller\DataController.cs" />
+    <Compile Include="Modules\Projects\Models\DonorListModel.cs" />
     <Compile Include="Modules\Projects\Models\DonorModel.cs" />
     <Compile Include="Modules\Projects\Models\DonationModel.cs" />
     <Compile Include="Modules\Projects\Models\ModifyDonorModel.cs" />
     <Compile Include="Modules\Projects\Models\PojectItemModel.cs" />
+    <Compile Include="Modules\Projects\Models\ProjectBaseModel.cs" />
+    <Compile Include="Modules\Projects\Models\ProjectDetailModel.cs" />
+    <Compile Include="Modules\Projects\Models\ProjectListModel.cs" />
     <Compile Include="Modules\Projects\Models\ProjectModel.cs" />
+    <Compile Include="Modules\Projects\Models\ProjectTaskModel.cs" />
     <Compile Include="Modules\Projects\ViewModels\AllDonorsVM.cs" />
     <Compile Include="Modules\Projects\ViewModels\AllProjectsVM.cs" />
     <Compile Include="Modules\Projects\ViewModels\ModifyDonorVM.cs" />
