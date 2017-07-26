@@ -13,10 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UmanyiSMS.Modules.Projects.Views
+namespace UmanyiSMS.Views
 {
     /// <summary>
-    /// Interaction logic for DonationsHistory.xaml
+    /// Interaction logic for NewDonation.xaml
     /// </summary>
     public partial class NewDonation : UserControl
     {

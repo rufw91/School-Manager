@@ -10,7 +10,7 @@ using System.Windows.Input;
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
-    public class NewDonationVM : ViewModelBase
+    public class NewPledgeVM : ViewModelBase
     {
         private DonationModel donation;
 
@@ -50,7 +50,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             private set;
         }
 
-        public NewDonationVM()
+        public NewPledgeVM()
         {
             this.InitVars();
             this.CreateCommands();
@@ -58,7 +58,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
 
         protected override void InitVars()
         {
-            base.Title = "ENTER NEW DONATION";
+            base.Title = "ENTER NEW PLEDGE";
             this.donation = new DonationModel();
             this.donation.PropertyChanged += delegate(object o, PropertyChangedEventArgs e)
             {
@@ -74,7 +74,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             this.SaveCommand = new RelayCommand(async delegate(object o)
             {
                 base.IsBusy = true;
-                bool flag = await DataAccess.SaveNewDonation(this.donation, "D");
+                bool flag = await DataAccess.SaveNewDonation(this.donation, "P");
                 if (flag)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Asterisk);
@@ -89,7 +89,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             this.SaveAndPrintCommand = new RelayCommand(async delegate(object o)
             {
                 base.IsBusy = true;
-                bool flag = await DataAccess.SaveNewDonation(this.donation, "D");
+                bool flag = await DataAccess.SaveNewDonation(this.donation, "P");
                 if (flag)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Asterisk);
