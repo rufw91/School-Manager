@@ -5,8 +5,8 @@ using System.Windows;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Modules.Institution.Models;
-using UmanyiSMS.Modules.Students.Models;
-using UmanyiSMS.Modules.Students.Controller;
+using UmanyiSMS.Modules.Projects.Models;
+using UmanyiSMS.Modules.Projects.Controller;
 using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Lib.Controllers;
 
@@ -15,107 +15,90 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class RemoveDonationVM : ViewModelBase
     {
-        StudentModel newStudent;
-        ObservableCollection<ClassModel> allClasses;
-
+        int selectedDonorID;
+        private DonationModel selectedDonation;
+        private ObservableCollection<TermModel> allTerms;
         public RemoveDonationVM()
-            : base()
         {
             InitVars();
             CreateCommands();
         }
 
-        protected override async void InitVars()
+        public int SelectedDonorID
         {
-            Title = "NEW STUDENT";
-
-            newStudent = new StudentModel();
-
-            AllClasses = await Institution.Controller.DataController.GetAllClassesAsync();
-            newStudent.PropertyChanged += (o, e) =>
+            get { return selectedDonorID; }
+            set
+            {
+                if (value != this.selectedDonorID)
                 {
-                    if (e.PropertyName == "StudentID")
-                        newStudent.CheckErrors();
-                };
-            newStudent.StudentID = await MySystem.Controller.DataController.GetNewID("dbo.Student");
+                    this.selectedDonorID = value;
+                    NotifyPropertyChanged("SelectedDonorID");
+                }
+            }
+        }
+        
+
+        protected override void InitVars()
+        {
+            Title = "REMOVE EXAM";
+            AllDonations = new ObservableCollection<DonationModel>();
+            PropertyChanged += async (o, e) =>
+            {
+                if (e.PropertyName == "SelectedDonorID")
+                {
+                    AllDonations = await DataController.GetDonationsAsync(selectedDonorID, null, null);
+                        NotifyPropertyChanged("AllDonations");
+                    }
+                    return;
+                
+            };
         }
 
         protected override void CreateCommands()
         {
-
-            SaveCommand = new RelayCommand(async o =>
+            RemoveCommand = new RelayCommand(async o =>
             {
-                bool succ = await DataController.SaveNewStudentAsync(newStudent);
-                if (succ)
-                    Reset();
-                MessageBox.Show(succ ? "Successfully saved details." : "Could not save details.", succ ? "Success" : "Error", MessageBoxButton.OK,
-                    succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
-            }, o =>
-                ValidateStudent());
-            ClearImageCommand = new RelayCommand(o => { newStudent.SPhoto = null; }, o => true);
-            BrowseCommand = new RelayCommand(o => { newStudent.SPhoto = FileHelper.BrowseImageAsByteArray(); }, o => true);
-
+                if (MessageBoxResult.Yes == MessageBox.Show("This action is IRREVERSIBLE.\r\nAre you sure you would like to continue?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                {
+                    if (MessageBoxResult.Yes == MessageBox.Show("Are you ABSOLUTELY sure you would like to delete this donation?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Information))
+                    {
+                        bool succ = await DataController.RemoveDonationAsync(selectedDonation.DonationID);
+                        MessageBox.Show(succ ? "Successfully completed operation" : "Operation failed!", succ ? "Success" : "Error", MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Error);
+                        if (succ)
+                            Reset();
+                    }
+                }
+            }, o => CanRemove());
         }
 
+        private bool CanRemove()
+        {
+            return selectedDonorID > 0 && selectedDonation!=null;
+        }
+
+        public ICommand RemoveCommand
+        {
+            get;
+            private set;
+        }
 
         public override void Reset()
         {
-            newStudent.Reset();
+            SelectedDonorID = 0;
         }
-
-        public Array GenderValues
+        public DonationModel SelectedDonation
         {
-            get { return Enum.GetValues(typeof(Gender)); }
-        }
+            get { return this.selectedDonation; }
 
-        public StudentModel NewStudent
-        { get { return newStudent; } }
-
-        public ObservableCollection<ClassModel> AllClasses
-        {
-            get { return allClasses; }
             set
             {
-                if (value != allClasses)
-                    allClasses = value;
-                NotifyPropertyChanged("AllClasses");
+                if (value != this.selectedDonation)
+                {
+                    this.selectedDonation = value;
+                    NotifyPropertyChanged("SelectedDonation");
+                }
             }
         }
-
-
-        public ICommand SaveCommand
-        {
-            get;
-            private set;
-        }
-        public ICommand ClearImageCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand BrowseCommand
-        {
-            get;
-            private set;
-        }
-        public ICommand ClearDormCommand
-        {
-            get;
-            private set;
-        }
-
-        private bool ValidateStudent()
-        {
-            bool isOk = !string.IsNullOrWhiteSpace(newStudent.FirstName) && !string.IsNullOrWhiteSpace(newStudent.LastName)
-                && !string.IsNullOrWhiteSpace(newStudent.NameOfGuardian) && !string.IsNullOrWhiteSpace(newStudent.Email)
-                   && !string.IsNullOrWhiteSpace(newStudent.GuardianPhoneNo) && !string.IsNullOrWhiteSpace(newStudent.Address)
-                    && !string.IsNullOrWhiteSpace(newStudent.City) && !string.IsNullOrWhiteSpace(newStudent.PostalCode)
-                      && (newStudent.DateOfBirth != null) && (newStudent.DateOfAdmission != null)
-                      && (EmailValidator.IsValidEmail(newStudent.Email))
-                      && newStudent.ClassID > 0 && newStudent.KCPEScore >= 0 && newStudent.KCPEScore <= 500;
-            return isOk && !newStudent.HasErrors;
-        }
-
+        public ObservableCollection<DonationModel> AllDonations { get; set; }
     }
 }

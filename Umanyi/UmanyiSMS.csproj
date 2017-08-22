@@ -356,15 +356,11 @@
     <Compile Include="Modules\Projects\Models\ProjectTaskModel.cs" />
     <Compile Include="Modules\Projects\ViewModels\AllDonorsVM.cs" />
     <Compile Include="Modules\Projects\ViewModels\AllProjectsVM.cs" />
-    <Compile Include="Modules\Projects\ViewModels\ModifyDonorVM.cs" />
-    <Compile Include="Modules\Projects\ViewModels\ModifyProjectVM.cs" />
-    <Compile Include="Modules\Projects\ViewModels\NewPledgeVM.cs" />
     <Compile Include="Modules\Projects\ViewModels\NewProjectVM.cs" />
     <Compile Include="Modules\Projects\ViewModels\NewDonationVM.cs" />
     <Compile Include="Modules\Projects\ViewModels\NewDonorVM.cs" />
     <Compile Include="Modules\Projects\ViewModels\ProjectHistoryVM.cs" />
     <Compile Include="Modules\Projects\ViewModels\DonationsHistoryVM.cs" />
-    <Compile Include="Modules\Projects\ViewModels\ProjectTimelineVM.cs" />
     <Compile Include="Modules\Projects\ViewModels\RemoveDonationVM.cs" />
     <Compile Include="Modules\Projects\Views\AllDonors.xaml.cs">
       <DependentUpon>AllDonors.xaml</DependentUpon>
@@ -372,26 +368,14 @@
     <Compile Include="Modules\Projects\Views\AllProjects.xaml.cs">
       <DependentUpon>AllProjects.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Projects\Views\ModifyDonor.xaml.cs">
-      <DependentUpon>ModifyDonor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Projects\Views\ModifyProject.xaml.cs">
-      <DependentUpon>ModifyProject.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Modules\Projects\Views\NewDonation.xaml.cs">
       <DependentUpon>NewDonation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Projects\Views\NewDonor.xaml.cs">
       <DependentUpon>NewDonor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Projects\Views\NewPledge.xaml.cs">
-      <DependentUpon>NewPledge.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Modules\Projects\Views\NewProject.xaml.cs">
       <DependentUpon>NewProject.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Projects\Views\ProjectTimeline.xaml.cs">
-      <DependentUpon>ProjectTimeline.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Projects\Views\RemoveDonation.xaml.cs">
       <DependentUpon>RemoveDonation.xaml</DependentUpon>
@@ -955,14 +939,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Modules\Projects\Views\ModifyDonor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Projects\Views\ModifyProject.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Modules\Projects\Views\NewDonation.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -971,15 +947,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Modules\Projects\Views\NewPledge.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Modules\Projects\Views\NewProject.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Projects\Views\ProjectTimeline.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

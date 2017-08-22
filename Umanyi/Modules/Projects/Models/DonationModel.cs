@@ -1,7 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
-
+using UmanyiSMS.Modules.Projects.Controller;
 namespace UmanyiSMS.Modules.Projects.Models
 {
     public class DonationModel : DonorModel
@@ -80,7 +80,7 @@ namespace UmanyiSMS.Modules.Projects.Models
 
         public DonationModel()
         {
-            this.DonateTo = "";//DonateTo.Fees;
+            this.DonateTo = "Fees";
             this.DateDonated = DateTime.Now;
         }
 
@@ -88,7 +88,7 @@ namespace UmanyiSMS.Modules.Projects.Models
         {
             base.Reset();
             this.Amount = 0m;
-            //this.DonateTo = DonateTo.Fees;
+            this.DonateTo = "Fees";
             this.DateDonated = DateTime.Now;
         }
 
@@ -105,7 +105,7 @@ namespace UmanyiSMS.Modules.Projects.Models
             }
             else
             {
-                DonorModel donor = null;// DataAccess.GetDonor(base.DonorID);
+                DonorModel donor = DataController.GetDonor(base.DonorID);
                 if (donor.DonorID == 0)
                 {
                     base.SetErrors("DonorID", new List<string>

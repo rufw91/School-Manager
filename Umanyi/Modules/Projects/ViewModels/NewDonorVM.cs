@@ -7,6 +7,7 @@ using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Projects.Models;
+using UmanyiSMS.Modules.Projects.Controller;
 
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
@@ -56,7 +57,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             this.SaveCommand = new RelayCommand(async delegate(object o)
             {
                 base.IsBusy = true;
-                bool flag = true;// await DataAccess.SaveNewDonorAsync(this.newDonor);
+                bool flag = await DataController.SaveNewDonorAsync(this.newDonor);
                 if (flag)
                 {
                     MessageBox.Show("Succesfully saved data.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);

@@ -7,6 +7,7 @@ using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Projects.Models;
+using UmanyiSMS.Modules.Projects.Controller;
 
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
@@ -35,7 +36,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
         {
             base.Title = "ALL DONORS";
             base.IsBusy = true;
-            this.AllDonors = null;// await  DataAccess.GetAllDonorsAsync();
+            this.AllDonors = await DataController.GetAllDonorsAsync();
             base.NotifyPropertyChanged("AllDonors");
             base.IsBusy = false;
         }
@@ -45,7 +46,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             this.RefreshCommand = new RelayCommand(async delegate(object o)
             {
                 base.IsBusy = true;
-                this.AllDonors = null;// await DataAccess.GetAllDonorsAsync();
+                this.AllDonors =  await DataController.GetAllDonorsAsync();
                 base.NotifyPropertyChanged("AllDonors");
                 base.IsBusy = false;
             }, (object o) => !base.IsBusy);

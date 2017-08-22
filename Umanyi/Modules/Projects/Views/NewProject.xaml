@@ -5,8 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UmanyiSMS.Modules.Projects.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
-            
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Style="{DynamicResource Title}" Text="New Project" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="30,80,0,0" Text="Name" VerticalAlignment="Top" Style="{DynamicResource ContentTextSemiBold}" />
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="90,76,0,0" VerticalAlignment="Top" Width="180" Text="{Binding NewProject.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBlock HorizontalAlignment="Left" Margin="30,130,0,0" Text="Starts" VerticalAlignment="Top" Style="{DynamicResource ContentTextSemiBold}" />
+        <TextBlock HorizontalAlignment="Left" Margin="50,170,0,0" Text="Date" VerticalAlignment="Top" />
+        <DatePicker HorizontalAlignment="Left" Margin="90,170,0,0" VerticalAlignment="Top" Width="180" SelectedDateFormat="Long" SelectedDate="{Binding NewProject.StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock HorizontalAlignment="Left" Margin="30,280,0,0" Text="Ends" VerticalAlignment="Top" Style="{DynamicResource ContentTextSemiBold}" />
+        <TextBlock HorizontalAlignment="Left" Margin="50,320,0,0" Text="Date" VerticalAlignment="Top" />
+        <DatePicker HorizontalAlignment="Left" Margin="90,320,0,0" VerticalAlignment="Top" Width="180" SelectedDateFormat="Long" SelectedDate="{Binding NewProject.EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock HorizontalAlignment="Left" Margin="35,470,0,0" Text="Amount in KES" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" />
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="90,470,0,0" VerticalAlignment="Top" Width="180" Text="{Binding NewProject.Budget, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Border BorderThickness="1" BorderBrush="#FFC0C0C0" VerticalAlignment="Top" Margin="350,131,50,0" />
+        <TextBox Margin="350,138,50,60" BorderBrush="#00FFFFFF" BorderThickness="0" Style="{DynamicResource AddTextTextBox}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Text="{Binding NewProject.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Content="Save" Margin="0,0,20,20" HorizontalAlignment="Right" Width="120" Height="32" VerticalAlignment="Bottom" Command="{Binding SaveCommand}" />
+        <TextBlock HorizontalAlignment="Left" Margin="350,110,0,0" Text="Details" VerticalAlignment="Top" Style="{DynamicResource ContentTextSemiBold}" />
+        <TextBlock HorizontalAlignment="Left" Margin="30,426,0,0" Text="Budget" VerticalAlignment="Top" Style="{DynamicResource ContentTextSemiBold}" />
     </Grid>
 </UserControl>
