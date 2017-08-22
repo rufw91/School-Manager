@@ -105,10 +105,8 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             ProjectsNewDonationCommand = new RelayCommand(o => Source = new NewDonationVM(), o => true);
 
             ProjectsNewDonorCommand = new RelayCommand(o => Source = new NewDonorVM(), o => true);
-            ProjectsModifyProjectCommand = new RelayCommand(o => Source = new ModifyProjectVM(), o => true);
-            ProjectsModifyDonorCommand = new RelayCommand(o => Source = new ModifyDonorVM(), o => true);
-            ProjectsProjectsHistoryCommand = new RelayCommand(o => Source = new ProjectHistoryVM(), o => true);
-
+            ProjectsProjectsHistoryCommand = new RelayCommand(o => Source = new AllProjectsVM (), o => true);
+            ProjectsProjectTimelineCommand = new RelayCommand(o => Source = new ProjectHistoryVM(), o => true);
             ProjectsDonationsHistoryCommand = new RelayCommand(o => Source = new DonationsHistoryVM(), o => true);
             ProjectsRemoveDonationCommand = new RelayCommand(o => Source = new RemoveDonationVM(), o => true);
             LibraryIssueBookCommand = new RelayCommand(o => Source = new IssueBookVM(), o => true);
@@ -473,19 +471,7 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             get;
             private set;
         }
-
-        public ICommand ProjectsModifyProjectCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand ProjectsModifyDonorCommand
-        {
-            get;
-            private set;
-        }
-
+        
         public ICommand ProjectsProjectsHistoryCommand
         {
             get;
@@ -497,6 +483,13 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             get;
             private set;
         }
+
+        public ICommand ProjectsProjectTimelineCommand
+        {
+            get;
+            private set;
+        }
+        
 
         public ICommand ProjectsRemoveDonationCommand
         {

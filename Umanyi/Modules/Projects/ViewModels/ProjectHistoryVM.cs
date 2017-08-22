@@ -6,154 +6,190 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Modules.Students.Models;
-using UmanyiSMS.Modules.Students.Controller;
+using UmanyiSMS.Modules.Projects.Controller;
 using UmanyiSMS.Lib.Presentation;
+using UmanyiSMS.Modules.Projects.Models;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Accounts")]
     public class ProjectHistoryVM : ViewModelBase
     {
-        LeavingCertificateModel leavingCert;
-        StudentBaseModel selectedStudent;
-        bool isCleared  = false;
-        bool hasRefreshed = false;
+        private ObservableCollection<ProjectBaseModel> allProjects;
+
+        private ObservableCollection<ProjectTaskModel> allTasks;
+
+        private ProjectTaskModel newTask;
+
+        private int selectedProjectID;
+
+        private ProjectTaskModel selectedTask;
+
+        public int SelectedProjectID
+        {
+            get
+            {
+                return this.selectedProjectID;
+            }
+            set
+            {
+                if (value != this.selectedProjectID)
+                {
+                    this.selectedProjectID = value;
+                    base.NotifyPropertyChanged("SelectedProjectID");
+                }
+            }
+        }
+
+        public ProjectTaskModel SelectedTask
+        {
+            get
+            {
+                return this.selectedTask;
+            }
+            set
+            {
+                if (value != this.selectedTask)
+                {
+                    this.selectedTask = value;
+                    base.NotifyPropertyChanged("SelectedTask");
+                }
+            }
+        }
+
+        public ProjectTaskModel NewTask
+        {
+            get
+            {
+                return this.newTask;
+            }
+            set
+            {
+                if (value != this.newTask)
+                {
+                    this.newTask = value;
+                    base.NotifyPropertyChanged("NewTask");
+                }
+            }
+        }
+
+        public ObservableCollection<ProjectBaseModel> AllProjects
+        {
+            get
+            {
+                return this.allProjects;
+            }
+            set
+            {
+                if (value != this.allProjects)
+                {
+                    this.allProjects = value;
+                    base.NotifyPropertyChanged("AllProjects");
+                }
+            }
+        }
+
+        public ObservableCollection<ProjectTaskModel> AllTasks
+        {
+            get
+            {
+                return this.allTasks;
+            }
+            set
+            {
+                if (value != this.allTasks)
+                {
+                    this.allTasks = value;
+                    base.NotifyPropertyChanged("AllTasks");
+                }
+            }
+        }
+
+        public System.Windows.Input.ICommand SaveCommand
+        {
+            get;
+            private set;
+        }
+
+        public System.Windows.Input.ICommand AddCommand
+        {
+            get;
+            private set;
+        }
+
+        public System.Windows.Input.ICommand RemoveCommand
+        {
+            get;
+            private set;
+        }
+
         public ProjectHistoryVM()
         {
-            InitVars();
-            CreateCommands();
+            this.InitVars();
+            this.CreateCommands();
         }
-        protected override void InitVars()
+
+        protected override async void InitVars()
         {
-            Title = "LEAVING CERTIFICATE";
-            leavingCert = new LeavingCertificateModel();
-            SelectedStudent = new StudentBaseModel();
-            selectedStudent.CheckErrors();
-            selectedStudent.PropertyChanged += (o, e) =>
+            base.Title = "PROJECT TIMELINE";
+            this.allTasks = new ObservableCollection<ProjectTaskModel>();
+            this.NewTask = new ProjectTaskModel();
+            this.AllProjects = await DataController.GetAllProjectsDisplay();
+            this.SelectedProjectID = 0;
+            base.PropertyChanged += async delegate (object o, PropertyChangedEventArgs e)
+            {
+                if (e.PropertyName == "SelectedProjectID" && this.selectedProjectID != 0)
                 {
-                    if (e.PropertyName != "StudentID")
-                        return;
-                    hasRefreshed = false;
-                    isCleared=false;
-                    if (selectedStudent.StudentID > 0)
-                        selectedStudent.CheckErrors();
-                    if (!selectedStudent.HasErrors)
-                    {
-                        isCleared = DataController.StudentIsCleared(selectedStudent.StudentID);
-                        if (!isCleared)
-                            selectedStudent.SetErrors("StudentID", new System.Collections.Generic.List<string>() { "Student has not been cleared." });
-                    }
-                };
+                    this.AllTasks = await DataController.GetProjectTasksAsync(this.selectedProjectID);
+                }
+            };
         }
 
         protected override void CreateCommands()
         {
-            PreviewCommand = new RelayCommand(o =>
+            this.AddCommand = new RelayCommand(delegate (object o)
             {
-                var doc = DocumentHelper.GenerateDocument(leavingCert);
-                if (ShowPrintDialogAction != null)
-                    ShowPrintDialogAction.Invoke(doc);
-            }, o => CanSave());
-            RefreshCommand = new RelayCommand(async o =>
-             {
-                 LeavingCert = await DataController.GetStudentLeavingCert(selectedStudent);
-                 if (leavingCert.StudentID ==0)
-                 {
-                     var s = await DataController.GetStudentAsync(selectedStudent.StudentID);
-                     leavingCert.StudentID = selectedStudent.StudentID;
-                     leavingCert.NameOfStudent = selectedStudent.NameOfStudent;
-                     leavingCert.DateOfAdmission = s.DateOfAdmission;                     
-                     leavingCert.DateOfBirth = s.DateOfBirth;                     
-                 }
-                 hasRefreshed=true;
-             }, o => CanRefresh());
-
-            SaveCommand = new RelayCommand(async o =>
+                this.allTasks.Add(this.newTask);
+                this.NewTask = new ProjectTaskModel();
+            }, (object o) => this.CanAdd());
+            this.SaveCommand = new RelayCommand(async delegate (object o)
             {
-                bool succ = await DataController.SaveNewLeavingCertificateAsync(leavingCert);
-                MessageBox.Show(succ ? "Successfully saved details" : "Could not save details", succ ? "Success" : "Warning",
-                    MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
-                if (succ)
-                    Reset();
-            }, o => CanSave());
-            SaveAndPrintCommand = new RelayCommand(async o =>
-            {
-                bool succ = await DataController.SaveNewLeavingCertificateAsync(leavingCert);
-                MessageBox.Show(succ ? "Successfully saved details" : "Could not save details", succ ? "Success" : "Warning",
-                    MessageBoxButton.OK, succ ? MessageBoxImage.Information : MessageBoxImage.Warning);
-                if (!succ)
-                    return;
-                    var doc = DocumentHelper.GenerateDocument(leavingCert);
-                    Reset();
-                    if (ShowPrintDialogAction != null)
-                        ShowPrintDialogAction.Invoke(doc);
-
-
-            }, o => CanSave());
-        }
-
-        private bool CanRefresh()
-        {
-            return !selectedStudent.HasErrors && isCleared;
-        }
-        private bool CanSave()
-        {
-            return !selectedStudent.HasErrors && isCleared && hasRefreshed;
-        }
-        public Action<FixedDocument> ShowPrintDialogAction
-        {
-            get;
-            set;
-        }
-        public ICommand PreviewCommand
-        {
-            get;
-            private set;
-        }
-        public ICommand RefreshCommand
-        {
-            get;
-            private set;
-        }
-        public ICommand SaveCommand
-        {
-            get;
-            private set;
-        }
-        public ICommand SaveAndPrintCommand
-        { get; private set; }
-        public LeavingCertificateModel LeavingCert
-        {
-            get { return leavingCert; }
-            set
-            {
-                if (value != this.leavingCert)
+                base.IsBusy = true;
+                bool flag = await DataController.SaveNewProjectTimeLineAsync(this.selectedProjectID, this.allTasks);
+                base.IsBusy = false;
+                if (flag)
                 {
-                    this.leavingCert = value;
-                    NotifyPropertyChanged("LeavingCert");
+                    this.Reset();
                 }
-            }
+                MessageBox.Show(flag ? "Successfully saved project details." : "Could not save project details at this time.", flag ? "Success" : "Error", MessageBoxButton.OK, flag ? MessageBoxImage.Asterisk : MessageBoxImage.Exclamation);
+                base.IsBusy = false;
+            }, (object o) => this.Cansave());
+            this.RemoveCommand = new RelayCommand(delegate (object o)
+            {
+                this.allTasks.Remove(this.selectedTask);
+            }, (object o) => this.CanRemove());
         }
 
-        public StudentBaseModel SelectedStudent
+        private bool CanAdd()
         {
-            get { return selectedStudent; }
-            set
-            {
-                if (value != this.selectedStudent)
-                {
-                    this.selectedStudent = value;
-                    NotifyPropertyChanged("SelectedStudent");
-                }
-            }
+            return this.newTask.Allocation > 0m && !string.IsNullOrWhiteSpace(this.newTask.NameOfTask) && this.newTask.StartDate < this.newTask.EndDate;
+        }
+
+        private bool CanRemove()
+        {
+            return this.selectedTask != null;
+        }
+
+        private bool Cansave()
+        {
+            return !base.IsBusy && this.selectedProjectID > 0 && this.allTasks.Count > 0;
         }
 
         public override void Reset()
         {
-            selectedStudent.Reset();
-            leavingCert.Reset();
-            hasRefreshed = false;
-            isCleared = false;
+            this.NewTask = new ProjectTaskModel();
         }
     }
 }

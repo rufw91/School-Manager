@@ -6,12 +6,6 @@
     <DataTemplate DataType="{x:Type viewModels:DonationsHistoryVM}" >
         <views:DonationsHistory/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ModifyDonorVM}" >
-        <views:ModifyDonor/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:ModifyProjectVM}" >
-        <views:ModifyProject/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:NewDonationVM}" >
         <views:NewDonation/>
     </DataTemplate>
@@ -21,11 +15,38 @@
     <DataTemplate DataType="{x:Type viewModels:NewProjectVM}" >
         <views:NewProject/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:AllProjectsVM}" >
+        <views:AllProjects/>
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:ProjectHistoryVM}" >
         <views:ProjectHistory/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewModels:RemoveDonationVM}" >
         <views:RemoveDonation/>
     </DataTemplate>
+
+    <DataTemplate x:Key="ProjectTaskModel">
+        <Grid Height="100">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Name:" />
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding NameOfTask}" />
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Allocation:" />
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Allocation}" />
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Starts:" />
+            <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding StartDate, StringFormat={}{0:dd MMM yyyy}}" />
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Ends:" />
+            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding EndDate, StringFormat={}{0:dd MMM yyyy}}" />
+        </Grid>
+    </DataTemplate>
+
 
 </ResourceDictionary>

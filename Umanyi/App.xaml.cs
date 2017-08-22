@@ -252,15 +252,15 @@ namespace UmanyiSMS
         private ApplicationPersistModel GetDefaultInfo()
         {
             ApplicationModel defaultInfo = new ApplicationModel();
-            defaultInfo.Address = "80 - 90108";
-            defaultInfo.AltInfo = "Catholic Mission";
-            defaultInfo.City = "Kola";
-            defaultInfo.Email = "stmarysgirlskola@yahoo.com";
-            defaultInfo.FullName = "ST MARYS GIRLS - KOLA";
-            defaultInfo.FullNameAlt = "St Marys Girls Secondary School";
-            defaultInfo.Motto = "In Pursuit of Excellence";
-            defaultInfo.Name = "St Marys Girls";
-            defaultInfo.PhoneNo = "+254 721 437 475";
+            defaultInfo.Address = "60 - 90100";
+            defaultInfo.AltInfo = "_";
+            defaultInfo.City = "Machakos";
+            defaultInfo.Email = "icanflyhighschool@gmail.com";
+            defaultInfo.FullName = "I CAN FLY HIGH SCHOOL";
+            defaultInfo.FullNameAlt = "I Can Fly High School";
+            defaultInfo.Motto = "Educating the minds of the future";
+            defaultInfo.Name = "I Can Fly";
+            defaultInfo.PhoneNo = "+254 700 000 000";
             defaultInfo.SPhoto = null;
             defaultInfo.Theme = "Light";
             defaultInfo.AccentColor = Color.FromRgb(100, 118, 135);

@@ -120,9 +120,7 @@
                     <MenuItem Header="New Project" Command="{Binding ProjectsNewProjectCommand}"/>
                     <MenuItem Header="New Donation" Command="{Binding ProjectsNewDonationCommand}"/>
                     <MenuItem Header="New Donor" Command="{Binding ProjectsNewDonorCommand}"/>
-                    <Separator/>
-                    <MenuItem Header="Modify Project" Command="{Binding ProjectsModifyProjectCommand}"/>
-                    <MenuItem Header="Modify Donor" Command="{Binding ProjectsModifyDonorCommand}"/>
+                    <MenuItem Header="Project Timeline" Command="{Binding ProjectsProjectTimelineCommand}"/>
                     <Separator/>
                     <MenuItem Header="Project(s) History" Command="{Binding ProjectsProjectsHistoryCommand}"/>
                     <MenuItem Header="Donations History" Command="{Binding ProjectsDonationsHistoryCommand}"/>

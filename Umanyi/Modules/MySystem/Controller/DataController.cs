@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using UmanyiSMS.Lib.Controllers;
 
-namespace UmanyiSMS.Modules.Projects.Controller
+namespace UmanyiSMS.Modules.MySystem.Controller
 {
     public class DataController
     {

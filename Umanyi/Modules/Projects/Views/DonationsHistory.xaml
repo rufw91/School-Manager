@@ -13,7 +13,8 @@
 
         <TextBlock Grid.ColumnSpan="2" Text="Donations History" Style="{StaticResource Title}" HorizontalAlignment="Left"  Margin="10,10,0,0"
                        VerticalAlignment="Top"/>
-        <TextBox Height="35"  Margin="20,105,20,0" VerticalAlignment="Top" />
+        <ComboBox  Margin="20,105,20,0" VerticalAlignment="Top" SelectedValuePath="DonorID" DisplayMemberPath="NameOfDonor" ItemsSource="{Binding AllDonors}"
+                   SelectedValue="{Binding SelectedDonorID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
         <Button Content="Today" Height="35"  Margin="20,155,20,0" VerticalAlignment="Top" 
                 Command="{Binding TodayCommand}"/>
@@ -42,8 +43,11 @@
 
             </DataGrid.Columns>
         </DataGrid>
-        
-        <TextBlock HorizontalAlignment="Left" Margin="20,65,0,0" TextWrapping="Wrap" Text="Donor ID: (enter '0' or leave blank to display records for all donors )" VerticalAlignment="Top" Width="223"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="20,65,0,0" TextWrapping="Wrap" Text="Donor (clear to leave blank and display records for all donors )" VerticalAlignment="Top" Width="223"/>
+        <TextBlock HorizontalAlignment="Left" Margin="203,89,0,0" VerticalAlignment="Top">
+            <Hyperlink Command="{Binding ClearCommand}">Clear</Hyperlink>
+        </TextBlock>
 
     </Grid>
 </UserControl>

@@ -9,6 +9,8 @@ using System.Windows.Input;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Lib.Presentation;
 using UmanyiSMS.Modules.Projects.Models;
+using UmanyiSMS.Modules.Projects.Controller;
+using System.Collections.ObjectModel;
 
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
@@ -17,6 +19,8 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
     {
         private DonationModel donation;
 
+        private ObservableCollection<DonorListModel> allDonors;
+        private int? selectedDonorID;
         public DonationModel Donation
         {
             get
@@ -33,11 +37,19 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             }
         }
 
-        public string DonateToValues
+        public int? SelectedDonorID
         {
             get
             {
-                return "";// new string[6](); // return Enum.GetValues(typeof(DonateTo));
+                return selectedDonorID;// new string[6](); // return Enum.GetValues(typeof(DonateTo));
+            }
+            private set
+            {
+                if (value != this.selectedDonorID)
+                {
+                    this.selectedDonorID = value;
+                    NotifyPropertyChanged("SelectedDonorID");
+                }
             }
         }
 
@@ -53,16 +65,31 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             private set;
         }
 
+        public ObservableCollection<DonorListModel> AllDonors
+        {
+            get
+            {
+                return allDonors;
+            }
+
+            set
+            {
+                allDonors = value;
+            }
+        }
+
         public NewDonationVM()
         {
             this.InitVars();
             this.CreateCommands();
         }
 
-        protected override void InitVars()
+        protected async override void InitVars()
         {
             base.Title = "ENTER NEW DONATION";
             this.donation = new DonationModel();
+            AllDonors = await DataController.GetAllDonorsAsync();
+            NotifyPropertyChanged("AllDonors");
             this.donation.PropertyChanged += delegate(object o, PropertyChangedEventArgs e)
             {
                 if (e.PropertyName == "DonorID")
@@ -77,7 +104,8 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             this.SaveCommand = new RelayCommand(async delegate(object o)
             {
                 base.IsBusy = true;
-                bool flag = true;// await DataAccess.SaveNewDonation(this.donation, "D");
+                this.donation.DonorID = selectedDonorID.Value;
+                bool flag =  await DataController.SaveNewDonation(this.donation, "D");
                 if (flag)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Asterisk);
@@ -92,7 +120,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
             this.SaveAndPrintCommand = new RelayCommand(async delegate(object o)
             {
                 base.IsBusy = true;
-                bool flag = true;// await DataAccess.SaveNewDonation(this.donation, "D");
+                bool flag = await DataController.SaveNewDonation(this.donation, "D");
                 if (flag)
                 {
                     MessageBox.Show("Successfully saved details.", "Success", MessageBoxButton.OK, MessageBoxImage.Asterisk);
@@ -108,11 +136,12 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
 
         private bool CanSave()
         {
-            return !base.IsBusy && !this.donation.HasErrors && this.donation.Amount > 0m;
+            return !base.IsBusy && !this.donation.HasErrors && this.donation.Amount > 0m&&selectedDonorID.HasValue&&selectedDonorID>0;
         }
 
         public override void Reset()
         {
+            SelectedDonorID = null;
             this.donation.Reset();
         }
     }

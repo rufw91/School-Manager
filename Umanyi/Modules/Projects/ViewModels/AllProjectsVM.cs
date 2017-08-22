@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Security.Permissions;
 using UmanyiSMS.Lib;
 using UmanyiSMS.Modules.Projects.Models;
-
+using UmanyiSMS.Modules.Projects.Controller;
 namespace UmanyiSMS.Modules.Projects.ViewModels
 {
     [PrincipalPermission(SecurityAction.Demand, Role = "Deputy")]
@@ -39,7 +39,7 @@ namespace UmanyiSMS.Modules.Projects.ViewModels
         {
             base.Title = "ALL PROJECTS";
             base.IsBusy = true;
-            this.AllProjects = null;// await DataAccess.GetAllProjects();
+            this.AllProjects =  await DataController.GetAllProjects();
             base.IsBusy = false;
         }
 
