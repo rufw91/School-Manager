@@ -124,24 +124,8 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AxInterop.AcroPDFLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Common\AxInterop.AcroPDFLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.AcroPDFLib">
-      <HintPath>..\..\..\..\Common\Interop.AcroPDFLib.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Common\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\Common\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
