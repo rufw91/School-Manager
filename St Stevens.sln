@@ -3,17 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmanyiSMS", "Umanyi\UmanyiSMS.csproj", "{FF9AFA4A-930E-4422-A879-BC0882F0A303}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmanyiSMS.Lib", "Umanyi.Helper\UmanyiSMS.Lib.csproj", "{C3938395-7C97-4474-866C-6E486819AF93}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupClient", "SetupClient\SetupClient.wixproj", "{19B72FCB-A2BF-42ED-A90D-C6AAADFD9F22}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmanyiSMS", "Umanyi\UmanyiSMS.csproj", "{FF9AFA4A-930E-4422-A879-BC0882F0A303}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WInHelper", "WInHelper\WInHelper.vcxproj", "{B2F64C6F-963C-445F-B347-B3502DD21D50}"
-EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupBootstrapper", "SetupBootstrapper\SetupBootstrapper.wixproj", "{93752B90-F087-408A-9226-4F2F65EA067D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetupUI", "SetupUI\SetupUI.csproj", "{0EFB2BE1-9399-4386-B768-71218B671256}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransfer", "DataTransfer\DataTransfer.csproj", "{AC2D28B6-0813-4861-BC0B-E5B4C2CC0996}"
 EndProject
