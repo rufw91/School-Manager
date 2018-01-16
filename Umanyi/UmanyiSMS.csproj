@@ -123,9 +123,12 @@
   <PropertyGroup>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
-   <ItemGroup>
-    <PackageReference Include="System.Collections.Immutable.Net40" Version="1.0.30.17" />
-    <PackageReference Include="log4net" Version="1.2.10" />
+<ItemGroup>
+  <None Include="packages.config" />
+  <Reference Include="System.Collections.Immutable.Net40, Version=6.9.9.0">
+  <Reference Include="log4net, Version=1.2.10">
+  <Private>True</Private>
+</Reference>
 </ItemGroup>
   <ItemGroup>
     <Reference Include="ReachFramework" />
