@@ -70,12 +70,10 @@
   </PropertyGroup>
 <ItemGroup>
   <None Include="packages.config" />
-  <Reference Include="System.Collections.Immutable.Net40, Version=1.0.30.17">
-  <Reference Include="log4net, Version=1.2.10">
-  <Reference Include="Newtonsoft.Json, Version=6.0.4">
-  <Reference Include="Unofficial.Microsoft.SQLServer.SMO, Version=11.0.3000">
-  <Private>True</Private>
-</Reference>
+  <Reference Include="System.Collections.Immutable.Net40, Version=1.0.30.17"></Reference>
+  <Reference Include="log4net, Version=1.2.10"></Reference>
+  <Reference Include="Newtonsoft.Json, Version=6.0.4"></Reference>
+  <Reference Include="Unofficial.Microsoft.SQLServer.SMO, Version=11.0.3000"></Reference>
 </ItemGroup>
   <ItemGroup>    
     <Reference Include="Microsoft.VisualBasic" />
