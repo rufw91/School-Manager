@@ -69,7 +69,12 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    
+    <PackageReference Include="System.Collections.Immutable.Net40" Version="1.0.30.17" />
+    <PackageReference Include="log4net" Version="1.2.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="6.0.4" />
+    <PackageReference Include="Unofficial.Microsoft.SQLServer.SMO" Version="11.0.3000" />
+</ItemGroup>
+  <ItemGroup>    
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
