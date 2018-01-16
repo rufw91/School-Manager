@@ -125,8 +125,11 @@
   </PropertyGroup>
 <ItemGroup>
   <None Include="packages.config" />
-  <Reference Include="System.Collections.Immutable.Net40, Version=1.0.30.17"></Reference>
-  <Reference Include="log4net, Version=1.2.10"></Reference>
+  <Reference Include="System.Collections.Immutable.Net40, Version=1.0.30.17">
+  <HintPath>..\..\packages\system.collections.immutable.net40.1.0.30.17\lib\net40\system.collections.immutable.net40.dll</HintPath>
+  </Reference>
+  <Reference Include="log4net, Version=1.2.10">
+  <HintPath>..\..\packages\log4net.1.2.10.\lib\1.1\log4net.dll</HintPath></Reference>
 </ItemGroup>
   <ItemGroup>
     <Reference Include="ReachFramework" />
