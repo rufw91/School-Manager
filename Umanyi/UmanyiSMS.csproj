@@ -125,10 +125,8 @@
   </PropertyGroup>
 <ItemGroup>
   <None Include="packages.config" />
-  <Reference Include="System.Collections.Immutable.Net40, Version=1.0.30.17">
-  <Reference Include="log4net, Version=1.2.10">
-  <Private>True</Private>
-</Reference>
+  <Reference Include="System.Collections.Immutable.Net40, Version=1.0.30.17"/>
+  <Reference Include="log4net, Version=1.2.10"/>
 </ItemGroup>
   <ItemGroup>
     <Reference Include="ReachFramework" />
