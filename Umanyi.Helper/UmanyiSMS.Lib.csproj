@@ -72,20 +72,20 @@
   <None Include="packages.config" />
   
   <Reference Include="System.Collections.Immutable.Net40, Version=1.0.30.17">
-  <HintPath>\\packages\system.collections.immutable.net40.dll</HintPath>
+  <HintPath>D:\a\1\s\Umanyi.Helper\packages\system.collections.immutable.net40.dll</HintPath>
   </Reference>
   <Reference Include="log4net, Version=1.2.10">
-  <HintPath>\\packages\log4net.dll</HintPath></Reference>
+  <HintPath>D:\a\1\s\Umanyi.Helper\packages\log4net.dll</HintPath></Reference>
   
   <Reference Include="Newtonsoft.Json, Version=6.0.4">
-  <HintPath>\\packages\Newtonsoft.Json.dll</HintPath>
+  <HintPath>D:\a\1\s\Umanyi.Helper\packages\Newtonsoft.Json.dll</HintPath>
   </Reference>
   <Reference Include="Unofficial.Microsoft.SQLServer.SMO, Version=11.0.3000">
-  <HintPath>\\packages\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
-  <HintPath>\\packages\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
-  <HintPath>\\packages\Microsoft.SqlServer.Smo.dll</HintPath>
-  <HintPath>\\packages\Microsoft.SqlServer.SmoExtended.dll</HintPath>
-  <HintPath>\\packages\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+  <HintPath>D:\a\1\s\Umanyi.Helper\packages\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+  <HintPath>D:\a\1\s\Umanyi.Helper\packages\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+  <HintPath>D:\a\1\s\Umanyi.Helper\packages\Microsoft.SqlServer.Smo.dll</HintPath>
+  <HintPath>D:\a\1\s\Umanyi.Helper\packages\Microsoft.SqlServer.SmoExtended.dll</HintPath>
+  <HintPath>D:\a\1\s\Umanyi.Helper\packages\Microsoft.SqlServer.SqlEnum.dll</HintPath>
   </Reference>
   
 </ItemGroup>
