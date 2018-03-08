@@ -130,8 +130,9 @@
   <SpecificVersion>False</SpecificVersion>
   </Reference>
   <Reference Include="log4net.dll">
-  <HintPath>D:\a\1\s\Umanyi\packages\log4net.dll</HintPath></Reference>
+  <HintPath>D:\a\1\s\Umanyi\packages\log4net.dll</HintPath>
   <SpecificVersion>False</SpecificVersion>
+  </Reference>
 </ItemGroup>
   <ItemGroup>
     <Reference Include="ReachFramework" />
