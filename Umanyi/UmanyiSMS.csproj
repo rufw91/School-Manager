@@ -125,10 +125,10 @@
   </PropertyGroup>
 <ItemGroup>
   <None Include="packages.config" />
-  <Reference Include="System.Collections.Immutable.Net40, Version=1.0.30.17">
+  <Reference Include="System.Collections.Immutable.Net40.dll">
   <HintPath>D:\a\1\s\Umanyi\packages\system.collections.immutable.net40.dll</HintPath>
   </Reference>
-  <Reference Include="log4net, Version=1.2.10">
+  <Reference Include="log4net.dll">
   <HintPath>D:\a\1\s\Umanyi\packages\log4net.dll</HintPath></Reference>
 </ItemGroup>
   <ItemGroup>
