@@ -127,9 +127,11 @@
   <None Include="packages.config" />
   <Reference Include="System.Collections.Immutable.Net40.dll">
   <HintPath>D:\a\1\s\Umanyi\packages\system.collections.immutable.net40.dll</HintPath>
+  <SpecificVersion>False</SpecificVersion>
   </Reference>
   <Reference Include="log4net.dll">
   <HintPath>D:\a\1\s\Umanyi\packages\log4net.dll</HintPath></Reference>
+  <SpecificVersion>False</SpecificVersion>
 </ItemGroup>
   <ItemGroup>
     <Reference Include="ReachFramework" />
