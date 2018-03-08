@@ -72,10 +72,10 @@
   <None Include="packages.config" />
   
   <Reference Include="System.Collections.Immutable.Net40, Version=1.0.30.17">
-  <HintPath>..\..\packages\system.collections.immutable.net40.1.0.30.17\lib\net40\system.collections.immutable.net40.dll</HintPath>
+  <HintPath>\\packages\system.collections.immutable.net40.1.0.30.17\lib\net40\system.collections.immutable.net40.dll</HintPath>
   </Reference>
   <Reference Include="log4net, Version=1.2.10">
-  <HintPath>..\..\packages\log4net.1.2.10.\lib\1.1\log4net.dll</HintPath></Reference>
+  <HintPath>\\packages\log4net.1.2.10.\lib\1.1\log4net.dll</HintPath></Reference>
   
   <Reference Include="Newtonsoft.Json, Version=6.0.4"></Reference>
   <Reference Include="Unofficial.Microsoft.SQLServer.SMO, Version=11.0.3000"></Reference>
