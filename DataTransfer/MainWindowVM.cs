@@ -103,18 +103,23 @@ namespace DataTransfer
             allTables.Add(new BasicPair<string, string>("[Institution].[BookReturnHeader]", "[dbo].[BookReturnHeader]"));
             allTables.Add(new BasicPair<string, string>("[Institution].[Class]", "[dbo].[Class]"));
             allTables.Add(new BasicPair<string, string>("[Institution].[ExamClassDetail]", "[dbo].[ExamClassDetail]"));
+            
+            
             allTables.Add(new BasicPair<string, string>("[Institution].[ExamDetail]", "[dbo].[ExamDetail]"));
             allTables.Add(new BasicPair<string, string>("[Institution].[ExamHeader]", "[dbo].[ExamHeader]"));
             allTables.Add(new BasicPair<string, string>("[Institution].[ExamResultDetail]", "[dbo].[ExamResultDetail]"));
             allTables.Add(new BasicPair<string, string>("[Institution].[ExamResultHeader]", "[dbo].[ExamResultHeader]"));
             allTables.Add(new BasicPair<string, string>("[Institution].[ExamStudentDetail]", "[dbo].[ExamStudentDetail]"));
             allTables.Add(new BasicPair<string, string>("[Institution].[FeesPayment]", "[dbo].[FeesPayment]"));
+            
+            
             allTables.Add(new BasicPair<string, string>("[Institution].[FeesStructureDetail]", "[dbo].[FeesStructureDetail]"));
             allTables.Add(new BasicPair<string, string>("[Institution].[FeesStructureHeader]", "[dbo].[FeesStructureHeader]"));
             allTables.Add(new BasicPair<string, string>("[Sales].[Item]", "[dbo].[Item]"));
             allTables.Add(new BasicPair<string, string>("[Sales].[ItemCategory]", "[dbo].[ItemCategory]"));
             allTables.Add(new BasicPair<string, string>("[Sales].[ItemReceiptDetail]", "[dbo].[ItemReceiptDetail]"));
             allTables.Add(new BasicPair<string, string>("[Sales].[ItemReceiptHeader]", "[dbo].[ItemReceiptHeader]"));
+            
             allTables.Add(new BasicPair<string, string>("[Institution].[LeavingCertificate]", "[dbo].[LeavingCertificate]"));
             allTables.Add(new BasicPair<string, string>("[Sales].[SaleDetail]", "[dbo].[SaleDetail]"));
             allTables.Add(new BasicPair<string, string>("[Sales].[SaleHeader]", "[dbo].[SaleHeader]"));
