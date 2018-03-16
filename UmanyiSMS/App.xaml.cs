@@ -216,38 +216,42 @@ namespace UmanyiSMS
             Lib.Properties.Settings.Default.Save();
         }
 
-        private void Application_Startup(object sender, StartupEventArgs e)
-        {
-            SplashScreen splashScreen = new SplashScreen("/Resources/UmanyiSMSSplash.png");
-            splashScreen.Show(true);
+		private void Application_Startup(object sender, StartupEventArgs e)
+		{
+			SplashScreen splashScreen = new SplashScreen("/Resources/UmanyiSMSSplash.png");
+			splashScreen.Show(true);
 
-            info = new ApplicationModel();
-            log = new ObservableImmutableList<string>();
-            Log.Init(ref log);
-            Log.I("Initializing...", this);
+			info = new ApplicationModel();
+			log = new ObservableImmutableList<string>();
+			Log.Init(ref log);
+			Log.I("Initializing...", this);
 
            
-            if (Lib.Properties.Settings.Default.Info == null)
-            {
-                Lib.Properties.Settings.Default.Info = GetDefaultInfo();
-                Lib.Properties.Settings.Default.Save();
-            }
+			if (Lib.Properties.Settings.Default.Info == null) {
+				Lib.Properties.Settings.Default.Info = GetDefaultInfo();
+				Lib.Properties.Settings.Default.Save();
+			}
 
-            InitGlobalVar();
+			InitGlobalVar();
 
-            Window lg;
-            if (RegistryHelper.IsFirstRun()) 
-                lg = new SetupWizard(false);
-            else lg = new Login();
+			Window lg;
+			var boy = false;
+			try {
+				boy = ActivationHelper.IsActivated().Result;
+			} catch {
+			}
+			if (!boy) {
+				lg = new Activation();
+			} else
+				lg = new Login();
            
-            try
-            {
-                MainWindow = lg;
-                lg.ShowDialog();                
-            }
-            catch { }
+			try {
+				MainWindow = lg;
+				lg.ShowDialog();                
+			} catch {
+			}
             
-        }
+		}
 
         private ApplicationPersistModel GetDefaultInfo()
         {

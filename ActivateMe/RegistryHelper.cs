@@ -16,30 +16,26 @@ namespace ActivateMe
             catch{ }
         
         }
-        internal static object GetKeyValue(string key, string name)
+        internal static object GetKeyValue(string name)
         {
             object val = null;
             try
             {
-                val = string.IsNullOrEmpty(key) ? Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Umanyi").OpenSubKey("Umanyi Digital Technologies")
-                    .OpenSubKey(guid).GetValue(name) : Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Umanyi").OpenSubKey("Umanyi Digital Technologies")
-                    .OpenSubKey(guid).OpenSubKey(key).GetValue(name);
+                val = Registry.CurrentUser.OpenSubKey("SOFTWARE").OpenSubKey("Umanyi").OpenSubKey("Umanyi Digital Technologies")
+                	.OpenSubKey(guid).GetValue(name);
             }
             catch { }
             return val;
         }
 
-        internal static bool SetKeyValue(string key, string name,object value)
+        internal static bool SetKeyValue(string name,object value)
         {
            
             try
             {
-                if (string.IsNullOrWhiteSpace(key))
+                
                     Registry.CurrentUser.OpenSubKey("SOFTWARE",true).OpenSubKey("Umanyi",true).OpenSubKey("Umanyi Digital Technologies",true)
                     .OpenSubKey(guid,true).SetValue(name,value) ;
-                else
-                    Registry.CurrentUser.OpenSubKey("SOFTWARE", true).OpenSubKey("Umanyi", true).OpenSubKey("Umanyi Digital Technologies", true)
-                    .OpenSubKey(guid,true).OpenSubKey(key,true).SetValue(name,value);
                 return true;
             }
             catch { }

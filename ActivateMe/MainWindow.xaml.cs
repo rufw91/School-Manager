@@ -28,14 +28,14 @@ namespace ActivateMe
             gkey.UseBytes = false;
             gkey.CreateKey();
             string finalkey = gkey.GetLicenseKey();
-            if (RegistryHelper.GetKeyValue(null, "adata") != null)
+            if (RegistryHelper.GetKeyValue("adata") != null)
             {
                 MessageBox.Show("Activation data already exists!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            RegistryHelper.SetKeyValue(null, "adata", finalkey);
-            RegistryHelper.SetKeyValue(null, "ah", GetSha1Hash(finalkey));
+            RegistryHelper.SetKeyValue("adata", finalkey);
+            RegistryHelper.SetKeyValue("ah", GetSha1Hash(finalkey));
             MessageBox.Show("Successfully saved activation data.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 

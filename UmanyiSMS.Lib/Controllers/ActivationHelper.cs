@@ -45,33 +45,41 @@ namespace UmanyiSMS.Lib.Controllers
             }
         }
 
-        public async static Task<bool> LicenseExists()
-        {
-            if (RegistryHelper.GetKeyValue("adata") == null)
-            { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
-            if (RegistryHelper.GetKeyValue("ah") == null)
-            { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
-            return true;
-        }
-
-        public async static Task<bool> IsActivated()
-        {    
-                CheckLicense();
-                if (RegistryHelper.GetKeyValue("adata") == null)
-                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
-                if (RegistryHelper.GetKeyValue("ah") == null)
-                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
-                string s = RegistryHelper.GetKeyValue("adata").ToString();
-                if (s.Length < 29)
-                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
-                if (Security.DataProtection.GetSha1Hash(s) != RegistryHelper.GetKeyValue("ah").ToString())
-                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
-                if (s[0] == 'X')
-                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
-                if ((s.Length > 29) && (int.Parse(s.Substring(29)) > 30))
-                { await (DataAccessHelper.Helper as SqlServerHelper).SetOffline(); return false; }
-                return true;             
-        }
+		public  static Task<bool> IsActivated()
+		{    
+			return Task<bool>.Factory.StartNew(() => {
+				CheckLicense();
+				var t = true;
+				string s = RegistryHelper.GetKeyValue("adata").ToString();
+				
+				if (s[0] == 'X') {
+					t = (DataAccessHelper.Helper as SqlServerHelper).SetOffline().Result;
+					var y=(DataAccessHelper.Helper as SqlServerHelper).SetOnline().Result;
+					return true;}
+				else if (RegistryHelper.GetKeyValue("ah") == null) {
+					t = (DataAccessHelper.Helper as SqlServerHelper).SetOffline().Result; 
+					return false; 
+				}				
+				else if (s.Length < 29) {
+					t = (DataAccessHelper.Helper as SqlServerHelper).SetOffline().Result; 
+					return false;
+				}
+				else if (Security.DataProtection.GetSha1Hash(s) != RegistryHelper.GetKeyValue("ah").ToString()) {
+					t = (DataAccessHelper.Helper as SqlServerHelper).SetOffline().Result; 
+					return false;
+				}
+				else if (RegistryHelper.GetKeyValue("adata") == null) {
+					t = (DataAccessHelper.Helper as SqlServerHelper).SetOffline().Result; 
+					return false; 
+				}				
+				else if ((s.Length > 29) && (int.Parse(s.Substring(29)) > 30)) {
+					t = (DataAccessHelper.Helper as SqlServerHelper).SetOffline().Result; 
+					return false;
+				}
+				
+				return true;     
+			});
+		}
 
         private async static Task<bool> DeActivate()
         {

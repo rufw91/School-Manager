@@ -497,28 +497,54 @@ namespace UmanyiSMS.Lib.Controllers
             });
         }
 
-        internal async Task SetOffline()
+        internal Task<bool> SetOffline()
         {
-            await  
-             Task.Factory.StartNew(() =>
+            return  
+             Task.Factory.StartNew<bool>(() =>
             {
                 try
-                {
-                    string commandText = "ALTER DATABASE "+_dbName+" SET OFFLINE";
+                {                	 
+                    string commandText = "USE MASTER\r\nALTER DATABASE "+_dbName+" SET OFFLINE";
                     using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.GetConnectionString(_serverName,true),null))
                     {
                         SqlCommand dta = new SqlCommand(commandText, DBConnection);
                         dta.ExecuteNonQuery();
-                        dta.Dispose();
+                       dta.Dispose();
                     }
+                   return true;
                 }
                 catch (Exception e)
                 {
                     Log.E(e.ToString(), null);
                 }
+                return false;
             });
         }
 
+        internal Task<bool> SetOnline()
+        {
+            return  
+             Task.Factory.StartNew<bool>(() =>
+            {
+                try
+                {                	 
+                    string commandText = "USE MASTER\r\nALTER DATABASE "+_dbName+" SET ONLINE";
+                    using (SqlConnection DBConnection = CreateConnection(ConnectionStringHelper.GetConnectionString(_serverName,true),null))
+                    {
+                        SqlCommand dta = new SqlCommand(commandText, DBConnection);
+                        dta.ExecuteNonQuery();
+                       dta.Dispose();
+                    }
+                   return true;
+                }
+                catch (Exception e)
+                {
+                    Log.E(e.ToString(), null);
+                }
+                return false;
+            });
+        }
+        
         public static bool IsServerMachine
         { get { return GetIsServerMachine(); } }
 
