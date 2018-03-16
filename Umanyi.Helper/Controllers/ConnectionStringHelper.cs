@@ -18,7 +18,8 @@ namespace UmanyiSMS.Lib.Controllers
                 if (useIS)
                     return "Server=" + serverName + ";MultipleActiveResultSets=true;Connection Timeout=300;AttachDBFilename=" + dbFilePath +
                 ";Initial Catalog=UmanyiSMS;Integrated Security=SSPI;";
-                else return "Server=" + serverName + ";MultipleActiveResultSets=true;Connection Timeout=300;Initial Catalog=UmanyiSMS;";
+                else return "Server=" + serverName + ";MultipleActiveResultSets=true;Connection Timeout=300;AttachDBFilename=" + dbFilePath +
+                	";Initial Catalog=UmanyiSMS;";
             }
             else
             {
