@@ -402,7 +402,15 @@ namespace UmanyiSMS.Modules.Students.Controller
                 "s.PreviousBalance, s.IsActive,s.Gender, s.SPhoto FROM [Student] s LEFT OUTER JOIN [StudentClass] cs" +
                 " ON (s.StudentID = cs.StudentID AND cs.[Year]=DATEPART(year,SYSDATETIME()))LEFT OUTER JOIN [Class] c ON(cs.ClassID=c.ClassID)";
                 ObservableCollection<StudentListModel> observableCollection = new ObservableCollection<StudentListModel>();
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable =null;
+                
+				try {
+					dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+				} 
+                catch {
+					return new ObservableCollection<StudentListModel>();
+				}
+                
                 if (dataTable.Rows.Count != 0)
                 {
                     foreach (DataRow dataRow in dataTable.Rows)

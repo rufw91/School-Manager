@@ -30,34 +30,34 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PDFViewer));
-            this.acrobatViewer = new AxAcroPDFLib.AxAcroPDF();
-            ((System.ComponentModel.ISupportInitialize)(this.acrobatViewer)).BeginInit();
+            //this.acrobatViewer = new AxAcroPDFLib.AxAcroPDF();
+            //((System.ComponentModel.ISupportInitialize)(this.acrobatViewer)).BeginInit();
             this.SuspendLayout();
             // 
             // acrobatViewer
-            // 
+            /* 
             this.acrobatViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.acrobatViewer.Enabled = true;
             this.acrobatViewer.Location = new System.Drawing.Point(0, 0);
             this.acrobatViewer.Name = "acrobatViewer";
             this.acrobatViewer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("acrobatViewer.OcxState")));
             this.acrobatViewer.Size = new System.Drawing.Size(150, 150);
-            this.acrobatViewer.TabIndex = 0;
+            this.acrobatViewer.TabIndex = 0;*/
             // 
             // PDFViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.acrobatViewer);
+            //this.Controls.Add(this.acrobatViewer);
             this.Name = "PDFViewer";
-            ((System.ComponentModel.ISupportInitialize)(this.acrobatViewer)).EndInit();
+           // ((System.ComponentModel.ISupportInitialize)(this.acrobatViewer)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private AxAcroPDFLib.AxAcroPDF acrobatViewer;
+       // private AxAcroPDFLib.AxAcroPDF acrobatViewer;
 
 
 

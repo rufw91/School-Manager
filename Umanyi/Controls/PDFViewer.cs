@@ -9,9 +9,9 @@ namespace UmanyiSMS.Controls
         public PDFViewer()
         {
             InitializeComponent();
-            acrobatViewer.setShowToolbar(true);
-            acrobatViewer.setShowScrollbars(true);
-            acrobatViewer.setView("FitH");
+            //acrobatViewer.setShowToolbar(true);
+            //acrobatViewer.setShowScrollbars(true);
+            //acrobatViewer.setView("FitH");
         }
 
         public string PdfFilePath
@@ -33,14 +33,14 @@ namespace UmanyiSMS.Controls
 
         public void Print()
         {
-            acrobatViewer.printWithDialog();
+            //acrobatViewer.printWithDialog();
         }
 
         private void ChangeCurrentDisplayedPdf()
         {
-            acrobatViewer.LoadFile(PdfFilePath);
-            acrobatViewer.src = PdfFilePath;
-            acrobatViewer.setViewScroll("FitH", 0);
+            //acrobatViewer.LoadFile(PdfFilePath);
+            //acrobatViewer.src = PdfFilePath;
+            //acrobatViewer.setViewScroll("FitH", 0);
         }
     }
 }
