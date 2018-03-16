@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Raphael Muindi")]
 [assembly: AssemblyProduct("Umanyi School MS")]
-[assembly: AssemblyCopyright("Copyright © 2017 Raphael Muindi")]
+[assembly: AssemblyCopyright("Copyright © 2018 Raphael Muindi")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("7.1.3.6728")]
-[assembly: AssemblyFileVersion("7.1.3.6728")]
+[assembly: AssemblyVersion("7.1.3.6730")]
+[assembly: AssemblyFileVersion("7.1.3.6730")]

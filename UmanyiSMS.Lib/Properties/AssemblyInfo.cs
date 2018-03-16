@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Raphael Muindi")]
 [assembly: AssemblyProduct("UmanyiSMS.Lib")]
-[assembly: AssemblyCopyright("Copyright © 2017 Raphael Muindi")]
+[assembly: AssemblyCopyright("Copyright © 2018 Raphael Muindi")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
