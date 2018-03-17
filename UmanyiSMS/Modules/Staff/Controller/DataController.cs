@@ -82,7 +82,7 @@ namespace UmanyiSMS.Modules.Staff.Controller
             try
             {
                 string commandText = "SELECT Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto,Designation FROM [Staff] WHERE StaffID='" + staffID + "'";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 if (dataTable.Rows.Count != 0)
                 {
                     staffModel.StaffID = staffID;
@@ -110,7 +110,7 @@ namespace UmanyiSMS.Modules.Staff.Controller
             {
                 string commandText = "SELECT TOP 1000000 StaffID,Name,NationalID,DateOfAdmission,PhoneNo,Email,Address,City,PostalCode,SPhoto,Designation FROM [Staff]";
                 ObservableCollection<StaffModel> observableCollection = new ObservableCollection<StaffModel>();
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 if (dataTable.Rows.Count != 0)
                 {
                     foreach (DataRow dataRow in dataTable.Rows)

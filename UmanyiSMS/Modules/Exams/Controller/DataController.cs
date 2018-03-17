@@ -46,7 +46,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             return Task.Factory.StartNew<ObservableCollection<SubjectModel>>(delegate
             {
                 string commandText = "SELECT ed.SubjectID, s.NameOfSubject, ed.ExamDateTime FROM [ExamDetail] ed LEFT OUTER JOIN [Subject] s ON (ed.SubjectID = s.SubjectID) WHERE ed.ExamID =" + examID + " ORDER BY s.[Code]";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 var observableCollection = new ObservableCollection<SubjectModel>();
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -65,7 +65,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         {
             ExamModel examModel = new ExamModel();
             string commandText = "SELECT NameOfExam,OutOf FROM [ExamHeader] WHERE ExamID=" + examID;
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             ExamModel result;
             if (dataTable.Rows.Count <= 0)
             {
@@ -93,7 +93,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             return Task.Factory.StartNew<ObservableCollection<ClassModel>>(delegate
             {
                 string commandText = "SELECT ecd.ClassID, c.NameOfClass FROM [ExamClassDetail] ecd LEFT OUTER JOIN [Class] c ON (ecd.ClassID = c.ClassID) WHERE ecd.ExamID =" + examID;
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 ObservableCollection<ClassModel> observableCollection = new ObservableCollection<ClassModel>();
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -141,7 +141,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 selectedExam.ExamID,
                 " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG(erd.Score),4) DESC"
             });
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 AggregateResultEntryModel aggregateResultEntryModel = new AggregateResultEntryModel();
@@ -159,7 +159,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         {
             ObservableCollection<AggregateResultEntryModel> observableCollection = new ObservableCollection<AggregateResultEntryModel>();
             string commandText = "SELECT sub.SubjectID,sub.NameOfSubject,ROUND(AVG(erd.Score),4) FROM [ExamDetail] ed INNER JOIN [StudentSubjectSelectionDetail] sssd on (sssd.SubjectID = ed.SubjectID) LEFT OUTER JOIN [ExamHeader] eh ON (eh.ExamID=ed.ExamID) LEFT OUTER JOIN [ExamResultHeader] erh ON (erh.ExamID=eh.ExamID) INNER JOIN [StudentSubjectSelectionHeader] sssh on (sssh.StudentID = erh.StudentID AND sssd.StudentSubjectSelectionID= sssh.StudentSubjectSelectionID) INNER JOIN [ExamResultDetail] erd ON (sssd.SubjectID=erd.SubjectID AND erd.ExamResultID=erh.ExamResultID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) LEFT OUTER JOIN [StudentClass] sc ON(erh.StudentID=sc.StudentID) WHERE sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME())  AND erh.ExamID=" + selectedExam.ExamID + " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG(erd.Score),4) DESC";
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 AggregateResultEntryModel aggregateResultEntryModel = new AggregateResultEntryModel();
@@ -260,7 +260,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     "WHERE sc.ClassID=" + selectedClass.ClassID + " AND sc.[Year]=DATEPART(year,SYSDATETIME()) AND sssh.[Year]=DATEPART(year,SYSDATETIME()) AND erh.ExamID=" + e.ExamID +
                     " GROUP BY sub.SubjectID,sub.NameOfSubject ORDER BY ROUND(AVG((erd.Score*" + e.Weight + "/eh.OutOf)),4) DESC";
 
-                DataTable dt = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
+                DataTable dt = DataAccessHelper.Helper.ExecuteNonQueryWithResult(selectStr);
                 AggregateResultEntryModel cls;
                 foreach (DataRow dtr in dt.Rows)
                 {
@@ -301,7 +301,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     current.Weight,
                     "/eh.OutOf)),4) DESC"
                 });
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     AggregateResultEntryModel aggregateResultEntryModel = new AggregateResultEntryModel();
@@ -1627,7 +1627,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 ExamResultStudentModel examResultStudentModel = new ExamResultStudentModel();
                 examResultStudentModel.StudentID = studentID;
                 examResultStudentModel.ExamID = examID;
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(selectStr);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(selectStr);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     ExamResultSubjectEntryModel examResultSubjectEntryModel = new ExamResultSubjectEntryModel();
@@ -1687,7 +1687,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     classID,
                     " AND s.IsACtive=1"
                 });
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     ExamResultStudentModel examResultStudentModel = new ExamResultStudentModel();
@@ -1791,7 +1791,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                     classID,
                     " AND IsACtive=1"
                 });
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     var studentExamResultModel = new ExamResultStudentDisplayModel();
@@ -1924,7 +1924,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 ")) res ON (erd.ExamResultID=res.ExamResultID) GROUP BY res.StudentID )x WHERE x.StudentID=",
                 studentID
             });
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             string result;
             if (dataTable.Rows.Count == 0)
             {
@@ -1949,7 +1949,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 ") res ON (erd.ExamResultID=res.ExamResultID) GROUP BY res.StudentID)x WHERE x.StudentID=",
                 studentID
             });
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             string result;
             if (dataTable.Rows.Count == 0)
             {
@@ -2005,7 +2005,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
                 classID,
                 " AND s.IsACtive=1"
             });
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 ExamResultStudentModel examResultStudentModel = new ExamResultStudentModel();
@@ -2081,7 +2081,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
             }
             text = text.Remove(text.Length - 1);
             text = text + " FROM [Student]s LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE ClassID IN (" + text2 + ") AND IsACtive=1";
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 ExamResultStudentModel examResultStudentModel = new ExamResultStudentModel();

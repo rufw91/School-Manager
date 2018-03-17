@@ -150,7 +150,7 @@ namespace UmanyiSMS.Modules.Institution.Controller
             {
                 ExamSettingsModel settings = new ExamSettingsModel();
                 string text = "SELECT [Key],Value,Value2 FROM [Settings] WHERE [Type]='ExamSettings'";
-                DataTable dt = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+                DataTable dt = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
                 var tx = new List<IEnumerable<string>>();
                 if (dt.Rows.Count == 0)
                     return new ExamSettingsModel();
@@ -194,7 +194,7 @@ namespace UmanyiSMS.Modules.Institution.Controller
             {
                 ObservableCollection<ClassModel> observableCollection = new ObservableCollection<ClassModel>();
                 string commandText = "SELECT ClassID,NameOfClass FROM [Class]";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new ClassModel
@@ -214,7 +214,7 @@ namespace UmanyiSMS.Modules.Institution.Controller
                 ObservableCollection<CombinedClassModel> observableCollection = new ObservableCollection<CombinedClassModel>();
                 ObservableCollection<ClassModel> observableCollection2 = new ObservableCollection<ClassModel>();
                 string commandText = "SELECT ClassID,NameOfClass FROM [Class]";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection2.Add(new ClassModel
@@ -336,7 +336,7 @@ namespace UmanyiSMS.Modules.Institution.Controller
         {
             ClassModel classModel = new ClassModel();
             string commandText = "SELECT ClassID,NameOfClass FROM [Class] WHERE ClassID=" + classID;
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             ClassModel result;
             if (dataTable.Rows.Count <= 0)
             {
@@ -357,7 +357,7 @@ namespace UmanyiSMS.Modules.Institution.Controller
             {
                 ObservableCollection<SubjectModel> observableCollection = new ObservableCollection<SubjectModel>();
                 string commandText = "SELECT SubjectID,NameOfSubject,Code,IsOptional FROM [Subject] ORDER BY Code";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new SubjectModel

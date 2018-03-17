@@ -168,7 +168,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                     });
                 }
             }
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
             ObservableCollection<PurchaseModel> result;
             if (dataTable.Rows.Count == 0)
             {
@@ -209,7 +209,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             ObservableCollection<ItemPurchaseModel> observableCollection = new ObservableCollection<ItemPurchaseModel>();
             string commandText = "SELECT sod.ItemID,p.Description,sod.UnitCost,sod.Quantity FROM [ItemReceiptDetail] sod LEFT OUTER JOIN [Item] p ON( sod.ItemID = p.ItemID) WHERE sod.ItemReceiptID = " + saleId;
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 long itemID = long.Parse(dataRow[0].ToString());
@@ -230,7 +230,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
             {
                 ObservableCollection<ItemModel> observableCollection = new ObservableCollection<ItemModel>();
                 string commandText = "SELECT ItemID,Description,DateAdded,ItemCategoryID,Cost FROM [Item]";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new ItemModel
@@ -253,7 +253,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
             {
                 ObservableCollection<ItemCategoryModel> observableCollection = new ObservableCollection<ItemCategoryModel>();
                 string commandText = "SELECT ItemCategoryID,Description FROM [ItemCategory]";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new ItemCategoryModel
@@ -272,7 +272,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
             {
                 ObservableCollection<SupplierBaseModel> observableCollection = new ObservableCollection<SupplierBaseModel>();
                 string commandText = "SELECT SupplierID,NameOfSupplier FROM [Supplier]";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new SupplierBaseModel
@@ -449,7 +449,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                         " 23:59:59.998'"
                     });
                 }
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new SupplierPaymentModel(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2].ToString(), decimal.Parse(dataRow[3].ToString()), DateTime.Parse(dataRow[4].ToString()), dataRow[5].ToString()));
@@ -487,7 +487,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
         {
             SupplierModel supplierModel = new SupplierModel();
             string commandText = "SELECT SupplierID, NameOfSupplier, PhoneNo, AltPhoneNo, Email, Address, PostalCode, City, PINNo FROM [Supplier] WHERE SupplierID=" + supplierID;
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             if (dataTable.Rows.Count >= 1)
             {
                 DataRow dataRow = dataTable.Rows[0];
@@ -535,7 +535,7 @@ namespace UmanyiSMS.Modules.Purchases.Controller
             {
                 ObservableCollection<SupplierModel> observableCollection = new ObservableCollection<SupplierModel>();
                 string commandText = "SELECT SupplierID,NameOfSupplier,PhoneNo,AltPhoneNo,Email,Address,PostalCode,City,PINNo FROM [Supplier]";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new SupplierModel
@@ -591,8 +591,8 @@ namespace UmanyiSMS.Modules.Purchases.Controller
                     }
 
                     
-                    DataTable dataTable2 = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text3);
-                    DataTable dataTable3 = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text4);
+                    DataTable dataTable2 = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text3);
+                    DataTable dataTable3 = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text4);
                     ObservableCollection<TransactionModel> observableCollection = new ObservableCollection<TransactionModel>();
                     
                     foreach (DataRow dataRow in dataTable2.Rows)

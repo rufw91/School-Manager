@@ -27,7 +27,7 @@ namespace UmanyiSMS.Lib.Controllers
                 int colIndex = reader.FieldCount;
                 for (int i = 0; i < colIndex; i++)
                 {
-                    dt.Columns.Add(new DataColumn("", typeof(object)));
+                	dt.Columns.Add(new DataColumn(reader.GetName(i), typeof(object)));
                 }
                 DataRow dtr;
                 while (reader.Read())
@@ -55,7 +55,7 @@ namespace UmanyiSMS.Lib.Controllers
             return dt;
         }
         public abstract bool ExecuteNonQuery(string commandText, IEnumerable<DbParameter> paramColl);
-        public abstract DataTable ExecuteNonQueryWithResultTable(string commandText);
+        public abstract DataTable ExecuteNonQueryWithResult(string commandText);
         public abstract bool ExecuteNonQuery(string commandText);
         public abstract List<string> CopyFirstColumnToList(string commandText);
         public abstract List<string> CopyFirstColumnToList(string commandText, IEnumerable<DbParameter> paramColl);

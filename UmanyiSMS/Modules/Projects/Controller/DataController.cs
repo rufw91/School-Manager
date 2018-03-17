@@ -15,7 +15,7 @@ namespace UmanyiSMS.Modules.Projects.Controller
         {
             DonorModel donorModel = new DonorModel();
             string commandText = "SELECT DonorID,NameOfDonor FROM [Donor] WHERE DonorID=" + donorID;
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             if (dataTable.Rows.Count != 0)
             {
                 donorModel.DonorID = donorID;
@@ -62,7 +62,7 @@ namespace UmanyiSMS.Modules.Projects.Controller
             {
                 ObservableCollection<DonorListModel> observableCollection = new ObservableCollection<DonorListModel>();
                 string commandText = "SELECT d.DonorID, d.NameOfDonor,d.PhoneNo, ISNULL(SUM(CONVERT(decimal(18,0),dn.AmountDonated)),0) FROM [Donor] d LEFT OUTER JOIN [Donation] dn ON(d.DonorID=dn.DonorID) GROUP BY d.DonorID,d.NameOfDonor,d.PhoneNo";
-                var dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                var dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new DonorListModel
@@ -161,7 +161,7 @@ namespace UmanyiSMS.Modules.Projects.Controller
                 endDate.Year,
                 " 23:59:59.998') GROUP BY p.ProjectID, p.NameOfProject,p.Budget,p.StartDateTime,p.EndDateTime"
             });
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 observableCollection.Add(new ProjectListModel
@@ -196,7 +196,7 @@ namespace UmanyiSMS.Modules.Projects.Controller
                 endDate.Year,
                 " 23:59:59.998')"
             });
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 observableCollection.Add(new ProjectBaseModel
@@ -214,7 +214,7 @@ namespace UmanyiSMS.Modules.Projects.Controller
             {
                 ObservableCollection<ProjectTaskModel> observableCollection = new ObservableCollection<ProjectTaskModel>();
                 string commandText = "SELECT ProjectDetailID,[Name],[Allocation],StartDate,EndDate FROM [ProjectDetail] WHERE ProjectID=" + projectID;
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 if (dataTable.Rows.Count > 0)
                 {
                     foreach (DataRow dataRow in dataTable.Rows)
@@ -325,7 +325,7 @@ namespace UmanyiSMS.Modules.Projects.Controller
                         " 23:59:59.998')"
                     });
                 }
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new DonationModel

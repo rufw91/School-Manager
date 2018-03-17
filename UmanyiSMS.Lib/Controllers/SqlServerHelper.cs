@@ -193,7 +193,7 @@ namespace UmanyiSMS.Lib.Controllers
             }
         }
 
-        public override DataTable ExecuteNonQueryWithResultTable(string commandText)
+        public override DataTable ExecuteNonQueryWithResult(string commandText)
         {
             return ExecuteNonQueryWithResultTable(commandText, true);
         }

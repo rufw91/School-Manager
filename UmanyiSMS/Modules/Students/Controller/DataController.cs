@@ -55,7 +55,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                 try
                 {
                     string commandText = "SELECT DateOfIssue,DateOfBirth,DateOfAdmission,DateOfLeaving,Nationality,ClassEntered,ClassLeft,Remarks FROM [LeavingCertificate] WHERE StudentID=" + student.StudentID;
-                    DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                    DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                     if (dataTable.Rows.Count != 0)
                     {
                         leavingCertificateModel.StudentID = student.StudentID;
@@ -158,7 +158,7 @@ namespace UmanyiSMS.Modules.Students.Controller
             {
                 StudentSubjectSelectionModel studentSubjectSelectionModel = new StudentSubjectSelectionModel();
                 string commandText = "SELECT sub.NameOfSubject,sssd.SubjectID FROM [StudentSubjectSelectionDetail] sssd LEFT OUTER JOIN [StudentSubjectSelectionHeader] sssh ON(sssd.StudentSubjectSelectionID = sssh.StudentSubjectSelectionID) LEFT OUTER JOIN [Subject] sub ON(sssd.SubjectID=sub.SubjectID) WHERE sssh.[Year]=DATEPART(YEAR,sysdatetime()) AND sssh.StudentID=" + studentID + " ORDER BY sub.[Code]";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     StudentSubjectSelectionEntryModel studentSubjectSelectionEntryModel = new StudentSubjectSelectionEntryModel();
@@ -265,7 +265,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                 string commandText = "SELECT s.StudentID,FirstName+' '+LastName+' '+MiddleName FROM [Student]s " +
                 "LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime()))" +
                 "WHERE cs.ClassID IN (" + text + ") AND s.IsActive=1";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     StudentBaseModel studentBaseModel = new StudentBaseModel();
@@ -405,7 +405,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                 DataTable dataTable =null;
                 
 				try {
-					dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+					dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
 				} 
                 catch {
 					return new ObservableCollection<StudentListModel>();
@@ -469,7 +469,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                 }
                 text = text.Remove(text.Length - 1);
                 text = text + " FROM [Student]s LEFT OUTER JOIN [StudentClass] cs ON (s.StudentID=cs.StudentID AND cs.[Year]=DATEPART(year,sysdatetime())) WHERE s.IsActive=1 AND cs.ClassID=" + classID;
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     StudentSubjectSelectionModel studentSubjectSelectionModel = new StudentSubjectSelectionModel();

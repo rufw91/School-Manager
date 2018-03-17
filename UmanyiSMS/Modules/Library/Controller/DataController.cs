@@ -26,7 +26,7 @@ namespace UmanyiSMS.Modules.Library.Controller
             {
                 ObservableCollection<BookModel> observableCollection = new ObservableCollection<BookModel>();
                 string commandText = "SELECT ISBN, Name,Author,Publisher,SPhoto,BookID FROM [Book]";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new BookModel
@@ -106,7 +106,7 @@ namespace UmanyiSMS.Modules.Library.Controller
                     studenID,
                     ")) x LEFT OUTER JOIN [Book] b ON (x.BookID=b.BookID))"
                 });
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new BookModel
@@ -130,7 +130,7 @@ namespace UmanyiSMS.Modules.Library.Controller
             {
                 ObservableCollection<UnreturnedBookModel> observableCollection = new ObservableCollection<UnreturnedBookModel>();
                 string commandText = "SELECT x.BookID,b.ISBN,b.Name,b.Author,b.Publisher,b.SPhoto,dbo.GetUnreturnedCopies(x.BookID) FROM ((SELECT bid.BookID FROM [BookIssueDetail] bid INNER JOIN [BookIssueHeader] bih ON(bid.BookIssueID=bih.BookIssueID) WHERE NOT EXISTS(SELECT brd.BookID FROM [BookReturnDetail] brd INNER JOIN [BookReturnHeader] brh ON(brd.BookReturnID=brh.BookReturnID) WHERE brh.DateReturned>bih.DateIssued AND brd.BookID=bid.BookID)) x LEFT OUTER JOIN [Book] b ON (x.BookID=b.BookID))";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new UnreturnedBookModel
@@ -179,7 +179,7 @@ namespace UmanyiSMS.Modules.Library.Controller
         internal static BookModel GetBook(int bookID)
         {
             string commandText = "SELECT BookID,ISBN,Name,Author,Publisher,SPhoto FROM [Book] WHERE BookID=" + bookID;
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             BookModel result;
             if (dataTable.Rows.Count == 0)
             {

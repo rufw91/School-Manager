@@ -46,7 +46,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
             {
                 ObservableCollection<StudentFeesDefaultModel> observableCollection = new ObservableCollection<StudentFeesDefaultModel>();
                 string commandText = "SELECT s.StudentID, NameOfStudent, GuardianPhoneNo,dbo.GetCurrentBalance(s.StudentID) FROM [Student]s LEFT OUTER JOIN [StudentClass]sc ON (sc.StudentID=s.StudentID AND sc.[Year]=DATEPART(year,sysdatetime())) WHERE sc.ClassID=" + classID + " AND sc.[Year]=DATEPART(year,sysdatetime()) AND s.IsActive = 1";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new StudentFeesDefaultModel
@@ -102,7 +102,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
             if (saleID==0)
                 return observableCollection;
             string commandText = "SELECT Name,Amount FROM [SaleDetail] WHERE SaleID=" + saleID;
-            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+            DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 observableCollection.Add(new FeesStructureEntryModel
@@ -131,7 +131,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
                 else
                 {
                     commandText = "SELECT Name, Amount FROM [FeesStructureDetail] WHERE FeesStructureID =" + num;
-                    DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                    DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                     foreach (DataRow dataRow in dataTable.Rows)
                     {
                         FeesStructureEntryModel feesStructureEntryModel = new FeesStructureEntryModel();
@@ -309,7 +309,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
                 }
 
                 text += "\r\nGROUP BY PaymentMethod";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new FeesPaymentHistoryModel
@@ -368,8 +368,8 @@ namespace UmanyiSMS.Modules.Fees.Controller
                             " 23:59:59.998')"
                         });
                     }
-                    DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text);
-                    DataTable dataTable2 = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(text3);
+                    DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text);
+                    DataTable dataTable2 = DataAccessHelper.Helper.ExecuteNonQueryWithResult(text3);
                     ObservableCollection<TransactionModel> observableCollection = new ObservableCollection<TransactionModel>();
                     foreach (DataRow dataRow in dataTable.Rows)
                     {
@@ -496,7 +496,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
             {
                 ObservableCollection<FeePaymentModel> observableCollection = new ObservableCollection<FeePaymentModel>();
                 string commandText = "SELECT TOP 20 FeesPaymentID,AmountPaid, DatePaid, PaymentMethod FROM [FeesPayment] WHERE StudentID =" + student.StudentID + " ORDER BY [DatePaid] desc";
-                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     observableCollection.Add(new FeePaymentModel
@@ -637,7 +637,7 @@ namespace UmanyiSMS.Modules.Fees.Controller
                             return result2;
                         }
                         commandText = "SELECT Name, Amount FROM [FeesStructureDetail] WHERE FeesStructureID =" + num;
-                        DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResultTable(commandText);
+                        DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                         foreach (DataRow dataRow in dataTable.Rows)
                         {
                             FeesStructureEntryModel feesStructureEntryModel = new FeesStructureEntryModel();
