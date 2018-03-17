@@ -79,8 +79,8 @@ namespace UmanyiSMS.Modules.MySystem.ViewModels
             ExamsEnterResultsPSCommand = new RelayCommand(o => Source = new EnterExamResultsVM(), o => true);
             ExamsEnterResultsPCCommand = new RelayCommand(o => Source = new EnterExamResultsBySubjectVM(), o => true);
             ExamsViewResultsCommand = new RelayCommand(o => Source = new ViewExamResultsVM(), o => true);
-            ExamsReportFormPSCommand = new RelayCommand(o => Source = new StudentReportForm3VM(), o => true);
-            ExamsReportFormPCCommand = new RelayCommand(o => Source = new ClassReportForms3VM(), o => true);
+            ExamsReportFormPSCommand = new RelayCommand(o => Source = new StudentReportFormVM(), o => true);
+            ExamsReportFormPCCommand = new RelayCommand(o => Source = new ClassReportFormsVM(), o => true);
             ExamsMarkListNCommand = new RelayCommand(o => Source = new MarkListsVM(), o => true);
             ExamsMarkListWCommand = new RelayCommand(o => Source = new WeightedMarkListVM(), o => true);
             ExamsSubjectPerfomanceNCommand = new RelayCommand(o => Source = new AggregateResultsVM(), o => true);
