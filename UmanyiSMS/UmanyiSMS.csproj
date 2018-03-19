@@ -689,7 +689,6 @@
       <SubType>Designer</SubType>
     </Resource>
     <Resource Include="Modules\Exams\Resources\Transcript.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
     <Resource Include="Modules\Exams\Resources\Transcript2.xaml">
@@ -701,9 +700,9 @@
     <Resource Include="Modules\Exams\Resources\Transcript4.xaml">
       <SubType>Designer</SubType>
     </Resource>
-    <Page Include="Modules\Exams\Resources\ReportForm.xaml">
+    <Resource Include="Modules\Exams\Resources\ReportForm.xaml">
       <SubType>Designer</SubType>
-    </Page>
+    </Resource>
     <Page Include="Modules\Exams\Views\CombinedAggregateResults.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -850,14 +849,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Modules\Library\Resources\UnreturnedBooks.xaml">
+    <Resource Include="Modules\Library\Resources\UnreturnedBooks.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Library\Resources\UnreturnedBooks2.xaml">
+    </Resource>
+    <Resource Include="Modules\Library\Resources\UnreturnedBooks2.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </Resource>
     <Page Include="Modules\Library\Views\AllUnreturnedBooks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

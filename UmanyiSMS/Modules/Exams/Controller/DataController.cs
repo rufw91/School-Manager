@@ -45,7 +45,7 @@ namespace UmanyiSMS.Modules.Exams.Controller
         {
             return Task.Factory.StartNew<ObservableCollection<SubjectModel>>(delegate
             {
-                string commandText = "SELECT ed.SubjectID, s.NameOfSubject, ed.ExamDateTime FROM [ExamDetail] ed LEFT OUTER JOIN [Subject] s ON (ed.SubjectID = s.SubjectID) WHERE ed.ExamID =" + examID + " ORDER BY s.[Code]";
+                string commandText = "SELECT ed.SubjectID, s.NameOfSubject FROM [ExamDetail] ed LEFT OUTER JOIN [Subject] s ON (ed.SubjectID = s.SubjectID) WHERE ed.ExamID =" + examID + " ORDER BY s.[Code]";
                 DataTable dataTable = DataAccessHelper.Helper.ExecuteNonQueryWithResult(commandText);
                 var observableCollection = new ObservableCollection<SubjectModel>();
                 foreach (DataRow dataRow in dataTable.Rows)

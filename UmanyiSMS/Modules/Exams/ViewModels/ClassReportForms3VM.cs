@@ -124,8 +124,8 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                                 NameOfExam = ex.NameOfExam,
                                 OutOf = ex.OutOf,
                                 Weight = count <= 3 ? ex.OutOf : 0,
-                                ShowInTranscript = count > 3 ? false : true,
-                                Index = count
+							ShowInTranscript = count <= 3,
+                                Index = count>3?3:count
                             });
                             count++;
                         }

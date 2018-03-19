@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UmanyiSMS.Modules.Exams.Views.EnterExamResultsBySubject"
+<UserControl x:Class="UmanyiSMS.Modules.Exams.Views.EnterExamResultsBySubject"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -14,13 +14,13 @@
             ItemsSource="{Binding AllClasses}"
         	DisplayMemberPath="NameOfClass" 
                   SelectedValuePath="ClassID"
-        	SelectedValue="{Binding SelectedClassID, Mode=TwoWay}" />
+        	SelectedValue="{Binding SelectedClassID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock  HorizontalAlignment="Left" Margin="31,135,0,0" Text="Term" VerticalAlignment="Top" />
         <ComboBox HorizontalAlignment="Left" Margin="80,135,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllTerms}"
         	DisplayMemberPath="Description" 
-                  SelectedItem="{Binding SelectedTerm, Mode=TwoWay}"/>
+                  SelectedItem="{Binding SelectedTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock  HorizontalAlignment="Left" Margin="31,180,0,0" Text="Exam" VerticalAlignment="Top" />
         <ComboBox HorizontalAlignment="Left" Margin="80,180,0,0" VerticalAlignment="Top" Width="200"         	
@@ -28,14 +28,14 @@
         	DisplayMemberPath="NameOfExam" 
                   SelectedValuePath="ExamID"
                   SelectedItem="{Binding SelectedExam,Mode=OneWayToSource}"
-        	SelectedValue="{Binding SelectedExamID, Mode=TwoWay}"/>
+        	SelectedValue="{Binding SelectedExamID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"/>
 
         <TextBlock  HorizontalAlignment="Left" Margin="31,225,0,0" Text="Subject" VerticalAlignment="Top" />
         <ComboBox HorizontalAlignment="Left" Margin="80,225,0,0" VerticalAlignment="Top" Width="200"         	
             ItemsSource="{Binding AllSubjects}"
         	DisplayMemberPath="NameOfSubject" 
                   SelectedValuePath="SubjectID"
-        	SelectedValue="{Binding SelectedSubjectID, Mode=TwoWay}"/>
+        	SelectedValue="{Binding SelectedSubjectID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="31,270,0,0" Text="Out Of" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="80,270,0,0" VerticalAlignment="Top" Width="150"

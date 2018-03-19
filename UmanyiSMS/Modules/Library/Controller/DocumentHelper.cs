@@ -26,11 +26,14 @@ namespace UmanyiSMS.Modules.Library.Controller
 
         protected override void AddDataToDocument()
         {
-            if (MyWorkObject is AllUnreturnedBooksModel)
-                GenerateUnreturnedBooks2();
-            if (MyWorkObject is UnreturnedBooksModel)
-                GenerateUnreturnedBooks();
-
+			if (MyWorkObject is AllUnreturnedBooksModel) {
+				GenerateUnreturnedBooks2();
+				return;
+			}
+			if (MyWorkObject is UnreturnedBooksModel) {
+				GenerateUnreturnedBooks();
+				return;
+			}
             throw new ArgumentException();
 
         }
@@ -38,9 +41,9 @@ namespace UmanyiSMS.Modules.Library.Controller
         protected override string GetResString()
         {
             if (MyWorkObject is AllUnreturnedBooksModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Library/Resources/UnreturnedBooks2.xaml"));
             if (MyWorkObject is UnreturnedBooksModel)
-                return GetResourceString(null);
+                return GetResourceString(new Uri("pack://application:,,,/UmanyiSMS;component/Modules/Library/Resources/UnreturnedBooks.xaml"));
 
             return "";
         }

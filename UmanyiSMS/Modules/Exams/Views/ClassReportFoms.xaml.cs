@@ -17,7 +17,7 @@ namespace UmanyiSMS.Modules.Exams.Views
             {
                 if (DataContext != null)
                 {
-                    var nfpvm = DataContext as ClassReportFormsVM;
+                    var nfpvm = DataContext as ClassReportForms3VM;
                     nfpvm.ShowPrintDialogAction = (p) =>
                     {
                         CustomWindow w = new CustomWindow();

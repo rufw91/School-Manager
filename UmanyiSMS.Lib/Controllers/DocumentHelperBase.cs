@@ -44,6 +44,7 @@ namespace UmanyiSMS.Lib.Controllers
         protected FixedPage GetPage(string resString)
         { 
             StringReader stringReader = new StringReader(resString);
+            
             XmlReader xmlReader = XmlReader.Create(stringReader);
             FixedPage page = (FixedPage)XamlReader.Load(xmlReader);
             return page;

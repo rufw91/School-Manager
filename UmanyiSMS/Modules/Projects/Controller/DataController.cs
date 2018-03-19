@@ -278,7 +278,7 @@ namespace UmanyiSMS.Modules.Projects.Controller
             ObservableCollection<DonationModel> result;
             try
             {
-                string text = "SELECT dn.DonationID,dn.DonorID,d.NameOfDonor,dn.AmountDonated, dn.DonateTo,dn.[Type],dn.DateDonated FROM [Donation] dn LEFT OUTER JOIN [Donor]d ON(dn.DonorID=d.DonorID)";
+                string text = "SELECT dn.DonationID,dn.DonorID,d.NameOfDonor,dn.AmountDonated, dn.DonateTo,dn.DateDonated FROM [Donation] dn LEFT OUTER JOIN [Donor]d ON(dn.DonorID=d.DonorID)";
                 if (donorID.HasValue)
                 {
                     text = text + " WHERE dn.DonorID =" + donorID.Value;
@@ -335,7 +335,7 @@ namespace UmanyiSMS.Modules.Projects.Controller
                         NameOfDonor = dataRow[2].ToString(),
                         Amount = decimal.Parse(dataRow[3].ToString()),
                         DonateTo = dataRow[4].ToString(),
-                        DateDonated = DateTime.Parse(dataRow[6].ToString())
+                        DateDonated = DateTime.Parse(dataRow[5].ToString())
                     });
                 }
                 result = observableCollection;

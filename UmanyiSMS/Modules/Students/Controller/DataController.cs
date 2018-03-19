@@ -214,7 +214,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                 studentModel.SPhoto = (byte[])dataTable.Rows[0][14];
                 studentModel.PrevBalance = decimal.Parse(dataTable.Rows[0][15].ToString());
                 studentModel.Gender = (Gender)Enum.Parse(typeof(Gender), dataTable.Rows[0][16].ToString());
-                studentModel.IsActive = int.Parse(dataTable.Rows[0][17].ToString()) == 1;
+                studentModel.IsActive = bool.Parse(dataTable.Rows[0][17].ToString());
             }
             return studentModel;
         }
@@ -433,7 +433,7 @@ namespace UmanyiSMS.Modules.Students.Controller
                         stud.PrevInstitution = dataRow[13].ToString();
                         stud.KCPEScore = string.IsNullOrWhiteSpace(dataRow[14].ToString()) ? 0 : int.Parse(dataRow[14].ToString());
                         stud.PrevBalance = decimal.Parse(dataRow[15].ToString());
-                        stud.IsActive = int.Parse(dataRow[16].ToString())==1;
+                        stud.IsActive = bool.Parse(dataRow[16].ToString());
                         stud.Gender = (Gender)Enum.Parse(typeof(Gender), dataRow[17].ToString());
                         stud.SPhoto = (byte[])dataRow[18];
                         observableCollection.Add(stud);
@@ -455,7 +455,7 @@ namespace UmanyiSMS.Modules.Students.Controller
             {
                 ObservableCollection<StudentSubjectSelectionModel> observableCollection = new ObservableCollection<StudentSubjectSelectionModel>();
                 ObservableCollection<SubjectModel> result = Institution.Controller.DataController.GetInstitutionSubjectsAsync().Result;
-                string text = "SELECT s.StudentID, NameOfStudent,";
+                string text = "SELECT s.StudentID, s.NameOfStudent,";
                 foreach (SubjectModel current in result)
                 {
                     object obj = text;

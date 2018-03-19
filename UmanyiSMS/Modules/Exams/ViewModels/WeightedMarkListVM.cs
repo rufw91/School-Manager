@@ -67,7 +67,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                                 OutOf = ex.OutOf,
                                 Weight = count <= 3 ? ex.OutOf : 0,
                                 ShowInTranscript = count > 3 ? false : true,
-                                Index = count
+                                Index = count>3?3:count
                             });
                             count++;
                         }
@@ -91,7 +91,7 @@ namespace UmanyiSMS.Modules.Exams.ViewModels
                                 OutOf = ex.OutOf,
                                 Weight = count <= 3 ? ex.OutOf : 0,
                                 ShowInTranscript = count > 3 ? false : true,
-                                Index = count
+                                Index = count>3?3:count
                             });
                             count++;
                         }
